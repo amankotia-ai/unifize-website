@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unifize — People</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --u-primary: #0052FF;
+    --u-primary-hover: #003ECC;
+    --u-primary-tint: #F0F4FF;
+    --u-primary-border: #D6E0FF;
+    --u-font: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --u-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --r-1: 2px;
+    --r-2: 3px;
+    --r-3: 5px;
+    --r-4: 8px;
+
+    --d: 1;
+
+    --n-0: #FFFFFF;
+    --n-25: #FBFBFC;
+    --n-50: #F6F7F8;
+    --n-100: #EEF0F2;
+    --n-150: #E4E7EB;
+    --n-200: #D8DCE1;
+    --n-300: #B8BEC7;
+    --n-400: #8B93A0;
+    --n-500: #646B78;
+    --n-600: #454B56;
+    --n-700: #2B2F38;
+    --n-800: #181B22;
+    --n-900: #0B0D11;
+
+    --s-ok: #0B8A5C;
+    --s-ok-tint: #E8F5EF;
+    --s-warn: #B4731A;
+    --s-warn-tint: #FBF2E2;
+    --s-err: #C4303A;
+    --s-err-tint: #FBEBEC;
+
+    --border: var(--n-150);
+    --border-strong: var(--n-200);
+    --text: var(--n-800);
+    --text-muted: var(--n-500);
+    --text-faint: var(--n-400);
+
+    --shadow-sm: 0 1px 2px rgba(11,13,17,0.04), 0 0 0 1px rgba(11,13,17,0.04);
+    --shadow-md: 0 4px 12px -2px rgba(11,13,17,0.06), 0 0 0 1px rgba(11,13,17,0.05);
+    --shadow-lg: 0 20px 40px -12px rgba(11,13,17,0.10), 0 0 0 1px rgba(11,13,17,0.05);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; height: 100%; }
+  body {
+    font-family: var(--u-font);
+    -webkit-font-smoothing: antialiased;
+    background: var(--n-25);
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: -0.005em;
+  }
+  .mono { font-family: var(--u-mono); }
+
+  /* App shell */
+  .app { display: grid; grid-template-columns: 56px 1fr; height: 100vh; }
+
+  /* ---------- LEFT NAV ---------- */
+  .nav {
+    background: var(--n-0);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 14px 0;
+    gap: 4px;
+  }
+  .nav-logo {
+    width: 32px; height: 32px;
+    background: var(--u-primary); color: white;
+    border-radius: var(--r-2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+    text-decoration: none;
+  }
+  .nav-item {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--n-400);
+    border-radius: var(--r-2);
+    cursor: pointer;
+    position: relative;
+    text-decoration: none;
+  }
+  .nav-item:hover { background: var(--n-50); color: var(--n-700); }
+  .nav-item.active {
+    background: var(--u-primary-tint);
+    color: var(--u-primary);
+  }
+  .nav-item.active::before {
+    content: '';
+    position: absolute;
+    left: -10px; top: 6px; bottom: 6px;
+    width: 2px;
+    background: var(--u-primary);
+    border-radius: 0 1px 1px 0;
+  }
+  .nav-spacer { flex: 1; }
+  .nav-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #C4D0E8, #8F9FBF);
+  }
+
+  /* ---------- MAIN ---------- */
+  .shell-main { display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+  /* Topbar */
+  .topbar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-0);
+  }
+  .breadcrumb {
+    font-family: var(--u-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb .sep { color: var(--n-200); }
+  .breadcrumb .current { color: var(--text); }
+  .topbar .spacer { flex: 1; }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--n-50);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .search.topbar-search { width: 320px; }
+  .search input { all: unset; flex: 1; font-size: 13px; color: var(--text); }
+  .search input::placeholder { color: var(--text-faint); }
+  .search .kbd { font-family: var(--u-mono); font-size: 10px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 2px; color: var(--text-faint); }
+
+  .btn {
+    font-family: var(--u-font);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    padding: 7px 12px;
+    border-radius: var(--r-2);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .btn-primary { background: var(--u-primary); color: white; }
+  .btn-primary:hover { background: var(--u-primary-hover); }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-secondary:hover { background: var(--n-50); }
+  .btn-ghost { color: var(--text-muted); }
+  .btn-ghost:hover { background: var(--n-100); color: var(--text); }
+  .btn-outline-primary { background: var(--n-0); border-color: var(--u-primary-border); color: var(--u-primary); }
+  .btn-outline-primary:hover { background: var(--u-primary-tint); }
+  .btn-sm { padding: 5px 9px; font-size: 12px; }
+
+  /* ---------- CONTACTS HEADER ---------- */
+  .contacts-head {
+    padding: 18px 24px 0;
+    background: var(--n-0);
+  }
+  .contacts-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contacts-title-row .ic {
+    width: 26px; height: 26px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+  }
+  .contacts-title-row h1 {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .contacts-title-row .meta {
+    font-family: var(--u-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    margin-left: 6px;
+  }
+  .contacts-title-row .close {
+    margin-left: auto;
+    width: 28px; height: 28px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-faint);
+    border-radius: var(--r-2);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .contacts-title-row .close:hover { background: var(--n-100); color: var(--text); }
+
+  /* ---------- TABS ---------- */
+  .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 12px 24px 0;
+    background: var(--n-0);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    all: unset;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    position: relative;
+    letter-spacing: -0.005em;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--u-primary); }
+  .tab.active::after {
+    content: '';
+    position: absolute;
+    left: 14px; right: 14px; bottom: -1px;
+    height: 2px;
+    background: var(--u-primary);
+    border-radius: 1px 1px 0 0;
+  }
+  .tab .n {
+    font-family: var(--u-mono);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-faint);
+    margin-left: 6px;
+  }
+  .tab.active .n { color: var(--u-primary); opacity: 0.7; }
+
+  /* ---------- TOOLBAR ---------- */
+  .toolbar {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--n-0);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .toolbar .search { background: var(--n-0); border-color: var(--border-strong); min-width: 260px; max-width: 320px; flex: 1; }
+  .toolbar .spacer { flex: 1; }
+  .toolbar .count {
+    font-family: var(--u-mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--u-font);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    background: var(--n-0);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-2);
+    color: var(--text);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { background: var(--n-50); }
+  .filter-btn .caret { color: var(--text-faint); }
+
+  /* ---------- TABLE ---------- */
+  .table-wrap {
+    flex: 1;
+    overflow: auto;
+    background: var(--n-0);
+  }
+  .tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .tbl th {
+    text-align: left;
+    font-family: var(--u-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+    font-weight: 500;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-25);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .tbl th .sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .tbl th .sort:hover { color: var(--text); }
+  .tbl th .caret {
+    opacity: 0.55;
+    color: currentColor;
+  }
+  .tbl td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+  .tbl tr:hover td { background: var(--n-25); }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl .cell-check { width: 38px; padding: 12px 8px 12px 24px; }
+  .tbl .cell-check input { accent-color: var(--u-primary); width: 13px; height: 13px; cursor: pointer; }
+
+  /* ---------- PEOPLE CELLS ---------- */
+  .person { display: flex; align-items: center; gap: 10px; }
+  .person .n { font-weight: 500; }
+
+  .av {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+  }
+  .av-1 { background: linear-gradient(180deg, #8AA9FF, #5775D9); }
+  .av-2 { background: linear-gradient(180deg, #8DBDA6, #5E9277); }
+  .av-3 { background: linear-gradient(180deg, #E1A879, #B47C4E); }
+  .av-4 { background: linear-gradient(180deg, #D29ACC, #A06BA5); }
+  .av-5 { background: linear-gradient(180deg, #B8BEC7, #8B93A0); color: var(--n-700); }
+  .av-6 { background: linear-gradient(180deg, #9EB4CE, #6D8AAC); }
+  .av-7 { background: linear-gradient(180deg, #CEBE9E, #A08E6E); }
+  .av-8 { background: linear-gradient(180deg, #9ECEBE, #6EA08E); }
+
+  .role {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-2);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--n-0);
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .role:hover { background: var(--n-50); }
+  .role .caret { color: var(--text-faint); }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .status .d {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+  }
+  .status-active { color: var(--s-ok); }
+  .status-active .d { background: var(--s-ok); }
+  .status-inactive { color: var(--text-muted); }
+  .status-inactive .d { background: var(--n-300); }
+  .status-pending { color: var(--s-warn); }
+  .status-pending .d { background: var(--s-warn); }
+
+  .resend-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--u-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--u-primary);
+    background: var(--u-primary-tint);
+    border: 1px solid var(--u-primary-border);
+    padding: 2px 6px;
+    border-radius: var(--r-1);
+    cursor: pointer;
+    font-weight: 500;
+    margin-left: 2px;
+  }
+  .resend-chip:hover { background: var(--u-primary); color: white; border-color: var(--u-primary); }
+
+  .txt-muted { color: var(--text-muted); }
+  .mono-muted { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); }
+
+  /* ---------- GROUPS ---------- */
+  .group-name { display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+  .lock {
+    width: 12px; height: 12px;
+    color: var(--text-faint);
+  }
+  .avstack { display: inline-flex; }
+  .avstack .av {
+    margin-left: -8px;
+    border: 2px solid var(--n-0);
+    width: 26px; height: 26px;
+  }
+  .avstack .av:first-child { margin-left: 0; }
+  .avstack .more {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--n-100);
+    color: var(--n-500);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+    margin-left: -8px;
+    border: 2px solid var(--n-0);
+  }
+
+  /* ---------- TWEAKS ---------- */
+  .tweaks {
+    position: fixed; right: 18px; bottom: 18px; width: 280px;
+    background: var(--n-0); border: 1px solid var(--border-strong);
+    border-radius: var(--r-3);
+    box-shadow: var(--shadow-lg);
+    padding: 14px; z-index: 50; display: none;
+  }
+  .tweaks.open { display: block; }
+  .tweaks h4 { margin: 0 0 12px; font-size: 12px; font-weight: 500; display:flex; justify-content: space-between; }
+  .tweaks .close { all: unset; cursor: pointer; color: var(--text-faint); font-size: 14px; }
+  .tweak-row { display:flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--border); font-size: 12px; gap: 8px;}
+  .tweak-row:first-of-type { border-top: 0; }
+  .tweak-row label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--u-mono); }
+  .tweak-row input[type=color] { width: 28px; height: 20px; border: 1px solid var(--border-strong); border-radius: 2px; padding: 0; background: none; cursor: pointer; }
+  .tweak-row input[type=range] { flex: 1; max-width: 120px; }
+  .tweak-row select { font-family: var(--u-font); font-size: 12px; padding: 4px 6px; border: 1px solid var(--border-strong); border-radius: var(--r-1); background: var(--n-0); }
+
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ============ NAV ============ -->
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item" title="Home"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <a class="nav-item" href="Chat.html" title="Conversations"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5a1 1 0 011-1h10a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></a>
+    <div class="nav-item" title="Documents"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 2.5h5.5L14 6v8.5a1 1 0 01-1 1H5a1 1 0 01-1-1v-11a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 2.5V6h4" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <a class="nav-item" href="Dashboard.html" title="Dashboard"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <div class="nav-item active" title="People"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="2.8" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 15c1.2-2.8 3.4-3.9 5.5-3.9s4.3 1.1 5.5 3.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-item" title="Settings"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M9 3.5V2m0 14v-1.5m5.5-5.5H16M2 9h1.5M12.9 5.1L14 4M4 14l1.1-1.1M12.9 12.9L14 14M4 4l1.1 1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="shell-main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="breadcrumb">
+        <span>Engineering Industries</span>
+        <span class="sep">/</span>
+        <span>Admin</span>
+        <span class="sep">/</span>
+        <span class="current">Contacts</span>
+      </div>
+      <div class="spacer"></div>
+      <div class="search topbar-search">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search conversations, NCs, CARs, LOTs…"/>
+        <span class="kbd">⌘K</span>
+      </div>
+      <button class="btn btn-ghost btn-sm" title="Notifications">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 6a5 5 0 015-5v0a5 5 0 015 5v3l2 2H1l2-2V6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M6 13a2 2 0 004 0" stroke="currentColor" stroke-width="1.4"/></svg>
+      </button>
+      <button class="btn btn-primary btn-sm">+ New</button>
+    </div>
+
+    <!-- Page header -->
+    <div class="contacts-head">
+      <div class="contacts-title-row">
+        <span class="ic">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <rect x="3" y="3.5" width="14" height="13" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+            <circle cx="10" cy="9" r="2.2" stroke="currentColor" stroke-width="1.4"/>
+            <path d="M6.5 14c.7-1.6 2-2.3 3.5-2.3s2.8.7 3.5 2.3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M8 1.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <h1>Contacts</h1>
+        <span class="meta">Engineering Industries</span>
+        <a class="close" href="Dashboard.html" title="Close">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="people">People <span class="n">52</span></button>
+      <button class="tab" data-tab="groups">Groups <span class="n">19</span></button>
+    </div>
+
+    <!-- ===== PEOPLE VIEW ===== -->
+    <div id="view-people" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+      <div class="toolbar">
+        <div class="search">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input placeholder="Search people by name or email"/>
+        </div>
+        <button class="filter-btn">Status <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="filter-btn">Department <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="filter-btn">Role <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="filter-btn">Group <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="spacer"></div>
+        <span class="count" id="people-count">52 Results</span>
+        <button class="btn btn-outline-primary btn-sm">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5.5v5M5.5 8h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Add Contacts
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th class="cell-check"><input type="checkbox"/></th>
+              <th><span class="sort">Name <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th>Status</th>
+              <th><span class="sort">Email ID <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th>Role</th>
+              <th><span class="sort">Department <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th>Phone number</th>
+              <th><span class="sort">Groups <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th><span class="sort">Last logged in <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th><span class="sort">Date invited <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th><span class="sort">Date joined <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+            </tr>
+          </thead>
+          <tbody id="people-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== GROUPS VIEW ===== -->
+    <div id="view-groups" class="hide" style="flex-direction: column; flex: 1; min-height: 0;">
+      <div class="toolbar">
+        <div class="search">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input placeholder="Search groups"/>
+        </div>
+        <button class="filter-btn">Type <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="filter-btn">Owner <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="spacer"></div>
+        <span class="count" id="groups-count">19 Groups</span>
+        <button class="btn btn-outline-primary btn-sm">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5.5v5M5.5 8h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Create Group
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th style="width: 320px;"><span class="sort">Group name <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span></th>
+              <th>Participants</th>
+              <th>Group owners</th>
+              <th>Created by</th>
+              <th style="width: 40px;"></th>
+            </tr>
+          </thead>
+          <tbody id="groups-rows"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaks-panel">
+  <h4>Tweaks <button class="close" id="tweaks-close">×</button></h4>
+  <div class="tweak-row">
+    <label>Primary</label>
+    <div style="display:flex; align-items:center; gap:6px;">
+      <span id="color-hex" class="mono" style="font-size:11px; color: var(--text-muted);">#0052FF</span>
+      <input type="color" id="t-color" value="#0052ff"/>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Radius</label>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <input type="range" id="t-radius" min="0" max="14" step="1" value="3"/>
+      <span id="radius-v" class="mono" style="font-size:11px; width: 30px; text-align:right; color: var(--text-muted);">3px</span>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Density</label>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <input type="range" id="t-density" min="0.8" max="1.3" step="0.05" value="1"/>
+      <span id="density-v" class="mono" style="font-size:11px; width: 36px; text-align:right; color: var(--text-muted);">1.00×</span>
+    </div>
+  </div>
+  <div class="tweak-row">
+    <label>Font</label>
+    <select id="t-font">
+      <option value="'Inter', sans-serif">Inter</option>
+      <option value="'Geist', sans-serif">Geist</option>
+      <option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica</option>
+      <option value="ui-sans-serif, system-ui, sans-serif">System</option>
+    </select>
+  </div>
+</div>
+
+<script>
+// =============================================================
+// Data
+// =============================================================
+const PEOPLE = [
+  { n: "James O'Leary",     s: 'Active',   e: 'james@acme.com',    r: 'Admin',         d: 'Quality',              p: '+1 202 555 1234', g: 'Quality Control Team',       ll: 'May 15, 2025 · 09:20 AM',  di: 'Aug 12, 2025', dj: 'Aug 15, 2025', av: 1 },
+  { n: 'Dennis Carter',     s: 'Active',   e: 'dennis@acme.com',   r: 'Admin',         d: 'Operations',           p: '+1 213 555 1234', g: 'Production Assembly Group',  ll: 'May 29, 2025 · 04:45 PM',  di: 'Jun 3, 2025',  dj: 'Jun 10, 2025', av: 2 },
+  { n: 'Ben Merton',        s: 'Pending',  e: 'ben@acme.com',      r: 'Admin',         d: 'Quality',              p: '+1 224 555 1234', g: 'Technical Support Crew',     ll: 'Jan 15, 2026 · 08:00 AM',  di: 'Feb 22, 2026', dj: 'Feb 22, 2026', av: 3 },
+  { n: 'Jack Coyne',        s: 'Active',   e: 'jack@acme.com',     r: 'Org Member',    d: 'Product Development',  p: '+1 235 555 1234', g: 'Maintenance Technicians',    ll: 'Feb 20, 2026 · 05:30 PM',  di: 'Mar 18, 2026', dj: 'Mar 5, 2026',  av: 4 },
+  { n: 'Jesse Kolstad',     s: 'Active',   e: 'jesse@acme.com',    r: 'Admin',         d: 'Operations',           p: '+1 246 555 1234', g: 'Assembly Technicians',       ll: 'Mar 10, 2026 · 12:00 PM',  di: 'Apr 5, 2026',  dj: 'Apr 12, 2026', av: 5 },
+  { n: 'Jamie Sullivan',    s: 'Active',   e: 'jamie@acme.com',    r: 'Admin',         d: 'Quality',              p: '+1 257 555 1234', g: 'Line Inspectors',            ll: 'May 29, 2025 · 02:10 PM',  di: 'Jun 3, 2025',  dj: 'Jun 15, 2025', av: 6 },
+  { n: 'Lakshman Thatai',   s: 'Active',   e: 'lakshman@acme.com', r: 'External User', d: 'Product Development',  p: '+1 268 555 1234', g: 'Assembly Planners',          ll: 'Apr 25, 2026 · 03:15 PM',  di: 'May 15, 2026', dj: 'May 30, 2026', av: 7 },
+  { n: 'Mannmay Vinze',     s: 'Active',   e: 'mannmay@acme.com',  r: 'Admin',         d: 'Operations',           p: '+1 279 555 1234', g: 'Maintenance Technicians',    ll: 'May 27, 2025 · 12:26 PM',  di: 'Jun 1, 2025',  dj: 'Jul 1, 2025',  av: 8 },
+  { n: 'Sarah Jones',       s: 'Active',   e: 'sarah@acme.com',    r: 'Org Member',    d: 'Quality',              p: '+1 280 555 1234', g: 'Quality Control Team',       ll: 'Jun 15, 2025 · 09:00 AM',  di: 'Jul 20, 2025', dj: 'Aug 20, 2025', av: 1 },
+  { n: 'David Smith',       s: 'Active',   e: 'david@acme.com',    r: 'Org Member',    d: 'Quality',              p: '+1 291 555 1234', g: 'Assembly Technicians',       ll: 'Jul 10, 2025 · 01:45 PM',  di: 'Aug 12, 2025', dj: 'Aug 15, 2025', av: 2 },
+  { n: 'Linda Brown',       s: 'Inactive', e: 'linda@acme.com',    r: 'Admin',         d: 'Product Development',  p: '+1 302 555 1234', g: 'Assembly Supervisors',       ll: 'Aug 5, 2025 · 03:30 PM',   di: 'Sep 1, 2025',  dj: 'Sep 18, 2025', av: 3 },
+  { n: 'John Doe',          s: 'Active',   e: 'john@acme.com',     r: 'Org Member',    d: 'Operations',           p: '+1 313 555 1234', g: 'Machine Supervisors',        ll: 'Sep 20, 2025 · 11:00 AM',  di: 'Oct 25, 2025', dj: 'Oct 28, 2025', av: 4 },
+  { n: 'Emma White',        s: 'Active',   e: 'emma@acme.com',     r: 'External User', d: 'Quality',              p: '+1 324 555 1234', g: 'Line Inspectors',            ll: 'Oct 3, 2025 · 02:00 PM',   di: 'Nov 5, 2025',  dj: 'Nov 15, 2025', av: 5 },
+  { n: 'Michael Johnson',   s: 'Inactive', e: 'michael@acme.com',  r: 'Admin',         d: 'Product Development',  p: '+1 335 555 1234', g: 'Production Supervisors',     ll: 'Nov 11, 2025 · 07:00 AM',  di: 'Dec 15, 2025', dj: 'Dec 5, 2025',  av: 6 },
+  { n: 'Susan Lee',         s: 'Active',   e: 'susan@acme.com',    r: 'Org Member',    d: 'Product Development',  p: '+1 346 555 1234', g: 'Production Supervisors',     ll: 'Dec 1, 2025 · 10:45 AM',   di: 'Jan 10, 2026', dj: 'Jan 20, 2026', av: 7 },
+  { n: 'Lisa Martin',       s: 'Active',   e: 'lisa@acme.com',     r: 'Admin',         d: 'Quality',              p: '+1 357 555 1234', g: 'Quality Control Team',       ll: 'Apr 22, 2026 · 08:15 AM',  di: 'Jan 4, 2025',  dj: 'Jan 8, 2025',  av: 8 },
+  { n: 'Daniel Storm',      s: 'Active',   e: 'daniel@acme.com',   r: 'Admin',         d: 'Quality',              p: '+1 368 555 1234', g: 'Quality Control Team',       ll: 'Apr 21, 2026 · 06:40 PM',  di: 'Feb 1, 2025',  dj: 'Feb 4, 2025',  av: 1 },
+  { n: 'Rupa Kapoor',       s: 'Active',   e: 'rupa@acme.com',     r: 'Org Member',    d: 'Quality',              p: '+1 379 555 1234', g: 'Line Inspectors',            ll: 'Apr 22, 2026 · 11:02 AM',  di: 'Mar 12, 2025', dj: 'Mar 19, 2025', av: 2 },
+  { n: 'Han Solo',          s: 'Active',   e: 'han@acme.com',      r: 'Org Member',    d: 'Operations',           p: '+1 380 555 1234', g: 'Maintenance Technicians',    ll: 'Apr 18, 2026 · 09:55 AM',  di: 'Nov 1, 2024',  dj: 'Nov 3, 2024',  av: 3 },
+  { n: 'Leia Organa',       s: 'Pending',  e: 'leia@acme.com',     r: 'Admin',         d: 'Quality',              p: '+1 391 555 1234', g: 'Quality Control Team',       ll: '—',                         di: 'Apr 15, 2026', dj: '—',            av: 4 },
+];
+
+const GROUPS = [
+  { n: 'Document Signatories',      pc: 12, po: 'Ethan Parker',    poAv: 1, cb: 'Jack Coyne',      cbAv: 4,  priv: false },
+  { n: 'Substitute Maintenance Team', pc: 6,  po: 'Lucas Mitchell', poAv: 6, cb: 'Dennis Carter',   cbAv: 2,  priv: false },
+  { n: 'Maintenance Admins',        pc: 5,  po: 'Mia Thompson',    poAv: 4, cb: 'Laura Taylor',    cbAv: 3,  priv: false },
+  { n: 'Maintenance Technicians',   pc: 3,  po: 'Oliver Jameson',  poAv: 7, cb: 'Jessica Davis',   cbAv: 5,  priv: false },
+  { n: 'Assembly Technicians',      pc: 2,  po: 'Ava White',       poAv: 5, cb: 'Sophia White',    cbAv: 1,  priv: false },
+  { n: 'Quality',                    pc: 7,  po: 'Lucas Mitchell',  poAv: 6, cb: 'Dennis Carter',   cbAv: 2,  priv: true  },
+  { n: 'Training Managers',         pc: 8,  po: 'Olivia Johnson',  poAv: 4, cb: 'Jessica Davis',   cbAv: 5,  priv: false },
+  { n: 'Project Coordinators',      pc: 6,  po: 'Noah Davis',      poAv: 3, cb: 'John Doe',        cbAv: 4,  priv: false },
+  { n: 'Product Engineers',         pc: 4,  po: 'Chloe Garcia',    poAv: 2, cb: 'Emily Chen',      cbAv: 8,  priv: false },
+  { n: 'Product Owners',            pc: 4,  po: 'Liam Anderson',   poAv: 6, cb: 'Michael Smith',   cbAv: 7,  priv: false },
+  { n: 'Quality Assurance',         pc: 9,  po: 'Emma Robinson',   poAv: 1, cb: 'Sarah Johnson',   cbAv: 3,  priv: true  },
+  { n: 'Data Analysts',             pc: 3,  po: 'James Wilson',    poAv: 7, cb: 'Robert Brown',    cbAv: 3,  priv: false },
+  { n: 'Line Managers',             pc: 4,  po: 'Olivia Johnson',  poAv: 4, cb: 'Jessica Davis',   cbAv: 5,  priv: false },
+  { n: 'Marketing Specialists',     pc: 2,  po: 'Benjamin Scott',  poAv: 2, cb: 'David Wilson',    cbAv: 6,  priv: false },
+  { n: 'Customer Support',          pc: 5,  po: 'Mia Thompson',    poAv: 4, cb: 'Laura Taylor',    cbAv: 3,  priv: false },
+  { n: 'Sales Representatives',     pc: 5,  po: 'William Harris',  poAv: 7, cb: 'James Anderson',  cbAv: 1,  priv: false },
+  { n: 'Internal Auditors',         pc: 2,  po: 'Ava Martinez',    poAv: 5, cb: 'Emily Martinez',  cbAv: 8,  priv: true  },
+  { n: 'Financial Analysts',        pc: 2,  po: 'Daniel Lee',      poAv: 6, cb: 'Daniel Garcia',   cbAv: 2,  priv: false },
+  { n: 'Business Strategists',      pc: 4,  po: 'Chloe Garcia',    poAv: 2, cb: 'Sophia White',    cbAv: 1,  priv: false },
+];
+
+// =============================================================
+// Helpers
+// =============================================================
+function initials(name) {
+  return name.split(' ').filter(Boolean).map(x => x[0]).slice(0,2).join('').toUpperCase();
+}
+function avClass(idx) { return `av-${((idx - 1) % 8) + 1}`; }
+function caret() {
+  return '<svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+// =============================================================
+// Render — People table
+// =============================================================
+const peopleRows = document.getElementById('people-rows');
+PEOPLE.forEach(p => {
+  const ini = initials(p.n);
+  const stClass =
+    p.s === 'Active'   ? 'status-active'   :
+    p.s === 'Pending'  ? 'status-pending'  : 'status-inactive';
+  const resend = p.s === 'Pending'
+    ? `<span class="resend-chip" title="Resend invitation">Resend</span>`
+    : '';
+
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="cell-check"><input type="checkbox"/></td>
+    <td>
+      <div class="person">
+        <span class="av ${avClass(p.av)}">${ini}</span>
+        <span class="n">${p.n}</span>
+        ${resend}
+      </div>
+    </td>
+    <td><span class="status ${stClass}"><span class="d"></span>${p.s}</span></td>
+    <td><span class="mono" style="font-size: 12px; color: var(--text-muted);">${p.e}</span></td>
+    <td>
+      <button class="role">
+        ${p.r}
+        ${caret()}
+      </button>
+    </td>
+    <td>${p.d}</td>
+    <td><span class="mono-muted">${p.p}</span></td>
+    <td>${p.g}</td>
+    <td><span class="mono-muted">${p.ll}</span></td>
+    <td><span class="mono-muted">${p.di}</span></td>
+    <td><span class="mono-muted">${p.dj}</span></td>
+  `;
+  peopleRows.appendChild(tr);
+});
+document.getElementById('people-count').textContent = `${PEOPLE.length} Results`;
+
+// =============================================================
+// Render — Groups table
+// =============================================================
+const participantPool = [
+  { i: 'EP', c: 1 }, { i: 'DC', c: 2 }, { i: 'BM', c: 3 }, { i: 'JC', c: 4 },
+  { i: 'JK', c: 5 }, { i: 'JS', c: 6 }, { i: 'LT', c: 7 }, { i: 'MV', c: 8 },
+  { i: 'SJ', c: 1 }, { i: 'DS', c: 2 }, { i: 'LB', c: 3 }, { i: 'JD', c: 4 },
+];
+const groupsRows = document.getElementById('groups-rows');
+GROUPS.forEach((g, idx) => {
+  const poInitials = initials(g.po);
+  const cbInitials = initials(g.cb);
+  const stackN = Math.min(g.pc, 6);
+  const rotated = participantPool.slice(idx % 6).concat(participantPool.slice(0, idx % 6));
+  let stackHtml = '<div class="avstack">';
+  for (let i = 0; i < stackN; i++) {
+    const p = rotated[i % rotated.length];
+    stackHtml += `<span class="av ${avClass(p.c)}">${p.i}</span>`;
+  }
+  if (g.pc > stackN) stackHtml += `<span class="more">+${g.pc - stackN}</span>`;
+  stackHtml += '</div>';
+
+  const lock = g.priv ? `<svg class="lock" width="12" height="12" viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="7" rx="1" stroke="currentColor" stroke-width="1.4"/><path d="M5 7V5a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.4"/></svg>` : '';
+
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>
+      <span class="group-name">${g.n}${lock}</span>
+    </td>
+    <td>${stackHtml}</td>
+    <td>
+      <div class="person">
+        <span class="av ${avClass(g.poAv)}">${poInitials}</span>
+        <span>${g.po}</span>
+      </div>
+    </td>
+    <td>
+      <div class="person">
+        <span class="av ${avClass(g.cbAv)}">${cbInitials}</span>
+        <span>${g.cb}</span>
+      </div>
+    </td>
+    <td>
+      <button class="btn btn-ghost btn-sm" style="padding: 3px 6px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </td>
+  `;
+  groupsRows.appendChild(tr);
+});
+document.getElementById('groups-count').textContent = `${GROUPS.length} Groups`;
+
+// =============================================================
+// Tabs
+// =============================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const name = tab.dataset.tab;
+    const viewP = document.getElementById('view-people');
+    const viewG = document.getElementById('view-groups');
+    viewP.classList.toggle('hide', name !== 'people');
+    viewG.classList.toggle('hide', name !== 'groups');
+    // restore flex display for the visible one
+    if (name === 'people') viewP.style.display = 'flex';
+    if (name === 'groups') viewG.style.display = 'flex';
+  });
+});
+
+// =============================================================
+// Tweaks
+// =============================================================
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryColor": "#0052FF",
+  "radius": 3,
+  "density": 1.0,
+  "font": "'Inter', sans-serif"
+}/*EDITMODE-END*/;
+
+let TWEAKS = { ...TWEAK_DEFAULTS };
+function hex(h) { return (h.startsWith('#') ? h : '#' + h).toUpperCase(); }
+function hexToRgb(h){ h=h.replace('#',''); return { r:parseInt(h.slice(0,2),16), g:parseInt(h.slice(2,4),16), b:parseInt(h.slice(4,6),16) }; }
+function darken(h,a){ const {r,g,b}=hexToRgb(h); const f=1-a; return '#'+[r*f,g*f,b*f].map(n=>Math.round(Math.max(0,Math.min(255,n))).toString(16).padStart(2,'0')).join('').toUpperCase(); }
+function mixW(h,a){ const {r,g,b}=hexToRgb(h); const mix=c=>Math.round(c+(255-c)*a); return '#'+[mix(r),mix(g),mix(b)].map(n=>n.toString(16).padStart(2,'0')).join('').toUpperCase(); }
+
+function applyTweaks(){
+  const root = document.documentElement;
+  const p = hex(TWEAKS.primaryColor);
+  root.style.setProperty('--u-primary', p);
+  root.style.setProperty('--u-primary-hover', darken(p, 0.2));
+  root.style.setProperty('--u-primary-tint', mixW(p, 0.93));
+  root.style.setProperty('--u-primary-border', mixW(p, 0.8));
+  root.style.setProperty('--u-font', TWEAKS.font);
+  const r = Number(TWEAKS.radius);
+  root.style.setProperty('--r-1', Math.max(0, r-1)+'px');
+  root.style.setProperty('--r-2', r+'px');
+  root.style.setProperty('--r-3', (r+2)+'px');
+  root.style.setProperty('--r-4', (r+5)+'px');
+  root.style.setProperty('--d', TWEAKS.density);
+  const ch = document.getElementById('color-hex'); if (ch) ch.textContent = p;
+  const rv = document.getElementById('radius-v'); if (rv) rv.textContent = r+'px';
+  const dv = document.getElementById('density-v'); if (dv) dv.textContent = Number(TWEAKS.density).toFixed(2)+'×';
+}
+function setKeys(o){ TWEAKS = { ...TWEAKS, ...o }; applyTweaks(); try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: o }, '*'); } catch(e){} }
+applyTweaks();
+
+document.getElementById('t-color').addEventListener('input', e => setKeys({ primaryColor: hex(e.target.value) }));
+document.getElementById('t-radius').addEventListener('input', e => setKeys({ radius: Number(e.target.value) }));
+document.getElementById('t-density').addEventListener('input', e => setKeys({ density: Number(e.target.value) }));
+document.getElementById('t-font').addEventListener('change', e => setKeys({ font: e.target.value }));
+document.getElementById('t-color').value = TWEAKS.primaryColor.toLowerCase();
+document.getElementById('t-radius').value = TWEAKS.radius;
+document.getElementById('t-density').value = TWEAKS.density;
+document.getElementById('t-font').value = TWEAKS.font;
+
+window.addEventListener('message', ev => {
+  const d = ev.data; if (!d || typeof d !== 'object') return;
+  if (d.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if (d.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+document.getElementById('tweaks-close').addEventListener('click', () => document.getElementById('tweaks-panel').classList.remove('open'));
+try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+</script>
+
+</body>
+</html>

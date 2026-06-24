@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cross-domain breadth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 28px; background: var(--n-25); }
+  .head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .head-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .head-count {
+    font-family: var(--u-mono); font-size: 11px;
+    color: var(--text-faint); letter-spacing: 0.04em;
+  }
+  .head-count b { color: var(--u-primary); font-weight: 600; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+  .dom {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  .dom.on {
+    background: var(--u-primary-tint);
+    border-color: var(--u-primary-border);
+    color: var(--u-primary);
+    font-weight: 600;
+  }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="head-title">Domains a typical med-device customer engages</div>
+  <div class="head-count"><b>6</b> / 14</div>
+</div>
+<div class="grid">
+  <div class="dom on">Quality</div>
+  <div class="dom on">Product Development</div>
+  <div class="dom on">Operations</div>
+  <div class="dom on">Supplier Management</div>
+  <div class="dom on">Document and Records Control</div>
+  <div class="dom on">Regulatory Affairs</div>
+  <div class="dom">Change Control</div>
+  <div class="dom">Procurement and Sourcing</div>
+  <div class="dom">Supply Chain and Planning</div>
+  <div class="dom">Customer Management</div>
+  <div class="dom">Training and Competency</div>
+  <div class="dom">Periodic Review and Data Governance</div>
+  <div class="dom">Post-Market and Recall</div>
+  <div class="dom">Compliance</div>
+</div>
+</body>
+</html>

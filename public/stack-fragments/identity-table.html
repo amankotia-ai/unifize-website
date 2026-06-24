@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Contact table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); }
+  .wrap { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<table class="tbl">
+  <thead>
+    <tr>
+      <th class="cell-check"><input type="checkbox"/></th>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Department</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="cell-check"><input type="checkbox"/></td>
+      <td><div class="person"><span class="av av-1">JO</span><span class="n">James O'Leary</span></div></td>
+      <td><span class="status status-active"><span class="d"></span>Active</span></td>
+      <td><span class="mono-muted">james@acme.com</span></td>
+      <td><button class="role">Admin <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button></td>
+      <td>Quality</td>
+    </tr>
+    <tr>
+      <td class="cell-check"><input type="checkbox"/></td>
+      <td><div class="person"><span class="av av-3">BM</span><span class="n">Ben Merton</span><span class="resend-chip" title="Resend invitation">Resend</span></div></td>
+      <td><span class="status status-pending"><span class="d"></span>Pending</span></td>
+      <td><span class="mono-muted">ben@acme.com</span></td>
+      <td><button class="role">Admin <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button></td>
+      <td>Quality</td>
+    </tr>
+    <tr>
+      <td class="cell-check"><input type="checkbox"/></td>
+      <td><div class="person"><span class="av av-4">JC</span><span class="n">Jack Coyne</span></div></td>
+      <td><span class="status status-active"><span class="d"></span>Active</span></td>
+      <td><span class="mono-muted">jack@acme.com</span></td>
+      <td><button class="role">Org Member <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button></td>
+      <td>Product Development</td>
+    </tr>
+    <tr>
+      <td class="cell-check"><input type="checkbox"/></td>
+      <td><div class="person"><span class="av av-5">LB</span><span class="n">Linda Brown</span></div></td>
+      <td><span class="status status-inactive"><span class="d"></span>Inactive</span></td>
+      <td><span class="mono-muted">linda@acme.com</span></td>
+      <td><button class="role">Admin <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button></td>
+      <td>Product Development</td>
+    </tr>
+    <tr>
+      <td class="cell-check"><input type="checkbox"/></td>
+      <td><div class="person"><span class="av av-7">LT</span><span class="n">Lakshman Thatai</span></div></td>
+      <td><span class="status status-active"><span class="d"></span>Active</span></td>
+      <td><span class="mono-muted">lakshman@acme.com</span></td>
+      <td><button class="role">External User <svg class="caret" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></button></td>
+      <td>Product Development</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</body>
+</html>

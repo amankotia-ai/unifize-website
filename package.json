@@ -1,22 +1,33 @@
 {
-  "name": "unifize-scaffold",
+  "name": "unifize-marketing",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "next": "16.2.6",
+    "@dagrejs/dagre": "^3.0.0",
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.0",
+    "@xyflow/react": "^12.10.2",
+    "clsx": "^2.1.1",
+    "gsap": "^3.13.0",
+    "lenis": "^1.1.20",
+    "next": "^16.2.7",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "three": "^0.171.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.171.0",
+    "r3f-perf": "^7.2.3",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

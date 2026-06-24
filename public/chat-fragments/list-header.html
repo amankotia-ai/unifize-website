@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>List header</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-50); }
+  .list { width: 360px; max-width: 100%; border-right: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<aside class="list">
+  <div class="list-head">
+    <div class="top">
+      <div>
+        <div class="org">Engineering Industries</div>
+        <div class="title">My Conversations <span class="count">999+</span></div>
+      </div>
+      <button class="btn btn-primary btn-sm">+ New <span class="kbd">N</span></button>
+    </div>
+    <div class="search">
+      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      <input placeholder="Search conversations"/>
+      <span class="kbd">⌘K</span>
+    </div>
+  </div>
+  <div class="list-filters">
+    <span class="chip active">All <span class="n">24</span></span>
+    <span class="chip">Unread <span class="n">6</span></span>
+    <span class="chip">Mine <span class="n">12</span></span>
+    <span class="chip">Pinned <span class="n">3</span></span>
+  </div>
+</aside>
+</body>
+</html>

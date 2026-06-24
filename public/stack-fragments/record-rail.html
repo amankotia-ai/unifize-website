@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Record rail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 18px; background: var(--n-25); display: flex; justify-content: center; }
+  .check { width: 100%; max-width: 360px; }
+</style>
+</head>
+<body>
+<aside class="check">
+  <div class="check-head">
+    <div class="eyebrow">
+      <span>CAR-41 · Checklist</span>
+      <span style="margin-left: auto; font-family: var(--u-mono); color: var(--text-faint);">v4.2</span>
+    </div>
+    <h3>Corrective action request</h3>
+  </div>
+  <div class="check-progress">
+    <div class="row"><span>Completion</span><span class="frac">5/8 sections</span></div>
+    <div class="prog-bar"><div class="fill" style="width: 62.5%;"></div></div>
+  </div>
+  <div>
+    <div class="sec">
+      <div class="sec-head">
+        <span class="dot done"></span>
+        <span class="t done">Inputs</span>
+        <span class="frac">4/4</span>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-head">
+        <span class="dot done"></span>
+        <span class="t done">Basic information</span>
+        <span class="frac">6/6</span>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-head">
+        <span class="dot done"></span>
+        <span class="t done">Disposition action</span>
+        <span class="frac">3/3</span>
+      </div>
+    </div>
+    <div class="sec open">
+      <div class="sec-head">
+        <span class="dot active"></span>
+        <span class="t">Corrective Action Request(s)</span>
+        <span class="frac">2/5</span>
+      </div>
+      <div class="sec-items">
+        <div class="item done"><input type="checkbox" checked/><span class="label">Update Process Control Plan</span><span class="value">Daniel</span></div>
+        <div class="item done"><input type="checkbox" checked/><span class="label">Retrain line operators</span><span class="value">Lisa</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Revise inspection criteria</span><span class="value">Pending</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Vendor corrective note sent</span><span class="value">Pending</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Incoming spec update</span><span class="value">Pending</span></div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-head">
+        <span class="dot pend"></span>
+        <span class="t">Verification &amp; Validation</span>
+        <span class="frac">0/4</span>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-head">
+        <span class="dot pend"></span>
+        <span class="t">Approval(s)</span>
+        <span class="frac">0/2</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-actions">
+    <button class="btn btn-secondary btn-sm" style="flex: 1;">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Export PDF
+    </button>
+    <button class="btn btn-primary btn-sm" style="flex: 1;">Approve CAR</button>
+  </div>
+</aside>
+</body>
+</html>

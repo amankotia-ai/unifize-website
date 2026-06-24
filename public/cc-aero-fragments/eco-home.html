@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ECO home dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .page-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+  .page-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); display: flex; gap: 8px; align-items: center; }
+  .page-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.022em; margin: 6px 0 4px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); max-width: 600px; }
+  .seg { display: inline-flex; border: 1px solid var(--border-strong); border-radius: 3px; padding: 2px; gap: 2px; background: var(--n-0); }
+  .seg button { all: unset; font-size: 12px; font-weight: 500; padding: 5px 10px; border-radius: 2px; color: var(--text-muted); cursor: pointer; }
+  .seg button.active { background: var(--u-primary-tint); color: var(--u-primary); }
+
+  .content { flex: 1; overflow: auto; padding: 22px 24px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); align-content: start; }
+
+  .kpi { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; grid-column: span 3; position: relative; }
+  .kpi-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .kpi-value { font-size: 28px; font-weight: 600; letter-spacing: -0.025em; display: flex; align-items: baseline; gap: 4px; }
+  .kpi-value .unit { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .kpi-delta { font-family: var(--u-mono); font-size: 11px; }
+  .kpi-delta.up { color: var(--s-ok); }
+  .kpi-delta.down { color: var(--s-err); }
+
+  .card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; }
+  .card-head { padding: 12px 16px 10px; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); }
+  .card-head .title { font-size: 13.5px; font-weight: 600; margin: 0; }
+  .card-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-body { padding: 14px 16px; }
+
+  .card-wide { grid-column: span 8; }
+  .card-narrow { grid-column: span 4; }
+  .card-half { grid-column: span 6; }
+
+  /* Class bars */
+  .class-list { display: flex; flex-direction: column; gap: 10px; }
+  .class-row { display: grid; grid-template-columns: 90px 1fr 40px; align-items: center; gap: 12px; font-size: 12.5px; }
+  .class-name { font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .class-mk { width: 8px; height: 8px; border-radius: 2px; }
+  .class-mk.cI { background: var(--s-err); }
+  .class-mk.cII { background: var(--s-warn); }
+  .class-mk.cIII { background: var(--n-300); }
+  .bar { height: 16px; background: var(--n-100); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; }
+  .bar-fill.cI { background: var(--s-err); }
+  .bar-fill.cII { background: var(--s-warn); }
+  .bar-fill.cIII { background: var(--n-300); }
+  .bar-count { font-family: var(--u-mono); color: var(--text-muted); text-align: right; font-size: 12px; }
+
+  /* Stage funnel */
+  .funnel { display: flex; flex-direction: column; gap: 6px; }
+  .stage-row { display: grid; grid-template-columns: 110px 1fr 36px; align-items: center; gap: 10px; padding: 6px 0; font-size: 12px; }
+  .stage-name { font-weight: 500; }
+  .stage-bar { height: 12px; background: var(--n-100); border-radius: 2px; overflow: hidden; }
+  .stage-bar .fill { height: 100%; background: var(--u-primary); }
+  .stage-bar .fill.warn { background: var(--s-warn); }
+  .stage-total { font-family: var(--u-mono); color: var(--text-muted); text-align: right; }
+
+  /* ECO list cards */
+  .eco-card { padding: 12px 14px; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 8px; display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; align-items: center; }
+  .eco-card:last-child { margin-bottom: 0; }
+  .eco-card-head { display: flex; align-items: center; gap: 8px; }
+  .eco-card-id { font-family: var(--u-mono); font-size: 11px; color: var(--u-primary); font-weight: 600; }
+  .eco-card-title { font-size: 12.5px; font-weight: 500; }
+  .eco-card-context { grid-column: span 2; display: flex; gap: 12px; flex-wrap: wrap; padding-top: 8px; border-top: 1px dashed var(--border); }
+  .ctx { display: flex; flex-direction: column; gap: 2px; }
+  .ctx-k { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); }
+  .ctx-v { font-size: 11.5px; color: var(--text); }
+  .ctx-v.warn { color: var(--s-warn); }
+  .ctx-v.err { color: var(--s-err); }
+  .age-cell { font-family: var(--u-mono); color: var(--text-muted); font-size: 11px; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 2px; font-family: var(--u-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-warn { background: var(--s-warn-tint); color: var(--s-warn); }
+  .badge-err { background: var(--s-err-tint); color: var(--s-err); }
+  .badge-info { background: var(--u-primary-tint); color: var(--u-primary); }
+  .badge-ok { background: var(--s-ok-tint); color: var(--s-ok); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4l12 4-12 4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Change Control</span><span class="sep">/</span>
+        <span>ECOs</span><span class="sep">/</span>
+        <span class="cur">Program 787-WX · live queue</span>
+      </div>
+    </div>
+
+    <header class="page-head">
+      <div>
+        <div class="page-eyebrow"><span class="dot"></span>Engineering Program Manager · Daniel Storm · Q2 2026</div>
+        <h1 class="page-title">Open ECOs · your programs</h1>
+        <p class="page-sub">38 open ECOs across three programs. Class I changes (form/fit/function) at the top of the queue. Customer approvals pending, supplier impact, propagation status all visible without opening the record.</p>
+      </div>
+      <div class="seg">
+        <button>7d</button>
+        <button class="active">30d</button>
+        <button>90d</button>
+        <button>QTD</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="kpi">
+        <div class="kpi-label">Open ECOs</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta down">↑ 6 new this week</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Class I · form/fit/function</div>
+        <div class="kpi-value" style="color: var(--s-err);">7</div>
+        <div class="kpi-delta down">3 awaiting FAA</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Customer approval pending</div>
+        <div class="kpi-value" style="color: var(--s-warn);">11</div>
+        <div class="kpi-delta down">avg 14d in prime queue</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Cycle time · first-pass</div>
+        <div class="kpi-value">21 <span class="unit">d</span></div>
+        <div class="kpi-delta up">↓ 9d vs prior 30d</div>
+      </div>
+
+      <div class="card card-half">
+        <div class="card-head"><h3 class="title">ECOs by classification</h3><span class="meta">AS9100 §8.5.6</span></div>
+        <div class="card-body">
+          <div class="class-list">
+            <div class="class-row"><span class="class-name"><span class="class-mk cI"></span>Class I · major (FAA)</span><div class="bar"><div class="bar-fill cI" style="width: 20%;"></div></div><span class="bar-count">7</span></div>
+            <div class="class-row"><span class="class-name"><span class="class-mk cII"></span>Class II · internal</span><div class="bar"><div class="bar-fill cII" style="width: 54%;"></div></div><span class="bar-count">19</span></div>
+            <div class="class-row"><span class="class-name"><span class="class-mk cIII"></span>Class III · routine</span><div class="bar"><div class="bar-fill cIII" style="width: 34%;"></div></div><span class="bar-count">12</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-half">
+        <div class="card-head"><h3 class="title">Stage funnel · where ECOs sit</h3><span class="meta">Bottleneck view</span></div>
+        <div class="card-body">
+          <div class="funnel">
+            <div class="stage-row"><span class="stage-name">Identified</span><div class="stage-bar"><div class="fill" style="width: 28%;"></div></div><span class="stage-total">5</span></div>
+            <div class="stage-row"><span class="stage-name">Impact eval</span><div class="stage-bar"><div class="fill" style="width: 50%;"></div></div><span class="stage-total">9</span></div>
+            <div class="stage-row"><span class="stage-name">CCB review</span><div class="stage-bar"><div class="fill warn" style="width: 72%;"></div></div><span class="stage-total">13</span></div>
+            <div class="stage-row"><span class="stage-name">Customer / FAA</span><div class="stage-bar"><div class="fill warn" style="width: 61%;"></div></div><span class="stage-total">11</span></div>
+            <div class="stage-row"><span class="stage-name">Cut-in plan</span><div class="stage-bar"><div class="fill" style="width: 33%;"></div></div><span class="stage-total">6</span></div>
+            <div class="stage-row"><span class="stage-name">Verify &amp; close</span><div class="stage-bar"><div class="fill" style="width: 22%;"></div></div><span class="stage-total">4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-wide">
+        <div class="card-head"><h3 class="title">Open ECOs · linked context (supplier · customer · NADCAP · DHF)</h3><span class="meta">Without opening the record</span></div>
+        <div class="card-body" style="padding: 12px;">
+          <div class="eco-card">
+            <div class="eco-card-head">
+              <span class="eco-card-id">ECO-2148</span>
+              <span class="eco-card-title">Bracket sub-assembly · fastener torque spec revision</span>
+              <span class="badge badge-err">Class I</span>
+            </div>
+            <span class="age-cell">12d open</span>
+            <div class="eco-card-context">
+              <div class="ctx"><span class="ctx-k">Program</span><span class="ctx-v">787-WX · Boeing</span></div>
+              <div class="ctx"><span class="ctx-k">Customer</span><span class="ctx-v warn">Awaiting Boeing approval · 8d</span></div>
+              <div class="ctx"><span class="ctx-k">FAA</span><span class="ctx-v">Part 21 notification filed</span></div>
+              <div class="ctx"><span class="ctx-k">Supplier</span><span class="ctx-v">Atlas Components · SCN issued</span></div>
+              <div class="ctx"><span class="ctx-k">CCB</span><span class="ctx-v">Approved · Apr 16</span></div>
+            </div>
+          </div>
+          <div class="eco-card">
+            <div class="eco-card-head">
+              <span class="eco-card-id">ECO-2151</span>
+              <span class="eco-card-title">Heat-treat process · soak time adjustment</span>
+              <span class="badge badge-warn">Class II</span>
+            </div>
+            <span class="age-cell">5d open</span>
+            <div class="eco-card-context">
+              <div class="ctx"><span class="ctx-k">Program</span><span class="ctx-v">F-35 · Lockheed</span></div>
+              <div class="ctx"><span class="ctx-k">NADCAP</span><span class="ctx-v warn">Special-process re-qual required</span></div>
+              <div class="ctx"><span class="ctx-k">Customer</span><span class="ctx-v">Internal · no customer approval</span></div>
+              <div class="ctx"><span class="ctx-k">CCB</span><span class="ctx-v warn">In review · pending Q signoff</span></div>
+            </div>
+          </div>
+          <div class="eco-card">
+            <div class="eco-card-head">
+              <span class="eco-card-id">ECO-2138</span>
+              <span class="eco-card-title">Wiring harness · routing diagram update</span>
+              <span class="badge badge-err">Overdue</span>
+            </div>
+            <span class="age-cell">38d open</span>
+            <div class="eco-card-context">
+              <div class="ctx"><span class="ctx-k">Program</span><span class="ctx-v">A320neo · Airbus</span></div>
+              <div class="ctx"><span class="ctx-k">Customer</span><span class="ctx-v err">Airbus rejected · evidence pkg gap</span></div>
+              <div class="ctx"><span class="ctx-k">Mixed-rev risk</span><span class="ctx-v err">In-flight WIP not held</span></div>
+              <div class="ctx"><span class="ctx-k">DHF</span><span class="ctx-v warn">Update pending</span></div>
+            </div>
+          </div>
+          <div class="eco-card">
+            <div class="eco-card-head">
+              <span class="eco-card-id">ECO-2155</span>
+              <span class="eco-card-title">Adhesive supplier swap · qualified alternate</span>
+              <span class="badge badge-warn">Class II</span>
+            </div>
+            <span class="age-cell">3d open</span>
+            <div class="eco-card-context">
+              <div class="ctx"><span class="ctx-k">Program</span><span class="ctx-v">Multiple · 4 platforms</span></div>
+              <div class="ctx"><span class="ctx-k">Supplier qual</span><span class="ctx-v">First-article testing in progress</span></div>
+              <div class="ctx"><span class="ctx-k">Customer</span><span class="ctx-v">Notified · acknowledgment recvd</span></div>
+              <div class="ctx"><span class="ctx-k">CCB</span><span class="ctx-v">Convening Apr 23</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-narrow">
+        <div class="card-head"><h3 class="title">Mixed-revision risk · live</h3><span class="meta">In-flight WIP audit</span></div>
+        <div class="card-body">
+          <div class="class-list">
+            <div class="class-row"><span class="class-name">Holds in place</span><div class="bar"><div class="bar-fill" style="width: 88%; background: var(--s-ok);"></div></div><span class="bar-count">31</span></div>
+            <div class="class-row"><span class="class-name">Holds missing</span><div class="bar"><div class="bar-fill cI" style="width: 12%;"></div></div><span class="bar-count">2</span></div>
+            <div class="class-row"><span class="class-name">Cut-over set</span><div class="bar"><div class="bar-fill" style="width: 72%; background: var(--u-primary);"></div></div><span class="bar-count">24</span></div>
+            <div class="class-row"><span class="class-name">Propagation lag</span><div class="bar"><div class="bar-fill cII" style="width: 22%;"></div></div><span class="bar-count">7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

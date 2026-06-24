@@ -1,0 +1,758 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Unifize — Chat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --u-primary: #0052FF;
+    --u-primary-hover: #003ECC;
+    --u-primary-tint: #F0F4FF;
+    --u-primary-border: #D6E0FF;
+    --u-font: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --u-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+    --r-1: 2px; --r-2: 3px; --r-3: 5px; --r-4: 8px;
+    --d: 1;
+
+    --n-0: #FFFFFF; --n-25: #FBFBFC; --n-50: #F6F7F8;
+    --n-100: #EEF0F2; --n-150: #E4E7EB; --n-200: #D8DCE1;
+    --n-300: #B8BEC7; --n-400: #8B93A0; --n-500: #646B78;
+    --n-600: #454B56; --n-700: #2B2F38; --n-800: #181B22; --n-900: #0B0D11;
+
+    --s-ok: #0B8A5C; --s-ok-tint: #E8F5EF;
+    --s-warn: #B4731A; --s-warn-tint: #FBF2E2;
+    --s-err: #C4303A; --s-err-tint: #FBEBEC;
+
+    --border: var(--n-150);
+    --border-strong: var(--n-200);
+    --text: var(--n-800);
+    --text-muted: var(--n-500);
+    --text-faint: var(--n-400);
+
+    --shadow-md: 0 4px 12px -2px rgba(11,13,17,0.06), 0 0 0 1px rgba(11,13,17,0.05);
+    --shadow-lg: 0 20px 40px -12px rgba(11,13,17,0.10), 0 0 0 1px rgba(11,13,17,0.05);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: var(--u-font);
+    -webkit-font-smoothing: antialiased;
+    background: var(--n-25);
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: -0.005em;
+  }
+  .mono { font-family: var(--u-mono); }
+
+  /* Shell: nav | list | thread | checklist */
+  .app { display: grid; grid-template-columns: 56px 320px 1fr 340px; height: 100vh; min-width: 0; }
+  @media (max-width: 1280px) { .app { grid-template-columns: 56px 280px 1fr 320px; } }
+
+  /* ============= NAV ============= */
+  .nav {
+    background: var(--n-0);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 14px 0;
+    gap: 4px;
+  }
+  .nav-logo {
+    width: 32px; height: 32px;
+    background: var(--u-primary);
+    color: white;
+    border-radius: var(--r-2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14px;
+    letter-spacing: -0.03em;
+    margin-bottom: 14px;
+  }
+  .nav-item {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--n-400); border-radius: var(--r-2);
+    cursor: pointer; position: relative;
+  }
+  .nav-item:hover { background: var(--n-50); color: var(--n-700); }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); }
+  .nav-item.active::before {
+    content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px;
+    width: 2px; background: var(--u-primary);
+  }
+  .nav-spacer { flex: 1; }
+  .nav-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(180deg, #C4D0E8, #8F9FBF);
+  }
+
+  /* ============= LIST ============= */
+  .list {
+    background: var(--n-0);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .list-head {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-head .top {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .list-head .org {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .list-head .title {
+    font-size: 16px; font-weight: 600; letter-spacing: -0.015em;
+    margin-top: 4px;
+    display: flex; align-items: baseline; gap: 8px;
+  }
+  .list-head .title .count {
+    font-family: var(--u-mono); font-weight: 400; font-size: 11px; color: var(--text-faint);
+  }
+  .search {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    background: var(--n-50);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2);
+    margin-top: 10px;
+    font-size: 13px;
+  }
+  .search input { all: unset; flex: 1; font-size: 13px; }
+  .search .kbd { font-family: var(--u-mono); font-size: 10px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 2px; color: var(--text-faint); }
+  .list-filters { padding: 8px 16px; display: flex; gap: 4px; border-bottom: 1px solid var(--border); background: var(--n-25); }
+  .chip {
+    font-size: 12px; font-weight: 500;
+    padding: 4px 9px; border-radius: var(--r-1);
+    color: var(--text-muted); cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .chip.active { background: var(--n-0); color: var(--text); box-shadow: inset 0 0 0 1px var(--border-strong); }
+  .chip .n { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); }
+  .list-scroll { flex: 1; overflow: auto; }
+
+  .conv {
+    padding: 12px 16px; border-bottom: 1px solid var(--border);
+    cursor: pointer; position: relative;
+    min-width: 0;
+  }
+  .conv:hover { background: var(--n-25); }
+  .conv.selected { background: var(--u-primary-tint); }
+  .conv.selected::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 2px; background: var(--u-primary);
+  }
+  .conv.unread .conv-title { font-weight: 600; }
+  .conv-top { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .conv-title { font-size: 13px; font-weight: 500; letter-spacing: -0.005em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .conv-time { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); flex-shrink: 0; }
+  .conv-preview { font-size: 12px; color: var(--text-muted); margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .conv-meta { display: flex; align-items: center; gap: 6px; margin-top: 8px; font-size: 10px; }
+  .conv-tag {
+    font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.02em;
+    padding: 1px 5px; border-radius: 2px;
+    color: var(--text-muted); background: var(--n-100);
+  }
+  .conv-sender { font-size: 11px; color: var(--text-faint); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1; }
+  .conv-unread {
+    background: var(--u-primary); color: white;
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 1px 5px; border-radius: 8px;
+    font-weight: 600;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 500;
+    padding: 2px 6px; border-radius: var(--r-1);
+    line-height: 1.5;
+  }
+  .badge .pulse { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+  .badge-ok { background: var(--s-ok-tint); color: var(--s-ok); }
+  .badge-warn { background: var(--s-warn-tint); color: var(--s-warn); }
+  .badge-err { background: var(--s-err-tint); color: var(--s-err); }
+  .badge-info { background: var(--u-primary-tint); color: var(--u-primary); }
+  .badge-neutral { background: var(--n-100); color: var(--n-600); }
+
+  /* ============= THREAD ============= */
+  .thread { display: flex; flex-direction: column; background: var(--n-0); min-width: 0; }
+  .thread-head {
+    padding: 14px 22px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-0);
+  }
+  .thread-head .id-row { display: flex; align-items: center; gap: 10px; }
+  .thread-head .nc {
+    font-family: var(--u-mono); font-size: 11px;
+    color: var(--text-faint); letter-spacing: 0.04em;
+  }
+  .thread-head h2 {
+    font-size: 20px; font-weight: 600;
+    letter-spacing: -0.02em; margin: 6px 0 0;
+  }
+  .thread-meta {
+    display: flex; gap: 14px; margin-top: 12px; align-items: center;
+    font-size: 12px; color: var(--text-muted); flex-wrap: wrap;
+  }
+  .meta-chip { display: flex; gap: 6px; align-items: center; }
+  .meta-chip .k { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; color: var(--text-faint); letter-spacing: 0.06em; }
+  .meta-chip .v { font-size: 12px; color: var(--text); font-weight: 500; display: flex; align-items: center; gap: 5px; }
+  .meta-chip .avatar {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--n-150); color: var(--n-600);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 600;
+  }
+
+  .thread-body { flex: 1; overflow: auto; padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 14px; }
+
+  .day-sep {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0 2px;
+  }
+  .day-sep .line { flex: 1; height: 1px; background: var(--border); }
+  .day-sep .label {
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .msg { display: grid; grid-template-columns: 30px 1fr; gap: 10px; min-width: 0; }
+  .msg-av {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--n-150); color: var(--n-600);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+    flex-shrink: 0;
+  }
+  .msg-av.bot { background: var(--u-primary-tint); color: var(--u-primary); }
+  .msg-body { min-width: 0; }
+  .msg-name-row { display: flex; gap: 8px; align-items: baseline; }
+  .msg-name { font-size: 13px; font-weight: 600; }
+  .msg-time { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); }
+  .msg-text { font-size: 13px; color: var(--text); margin-top: 2px; line-height: 1.55; overflow-wrap: break-word; }
+
+  /* Bot/checklist card inside thread */
+  .bot-card {
+    margin-top: 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--r-3);
+    overflow: hidden;
+    background: var(--n-0);
+  }
+  .bot-card-head {
+    padding: 10px 14px;
+    background: var(--n-25);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .bot-card-head .t {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint);
+  }
+  .bot-card-head .title {
+    font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+    margin-top: 2px;
+  }
+  .bot-card-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .bot-row {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px;
+    padding: 4px 0;
+  }
+  .bot-row input[type=checkbox] { accent-color: var(--u-primary); width: 13px; height: 13px; }
+  .bot-row .k { flex: 1; color: var(--text); }
+  .bot-row.done .k { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--n-200); }
+  .bot-row .v {
+    font-family: var(--u-mono); font-size: 11px; color: var(--text-muted);
+  }
+  .bot-row .link {
+    font-size: 12px; color: var(--u-primary); font-weight: 500;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+
+  /* System event (joined, linked, etc.) */
+  .sys {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-faint);
+    padding: 4px 10px;
+    border-left: 2px solid var(--border-strong);
+    margin-left: 4px;
+  }
+
+  /* Composer */
+  .composer {
+    border-top: 1px solid var(--border); padding: 12px 22px 14px;
+    background: var(--n-0);
+  }
+  .composer-box {
+    display: flex; flex-direction: column; gap: 8px;
+    background: var(--n-0);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-3);
+    padding: 10px 12px;
+  }
+  .composer-box:focus-within { border-color: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .composer-input {
+    all: unset;
+    font-family: var(--u-font); font-size: 13px;
+    min-height: 22px;
+    color: var(--text);
+  }
+  .composer-tools {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .tool { all: unset; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: var(--r-1); color: var(--text-faint); cursor: pointer; }
+  .tool:hover { background: var(--n-100); color: var(--text); }
+  .composer-tools .spacer { flex: 1; }
+  .btn {
+    font-family: var(--u-font); font-size: 13px; font-weight: 500;
+    line-height: 1; padding: 7px 12px; border-radius: var(--r-2);
+    border: 1px solid transparent; background: transparent; color: var(--text);
+    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    letter-spacing: -0.005em;
+  }
+  .btn-primary { background: var(--u-primary); color: white; }
+  .btn-primary:hover { background: var(--u-primary-hover); }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); }
+  .btn-secondary:hover { background: var(--n-50); }
+  .btn-ghost { color: var(--text-muted); }
+  .btn-ghost:hover { background: var(--n-100); color: var(--text); }
+  .btn-sm { padding: 5px 9px; font-size: 12px; }
+  .kbd { font-family: var(--u-mono); font-size: 10px; padding: 1px 5px; background: rgba(255,255,255,0.18); border-radius: 2px; color: rgba(255,255,255,0.85); margin-left: 4px; }
+
+  /* ============= CHECKLIST ============= */
+  .check {
+    border-left: 1px solid var(--border);
+    background: var(--n-0);
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .check-head {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .check-head .eyebrow {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .check-head h3 {
+    font-size: 15px; font-weight: 600;
+    letter-spacing: -0.015em; margin: 4px 0 0;
+  }
+  .check-progress { padding: 12px 18px; border-bottom: 1px solid var(--border); }
+  .check-progress .row { display: flex; justify-content: space-between; font-size: 12px; align-items: baseline; }
+  .check-progress .row span:first-child { font-weight: 500; }
+  .check-progress .row .frac { font-family: var(--u-mono); color: var(--text-muted); font-size: 11px; }
+  .prog-bar { height: 3px; background: var(--n-100); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+  .prog-bar .fill { height: 100%; background: var(--u-primary); }
+
+  .check-body { flex: 1; overflow: auto; }
+  .sec { border-bottom: 1px solid var(--border); }
+  .sec-head {
+    padding: 11px 18px;
+    display: flex; align-items: center; gap: 10px;
+    cursor: pointer;
+  }
+  .sec-head .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .sec-head .dot.done { background: var(--s-ok); }
+  .sec-head .dot.active { background: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .sec-head .dot.pend { background: var(--n-200); }
+  .sec-head .t {
+    flex: 1; font-size: 13px; font-weight: 500;
+  }
+  .sec-head .t.done { color: var(--text-muted); }
+  .sec-head .frac { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); }
+  .sec-head .caret {
+    color: var(--text-faint); transition: transform 120ms; transform: rotate(0deg);
+  }
+  .sec-head.open .caret { transform: rotate(90deg); }
+  .sec-items { padding: 4px 18px 14px 36px; display: none; flex-direction: column; gap: 6px; }
+  .sec.open .sec-items { display: flex; }
+  .item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; padding: 5px 0;
+  }
+  .item input[type=checkbox] { accent-color: var(--u-primary); width: 13px; height: 13px; }
+  .item .label { flex: 1; color: var(--text); }
+  .item.done .label { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--n-200); }
+  .item .value { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); }
+
+  /* Right panel actions */
+  .check-actions { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+
+  /* Tweaks */
+  .tweaks { position: fixed; right: 18px; bottom: 18px; width: 280px; background: var(--n-0); border: 1px solid var(--border-strong); border-radius: var(--r-3); box-shadow: var(--shadow-lg); padding: 14px; z-index: 50; display: none; }
+  .tweaks.open { display: block; }
+  .tweaks h4 { margin: 0 0 12px; font-size: 12px; font-weight: 500; display:flex; justify-content: space-between; }
+  .tweaks .close { all: unset; cursor: pointer; color: var(--text-faint); font-size: 14px; }
+  .tweak-row { display:flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--border); font-size: 12px; gap: 8px;}
+  .tweak-row:first-of-type { border-top: 0; }
+  .tweak-row label { color: var(--text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--u-mono); }
+  .tweak-row input[type=color] { width: 28px; height: 20px; border: 1px solid var(--border-strong); border-radius: 2px; padding: 0; background: none; cursor: pointer; }
+  .tweak-row input[type=range] { flex: 1; max-width: 120px; }
+  .tweak-row select { font-family: var(--u-font); font-size: 12px; padding: 4px 6px; border: 1px solid var(--border-strong); border-radius: var(--r-1); background: var(--n-0); }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ============= NAV ============= -->
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item" title="Home"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active" title="Conversations"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5a1 1 0 011-1h10a1 1 0 011 1v7a1 1 0 01-1 1H7l-4 3V5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item" title="Documents"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M5 2.5h5.5L14 6v8.5a1 1 0 01-1 1H5a1 1 0 01-1-1v-11a1 1 0 011-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M10 2.5V6h4" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <div class="nav-item" title="Dashboard"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <div class="nav-item" title="People"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="7" r="2.8" stroke="currentColor" stroke-width="1.4"/><path d="M3.5 15c1.2-2.8 3.4-3.9 5.5-3.9s4.3 1.1 5.5 3.9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-item" title="Settings"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M9 3.5V2m0 14v-1.5m5.5-5.5H16M2 9h1.5M12.9 5.1L14 4M4 14l1.1-1.1M12.9 12.9L14 14M4 4l1.1 1.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <!-- ============= LIST ============= -->
+  <aside class="list">
+    <div class="list-head">
+      <div class="top">
+        <div>
+          <div class="org">Engineering Industries</div>
+          <div class="title">My Conversations <span class="count">999+</span></div>
+        </div>
+        <button class="btn btn-primary btn-sm">+ New <span class="kbd">N</span></button>
+      </div>
+      <div class="search">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.4"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input placeholder="Search conversations"/>
+        <span class="kbd">⌘K</span>
+      </div>
+    </div>
+    <div class="list-filters">
+      <span class="chip active">All <span class="n">24</span></span>
+      <span class="chip">Unread <span class="n">6</span></span>
+      <span class="chip">Mine <span class="n">12</span></span>
+      <span class="chip">Pinned <span class="n">3</span></span>
+    </div>
+    <div class="list-scroll" id="convs"></div>
+  </aside>
+
+  <!-- ============= THREAD ============= -->
+  <section class="thread">
+    <div class="thread-head">
+      <div class="id-row">
+        <span class="badge badge-info"><span class="pulse"></span>IDENTIFIED</span>
+        <span class="nc">NC-25</span>
+        <span class="nc">·</span>
+        <span class="nc">Opened Apr 18</span>
+      </div>
+      <h2>Assembly defect detected in final inspection</h2>
+      <div class="thread-meta">
+        <div class="meta-chip"><span class="k">Owner</span><span class="v"><span class="avatar">LM</span>Lisa Martin</span></div>
+        <div class="meta-chip"><span class="k">Participants</span><span class="v">
+          <span class="avatar" style="margin-right: -4px;">DS</span>
+          <span class="avatar" style="margin-right: -4px;">RK</span>
+          <span class="avatar" style="margin-right: -4px;">HS</span>
+          <span class="avatar">+2</span>
+        </span></div>
+        <div class="meta-chip"><span class="k">Due</span><span class="v">Apr 24</span></div>
+        <div class="meta-chip"><span class="k">Priority</span><span class="v">Normal</span></div>
+        <div class="meta-chip"><span class="k">Linked</span><span class="v">CAR-41 · RCA-12</span></div>
+        <div style="margin-left: auto; display: flex; gap: 6px;">
+          <button class="btn btn-ghost btn-sm"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg> Add field</button>
+          <button class="btn btn-ghost btn-sm"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="3" cy="8" r="1.3" fill="currentColor"/><circle cx="8" cy="8" r="1.3" fill="currentColor"/><circle cx="13" cy="8" r="1.3" fill="currentColor"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="thread-body" id="messages"></div>
+
+    <div class="composer">
+      <div class="composer-box">
+        <div class="composer-input" contenteditable="true" data-placeholder="Reply to NC-25…"></div>
+        <div class="composer-tools">
+          <button class="tool" title="Attach"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M12 7l-5 5a3 3 0 01-4-4l6-6a2 2 0 013 3l-6 6a1 1 0 01-1-1l5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="tool" title="Mention"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 8v1a1.8 1.8 0 003.5 0V8a6 6 0 10-2.5 4.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="tool" title="Link record"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 10l4-4M7 5l1.5-1.5a2 2 0 013 3L11 8M9 11l-1.5 1.5a2 2 0 01-3-3L6 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+          <button class="tool" title="AI"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.5 4L13 7.5 9.5 9 8 13 6.5 9 3 7.5 6.5 6z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></button>
+          <div class="spacer"></div>
+          <button class="btn btn-ghost btn-sm">Save draft</button>
+          <button class="btn btn-primary btn-sm">Send <span class="kbd">↩</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============= CHECKLIST ============= -->
+  <aside class="check">
+    <div class="check-head">
+      <div class="eyebrow">
+        <span>CAR-41 · Checklist</span>
+        <span style="margin-left: auto; font-family: var(--u-mono); color: var(--text-faint);">v4.2</span>
+      </div>
+      <h3>Corrective action request</h3>
+    </div>
+    <div class="check-progress">
+      <div class="row"><span>Completion</span><span class="frac">5/8 sections</span></div>
+      <div class="prog-bar"><div class="fill" style="width: 62.5%;"></div></div>
+    </div>
+    <div class="check-body" id="checklist"></div>
+    <div class="check-actions">
+      <button class="btn btn-secondary btn-sm" style="flex: 1;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Export PDF</button>
+      <button class="btn btn-primary btn-sm" style="flex: 1;">Approve CAR</button>
+    </div>
+  </aside>
+
+</div>
+
+<!-- Tweaks -->
+<div class="tweaks" id="tweaks-panel">
+  <h4>Tweaks <button class="close" id="tweaks-close">×</button></h4>
+  <div class="tweak-row"><label>Primary</label><div style="display:flex; align-items:center; gap:6px;"><span id="color-hex" class="mono" style="font-size:11px; color: var(--text-muted);">#0052FF</span><input type="color" id="t-color" value="#0052ff"/></div></div>
+  <div class="tweak-row"><label>Radius</label><div style="display:flex; align-items:center; gap:8px;"><input type="range" id="t-radius" min="0" max="14" step="1" value="3"/><span id="radius-v" class="mono" style="font-size:11px; width: 30px; text-align:right; color: var(--text-muted);">3px</span></div></div>
+  <div class="tweak-row"><label>Density</label><div style="display:flex; align-items:center; gap:8px;"><input type="range" id="t-density" min="0.8" max="1.3" step="0.05" value="1"/><span id="density-v" class="mono" style="font-size:11px; width: 36px; text-align:right; color: var(--text-muted);">1.00×</span></div></div>
+  <div class="tweak-row"><label>Font</label><select id="t-font"><option value="'Inter', sans-serif">Inter</option><option value="'Geist', sans-serif">Geist</option><option value="'Helvetica Neue', Helvetica, Arial, sans-serif">Helvetica</option><option value="ui-sans-serif, system-ui, sans-serif">System</option></select></div>
+</div>
+
+<script>
+// ========= Conversations list =========
+const CONVS = [
+  { sel: true, unread: false, title: 'Nonconforming weld · bracket sub-assembly', prev: 'Daniel: CAR is DUE TODAY and ready for verification.', sender: 'Daniel Storm', tag: 'NC-25', time: '10:42', status: 'IDENTIFIED', statusKind: 'info', unreadCount: 0 },
+  { sel: false, unread: true, title: 'Version Control SOP', prev: 'Mace: Nothing pending as of now.', sender: 'Anakin Skywalker', tag: 'DOC-25', time: '07:30', status: 'COMPLETE', statusKind: 'ok', unreadCount: 2 },
+  { sel: false, unread: true, title: 'Spec mismatch · delivery packaging', prev: 'Anakin: Let me know if you need anything', sender: 'Luke Skywalker', tag: 'NC-14', time: '05:28', status: 'COMPLETE', statusKind: 'ok', unreadCount: 3 },
+  { sel: false, unread: false, title: 'IX974 Release · Batch #271', prev: 'Anakin: Add-ons still pending', sender: 'Obi-Wan Kenobi', tag: 'LOT-271', time: '05:23', status: 'COMPLETE', statusKind: 'ok', unreadCount: 0 },
+  { sel: false, unread: false, title: 'Update CAD model for NC46-XR', prev: 'Luke: Roger that. Will get it done.', sender: 'Han Solo', tag: 'CHG-34', time: '04:50', status: 'COMPLETE', statusKind: 'ok', unreadCount: 0 },
+  { sel: false, unread: true, title: 'Process map · stage 2 assembly', prev: 'Han: Waiting for approval', sender: 'Princess Leia', tag: 'DOC-12', time: '04:18', status: 'PENDING', statusKind: 'warn', unreadCount: 1 },
+  { sel: false, unread: false, title: 'IX974 Release · Batch #234', prev: 'Obi-Wan: Just sent the review', sender: 'Chewbacca', tag: 'LOT-234', time: 'Yesterday', status: 'COMPLETE', statusKind: 'ok', unreadCount: 0 },
+  { sel: false, unread: false, title: 'Product quality pre-release evaluation SOP', prev: 'Princess: ETA please. Need this to plan my scope.', sender: 'Wedge Antilles', tag: 'DOC-33', time: 'Yesterday', status: 'COMPLETE', statusKind: 'ok', unreadCount: 0 },
+  { sel: false, unread: false, title: 'Calibration failure · torque tool', prev: 'Han: Verified on Line 3.', sender: 'Han Solo', tag: 'NC-19', time: 'Apr 16', status: 'COMPLETE', statusKind: 'ok', unreadCount: 0 },
+  { sel: false, unread: false, title: 'Paint thickness below spec', prev: 'Leia: Still under investigation', sender: 'Leia Organa', tag: 'NC-18', time: 'Apr 14', status: 'OVERDUE', statusKind: 'err', unreadCount: 0 },
+];
+const list = document.getElementById('convs');
+CONVS.forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'conv' + (c.sel ? ' selected' : '') + (c.unread ? ' unread' : '');
+  d.innerHTML = `
+    <div class="conv-top">
+      <div class="conv-title">${c.title}</div>
+      <div class="conv-time">${c.time}</div>
+    </div>
+    <div class="conv-preview">${c.prev}</div>
+    <div class="conv-meta">
+      <span class="conv-tag">${c.tag}</span>
+      <span class="conv-sender">${c.sender}</span>
+      ${c.unreadCount > 0 ? `<span class="conv-unread">${c.unreadCount}</span>` : `<span class="badge badge-${c.statusKind}"><span class="pulse"></span>${c.status}</span>`}
+    </div>
+  `;
+  list.appendChild(d);
+});
+
+// ========= Thread messages =========
+const MESSAGES = [
+  { type: 'day', label: 'Apr 18' },
+  { type: 'sys', text: 'Lisa Martin created this conversation · linked to NC-25' },
+  { type: 'msg', name: 'Lisa Martin', initials: 'LM', time: '09:02', text: "We've found a nonconforming weld on the bracket sub-assembly at final inspection. Let's investigate and find out what went wrong." },
+  { type: 'msg', name: 'Lisa Martin', initials: 'LM', time: '09:12', text: 'Adding disposition action to Scrap. We\'ll isolate and scrap the nonconforming bracket sub-assemblies to prevent further issues.' },
+  { type: 'bot', title: 'Updated checklist', section: 'Disposition action',
+    items: [ { c: true, l: 'Scrap', v: '12 units' } ] },
+  { type: 'msg', name: 'Daniel Storm', initials: 'DS', time: '09:42', text: 'Just had a look at the issue — I\'ll raise a Corrective Action Request to prevent this from happening ever again.' },
+  { type: 'bot', title: 'Updated checklist', section: 'Corrective Action Request (CAR)',
+    items: [
+      { c: true, l: 'CAR-41 · Prevent recurrence of bracket weld nonconformance', v: 'Linked' },
+      { c: true, l: 'Record owner', v: 'Daniel Storm', owner: true }
+    ] },
+  { type: 'day', label: 'Today' },
+  { type: 'msg', name: 'Rupa Kapoor', initials: 'RK', time: '10:14', text: 'Reviewed incoming materials — traceability points to a secondary supplier. Likely a contributing factor.' },
+  { type: 'bot-assistant', title: 'Root cause analysis', section: 'RCA-12',
+    items: [
+      { c: true, l: 'Material inconsistency', v: 'High confidence' },
+      { c: false, l: 'Operator training gap', v: 'Investigating' },
+      { c: false, l: 'Jig alignment', v: 'Investigating' },
+    ],
+    owners: [ { n: 'Rupa Kapoor', i: 'RK' } ] },
+  { type: 'msg', name: 'Daniel Storm', initials: 'DS', time: '10:38', text: 'Thanks — I\'ll create corrective actions for each cause. @Lisa @Rupa please review.' },
+];
+
+const messagesEl = document.getElementById('messages');
+MESSAGES.forEach(m => {
+  if (m.type === 'day') {
+    const d = document.createElement('div');
+    d.className = 'day-sep';
+    d.innerHTML = `<div class="line"></div><div class="label">${m.label}</div><div class="line"></div>`;
+    messagesEl.appendChild(d);
+  } else if (m.type === 'sys') {
+    const d = document.createElement('div');
+    d.className = 'sys';
+    d.textContent = '· ' + m.text;
+    messagesEl.appendChild(d);
+  } else if (m.type === 'msg') {
+    const d = document.createElement('div');
+    d.className = 'msg';
+    d.innerHTML = `
+      <div class="msg-av">${m.initials}</div>
+      <div class="msg-body">
+        <div class="msg-name-row">
+          <span class="msg-name">${m.name}</span>
+          <span class="msg-time">${m.time}</span>
+        </div>
+        <div class="msg-text">${m.text}</div>
+      </div>
+    `;
+    messagesEl.appendChild(d);
+  } else if (m.type === 'bot' || m.type === 'bot-assistant') {
+    const d = document.createElement('div');
+    d.className = 'msg';
+    d.innerHTML = `
+      <div class="msg-av bot">U</div>
+      <div class="msg-body">
+        <div class="msg-name-row">
+          <span class="msg-name" style="color: var(--u-primary);">Unifize Assistant</span>
+          <span class="msg-time">auto-updated</span>
+        </div>
+        <div class="bot-card">
+          <div class="bot-card-head">
+            <div>
+              <div class="t">${m.title}</div>
+              <div class="title">${m.section}</div>
+            </div>
+            <span class="badge badge-info"><span class="pulse"></span>LINKED</span>
+          </div>
+          <div class="bot-card-body">
+            ${m.items.map(it => `
+              <div class="bot-row ${it.c ? 'done' : ''}">
+                <input type="checkbox" ${it.c ? 'checked' : ''}/>
+                <span class="k">${it.l}</span>
+                <span class="v">${it.v}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+    messagesEl.appendChild(d);
+  }
+});
+
+// ========= Checklist =========
+const SECS = [
+  { t: 'Inputs', state: 'done', n: 4, nt: 4 },
+  { t: 'Basic information', state: 'done', n: 6, nt: 6, items: [
+    { c: true, l: 'CAR opened by', v: 'Daniel Storm' },
+    { c: true, l: 'Source NC', v: 'NC-25' },
+    { c: true, l: 'Severity', v: 'High' },
+    { c: true, l: 'Customer impact', v: 'Internal only' },
+    { c: true, l: 'Target closure date', v: 'Apr 28' },
+    { c: true, l: 'Owner', v: 'Daniel Storm' },
+  ]},
+  { t: 'Disposition action', state: 'done', n: 3, nt: 3 },
+  { t: 'Corrective Action Request(s)', state: 'active', n: 2, nt: 5, open: true, items: [
+    { c: true, l: 'Update Process Control Plan', v: 'Daniel' },
+    { c: true, l: 'Retrain line operators', v: 'Lisa' },
+    { c: false, l: 'Revise inspection criteria', v: 'Pending' },
+    { c: false, l: 'Vendor corrective note sent', v: 'Pending' },
+    { c: false, l: 'Incoming spec update', v: 'Pending' },
+  ]},
+  { t: 'Verification & Validation', state: 'pend', n: 0, nt: 4 },
+  { t: 'Approval(s)', state: 'pend', n: 0, nt: 2 },
+  { t: 'Generate PDF report', state: 'pend', n: 0, nt: 1 },
+  { t: 'Related records', state: 'pend', n: 0, nt: 3 },
+];
+const cl = document.getElementById('checklist');
+SECS.forEach((s, i) => {
+  const sec = document.createElement('div');
+  sec.className = 'sec' + (s.open ? ' open' : '');
+  const items = s.items ? `
+    <div class="sec-items">
+      ${s.items.map(it => `
+        <div class="item ${it.c ? 'done' : ''}">
+          <input type="checkbox" ${it.c ? 'checked' : ''}/>
+          <span class="label">${it.l}</span>
+          <span class="value">${it.v}</span>
+        </div>
+      `).join('')}
+    </div>
+  ` : '';
+  sec.innerHTML = `
+    <div class="sec-head ${s.open ? 'open' : ''}">
+      <span class="dot ${s.state}"></span>
+      <span class="t ${s.state === 'done' ? 'done' : ''}">${s.t}</span>
+      <span class="frac">${s.n}/${s.nt}</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+    ${items}
+  `;
+  cl.appendChild(sec);
+  sec.querySelector('.sec-head').addEventListener('click', () => {
+    sec.classList.toggle('open');
+    sec.querySelector('.sec-head').classList.toggle('open');
+  });
+});
+
+// ========= Tweaks =========
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryColor": "#0052FF",
+  "radius": 4,
+  "density": 1.05,
+  "font": "'Inter', sans-serif"
+}/*EDITMODE-END*/;
+
+let TWEAKS = { ...TWEAK_DEFAULTS };
+function hex(h) { return (h.startsWith('#') ? h : '#' + h).toUpperCase(); }
+function hexToRgb(h){ h=h.replace('#',''); return { r:parseInt(h.slice(0,2),16), g:parseInt(h.slice(2,4),16), b:parseInt(h.slice(4,6),16) }; }
+function darken(h,a){ const {r,g,b}=hexToRgb(h); const f=1-a; return '#'+[r*f,g*f,b*f].map(n=>Math.round(Math.max(0,Math.min(255,n))).toString(16).padStart(2,'0')).join('').toUpperCase(); }
+function mixW(h,a){ const {r,g,b}=hexToRgb(h); const mix=c=>Math.round(c+(255-c)*a); return '#'+[mix(r),mix(g),mix(b)].map(n=>n.toString(16).padStart(2,'0')).join('').toUpperCase(); }
+
+function applyTweaks(){
+  const root = document.documentElement;
+  const p = hex(TWEAKS.primaryColor);
+  root.style.setProperty('--u-primary', p);
+  root.style.setProperty('--u-primary-hover', darken(p, 0.2));
+  root.style.setProperty('--u-primary-tint', mixW(p, 0.93));
+  root.style.setProperty('--u-primary-border', mixW(p, 0.8));
+  root.style.setProperty('--u-font', TWEAKS.font);
+  const r = Number(TWEAKS.radius);
+  root.style.setProperty('--r-1', Math.max(0, r-1)+'px');
+  root.style.setProperty('--r-2', r+'px');
+  root.style.setProperty('--r-3', (r+2)+'px');
+  root.style.setProperty('--r-4', (r+5)+'px');
+  root.style.setProperty('--d', TWEAKS.density);
+  const ch = document.getElementById('color-hex'); if (ch) ch.textContent = p;
+  const rv = document.getElementById('radius-v'); if (rv) rv.textContent = r+'px';
+  const dv = document.getElementById('density-v'); if (dv) dv.textContent = Number(TWEAKS.density).toFixed(2)+'×';
+}
+function setKeys(o){ TWEAKS = { ...TWEAKS, ...o }; applyTweaks(); try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits: o }, '*'); } catch(e){} }
+applyTweaks();
+
+document.getElementById('t-color').addEventListener('input', e => setKeys({ primaryColor: hex(e.target.value) }));
+document.getElementById('t-radius').addEventListener('input', e => setKeys({ radius: Number(e.target.value) }));
+document.getElementById('t-density').addEventListener('input', e => setKeys({ density: Number(e.target.value) }));
+document.getElementById('t-font').addEventListener('change', e => setKeys({ font: e.target.value }));
+document.getElementById('t-color').value = TWEAKS.primaryColor.toLowerCase();
+document.getElementById('t-radius').value = TWEAKS.radius;
+document.getElementById('t-density').value = TWEAKS.density;
+document.getElementById('t-font').value = TWEAKS.font;
+
+window.addEventListener('message', ev => {
+  const d = ev.data; if (!d || typeof d !== 'object') return;
+  if (d.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if (d.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+document.getElementById('tweaks-close').addEventListener('click', () => document.getElementById('tweaks-panel').classList.remove('open'));
+try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e){}
+
+// Placeholder styling for composer
+const ce = document.querySelector('.composer-input');
+ce.addEventListener('input', () => ce.classList.toggle('empty', !ce.textContent.trim()));
+</script>
+</body>
+</html>

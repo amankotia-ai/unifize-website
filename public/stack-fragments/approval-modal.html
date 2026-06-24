@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NC disposition approval, in action</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<link rel="stylesheet" href="/stack-fragments/chat-states.css" />
+<style>
+  .cite {
+    font-family: var(--u-mono); font-size: 10.5px;
+    background: var(--u-primary-tint); color: var(--u-primary);
+    padding: 1px 5px; border-radius: 3px; white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="rec-head">
+      <span class="rec-id">NC-25</span>
+      <span class="rec-title">Nonconforming weld — bracket sub-assembly (LOT-271)</span>
+      <span class="rec-chips">
+        <span class="rec-chip">
+          <span class="av-xs ak">QM</span>
+          QA Manager
+        </span>
+        <span class="rec-chip plain">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M11 13c0-2-1.8-3-3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          9
+        </span>
+        <span class="rec-chip plain">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 6h12" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          Day 7
+        </span>
+        <span class="rec-chip priority">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l5-5 5 5-5 5z" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          Major
+          <span class="caret">▾</span>
+        </span>
+        <span class="rec-chip plain">More</span>
+      </span>
+    </div>
+
+    <div class="rec-status-row">
+      <span class="status-pill s-complete">Complete</span>
+      <span class="rec-clock">Day 7 · 04:18 pm</span>
+    </div>
+
+    <div class="stage-body">
+      <div class="conv">
+        <div class="fold">earlier in the conversation</div>
+
+        <div class="m">
+          <div class="av me">ME</div>
+          <div class="m-body">
+            <div class="m-row">
+              <span class="m-name">Mfg Engineer</span>
+              <span class="m-time">filled in checklist · 04:14 pm</span>
+            </div>
+            <div class="m-text" style="color:var(--text-muted);font-size:12px">
+              <b style="color:var(--text)">Verified by</b> · Mfg Engineer &nbsp;·&nbsp; <b style="color:var(--text)">Verified on</b> · Day 7 &nbsp;·&nbsp; scrap of 12 nonconforming units verified
+            </div>
+          </div>
+        </div>
+
+        <div class="m">
+          <div class="av bot">U</div>
+          <div class="m-body">
+            <div class="m-row">
+              <span class="m-name bot">Unifize Assistant</span>
+              <span class="m-time">04:15 pm · automated</span>
+            </div>
+            <div class="m-text">
+              Status of the conversation updated to <span class="tag">Complete</span>. Corrective action request: <a href="#">CAR-41 · SCAR — bracket weld nonconformance</a> validated.
+            </div>
+          </div>
+        </div>
+
+        <div class="m">
+          <div class="av qm">QM</div>
+          <div class="m-body">
+            <div class="m-row">
+              <span class="m-name">QA Manager</span>
+              <span class="m-time">completion approval · 04:18 pm</span>
+            </div>
+            <div class="sig-card">
+              <div class="sig-card-head">
+                <span class="approved-chip">Approved</span>
+                <span class="sig-card-handwritten">QA Manager</span>
+              </div>
+              <div class="sig-card-id">ID: 360c42…e9aeca · rationale, evidence &amp; <span class="cite">ISO 13485 §8.3</span> bound</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sys">
+          <b>Approval bound on record</b> · signer · timestamp · signature ID · rationale · evidence · CAR-41 linkage
+        </div>
+      </div>
+
+      <div class="rail">
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name muted">Basic info</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="rail-section open">
+          <div class="rail-section-head">
+            <span class="rail-section-name">Disposition action(s)</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+          <div class="rail-section-body">
+            <span class="rail-field-label">Disposition action(s)</span>
+            <div class="disp-action">
+              <span class="disp-action-id">Scrap · LOT-271 · 12 units</span>
+              <div class="disp-action-meta">
+                <span class="pending-chip" style="background:var(--s-ok)">
+                  <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" stroke="white" stroke-width="1.2" fill="none"/></svg>
+                  Complete
+                </span>
+                <span class="rec-chip plain" style="padding:2px 7px;font-size:10.5px">
+                  <span class="av-xs ak">ME</span>
+                  M…
+                </span>
+                <span class="due-chip" style="color:var(--s-ok);border-color:var(--s-ok-tint)">Day 5</span>
+              </div>
+              <a class="disp-action-link" href="#">View all fields ▾</a>
+            </div>
+            <span class="rail-field-label" style="margin-top:4px">Regulatory basis</span>
+            <span class="rail-field-value">ISO 13485 §8.3 · 21 CFR 820 (QMSR)</span>
+            <span class="rail-field-label">Verified by</span>
+            <span class="rail-field-value with-avatar">
+              <span class="av-xs ak">ME</span>
+              Mfg Engineer
+            </span>
+            <span class="rail-field-label">Verified on</span>
+            <span class="rail-field-value">Day 7</span>
+            <span class="rail-field-label">Verification approval</span>
+            <div class="verif-approval-banner">
+              <span>Approved · Day 7 · 16:18</span>
+              <a class="show" href="#">Show</a>
+            </div>
+            <button class="cancel-approval-btn">Cancel approval</button>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name muted">Corrective action request</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name muted">Non-conformance completion approval(s)</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

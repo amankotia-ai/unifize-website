@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Configuration Manager dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .page-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+  .page-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); display: flex; gap: 8px; align-items: center; }
+  .page-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.022em; margin: 6px 0 4px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); max-width: 620px; }
+
+  .content { flex: 1; overflow: auto; padding: 22px 24px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); align-content: start; }
+
+  .kpi { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; grid-column: span 3; }
+  .kpi-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .kpi-value { font-size: 28px; font-weight: 600; letter-spacing: -0.025em; display: flex; align-items: baseline; gap: 4px; }
+  .kpi-value .unit { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .kpi-delta { font-family: var(--u-mono); font-size: 11px; }
+  .kpi-delta.up { color: var(--s-ok); }
+  .kpi-delta.down { color: var(--s-err); }
+
+  .card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; }
+  .card-head { padding: 12px 16px 10px; display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border); }
+  .card-head .title { font-size: 13.5px; font-weight: 600; margin: 0; }
+  .card-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-body { padding: 14px 16px; }
+  .card-wide { grid-column: span 8; }
+  .card-narrow { grid-column: span 4; }
+  .card-half { grid-column: span 6; }
+
+  /* Heatmap: programs vs class */
+  .heat-row { display: grid; grid-template-columns: 110px repeat(3, 1fr) 50px; gap: 6px; align-items: center; padding: 6px 0; font-size: 12px; }
+  .heat-name { font-weight: 500; }
+  .heat-cell { aspect-ratio: 1.6 / 1; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 11px; font-weight: 600; }
+  .heat-cell.l0 { background: var(--n-50); color: var(--text-faint); }
+  .heat-cell.l1 { background: var(--u-primary-tint); color: var(--u-primary); }
+  .heat-cell.l2 { background: var(--s-warn-tint); color: var(--s-warn); }
+  .heat-cell.l3 { background: var(--s-err-tint); color: var(--s-err); }
+  .heat-total { font-family: var(--u-mono); color: var(--text-muted); text-align: right; font-weight: 600; }
+
+  .heat-head { display: grid; grid-template-columns: 110px repeat(3, 1fr) 50px; gap: 6px; padding-bottom: 8px; border-bottom: 1px dashed var(--border); margin-bottom: 4px; font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .heat-head .col { text-align: center; }
+
+  /* Funnel */
+  .funnel { display: flex; flex-direction: column; gap: 6px; }
+  .stage-row { display: grid; grid-template-columns: 110px 1fr 50px; align-items: center; gap: 10px; padding: 6px 0; font-size: 12px; }
+  .stage-name { font-weight: 500; }
+  .stage-bar { height: 14px; background: var(--n-100); border-radius: 2px; overflow: hidden; }
+  .stage-bar .fill { height: 100%; background: var(--u-primary); }
+  .stage-bar .fill.warn { background: var(--s-warn); }
+  .stage-bar .fill.err { background: var(--s-err); }
+  .stage-total { font-family: var(--u-mono); color: var(--text-muted); text-align: right; font-size: 11px; }
+  .stage-total .age { color: var(--text-faint); margin-left: 8px; }
+
+  /* ECO table */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tbl th { text-align: left; font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); font-weight: 500; padding: 9px 12px; border-bottom: 1px solid var(--border); background: var(--n-25); white-space: nowrap; }
+  .tbl td { padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; vertical-align: middle; }
+  .tbl tr:last-child td { border-bottom: 0; }
+  .tbl .id { font-family: var(--u-mono); font-size: 11px; color: var(--u-primary); font-weight: 600; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 2px; font-family: var(--u-mono); letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-warn { background: var(--s-warn-tint); color: var(--s-warn); }
+  .badge-err { background: var(--s-err-tint); color: var(--s-err); }
+  .badge-info { background: var(--u-primary-tint); color: var(--u-primary); }
+  .badge-ok { background: var(--s-ok-tint); color: var(--s-ok); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Change Control</span><span class="sep">/</span>
+        <span>Configuration Manager</span><span class="sep">/</span>
+        <span class="cur">Dashboard</span>
+      </div>
+    </div>
+
+    <header class="page-head">
+      <div>
+        <div class="page-eyebrow"><span class="dot"></span>Configuration Manager · Han Solo · Q2 2026</div>
+        <h1 class="page-title">ECOs across all programs · live</h1>
+        <p class="page-sub">38 open · 7 Class I awaiting customer/FAA · 2 holds missing on in-flight WIP. Baseline integrity across three platforms tracked in one place.</p>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="kpi">
+        <div class="kpi-label">Open ECOs</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta down">↑ 6 new this wk</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Avg cycle time</div>
+        <div class="kpi-value">21 <span class="unit">d</span></div>
+        <div class="kpi-delta up">↓ 9d vs prior</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">First-pass approval</div>
+        <div class="kpi-value">76 <span class="unit">%</span></div>
+        <div class="kpi-delta up">↑ 11 pts</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Mixed-rev escapes Q2</div>
+        <div class="kpi-value" style="color: var(--s-ok);">0</div>
+        <div class="kpi-delta up">↓ from 2 in Q1</div>
+      </div>
+
+      <div class="card card-wide">
+        <div class="card-head"><h3 class="title">ECOs by program × class</h3><span class="meta">Configuration baseline view</span></div>
+        <div class="card-body">
+          <div class="heat-head">
+            <span></span>
+            <span class="col">Class I (FAA)</span>
+            <span class="col">Class II (internal)</span>
+            <span class="col">Class III (routine)</span>
+            <span class="col" style="text-align: right;">Total</span>
+          </div>
+          <div class="heat-row">
+            <span class="heat-name">787-WX · Boeing</span>
+            <span class="heat-cell l3">4</span>
+            <span class="heat-cell l2">8</span>
+            <span class="heat-cell l1">3</span>
+            <span class="heat-total">15</span>
+          </div>
+          <div class="heat-row">
+            <span class="heat-name">F-35 · Lockheed</span>
+            <span class="heat-cell l2">2</span>
+            <span class="heat-cell l2">7</span>
+            <span class="heat-cell l1">5</span>
+            <span class="heat-total">14</span>
+          </div>
+          <div class="heat-row">
+            <span class="heat-name">A320neo · Airbus</span>
+            <span class="heat-cell l2">1</span>
+            <span class="heat-cell l1">4</span>
+            <span class="heat-cell l1">4</span>
+            <span class="heat-total">9</span>
+          </div>
+          <div class="heat-row">
+            <span class="heat-name" style="font-weight: 600;">Total</span>
+            <span class="heat-cell l3">7</span>
+            <span class="heat-cell l2">19</span>
+            <span class="heat-cell l1">12</span>
+            <span class="heat-total">38</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-narrow">
+        <div class="card-head"><h3 class="title">Stage funnel</h3><span class="meta">Bottleneck view</span></div>
+        <div class="card-body">
+          <div class="funnel">
+            <div class="stage-row"><span class="stage-name">Identified</span><div class="stage-bar"><div class="fill" style="width: 28%;"></div></div><span class="stage-total">5</span></div>
+            <div class="stage-row"><span class="stage-name">Impact eval</span><div class="stage-bar"><div class="fill" style="width: 50%;"></div></div><span class="stage-total">9</span></div>
+            <div class="stage-row"><span class="stage-name">CCB</span><div class="stage-bar"><div class="fill warn" style="width: 72%;"></div></div><span class="stage-total">13 <span class="age">7d avg</span></span></div>
+            <div class="stage-row"><span class="stage-name">Customer / FAA</span><div class="stage-bar"><div class="fill err" style="width: 61%;"></div></div><span class="stage-total">11 <span class="age">14d avg</span></span></div>
+            <div class="stage-row"><span class="stage-name">Cut-in</span><div class="stage-bar"><div class="fill" style="width: 33%;"></div></div><span class="stage-total">6</span></div>
+            <div class="stage-row"><span class="stage-name">Verify</span><div class="stage-bar"><div class="fill" style="width: 22%;"></div></div><span class="stage-total">4</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-wide">
+        <div class="card-head"><h3 class="title">Recent ECOs · drill</h3><span class="meta">Click to open Thread</span></div>
+        <table class="tbl">
+          <thead><tr><th>ID</th><th>Title</th><th>Class</th><th>Program</th><th>Stage</th><th>Age</th></tr></thead>
+          <tbody>
+            <tr><td><span class="id">ECO-2148</span></td><td>Bracket sub-assembly · fastener torque</td><td><span class="badge badge-err">I</span></td><td>787-WX</td><td><span class="badge badge-ok">Cut-in ready</span></td><td>12d</td></tr>
+            <tr><td><span class="id">ECO-2151</span></td><td>Heat-treat · soak time adjustment</td><td><span class="badge badge-warn">II</span></td><td>F-35</td><td><span class="badge badge-info">CCB</span></td><td>5d</td></tr>
+            <tr><td><span class="id">ECO-2138</span></td><td>Wiring harness · routing update</td><td><span class="badge badge-err">I</span></td><td>A320neo</td><td><span class="badge badge-err">Customer</span></td><td>38d</td></tr>
+            <tr><td><span class="id">ECO-2155</span></td><td>Adhesive supplier swap</td><td><span class="badge badge-warn">II</span></td><td>Multiple</td><td><span class="badge badge-info">Impact</span></td><td>3d</td></tr>
+            <tr><td><span class="id">ECO-2129</span></td><td>Coating thickness spec revision</td><td><span class="badge badge-info">III</span></td><td>787-WX</td><td><span class="badge badge-ok">Closed</span></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card card-narrow">
+        <div class="card-head"><h3 class="title">Mixed-revision risk</h3><span class="meta">Live WIP audit</span></div>
+        <div class="card-body">
+          <div class="funnel">
+            <div class="stage-row"><span class="stage-name">Holds in place</span><div class="stage-bar"><div class="fill" style="width: 88%; background: var(--s-ok);"></div></div><span class="stage-total">31</span></div>
+            <div class="stage-row"><span class="stage-name">Holds missing</span><div class="stage-bar"><div class="fill err" style="width: 12%;"></div></div><span class="stage-total">2</span></div>
+            <div class="stage-row"><span class="stage-name">Cut-over set</span><div class="stage-bar"><div class="fill" style="width: 72%;"></div></div><span class="stage-total">24</span></div>
+            <div class="stage-row"><span class="stage-name">Prop lag</span><div class="stage-bar"><div class="fill warn" style="width: 22%;"></div></div><span class="stage-total">7</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

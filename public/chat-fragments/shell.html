@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Shell</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-100); }
+  .shell-map {
+    display: grid;
+    grid-template-columns: 56px 220px 1fr 220px;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    height: 100vh;
+  }
+  .col {
+    background: var(--n-0);
+    padding: 14px 16px;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .col.nav-col { padding: 12px 8px; align-items: center; }
+  .col-eyebrow {
+    font-family: var(--u-mono); font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 6px;
+  }
+  .col-name {
+    font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .col-role {
+    font-size: 11px; color: var(--text-muted); line-height: 1.5;
+  }
+  .col-width {
+    margin-top: auto;
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+  .nav-col .col-eyebrow, .nav-col .col-name, .nav-col .col-role { text-align: center; }
+  .badge-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--u-primary-tint); color: var(--u-primary);
+    font-family: var(--u-mono); font-size: 10px; font-weight: 600;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="shell-map">
+  <div class="col nav-col">
+    <span class="badge-num">1</span>
+    <div class="col-eyebrow">Col 1</div>
+    <div class="col-name">Nav</div>
+    <div class="col-role">App-wide jumps. Always visible.</div>
+    <div class="col-width">56px</div>
+  </div>
+  <div class="col">
+    <span class="badge-num">2</span>
+    <div class="col-eyebrow">Col 2</div>
+    <div class="col-name">Conversation list</div>
+    <div class="col-role">Inbox of every record-bound thread you can see, with filters and search.</div>
+    <div class="col-width">320px</div>
+  </div>
+  <div class="col">
+    <span class="badge-num">3</span>
+    <div class="col-eyebrow">Col 3 — primary</div>
+    <div class="col-name">Thread</div>
+    <div class="col-role">The active conversation. Header with record metadata, body of messages and bot updates, composer at the bottom.</div>
+    <div class="col-width">1fr (flexes)</div>
+  </div>
+  <div class="col">
+    <span class="badge-num">4</span>
+    <div class="col-eyebrow">Col 4</div>
+    <div class="col-name">Checklist</div>
+    <div class="col-role">The record bound to this thread. Progress, sections, approvals — what closure actually looks like.</div>
+    <div class="col-width">340px</div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Assistant card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-0); }
+</style>
+</head>
+<body>
+  <div class="msg">
+    <div class="msg-av bot">U</div>
+    <div class="msg-body">
+      <div class="msg-name-row">
+        <span class="msg-name" style="color: var(--u-primary);">Unifize Assistant</span>
+        <span class="msg-time">auto-updated</span>
+      </div>
+      <div class="bot-card">
+        <div class="bot-card-head">
+          <div>
+            <div class="t">Root cause analysis</div>
+            <div class="title">RCA-12</div>
+          </div>
+          <span class="badge badge-info"><span class="pulse"></span>LINKED</span>
+        </div>
+        <div class="bot-card-body">
+          <div class="bot-row done">
+            <input type="checkbox" checked/>
+            <span class="k">Material inconsistency</span>
+            <span class="v">High confidence</span>
+          </div>
+          <div class="bot-row">
+            <input type="checkbox"/>
+            <span class="k">Operator training gap</span>
+            <span class="v">Investigating</span>
+          </div>
+          <div class="bot-row">
+            <input type="checkbox"/>
+            <span class="k">Jig alignment</span>
+            <span class="v">Investigating</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

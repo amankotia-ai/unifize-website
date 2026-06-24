@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Change Control modules</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .mod { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .mod.focus { border-color: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .mod-num { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.06em; }
+  .mod-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .mod-blurb { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+  .mod-focus-tag { position: absolute; top: 12px; right: 12px; background: var(--u-primary-tint); color: var(--u-primary); font-family: var(--u-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="mod focus">
+    <span class="mod-num">01</span>
+    <span class="mod-focus-tag">Drilled in</span>
+    <div class="mod-name">Engineering Change Order</div>
+    <div class="mod-blurb">ECO — design, drawing, BoM, spec change. The module Ben asked us to anchor for aerospace.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">02</span>
+    <div class="mod-name">Engineering Change Notice</div>
+    <div class="mod-blurb">ECN — propagates the approved change to manufacturing, supply chain, and downstream functions.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">03</span>
+    <div class="mod-name">Document Change Notice</div>
+    <div class="mod-blurb">DCN — controlled-document revision: SOP, work instruction, inspection criteria.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">04</span>
+    <div class="mod-name">Manufacturing Change Order</div>
+    <div class="mod-blurb">MCO — routing, tooling, fixture, special-process change. Cuts NADCAP scope.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">05</span>
+    <div class="mod-name">DHF Design Change</div>
+    <div class="mod-blurb">Design History File update — under design control discipline, FAA Part 21.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">06</span>
+    <div class="mod-name">Supplier Change Notification</div>
+    <div class="mod-blurb">SCN — supplier-side change (material, process, location) that touches your design baseline.</div>
+  </div>
+  <div class="mod">
+    <span class="mod-num">07</span>
+    <div class="mod-name">Customer / Program Change</div>
+    <div class="mod-blurb">Prime-driven change (Boeing, Lockheed, Airbus). Customer ECO approval is its own gate.</div>
+  </div>
+</div>
+</body>
+</html>

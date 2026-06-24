@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Approval Field, configured</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 22px; background: var(--n-25); }
+
+  .ac-wrap {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 920px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .ac-head {
+    padding: 14px 20px;
+    background: var(--n-25);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ac-head-eyebrow {
+    font-family: var(--u-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .ac-head-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
+  .ac-head-divider {
+    color: var(--n-200);
+    margin: 0 4px;
+  }
+  .ac-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 18px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+  .ac-row:last-child { border-bottom: 0; }
+  .ac-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.003em;
+  }
+  .ac-label-meta {
+    display: block;
+    font-family: var(--u-mono);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+  .ac-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .ac-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    background: var(--n-50);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: -0.003em;
+  }
+  .ac-chip.ok {
+    background: var(--s-ok-tint);
+    border-color: transparent;
+    color: var(--s-ok);
+  }
+  .ac-chip.primary {
+    background: var(--u-primary-tint);
+    border-color: var(--u-primary-border);
+    color: var(--u-primary);
+  }
+  .ac-chip.warn {
+    background: var(--s-warn-tint);
+    border-color: transparent;
+    color: var(--s-warn);
+  }
+  .ac-chip .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+</style>
+</head>
+<body>
+  <div class="ac-wrap">
+    <div class="ac-head">
+      <span class="ac-head-eyebrow">Process builder</span>
+      <span class="ac-head-divider">›</span>
+      <span class="ac-head-title">Field type: Approval — configurable surface</span>
+    </div>
+
+    <div class="ac-row">
+      <div class="ac-label">
+        Approvers
+        <span class="ac-label-meta">who can approve</span>
+      </div>
+      <div class="ac-chips">
+        <span class="ac-chip">Specific users</span>
+        <span class="ac-chip">Roles</span>
+        <span class="ac-chip">Participants</span>
+        <span class="ac-chip">Pulled from a field <span style="color:var(--text-faint);font-family:var(--u-mono);font-size:10px">(Owner, Reviewer)</span></span>
+        <span class="ac-chip warn">Prevent requester from approving</span>
+        <span class="ac-chip warn">Restrict by status</span>
+      </div>
+    </div>
+
+    <div class="ac-row">
+      <div class="ac-label">
+        Comments &amp; request
+        <span class="ac-label-meta">what the approver must say</span>
+      </div>
+      <div class="ac-chips">
+        <span class="ac-chip">Show / hide Request Approval button</span>
+        <span class="ac-chip">Required comments · approve</span>
+        <span class="ac-chip">Required comments · reject</span>
+        <span class="ac-chip">Required comments · cancel</span>
+        <span class="ac-chip">Minimum approvers</span>
+      </div>
+    </div>
+
+    <div class="ac-row">
+      <div class="ac-label">
+        Field locking
+        <span class="ac-label-meta">what gets frozen, and when</span>
+      </div>
+      <div class="ac-chips">
+        <span class="ac-chip">Lock fields</span>
+        <span class="ac-chip">Lock sections</span>
+        <span class="ac-chip">Lock whole checklist</span>
+        <span class="ac-chip primary">On request</span>
+        <span class="ac-chip primary">On approval</span>
+        <span class="ac-chip primary">On rejection</span>
+        <span class="ac-chip">Inherit from another approval</span>
+      </div>
+    </div>
+
+    <div class="ac-row">
+      <div class="ac-label">
+        Contingent approvals
+        <span class="ac-label-meta">multi-stage sign-offs</span>
+      </div>
+      <div class="ac-chips">
+        <span class="ac-chip">Stage 2 waits for Stage 1</span>
+        <span class="ac-chip">Multiple dependent stages</span>
+      </div>
+    </div>
+
+    <div class="ac-row">
+      <div class="ac-label">
+        Automations
+        <span class="ac-label-meta">what fires on approval events</span>
+      </div>
+      <div class="ac-chips">
+        <span class="ac-chip primary">On request</span>
+        <span class="ac-chip primary">On approval</span>
+        <span class="ac-chip primary">On rejection</span>
+        <span class="ac-chip primary">On cancellation</span>
+        <span class="ac-chip ok"><span class="dot"></span>Change status</span>
+        <span class="ac-chip ok"><span class="dot"></span>Add / remove participants</span>
+        <span class="ac-chip ok"><span class="dot"></span>Send message</span>
+        <span class="ac-chip ok"><span class="dot"></span>Update fields</span>
+        <span class="ac-chip ok"><span class="dot"></span>Mark revision current</span>
+        <span class="ac-chip ok"><span class="dot"></span>Move to next stage</span>
+        <span class="ac-chip ok"><span class="dot"></span>Cancel downstream approvals</span>
+        <span class="ac-chip ok"><span class="dot"></span>Reassign ownership</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

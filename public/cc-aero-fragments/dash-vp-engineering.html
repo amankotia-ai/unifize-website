@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VP Engineering dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .page-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+  .page-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); display: flex; gap: 8px; align-items: center; }
+  .page-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.022em; margin: 6px 0 4px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); max-width: 620px; }
+
+  .content { flex: 1; overflow: auto; padding: 22px 24px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); align-content: start; }
+
+  .kpi { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; grid-column: span 3; position: relative; }
+  .kpi-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .kpi-value { font-size: 28px; font-weight: 600; letter-spacing: -0.025em; display: flex; align-items: baseline; gap: 4px; }
+  .kpi-value .unit { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .kpi-delta { font-family: var(--u-mono); font-size: 11px; }
+  .kpi-delta.up { color: var(--s-ok); }
+  .kpi-delta.down { color: var(--s-err); }
+  .kpi-spark { position: absolute; right: 12px; bottom: 12px; opacity: 0.35; }
+
+  .dom-card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; grid-column: span 4; display: flex; flex-direction: column; gap: 8px; }
+  .dom-eyebrow { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .dom-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .dom-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; padding: 4px 0; border-top: 1px dashed var(--border); }
+  .dom-row:first-of-type { border-top: 0; padding-top: 8px; }
+  .dom-row .k { color: var(--text-muted); }
+  .dom-row .v { font-weight: 500; }
+  .dom-row .v.warn { color: var(--s-warn); }
+  .dom-row .v.err { color: var(--s-err); }
+  .dom-row .v.ok { color: var(--s-ok); }
+  .dom-foot { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .dom-foot .open { color: var(--u-primary); }
+
+  .card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; }
+  .card-head { padding: 12px 16px 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
+  .card-head .title { font-size: 13.5px; font-weight: 600; margin: 0; }
+  .card-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-body { padding: 14px 16px; }
+  .card-wide { grid-column: span 8; }
+  .card-narrow { grid-column: span 4; }
+
+  /* Customer queue */
+  .cust-row { display: grid; grid-template-columns: 36px 1fr 90px 60px; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px dashed var(--border); font-size: 12.5px; }
+  .cust-row:first-child { border-top: 0; padding-top: 4px; }
+  .cust-mk { width: 28px; height: 28px; border-radius: 4px; background: var(--n-700); color: var(--n-25); display: flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 11px; font-weight: 700; }
+  .cust-name { font-weight: 500; }
+  .cust-platform { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); }
+  .cust-state { font-family: var(--u-mono); font-size: 9px; padding: 3px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; text-align: center; }
+  .cust-state.wait { background: var(--s-warn-tint); color: var(--s-warn); }
+  .cust-state.ok { background: var(--s-ok-tint); color: var(--s-ok); }
+  .cust-count { font-family: var(--u-mono); color: var(--text-muted); text-align: right; }
+
+  .gauges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .gauge { display: flex; flex-direction: column; gap: 6px; }
+  .gauge-name { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .gauge-bar { height: 6px; background: var(--n-100); border-radius: 3px; overflow: hidden; }
+  .gauge-bar .fill.ok { background: var(--s-ok); }
+  .gauge-bar .fill.warn { background: var(--s-warn); }
+  .gauge-bar .fill { height: 100%; }
+  .gauge-num { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; }
+  .gauge-num .of { font-family: var(--u-mono); color: var(--text-muted); font-weight: 400; font-size: 11px; }
+  .gauge-tag { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Engineering</span><span class="sep">/</span>
+        <span>Executive</span><span class="sep">/</span>
+        <span class="cur">VP Engineering · cross-domain</span>
+      </div>
+    </div>
+    <header class="page-head">
+      <div>
+        <div class="page-eyebrow"><span class="dot"></span>VP Engineering · Priya Ramesh · Q2 2026</div>
+        <h1 class="page-title">Six-domain change posture</h1>
+        <p class="page-sub">Engineering's six domains in one view. Customer queues, regulatory posture, mixed-revision risk all computed live from the records.</p>
+      </div>
+    </header>
+    <div class="content">
+
+      <div class="kpi">
+        <div class="kpi-label">Open ECOs · cross-program</div>
+        <div class="kpi-value">38</div>
+        <div class="kpi-delta up">↓ 4 vs prior 30d</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,8 8,9 16,11 24,10 32,12 40,11 48,13 60,15" stroke="var(--u-primary)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">First-pass approval rate</div>
+        <div class="kpi-value">76 <span class="unit">%</span></div>
+        <div class="kpi-delta up">↑ 11 pts</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,16 8,14 16,12 24,11 32,10 40,8 48,7 60,5" stroke="var(--s-ok)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Customer queue · avg</div>
+        <div class="kpi-value" style="color: var(--s-warn);">14 <span class="unit">d</span></div>
+        <div class="kpi-delta down">↑ 2d (Airbus)</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,14 8,13 16,12 24,12 32,11 40,12 48,10 60,9" stroke="var(--s-warn)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Audit posture · AS9100</div>
+        <div class="kpi-value">98 <span class="unit">%</span></div>
+        <div class="kpi-delta up">2 gaps</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,8 8,7 16,5 24,6 32,4 40,4 48,3 60,2" stroke="var(--s-ok)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 01</span>
+        <div class="dom-name">Change Control</div>
+        <div class="dom-row"><span class="k">Open ECOs</span><span class="v">38</span></div>
+        <div class="dom-row"><span class="k">Pending CCB</span><span class="v warn">13</span></div>
+        <div class="dom-row"><span class="k">Customer / FAA</span><span class="v warn">11</span></div>
+        <div class="dom-foot"><span>21d avg</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 02</span>
+        <div class="dom-name">Configuration Mgmt</div>
+        <div class="dom-row"><span class="k">Active baselines</span><span class="v">3 programs</span></div>
+        <div class="dom-row"><span class="k">Mixed-rev escapes</span><span class="v ok">0</span></div>
+        <div class="dom-row"><span class="k">Holds missing</span><span class="v err">2</span></div>
+        <div class="dom-foot"><span>Baseline integrity</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 03</span>
+        <div class="dom-name">Quality</div>
+        <div class="dom-row"><span class="k">Open NCs</span><span class="v">27</span></div>
+        <div class="dom-row"><span class="k">Drives ECOs</span><span class="v">11</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v err">5</span></div>
+        <div class="dom-foot"><span>14.2d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 04</span>
+        <div class="dom-name">Supplier Quality</div>
+        <div class="dom-row"><span class="k">Open SCARs</span><span class="v">12</span></div>
+        <div class="dom-row"><span class="k">SCNs in flight</span><span class="v">8</span></div>
+        <div class="dom-row"><span class="k">Pending ack</span><span class="v warn">3</span></div>
+        <div class="dom-foot"><span>Cross-org</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 05</span>
+        <div class="dom-name">Doc &amp; Records</div>
+        <div class="dom-row"><span class="k">DCN in flight</span><span class="v">19</span></div>
+        <div class="dom-row"><span class="k">Pending Q signoff</span><span class="v warn">7</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v">0</span></div>
+        <div class="dom-foot"><span>6.1d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 06</span>
+        <div class="dom-name">NPI / Design</div>
+        <div class="dom-row"><span class="k">Active programs</span><span class="v">4</span></div>
+        <div class="dom-row"><span class="k">DHF reviews</span><span class="v">17</span></div>
+        <div class="dom-row"><span class="k">Slip risk</span><span class="v warn">2</span></div>
+        <div class="dom-foot"><span>3 milestones due</span><span class="open">Open →</span></div>
+      </div>
+
+      <div class="card card-wide">
+        <div class="card-head"><h3 class="title">Customer / FAA queues</h3><span class="meta">Where ECOs sit outside our control</span></div>
+        <div class="card-body">
+          <div class="cust-row">
+            <span class="cust-mk">B</span>
+            <div><div class="cust-name">Boeing 787-WX</div><div class="cust-platform">portal · ECO-Notify</div></div>
+            <span class="cust-state wait">14d avg</span>
+            <span class="cust-count">5 open</span>
+          </div>
+          <div class="cust-row">
+            <span class="cust-mk">L</span>
+            <div><div class="cust-name">Lockheed F-35</div><div class="cust-platform">portal · GLAD</div></div>
+            <span class="cust-state wait">9d avg</span>
+            <span class="cust-count">4 open</span>
+          </div>
+          <div class="cust-row">
+            <span class="cust-mk">A</span>
+            <div><div class="cust-name">Airbus A320neo</div><div class="cust-platform">portal · SupplyOn</div></div>
+            <span class="cust-state wait">21d avg</span>
+            <span class="cust-count">2 open</span>
+          </div>
+          <div class="cust-row">
+            <span class="cust-mk" style="background: var(--u-primary);">F</span>
+            <div><div class="cust-name">FAA · Part 21 notifications</div><div class="cust-platform">in-house DER</div></div>
+            <span class="cust-state ok">All concurred</span>
+            <span class="cust-count">3 closed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-narrow">
+        <div class="card-head"><h3 class="title">Regulatory posture</h3><span class="meta">Live</span></div>
+        <div class="card-body">
+          <div class="gauges">
+            <div class="gauge">
+              <div class="gauge-name">AS9100 §8.5.6</div>
+              <div class="gauge-bar"><div class="fill ok" style="width: 98%;"></div></div>
+              <div class="gauge-num">98<span class="of">/100</span></div>
+              <span class="gauge-tag">2 docs pending</span>
+            </div>
+            <div class="gauge">
+              <div class="gauge-name">NADCAP</div>
+              <div class="gauge-bar"><div class="fill ok" style="width: 100%;"></div></div>
+              <div class="gauge-num">100<span class="of">/100</span></div>
+              <span class="gauge-tag">All special-process re-quals on file</span>
+            </div>
+            <div class="gauge">
+              <div class="gauge-name">FAA Part 21</div>
+              <div class="gauge-bar"><div class="fill warn" style="width: 92%;"></div></div>
+              <div class="gauge-num">92<span class="of">/100</span></div>
+              <span class="gauge-tag">1 Part 21.95 in-house</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

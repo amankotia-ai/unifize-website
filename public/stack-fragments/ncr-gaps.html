@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NCR gaps & failure modes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 900px) { .two { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .panel-head {
+    padding: 13px 18px;
+    background: var(--n-25);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panel-tag {
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 2px 7px; border-radius: 3px;
+    letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600;
+  }
+  .panel-tag.honest { background: var(--s-warn-tint); color: var(--s-warn); }
+  .panel-tag.med { background: var(--s-err-tint); color: var(--s-err); }
+  .panel-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .panel-body { padding: 4px 0; }
+  .item {
+    padding: 12px 18px;
+    border-bottom: 1px dashed var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .item:last-child { border-bottom: 0; }
+  .item-t { font-size: 13.5px; font-weight: 500; color: var(--text); letter-spacing: -0.005em; }
+  .item-b { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="two">
+  <div class="panel">
+    <div class="panel-head">
+      <span class="panel-tag honest">Honest</span>
+      <span class="panel-title">Today's limitations · NCR module</span>
+    </div>
+    <div class="panel-body">
+      <div class="item">
+        <div class="item-t">No automated escalation on overdue NCs</div>
+        <div class="item-b">Overdue items still rely on someone noticing. The 483-risk signal isn't computed.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">Root cause is a free-text field</div>
+        <div class="item-b">No structured 5-Why, no Ishikawa template, no AI-assisted suggestion. Quality of RCA varies by author.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">No enforced inspection-to-NC link</div>
+        <div class="item-b">Traceability from incoming inspection record into the NCR is operator-discipline, not system-enforced.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">No role-based task routing</div>
+        <div class="item-b">Tasks land in inboxes by name, not by role. A vacationing owner is a stalled NC.</div>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-head">
+      <span class="panel-tag med">Med-device</span>
+      <span class="panel-title">Failure modes customers describe</span>
+    </div>
+    <div class="panel-body">
+      <div class="item">
+        <div class="item-t">Inspection-to-NCR traceability is broken</div>
+        <div class="item-b">Both Starfish and a Medical-Device customer named this. Inspection records and the NC live in different places.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">Supplier involvement runs as email relay</div>
+        <div class="item-b">SCAR responses, evidence, dispositions arrive as forwarded threads — not as governed inputs to the NC.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">RCA is a free-text box on the record</div>
+        <div class="item-b">No structure means no learning. Similar NCs don't surface the prior rationale.</div>
+      </div>
+      <div class="item">
+        <div class="item-t">Management has no live view</div>
+        <div class="item-b">Quality leadership sees the queue length, not the bottleneck stages. The dashboard arrives in a Monday slide.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

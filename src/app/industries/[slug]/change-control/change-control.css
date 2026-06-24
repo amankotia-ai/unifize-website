@@ -1,0 +1,185 @@
+/* ------------------------------------------------------------
+ * Change-control page styles (hero grid, matrix glyph, cascade
+ * animation, standards cards). Lives in its own file — page-scoped
+ * additions to the 10.8k-line globals.css were being dropped by
+ * Turbopack's incremental CSS compile (2026-06-04).
+ * ------------------------------------------------------------ */
+
+/* ---- Hero: copy left, matrix glyph right ---- */
+.cc-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  gap: 88px;
+  align-items: center;
+}
+.cc-hero-copy .cc-hero-line {
+  white-space: nowrap;
+}
+.cc-hero-visual {
+  min-width: 0;
+}
+
+/* Same glyph language as the homepage, fixed-size cells so the
+ * 17-row portrait glyph never outgrows the viewport. */
+.cc-hero-visual .matrix-grid {
+  grid-template-columns: repeat(13, 22px);
+  gap: 7px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.cc-hero-visual .matrix-grid .cell {
+  width: 22px;
+  height: 22px;
+  aspect-ratio: auto;
+  border-radius: 4px;
+}
+/* The ghost state: default .low (white 8%) disappears on the dark
+ * mast — lift it just enough to read. */
+.surface.dark .cc-hero-visual .matrix-grid .cell.low {
+  background: rgba(255, 255, 255, 0.17);
+}
+
+/* ---- Cascade animation: the change ignites at the apex, rolls
+ * down the delta's edges row by row, lands on the baseline, holds,
+ * drains, loops. Per-row delays via nth-child (13 cells/row). ---- */
+.cc-hero-visual .matrix-grid .cell.low,
+.cc-hero-visual .matrix-grid .cell.on {
+  animation: cc-cascade 5.6s ease-in-out infinite;
+  animation-fill-mode: backwards;
+}
+@keyframes cc-cascade {
+  0% { opacity: 0.22; }
+  5% { opacity: 1; }
+  58% { opacity: 1; }
+  72% { opacity: 0.22; }
+  100% { opacity: 0.22; }
+}
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+14):nth-child(-n+26) { animation-delay: 0.16s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+27):nth-child(-n+39) { animation-delay: 0.32s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+40):nth-child(-n+52) { animation-delay: 0.48s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+53):nth-child(-n+65) { animation-delay: 0.64s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+66):nth-child(-n+78) { animation-delay: 0.8s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+79):nth-child(-n+91) { animation-delay: 0.96s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+92):nth-child(-n+104) { animation-delay: 1.12s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+105):nth-child(-n+117) { animation-delay: 1.28s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+118):nth-child(-n+130) { animation-delay: 1.44s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+131):nth-child(-n+143) { animation-delay: 1.6s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+144):nth-child(-n+156) { animation-delay: 1.76s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+157):nth-child(-n+169) { animation-delay: 1.92s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+170):nth-child(-n+182) { animation-delay: 2.08s; }
+.cc-hero-visual .matrix-grid :is(.cell.low, .cell.on):nth-child(n+183):nth-child(-n+195) { animation-delay: 2.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-hero-visual .matrix-grid .cell.low,
+  .cc-hero-visual .matrix-grid .cell.on {
+    animation: none;
+  }
+}
+
+/* ---- §01 flow section: the canvas sits directly under the section
+ * head — trim the section's bottom padding so the map starts close. */
+.cc-flow-section .section-inner {
+  padding-bottom: 0;
+}
+
+/* ---- Standards marquee: issuer mark · standard id, auto-scrolling.
+ * Compressed 2026-06-08 from the old 5-card grid (Ben: standards strip
+ * "taking up a bit too much space … a marquee, a small bar moving left to
+ * right"). Each standard's demand note → chip title tooltip. Pauses on hover;
+ * freezes to a static rail under prefers-reduced-motion. ---- */
+/* the height lives on .section-inner (padding-block: 144px), not the section —
+ * override the inner so the compressed band is actually short. */
+.cc-std-section .section-inner {
+  padding-block: 32px;
+}
+.cc-std-bar {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.section-eyebrow.cc-std-eyebrow {
+  flex: none;
+  margin: 0;
+  max-width: 156px;
+  line-height: 1.4;
+}
+.cc-std-marquee {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 4%, #000 92%, transparent);
+}
+.cc-std-track {
+  display: inline-flex;
+  width: max-content;
+  animation: cc-std-scroll 30s linear infinite;
+  will-change: transform;
+}
+.cc-std-marquee:hover .cc-std-track {
+  animation-play-state: paused;
+}
+.cc-std-grp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 10px;
+}
+.cc-std-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  padding: 7px 13px;
+  background: var(--n-0);
+  border: 1px solid var(--n-150);
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+/* issuer marks (FDA / ISO ...) - greyscale per 2026-06-05 direction. */
+.cc-std-chip-logo {
+  height: 15px;
+  width: auto;
+  filter: grayscale(1);
+  opacity: 0.62;
+}
+.cc-std-chip-iss {
+  font-family: var(--u-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-400);
+}
+.cc-std-chip-id {
+  font-family: var(--u-mono);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--n-700);
+}
+@keyframes cc-std-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cc-std-track {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .cc-std-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+}
+@media (max-width: 1100px) {
+  .cc-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .cc-hero-visual {
+    display: none;
+  }
+}

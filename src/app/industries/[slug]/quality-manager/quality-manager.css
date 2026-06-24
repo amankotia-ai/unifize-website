@@ -1,0 +1,178 @@
+/* ------------------------------------------------------------
+ * Quality Manager persona page styles. Page-scoped file per repo
+ * convention (Turbopack drops late additions to globals.css).
+ * Mirrors the change-control page's visual system: hero grid with
+ * matrix glyph, standards cards, workflow doors.
+ * ------------------------------------------------------------ */
+
+/* ---- Hero: copy left, matrix glyph right ---- */
+.qm-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  gap: 88px;
+  align-items: center;
+}
+.qm-hero-copy .qm-hero-line {
+  white-space: nowrap;
+}
+.qm-hero-visual {
+  min-width: 0;
+}
+.qm-hero-visual .matrix-grid {
+  grid-template-columns: repeat(13, 22px);
+  gap: 7px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.qm-hero-visual .matrix-grid .cell {
+  width: 22px;
+  height: 22px;
+  aspect-ratio: auto;
+  border-radius: 4px;
+}
+.surface.dark .qm-hero-visual .matrix-grid .cell.low {
+  background: rgba(255, 255, 255, 0.17);
+}
+/* The sign-off lands: the check draws in once, then breathes. */
+.qm-hero-visual .matrix-grid .cell.on {
+  animation: qm-breathe 5.2s ease-in-out infinite;
+}
+@keyframes qm-breathe {
+  0% { opacity: 0.55; }
+  18% { opacity: 1; }
+  62% { opacity: 1; }
+  86% { opacity: 0.55; }
+  100% { opacity: 0.55; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .qm-hero-visual .matrix-grid .cell.on { animation: none; }
+}
+
+/* ---- Standards cards (same card system as the workflow page) ---- */
+.qm-std-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.qm-std-card {
+  background: var(--n-0);
+  border: 1px solid var(--n-150);
+  border-radius: var(--r-3);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.qm-std-card .iss {
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--n-400);
+}
+.qm-std-card .id {
+  font-family: var(--u-mono);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--n-800);
+}
+.qm-std-card .note {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--n-500);
+  margin: 2px 0 0;
+}
+
+/* ---- Workflow doors (same system as the industry page) ---- */
+.qm-wf-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.qm-wf-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--n-0);
+  border: 1px solid var(--n-150);
+  border-radius: var(--r-3);
+  padding: 22px 24px;
+  text-decoration: none;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+a.qm-wf-card:hover {
+  border-color: var(--u-primary);
+  transform: translateY(-2px);
+}
+.qm-wf-card .mod {
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--n-400);
+}
+.qm-wf-card .name {
+  font-family: var(--u-display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--n-900);
+  margin: 0;
+}
+.qm-wf-card .sum {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--n-500);
+  margin: 0;
+}
+.qm-wf-card .cta {
+  margin-top: auto;
+  padding-top: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--u-primary);
+}
+.qm-wf-card.ghost {
+  background: transparent;
+  opacity: 0.72;
+}
+.qm-wf-card.ghost .cta {
+  color: var(--n-400);
+  font-weight: 400;
+}
+
+/* ---- The discovery quote under the symptoms head ---- */
+.qm-quote {
+  font-family: var(--u-display);
+  font-size: clamp(17px, 1.8vw, 22px);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--n-700);
+  max-width: 56ch;
+  margin: 0;
+}
+.qm-quote-attr {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--n-400);
+}
+
+@media (max-width: 760px) {
+  .qm-std-grid,
+  .qm-wf-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 1100px) {
+  .qm-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .qm-hero-visual {
+    display: none;
+  }
+}

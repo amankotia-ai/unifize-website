@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Checklist sections</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-50); }
+  .check { width: 100%; border-left: 0; }
+</style>
+</head>
+<body>
+<aside class="check">
+  <div class="sec">
+    <div class="sec-head">
+      <span class="dot done"></span>
+      <span class="t done">Inputs</span>
+      <span class="frac">4/4</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">
+      <span class="dot done"></span>
+      <span class="t done">Basic information</span>
+      <span class="frac">6/6</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">
+      <span class="dot done"></span>
+      <span class="t done">Disposition action</span>
+      <span class="frac">3/3</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="sec open">
+    <div class="sec-head open">
+      <span class="dot active"></span>
+      <span class="t">Corrective Action Request(s)</span>
+      <span class="frac">2/5</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+    <div class="sec-items">
+      <div class="item done">
+        <input type="checkbox" checked/>
+        <span class="label">Update Process Control Plan</span>
+        <span class="value">Daniel</span>
+      </div>
+      <div class="item done">
+        <input type="checkbox" checked/>
+        <span class="label">Retrain line operators</span>
+        <span class="value">Lisa</span>
+      </div>
+      <div class="item">
+        <input type="checkbox"/>
+        <span class="label">Revise inspection criteria</span>
+        <span class="value">Pending</span>
+      </div>
+      <div class="item">
+        <input type="checkbox"/>
+        <span class="label">Vendor corrective note sent</span>
+        <span class="value">Pending</span>
+      </div>
+      <div class="item">
+        <input type="checkbox"/>
+        <span class="label">Incoming spec update</span>
+        <span class="value">Pending</span>
+      </div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">
+      <span class="dot pend"></span>
+      <span class="t">Verification &amp; Validation</span>
+      <span class="frac">0/4</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">
+      <span class="dot pend"></span>
+      <span class="t">Approval(s)</span>
+      <span class="frac">0/2</span>
+      <span class="caret"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3 2l4 3-4 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+    </div>
+  </div>
+  <div class="check-actions">
+    <button class="btn btn-secondary btn-sm" style="flex: 1;"><svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Export PDF</button>
+    <button class="btn btn-primary btn-sm" style="flex: 1;">Approve CAR</button>
+  </div>
+</aside>
+</body>
+</html>

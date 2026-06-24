@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conversation rows</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-50); }
+  .list { width: 360px; max-width: 100%; border-right: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<aside class="list">
+  <div class="conv selected">
+    <div class="conv-top">
+      <div class="conv-title">Assembly defect in final inspection</div>
+      <div class="conv-time">10:42</div>
+    </div>
+    <div class="conv-preview">Daniel: CAR is DUE TODAY and ready for verification.</div>
+    <div class="conv-meta">
+      <span class="conv-tag">NC-25</span>
+      <span class="conv-sender">Daniel Storm</span>
+      <span class="badge badge-info"><span class="pulse"></span>IDENTIFIED</span>
+    </div>
+  </div>
+  <div class="conv unread">
+    <div class="conv-top">
+      <div class="conv-title">Spec mismatch · delivery packaging</div>
+      <div class="conv-time">05:28</div>
+    </div>
+    <div class="conv-preview">Anakin: Let me know if you need anything</div>
+    <div class="conv-meta">
+      <span class="conv-tag">NC-14</span>
+      <span class="conv-sender">Luke Skywalker</span>
+      <span class="conv-unread">3</span>
+    </div>
+  </div>
+  <div class="conv">
+    <div class="conv-top">
+      <div class="conv-title">Process map · stage 2 assembly</div>
+      <div class="conv-time">04:18</div>
+    </div>
+    <div class="conv-preview">Han: Waiting for approval</div>
+    <div class="conv-meta">
+      <span class="conv-tag">DOC-12</span>
+      <span class="conv-sender">Princess Leia</span>
+      <span class="badge badge-warn"><span class="pulse"></span>PENDING</span>
+    </div>
+  </div>
+  <div class="conv">
+    <div class="conv-top">
+      <div class="conv-title">Paint thickness below spec</div>
+      <div class="conv-time">Apr 14</div>
+    </div>
+    <div class="conv-preview">Leia: Still under investigation</div>
+    <div class="conv-meta">
+      <span class="conv-tag">NC-18</span>
+      <span class="conv-sender">Leia Organa</span>
+      <span class="badge badge-err"><span class="pulse"></span>OVERDUE</span>
+    </div>
+  </div>
+</aside>
+</body>
+</html>

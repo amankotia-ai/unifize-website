@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aerospace regulations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .reg { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; padding: 18px 20px; display: flex; flex-direction: column; gap: 8px; }
+  .reg-eyebrow { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+  .reg-title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; }
+  .reg-blurb { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; flex: 1; }
+  .reg-tag { align-self: flex-start; background: var(--s-err-tint); color: var(--s-err); font-family: var(--u-mono); font-size: 9px; padding: 3px 7px; border-radius: 3px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+  .reg-tag.warn { background: var(--s-warn-tint); color: var(--s-warn); }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="reg">
+    <div class="reg-eyebrow">International (IAQG / SAE)</div>
+    <div class="reg-title">AS9100D · §8.5.6</div>
+    <div class="reg-blurb">"Control of changes." Documented evaluation, approval, and traceability for every design and process change that affects the product or its performance.</div>
+    <span class="reg-tag">Documented trace</span>
+  </div>
+  <div class="reg">
+    <div class="reg-eyebrow">Special processes</div>
+    <div class="reg-title">NADCAP</div>
+    <div class="reg-blurb">Process changes to accredited special processes (heat-treat, NDT, coating) can revoke accreditation in 90 days if not properly re-qualified.</div>
+    <span class="reg-tag warn">90-day clock</span>
+  </div>
+  <div class="reg">
+    <div class="reg-eyebrow">United States</div>
+    <div class="reg-title">FAA 14 CFR Part 21</div>
+    <div class="reg-blurb">Production certificate holders must report and approve design changes to the type-certified product. Major changes require FAA approval before implementation.</div>
+    <span class="reg-tag">Production cert</span>
+  </div>
+  <div class="reg">
+    <div class="reg-eyebrow">European Union</div>
+    <div class="reg-title">EASA Part 21 · Subpart D</div>
+    <div class="reg-blurb">Design changes to type-certified products require evaluation against the certification basis. Major changes need EASA approval; minor classified internally.</div>
+    <span class="reg-tag">Certification basis</span>
+  </div>
+</div>
+</body>
+</html>

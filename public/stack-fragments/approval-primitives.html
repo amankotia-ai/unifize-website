@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Approval primitives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+  .prim {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 22px 24px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .prim-eyebrow {
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .prim-title { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+  .prim-blurb { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+  .prim-diagram {
+    display: flex; align-items: stretch;
+    background: var(--n-25);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .prim-cell {
+    flex: 1; padding: 12px 14px;
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .prim-cell:last-child { border-right: 0; }
+  .prim-cell-k { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .prim-cell-v { font-size: 13px; color: var(--text); font-weight: 500; }
+
+  .channels {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .ch {
+    font-family: var(--u-mono); font-size: 11px;
+    padding: 4px 8px;
+    border: 1px dashed var(--border-strong);
+    border-radius: 3px;
+    color: var(--text-muted);
+    background: var(--n-25);
+  }
+  .ch.strike {
+    text-decoration: line-through;
+    text-decoration-color: var(--text-faint);
+  }
+  .governed-note {
+    font-size: 12px; color: var(--text-muted);
+    font-style: italic;
+    margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="prim">
+    <span class="prim-eyebrow">Primitive 01 · The work unit</span>
+    <div class="prim-title">Record</div>
+    <div class="prim-blurb">One NCR is one Record. Status, severity, owner, disposition, linked CAPA — all bound to a single addressable entity.</div>
+    <div class="prim-diagram">
+      <div class="prim-cell"><span class="prim-cell-k">ID</span><span class="prim-cell-v">NC-25</span></div>
+      <div class="prim-cell"><span class="prim-cell-k">Owner</span><span class="prim-cell-v">L. Martin</span></div>
+      <div class="prim-cell"><span class="prim-cell-k">Status</span><span class="prim-cell-v">In CAR</span></div>
+    </div>
+  </div>
+
+  <div class="prim">
+    <span class="prim-eyebrow">Primitive 02 · The execution trace</span>
+    <div class="prim-title">Thread</div>
+    <div class="prim-blurb">The Record used as a durable execution trace. Every decision, approval, evidence item, and link sits on the Thread — in order, attributed, recoverable.</div>
+    <div class="prim-diagram">
+      <div class="prim-cell"><span class="prim-cell-k">Decisions</span><span class="prim-cell-v">attributed</span></div>
+      <div class="prim-cell"><span class="prim-cell-k">Approvals</span><span class="prim-cell-v">on-record</span></div>
+      <div class="prim-cell"><span class="prim-cell-k">Evidence</span><span class="prim-cell-v">bound</span></div>
+    </div>
+  </div>
+
+  <div class="prim">
+    <span class="prim-eyebrow">Primitive 03 · The completion principle</span>
+    <div class="prim-title">Provable completion</div>
+    <div class="prim-blurb">"Decisions, approvals, and evidence make completion <em>provable</em>." A closed NC isn't an inbox state — it's a trail an auditor can read in one record.</div>
+    <div style="display: flex; gap: 16px; font-family: var(--u-mono); font-size: 11px; color: var(--text); margin-top: 4px;">
+      <span>✓ Decision</span><span>✓ Approval</span><span>✓ Evidence</span><span style="color: var(--s-ok); font-weight: 600;">→ Provable</span>
+    </div>
+  </div>
+
+  <div class="prim">
+    <span class="prim-eyebrow">Primitive 04 · The boundary</span>
+    <div class="prim-title">Channels ≠ the governed trace</div>
+    <div class="prim-blurb">Email, Slack, Teams, WhatsApp are channels. They carry the conversation. They are <em>not</em> the governed trace. The trace lives on the Thread; the channels feed into it.</div>
+    <div class="channels">
+      <span class="ch">Email</span>
+      <span class="ch">Slack</span>
+      <span class="ch">Teams</span>
+      <span class="ch">WhatsApp</span>
+    </div>
+    <div class="governed-note">→ feed in. The Thread is what FDA reads.</div>
+  </div>
+</div>
+</body>
+</html>

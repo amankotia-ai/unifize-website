@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Industries that intersect Quality</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .ind {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .ind.focus {
+    border-color: var(--u-primary);
+    box-shadow: 0 0 0 3px var(--u-primary-tint);
+  }
+  .ind-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .ind-regs { display: flex; flex-wrap: wrap; gap: 4px; }
+  .reg {
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--n-100); color: var(--n-600);
+    letter-spacing: 0.02em;
+  }
+  .ind-blurb { font-size: 11.5px; color: var(--text-muted); line-height: 1.45; }
+  .focus-tag {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--u-primary-tint); color: var(--u-primary);
+    font-family: var(--u-mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="ind focus">
+    <span class="focus-tag">Anchor ICP</span>
+    <div class="ind-name">Medical Devices</div>
+    <div class="ind-regs"><span class="reg">FDA 820</span><span class="reg">ISO 13485</span><span class="reg">EU MDR</span></div>
+    <div class="ind-blurb">Class II / III OEMs and CDMOs. Highest proof maturity (Advocacy).</div>
+  </div>
+  <div class="ind">
+    <div class="ind-name">Pharmaceuticals</div>
+    <div class="ind-regs"><span class="reg">ICH Q10</span><span class="reg">EU GMP</span></div>
+    <div class="ind-blurb">Drug-substance and drug-product manufacturers plus CDMOs.</div>
+  </div>
+  <div class="ind">
+    <div class="ind-name">Aerospace</div>
+    <div class="ind-regs"><span class="reg">AS9100</span><span class="reg">NADCAP</span></div>
+    <div class="ind-blurb">Airframe and component manufacturers, config-managed parts.</div>
+  </div>
+  <div class="ind">
+    <div class="ind-name">Automotive</div>
+    <div class="ind-regs"><span class="reg">IATF 16949</span></div>
+    <div class="ind-blurb">Tier-1 suppliers, OEMs, captive tooling and stamping.</div>
+  </div>
+  <div class="ind">
+    <div class="ind-name">Labs</div>
+    <div class="ind-regs"><span class="reg">ISO 17025</span><span class="reg">GLP</span></div>
+    <div class="ind-blurb">Testing labs, contract analytics, calibration.</div>
+  </div>
+</div>
+</body>
+</html>

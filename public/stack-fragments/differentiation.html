@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Differentiation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .arg {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 20px;
+    align-items: start;
+    margin-bottom: 10px;
+  }
+  .arg:last-child { margin-bottom: 0; }
+  .arg-num {
+    font-family: var(--u-mono); font-size: 24px;
+    font-weight: 500;
+    color: var(--u-primary);
+    line-height: 1;
+    padding-top: 2px;
+  }
+  .arg-body { display: flex; flex-direction: column; gap: 8px; }
+  .arg-title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.3; }
+  .arg-blurb { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; }
+  .arg-blurb em { color: var(--text); font-style: italic; }
+  .arg-tag {
+    align-self: flex-start;
+    background: var(--n-100); color: var(--n-600);
+    font-family: var(--u-mono); font-size: 9px;
+    padding: 2px 7px; border-radius: 3px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="arg">
+  <div class="arg-num">01</div>
+  <div class="arg-body">
+    <div class="arg-title">The approval is a commit point on a Thread — not a checkbox.</div>
+    <div class="arg-blurb">Unifize captures <em>why</em> the disposition was approved — the rationale, the evidence supporting it, the participants who agreed. Six months later, when a similar NC appears, that rationale is discoverable. A traditional QMS captures that a CAPA closed; Unifize captures <em>how the decision was reached</em>.</div>
+    <span class="arg-tag">Decision posture</span>
+  </div>
+</div>
+<div class="arg">
+  <div class="arg-num">02</div>
+  <div class="arg-body">
+    <div class="arg-title">Evidence is bound at the time of approval — not assembled at the end.</div>
+    <div class="arg-blurb">Test reports, photos, supplier responses, training records, inspection records — all linked to the Thread as created. When an FDA investigator asks for the disposition record and rationale, the response is a click, not a reconstruction exercise.</div>
+    <span class="arg-tag">Evidence binding</span>
+  </div>
+</div>
+<div class="arg">
+  <div class="arg-num">03</div>
+  <div class="arg-body">
+    <div class="arg-title">The approver isn't the coordinator-as-relay.</div>
+    <div class="arg-blurb">Routing, ownership, and visibility are enforced by the Process definition. Senior engineers stop being bottlenecks because context-reconstruction time collapses — the Thread already holds it.</div>
+    <span class="arg-tag">Role posture</span>
+  </div>
+</div>
+<div class="arg">
+  <div class="arg-num">04</div>
+  <div class="arg-body">
+    <div class="arg-title">Cross-system / cross-organisation approvals are governed.</div>
+    <div class="arg-blurb">The NCR may touch the QMS, ERP (lot/batch), PLM (DHR entry), and a supplier portal. Unifize binds those references into the Thread so the approval doesn't depend on email-relay coordination across system boundaries.</div>
+    <span class="arg-tag">Boundary posture</span>
+  </div>
+</div>
+<div class="arg">
+  <div class="arg-num">05</div>
+  <div class="arg-body">
+    <div class="arg-title">Coexistence — the approval lives where the work lives; the record lives where the QMS lives.</div>
+    <div class="arg-blurb">With MasterControl / ETQ / Qualio / Greenlight Guru / Veeva, the approved NC record continues to live in their QMS. Unifize owns the coordination layer that <em>produces</em> the approval; the QMS owns the artifact. Context flows in, approved outcomes flow back.</div>
+    <span class="arg-tag">Coexistence</span>
+  </div>
+</div>
+<div class="arg">
+  <div class="arg-num">06</div>
+  <div class="arg-body">
+    <div class="arg-title">Audit posture is the differentiator.</div>
+    <div class="arg-blurb">FDA 820 and ISO 13485 §8.5.2 expect a documented decision trace. If the trace lives in email and meeting notes, the response is days of reconstruction. If it lives in a governed Thread, the response is <em>one record</em>.</div>
+    <span class="arg-tag">Audit posture</span>
+  </div>
+</div>
+</body>
+</html>

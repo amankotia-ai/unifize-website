@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Recent NCs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .card { overflow: hidden; }
+  .rec { display: flex; align-items: center; gap: 8px; font-weight: 500; }
+  .rec .mk { width: 3px; height: 14px; border-radius: 1px; }
+  .id { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); }
+  .right { text-align: right; }
+  .prog-bar { width: 90px; height: 4px; background: var(--n-100); border-radius: 2px; overflow: hidden; margin-left: auto; }
+  .prog-bar .fill { height: 100%; background: var(--u-primary); border-radius: 2px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <h3 class="title">Recent non-conformances</h3>
+    <span class="meta">Q2 2026</span>
+  </div>
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th>Record</th>
+        <th>Stage</th>
+        <th>Owner</th>
+        <th>Age</th>
+        <th class="right">Progress</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="rec">
+            <span class="mk" style="background: var(--u-primary)"></span>
+            <span class="id">NC-25</span>
+            <span>Assembly defect · final inspection</span>
+          </div>
+        </td>
+        <td><span class="badge badge-info"><span class="pulse"></span>CAR</span></td>
+        <td><span class="avatar" style="background: linear-gradient(180deg, #8AA9FF, #5775D9); color: #fff;">LM</span></td>
+        <td><span class="id">9 days</span></td>
+        <td><div class="prog-bar"><div class="fill" style="width: 62%;"></div></div></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="rec">
+            <span class="mk" style="background: var(--s-warn)"></span>
+            <span class="id">NC-19</span>
+            <span>Calibration failure · torque tool</span>
+          </div>
+        </td>
+        <td><span class="badge badge-warn"><span class="pulse"></span>PENDING</span></td>
+        <td><span class="avatar" style="background: linear-gradient(180deg, #E1A879, #B47C4E); color: #fff;">HS</span></td>
+        <td><span class="id">4 days</span></td>
+        <td><div class="prog-bar"><div class="fill" style="width: 38%;"></div></div></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="rec">
+            <span class="mk" style="background: var(--s-err)"></span>
+            <span class="id">NC-18</span>
+            <span>Paint thickness below spec</span>
+          </div>
+        </td>
+        <td><span class="badge badge-err"><span class="pulse"></span>OVERDUE</span></td>
+        <td><span class="avatar" style="background: linear-gradient(180deg, #D29ACC, #A06BA5); color: #fff;">LO</span></td>
+        <td><span class="id">21 days</span></td>
+        <td><div class="prog-bar"><div class="fill" style="width: 24%; background: var(--s-err)"></div></div></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="rec">
+            <span class="mk" style="background: var(--s-ok)"></span>
+            <span class="id">NC-14</span>
+            <span>Spec mismatch · delivery packaging</span>
+          </div>
+        </td>
+        <td><span class="badge badge-ok"><span class="pulse"></span>CLOSED</span></td>
+        <td><span class="avatar" style="background: linear-gradient(180deg, #8DBDA6, #5E9277); color: #fff;">LS</span></td>
+        <td><span class="id">closed</span></td>
+        <td><div class="prog-bar"><div class="fill" style="width: 100%; background: var(--s-ok)"></div></div></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

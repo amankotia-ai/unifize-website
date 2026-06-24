@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quality Manager · open NCs · live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 22px; background: var(--n-25); }
+  .dash {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 1100px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .d-head {
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-25);
+  }
+  .d-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--u-primary);
+    letter-spacing: -0.005em;
+  }
+  .d-meta {
+    font-family: var(--u-mono);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* CHART */
+  .chart-wrap {
+    padding: 20px 28px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .chart-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 0 0 12px;
+  }
+  .chart {
+    position: relative;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    column-gap: 12px;
+    height: 220px;
+    margin-bottom: 8px;
+  }
+  .y-axis {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 22px;
+    font-family: var(--u-mono);
+    font-size: 10px;
+    color: var(--text-faint);
+  }
+  .chart-area {
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .gridlines {
+    position: absolute;
+    inset: 0;
+    bottom: 22px;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+  }
+  .gridline {
+    border-top: 1px dashed var(--n-100);
+    height: 0;
+  }
+  .bars {
+    position: absolute;
+    inset: 0;
+    bottom: 22px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: end;
+    padding: 0 4px;
+    gap: 12px;
+  }
+  .bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    height: 100%;
+    justify-content: flex-end;
+    position: relative;
+  }
+  .bar-total {
+    font-family: var(--u-font);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .bar {
+    width: 44px;
+    border-radius: 2px 2px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .seg {
+    width: 100%;
+  }
+  .seg.critical { background: #6E55C8; }
+  .seg.major { background: #4FB39B; }
+  .seg.minor { background: #ECC658; }
+  .x-axis {
+    position: absolute;
+    bottom: 0;
+    left: 4px;
+    right: 4px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    padding-top: 4px;
+  }
+  .x-label {
+    font-family: var(--u-font);
+    font-size: 11px;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.25;
+  }
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    padding: 10px 0 14px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+  .legend .sw {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .legend .sw-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+  .sw-dot.critical { background: #6E55C8; }
+  .sw-dot.major { background: #4FB39B; }
+  .sw-dot.minor { background: #ECC658; }
+
+  /* TOOLBAR */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 22px;
+    border-bottom: 1px solid var(--border);
+    gap: 12px;
+  }
+  .toolbar .results {
+    font-family: var(--u-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+  }
+  .toolbar-btns {
+    display: inline-flex;
+    gap: 8px;
+  }
+  .tb-btn {
+    padding: 4px 10px;
+    background: var(--n-0);
+    border: 1px solid var(--border-strong);
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .tb-btn.primary {
+    background: var(--u-primary);
+    color: white;
+    border-color: var(--u-primary);
+  }
+
+  /* FILTERS */
+  .filters {
+    padding: 10px 22px;
+    background: var(--u-primary-tint);
+    border-bottom: 1px solid var(--u-primary-border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    font-size: 11.5px;
+  }
+  .filters-label {
+    font-family: var(--u-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background: var(--n-0);
+    border: 1px solid var(--u-primary-border);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--text);
+  }
+  .filter-chip .x {
+    color: var(--text-faint);
+    font-family: var(--u-mono);
+    font-size: 9.5px;
+  }
+  .filter-clear {
+    margin-left: auto;
+    font-family: var(--u-mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    background: var(--n-0);
+    border-radius: 3px;
+    padding: 2px 7px;
+    cursor: pointer;
+  }
+
+  /* TABLE */
+  table.records {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--n-0);
+  }
+  table.records th {
+    text-align: left;
+    font-family: var(--u-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    font-weight: 500;
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-25);
+    white-space: nowrap;
+  }
+  table.records td {
+    padding: 11px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: 12.5px;
+    white-space: nowrap;
+  }
+  table.records tr:last-child td { border-bottom: 0; }
+  table.records td a {
+    color: var(--u-primary);
+    text-decoration: none;
+  }
+  td.cell-num {
+    font-family: var(--u-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    width: 50px;
+  }
+  td.cell-nc::before {
+    content: '›';
+    margin-right: 6px;
+    color: var(--text-faint);
+    font-family: var(--u-mono);
+  }
+</style>
+</head>
+<body>
+  <div class="dash">
+    <div class="d-head">
+      <span class="d-title">Non-Conformances</span>
+      <span class="d-meta">live · 9 results · severity: moderate</span>
+    </div>
+
+    <div class="chart-wrap">
+      <h3 class="chart-title">Pending non-conformances by owner and severity</h3>
+      <div class="chart">
+        <div class="y-axis">
+          <span>0</span><span>5</span><span>10</span><span>15</span><span>20</span>
+        </div>
+        <div class="chart-area">
+          <div class="gridlines">
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+            <div class="gridline"></div>
+          </div>
+          <div class="bars">
+            <div class="bar-col">
+              <span class="bar-total">17</span>
+              <div class="bar" style="height:85%">
+                <div class="seg major" style="height:35%"></div>
+                <div class="seg critical" style="height:65%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">16</span>
+              <div class="bar" style="height:80%">
+                <div class="seg minor" style="height:38%"></div>
+                <div class="seg major" style="height:6%"></div>
+                <div class="seg critical" style="height:56%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">8</span>
+              <div class="bar" style="height:40%">
+                <div class="seg major" style="height:100%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">7</span>
+              <div class="bar" style="height:35%">
+                <div class="seg critical" style="height:100%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">1</span>
+              <div class="bar" style="height:5%">
+                <div class="seg critical" style="height:100%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">1</span>
+              <div class="bar" style="height:5%">
+                <div class="seg major" style="height:100%"></div>
+              </div>
+            </div>
+            <div class="bar-col">
+              <span class="bar-total">1</span>
+              <div class="bar" style="height:5%">
+                <div class="seg minor" style="height:100%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="x-axis">
+            <span class="x-label">Arjun Patel</span>
+            <span class="x-label">Jake Carter</span>
+            <span class="x-label">Priya Menon</span>
+            <span class="x-label">Ryan Taylor</span>
+            <span class="x-label">Charlie Johnson</span>
+            <span class="x-label">Emma Anderson</span>
+            <span class="x-label">Nick Davis</span>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <span class="sw"><span class="sw-dot critical"></span>Critical</span>
+        <span class="sw"><span class="sw-dot major"></span>Major</span>
+        <span class="sw"><span class="sw-dot minor"></span>Minor</span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <span class="results">9 Results</span>
+      <span class="toolbar-btns">
+        <button class="tb-btn primary">+ New Non-Conformance</button>
+        <button class="tb-btn">Customize view</button>
+        <button class="tb-btn">Refresh</button>
+        <button class="tb-btn">Download</button>
+        <button class="tb-btn">Share</button>
+      </span>
+    </div>
+
+    <div class="filters">
+      <span class="filters-label">Filters applied</span>
+      <span class="filter-chip">Severity: Major <span class="x">×</span></span>
+      <span class="filter-chip">Status: Problem statement <span class="x">×</span></span>
+      <span class="filter-chip">Status: Disposition action(s) <span class="x">×</span></span>
+      <span class="filter-chip">Status: CAR <span class="x">×</span></span>
+      <span class="filter-chip">Owner: Jake Carter <span class="x">×</span></span>
+      <button class="filter-clear">Clear all</button>
+    </div>
+
+    <table class="records">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Non-Conformance</th>
+          <th>Supplier</th>
+          <th>Part</th>
+          <th>Product</th>
+          <th>Disposition action(s)</th>
+          <th>CARs</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cell-num">139</td>
+          <td class="cell-nc"><a href="#">Uncontrolled process variation in CNC machining</a></td>
+          <td><a href="#">#114: Precision Tools</a></td>
+          <td>#4: Drills</td>
+          <td>#118: Plastic Molded Caps</td>
+          <td><a href="#">#92: Process stability assessment</a></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="cell-num">138</td>
+          <td class="cell-nc"><a href="#">Device casing defect</a></td>
+          <td><a href="#">#116: ProSeal Gaskets</a></td>
+          <td>#3: Aluminum Sheets</td>
+          <td>#120: Solar Panel Module</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="cell-num">129</td>
+          <td class="cell-nc"><a href="#">Improper weld penetration</a></td>
+          <td><a href="#">#117: Rapid Electronics</a></td>
+          <td>#24: Part Y</td>
+          <td>#122: Product 3</td>
+          <td><a href="#">#66: Welding process correction</a></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="cell-num">128</td>
+          <td class="cell-nc"><a href="#">Incorrect labeling on finished goods</a></td>
+          <td><a href="#">#120: Supplier A</a></td>
+          <td>#23: Part X</td>
+          <td>#124: Product 2</td>
+          <td><a href="#">#67: Labeling review and verification</a></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="cell-num">127</td>
+          <td class="cell-nc"><a href="#">Foreign material in production line</a></td>
+          <td><a href="#">#118: Supplier C</a></td>
+          <td>#23: Part X</td>
+          <td>#122: Product 3</td>
+          <td><a href="#">#68: Contamination prevention</a></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

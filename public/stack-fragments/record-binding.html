@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conversation → Record binding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .binding {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    gap: 0;
+    align-items: start;
+  }
+  .pane {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .pane-eyebrow {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  .arrow {
+    align-self: center;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--u-primary);
+  }
+  .arrow-line {
+    height: 1px; width: 56px; background: var(--u-primary);
+    position: relative;
+  }
+  .arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px; top: -3px;
+    border-left: 7px solid var(--u-primary);
+    border-top: 3.5px solid transparent;
+    border-bottom: 3.5px solid transparent;
+  }
+  .arrow-label {
+    font-family: var(--u-mono); font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--u-primary);
+  }
+</style>
+</head>
+<body>
+<div class="binding">
+  <div class="pane">
+    <div class="pane-eyebrow">In the thread</div>
+    <div class="msg">
+      <div class="msg-av bot">U</div>
+      <div class="msg-body">
+        <div class="msg-name-row">
+          <span class="msg-name" style="color: var(--u-primary);">Unifize Assistant</span>
+          <span class="msg-time">auto-updated</span>
+        </div>
+        <div class="bot-card">
+          <div class="bot-card-head">
+            <div>
+              <div class="t">Updated checklist</div>
+              <div class="title">Corrective Action Request</div>
+            </div>
+            <span class="badge badge-info"><span class="pulse"></span>LINKED</span>
+          </div>
+          <div class="bot-card-body">
+            <div class="bot-row done"><input type="checkbox" checked/><span class="k">Update Process Control Plan</span><span class="v">Daniel</span></div>
+            <div class="bot-row done"><input type="checkbox" checked/><span class="k">Retrain line operators</span><span class="v">Lisa</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow">
+    <div class="arrow-line"></div>
+    <div class="arrow-label">bound</div>
+  </div>
+
+  <div class="pane">
+    <div class="pane-eyebrow">On the record rail</div>
+    <div class="sec open" style="border: 1px solid var(--border); border-radius: 5px;">
+      <div class="sec-head" style="background: var(--n-0);">
+        <span class="dot active"></span>
+        <span class="t">Corrective Action Request(s)</span>
+        <span class="frac">2/5</span>
+      </div>
+      <div class="sec-items">
+        <div class="item done"><input type="checkbox" checked/><span class="label">Update Process Control Plan</span><span class="value">Daniel</span></div>
+        <div class="item done"><input type="checkbox" checked/><span class="label">Retrain line operators</span><span class="value">Lisa</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Revise inspection criteria</span><span class="value">Pending</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Vendor corrective note sent</span><span class="value">Pending</span></div>
+        <div class="item"><input type="checkbox"/><span class="label">Incoming spec update</span><span class="value">Pending</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

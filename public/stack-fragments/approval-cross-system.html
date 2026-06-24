@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cross-system trail</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .frame {
+    background: var(--n-0); border: 1px solid var(--border); border-radius: 8px;
+    overflow: hidden;
+  }
+  .frame-head {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex; gap: 12px; align-items: baseline;
+  }
+  .frame-head .id { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); background: var(--n-100); padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em; }
+  .frame-head .title { font-size: 14px; font-weight: 600; }
+  .frame-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); margin-left: auto; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .systems { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .sys {
+    border-right: 1px solid var(--border);
+    padding: 18px 18px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+    background: var(--n-0);
+  }
+  .sys:last-child { border-right: 0; }
+  .sys-head { display: flex; gap: 10px; align-items: center; }
+  .sys-mark {
+    width: 28px; height: 28px;
+    border-radius: 5px;
+    background: var(--n-100); color: var(--n-700);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--u-mono); font-size: 12px; font-weight: 700;
+  }
+  .sys.unifize .sys-mark { background: var(--u-primary); color: #fff; }
+  .sys-name { font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+  .sys-role { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+  .sys-body { font-size: 12px; color: var(--text); line-height: 1.5; flex: 1; padding-top: 4px; border-top: 1px dashed var(--border); }
+  .sys-ref {
+    margin-top: 6px;
+    background: var(--n-25); border: 1px solid var(--border); border-radius: 3px;
+    padding: 6px 9px;
+    font-family: var(--u-mono); font-size: 10px; color: var(--text);
+    display: inline-flex; gap: 6px; align-items: center;
+    align-self: flex-start;
+  }
+  .sys-ref .nm { color: var(--u-primary); font-weight: 600; }
+  .sys-state {
+    font-family: var(--u-mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+    align-self: flex-start;
+  }
+  .sys-state.ok { background: var(--s-ok-tint); color: var(--s-ok); }
+  .sys-state.live { background: var(--u-primary-tint); color: var(--u-primary); }
+  .sys-state.bound { background: var(--n-100); color: var(--text-muted); }
+
+  /* Connector lane */
+  .lane {
+    grid-column: span 4;
+    border-top: 1px solid var(--border);
+    background: var(--n-25);
+    padding: 16px 22px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .lane-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .lane-text { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+  .lane-text b { color: var(--u-primary); font-weight: 600; }
+
+  @media (max-width: 900px) {
+    .systems { grid-template-columns: 1fr 1fr; }
+    .sys { border-right: 1px solid var(--border); }
+    .sys:nth-child(2n) { border-right: 0; }
+    .sys:nth-child(1), .sys:nth-child(2) { border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="frame-head">
+    <span class="id">NC-25 · disposition</span>
+    <span class="title">Cross-system references bound to the approval</span>
+    <span class="meta">All references resolve to live records</span>
+  </div>
+  <div class="systems">
+    <div class="sys unifize">
+      <div class="sys-head"><span class="sys-mark">U</span><div><div class="sys-name">Unifize</div><div class="sys-role">Coordination layer</div></div></div>
+      <div class="sys-body">The Thread that holds the rationale, the approvers, the evidence — the moment of decision itself.</div>
+      <span class="sys-state live">Live</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">M</span><div><div class="sys-name">MasterControl</div><div class="sys-role">QMS · record</div></div></div>
+      <div class="sys-body">The closed NC record. Receives the disposition payload and the audit-packet PDF on commit.</div>
+      <span class="sys-ref"><span class="nm">NC-25</span>· synced</span>
+      <span class="sys-state ok">Sync OK</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">S</span><div><div class="sys-name">SAP S/4</div><div class="sys-role">ERP · lot</div></div></div>
+      <div class="sys-body">LOT-271 quarantine status mirrored back. Scrap transaction pushed to MM module on commit.</div>
+      <span class="sys-ref"><span class="nm">LOT-271</span>· QM block 03</span>
+      <span class="sys-state ok">Bound</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">W</span><div><div class="sys-name">Windchill</div><div class="sys-role">PLM · DHR</div></div></div>
+      <div class="sys-body">Device History Record entry written. Bracket sub-assembly variant is now annotated with NC-25 reference.</div>
+      <span class="sys-ref"><span class="nm">DHR-1148</span>· Rev B</span>
+      <span class="sys-state bound">Pending</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">P</span><div><div class="sys-name">Supplier portal</div><div class="sys-role">SCAR · supplier</div></div></div>
+      <div class="sys-body">Supplier corrective action request raised against the bracket lot. Response and effectiveness evidence flow back onto the Thread.</div>
+      <span class="sys-ref"><span class="nm">CAR-41</span>· SCAR</span>
+      <span class="sys-state ok">Bound</span>
+    </div>
+  </div>
+  <div class="lane">
+    <div class="lane-label">What this means</div>
+    <div class="lane-text">
+      The approval doesn't depend on email-relay between QMS / ERP / PLM / supplier. <b>Unifize binds the references at the moment of decision</b> — and pushes the resolved payload back to each system of record. Channels (email, Slack, Teams, WhatsApp) feed in. The Thread is the governed trace.
+    </div>
+  </div>
+</div>
+</body>
+</html>

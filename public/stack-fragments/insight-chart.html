@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Closure TAT by stage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <div>
+      <h3 class="title">Closure TAT by stage</h3>
+      <div style="font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px;">Days until closure · last 30 days</div>
+    </div>
+    <div class="legend">
+      <span class="sw"><span class="dot" style="background: var(--u-primary);"></span> Active work</span>
+      <span class="sw"><span class="dot" style="background: var(--u-primary-border);"></span> Waiting on review</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div id="chart" style="height: 280px;"></div>
+  </div>
+</div>
+
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+function svg(w, h) {
+  const s = document.createElementNS(NS, 'svg');
+  s.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  s.setAttribute('preserveAspectRatio', 'none');
+  s.setAttribute('width', '100%');
+  s.setAttribute('height', '100%');
+  return s;
+}
+function n(tag, attrs) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+
+const W = 760, H = 280, PAD_L = 32, PAD_R = 10, PAD_T = 18, PAD_B = 40;
+const plotW = W - PAD_L - PAD_R, plotH = H - PAD_T - PAD_B;
+const data = [
+  { l: 'Identification', a: 3, b: 2 },
+  { l: 'Disposition',    a: 5, b: 2 },
+  { l: 'CAR',            a: 8, b: 3 },
+  { l: 'Root Cause',     a: 7, b: 2 },
+  { l: 'Action Plan',    a: 4, b: 2 },
+  { l: 'Implementation', a: 8, b: 3 },
+  { l: 'Verify & Valid.',a: 2, b: 1 },
+];
+const max = 12;
+const s = svg(W, H);
+
+[0, 3, 6, 9, 12].forEach(t => {
+  const y = PAD_T + plotH * (1 - t/max);
+  s.appendChild(n('line', { x1: PAD_L, x2: W - PAD_R, y1: y, y2: y, stroke: '#E4E7EB', 'stroke-width': 1 }));
+  const lbl = n('text', { x: PAD_L - 8, y: y + 3, 'text-anchor': 'end', fill: '#8B93A0', 'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
+  lbl.textContent = t;
+  s.appendChild(lbl);
+});
+
+const slot = plotW / data.length;
+const barW = Math.min(56, slot * 0.52);
+
+data.forEach((d, i) => {
+  const xc = PAD_L + i * slot + slot / 2;
+  const x = xc - barW / 2;
+  const hA = (d.a / max) * plotH;
+  const hB = (d.b / max) * plotH;
+  const yA = PAD_T + plotH - hA;
+  const yB = yA - hB;
+  s.appendChild(n('rect', { x, y: yA, width: barW, height: hA, fill: '#0052FF' }));
+  s.appendChild(n('rect', { x, y: yB, width: barW, height: hB, fill: '#D6E0FF' }));
+  const tot = n('text', { x: xc, y: yB - 6, 'text-anchor': 'middle', fill: '#2B2F38', 'font-family': 'JetBrains Mono, monospace', 'font-size': 10, 'font-weight': 500 });
+  tot.textContent = (d.a + d.b) + 'd';
+  s.appendChild(tot);
+  const lbl = n('text', { x: xc, y: H - 18, 'text-anchor': 'middle', fill: '#646B78', 'font-family': 'Inter, sans-serif', 'font-size': 11 });
+  lbl.textContent = d.l;
+  s.appendChild(lbl);
+});
+
+document.getElementById('chart').appendChild(s);
+</script>
+</body>
+</html>

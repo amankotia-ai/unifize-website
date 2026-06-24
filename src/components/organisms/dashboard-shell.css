@@ -1,0 +1,54 @@
+/* ============================================================
+ * DashboardShell — org-level value-add view (2026-06-02 call).
+ * Co-located + imported by the component so these styles ship with its
+ * chunk (avoids Turbopack's stale global-CSS HMR). Only the NEW VA/NVA
+ * aggregate visuals live here; the rest of .dshell-* stays in globals.css.
+ * Green = value-add (--s-ok), red = non-value-add / wait (--s-err) — the
+ * same through-line language as §04. Every panel aggregates a signal the
+ * AI read gathers per record: VA/wait tag, timestamps, ownership changes.
+ * ============================================================ */
+
+/* split bar: value-add | wait, sharing one track */
+.dshell-split {
+  display: flex; height: 5px; background: var(--n-100);
+  border-radius: 2px; overflow: hidden;
+}
+.dshell-split--sm { width: 64px; flex: none; height: 6px; }
+.dshell-split-va { height: 100%; background: var(--s-ok); }
+.dshell-split-nva { height: 100%; background: var(--s-err); }
+
+/* single bars reused for wait magnitude (red) — pairs with .is-primary (blue) */
+.dshell-bar-row-value.is-wait { color: var(--s-err); }
+.dshell-bar-fill.is-wait { background: var(--s-err); }
+
+/* "biggest recoverable" / "longest" flag */
+.dshell-flag {
+  font-family: var(--u-mono); font-size: 8.5px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--s-err); background: color-mix(in srgb, var(--s-err) 10%, transparent);
+  padding: 1px 5px; border-radius: 3px; margin-left: 8px; vertical-align: middle;
+}
+
+/* value-add cell in the records table: mini split + ratio */
+.dshell-vacell { display: flex; align-items: center; gap: 9px; }
+
+/* two-column analytics grid */
+.dshell-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 680px) { .dshell-grid2 { grid-template-columns: 1fr; } }
+
+/* handoff pair arrow (ownership change) */
+.dshell-arrow { color: var(--n-400); margin: 0 2px; }
+
+/* cycle-time trend */
+.dshell-trend { display: block; width: 100%; height: 60px; }
+.dshell-trend-area { fill: color-mix(in srgb, var(--u-primary) 12%, transparent); }
+.dshell-trend-line { fill: none; stroke: var(--u-primary); stroke-width: 1.6; }
+.dshell-trend-cap { margin-top: 9px; font-family: var(--u-mono); font-size: 10.5px; color: var(--n-500); }
+.dshell-trend-cap b { color: var(--s-ok); font-weight: 600; }
+
+/* recoverable total footer */
+.dshell-total {
+  margin-top: 6px; padding-top: 9px; border-top: 1px solid var(--n-100);
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: 11.5px; color: var(--n-500);
+}
+.dshell-total-v { font-family: var(--u-mono); font-weight: 600; color: var(--u-primary); font-size: 12.5px; }

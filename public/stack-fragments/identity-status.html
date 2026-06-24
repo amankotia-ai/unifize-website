@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Status indicators</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 28px; background: var(--n-0); }
+  .row { display: flex; gap: 36px; align-items: center; flex-wrap: wrap; }
+  .swatch { display: flex; flex-direction: column; gap: 8px; }
+  .swatch .nm { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="swatch">
+    <span class="status status-active"><span class="d"></span>Active</span>
+    <span class="nm">.status-active</span>
+  </div>
+  <div class="swatch">
+    <span class="status status-pending"><span class="d"></span>Pending</span>
+    <span class="nm">.status-pending</span>
+  </div>
+  <div class="swatch">
+    <span class="status status-inactive"><span class="d"></span>Inactive</span>
+    <span class="nm">.status-inactive</span>
+  </div>
+  <div class="swatch">
+    <span class="resend-chip">Resend</span>
+    <span class="nm">.resend-chip</span>
+  </div>
+</div>
+</body>
+</html>

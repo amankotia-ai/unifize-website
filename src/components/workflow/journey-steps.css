@@ -1,0 +1,167 @@
+/* ============================================================
+ * §01 lead-in — JourneySteps. The named journey, listed down and designed,
+ * flowing into the ProcessStraighten map below (Ben 2026-06-02: "a set of
+ * steps listed down that's designed well, that flows into this").
+ * Co-located + imported by the component to avoid stale global-CSS HMR.
+ * Tokens come from globals.css :root.
+ * ============================================================ */
+.js {
+  --js-accent: var(--u-primary);
+  max-width: 760px;
+  margin: 28px 0 0;
+}
+
+.js-head {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.js-kicker {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--js-accent);
+}
+.js-intro {
+  margin: 0;
+  font-family: var(--u-display);
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.35;
+  font-weight: 500;
+  color: var(--n-700);
+  max-width: 46ch;
+}
+
+.js-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.js-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 16px;
+  padding-bottom: 22px;
+}
+/* the spine connecting the step numbers down the journey */
+.js-step::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--n-150);
+}
+.js-step:first-child::before {
+  top: 19px;
+}
+.js-step-num {
+  position: relative;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--js-accent);
+  background: var(--n-0);
+  border: 1.5px solid color-mix(in srgb, var(--js-accent) 35%, var(--n-150));
+}
+.js-step-body {
+  min-width: 0;
+  padding-top: 7px;
+}
+.js-step-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+.js-step-name {
+  margin: 0;
+  font-family: var(--u-display);
+  font-size: 17px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  color: var(--n-900);
+}
+.js-step-role {
+  flex: none;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--n-500);
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--n-100);
+}
+.js-step-what {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--n-600);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.js-step-decide {
+  margin: 7px 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--n-500);
+}
+.js-step-decide-lab {
+  flex: none;
+  font-size: 9px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--js-accent);
+  padding: 2px 7px;
+  border-radius: var(--r-2, 4px);
+  background: color-mix(in srgb, var(--js-accent) 10%, transparent);
+  transform: translateY(-1px);
+}
+
+/* the journey line continues down and fades — flowing into the map below */
+.js-into {
+  position: relative;
+  padding: 16px 0 6px 56px;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+}
+.js-into::before {
+  content: "";
+  position: absolute;
+  left: 19px;
+  top: -22px;
+  height: 48px;
+  width: 2px;
+  background: linear-gradient(
+    var(--js-accent),
+    color-mix(in srgb, var(--js-accent) 0%, transparent)
+  );
+}
+.js-into-cap {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--js-accent);
+}
+
+@media (max-width: 640px) {
+  .js-step-top {
+    gap: 6px;
+  }
+}

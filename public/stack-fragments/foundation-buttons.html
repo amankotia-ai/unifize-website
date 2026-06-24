@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buttons & badges</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  .group { margin-bottom: 18px; }
+  .group:last-child { margin-bottom: 0; }
+</style>
+</head>
+<body>
+<div class="group">
+  <div class="label">Buttons · variants</div>
+  <div class="buttons-row">
+    <button class="btn btn-primary">Send <span class="kbd">↩</span></button>
+    <button class="btn btn-secondary">Save draft</button>
+    <button class="btn btn-ghost">Cancel</button>
+    <button class="btn btn-danger">Delete</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="label">Buttons · sizes</div>
+  <div class="buttons-row">
+    <button class="btn btn-primary btn-sm">Small</button>
+    <button class="btn btn-primary">Default</button>
+    <button class="btn btn-primary btn-lg">Large</button>
+  </div>
+</div>
+
+<div class="group">
+  <div class="label">Badges</div>
+  <div class="buttons-row">
+    <span class="badge badge-info"><span class="pulse"></span>IDENTIFIED</span>
+    <span class="badge badge-ok"><span class="pulse"></span>COMPLETE</span>
+    <span class="badge badge-warn"><span class="pulse"></span>PENDING</span>
+    <span class="badge badge-err"><span class="pulse"></span>OVERDUE</span>
+    <span class="badge badge-neutral"><span class="pulse"></span>DRAFT</span>
+    <span class="badge badge-outline">OUTLINE</span>
+  </div>
+</div>
+</body>
+</html>

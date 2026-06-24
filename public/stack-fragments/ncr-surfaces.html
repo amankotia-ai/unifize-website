@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NCR home surfaces</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .p-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--n-25);
+  }
+  .p-head .t { font-size: 13px; font-weight: 600; }
+  .p-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .p-body { padding: 14px 16px; }
+
+  /* Severity list */
+  .sev-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .sev-row:last-child { border-bottom: 0; }
+  .sev-mk { width: 6px; height: 18px; border-radius: 1px; }
+  .sev-mk.crit { background: var(--s-err); }
+  .sev-mk.maj { background: var(--s-warn); }
+  .sev-mk.min { background: var(--n-300); }
+  .sev-label { flex: 1; font-weight: 500; }
+  .sev-count { font-family: var(--u-mono); color: var(--text-muted); }
+
+  /* Owner list */
+  .own-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px dashed var(--border); font-size: 13px; }
+  .own-row:last-child { border-bottom: 0; }
+  .own-av {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+  .own-name { flex: 1; font-weight: 500; }
+  .own-meta { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); }
+
+  /* Linked context */
+  .linked-card {
+    padding: 10px 12px;
+    background: var(--n-25);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .linked-card:last-child { margin-bottom: 0; }
+  .linked-row { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
+  .linked-row .k { color: var(--text-faint); font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .linked-row .v { color: var(--text); }
+  .nc-id { font-family: var(--u-mono); font-size: 11px; color: var(--u-primary); font-weight: 600; margin-bottom: 4px; }
+
+  /* Stacked-bar chart */
+  .bar-row { display: grid; grid-template-columns: 80px 1fr 40px; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; }
+  .bar-name { font-weight: 500; }
+  .bar-stack { display: flex; height: 14px; background: var(--n-100); border-radius: 2px; overflow: hidden; }
+  .bar-stack .seg { height: 100%; }
+  .bar-crit { background: var(--s-err); }
+  .bar-maj { background: var(--s-warn); }
+  .bar-min { background: var(--n-300); }
+  .bar-total { font-family: var(--u-mono); color: var(--text-muted); text-align: right; }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="panel">
+    <div class="p-head"><span class="t">Open NCs by severity</span><span class="meta">prioritised, no filter needed</span></div>
+    <div class="p-body">
+      <div class="sev-row"><span class="sev-mk crit"></span><span class="sev-label">Critical</span><span class="sev-count">4</span></div>
+      <div class="sev-row"><span class="sev-mk maj"></span><span class="sev-label">Major</span><span class="sev-count">14</span></div>
+      <div class="sev-row"><span class="sev-mk min"></span><span class="sev-label">Minor</span><span class="sev-count">9</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="p-head"><span class="t">Open NCs by owner · age</span><span class="meta">accountable from minute one</span></div>
+    <div class="p-body">
+      <div class="own-row"><span class="own-av" style="background: linear-gradient(180deg,#8AA9FF,#5775D9)">LM</span><span class="own-name">Lisa Martin</span><span class="own-meta">8 open · 6d avg</span></div>
+      <div class="own-row"><span class="own-av" style="background: linear-gradient(180deg,#8DBDA6,#5E9277)">DS</span><span class="own-name">Daniel Storm</span><span class="own-meta">6 open · 4d avg</span></div>
+      <div class="own-row"><span class="own-av" style="background: linear-gradient(180deg,#E1A879,#B47C4E)">RK</span><span class="own-name">Rupa Kapoor</span><span class="own-meta">5 open · 9d avg</span></div>
+      <div class="own-row"><span class="own-av" style="background: linear-gradient(180deg,#D29ACC,#A06BA5)">HS</span><span class="own-name">Han Solo</span><span class="own-meta">4 open · 3d avg</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="p-head"><span class="t">Linked context per NC</span><span class="meta">supplier · disposition · CAPA</span></div>
+    <div class="p-body">
+      <div class="linked-card">
+        <div class="nc-id">NC-25 · Nonconforming weld, bracket sub-assembly</div>
+        <div class="linked-row"><span class="k">Supplier</span><span class="v">Atlas Components</span></div>
+        <div class="linked-row"><span class="k">Disposition</span><span class="v">Scrap · 12 units</span></div>
+        <div class="linked-row"><span class="k">CAPA</span><span class="v">CAR-41 linked</span></div>
+      </div>
+      <div class="linked-card">
+        <div class="nc-id">NC-18 · Paint thickness below spec</div>
+        <div class="linked-row"><span class="k">Supplier</span><span class="v">Internal</span></div>
+        <div class="linked-row"><span class="k">Disposition</span><span class="v">Under review</span></div>
+        <div class="linked-row"><span class="k">CAPA</span><span class="v">— not yet linked</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="p-head"><span class="t">Owner × severity</span><span class="meta">manager workload view</span></div>
+    <div class="p-body">
+      <div class="bar-row">
+        <span class="bar-name">L. Martin</span>
+        <div class="bar-stack">
+          <div class="seg bar-crit" style="width: 12%"></div>
+          <div class="seg bar-maj" style="width: 62%"></div>
+          <div class="seg bar-min" style="width: 26%"></div>
+        </div>
+        <span class="bar-total">8</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">D. Storm</span>
+        <div class="bar-stack">
+          <div class="seg bar-crit" style="width: 33%"></div>
+          <div class="seg bar-maj" style="width: 50%"></div>
+          <div class="seg bar-min" style="width: 17%"></div>
+        </div>
+        <span class="bar-total">6</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">R. Kapoor</span>
+        <div class="bar-stack">
+          <div class="seg bar-maj" style="width: 60%"></div>
+          <div class="seg bar-min" style="width: 40%"></div>
+        </div>
+        <span class="bar-total">5</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">H. Solo</span>
+        <div class="bar-stack">
+          <div class="seg bar-maj" style="width: 75%"></div>
+          <div class="seg bar-min" style="width: 25%"></div>
+        </div>
+        <span class="bar-total">4</span>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

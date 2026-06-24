@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NCR · Link CAPA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr 380px; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .id-row { padding: 18px 24px 12px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .nc-id { font-family: var(--u-mono); font-size: 12px; color: var(--text-muted); background: var(--n-100); padding: 3px 9px; border-radius: 3px; letter-spacing: 0.04em; }
+  .nc-title { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+  .closed-pill { background: var(--s-ok-tint); color: var(--s-ok); font-family: var(--u-mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-left: auto; }
+
+  .step-bar { display: flex; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--n-25); overflow-x: auto; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-muted); white-space: nowrap; }
+  .step .n { font-family: var(--u-mono); width: 20px; height: 20px; background: var(--n-200); color: var(--n-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .step.done .n { background: var(--s-ok); color: #fff; }
+  .step.cur { background: var(--u-primary-tint); color: var(--u-primary); font-weight: 600; }
+  .step.cur .n { background: var(--u-primary); color: #fff; }
+  .step-arrow { width: 14px; color: var(--n-300); margin: 0 2px; }
+
+  .panel { padding: 22px 24px; flex: 1; overflow: auto; }
+
+  /* The link diagram */
+  .link-diagram {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 18px;
+    display: grid; grid-template-columns: 1fr 80px 1fr;
+    gap: 0; align-items: center;
+  }
+  .link-card { padding: 16px; border: 1px solid var(--border); border-radius: 6px; background: var(--n-0); }
+  .link-card.nc { border-color: var(--u-primary); background: var(--u-primary-tint); }
+  .link-card-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+  .link-card-id { font-family: var(--u-mono); font-size: 12px; color: var(--u-primary); font-weight: 700; }
+  .link-card-title { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .link-card-sub { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .link-meta-row { display: flex; gap: 14px; margin-top: 12px; flex-wrap: wrap; }
+  .meta-pair { display: flex; flex-direction: column; gap: 2px; }
+  .meta-k { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); }
+  .meta-v { font-size: 12px; font-weight: 500; }
+
+  .link-arrow {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: var(--u-primary);
+    gap: 6px;
+  }
+  .link-arrow-row {
+    display: flex; align-items: center;
+    width: 100%; height: 18px;
+  }
+  .link-arrow-line { height: 1px; flex: 1; background: var(--u-primary); position: relative; }
+  .link-arrow-line.both::before, .link-arrow-line.right::after {
+    content: ''; position: absolute; top: -3px;
+    border-top: 3px solid transparent; border-bottom: 3px solid transparent;
+  }
+  .link-arrow-line.right::after { right: -1px; border-left: 6px solid var(--u-primary); }
+  .link-arrow-line.left::before { content: ''; position: absolute; left: -1px; top: -3px; border-right: 6px solid var(--u-primary); border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+  .link-arrow-label { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .closure {
+    background: var(--s-ok-tint); border: 1px solid var(--s-ok); border-radius: 8px;
+    padding: 18px 22px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .closure-ic { width: 28px; height: 28px; border-radius: 50%; background: var(--s-ok); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .closure-title { font-size: 14px; font-weight: 600; color: var(--s-ok); margin-bottom: 4px; }
+  .closure-body { font-size: 13px; color: var(--n-700); line-height: 1.6; }
+  .closure-body b { color: var(--n-900); font-weight: 600; }
+  .closure-meta {
+    margin-top: 10px;
+    font-family: var(--u-mono); font-size: 11px;
+    color: var(--text-muted);
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+
+  .actions { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .actions .spacer { flex: 1; }
+  .btn { font-family: var(--u-font); font-size: 13px; font-weight: 500; line-height: 1; padding: 9px 14px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--u-primary); color: #fff; }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost { color: var(--text-muted); }
+
+  /* Right rail — audit packet */
+  .right { border-left: 1px solid var(--border); background: var(--n-25); padding: 22px; overflow: auto; }
+  .right-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 10px; }
+  .packet { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; padding: 16px; }
+  .packet-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .packet-sub { font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; }
+  .packet-section { padding: 8px 0; border-top: 1px dashed var(--border); font-size: 12.5px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .packet-section:first-of-type { border-top: 0; padding-top: 4px; }
+  .packet-section .k { color: var(--text-muted); }
+  .packet-section .v { font-family: var(--u-mono); color: var(--text); }
+  .packet-foot { padding-top: 12px; margin-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l4 4 8-8" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Quality</span><span class="sep">/</span>
+        <span>Non-conformances</span><span class="sep">/</span>
+        <span class="cur">NC-25 · Link CAPA</span>
+      </div>
+    </div>
+
+    <div class="id-row">
+      <span class="nc-id">NC-25</span>
+      <span class="nc-title">Assembly defect detected in final inspection</span>
+      <span class="closed-pill">Bound · ready to close</span>
+    </div>
+
+    <div class="step-bar">
+      <div class="step done"><span class="n">✓</span>Classify &amp; assign</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step done"><span class="n">✓</span>Add containment</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step done"><span class="n">✓</span>Record disposition</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step cur"><span class="n">4</span>Link CAPA</div>
+    </div>
+
+    <div class="panel">
+      <div class="link-diagram">
+        <div class="link-card nc">
+          <div class="link-card-eyebrow">Source · this record</div>
+          <div class="link-card-id">NC-25</div>
+          <div class="link-card-title">Assembly defect · final inspection</div>
+          <div class="link-card-sub">Major · Scrap 12 units · disposition rationale on record</div>
+          <div class="link-meta-row">
+            <div class="meta-pair"><span class="meta-k">Owner</span><span class="meta-v">Lisa Martin</span></div>
+            <div class="meta-pair"><span class="meta-k">Closed</span><span class="meta-v">Apr 21</span></div>
+            <div class="meta-pair"><span class="meta-k">Severity</span><span class="meta-v">Major</span></div>
+          </div>
+        </div>
+
+        <div class="link-arrow">
+          <div class="link-arrow-row"><span class="link-arrow-line both right"></span></div>
+          <div class="link-arrow-label">drives</div>
+          <div class="link-arrow-row"><span class="link-arrow-line both left"></span></div>
+          <div class="link-arrow-label">closes-back</div>
+        </div>
+
+        <div class="link-card">
+          <div class="link-card-eyebrow">Created from NC-25</div>
+          <div class="link-card-id">CAR-41</div>
+          <div class="link-card-title">Prevent recurrence · bracket fastener torque</div>
+          <div class="link-card-sub">6 governance gates · 5 corrective actions assigned</div>
+          <div class="link-meta-row">
+            <div class="meta-pair"><span class="meta-k">Owner</span><span class="meta-v">Daniel Storm</span></div>
+            <div class="meta-pair"><span class="meta-k">Target</span><span class="meta-v">May 12</span></div>
+            <div class="meta-pair"><span class="meta-k">Status</span><span class="meta-v" style="color: var(--u-primary);">Identified</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="closure">
+        <div class="closure-ic">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="closure-title">NC-25 is now provable</div>
+          <div class="closure-body">
+            The disposition, the rationale, the evidence, and the corrective action are <b>on a single record</b>. When the FDA investigator asks "show me the disposition decision and the action taken to prevent recurrence" — the response is one click, not five days of reconstruction.
+          </div>
+          <div class="closure-meta">
+            <span>4 / 4 steps complete</span>
+            <span>·</span>
+            <span>3 approvers committed</span>
+            <span>·</span>
+            <span>11 evidence items bound</span>
+            <span>·</span>
+            <span>CAR-41 drives forward</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost">← Back to disposition</button>
+      <div class="spacer"></div>
+      <button class="btn btn-secondary">Open CAR-41</button>
+      <button class="btn btn-primary">Close NC-25</button>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="right-eyebrow">Audit-ready packet</div>
+    <div class="packet">
+      <div class="packet-title">NC-25 · disposition packet</div>
+      <div class="packet-sub">FDA 820 · ISO 13485 §8.3 · auto-assembled</div>
+      <div class="packet-section"><span class="k">Disposition</span><span class="v">Scrap · 12 units</span></div>
+      <div class="packet-section"><span class="k">Rationale</span><span class="v">On record</span></div>
+      <div class="packet-section"><span class="k">Approver</span><span class="v">P. Ramesh · VP</span></div>
+      <div class="packet-section"><span class="k">Evidence</span><span class="v">11 items bound</span></div>
+      <div class="packet-section"><span class="k">CAPA</span><span class="v">CAR-41 linked</span></div>
+      <div class="packet-section"><span class="k">SCAR</span><span class="v">SC-104 raised</span></div>
+      <div class="packet-section"><span class="k">QMS sync</span><span class="v">MasterControl · OK</span></div>
+      <div class="packet-foot">
+        <button class="btn btn-secondary btn-sm" style="flex: 1; padding: 7px 10px;">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Export PDF
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

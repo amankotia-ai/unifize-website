@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NCR workflow</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  @media (max-width: 900px) { .flow { grid-template-columns: 1fr; } }
+  .step {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-right: 0;
+    padding: 18px 18px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+    position: relative;
+  }
+  .step:last-child { border-right: 1px solid var(--border); border-radius: 0 6px 6px 0; }
+  .step:first-child { border-radius: 6px 0 0 6px; }
+  @media (max-width: 900px) {
+    .step { border-right: 1px solid var(--border); border-radius: 6px !important; margin-bottom: 12px; }
+  }
+  .step-num {
+    font-family: var(--u-mono); font-size: 11px;
+    color: var(--u-primary);
+    padding: 3px 8px; background: var(--u-primary-tint);
+    border-radius: 3px; align-self: flex-start;
+    letter-spacing: 0.04em; font-weight: 600;
+  }
+  .step-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .step-blurb { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+  .step-tail {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .step-arrow {
+    position: absolute; right: -7px; top: 50%;
+    width: 14px; height: 14px;
+    background: var(--n-0);
+    border-top: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 2;
+  }
+  .step:last-child .step-arrow { display: none; }
+  @media (max-width: 900px) { .step-arrow { display: none; } }
+</style>
+</head>
+<body>
+<div class="flow">
+  <div class="step">
+    <span class="step-num">Step 01</span>
+    <div class="step-title">Classify &amp; assign</div>
+    <div class="step-blurb">Set severity (Critical / Major / Minor) and the named owner. NC has accountability from minute one — not the coordinator's inbox.</div>
+    <div class="step-tail">Outcome · NC has an owner</div>
+    <div class="step-arrow"></div>
+  </div>
+  <div class="step">
+    <span class="step-num">Step 02</span>
+    <div class="step-title">Add containment</div>
+    <div class="step-blurb">Quarantine, line stop, hold tag, supplier notification. Recorded <em>before</em> investigation begins — not retrospectively.</div>
+    <div class="step-tail">Outcome · containment on record</div>
+    <div class="step-arrow"></div>
+  </div>
+  <div class="step">
+    <span class="step-num">Step 03</span>
+    <div class="step-title">Record disposition</div>
+    <div class="step-blurb">Use-as-is, rework, scrap, or return to supplier — with rationale. <em>"This is the decision an auditor will ask about first."</em></div>
+    <div class="step-tail">Outcome · defensible decision</div>
+    <div class="step-arrow"></div>
+  </div>
+  <div class="step">
+    <span class="step-num">Step 04</span>
+    <div class="step-title">Link the corrective action</div>
+    <div class="step-blurb">CAPA created or linked from the NC. Bidirectional traceability — the NC carries forward, the CAPA carries back.</div>
+    <div class="step-tail">Outcome · NC ↔ CAPA bound</div>
+  </div>
+</div>
+</body>
+</html>

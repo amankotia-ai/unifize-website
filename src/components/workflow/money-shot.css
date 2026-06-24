@@ -1,0 +1,105 @@
+/* ============================================================
+ * §06 · THE MONEY SHOT — MoneyShot (2026-06-02 call).
+ * Ben: "a final screen which is a money shot … how much is this worth to
+ * your organization? … how does this connect to money? … this is how we
+ * sell it." The dashboard's recovered time, costed out to one big number.
+ * Co-located + imported by the component (ships with its chunk, avoids
+ * Turbopack's stale global-CSS HMR). Tokens from globals.css :root.
+ * ============================================================ */
+.money-shot {
+  position: relative;
+  background: var(--d-bg);
+  color: var(--d-text);
+  overflow: hidden;
+  border-top: 1px solid var(--d-border);
+  padding-block: clamp(96px, 13vh, 168px);
+}
+/* a brand glow behind the figure */
+.money-shot::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(
+    680px 400px at 50% 40%,
+    color-mix(in srgb, var(--u-primary) 20%, transparent),
+    transparent 72%
+  );
+}
+.money-shot .section-inner { position: relative; }
+
+.ms-inner { display: grid; justify-items: center; text-align: center; gap: 22px; max-width: 940px; margin: 0 auto; }
+
+.ms-eyebrow {
+  font-family: var(--u-mono); font-size: 11px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--d-text-3);
+}
+.ms-q {
+  font-family: var(--u-display); font-weight: 400; margin: 0;
+  font-size: clamp(18px, 2vw, 24px); letter-spacing: -0.015em; color: var(--d-text-2);
+}
+
+.ms-figure-wrap { display: grid; justify-items: center; gap: 6px; margin: 6px 0 2px; }
+/* range headline (Ben 2026-06-03: "$1,200 and $2,400 per non conformance")
+   — longer string than the old $3.1M, so the clamp steps down */
+.ms-figure {
+  font-family: var(--u-display); font-weight: 600; line-height: 0.9;
+  font-size: clamp(54px, 8.4vw, 116px); letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: #fff; /* fallback */
+  background: linear-gradient(176deg, #ffffff 36%, color-mix(in srgb, var(--u-primary) 72%, #ffffff));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ms-figure-dash { padding-inline: 0.06em; }
+.ms-unit {
+  font-family: var(--u-display); font-size: clamp(15px, 1.7vw, 21px);
+  letter-spacing: -0.01em; color: var(--d-text-2);
+}
+
+/* the basis — fine print attached to the figure (= is implied by proximity) */
+.ms-basis {
+  font-family: var(--u-mono); font-size: 12px; letter-spacing: 0.02em;
+  color: var(--d-text-3); margin-top: 8px;
+}
+.ms-sep { color: var(--d-border-2); }
+
+.ms-sub { font-size: 14px; line-height: 1.55; color: var(--d-text-2); max-width: 54ch; margin: 0; }
+
+/* the other reads — three stat columns: big numerals in the figure's
+   gradient so they belong to the money story without rivaling it */
+.ms-stats {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: stretch;
+  margin-top: 8px;
+}
+.ms-stat {
+  display: grid; gap: 3px; padding: 2px 34px; text-align: center;
+}
+.ms-stat + .ms-stat { border-left: 1px solid var(--d-border); }
+.ms-stat b {
+  font-family: var(--u-display); font-weight: 600;
+  font-size: clamp(26px, 2.7vw, 36px); letter-spacing: -0.025em; line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: #fff; /* fallback */
+  background: linear-gradient(176deg, #ffffff 40%, color-mix(in srgb, var(--u-primary) 62%, #ffffff));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ms-stat span { font-size: 12px; line-height: 1.35; color: var(--d-text-3); max-width: 18ch; margin: 0 auto; }
+@media (max-width: 640px) {
+  .ms-stats { flex-direction: column; gap: 18px; }
+  .ms-stat + .ms-stat { border-left: 0; }
+}
+
+/* customer outlinks — social proof under the claim (2026-06-03) */
+.ms-proof {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center;
+  gap: 8px 18px; font-size: 13px;
+}
+.ms-proof-k { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--d-text-3); }
+.ms-proof-link { color: var(--d-text-2); text-decoration: none; border-bottom: 1px solid var(--d-border-2); padding-bottom: 1px; transition: color 140ms ease, border-color 140ms ease; }
+.ms-proof-link:hover { color: var(--d-text); border-color: var(--d-text-3); }
+
+.ms-cta { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ms-figure { transition: none; }
+}

@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ECO · Cut-in &amp; verify</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr 380px; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .id-row { padding: 18px 24px 12px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .eco-id { font-family: var(--u-mono); font-size: 12px; color: var(--text-muted); background: var(--n-100); padding: 3px 9px; border-radius: 3px; letter-spacing: 0.04em; }
+  .eco-title { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+  .closed-pill { background: var(--s-ok-tint); color: var(--s-ok); font-family: var(--u-mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-left: auto; }
+
+  .step-bar { display: flex; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--n-25); overflow-x: auto; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-muted); white-space: nowrap; }
+  .step .n { font-family: var(--u-mono); width: 20px; height: 20px; background: var(--n-200); color: var(--n-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .step.cur { background: var(--u-primary-tint); color: var(--u-primary); font-weight: 600; }
+  .step.cur .n { background: var(--u-primary); color: #fff; }
+  .step.done .n { background: var(--s-ok); color: #fff; }
+  .step-arrow { width: 14px; color: var(--n-300); margin: 0 2px; }
+
+  .panel { padding: 22px 24px; flex: 1; overflow: auto; }
+  .panel-title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .panel-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* Effective date cards */
+  .effective {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+    margin-bottom: 18px;
+  }
+  .eff-card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+  .eff-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .eff-value { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; }
+  .eff-value.lot { font-family: var(--u-mono); }
+  .eff-sub { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* Propagation tracker */
+  .prop-list {
+    border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin-bottom: 14px;
+  }
+  .prop-row { display: grid; grid-template-columns: 30px 1fr 130px 80px; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border); align-items: center; }
+  .prop-row:last-child { border-bottom: 0; }
+  .prop-mk { width: 22px; height: 22px; border-radius: 3px; display: flex; align-items: center; justify-content: center; }
+  .prop-mk.done { background: var(--s-ok); color: #fff; }
+  .prop-mk.pending { background: var(--s-warn-tint); color: var(--s-warn); border: 1px solid var(--s-warn); }
+  .prop-mk svg { width: 12px; height: 12px; }
+  .prop-name { font-size: 13px; font-weight: 600; }
+  .prop-detail { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+  .prop-system { font-family: var(--u-mono); font-size: 10px; color: var(--text-muted); }
+  .prop-time { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-align: right; }
+
+  /* Closure box */
+  .closure { background: var(--s-ok-tint); border: 1px solid var(--s-ok); border-radius: 6px; padding: 18px 22px; display: flex; gap: 14px; align-items: flex-start; }
+  .closure-ic { width: 28px; height: 28px; border-radius: 50%; background: var(--s-ok); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .closure-title { font-size: 15px; font-weight: 600; color: var(--s-ok); margin-bottom: 4px; }
+  .closure-body { font-size: 13px; color: var(--n-700); line-height: 1.6; }
+  .closure-body b { color: var(--n-900); font-weight: 600; }
+  .closure-meta { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; }
+
+  .actions { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .actions .spacer { flex: 1; }
+  .btn { font-family: var(--u-font); font-size: 13px; font-weight: 500; line-height: 1; padding: 9px 14px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--u-primary); color: #fff; }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost { color: var(--text-muted); }
+
+  /* Right rail - audit packet */
+  .right { border-left: 1px solid var(--border); background: var(--n-25); padding: 22px; overflow: auto; }
+  .right-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 10px; }
+  .packet { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; padding: 16px; }
+  .packet-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .packet-sub { font-size: 11.5px; color: var(--text-muted); margin-bottom: 12px; }
+  .packet-section { padding: 8px 0; border-top: 1px dashed var(--border); font-size: 12.5px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .packet-section:first-of-type { border-top: 0; padding-top: 4px; }
+  .packet-section .k { color: var(--text-muted); }
+  .packet-section .v { font-family: var(--u-mono); color: var(--text); }
+  .packet-foot { padding-top: 12px; margin-top: 8px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4l12 4-12 4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Change Control</span><span class="sep">/</span>
+        <span>ECOs</span><span class="sep">/</span>
+        <span class="cur">ECO-2148 · Cut-in &amp; verify</span>
+      </div>
+    </div>
+
+    <div class="id-row">
+      <span class="eco-id">ECO-2148</span>
+      <span class="eco-title">Bracket sub-assembly · fastener torque spec revision</span>
+      <span class="closed-pill">Cut-over ready · all conditions met</span>
+    </div>
+
+    <div class="step-bar">
+      <div class="step done"><span class="n">✓</span>Identify &amp; classify</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step done"><span class="n">✓</span>Evaluate impact</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step done"><span class="n">✓</span>CCB review &amp; approve</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step cur"><span class="n">4</span>Cut-in &amp; verify</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Effective date · cut-over plan</div>
+      <div class="panel-sub">The dimensions that govern mixed-revision risk. Locked at CCB approval — propagation gated on these.</div>
+
+      <div class="effective">
+        <div class="eff-card">
+          <div class="eff-eyebrow">Effective date</div>
+          <div class="eff-value">Apr 28 · 06:00</div>
+          <div class="eff-sub">Production cut-over · Shift 1 · Line 3</div>
+        </div>
+        <div class="eff-card">
+          <div class="eff-eyebrow">First effective lot</div>
+          <div class="eff-value lot">LOT-275</div>
+          <div class="eff-sub">All prior lots remain Rev D · use existing inspection</div>
+        </div>
+        <div class="eff-card">
+          <div class="eff-eyebrow">In-flight WIP</div>
+          <div class="eff-value">18 units held</div>
+          <div class="eff-sub">MRB-3 quarantine · disposition decided before cut-over</div>
+        </div>
+      </div>
+
+      <div class="panel-title">Propagation status · all dependent records</div>
+      <div class="panel-sub">Auto-tracked across PLM, ERP, LMS, Doc Control, supplier portal. Cut-over is gated on every dependent record reaching the new state.</div>
+
+      <div class="prop-list">
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">DWG-4471 Rev E released</div><div class="prop-detail">Drawing revision and detail callout updated. PLM checksum verified.</div></div>
+          <span class="prop-system">PLM · Windchill</span>
+          <span class="prop-time">Apr 25</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">WI-0211 Rev 4 issued</div><div class="prop-detail">Work instruction updated · DCN-1148 closed.</div></div>
+          <span class="prop-system">Doc Control</span>
+          <span class="prop-time">Apr 26</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">Operator training · 14 / 14 complete</div><div class="prop-detail">All Line-3 operators certified on new torque spec.</div></div>
+          <span class="prop-system">LMS · Cornerstone</span>
+          <span class="prop-time">Apr 27</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">Torque tool re-calibration · TT-205</div><div class="prop-detail">New torque tool calibrated and bound to station 4.</div></div>
+          <span class="prop-system">Calibration</span>
+          <span class="prop-time">Apr 27</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">Atlas SCN-2148 acknowledged</div><div class="prop-detail">Supplier confirmed new spec · first-shipment LOT-275 inbound.</div></div>
+          <span class="prop-system">Supplier portal</span>
+          <span class="prop-time">Apr 27</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">Boeing prime concurrence received</div><div class="prop-detail">B-PCN-887 returned · cut-over authorised.</div></div>
+          <span class="prop-system">Customer portal</span>
+          <span class="prop-time">Apr 27</span>
+        </div>
+        <div class="prop-row">
+          <span class="prop-mk done"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+          <div><div class="prop-name">First-article inspection · LOT-275 unit 1</div><div class="prop-detail">FAI passed at 32.1 N·m · within new spec window.</div></div>
+          <span class="prop-system">Inspection</span>
+          <span class="prop-time">Apr 28 · 07:14</span>
+        </div>
+      </div>
+
+      <div class="closure">
+        <div class="closure-ic"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div>
+          <div class="closure-title">ECO-2148 is now bound and effective</div>
+          <div class="closure-body">
+            Every dependent record reached the new state before cut-over. <b>Mixed-revision risk = zero</b> — in-flight WIP held, first effective lot identified, supplier first-shipment matches new spec. The audit packet is one click: 14 evidence items, 5 CCB approvers, 7 propagation records.
+          </div>
+          <div class="closure-meta">
+            <span>4 / 4 steps closed</span>
+            <span>·</span>
+            <span>FAI passed</span>
+            <span>·</span>
+            <span>Boeing concurrence on file</span>
+            <span>·</span>
+            <span>Effectiveness review scheduled · 30d</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost">← Back to CCB</button>
+      <div class="spacer"></div>
+      <button class="btn btn-secondary">Open NC-25 · CAR-41 (closes-back)</button>
+      <button class="btn btn-primary">Close ECO-2148 · schedule effectiveness review</button>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="right-eyebrow">Audit-ready packet · AS9100 §8.5.6</div>
+    <div class="packet">
+      <div class="packet-title">ECO-2148 · packet</div>
+      <div class="packet-sub">FAA 14 CFR 21 · auto-assembled</div>
+      <div class="packet-section"><span class="k">Class</span><span class="v">Class I</span></div>
+      <div class="packet-section"><span class="k">Impact</span><span class="v">FFF + propagation</span></div>
+      <div class="packet-section"><span class="k">CCB minutes</span><span class="v">CCB-447 · 5/5</span></div>
+      <div class="packet-section"><span class="k">FAA pathway</span><span class="v">Part 21.95 · in-house DER</span></div>
+      <div class="packet-section"><span class="k">Customer concurrence</span><span class="v">Boeing · B-PCN-887</span></div>
+      <div class="packet-section"><span class="k">Evidence</span><span class="v">14 items bound</span></div>
+      <div class="packet-section"><span class="k">First-article</span><span class="v">LOT-275 · passed</span></div>
+      <div class="packet-section"><span class="k">PLM sync</span><span class="v">Windchill · OK</span></div>
+      <div class="packet-section"><span class="k">ERP sync</span><span class="v">SAP MM · OK</span></div>
+      <div class="packet-foot">
+        <button class="btn btn-secondary" style="width: 100%; padding: 8px 12px;">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Export audit packet
+        </button>
+      </div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

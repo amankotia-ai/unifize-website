@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Buyer profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .card {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .card-head {
+    display: flex; gap: 16px; align-items: center;
+    padding: 22px 24px;
+    background: var(--n-25);
+    border-bottom: 1px solid var(--border);
+  }
+  .av {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #8AA9FF, #5775D9);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 600; font-size: 16px;
+    letter-spacing: 0.02em;
+  }
+  .role { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); letter-spacing: 0.08em; text-transform: uppercase; }
+  .name { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+  }
+  .cell {
+    padding: 18px 22px;
+    border-right: 1px solid var(--border);
+  }
+  .cell:last-child { border-right: 0; }
+  .cell-label {
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .cell-value { font-size: 14px; color: var(--text); line-height: 1.5; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+  .chip {
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--n-100); color: var(--n-600);
+    letter-spacing: 0.02em;
+  }
+  .accountable {
+    padding: 18px 24px;
+    font-size: 14px; color: var(--text-muted);
+    line-height: 1.55;
+    border-top: 1px solid var(--border);
+    background: var(--n-25);
+  }
+  .accountable strong { color: var(--text); font-weight: 600; }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    .cell { border-right: 0; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="card-head">
+    <div class="av">VQ</div>
+    <div>
+      <div class="role">Buyer profile</div>
+      <div class="name">VP Quality · Class II Medical Device OEM or CDMO</div>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <div class="cell-label">Title</div>
+      <div class="cell-value">VP Quality<br/>Director of Quality<br/>Quality Manager</div>
+    </div>
+    <div class="cell">
+      <div class="cell-label">Company shape</div>
+      <div class="cell-value">Class II device OEM<br/>or CDMO</div>
+      <div class="chips"><span class="chip">~200–2000 FTE</span><span class="chip">1–4 lots/mo</span></div>
+    </div>
+    <div class="cell">
+      <div class="cell-label">Regulatory scope</div>
+      <div class="cell-value">Operating under:</div>
+      <div class="chips"><span class="chip">FDA 21 CFR 820</span><span class="chip">ISO 13485</span><span class="chip">EU MDR</span></div>
+    </div>
+  </div>
+  <div class="accountable">
+    <strong>Accountable for:</strong> CAPA effectiveness, overdue NC count, audit posture, supplier quality program, design control hand-offs between R&amp;D and manufacturing. Their inbox is full of escalations they didn't create.
+  </div>
+</div>
+</body>
+</html>

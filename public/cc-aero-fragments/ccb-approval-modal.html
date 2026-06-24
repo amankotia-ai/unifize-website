@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CCB approval modal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 32px 24px; background: rgba(11,13,17,0.42); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; }
+  .modal { width: 100%; max-width: 760px; background: var(--n-0); border-radius: 8px; box-shadow: 0 24px 48px -16px rgba(11,13,17,0.24); overflow: hidden; }
+  .modal-head { padding: 20px 24px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: flex-start; }
+  .modal-head .pip { width: 30px; height: 30px; background: var(--u-primary-tint); color: var(--u-primary); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .modal-head .eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 4px; }
+  .modal-head .title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; }
+  .modal-head .meta { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .modal-head .close { margin-left: auto; width: 28px; height: 28px; border-radius: 4px; color: var(--text-faint); display: flex; align-items: center; justify-content: center; }
+
+  .modal-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+
+  .summary { background: var(--n-25); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .sk { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 2px; }
+  .sv { font-size: 12.5px; font-weight: 500; color: var(--text); }
+  .sv .strong { color: var(--s-err); font-weight: 600; }
+
+  .rationale-field { background: var(--n-0); border: 1px solid var(--border-strong); border-radius: 5px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .rationale-field .lbl { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .rationale-field .txt { font-size: 13.5px; line-height: 1.55; color: var(--text); }
+  .rationale-field .meta { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 4px; }
+
+  .group { display: flex; flex-direction: column; gap: 8px; }
+  .group-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+
+  /* Evidence */
+  .evidence-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .evidence-row { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--n-0); border: 1px solid var(--border); border-radius: 4px; }
+  .evidence-mark { width: 16px; height: 16px; border-radius: 3px; background: var(--s-ok); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .evidence-mark svg { width: 10px; height: 10px; }
+  .evidence-name { font-size: 12.5px; font-weight: 500; flex: 1; }
+  .evidence-id { font-family: var(--u-mono); font-size: 10px; color: var(--text-muted); }
+
+  /* Voting board */
+  .voting { display: grid; gap: 6px; }
+  .vote-row { display: grid; grid-template-columns: 26px 1fr 90px 90px; gap: 10px; padding: 8px 12px; background: var(--n-0); border: 1px solid var(--border); border-radius: 4px; align-items: center; }
+  .vote-av { width: 22px; height: 22px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; }
+  .vote-name { font-size: 12px; font-weight: 500; }
+  .vote-role { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); margin-left: 6px; }
+  .vote-state { font-family: var(--u-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; text-align: center; }
+  .vote-state.approve { background: var(--s-ok-tint); color: var(--s-ok); }
+  .vote-state.condition { background: var(--s-warn-tint); color: var(--s-warn); }
+  .vote-state.pending { background: var(--n-100); color: var(--text-muted); }
+  .vote-time { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-align: right; }
+  .vote-action { display: flex; gap: 6px; padding: 8px 12px; background: var(--u-primary-tint); border: 1px solid var(--u-primary); border-radius: 4px; align-items: center; justify-content: space-between; }
+  .vote-action-label { font-family: var(--u-mono); font-size: 10px; color: var(--u-primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .modal-foot { padding: 14px 24px; background: var(--n-25); border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .modal-foot .spacer { flex: 1; }
+  .btn { font-family: var(--u-font); font-size: 13px; font-weight: 500; line-height: 1; padding: 9px 14px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--u-primary); color: #fff; }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-warn { background: var(--n-0); border-color: var(--border-strong); color: var(--s-warn); }
+  .btn-danger { background: var(--n-0); border-color: var(--border-strong); color: var(--s-err); }
+  .commit-note { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); margin-right: 12px; letter-spacing: 0.04em; }
+</style>
+</head>
+<body>
+<div class="modal">
+  <div class="modal-head">
+    <div class="pip">3/4</div>
+    <div>
+      <div class="eyebrow">ECO · Gate 03 · CCB approval</div>
+      <div class="title">Cast your CCB vote</div>
+      <div class="meta">ECO-2148 · Bracket sub-assembly · fastener torque spec revision</div>
+    </div>
+    <span class="close"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+  </div>
+
+  <div class="modal-body">
+    <div class="summary">
+      <div><div class="sk">Class</div><div class="sv"><span class="strong">Class I</span> · FAA</div></div>
+      <div><div class="sk">Program</div><div class="sv">787-WX · Boeing</div></div>
+      <div><div class="sk">Source NC</div><div class="sv">NC-25 · CAR-41</div></div>
+      <div><div class="sk">Drawing</div><div class="sv">DWG-4471 · D → E</div></div>
+    </div>
+
+    <div class="rationale-field">
+      <span class="lbl">Change rationale</span>
+      <div class="txt">
+        Revise bracket sub-assembly fastener torque spec from 28 ± 2 N·m to 32 ± 1.5 N·m. Driven by NC-25 root cause: variance in supplied fasteners producing inconsistent seating. New spec validated against design margin (FEM 4.2x retained). Vibration test (TEST-441) shows 26% improvement in joint integrity over service life.
+      </div>
+      <div class="meta">Author · Daniel Storm · 14 evidence items reviewed</div>
+    </div>
+
+    <div class="group">
+      <span class="group-label">Evidence reviewed · all bound</span>
+      <div class="evidence-grid">
+        <div class="evidence-row"><span class="evidence-mark"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="evidence-name">FEM analysis · FEM-2148.pdf</span><span class="evidence-id">412 KB</span></div>
+        <div class="evidence-row"><span class="evidence-mark"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="evidence-name">Vibration test · TEST-441</span><span class="evidence-id">PDF</span></div>
+        <div class="evidence-row"><span class="evidence-mark"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="evidence-name">Propagation impact map · 6 records</span><span class="evidence-id">auto</span></div>
+        <div class="evidence-row"><span class="evidence-mark"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="evidence-name">NC-25 · root cause · CAR-41</span><span class="evidence-id">linked</span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <span class="group-label">CCB voting · 4 done · 1 to commit (you)</span>
+      <div class="voting">
+        <div class="vote-row">
+          <span class="vote-av" style="background: linear-gradient(180deg,#D29ACC,#A06BA5);">PR</span>
+          <span class="vote-name">Priya Ramesh <span class="vote-role">VP Eng · chair</span></span>
+          <span class="vote-state approve">Approved</span>
+          <span class="vote-time">10:14</span>
+        </div>
+        <div class="vote-row">
+          <span class="vote-av" style="background: linear-gradient(180deg,#8DBDA6,#5E9277);">DS</span>
+          <span class="vote-name">Daniel Storm <span class="vote-role">Engineering</span></span>
+          <span class="vote-state approve">Approved</span>
+          <span class="vote-time">10:18</span>
+        </div>
+        <div class="vote-row">
+          <span class="vote-av" style="background: linear-gradient(180deg,#8AA9FF,#5775D9);">LM</span>
+          <span class="vote-name">Lisa Martin <span class="vote-role">Quality</span></span>
+          <span class="vote-state approve">Approved</span>
+          <span class="vote-time">10:21</span>
+        </div>
+        <div class="vote-row">
+          <span class="vote-av" style="background: linear-gradient(180deg,#E1A879,#B47C4E);">RK</span>
+          <span class="vote-name">Rupa Kapoor <span class="vote-role">Mfg Eng</span></span>
+          <span class="vote-state condition">w/ conditions</span>
+          <span class="vote-time">10:24</span>
+        </div>
+        <div class="vote-action">
+          <span class="vote-action-label">Your vote · Jack Coyne · Supply Chain</span>
+          <span class="vote-action-label" style="opacity: 0.5;">awaiting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-foot">
+    <span class="commit-note">Vote commits to the Thread. AS9100 §8.5.6 trace.</span>
+    <div class="spacer"></div>
+    <button class="btn btn-danger">Reject</button>
+    <button class="btn btn-warn">Approve · conditions</button>
+    <button class="btn btn-primary">Approve · commit vote</button>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Aerospace cross-domain breadth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 28px; background: var(--n-25); }
+  .head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 16px; }
+  .head-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .head-count { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em; }
+  .head-count b { color: var(--u-primary); font-weight: 600; }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .dom { background: var(--n-0); border: 1px solid var(--border); border-radius: 4px; padding: 12px 10px; text-align: center; font-size: 12px; font-weight: 500; color: var(--text-muted); }
+  .dom.on { background: var(--u-primary-tint); border-color: var(--u-primary-border); color: var(--u-primary); font-weight: 600; }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+<div class="head">
+  <div class="head-title">Domains a typical aerospace customer engages</div>
+  <div class="head-count"><b>6</b> / 15</div>
+</div>
+<div class="grid">
+  <div class="dom on">Change Control</div>
+  <div class="dom on">Configuration Mgmt</div>
+  <div class="dom on">Quality</div>
+  <div class="dom on">Supplier Quality</div>
+  <div class="dom on">Doc &amp; Records</div>
+  <div class="dom on">NPI / Design</div>
+  <div class="dom">Manufacturing</div>
+  <div class="dom">Engineering R&amp;D</div>
+  <div class="dom">EHS</div>
+  <div class="dom">Training</div>
+  <div class="dom">Audit Mgmt</div>
+  <div class="dom">Calibration</div>
+  <div class="dom">Validation</div>
+  <div class="dom">First-Article</div>
+  <div class="dom">Compliance</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Customer evidence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  @media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  .cust {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .cust-name {
+    font-family: var(--u-mono); font-size: 11px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .cust-blurb { font-size: 12.5px; color: var(--text); line-height: 1.5; }
+  .cust-tag {
+    align-self: flex-start;
+    background: var(--u-primary-tint); color: var(--u-primary);
+    font-family: var(--u-mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="cust">
+    <div class="cust-name">TotalEnergies</div>
+    <div class="cust-blurb">Coordinator-as-relay pattern across regional teams and supplier networks. Same shape, different vocabulary.</div>
+    <span class="cust-tag">Energy</span>
+  </div>
+  <div class="cust">
+    <div class="cust-name">Life Sciences customer</div>
+    <div class="cust-blurb">Deviation and NC flows running on email; QMS records reconstructed at month-end for governance review.</div>
+    <span class="cust-tag">Pharma</span>
+  </div>
+  <div class="cust">
+    <div class="cust-name">Starfish</div>
+    <div class="cust-blurb">Named the inspection-to-NCR traceability break directly. Two systems, one decision, days of stitching.</div>
+    <span class="cust-tag">Devices</span>
+  </div>
+  <div class="cust">
+    <div class="cust-name">Stamping / Molding customer</div>
+    <div class="cust-blurb">High-volume production-floor defects. Supplier SCAR response runs as forwarded email; not bound to the NC.</div>
+    <span class="cust-tag">Automotive</span>
+  </div>
+  <div class="cust">
+    <div class="cust-name">Med-device customer</div>
+    <div class="cust-blurb">Scaling 1 → 4 lots/month. Same NCR process couldn't survive the volume increase — coordination became the bottleneck.</div>
+    <span class="cust-tag">Class II</span>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Approval gates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .gates {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    position: relative;
+  }
+  @media (max-width: 900px) { .gates { grid-template-columns: 1fr; } }
+  .gate {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 18px 18px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .gate-head { display: flex; align-items: center; justify-content: space-between; }
+  .gate-num {
+    font-family: var(--u-mono); font-size: 11px;
+    padding: 3px 8px; border-radius: 3px;
+    background: var(--u-primary-tint); color: var(--u-primary);
+    letter-spacing: 0.04em; font-weight: 600;
+  }
+  .gate-badge {
+    font-family: var(--u-mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px;
+    background: var(--n-100); color: var(--text-muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .gate-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .gate-blurb { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+  .gate-decides {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 12px; color: var(--text);
+  }
+  .gate-decides b {
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 4px;
+  }
+</style>
+</head>
+<body>
+<div class="gates">
+  <div class="gate">
+    <div class="gate-head">
+      <span class="gate-num">Gate 01</span>
+      <span class="gate-badge">Severity</span>
+    </div>
+    <div class="gate-title">Classification approval</div>
+    <div class="gate-blurb">Severity sign-off. Critical NCs route differently. Misclassification is a 483 risk all by itself.</div>
+    <div class="gate-decides"><b>Decides</b>Critical · Major · Minor</div>
+  </div>
+  <div class="gate">
+    <div class="gate-head">
+      <span class="gate-num">Gate 02</span>
+      <span class="gate-badge">Action</span>
+    </div>
+    <div class="gate-title">Containment approval</div>
+    <div class="gate-blurb">Was the action taken adequate? Quarantine, line stop, supplier notification — confirmed before investigation, not after.</div>
+    <div class="gate-decides"><b>Decides</b>Containment scope &amp; sufficiency</div>
+  </div>
+  <div class="gate">
+    <div class="gate-head">
+      <span class="gate-num">Gate 03</span>
+      <span class="gate-badge">Auditor's first ask</span>
+    </div>
+    <div class="gate-title">Disposition approval</div>
+    <div class="gate-blurb">Use-as-is, rework, scrap, or return to supplier — with rationale on the record. The decision an auditor will ask about first.</div>
+    <div class="gate-decides"><b>Decides</b>What happens to the units</div>
+  </div>
+  <div class="gate">
+    <div class="gate-head">
+      <span class="gate-num">Gate 04</span>
+      <span class="gate-badge">Handoff</span>
+    </div>
+    <div class="gate-title">Linked CAPA approval</div>
+    <div class="gate-blurb">Handoff to the CAPA flow — which has its own six governance gates per Ben's CAPA reference slice.</div>
+    <div class="gate-decides"><b>Decides</b>CAPA created &amp; bound</div>
+  </div>
+</div>
+</body>
+</html>

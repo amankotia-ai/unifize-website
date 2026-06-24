@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Regulations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .reg {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .reg-eyebrow {
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .reg-title { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+  .reg-blurb { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+  .reg-tag {
+    align-self: flex-start;
+    background: var(--s-err-tint); color: var(--s-err);
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 3px 7px; border-radius: 3px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="reg">
+    <div class="reg-eyebrow">United States</div>
+    <div class="reg-title">FDA 21 CFR 820 (QMSR)</div>
+    <div class="reg-blurb">The Quality Management System Regulation — as of Feb 2026 it incorporates ISO 13485 by reference. Scrutinises CAPA cycle-time, overdue NCs, and effectiveness checks. Overdue items are a common <em>483 observation</em>.</div>
+    <span class="reg-tag">483 risk</span>
+  </div>
+  <div class="reg">
+    <div class="reg-eyebrow">International</div>
+    <div class="reg-title">ISO 13485 · §8.5.2</div>
+    <div class="reg-blurb">Requires <em>documented effectiveness verification</em> for every corrective action. The trace has to exist on the record — not in someone's memory of the cross-functional review.</div>
+    <span class="reg-tag">Effectiveness</span>
+  </div>
+  <div class="reg">
+    <div class="reg-eyebrow">European Union</div>
+    <div class="reg-title">EU MDR · Article 83</div>
+    <div class="reg-blurb">Post-market surveillance must flow back into design and manufacturing. Field signals close the loop on the device file — the coordination has to cross both domains.</div>
+    <span class="reg-tag">Post-market</span>
+  </div>
+</div>
+</body>
+</html>

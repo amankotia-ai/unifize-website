@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VP Quality dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; overflow: hidden; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .page-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 16px; }
+  .page-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); display: flex; gap: 8px; align-items: center; }
+  .page-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--u-primary); box-shadow: 0 0 0 3px var(--u-primary-tint); }
+  .page-title { font-size: 22px; font-weight: 600; letter-spacing: -0.022em; margin: 6px 0 4px; }
+  .page-sub { font-size: 13px; color: var(--text-muted); max-width: 620px; }
+
+  .content { flex: 1; overflow: auto; padding: 22px 24px; display: grid; gap: 14px; grid-template-columns: repeat(12, 1fr); align-content: start; }
+
+  /* Domain cards */
+  .dom-card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; grid-column: span 4; display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .dom-eyebrow { font-family: var(--u-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .dom-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .dom-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 12.5px; padding: 4px 0; border-top: 1px dashed var(--border); }
+  .dom-row:first-of-type { border-top: 0; padding-top: 8px; }
+  .dom-row .k { color: var(--text-muted); }
+  .dom-row .v { font-weight: 500; }
+  .dom-row .v.warn { color: var(--s-warn); }
+  .dom-row .v.err { color: var(--s-err); }
+  .dom-row .v.ok { color: var(--s-ok); }
+  .dom-foot {
+    margin-top: 6px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between;
+    font-family: var(--u-mono); font-size: 10px;
+    color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .dom-foot .open { color: var(--u-primary); }
+
+  /* Top row KPIs */
+  .kpi { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; grid-column: span 3; position: relative; }
+  .kpi-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .kpi-value { font-size: 28px; font-weight: 600; letter-spacing: -0.025em; display: flex; align-items: baseline; gap: 4px; }
+  .kpi-value .unit { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .kpi-delta { font-family: var(--u-mono); font-size: 11px; }
+  .kpi-delta.up { color: var(--s-ok); }
+  .kpi-delta.down { color: var(--s-err); }
+  .kpi-spark { position: absolute; right: 12px; bottom: 12px; opacity: 0.35; }
+
+  /* Compliance posture row */
+  .card { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; }
+  .card-head { padding: 12px 16px 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; }
+  .card-head .title { font-size: 13.5px; font-weight: 600; margin: 0; }
+  .card-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .card-body { padding: 14px 16px; }
+  .card-wide { grid-column: span 8; }
+  .card-narrow { grid-column: span 4; }
+
+  /* Compliance gauges */
+  .gauges { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .gauge { display: flex; flex-direction: column; gap: 6px; }
+  .gauge-name { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .gauge-bar { height: 6px; background: var(--n-100); border-radius: 3px; overflow: hidden; }
+  .gauge-bar .fill { height: 100%; }
+  .gauge-bar .fill.ok { background: var(--s-ok); }
+  .gauge-bar .fill.warn { background: var(--s-warn); }
+  .gauge-num { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 600; }
+  .gauge-num .of { font-family: var(--u-mono); color: var(--text-muted); font-weight: 400; font-size: 11px; }
+  .gauge-tag { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); }
+
+  /* Top causes */
+  .cause-list { display: flex; flex-direction: column; gap: 8px; }
+  .cause-row { display: grid; grid-template-columns: 1fr 110px 28px; align-items: center; gap: 10px; font-size: 12.5px; }
+  .cause-name { font-weight: 500; }
+  .cause-bar { height: 12px; background: var(--n-100); border-radius: 2px; overflow: hidden; }
+  .cause-bar .fill { height: 100%; background: var(--u-primary); }
+  .cause-n { font-family: var(--u-mono); color: var(--text-muted); text-align: right; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="3" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="3" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/><rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" stroke-width="1.4"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Quality</span><span class="sep">/</span>
+        <span>Executive</span><span class="sep">/</span>
+        <span class="cur">VP Quality dashboard</span>
+      </div>
+    </div>
+    <header class="page-head">
+      <div>
+        <div class="page-eyebrow"><span class="dot"></span>VP Quality · Priya Ramesh · Q2 2026</div>
+        <h1 class="page-title">Cross-domain quality posture</h1>
+        <p class="page-sub">Six domains your team owns. Quality, Change Control, Supplier Quality, Document &amp; Records, NPI, Regulatory Affairs. Same surface — no exporting to slides.</p>
+      </div>
+    </header>
+    <div class="content">
+
+      <!-- Top row KPIs -->
+      <div class="kpi">
+        <div class="kpi-label">Open quality events · cross-domain</div>
+        <div class="kpi-value">96</div>
+        <div class="kpi-delta up">↓ 7 vs prior 30d</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,16 8,15 16,12 24,14 32,11 40,10 48,8 60,6" stroke="var(--u-primary)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">CAPA effectiveness rate</div>
+        <div class="kpi-value">87 <span class="unit">%</span></div>
+        <div class="kpi-delta up">↑ 3 pts</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,14 8,13 16,12 24,10 32,11 40,8 48,7 60,5" stroke="var(--s-ok)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Overdue items · 483-risk</div>
+        <div class="kpi-value" style="color: var(--s-err);">11</div>
+        <div class="kpi-delta down">↑ 2 vs prior</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,12 8,12 16,10 24,13 32,11 40,12 48,9 60,7" stroke="var(--s-err)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Audit-ready posture</div>
+        <div class="kpi-value">97 <span class="unit">%</span></div>
+        <div class="kpi-delta up">↑ 1 pt · 4 gaps</div>
+        <svg class="kpi-spark" width="60" height="22" viewBox="0 0 60 22" fill="none"><polyline points="0,8 8,7 16,6 24,7 32,5 40,5 48,4 60,3" stroke="var(--s-ok)" stroke-width="1.4" fill="none"/></svg>
+      </div>
+
+      <!-- Six domains -->
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 01</span>
+        <div class="dom-name">Quality</div>
+        <div class="dom-row"><span class="k">Open NCs</span><span class="v">27</span></div>
+        <div class="dom-row"><span class="k">Open CAPAs</span><span class="v">9</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v err">5</span></div>
+        <div class="dom-foot"><span>14.2d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 02</span>
+        <div class="dom-name">Change Control</div>
+        <div class="dom-row"><span class="k">Open ECOs</span><span class="v">14</span></div>
+        <div class="dom-row"><span class="k">Pending approval</span><span class="v warn">6</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v">2</span></div>
+        <div class="dom-foot"><span>11.6d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 03</span>
+        <div class="dom-name">Supplier Quality</div>
+        <div class="dom-row"><span class="k">Open SCARs</span><span class="v">12</span></div>
+        <div class="dom-row"><span class="k">Pending response</span><span class="v warn">5</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v err">3</span></div>
+        <div class="dom-foot"><span>23.4d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 04</span>
+        <div class="dom-name">Document &amp; Records</div>
+        <div class="dom-row"><span class="k">Pending review</span><span class="v">23</span></div>
+        <div class="dom-row"><span class="k">Pending signature</span><span class="v warn">8</span></div>
+        <div class="dom-row"><span class="k">Overdue</span><span class="v">1</span></div>
+        <div class="dom-foot"><span>6.1d TAT</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 05</span>
+        <div class="dom-name">NPI</div>
+        <div class="dom-row"><span class="k">Active programs</span><span class="v">4</span></div>
+        <div class="dom-row"><span class="k">DHF reviews</span><span class="v">11</span></div>
+        <div class="dom-row"><span class="k">At risk</span><span class="v warn">2</span></div>
+        <div class="dom-foot"><span>2 milestones due</span><span class="open">Open →</span></div>
+      </div>
+      <div class="dom-card">
+        <span class="dom-eyebrow">Domain 06</span>
+        <div class="dom-name">Regulatory Affairs</div>
+        <div class="dom-row"><span class="k">Active submissions</span><span class="v">3</span></div>
+        <div class="dom-row"><span class="k">PMS signals</span><span class="v">7</span></div>
+        <div class="dom-row"><span class="k">Open gaps</span><span class="v ok">0</span></div>
+        <div class="dom-foot"><span>EU MDR · OK</span><span class="open">Open →</span></div>
+      </div>
+
+      <!-- Compliance posture -->
+      <div class="card card-wide">
+        <div class="card-head"><h3 class="title">Compliance posture · live</h3><span class="meta">Auto-computed from records</span></div>
+        <div class="card-body">
+          <div class="gauges">
+            <div class="gauge">
+              <div class="gauge-name">FDA 21 CFR 820</div>
+              <div class="gauge-bar"><div class="fill ok" style="width: 96%;"></div></div>
+              <div class="gauge-num">96<span class="of">/100</span></div>
+              <span class="gauge-tag">2 sub-clauses with gaps</span>
+            </div>
+            <div class="gauge">
+              <div class="gauge-name">ISO 13485 · §8</div>
+              <div class="gauge-bar"><div class="fill ok" style="width: 98%;"></div></div>
+              <div class="gauge-num">98<span class="of">/100</span></div>
+              <span class="gauge-tag">Effectiveness — all green</span>
+            </div>
+            <div class="gauge">
+              <div class="gauge-name">EU MDR · Art. 83</div>
+              <div class="gauge-bar"><div class="fill warn" style="width: 82%;"></div></div>
+              <div class="gauge-num">82<span class="of">/100</span></div>
+              <span class="gauge-tag">PMS feedback loop gap</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top RCA causes -->
+      <div class="card card-narrow">
+        <div class="card-head"><h3 class="title">Top RCA causes · Q2</h3><span class="meta">Cross-domain</span></div>
+        <div class="card-body">
+          <div class="cause-list">
+            <div class="cause-row"><span class="cause-name">Material inconsistency</span><div class="cause-bar"><div class="fill" style="width: 78%;"></div></div><span class="cause-n">17</span></div>
+            <div class="cause-row"><span class="cause-name">Operator training gap</span><div class="cause-bar"><div class="fill" style="width: 64%;"></div></div><span class="cause-n">14</span></div>
+            <div class="cause-row"><span class="cause-name">Jig &amp; tooling drift</span><div class="cause-bar"><div class="fill" style="width: 50%;"></div></div><span class="cause-n">11</span></div>
+            <div class="cause-row"><span class="cause-name">Inspection method</span><div class="cause-bar"><div class="fill" style="width: 41%;"></div></div><span class="cause-n">9</span></div>
+            <div class="cause-row"><span class="cause-name">Specification ambiguity</span><div class="cause-bar"><div class="fill" style="width: 27%;"></div></div><span class="cause-n">6</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>

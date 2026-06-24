@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NC closed — CAR-41 validated</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<link rel="stylesheet" href="/stack-fragments/chat-states.css" />
+<style>
+  .rail-section-name .tick { color: var(--s-ok); margin-right: 5px; font-weight: 700; }
+  .commit-card {
+    margin-top: 6px;
+    border: 1px solid var(--s-ok-tint);
+    background: var(--n-0);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .commit-card-head {
+    display: flex; align-items: center; gap: 7px;
+    padding: 7px 12px;
+    background: var(--s-ok-tint);
+    border-bottom: 1px solid var(--s-ok-tint);
+    font-family: var(--u-mono); font-size: 9px;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--s-ok); font-weight: 600;
+  }
+  .commit-card-body { padding: 9px 12px; display: flex; flex-direction: column; gap: 7px; }
+  .commit-row { display: flex; gap: 10px; font-size: 11.5px; align-items: baseline; }
+  .commit-row .k {
+    color: var(--text-faint); font-family: var(--u-mono); font-size: 9px;
+    min-width: 88px; text-transform: uppercase; letter-spacing: 0.04em; flex-shrink: 0;
+  }
+  .commit-row .v { color: var(--text); }
+  .audit-btn {
+    margin-top: 2px; align-self: flex-start;
+    padding: 6px 12px; background: var(--u-primary); color: #fff;
+    border: 0; border-radius: 4px; font-size: 11.5px; font-weight: 500; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .audit-btn .count {
+    font-family: var(--u-mono); font-size: 10px;
+    background: rgba(255,255,255,0.22); padding: 1px 6px; border-radius: 3px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="rec-head">
+      <span class="rec-id">NC-25</span>
+      <span class="rec-title">Nonconforming weld — bracket sub-assembly (LOT-271)</span>
+      <span class="rec-chips">
+        <span class="rec-chip">
+          <span class="av-xs as">AS</span>
+          Anusha Setti
+        </span>
+        <span class="rec-chip plain">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M11 13c0-2-1.8-3-3-3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+          9
+        </span>
+        <span class="rec-chip plain">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1" stroke="currentColor" stroke-width="1.2"/><path d="M2 6h12" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          Day 7
+        </span>
+        <span class="rec-chip priority">
+          <span class="ico"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l5-5 5 5-5 5z" stroke="currentColor" stroke-width="1.2"/></svg></span>
+          Major
+          <span class="caret">▾</span>
+        </span>
+        <span class="rec-chip plain">More</span>
+      </span>
+    </div>
+
+    <div class="rec-status-row">
+      <span class="status-pill s-complete">Closed</span>
+      <span class="rec-clock">Day 7 · 04:18 pm</span>
+    </div>
+
+    <div class="stage-body">
+      <div class="conv">
+        <div class="fold">earlier in the conversation</div>
+
+        <div class="m">
+          <div class="av bot">U</div>
+          <div class="m-body">
+            <div class="m-row">
+              <span class="m-name bot">Unifize Assistant</span>
+              <span class="m-time">04:15 pm · automated</span>
+            </div>
+            <div class="m-text">
+              <a href="#">CAR-41</a> effectiveness verified. Closing NC-25 by bidirectional binding.
+            </div>
+            <div class="commit-card">
+              <div class="commit-card-head">NC-25 closed · audit trail compiled</div>
+              <div class="commit-card-body">
+                <div class="commit-row"><span class="k">Disposition</span><span class="v">Scrap complete · 12 units dispositioned</span></div>
+                <div class="commit-row"><span class="k">Corrective</span><span class="v"><a href="#">CAR-41</a> · SCAR validated · effectiveness verified</span></div>
+                <div class="commit-row"><span class="k">Binding</span><span class="v">NC-25 ↔ CAR-41 · bidirectional</span></div>
+                <div class="commit-row"><span class="k">Regulatory</span><span class="v">ISO 13485 §8.3 · 21 CFR 820 (QMSR)</span></div>
+                <button class="audit-btn">Export audit packet <span class="count">1,284 records</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="m">
+          <div class="av qm">QM</div>
+          <div class="m-body">
+            <div class="m-row">
+              <span class="m-name">QA Manager</span>
+              <span class="m-time">completion approval · 04:18 pm</span>
+            </div>
+            <div class="sig-card">
+              <div class="sig-card-head">
+                <span class="approved-chip">Approved</span>
+                <span class="sig-card-handwritten">QA Manager</span>
+              </div>
+              <div class="sig-card-id">ID: 360c42…e9aeca · Day 7 · 16:18</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sys">
+          <b>NC-25 closed</b> · CAR-41 ↔ NC-25 bound · the conversation is the audit trail
+        </div>
+      </div>
+
+      <div class="rail">
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name"><span class="tick">✓</span>Basic info</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name"><span class="tick">✓</span>Containment</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name"><span class="tick">✓</span>Disposition action(s)</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+        <div class="rail-section open">
+          <div class="rail-section-head">
+            <span class="rail-section-name"><span class="tick">✓</span>Corrective action request</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+          <div class="rail-section-body">
+            <span class="rail-field-label">Linked CAR</span>
+            <span class="rail-field-value">CAR-41 · SCAR — bracket weld nonconformance</span>
+            <span class="rail-field-label">Status</span>
+            <span class="rail-field-value">Validated · effectiveness verified</span>
+            <span class="rail-field-label">Binding</span>
+            <span class="rail-field-value">NC-25 closed on CAR-41 validation</span>
+          </div>
+        </div>
+        <div class="rail-section">
+          <div class="rail-section-head">
+            <span class="rail-section-name"><span class="tick">✓</span>Non-conformance completion approval(s)</span>
+            <span class="rail-section-chevron">▾</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

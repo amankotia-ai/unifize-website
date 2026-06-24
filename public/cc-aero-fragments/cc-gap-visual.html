@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Change Control coordination gap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); display: flex; flex-direction: column; }
+  .gap { display: grid; grid-template-columns: 1fr 220px 1fr; min-height: 520px; align-items: stretch; }
+  @media (max-width: 900px) { .gap { grid-template-columns: 1fr; } }
+  .side { padding: 32px 36px; display: flex; flex-direction: column; gap: 18px; background: var(--n-0); }
+  .side.left { border-right: 1px solid var(--border); }
+  .side.right { border-left: 1px solid var(--border); }
+  .side-eyebrow { font-family: var(--u-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-faint); display: flex; align-items: center; gap: 10px; }
+  .side-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint); }
+  .side-title { font-size: 19px; font-weight: 600; letter-spacing: -0.018em; }
+  .side-sub { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+  .logos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 6px; }
+  .logo { background: var(--n-25); border: 1px solid var(--border); border-radius: 5px; padding: 14px 14px 12px; display: flex; flex-direction: column; gap: 4px; min-height: 64px; }
+  .logo-mark { width: 22px; height: 22px; border-radius: 4px; background: var(--n-200); color: var(--n-700); display: inline-flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 11px; font-weight: 700; }
+  .logo-name { font-size: 12.5px; font-weight: 600; color: var(--text); }
+  .logo-tag { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .tools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 6px; }
+  .tool { background: var(--s-warn-tint); border: 1px dashed var(--s-warn); color: var(--s-warn); border-radius: 5px; padding: 12px 14px; font-size: 13px; font-weight: 500; display: flex; align-items: center; justify-content: space-between; }
+  .tool .nm { letter-spacing: -0.005em; }
+  .tool .ic { font-family: var(--u-mono); font-size: 10px; opacity: 0.75; }
+
+  .middle { background: repeating-linear-gradient(135deg, var(--n-50) 0, var(--n-50) 8px, var(--n-25) 8px, var(--n-25) 14px); border-left: 1px solid var(--border); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 16px; text-align: center; gap: 14px; position: relative; }
+  .middle-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--s-err); background: var(--s-err-tint); padding: 4px 10px; border-radius: 3px; font-weight: 600; }
+  .middle-headline { font-family: var(--u-font); font-size: 16px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.25; color: var(--text); }
+  .middle-sub { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 180px; }
+  .arrow { position: absolute; width: 100%; height: 1px; background: var(--s-err); top: 50%; }
+  .arrow.left  { left: -55%; }
+  .arrow.right { right: -55%; }
+  .arrow.left::before { content: ''; position: absolute; left: -1px; top: -3px; border-right: 6px solid var(--s-err); border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+  .arrow.right::after { content: ''; position: absolute; right: -1px; top: -3px; border-left: 6px solid var(--s-err); border-top: 3px solid transparent; border-bottom: 3px solid transparent; }
+  @media (max-width: 900px) { .arrow { display: none; } .middle { border-left: 0; border-right: 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); } }
+
+  .resolution { background: var(--n-900); color: var(--d-text); padding: 22px 32px; display: flex; gap: 24px; align-items: center; justify-content: space-between; border-top: 1px solid var(--n-700); flex-wrap: wrap; }
+  .res-mark { display: flex; align-items: center; gap: 14px; font-family: var(--u-font); font-size: 14px; }
+  .res-mark .u-mark { width: 28px; height: 28px; background: var(--u-primary); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; font-size: 13px; }
+  .res-body { flex: 1; min-width: 260px; font-size: 14px; color: var(--d-text-2); line-height: 1.55; max-width: 600px; }
+  .res-body b { color: var(--d-text); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="gap">
+  <div class="side left">
+    <div class="side-eyebrow"><span class="dot"></span>Systems of record</div>
+    <div class="side-title">PLM captures the approved revision</div>
+    <div class="side-sub">CAD, BoM, drawings, ECO records — versioned and validated. Owns the artifact, not the journey that produced it.</div>
+    <div class="logos">
+      <div class="logo"><span class="logo-mark">W</span><span class="logo-name">PTC Windchill</span><span class="logo-tag">Aerospace · Defense</span></div>
+      <div class="logo"><span class="logo-mark">T</span><span class="logo-name">Teamcenter</span><span class="logo-tag">Siemens · Tier-1</span></div>
+      <div class="logo"><span class="logo-mark">E</span><span class="logo-name">ENOVIA / 3DEXPERIENCE</span><span class="logo-tag">Dassault</span></div>
+      <div class="logo"><span class="logo-mark">A</span><span class="logo-name">Aras Innovator</span><span class="logo-tag">Configurable PLM</span></div>
+      <div class="logo"><span class="logo-mark">A</span><span class="logo-name">Arena PLM</span><span class="logo-tag">Mid-market</span></div>
+      <div class="logo"><span class="logo-mark">S</span><span class="logo-name">SAP ERP / S/4</span><span class="logo-tag">BoM · MRP</span></div>
+    </div>
+  </div>
+
+  <div class="middle">
+    <span class="arrow left"></span>
+    <span class="arrow right"></span>
+    <span class="middle-label">Coordination tax</span>
+    <div class="middle-headline">4 functions.<br/>3–6 weeks.<br/>DHF gaps at audit.<br/>Mixed-revision escapes.</div>
+    <div class="middle-sub">The review loop spans Quality, Engineering, Regulatory, and Manufacturing. PLM sees the result; it doesn't see the work.</div>
+  </div>
+
+  <div class="side right">
+    <div class="side-eyebrow"><span class="dot"></span>Tools the review loop runs through</div>
+    <div class="side-title">Where the review actually happens</div>
+    <div class="side-sub">Email threads. Design review meetings. Shared drives. Side conversations. The decisions are made — the proof is scattered.</div>
+    <div class="tools">
+      <div class="tool"><span class="nm">Outlook · Lotus Notes</span><span class="ic">EMAIL</span></div>
+      <div class="tool"><span class="nm">Microsoft Teams · Webex</span><span class="ic">CHAT</span></div>
+      <div class="tool"><span class="nm">Design review meetings</span><span class="ic">MEETING</span></div>
+      <div class="tool"><span class="nm">Excel impact analyses</span><span class="ic">SHEET</span></div>
+      <div class="tool"><span class="nm">SharePoint · network drives</span><span class="ic">DOC</span></div>
+      <div class="tool"><span class="nm">Customer ECO portal exports</span><span class="ic">PDF</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="resolution">
+  <div class="res-mark"><span class="u-mark">U</span><span>Unifize sits between PLM and the review</span></div>
+  <div class="res-body">
+    The review loop becomes a governed Thread; the approved revision still lives in PLM. <b>Cross-functional visibility flows in. Approved outcomes flow back.</b> Change cycle time compresses without weakening the review.
+  </div>
+</div>
+</body>
+</html>

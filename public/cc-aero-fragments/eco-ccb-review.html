@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ECO · CCB review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr 380px; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .id-row { padding: 18px 24px 12px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .eco-id { font-family: var(--u-mono); font-size: 12px; color: var(--text-muted); background: var(--n-100); padding: 3px 9px; border-radius: 3px; letter-spacing: 0.04em; }
+  .eco-title { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+  .class-pill { background: var(--s-err-tint); color: var(--s-err); font-family: var(--u-mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-left: auto; }
+
+  .step-bar { display: flex; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--n-25); overflow-x: auto; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-muted); white-space: nowrap; }
+  .step .n { font-family: var(--u-mono); width: 20px; height: 20px; background: var(--n-200); color: var(--n-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .step.cur { background: var(--u-primary-tint); color: var(--u-primary); font-weight: 600; }
+  .step.cur .n { background: var(--u-primary); color: #fff; }
+  .step.done .n { background: var(--s-ok); color: #fff; }
+  .step-arrow { width: 14px; color: var(--n-300); margin: 0 2px; }
+
+  .panel { padding: 22px 24px; flex: 1; overflow: auto; }
+  .panel-title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .panel-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* CCB board */
+  .ccb-board { background: var(--n-0); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 14px; }
+  .ccb-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--n-25); }
+  .ccb-head .label { font-family: var(--u-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+  .ccb-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); }
+  .ccb-list { padding: 0; }
+  .ccb-row { display: grid; grid-template-columns: 36px 1fr 120px 110px 36px; gap: 12px; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  .ccb-row:last-child { border-bottom: 0; }
+  .ccb-av { width: 28px; height: 28px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; }
+  .ccb-name { font-size: 13px; font-weight: 600; }
+  .ccb-role { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .ccb-vote { font-family: var(--u-mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .ccb-vote.approve { background: var(--s-ok-tint); color: var(--s-ok); }
+  .ccb-vote.condition { background: var(--s-warn-tint); color: var(--s-warn); }
+  .ccb-vote.pending { background: var(--n-100); color: var(--text-muted); }
+  .ccb-time { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); }
+  .ccb-icon { color: var(--text-faint); }
+  .ccb-rationale { padding: 8px 18px 14px 66px; font-size: 12.5px; color: var(--text-muted); line-height: 1.55; background: var(--n-25); border-bottom: 1px solid var(--border); }
+  .ccb-rationale b { color: var(--text); font-weight: 600; }
+
+  /* Decision summary */
+  .decision { background: var(--s-ok-tint); border: 1px solid var(--s-ok); border-radius: 6px; padding: 18px 22px; margin-bottom: 14px; display: flex; gap: 14px; align-items: flex-start; }
+  .decision .ic { width: 28px; height: 28px; border-radius: 50%; background: var(--s-ok); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .decision-title { font-size: 15px; font-weight: 600; color: var(--s-ok); margin-bottom: 4px; }
+  .decision-body { font-size: 13px; color: var(--n-700); line-height: 1.55; }
+  .decision-body b { color: var(--n-900); font-weight: 600; }
+  .decision-meta { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .conditions { background: var(--s-warn-tint); border: 1px solid var(--s-warn); border-radius: 5px; padding: 14px 18px; }
+  .conditions-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--s-warn); font-weight: 600; margin-bottom: 8px; }
+  .conditions-list { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--n-700); }
+  .conditions-list li { display: flex; gap: 8px; }
+  .conditions-list li::before { content: '→'; color: var(--s-warn); }
+
+  .actions { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .actions .spacer { flex: 1; }
+  .btn { font-family: var(--u-font); font-size: 13px; font-weight: 500; line-height: 1; padding: 9px 14px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--u-primary); color: #fff; }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost { color: var(--text-muted); }
+
+  /* Right rail - regulatory frame */
+  .right { border-left: 1px solid var(--border); background: var(--n-25); padding: 22px; overflow: auto; }
+  .right-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 10px; }
+  .reg { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .reg-tag { font-family: var(--u-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; background: var(--n-100); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; align-self: flex-start; }
+  .reg-title { font-size: 12.5px; font-weight: 500; }
+  .reg-sub { font-size: 11px; color: var(--text-muted); }
+  .customer-pane { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+  .customer-head { display: flex; align-items: center; gap: 10px; }
+  .customer-mk { width: 28px; height: 28px; border-radius: 4px; background: var(--n-700); color: var(--n-25); display: flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 11px; font-weight: 700; }
+  .customer-name { font-size: 13px; font-weight: 600; }
+  .customer-portal { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); }
+  .customer-state { font-family: var(--u-mono); font-size: 9px; padding: 3px 7px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; background: var(--s-warn-tint); color: var(--s-warn); align-self: flex-start; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4l12 4-12 4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Change Control</span><span class="sep">/</span>
+        <span>ECOs</span><span class="sep">/</span>
+        <span class="cur">ECO-2148 · CCB review</span>
+      </div>
+    </div>
+
+    <div class="id-row">
+      <span class="eco-id">ECO-2148</span>
+      <span class="eco-title">Bracket sub-assembly · fastener torque spec revision</span>
+      <span class="class-pill">Class I · FAA</span>
+    </div>
+
+    <div class="step-bar">
+      <div class="step done"><span class="n">✓</span>Identify &amp; classify</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step done"><span class="n">✓</span>Evaluate impact</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step cur"><span class="n">3</span>CCB review &amp; approve</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step"><span class="n">4</span>Cut-in &amp; verify</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Change Control Board · ECO-2148</div>
+      <div class="panel-sub">Five voting members. Each vote is bound to the Thread with rationale and the evidence reviewed.</div>
+
+      <div class="ccb-board">
+        <div class="ccb-head">
+          <span class="label">CCB-447 · convened Apr 22 · 10:00</span>
+          <span class="meta">Quorum 5/5 · all functional reviews complete</span>
+        </div>
+        <div class="ccb-list">
+          <div class="ccb-row">
+            <span class="ccb-av" style="background: linear-gradient(180deg,#D29ACC,#A06BA5);">PR</span>
+            <div><div class="ccb-name">Priya Ramesh</div><div class="ccb-role">VP Engineering · CCB chair</div></div>
+            <span class="ccb-vote approve">Approved</span>
+            <span class="ccb-time">10:14 · Apr 22</span>
+            <span class="ccb-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="var(--s-ok)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="ccb-rationale">
+            <b>Chair rationale:</b> FEM margins acceptable. Improvement to NC-25 root cause is well-supported. Approve pending Boeing prime concurrence and operator training completion before cut-over.
+          </div>
+          <div class="ccb-row">
+            <span class="ccb-av" style="background: linear-gradient(180deg,#8DBDA6,#5E9277);">DS</span>
+            <div><div class="ccb-name">Daniel Storm</div><div class="ccb-role">Engineering</div></div>
+            <span class="ccb-vote approve">Approved</span>
+            <span class="ccb-time">10:18</span>
+            <span class="ccb-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="var(--s-ok)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="ccb-row">
+            <span class="ccb-av" style="background: linear-gradient(180deg,#8AA9FF,#5775D9);">LM</span>
+            <div><div class="ccb-name">Lisa Martin</div><div class="ccb-role">Quality</div></div>
+            <span class="ccb-vote approve">Approved</span>
+            <span class="ccb-time">10:21</span>
+            <span class="ccb-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="var(--s-ok)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="ccb-row">
+            <span class="ccb-av" style="background: linear-gradient(180deg,#E1A879,#B47C4E);">RK</span>
+            <div><div class="ccb-name">Rupa Kapoor</div><div class="ccb-role">Manufacturing Engineering</div></div>
+            <span class="ccb-vote condition">Approve w/ conditions</span>
+            <span class="ccb-time">10:24</span>
+            <span class="ccb-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 5v3M8 11h.01" stroke="var(--s-warn)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="ccb-rationale">
+            <b>Condition:</b> Cut-in gated on operator training completion (14 ppl) and torque-tool re-calibration. In-flight WIP (18 units) must be held until effective date.
+          </div>
+          <div class="ccb-row">
+            <span class="ccb-av" style="background: linear-gradient(180deg,#9EB4CE,#6D8AAC);">JC</span>
+            <div><div class="ccb-name">Jack Coyne</div><div class="ccb-role">Supply Chain</div></div>
+            <span class="ccb-vote approve">Approved</span>
+            <span class="ccb-time">10:27</span>
+            <span class="ccb-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="var(--s-ok)" stroke-width="2" stroke-linecap="round"/></svg></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="decision">
+        <div class="ic"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div>
+          <div class="decision-title">CCB decision · Approved with conditions</div>
+          <div class="decision-body">
+            5 / 5 voting members concur. The change is approved pending Boeing prime concurrence (in flight) and the implementation conditions below. The decision, the rationale, and the evidence are all bound to the Thread.
+          </div>
+          <div class="decision-meta">
+            <span>5 / 5 approvers</span><span>·</span><span>2 conditions</span><span>·</span><span>14 evidence items reviewed</span><span>·</span><span>AS9100 §8.5.6 satisfied</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="conditions">
+        <div class="conditions-label">Conditions for cut-in (Step 4)</div>
+        <ul class="conditions-list">
+          <li>Boeing engineering concurrence received (currently in prime queue · 6d)</li>
+          <li>Operator training complete for 14 people · LMS-cascaded</li>
+          <li>Torque-tool re-calibration record TT-205 bound</li>
+          <li>In-flight WIP (18 units) held at MRB-3 until effective date</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost">← Back to impact</button>
+      <div class="spacer"></div>
+      <button class="btn btn-secondary">Export CCB minutes (PDF)</button>
+      <button class="btn btn-primary">Move to cut-in planning</button>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="right-eyebrow">Prime customer approval</div>
+    <div class="customer-pane">
+      <div class="customer-head">
+        <span class="customer-mk">B</span>
+        <div>
+          <div class="customer-name">Boeing 787-WX program</div>
+          <div class="customer-portal">portal · ECO-Notify-887</div>
+        </div>
+      </div>
+      <span class="customer-state">Awaiting · 6d in queue</span>
+      <div style="font-size: 12.5px; color: var(--text-muted); line-height: 1.55;">CCB decision pushed to Boeing portal. Evidence packet (FEM, test data, CCB minutes) attached. Boeing avg cycle: 14d.</div>
+    </div>
+
+    <div class="right-eyebrow">Regulatory frame on this gate</div>
+    <div class="reg">
+      <span class="reg-tag">AS9100</span>
+      <div class="reg-title">§8.5.6 · Control of changes</div>
+      <div class="reg-sub">Documented evaluation + approval + traceability</div>
+    </div>
+    <div class="reg">
+      <span class="reg-tag">FAA</span>
+      <div class="reg-title">14 CFR Part 21.95</div>
+      <div class="reg-sub">Minor change · DER signoff in-house</div>
+    </div>
+    <div class="reg">
+      <span class="reg-tag">NADCAP</span>
+      <div class="reg-title">Special process · unaffected</div>
+      <div class="reg-sub">No re-qualification trigger</div>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

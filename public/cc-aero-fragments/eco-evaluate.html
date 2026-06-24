@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ECO · Evaluate impact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 0; background: var(--n-25); height: 100vh; overflow: hidden; }
+  .shell { display: grid; grid-template-columns: 56px 1fr 380px; height: 100vh; background: var(--n-0); }
+  .nav { background: var(--n-0); border-right: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; padding: 14px 0; gap: 4px; }
+  .nav-logo { width: 32px; height: 32px; background: var(--u-primary); color: white; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; margin-bottom: 14px; }
+  .nav-item { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--n-400); border-radius: 3px; }
+  .nav-item.active { background: var(--u-primary-tint); color: var(--u-primary); position: relative; }
+  .nav-item.active::before { content: ''; position: absolute; left: -10px; top: 6px; bottom: 6px; width: 2px; background: var(--u-primary); }
+  .nav-spacer { flex: 1; }
+  .nav-avatar { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(180deg, #C4D0E8, #8F9FBF); }
+
+  .main { display: flex; flex-direction: column; min-width: 0; }
+  .topbar { padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; }
+  .crumb { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; display: flex; gap: 8px; }
+  .crumb .sep { color: var(--n-200); }
+  .crumb .cur { color: var(--text); }
+
+  .id-row { padding: 18px 24px 12px; display: flex; gap: 12px; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  .eco-id { font-family: var(--u-mono); font-size: 12px; color: var(--text-muted); background: var(--n-100); padding: 3px 9px; border-radius: 3px; letter-spacing: 0.04em; }
+  .eco-title { font-size: 19px; font-weight: 600; letter-spacing: -0.02em; }
+  .class-pill { background: var(--s-err-tint); color: var(--s-err); font-family: var(--u-mono); font-size: 10px; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-left: auto; }
+
+  .step-bar { display: flex; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--border); background: var(--n-25); overflow-x: auto; }
+  .step { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 500; color: var(--text-muted); white-space: nowrap; }
+  .step .n { font-family: var(--u-mono); width: 20px; height: 20px; background: var(--n-200); color: var(--n-700); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; }
+  .step.cur { background: var(--u-primary-tint); color: var(--u-primary); font-weight: 600; }
+  .step.cur .n { background: var(--u-primary); color: #fff; }
+  .step.done .n { background: var(--s-ok); color: #fff; }
+  .step-arrow { width: 14px; color: var(--n-300); margin: 0 2px; }
+
+  .panel { padding: 22px 24px; flex: 1; overflow: auto; }
+  .panel-title { font-size: 16px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 4px; }
+  .panel-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; }
+
+  /* FFF matrix */
+  .fff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  .fff { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+  .fff.warn { border-left: 3px solid var(--s-warn); }
+  .fff.ok { border-left: 3px solid var(--s-ok); }
+  .fff.err { border-left: 3px solid var(--s-err); }
+  .fff-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .fff-name { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .fff-body { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+  .fff-meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); padding-top: 8px; border-top: 1px dashed var(--border); }
+
+  /* Downstream propagation */
+  .prop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; }
+  .prop-cell { padding: 14px 16px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+  .prop-cell:nth-child(2n) { border-right: 0; }
+  .prop-cell:nth-last-child(-n+2) { border-bottom: 0; }
+  .prop-head { display: flex; align-items: center; gap: 10px; }
+  .prop-mk { width: 22px; height: 22px; border-radius: 3px; background: var(--n-100); display: flex; align-items: center; justify-content: center; }
+  .prop-mk.bound { background: var(--s-ok-tint); color: var(--s-ok); }
+  .prop-mk.pending { background: var(--s-warn-tint); color: var(--s-warn); }
+  .prop-mk svg { width: 12px; height: 12px; }
+  .prop-name { font-size: 13px; font-weight: 600; }
+  .prop-ref { font-family: var(--u-mono); font-size: 11px; color: var(--u-primary); }
+  .prop-sub { font-size: 12px; color: var(--text-muted); line-height: 1.5; padding-left: 32px; }
+
+  .reg-impact { margin-top: 18px; background: var(--s-err-tint); border: 1px solid var(--s-err); border-radius: 5px; padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start; }
+  .reg-impact .ic { width: 28px; height: 28px; border-radius: 50%; background: var(--s-err); color: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .reg-impact-title { font-size: 14px; font-weight: 600; color: var(--s-err); margin-bottom: 4px; }
+  .reg-impact-body { font-size: 13px; color: var(--n-700); line-height: 1.55; }
+  .reg-impact-body b { font-weight: 600; color: var(--n-900); }
+
+  .actions { padding: 14px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; align-items: center; }
+  .actions .spacer { flex: 1; }
+  .btn { font-family: var(--u-font); font-size: 13px; font-weight: 500; line-height: 1; padding: 9px 14px; border-radius: 3px; border: 1px solid transparent; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: var(--u-primary); color: #fff; }
+  .btn-secondary { background: var(--n-0); border-color: var(--border-strong); color: var(--text); }
+  .btn-ghost { color: var(--text-muted); }
+
+  .right { border-left: 1px solid var(--border); background: var(--n-25); padding: 22px; overflow: auto; }
+  .right-eyebrow { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); margin-bottom: 10px; }
+  .reviewer { background: var(--n-0); border: 1px solid var(--border); border-radius: 5px; padding: 12px 14px; display: flex; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .reviewer-av { width: 28px; height: 28px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; }
+  .reviewer-info { flex: 1; min-width: 0; }
+  .reviewer-name { font-size: 12.5px; font-weight: 500; }
+  .reviewer-role { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .reviewer-state { font-family: var(--u-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .rs-done { background: var(--s-ok-tint); color: var(--s-ok); }
+  .rs-active { background: var(--u-primary-tint); color: var(--u-primary); }
+  .rs-pending { background: var(--n-100); color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="nav">
+    <div class="nav-logo">U</div>
+    <div class="nav-item"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 8L9 3.5 15 8v6.5a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5V8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-item active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 4l12 4-12 4z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+    <div class="nav-spacer"></div>
+    <div class="nav-avatar"></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb">
+        <span>Change Control</span><span class="sep">/</span>
+        <span>ECOs</span><span class="sep">/</span>
+        <span class="cur">ECO-2148 · Impact</span>
+      </div>
+    </div>
+
+    <div class="id-row">
+      <span class="eco-id">ECO-2148</span>
+      <span class="eco-title">Bracket sub-assembly · fastener torque spec revision</span>
+      <span class="class-pill">Class I · FAA</span>
+    </div>
+
+    <div class="step-bar">
+      <div class="step done"><span class="n">✓</span>Identify &amp; classify</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step cur"><span class="n">2</span>Evaluate impact</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step"><span class="n">3</span>CCB review &amp; approve</div>
+      <svg class="step-arrow" viewBox="0 0 14 14"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+      <div class="step"><span class="n">4</span>Cut-in &amp; verify</div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Form / Fit / Function impact</div>
+      <div class="panel-sub">Three-dimensional impact assessment, each evaluated by its functional owner. Evidence bound at the time of evaluation.</div>
+
+      <div class="fff-grid">
+        <div class="fff warn">
+          <span class="fff-eyebrow">Form</span>
+          <span class="fff-name">No geometric change</span>
+          <div class="fff-body">Bracket geometry unchanged. Torque spec adjustment only; fastener seating envelope unaffected.</div>
+          <div class="fff-meta">Eval · J. Coyne · 2 evidence items bound</div>
+        </div>
+        <div class="fff err">
+          <span class="fff-eyebrow">Fit</span>
+          <span class="fff-name">Higher seating force on mating part</span>
+          <div class="fff-body">+14% clamp load. FEM re-run for mating bracket — design margin 4.2x retained. Validates within spec.</div>
+          <div class="fff-meta">Eval · R. Kapoor · FEM-2148.pdf · 5 items</div>
+        </div>
+        <div class="fff ok">
+          <span class="fff-eyebrow">Function</span>
+          <span class="fff-name">Improved fastener retention</span>
+          <div class="fff-body">Higher preload addresses NC-25 root cause. Vibration test re-run shows 26% improvement in joint integrity over service life.</div>
+          <div class="fff-meta">Eval · D. Storm · TEST-441 · 8 items</div>
+        </div>
+      </div>
+
+      <div class="panel-title">Downstream propagation · auto-computed</div>
+      <div class="panel-sub">Every dependent record across BoM, routings, training, supplier docs, and inspection criteria. Status tracked per record.</div>
+
+      <div class="prop-grid">
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk bound"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">DWG-4471 · Rev D → E</span>
+          </div>
+          <span class="prop-ref">PLM · Windchill</span>
+          <div class="prop-sub">Drawing revision in PLM. Auto-cascades torque callout to detail views.</div>
+        </div>
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk bound"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">BoM line 4471-03</span>
+          </div>
+          <span class="prop-ref">ERP · SAP MM</span>
+          <div class="prop-sub">Routing op 030 callout updated. New torque tool linked.</div>
+        </div>
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk pending"><svg viewBox="0 0 16 16" fill="none"><path d="M8 5v3M8 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">Work instruction WI-0211</span>
+          </div>
+          <span class="prop-ref">Doc Control · DCN-1148</span>
+          <div class="prop-sub">DCN drafted · pending Q signoff before issue.</div>
+        </div>
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk pending"><svg viewBox="0 0 16 16" fill="none"><path d="M8 5v3M8 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">Operator training · 14 ppl</span>
+          </div>
+          <span class="prop-ref">LMS · Cornerstone</span>
+          <div class="prop-sub">Training module scheduled · cut-over gated on completion.</div>
+        </div>
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk bound"><svg viewBox="0 0 16 16" fill="none"><path d="M4 8l3 3 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">Inspection criteria IC-877</span>
+          </div>
+          <span class="prop-ref">Inspection · IC system</span>
+          <div class="prop-sub">Updated torque verification step added to final inspection.</div>
+        </div>
+        <div class="prop-cell">
+          <div class="prop-head">
+            <span class="prop-mk pending"><svg viewBox="0 0 16 16" fill="none"><path d="M8 5v3M8 11h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+            <span class="prop-name">Atlas Components · supplier spec</span>
+          </div>
+          <span class="prop-ref">SCN-2148 to supplier</span>
+          <div class="prop-sub">Supplier change notice issued · acknowledgment pending.</div>
+        </div>
+      </div>
+
+      <div class="reg-impact">
+        <div class="ic">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1l7 14H1z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M8 6v3M8 12h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="reg-impact-title">FAA Part 21 + Boeing prime approval required</div>
+          <div class="reg-impact-body">
+            Class I change to type-certified product. <b>Boeing engineering review</b> required before cut-in (avg 14d in prime queue). <b>FAA notification</b> filed under Part 21.95 — minor change pathway, in-house DER signoff sufficient. <b>NADCAP scope unchanged</b> — special process unaffected.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-ghost">← Back to classify</button>
+      <div class="spacer"></div>
+      <button class="btn btn-secondary">Request additional analysis</button>
+      <button class="btn btn-primary">Submit impact → CCB review</button>
+    </div>
+  </main>
+
+  <aside class="right">
+    <div class="right-eyebrow">Functional reviewers</div>
+    <div class="reviewer">
+      <span class="reviewer-av" style="background: linear-gradient(180deg,#8DBDA6,#5E9277);">DS</span>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Daniel Storm</div>
+        <div class="reviewer-role">Engineering · Function</div>
+      </div>
+      <span class="reviewer-state rs-done">Done</span>
+    </div>
+    <div class="reviewer">
+      <span class="reviewer-av" style="background: linear-gradient(180deg,#E1A879,#B47C4E);">RK</span>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Rupa Kapoor</div>
+        <div class="reviewer-role">Stress · Fit (FEM)</div>
+      </div>
+      <span class="reviewer-state rs-done">Done</span>
+    </div>
+    <div class="reviewer">
+      <span class="reviewer-av" style="background: linear-gradient(180deg,#9EB4CE,#6D8AAC);">JC</span>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Jack Coyne</div>
+        <div class="reviewer-role">Design · Form</div>
+      </div>
+      <span class="reviewer-state rs-done">Done</span>
+    </div>
+    <div class="reviewer">
+      <span class="reviewer-av" style="background: linear-gradient(180deg,#8AA9FF,#5775D9);">LM</span>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Lisa Martin</div>
+        <div class="reviewer-role">Quality · Q signoff (WI)</div>
+      </div>
+      <span class="reviewer-state rs-active">Reviewing</span>
+    </div>
+    <div class="reviewer">
+      <span class="reviewer-av" style="background: linear-gradient(180deg,#D29ACC,#A06BA5);">PR</span>
+      <div class="reviewer-info">
+        <div class="reviewer-name">Priya Ramesh</div>
+        <div class="reviewer-role">DER · FAA pathway</div>
+      </div>
+      <span class="reviewer-state rs-pending">Queued</span>
+    </div>
+  </aside>
+</div>
+</body>
+</html>

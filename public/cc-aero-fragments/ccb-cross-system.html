@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cross-system binding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 26px; background: var(--n-25); }
+  .frame { background: var(--n-0); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .frame-head { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: baseline; }
+  .frame-head .id { font-family: var(--u-mono); font-size: 11px; color: var(--text-muted); background: var(--n-100); padding: 3px 8px; border-radius: 3px; letter-spacing: 0.04em; }
+  .frame-head .title { font-size: 14px; font-weight: 600; }
+  .frame-head .meta { font-family: var(--u-mono); font-size: 10px; color: var(--text-faint); margin-left: auto; text-transform: uppercase; letter-spacing: 0.06em; }
+  .systems { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .sys { border-right: 1px solid var(--border); padding: 18px 16px 16px; display: flex; flex-direction: column; gap: 10px; background: var(--n-0); }
+  .sys:last-child { border-right: 0; }
+  .sys.unifize { background: var(--u-primary-tint); }
+  .sys-head { display: flex; gap: 8px; align-items: center; }
+  .sys-mark { width: 26px; height: 26px; border-radius: 5px; background: var(--n-100); color: var(--n-700); display: flex; align-items: center; justify-content: center; font-family: var(--u-mono); font-size: 11px; font-weight: 700; }
+  .sys.unifize .sys-mark { background: var(--u-primary); color: #fff; }
+  .sys-name { font-size: 12.5px; font-weight: 600; }
+  .sys-role { font-family: var(--u-mono); font-size: 9px; color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .sys-body { font-size: 11.5px; color: var(--text); line-height: 1.5; flex: 1; padding-top: 4px; border-top: 1px dashed var(--border); }
+  .sys-ref { background: var(--n-25); border: 1px solid var(--border); border-radius: 3px; padding: 6px 8px; font-family: var(--u-mono); font-size: 10px; color: var(--text); display: inline-flex; gap: 6px; align-items: center; align-self: flex-start; }
+  .sys-ref .nm { color: var(--u-primary); font-weight: 600; }
+  .sys-state { font-family: var(--u-mono); font-size: 9px; padding: 2px 6px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; align-self: flex-start; }
+  .sys-state.ok { background: var(--s-ok-tint); color: var(--s-ok); }
+  .sys-state.live { background: var(--u-primary-tint); color: var(--u-primary); border: 1px solid var(--u-primary); }
+  .sys-state.bound { background: var(--n-100); color: var(--text-muted); }
+
+  .lane { grid-column: span 5; border-top: 1px solid var(--border); background: var(--n-25); padding: 16px 22px; display: flex; flex-direction: column; gap: 4px; }
+  .lane-label { font-family: var(--u-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); }
+  .lane-text { font-size: 12.5px; color: var(--text); line-height: 1.55; }
+  .lane-text b { color: var(--u-primary); font-weight: 600; }
+  @media (max-width: 1100px) {
+    .systems { grid-template-columns: repeat(3, 1fr); }
+    .lane { grid-column: span 3; }
+  }
+  @media (max-width: 700px) {
+    .systems { grid-template-columns: 1fr 1fr; }
+    .lane { grid-column: span 2; }
+  }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="frame-head">
+    <span class="id">ECO-2148 · cross-system</span>
+    <span class="title">Five systems · one approved revision · governed Thread in the middle</span>
+    <span class="meta">All refs resolve to live records</span>
+  </div>
+  <div class="systems">
+    <div class="sys unifize">
+      <div class="sys-head"><span class="sys-mark">U</span><div><div class="sys-name">Unifize</div><div class="sys-role">Coordination</div></div></div>
+      <div class="sys-body">The Thread holding the rationale, CCB votes, evidence, propagation status — the decision moment itself.</div>
+      <span class="sys-state live">Live</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">W</span><div><div class="sys-name">PTC Windchill</div><div class="sys-role">PLM · CAD</div></div></div>
+      <div class="sys-body">DWG-4471 Rev E checked in. BoM line 4471-03 updated. Receives approved revision on commit.</div>
+      <span class="sys-ref"><span class="nm">DWG-4471</span>· Rev E</span>
+      <span class="sys-state ok">Sync OK</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">S</span><div><div class="sys-name">SAP S/4</div><div class="sys-role">ERP · MRP</div></div></div>
+      <div class="sys-body">Routing op 030 callout updated. New torque tool linked. Effective lot LOT-275 marked.</div>
+      <span class="sys-ref"><span class="nm">RTG-4471</span>· Rev 4</span>
+      <span class="sys-state ok">Sync OK</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">B</span><div><div class="sys-name">Boeing portal</div><div class="sys-role">Customer · prime</div></div></div>
+      <div class="sys-body">Prime concurrence requested via Boeing portal. Evidence packet attached. Response on file.</div>
+      <span class="sys-ref"><span class="nm">B-PCN-887</span>· acked</span>
+      <span class="sys-state ok">Concurred</span>
+    </div>
+    <div class="sys">
+      <div class="sys-head"><span class="sys-mark">A</span><div><div class="sys-name">Atlas portal</div><div class="sys-role">Supplier</div></div></div>
+      <div class="sys-body">SCN issued to Atlas Components with new fastener spec. Acknowledgment + first-shipment ID returned.</div>
+      <span class="sys-ref"><span class="nm">SCN-2148</span>· acked</span>
+      <span class="sys-state bound">Bound</span>
+    </div>
+  </div>
+  <div class="lane">
+    <div class="lane-label">What this means</div>
+    <div class="lane-text">
+      The ECO doesn't depend on email-relay between PLM / ERP / supplier portal / customer portal. <b>Unifize binds the references at the moment of CCB approval</b> — and pushes the resolved payload to each system of record. Email, Teams, supplier emails, design-review notes all <b>feed into the Thread</b>; the Thread is what an FAA or Boeing auditor reads.
+    </div>
+  </div>
+</div>
+</body>
+</html>

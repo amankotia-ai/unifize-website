@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Coordination tax</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 28px; background: var(--n-25); }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    gap: 0; align-items: stretch;
+  }
+  .col {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .col-eyebrow {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  .col-title { font-size: 18px; font-weight: 600; letter-spacing: -0.015em; color: var(--text); }
+  .stamp {
+    background: var(--n-50);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .stamp .nm { font-family: var(--u-mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em; text-transform: uppercase; }
+  .stamp .v { font-size: 14px; font-weight: 500; }
+  .stamp-row { display: flex; justify-content: space-between; align-items: baseline; }
+  .closed-badge {
+    align-self: flex-start;
+    background: var(--s-ok-tint); color: var(--s-ok);
+    font-family: var(--u-mono); font-size: 10px;
+    padding: 3px 8px; border-radius: 3px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .invisible-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 7px;
+  }
+  .invisible-list li {
+    display: flex; align-items: baseline; gap: 10px;
+    font-size: 13px; color: var(--text-muted);
+    padding: 6px 10px;
+    border-left: 2px dashed var(--n-200);
+  }
+  .invisible-list .n {
+    font-family: var(--u-mono); font-size: 12px;
+    color: var(--text-faint); flex-shrink: 0;
+    width: 22px;
+  }
+  .vs {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.1em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+  .vs .line { width: 1px; height: 32%; background: var(--border); }
+  @media (max-width: 720px) {
+    .row { grid-template-columns: 1fr; }
+    .vs { padding: 16px 0; }
+    .vs .line { width: 30%; height: 1px; }
+  }
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="col">
+    <div>
+      <div class="col-eyebrow">What the QMS sees</div>
+      <div class="col-title">The closed record</div>
+    </div>
+    <div class="stamp">
+      <span class="closed-badge">CLOSED · Apr 27</span>
+      <div class="stamp-row"><span class="nm">NC ID</span><span class="v">NC-25</span></div>
+      <div class="stamp-row"><span class="nm">Severity</span><span class="v">Major</span></div>
+      <div class="stamp-row"><span class="nm">Disposition</span><span class="v">Scrap · 12 units</span></div>
+      <div class="stamp-row"><span class="nm">CAR linked</span><span class="v">CAR-41</span></div>
+      <div class="stamp-row"><span class="nm">Approver</span><span class="v">Priya Ramesh · VP Quality</span></div>
+    </div>
+  </div>
+  <div class="vs">
+    <div class="line"></div>
+    <div>vs</div>
+    <div class="line"></div>
+  </div>
+  <div class="col">
+    <div>
+      <div class="col-eyebrow">What the QMS misses</div>
+      <div class="col-title">The coordination tax</div>
+    </div>
+    <ul class="invisible-list">
+      <li><span class="n">8×</span>Handoffs between inspection, engineering, supplier, quality</li>
+      <li><span class="n">6×</span>Approval cycles before disposition was committed</li>
+      <li><span class="n">3×</span>Cross-functional meetings to align on rationale</li>
+      <li><span class="n">10×</span>Evidence items reassembled from email threads</li>
+      <li><span class="n">~9d</span>Spent reconstructing context for the auditor</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Status badges</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/chat-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-50); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+  }
+  .swatch {
+    background: var(--n-0);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 14px 12px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .swatch .name {
+    font-family: var(--u-mono); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .swatch .use {
+    font-size: 11px; color: var(--text-muted); line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="swatch">
+    <div><span class="badge badge-info"><span class="pulse"></span>IDENTIFIED</span></div>
+    <div class="name">badge-info</div>
+    <div class="use">In progress, linked, or governed. The brand-blue badge — the working state.</div>
+  </div>
+  <div class="swatch">
+    <div><span class="badge badge-ok"><span class="pulse"></span>COMPLETE</span></div>
+    <div class="name">badge-ok</div>
+    <div class="use">Closed, approved, verified. Green; signals "done and safe to move on."</div>
+  </div>
+  <div class="swatch">
+    <div><span class="badge badge-warn"><span class="pulse"></span>PENDING</span></div>
+    <div class="name">badge-warn</div>
+    <div class="use">Awaiting a person — review, approval, signature. Amber; you should look.</div>
+  </div>
+  <div class="swatch">
+    <div><span class="badge badge-err"><span class="pulse"></span>OVERDUE</span></div>
+    <div class="name">badge-err</div>
+    <div class="use">Past due or failed. Red; escalate.</div>
+  </div>
+  <div class="swatch">
+    <div><span class="badge badge-neutral"><span class="pulse"></span>DRAFT</span></div>
+    <div class="name">badge-neutral</div>
+    <div class="use">Not yet active. Used for drafts, archived records, or non-decisive states.</div>
+  </div>
+</div>
+</body>
+</html>

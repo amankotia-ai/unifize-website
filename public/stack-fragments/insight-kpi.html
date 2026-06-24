@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KPI cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/stack-fragments/styles.css" />
+<style>
+  body { padding: 24px; background: var(--n-25); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="kpi">
+    <div class="kpi-label">Avg closure TAT</div>
+    <div class="kpi-value">14.2 <span class="unit">days</span></div>
+    <div class="kpi-delta up">↓ 8.1% vs last 30d</div>
+    <svg class="kpi-spark" width="68" height="24" viewBox="0 0 68 24" fill="none"><polyline points="0,18 8,16 16,17 24,14 32,11 40,10 48,7 56,5 68,6" stroke="var(--u-primary)" stroke-width="1.6" fill="none"/></svg>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Open NCs</div>
+    <div class="kpi-value">27</div>
+    <div class="kpi-delta down">↑ 3 new this week</div>
+    <svg class="kpi-spark" width="68" height="24" viewBox="0 0 68 24" fill="none"><polyline points="0,14 8,15 16,12 24,13 32,12 40,10 48,13 56,11 68,8" stroke="var(--n-500)" stroke-width="1.6" fill="none"/></svg>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Closed in quarter</div>
+    <div class="kpi-value">41</div>
+    <div class="kpi-delta up">↑ 12 vs Q1</div>
+    <svg class="kpi-spark" width="68" height="24" viewBox="0 0 68 24" fill="none"><polyline points="0,20 8,19 16,16 24,14 32,12 40,13 48,9 56,8 68,5" stroke="var(--s-ok)" stroke-width="1.6" fill="none"/></svg>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">On-time closure</div>
+    <div class="kpi-value">82<span class="unit">%</span></div>
+    <div class="kpi-delta up">↑ 4pts vs 30d</div>
+    <svg class="kpi-spark" width="68" height="24" viewBox="0 0 68 24" fill="none"><polyline points="0,14 8,12 16,13 24,10 32,11 40,8 48,9 56,6 68,5" stroke="var(--u-primary)" stroke-width="1.6" fill="none"/></svg>
+  </div>
+</div>
+</body>
+</html>
