@@ -13,7 +13,7 @@ import {
 } from "@/components/workflow";
 import { getWorkflow } from "@/lib/platform-data/workflows";
 import { MD_STANDARDS, MD_ROOT_CAUSE } from "@/lib/platform-data/medical-devices-canonical";
-import { HeroGlyph, MED_CROSS_GLYPH, SiteFooterX } from "../_shared";
+import { HeroGlyph, MED_CROSS_GLYPH, TrustStrip, ProofBlock, SiteFooterX } from "../_shared";
 import "../explorations.css";
 
 export const metadata: Metadata = {
@@ -79,6 +79,8 @@ export default function SymptomsPage() {
           </div>
         </div>
       </header>
+
+      <TrustStrip />
 
       {/* STAKES */}
       <section className="section white">
@@ -165,6 +167,8 @@ export default function SymptomsPage() {
           </div>
         </div>
       </section>
+
+      <ProofBlock surface="white" />
 
       <MoneyShot unit="CAPA" />
 

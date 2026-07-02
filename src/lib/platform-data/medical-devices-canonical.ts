@@ -207,6 +207,28 @@ export const MD_PRODUCTS = [
   { name: "MES", note: "from $1,950 / org / mo" },
 ] as const;
 
+/* --- Proof (real, from Notion) -------------------------------------------- */
+// source: Proof Points DB → PFP-1 (Customer-attested, anonymized "Acme") +
+// Customer Scoring → Recovery Force (CSC-2, the named med-device case-study
+// anchor per CCO directive) + Content Library → Harmonic Bionics case study.
+// Advocacy-level rules (Content Blocks → "Proof"): named customer + workflow-
+// specific; metric claims only if customer-approved → the % is anonymized.
+export const MD_PROOF = {
+  stat: {
+    pct: 41,
+    recovered: 81_350, // $/yr recovered, year one
+    baseline: 198_150, // signed baseline $/yr
+    metric: "non-conformance coordination cost",
+    detail:
+      "A medical-device manufacturer recovered $81,350 a year — about 41% — against a signed $198,150 baseline, in the first year.",
+    attribution: "Customer-attested · medical devices",
+  },
+  customers: [
+    { name: "Recovery Force", desc: "FDA-regulated Class I/II wearable medical devices, running CAPA, document control, training, and complaints on Unifize." },
+    { name: "Harmonic Bionics", desc: "Surgical robotics, with quality and change control held on one accountable thread." },
+  ],
+} as const;
+
 /* --- Coexistence context (shared by the workflow components) -------------- */
 // source: Concept Map (PLT-2) + Products + Standards. Mirrors the Coexistence
 // context the live change-control page passes, retargeted to the CAPA record.

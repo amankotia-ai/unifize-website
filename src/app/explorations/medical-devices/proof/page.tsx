@@ -12,7 +12,7 @@ import {
 } from "@/components/workflow";
 import { getWorkflow } from "@/lib/platform-data/workflows";
 import { MD_STANDARDS } from "@/lib/platform-data/medical-devices-canonical";
-import { ScreenFrame, SiteFooterX } from "../_shared";
+import { ScreenFrame, TrustStrip, ProofBlock, SiteFooterX } from "../_shared";
 import "../explorations.css";
 
 export const metadata: Metadata = {
@@ -62,6 +62,8 @@ export default function ProofPage() {
           </div>
         </div>
       </header>
+
+      <TrustStrip />
 
       {/* CLAIM 1 — conversation */}
       <section className="section white">
@@ -124,6 +126,7 @@ export default function ProofPage() {
       </section>
 
       <CoexistenceLayer workflow={capa} context={coexistence} />
+      <ProofBlock surface="white" />
       <MoneyShot unit="CAPA" />
 
       <section className="section dark close-band">

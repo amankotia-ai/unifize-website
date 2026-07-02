@@ -1,0 +1,276 @@
+/* ============================================================================
+ * 03 · The Coverage Atlas, fresh visual language ("precision survey map").
+ * Layered on _base.css. Token overrides on the .it.v-atlas root re-skin the
+ * shared system to a control-room atlas: warm paper as the map field, ink
+ * near-black text, ONE cool deep-teal accent used only on live routing
+ * affordances and active state. The tier hierarchy (4 Primary pillars vs 5
+ * Secondary doors) is encoded by ELEVATION and WEIGHT, not hue: a faint
+ * raised plane for pillars, flat paper for the rest, which is the single
+ * biggest defence against a feature wall. Distinct from the ledger's
+ * statement-grade green: this is calm, instrumented, plotted.
+ * ========================================================================== */
+.it.v-atlas {
+  /* warm-paper map field */
+  --it-bg: #fbf9f4;
+  --it-alt: #f4f0e7;
+  --it-warm: #f4f0e7;
+  --it-warm-line: #e6ddcc;
+  --it-line: #e7dfd0;
+  --it-line-2: #d6cab4;
+  --it-text: #16191c;
+  --it-text-2: #41464b;
+  --it-muted: #5d6358;
+  --it-faint: #797f78;
+
+  /* deep teal: the single accent, only on live routing + active state */
+  --it-blue: #166b7a;
+  --it-blue-hover: #115561;
+  --it-blue-tint: #e6f0f1;
+  --it-blue-border: #c2dde0;
+  --it-blue-d: oklch(0.82 0.09 200);
+
+  /* ink "bookend" dark surfaces (hero + close) */
+  --it-dark: #14181b;
+  --it-ink: #14181b;
+  --it-cool: #e6f0f1;
+  --it-cool-line: #c2dde0;
+
+  /* the faint raised plane the Primary pillars sit on */
+  --at-raise: #fdfcf8;
+  --at-raise-line: #e0d6c4;
+}
+
+/* mono reads as "instrument labels on a map" across the whole direction */
+.v-atlas .at-mono { font-family: var(--it-mono); font-variant-numeric: tabular-nums; }
+
+/* a barely-there survey grid on the light sections so the field reads as a
+   chart, not a void. <=3% opacity, no gradients-as-drama. */
+.v-atlas .it-section:not(.is-dark) {
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 47px, oklch(0.2 0.02 200 / 0.022) 47px 48px),
+    repeating-linear-gradient(90deg, transparent 0 47px, oklch(0.2 0.02 200 / 0.022) 47px 48px);
+}
+.v-atlas .it-section.it-section-alt {
+  background-color: var(--it-alt);
+}
+
+/* ---- A · atlas hero (ink plane; the legend + on-ramp for the map below) ----
+ * Short, ~1/3 viewport, so the Atlas crests into view immediately. */
+.v-atlas .it-hero {
+  min-height: auto; display: block; padding: clamp(72px, 8vw, 104px) 0 clamp(56px, 6vw, 76px);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 47px, oklch(1 0 0 / 0.02) 47px 48px),
+    repeating-linear-gradient(90deg, transparent 0 47px, oklch(1 0 0 / 0.02) 47px 48px),
+    var(--it-dark);
+}
+.v-atlas .it-hero::after { display: none; }
+.v-atlas .it-hero-shot { display: none; }
+.v-atlas .it-hero-copy { max-width: 64ch; }
+
+.at-hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--it-on-dark-2); margin-bottom: 22px;
+}
+.at-hero-title {
+  font-family: var(--it-display); font-weight: 600; font-size: clamp(34px, 4.4vw, 54px);
+  line-height: 1.08; letter-spacing: -0.03em; color: #fff; margin: 0 0 20px; max-width: 18ch; text-wrap: balance;
+}
+.at-hero-sub { font-size: 18px; line-height: 1.6; color: var(--it-on-dark-2); max-width: 56ch; margin: 0 0 14px; }
+.at-hero-sub b { color: var(--it-on-dark); font-weight: 600; }
+.at-hero-coexist { font-size: 15px; line-height: 1.6; color: var(--it-on-dark-2); max-width: 56ch; margin: 0 0 30px; }
+
+/* the regulatory frame chips: quiet mono strip, the "one frame" */
+.at-frame { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 22px; }
+.at-frame li {
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.02em; color: var(--it-on-dark-2);
+  background: oklch(1 0 0 / 0.04); border: 1px solid var(--it-on-dark-line); border-radius: 5px; padding: 7px 11px;
+}
+
+/* the one economic number, set small as a caption to the breadth claim */
+.at-hero-econ {
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums; font-size: 13px; line-height: 1.6;
+  color: var(--it-on-dark-2); margin: 0 0 30px; max-width: 60ch;
+}
+.at-hero-econ b { color: var(--it-on-dark); font-weight: 600; }
+
+/* the dual on-ramp: the page's two doors, stated explicitly */
+.at-onramp { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 26px; }
+.at-onramp a {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  font-size: 14px; font-weight: 600; color: var(--it-on-dark);
+  border: 1px solid var(--it-on-dark-line); border-radius: 8px; padding: 11px 16px;
+  background: oklch(1 0 0 / 0.03); transition: border-color 0.16s ease, background 0.16s ease;
+}
+.at-onramp a:hover { border-color: var(--it-blue-d); background: oklch(1 0 0 / 0.06); }
+.at-onramp a span { font-family: var(--it-mono); color: var(--it-blue-d); }
+
+.v-atlas .it-hero .it-ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.v-atlas .it-hero .it-btn-ghost { color: var(--it-on-dark); border-color: var(--it-on-dark-line); }
+.v-atlas .it-hero .it-btn-ghost:hover { background: oklch(1 0 0 / 0.06); border-color: var(--it-on-dark-2); }
+
+/* ---- B · THE ATLAS: the full coverage grid, all 9 domains at once ---- */
+.at-atlas-note {
+  font-size: 15px; line-height: 1.6; color: var(--it-muted); max-width: 64ch; margin: 0 0 8px;
+}
+
+/* the tier band label ("PRIMARY PILLARS" / "ADJACENT DOORS") */
+.at-tierlab {
+  display: flex; align-items: center; gap: 16px; margin: clamp(32px, 4vw, 44px) 0 18px;
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--it-muted);
+}
+.at-tierlab::after { content: ""; flex: 1; height: 1px; background: var(--it-line-2); }
+.at-tierlab:first-of-type { margin-top: 4px; }
+
+/* the grids: Primary span wider columns (raised), Secondary denser (flat) */
+.at-grid { display: grid; gap: 16px; }
+.at-grid-primary { grid-template-columns: repeat(4, 1fr); }
+.at-grid-secondary { grid-template-columns: repeat(5, 1fr); }
+
+/* a domain region: a plotted area, not a UI card */
+.at-region { display: flex; flex-direction: column; border-radius: var(--it-r); padding: 22px; }
+/* Primary pillars: faint raised plane + hairline + soft shadow (elevation = tier) */
+.at-region.is-primary {
+  background: var(--at-raise); border: 1px solid var(--at-raise-line); box-shadow: var(--it-elev-1);
+}
+/* Secondary doors: flat on the paper, hairline only */
+.at-region.is-secondary {
+  background: transparent; border: 1px solid var(--it-line); padding: 18px;
+}
+
+.at-region-head { padding-bottom: 16px; border-bottom: 1px solid var(--it-line); margin-bottom: 16px; }
+.at-region.is-secondary .at-region-head { padding-bottom: 12px; margin-bottom: 12px; }
+.at-region-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.at-region-name { font-family: var(--it-display); font-weight: 600; letter-spacing: -0.015em; margin: 0; color: var(--it-text); }
+.at-region.is-primary .at-region-name { font-size: 20px; }
+.at-region.is-secondary .at-region-name { font-size: 16px; }
+.at-region-count {
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums; font-size: 11px; color: var(--it-muted);
+  border: 1px solid var(--it-line-2); border-radius: 20px; padding: 3px 9px; white-space: nowrap; flex: none;
+}
+.at-region-owner {
+  font-family: var(--it-mono); font-size: 11.5px; letter-spacing: 0.02em; color: var(--it-muted);
+  display: block; margin: 8px 0 0;
+}
+.at-region-promise { font-size: 13px; line-height: 1.5; color: var(--it-text-2); margin: 10px 0 0; }
+.at-region.is-secondary .at-region-promise { font-size: 12.5px; }
+
+/* module doors inside a region: compact rows */
+.at-mods { display: grid; gap: 12px; align-content: start; }
+.at-region.is-secondary .at-mods { gap: 10px; }
+.at-mod { display: flex; flex-direction: column; }
+.at-mod + .at-mod { padding-top: 12px; border-top: 1px solid var(--it-line); }
+.at-region.is-secondary .at-mod + .at-mod { padding-top: 10px; }
+.at-mod-name { font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--it-text); margin: 0; }
+.at-region.is-secondary .at-mod-name { font-size: 13px; }
+.at-mod-blurb { font-size: 12px; line-height: 1.45; color: var(--it-muted); margin: 5px 0 0; }
+
+/* standards chips: mono "instrument labels" */
+.at-mod-std { display: flex; flex-wrap: wrap; gap: 5px; margin: 9px 0 0; }
+.at-mod-std span {
+  font-family: var(--it-mono); font-size: 10px; letter-spacing: 0.01em; color: var(--it-muted);
+  border: 1px solid var(--it-line-2); border-radius: 4px; padding: 2px 6px;
+}
+
+/* the routing affordance: live link gets the accent; placeholder is honest */
+.at-mod-go { margin-top: 9px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+a.at-mod-go {
+  color: var(--it-blue); text-decoration: none;
+  transition: gap 0.16s ease;
+}
+a.at-mod-go:hover { gap: 9px; }
+a.at-mod-go .at-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--it-blue); }
+span.at-mod-go { color: var(--it-faint); font-weight: 500; }
+
+.at-atlas-foot {
+  margin: clamp(28px, 3.5vw, 40px) 0 0; padding-top: 18px; border-top: 1px solid var(--it-line);
+  font-size: 13.5px; line-height: 1.6; color: var(--it-muted); max-width: 72ch;
+}
+.at-atlas-foot b { color: var(--it-text); font-weight: 600; }
+
+/* ---- D · why now: triggers as compact badges (the events that light up the map) ---- */
+.at-trigs { display: flex; flex-wrap: wrap; gap: 10px; }
+.at-trig {
+  font-family: var(--it-mono); font-size: 12.5px; letter-spacing: 0.01em; color: var(--it-text-2);
+  background: var(--it-bg); border: 1px solid var(--it-line-2); border-radius: 20px; padding: 9px 15px;
+}
+
+/* ---- E · the structural why (one quiet line) ---- */
+.at-why { max-width: 64ch; }
+.at-why p { font-size: clamp(19px, 2.2vw, 24px); line-height: 1.4; letter-spacing: -0.01em; color: var(--it-text); margin: 0; }
+.at-why p b { font-weight: 600; }
+.at-why p em { font-style: normal; color: var(--it-blue); }
+
+/* ---- F · what it costs: five word-tiles, NO $ ---- */
+.at-cost { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.at-cost-tile { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 22px; background: var(--it-bg); }
+.at-cost-name { font-family: var(--it-display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; }
+.at-cost-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.at-cost-list li { font-size: 12.5px; line-height: 1.4; color: var(--it-muted); }
+
+/* ---- G · proof ---- */
+.at-proof { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.at-proof-fig {
+  border: 1px solid var(--it-blue-border); background: var(--it-blue-tint); border-radius: var(--it-r);
+  padding: 36px; display: flex; flex-direction: column;
+}
+.at-proof-pretag { font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-blue); margin-bottom: 16px; }
+.at-proof-pct {
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums; font-size: clamp(40px, 5.2vw, 60px);
+  font-weight: 600; color: var(--it-blue); line-height: 1; letter-spacing: -0.03em;
+}
+.at-proof-pct small { font-size: 0.4em; color: var(--it-text-2); font-weight: 600; letter-spacing: 0; }
+.at-proof-ctx { font-size: 16px; line-height: 1.55; color: var(--it-text); margin: 18px 0 0; }
+.at-proof-ctx b { font-weight: 600; }
+.at-proof-attr { margin-top: auto; padding-top: 20px; font-size: 12.5px; color: var(--it-muted); }
+.at-proof-side { display: flex; flex-direction: column; gap: 16px; }
+.at-proof-names { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 26px; display: grid; gap: 16px; background: var(--it-bg); }
+.at-proof-names li { list-style: none; display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--it-line); }
+.at-proof-names li:last-child { border-bottom: 0; padding-bottom: 0; }
+.at-proof-names b { font-size: 15px; font-weight: 600; }
+.at-proof-names span { font-size: 13px; color: var(--it-muted); line-height: 1.45; }
+
+/* ---- H · why Unifize: differentiator spine + named incumbents as quiet chips ---- */
+.at-diff { max-width: 60ch; }
+.at-diff p { font-family: var(--it-display); font-weight: 600; letter-spacing: -0.015em; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.3; color: var(--it-text); margin: 0; }
+.at-diff p em { font-style: normal; color: var(--it-blue); }
+.at-incumbents { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; }
+.at-incumbent {
+  font-family: var(--it-mono); font-size: 11.5px; color: var(--it-muted);
+  border: 1px solid var(--it-line-2); border-radius: 4px; padding: 6px 11px;
+}
+.at-coexist { margin: 22px 0 0; font-size: 14.5px; color: var(--it-muted); }
+.at-coexist b { color: var(--it-text); font-weight: 600; }
+
+/* ---- C / persona ingress framing line ---- */
+.at-also { margin: clamp(24px, 3vw, 32px) 0 0; font-size: 13.5px; color: var(--it-muted); }
+.at-also b { color: var(--it-text-2); font-weight: 600; }
+
+/* ---- I · close (dark): back-to-map link ---- */
+.at-backmap {
+  margin-top: 8px; font-family: var(--it-mono); font-size: 13px; color: var(--it-on-dark-2);
+  text-decoration: none; display: inline-flex; align-items: center; gap: 7px;
+}
+.at-backmap:hover { color: var(--it-on-dark); }
+
+/* dark-surface overrides for the bespoke hero/close bits */
+.v-atlas .it-section.is-dark .at-backmap span { color: var(--it-blue-d); }
+
+/* ---- responsive: the grid reflows; Primary stays prominent ---- */
+@media (max-width: 1100px) {
+  .at-grid-primary { grid-template-columns: repeat(2, 1fr); }
+  .at-grid-secondary { grid-template-columns: repeat(3, 1fr); }
+  .at-cost { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .at-grid-primary, .at-grid-secondary { grid-template-columns: 1fr; }
+  .at-cost { grid-template-columns: 1fr 1fr; }
+  .at-proof { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .at-cost { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.at-mod-go { transition: none; }
+}

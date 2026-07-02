@@ -1,0 +1,98 @@
+/* ============================================================================
+ * Industry-variant pages - shared extras layered on top of _base.css.
+ * Holds only the bake-off switcher and the gallery index. The variant design
+ * tokens themselves live in _base.css (the duplicated .it token system); each
+ * direction's "fresh visual language" is a root modifier class in its own CSS.
+ * ========================================================================== */
+
+/* ---- bake-off switcher (thin top strip above the sticky header) ---- */
+.iv-switch {
+  background: #07090d;
+  border-bottom: 1px solid oklch(0.96 0.004 95 / 0.1);
+}
+.iv-switch-inner {
+  max-width: 1400px; margin: 0 auto; padding: 0 40px;
+  height: 44px; display: flex; align-items: center; gap: 20px;
+}
+.iv-switch-home {
+  font-family: var(--u-mono, ui-monospace, monospace);
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: #8b93a0; text-decoration: none; white-space: nowrap;
+}
+.iv-switch-home:hover { color: #fff; }
+.iv-switch-nav {
+  display: flex; gap: 4px; margin-left: auto; min-width: 0;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.iv-switch-tab {
+  display: inline-flex; align-items: center; gap: 8px; flex: 0 0 auto;
+  padding: 6px 12px; border-radius: 7px; text-decoration: none;
+  transition: background 0.15s ease;
+}
+.iv-switch-tab:hover { background: oklch(1 0 0 / 0.06); }
+.iv-switch-tab.is-active { background: oklch(1 0 0 / 0.1); }
+.iv-switch-num {
+  font-family: var(--u-mono, ui-monospace, monospace);
+  font-size: 11px; color: #646b78;
+}
+.iv-switch-name { font-size: 12.5px; font-weight: 600; color: #aab2c0; white-space: nowrap; }
+.iv-switch-tab:hover .iv-switch-name,
+.iv-switch-tab.is-active .iv-switch-name { color: #fff; }
+.iv-switch-tab.is-active .iv-switch-num { color: var(--u-primary-tint, #c9d4ff); }
+@media (max-width: 720px) {
+  .iv-switch-inner { padding: 0 18px; }
+  .iv-switch-name { display: none; }
+}
+
+/* ---- gallery index ---- */
+.iv-index { background: #0b0d11; color: #fbfbfc; min-height: 100vh;
+  font-family: var(--u-font, ui-sans-serif, system-ui, sans-serif); }
+.iv-index-wrap { max-width: 1180px; margin: 0 auto; padding: clamp(72px, 10vw, 130px) 40px; }
+.iv-index-eyebrow {
+  font-family: var(--u-mono, ui-monospace, monospace);
+  font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--u-primary-tint, #c9d4ff); display: inline-flex; align-items: center; gap: 10px;
+}
+.iv-index-eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: oklch(0.72 0.15 263); box-shadow: 0 0 0 4px oklch(0.72 0.15 263 / 0.16); }
+.iv-index-title {
+  font-family: var(--u-display, system-ui, sans-serif);
+  font-size: clamp(34px, 5vw, 60px); font-weight: 600; line-height: 1.06;
+  letter-spacing: -0.03em; margin: 22px 0 0; max-width: 18ch; text-wrap: balance;
+}
+.iv-index-sub { font-size: 18px; line-height: 1.6; color: #aab2c0; max-width: 64ch; margin: 22px 0 0; }
+.iv-index-grid {
+  margin-top: clamp(44px, 6vw, 72px);
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px;
+}
+.iv-card {
+  display: flex; flex-direction: column; text-decoration: none; color: inherit;
+  border: 1px solid oklch(0.96 0.004 95 / 0.12); border-radius: 14px;
+  padding: 30px; background: oklch(1 0 0 / 0.025);
+  transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+.iv-card:hover { border-color: oklch(0.72 0.15 263 / 0.7); transform: translateY(-3px); background: oklch(1 0 0 / 0.05); }
+.iv-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.iv-card-num {
+  font-family: var(--u-mono, ui-monospace, monospace);
+  font-size: 13px; color: #646b78;
+}
+.iv-card-live {
+  font-family: var(--u-mono, ui-monospace, monospace);
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: oklch(0.72 0.15 263); border: 1px solid oklch(0.72 0.15 263 / 0.4);
+  border-radius: 4px; padding: 3px 7px;
+}
+.iv-card-name {
+  font-family: var(--u-display, system-ui, sans-serif);
+  font-size: 24px; font-weight: 600; letter-spacing: -0.02em; margin: 18px 0 0;
+}
+.iv-card-tag { font-size: 15px; line-height: 1.5; color: #aab2c0; margin: 8px 0 0; }
+.iv-card-swatch { display: flex; gap: 6px; margin: 22px 0 0; }
+.iv-card-swatch span { width: 26px; height: 8px; border-radius: 3px; }
+.iv-card-go { margin-top: 22px; font-size: 14px; font-weight: 600; color: var(--u-primary-tint, #c9d4ff); }
+.iv-index-foot { margin-top: 54px; font-size: 13px; color: #646b78; line-height: 1.6; max-width: 70ch; }
+@media (max-width: 760px) {
+  .iv-index-grid { grid-template-columns: 1fr; }
+  .iv-index-wrap { padding-left: 22px; padding-right: 22px; }
+}

@@ -156,11 +156,158 @@ a.ind-wf-card:hover { border-color: var(--u-primary); transform: translateY(-2px
 .xpl-index-card p { font-size: 14px; color: var(--n-500); line-height: 1.55; margin: 0; }
 .xpl-index-card .go { margin-top: auto; font-family: var(--u-mono); font-size: 12px; color: var(--u-primary); }
 
+/* ---- Proof block: big stat + named customers ---- */
+.xpl-proofblock { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 24px; align-items: stretch; }
+.xpl-bigstat { background: var(--n-900); border-radius: var(--r-4); padding: 44px 40px; display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.xpl-bigstat .val { font-family: var(--u-display); font-size: clamp(64px, 9vw, 104px); font-weight: 500; letter-spacing: -0.04em; line-height: 0.88; color: #fff; }
+.xpl-bigstat .ctx { font-size: 16px; line-height: 1.55; color: var(--d-text-2); max-width: 34ch; margin: 0; }
+.xpl-bigstat .ctx b { color: #fff; font-weight: 600; }
+.xpl-bigstat .attr { font-family: var(--u-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--d-text-3); margin-top: 4px; }
+.xpl-cust-list { display: flex; flex-direction: column; gap: 12px; }
+.xpl-cust { background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-3); padding: 22px 24px; display: flex; flex-direction: column; gap: 7px; }
+.xpl-cust .tag { font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--u-primary); }
+.xpl-cust .nm { font-family: var(--u-display); font-size: 20px; font-weight: 500; letter-spacing: -0.01em; color: var(--n-900); }
+.xpl-cust .ds { font-size: 13.5px; line-height: 1.55; color: var(--n-500); margin: 0; }
+@media (max-width: 900px) { .xpl-proofblock { grid-template-columns: 1fr; } }
+
+/* ---- Trust strip (thin band under hero) ---- */
+.xpl-trust { display: flex; align-items: center; gap: 16px 22px; flex-wrap: wrap; }
+.xpl-trust .lab { font-family: var(--u-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--n-400); }
+.xpl-trust .nm { font-family: var(--u-display); font-size: 17px; font-weight: 500; color: var(--n-600); letter-spacing: -0.01em; }
+.xpl-trust .sep { color: var(--n-300); }
+
 /* ---- Light entrance motion ---- */
 @keyframes xpl-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .xpl-rise { animation: xpl-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
 .xpl-rise-2 { animation-delay: 0.08s; }
 @media (prefers-reduced-motion: reduce) { .xpl-rise, .xpl-rise-2 { animation: none; } }
+
+/* ===========================================================================
+ * Industry-altitude page (the corrected flow): hero anchor, problem engine,
+ * the Domains×Modules map, personas+jobs, competitive. Existing tokens only.
+ * ========================================================================== */
+
+/* --- A · hero subordinate fear-anchor line -------------------------------- */
+.ind-hero-anchor { margin: 18px 0 0; padding-left: 14px; position: relative; font-size: 13.5px; line-height: 1.55; color: var(--d-text-2); max-width: 54ch; border-left: 2px solid var(--s-err); }
+
+/* --- B · the before-state engine, compressed ------------------------------ */
+.eng { display: grid; grid-template-columns: 1fr minmax(280px, 360px); gap: 16px; align-items: stretch; }
+.eng-rail { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.eng-node { position: relative; background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-3); padding: 18px 20px 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+.eng-node::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 2px; background: var(--u-primary); border-radius: var(--r-pill); opacity: 0.5; }
+.eng-num { font-family: var(--u-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--u-primary); }
+.eng-lab { font-family: var(--u-display); font-size: 16px; font-weight: 500; letter-spacing: -0.01em; color: var(--n-900); }
+.eng-body { font-size: 13px; line-height: 1.55; color: var(--n-500); }
+.eng-cost { background: var(--n-900); border-radius: var(--r-4); padding: 28px 30px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.eng-cost-lab { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--d-text-3); }
+.eng-cost-val { font-family: var(--u-display); font-size: clamp(34px, 4.4vw, 52px); font-weight: 500; letter-spacing: -0.035em; line-height: 1; color: #fff; }
+.eng-cost-val small { font-family: var(--u-display); font-size: 0.5em; letter-spacing: -0.02em; color: var(--d-text-2); font-weight: 500; }
+.eng-cost-meta { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 2px; }
+.eng-cost-meta span { font-family: var(--u-mono); font-size: 11px; color: var(--d-text-2); }
+.eng-cost-types { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding-top: 14px; border-top: 1px solid var(--d-border-2); }
+.eng-cost-types span { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.02em; color: var(--d-text-2); background: rgba(255,255,255,0.05); border: 1px solid var(--d-border-2); border-radius: var(--r-1); padding: 4px 8px; }
+
+/* --- C · the Domains × Modules map (centerpiece) -------------------------- */
+.imap { display: grid; grid-template-columns: minmax(220px, 264px) 1fr; gap: 16px; align-items: start; }
+.imap-rail { display: flex; flex-direction: column; gap: 8px; position: sticky; top: 88px; }
+.imap-rail-lab { font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--n-400); margin: 6px 0 2px 2px; }
+.imap-rail-group { display: flex; flex-direction: column; gap: 6px; }
+.imap-domain { appearance: none; cursor: pointer; text-align: left; font: inherit; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-3); padding: 12px 14px; transition: border-color 160ms ease, background 160ms ease, transform 160ms ease; }
+.imap-domain:hover { border-color: var(--n-300); transform: translateX(2px); }
+.imap-domain.active { border-color: var(--u-primary); background: var(--u-primary-tint); box-shadow: var(--shadow-sm); }
+.imap-domain-name { font-family: var(--u-display); font-size: 14.5px; font-weight: 500; letter-spacing: -0.01em; color: var(--n-700); }
+.imap-domain.active .imap-domain-name { color: var(--u-primary); }
+.imap-domain-meta { font-family: var(--u-mono); font-size: 11px; color: var(--n-400); background: var(--n-50); border-radius: var(--r-pill); min-width: 22px; height: 20px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; }
+.imap-domain.active .imap-domain-meta { color: var(--u-primary); background: var(--n-0); }
+
+.imap-panel { background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-4); padding: 28px 30px 30px; animation: imap-fade 280ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes imap-fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .imap-panel { animation: none; } }
+.imap-panel-head { display: flex; flex-direction: column; gap: 8px; padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px solid var(--n-150); }
+.imap-panel-headrow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.imap-tier { font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 9px; border-radius: var(--r-pill); }
+.imap-tier.primary { color: var(--u-primary); background: var(--u-primary-tint); }
+.imap-tier.secondary { color: var(--n-500); background: var(--n-50); }
+.imap-owner { font-family: var(--u-mono); font-size: 11.5px; color: var(--n-400); }
+.imap-panel-title { font-family: var(--u-display); font-size: clamp(24px, 3vw, 32px); font-weight: 500; letter-spacing: -0.025em; color: var(--n-900); margin: 0; }
+.imap-panel-promise { font-size: 15px; line-height: 1.6; color: var(--n-500); margin: 0; max-width: 64ch; }
+.imap-mods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.imap-mod { position: relative; display: flex; flex-direction: column; gap: 7px; background: var(--n-25); border: 1px solid var(--n-150); border-radius: var(--r-3); padding: 18px 20px; text-decoration: none; transition: border-color 160ms ease, background 160ms ease, transform 160ms ease; }
+.imap-mod.live { background: var(--n-0); cursor: pointer; }
+.imap-mod.live:hover { border-color: var(--u-primary); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.imap-mod-tag { font-family: var(--u-mono); font-size: 9.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--n-400); }
+.imap-mod-name { font-family: var(--u-display); font-size: 17px; font-weight: 500; letter-spacing: -0.015em; color: var(--n-900); }
+.imap-mod-blurb { font-size: 12.5px; line-height: 1.5; color: var(--n-500); }
+.imap-mod-foot { margin-top: auto; padding-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.imap-mod-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.imap-mod-chip { font-family: var(--u-mono); font-size: 10px; color: var(--n-500); background: var(--n-50); border: 1px solid var(--n-150); border-radius: var(--r-1); padding: 3px 7px; }
+.imap-mod-go { font-family: var(--u-mono); font-size: 11px; font-weight: 500; color: var(--u-primary); white-space: nowrap; }
+.imap-mod-soon { font-family: var(--u-mono); font-size: 11px; color: var(--n-300); white-space: nowrap; }
+
+/* --- E · personas + the jobs they own ------------------------------------- */
+.iper { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 16px; align-items: stretch; }
+.iper-lead { display: flex; flex-direction: column; gap: 10px; background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-4); padding: 30px 32px; text-decoration: none; transition: border-color 160ms ease, transform 160ms ease; }
+.iper-lead:hover { border-color: var(--u-primary); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.iper-tag { font-family: var(--u-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--u-primary); }
+.iper-name { font-family: var(--u-display); font-size: 26px; font-weight: 500; letter-spacing: -0.022em; color: var(--n-900); margin: 0; }
+.iper-name.sm { font-size: 18px; }
+.iper-titles { font-family: var(--u-mono); font-size: 12px; color: var(--n-500); margin: 0; }
+.iper-jobs { margin-top: 6px; padding-top: 16px; border-top: 1px solid var(--n-150); }
+.iper-jobs-lab { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--n-400); }
+.iper-jobs ul { list-style: none; margin: 12px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; }
+.iper-jobs li { position: relative; padding-left: 16px; font-size: 13.5px; line-height: 1.4; color: var(--n-700); }
+.iper-jobs li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--u-primary); }
+.iper-worry { font-size: 13px; line-height: 1.55; color: var(--n-500); margin-top: 4px; }
+.iper-go { margin-top: auto; padding-top: 12px; font-family: var(--u-mono); font-size: 12px; font-weight: 500; color: var(--u-primary); }
+.iper-side { display: flex; flex-direction: column; gap: 16px; }
+.iper-card { background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-4); padding: 24px 26px; display: flex; flex-direction: column; gap: 7px; flex: 1; }
+.iper-owns { font-size: 13.5px; line-height: 1.55; color: var(--n-500); margin: 4px 0 0; }
+
+/* --- F · competitive ------------------------------------------------------ */
+.icomp { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; align-items: stretch; }
+.icomp-incumbents { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.icomp-card { background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-3); padding: 20px 22px; display: flex; flex-direction: column; gap: 6px; }
+.icomp-name { font-family: var(--u-display); font-size: 17px; font-weight: 500; letter-spacing: -0.01em; color: var(--n-700); }
+.icomp-note { font-size: 12.5px; line-height: 1.5; color: var(--n-500); margin: 0; }
+.icomp-diff { background: var(--u-primary-tint); border: 1px solid var(--u-primary-border); border-radius: var(--r-4); padding: 30px 32px; display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.icomp-diff-lab { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--u-primary); }
+.icomp-diff-body { font-family: var(--u-display); font-size: 21px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.3; color: var(--n-900); margin: 0; }
+.icomp-diff-sub { font-size: 13.5px; line-height: 1.6; color: var(--n-600); margin: 0; }
+.icomp-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.icomp-list span { font-family: var(--u-mono); font-size: 11px; color: var(--n-500); background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-pill); padding: 5px 11px; }
+
+/* === image / visualization placeholders (empty slots) ===================== */
+.ph { position: relative; border: 1px dashed var(--n-300); border-radius: var(--r-4); background-color: var(--n-50); background-image: repeating-linear-gradient(135deg, transparent 0 11px, rgba(11,13,17,0.022) 11px 22px); display: flex; align-items: center; justify-content: center; overflow: hidden; min-height: 160px; }
+.ph-label { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--n-500); background: var(--n-0); border: 1px solid var(--n-200); border-radius: var(--r-pill); padding: 6px 13px; text-align: center; }
+.ph.dark { border-color: var(--d-border-2); background-color: var(--d-bg-2); background-image: repeating-linear-gradient(135deg, transparent 0 11px, rgba(255,255,255,0.025) 11px 22px); }
+.ph.dark .ph-label { color: var(--d-text-2); background: var(--d-bg-3); border-color: var(--d-border-2); }
+.ph-43 { aspect-ratio: 4 / 3; }
+.ph-169 { aspect-ratio: 16 / 9; }
+.ph-wide { min-height: 240px; }
+.ind-hero-ph { width: 100%; }
+.ph-ava { width: 46px; height: 46px; min-height: 0; border-radius: var(--r-3); flex: none; }
+.ph-ava .ph-label { display: none; }
+
+/* B · before-state stage chips */
+.sit-stages { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.sit-stages span { font-family: var(--u-mono); font-size: 11px; letter-spacing: 0.03em; color: var(--n-600); background: var(--n-0); border: 1px solid var(--n-150); border-radius: var(--r-pill); padding: 6px 13px; }
+.sit-stages span::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--u-primary); margin-right: 8px; vertical-align: middle; }
+
+/* C · per-domain visual band */
+.imap-viz { aspect-ratio: auto; min-height: 150px; margin-bottom: 22px; }
+
+/* D · proof */
+.pf { display: grid; grid-template-columns: 0.92fr 1.08fr; gap: 16px; align-items: stretch; }
+.pf-stat { background: var(--n-900); border-radius: var(--r-4); padding: 40px; display: flex; flex-direction: column; justify-content: center; gap: 12px; }
+.pf-v { font-family: var(--u-display); font-size: clamp(56px, 8vw, 96px); font-weight: 500; letter-spacing: -0.04em; line-height: 0.88; color: #fff; }
+.pf-c { font-size: 15px; line-height: 1.55; color: var(--d-text-2); margin: 0; max-width: 34ch; }
+.pf-c b { color: #fff; font-weight: 600; }
+.pf-a { font-family: var(--u-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--d-text-3); }
+.pf-names { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.pf-names span { font-family: var(--u-mono); font-size: 11px; color: var(--d-text-2); border: 1px solid var(--d-border-2); border-radius: var(--r-pill); padding: 4px 10px; }
+
+/* E · persona portrait slot */
+.iper-portrait { width: 100%; margin-bottom: 4px; }
 
 /* ---- Responsive ---- */
 @media (max-width: 1100px) { .ind-hero-grid { grid-template-columns: 1fr; gap: 40px; } .ind-hero-visual { display: none; } }
@@ -169,7 +316,12 @@ a.ind-wf-card:hover { border-color: var(--u-primary); transform: translateY(-2px
   .ind-surface-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
   .ind-surface-grid, .ind-proof-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .ind-contrast-arrow { transform: rotate(90deg); justify-self: center; }
+  .eng, .imap, .iper, .icomp, .pf { grid-template-columns: 1fr; }
+  .imap-rail { position: static; flex-direction: row; flex-wrap: wrap; }
+  .imap-rail-group { flex-direction: row; flex-wrap: wrap; }
+  .imap-rail-lab { width: 100%; }
 }
 @media (max-width: 800px) {
   .ind-wf-grid, .ind-std-grid, .ind-surface-grid, .ind-proof-grid, .claim-steps, .xpl-trig-grid, .xpl-index-grid { grid-template-columns: 1fr; }
+  .eng-rail, .imap-mods, .icomp-incumbents, .iper-jobs ul { grid-template-columns: 1fr; }
 }

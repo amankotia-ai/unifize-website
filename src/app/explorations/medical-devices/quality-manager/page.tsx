@@ -6,7 +6,7 @@ import { Button, Eyebrow } from "@/components/atoms";
 import { CompressionStoryV2 } from "@/components/workflow";
 import { getWorkflow } from "@/lib/platform-data/workflows";
 import { MD_STANDARDS, MD_PERSONA, MD_ROOT_CAUSE } from "@/lib/platform-data/medical-devices-canonical";
-import { HeroGlyph, QM_CHECK_GLYPH, SiteFooterX } from "../_shared";
+import { HeroGlyph, QM_CHECK_GLYPH, TrustStrip, ProofBlock, SiteFooterX } from "../_shared";
 import "../explorations.css";
 
 export const metadata: Metadata = {
@@ -63,6 +63,8 @@ export default function QualityManagerPage() {
           </div>
         </div>
       </header>
+
+      <TrustStrip />
 
       {/* THE FRAME */}
       <section className="section alt">
@@ -145,6 +147,8 @@ export default function QualityManagerPage() {
           </div>
         </div>
       </section>
+
+      <ProofBlock surface="alt" />
 
       <section className="section dark close-band">
         <div className="section-inner">

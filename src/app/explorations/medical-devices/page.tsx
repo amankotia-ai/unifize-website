@@ -8,7 +8,7 @@ import "./explorations.css";
 
 export const metadata: Metadata = {
   title: "Medical Devices — directions · Unifize",
-  description: "Three finished directions for the Medical Devices page.",
+  description: "The Medical Devices industry page, at industry altitude — plus three earlier directions.",
 };
 
 const DIRECTIONS = [
@@ -25,16 +25,24 @@ export default function DirectionsIndex() {
       <header className="mast surface dark hero detail-hero">
         <div className="mast-inner">
           <Eyebrow dot>Medical Devices</Eyebrow>
-          <h1>Three ways to tell the story.</h1>
-          <p className="sub" style={{ maxWidth: "60ch" }}>
-            One industry page, three finished directions — each leading with a different idea, on the
-            same shell. Open each to compare, plus the Quality Manager page one level deeper.
+          <h1>The industry page, at the right altitude.</h1>
+          <p className="sub" style={{ maxWidth: "62ch" }}>
+            The lead direction sits at industry altitude: opportunity first, then a map of nine
+            coordination domains where every door is a module that funnels to its own page. The three
+            earlier directions sit below for comparison — each told one process, which is why they
+            read like the change-control page.
           </p>
         </div>
       </header>
 
       <section className="section white">
         <div className="section-inner">
+          <Link href="/explorations/medical-devices/industry" className="xpl-index-card" style={{ marginBottom: 16, borderColor: "var(--u-primary-border)", background: "var(--u-primary-tint)" }}>
+            <span className="tag">The map · industry altitude · recommended</span>
+            <h2>Nine coordination domains. Every door is a module.</h2>
+            <p>Opportunity-led, then the interactive Domains × Modules map that funnels down to each module page. Built from the canonical Industries, Domains, and Personas tables.</p>
+            <span className="go">Open →</span>
+          </Link>
           <div className="xpl-index-grid">
             {DIRECTIONS.map((d) => (
               <Link key={d.href} href={d.href} className="xpl-index-card">

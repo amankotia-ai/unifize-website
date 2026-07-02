@@ -12,7 +12,7 @@ import {
   MD_COMPETITORS,
   MD_PRODUCTS,
 } from "@/lib/platform-data/medical-devices-canonical";
-import { WhyNow, SiteFooterX } from "../_shared";
+import { WhyNow, TrustStrip, ProofBlock, SiteFooterX } from "../_shared";
 import "../explorations.css";
 
 export const metadata: Metadata = {
@@ -63,6 +63,8 @@ export default function CostPage() {
           </div>
         </div>
       </header>
+
+      <TrustStrip />
 
       {/* PER-INSTANCE COST */}
       <section className="section white">
@@ -157,6 +159,8 @@ export default function CostPage() {
       </section>
 
       <MoneyShot unit="change order" />
+
+      <ProofBlock surface="alt" />
 
       {/* CONTRAST */}
       <section className="section alt">

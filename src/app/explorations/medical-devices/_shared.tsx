@@ -4,7 +4,9 @@
  * ========================================================================== */
 import Link from "next/link";
 import { MatrixGrid, type CellState } from "@/components/atoms";
-import { MD_TRIGGERS } from "@/lib/platform-data/medical-devices-canonical";
+import { MD_TRIGGERS, MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
+
+const usd = (n: number) => "$" + n.toLocaleString("en-US");
 
 /* --- glyphs (homepage pixel language, 13×17) ------------------------------ */
 export const MED_CROSS_GLYPH: CellState[] = (() => {
@@ -94,6 +96,57 @@ export function WhyNow({
           {MD_TRIGGERS.slice(0, count).map((t) => (
             <div key={t} className="xpl-trig"><span className="dot" /><p>{t}</p></div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Trust strip (thin band under hero) ----------------------------------- */
+export function TrustStrip() {
+  return (
+    <section className="section white">
+      <div className="section-inner tight">
+        <div className="xpl-trust">
+          <span className="lab">Trusted by regulated device &amp; life-science teams</span>
+          {MD_PROOF.customers.map((c, i) => (
+            <span key={c.name} style={{ display: "inline-flex", alignItems: "center", gap: 22 }}>
+              {i > 0 ? <span className="sep">·</span> : null}
+              <span className="nm">{c.name}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --- Proof block: the real customer-attested result + named references ----- */
+export function ProofBlock({ surface = "white" }: { surface?: "alt" | "white" }) {
+  const s = MD_PROOF.stat;
+  return (
+    <section className={"section " + surface}>
+      <div className="section-inner">
+        <div className="section-head stack">
+          <span className="section-eyebrow">Proof</span>
+          <h2 className="section-title">From a device company in your regulatory class.</h2>
+          <p className="wf-lede">Medical-device buyers don&apos;t accept a logo — they want a quantified result from a company like theirs. Here is one.</p>
+        </div>
+        <div className="xpl-proofblock">
+          <div className="xpl-bigstat">
+            <div className="val">{s.pct}%</div>
+            <p className="ctx">lower {s.metric} — <b>{usd(s.recovered)} recovered</b> in year one, against a signed {usd(s.baseline)} baseline.</p>
+            <span className="attr">{s.attribution}</span>
+          </div>
+          <div className="xpl-cust-list">
+            {MD_PROOF.customers.map((c) => (
+              <div key={c.name} className="xpl-cust">
+                <span className="tag">Medical devices</span>
+                <span className="nm">{c.name}</span>
+                <p className="ds">{c.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,275 @@
+/* ============================================================================
+ * 04 · The Mirror. Fresh visual language ("lab notebook / margin annotation").
+ * Layered on _base.css. Token overrides on the .it.v-mirror root re-skin the
+ * shared system to a quiet, evidentiary register: warm near-monochrome paper,
+ * near-black ink, two dark bands as the only tonal hinges (the turn C, the fork
+ * F, the close K), and ONE low-chroma clinical teal reserved exclusively for
+ * ingress affordances (the two doors, the module link, the persona link).
+ *
+ * The core device is a TYPE SPLIT: the buyer's voice (symptom quotes and the
+ * root-cause name) is set in an editorial serif; everything structural (labels,
+ * owners, chips, body) stays in the project sans. Serif = their world; sans =
+ * our system. A persistent faint LEFT hairline runs the light sections, the
+ * notebook margin the quotes hang off. Distinct from the Ledger's mono-numeral,
+ * financial-statement register and from the template's brand blue.
+ * ========================================================================== */
+.it.v-mirror {
+  /* warm near-monochrome paper base; near-black ink */
+  --it-bg: #f7f6f3;
+  --it-alt: #f1efe9;
+  --it-text: #1a1916;
+  --it-text-2: #41403a;
+  --it-muted: #5c5b53;
+  --it-faint: #74736a;
+  --it-line: #e3e0d7;
+  --it-line-2: #d3cfc3;
+
+  /* clinical teal/ink-blue: the only accent, AA on paper, ingress only */
+  --it-blue: #1f5673;
+  --it-blue-hover: #17435a;
+  --it-blue-tint: #e8eef1;
+  --it-blue-border: #c5d6de;
+  --it-blue-d: oklch(0.74 0.07 230); /* lifted teal for the dark bands */
+
+  /* ink bands: the two tonal hinges (C, F) plus the close (K) */
+  --it-dark: #181b1d;
+  --it-ink: #181b1d;
+  --it-on-dark: #f2f1ec;
+  --it-on-dark-2: #b0afa6;
+  --it-on-dark-line: oklch(0.96 0.004 95 / 0.13);
+
+  /* the editorial serif: a CSS stack, no new font dependency */
+  --mir-serif: Georgia, "Times New Roman", "Iowan Old Style", serif;
+}
+
+/* The notebook margin: a faint left hairline the light sections hang off. We
+ * draw it on the .it-wrap of light sections only (dark bands stay pure ink). */
+.v-mirror .it-section:not(.is-dark) > .it-wrap,
+.v-mirror .it-hero > .it-wrap {
+  position: relative;
+}
+.v-mirror .it-section:not(.is-dark) > .it-wrap::before,
+.v-mirror .it-hero > .it-wrap::before {
+  content: "";
+  position: absolute;
+  left: 18px; top: 0; bottom: 0;
+  width: 1px; background: var(--it-line-2);
+  pointer-events: none;
+}
+@media (max-width: 620px) {
+  .v-mirror .it-section:not(.is-dark) > .it-wrap::before,
+  .v-mirror .it-hero > .it-wrap::before { left: 6px; }
+}
+
+/* ---- A · the Mirror hero (LIGHT, no image; restraint is the credibility) ---- */
+.v-mirror .mir-hero {
+  background: var(--it-bg);
+  color: var(--it-text);
+  padding: clamp(96px, 11vw, 150px) 0 clamp(72px, 8vw, 104px);
+  border-bottom: 1px solid var(--it-line);
+}
+.mir-crumb {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--it-sans); font-size: 12px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--it-muted); margin-bottom: 34px;
+}
+.mir-crumb a { color: var(--it-muted); text-decoration: none; }
+.mir-crumb a:hover { color: var(--it-text); }
+.mir-crumb .sep { opacity: 0.45; }
+.mir-crumb .it-dot { background: var(--it-blue); box-shadow: 0 0 0 4px var(--it-blue-tint); flex: none; }
+
+/* the lead symptom is the H1-equivalent: oversized italic serif, hung quote */
+.mir-lead {
+  font-family: var(--mir-serif); font-style: italic; font-weight: 400;
+  font-size: clamp(2.6rem, 5.4vw, 4.2rem); line-height: 1.08;
+  letter-spacing: -0.01em; color: var(--it-text);
+  margin: 0; max-width: 18ch; position: relative; text-wrap: balance;
+}
+.mir-lead .mir-hung {
+  font-family: var(--mir-serif); color: var(--it-line-2);
+  position: absolute; left: -0.52em; top: -0.04em; font-size: 1em;
+}
+@media (max-width: 620px) { .mir-lead .mir-hung { position: static; margin-right: 0.04em; } }
+
+.mir-hero-sub {
+  font-family: var(--it-sans); font-size: 18px; line-height: 1.62;
+  color: var(--it-text-2); max-width: 62ch; margin: 30px 0 0;
+}
+.mir-frame {
+  list-style: none; display: flex; flex-wrap: wrap; gap: 9px;
+  padding: 0; margin: 34px 0 0;
+}
+.mir-frame li {
+  font-family: var(--it-sans); font-size: 12.5px; letter-spacing: 0.01em;
+  color: var(--it-muted); background: var(--it-bg);
+  border: 1px solid var(--it-line-2); border-radius: 5px; padding: 7px 12px;
+}
+.v-mirror .mir-hero .it-ctas { margin-top: 38px; }
+
+/* ---- B · the verbatim wall (white): six hung-quote serif tiles ---- */
+.mir-wall {
+  list-style: none; padding: 0; margin: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+  border-top: 1px solid var(--it-line);
+}
+.mir-tile {
+  padding: 34px 30px 34px 0; border-bottom: 1px solid var(--it-line);
+  position: relative;
+}
+/* a thin vertical rule between columns, so it reads as a transcript, not cards */
+.mir-tile:not(:nth-child(3n)) { border-right: 1px solid var(--it-line); padding-right: 30px; }
+.mir-tile:not(:nth-child(3n)) { padding-left: 30px; }
+.mir-tile:nth-child(3n - 2) { padding-left: 4px; }
+.mir-quote {
+  font-family: var(--mir-serif); font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+  line-height: 1.4; color: var(--it-text); margin: 0;
+  position: relative; padding-left: 0.9em; max-width: 28ch;
+}
+.mir-quote .mir-hung {
+  font-family: var(--mir-serif); color: var(--it-line-2);
+  position: absolute; left: -0.05em; top: -0.06em; font-size: 1.5em; line-height: 1;
+}
+@media (max-width: 860px) {
+  .mir-wall { grid-template-columns: 1fr 1fr; }
+  .mir-tile:not(:nth-child(3n)) { border-right: 0; }
+  .mir-tile:not(:nth-child(2n)) { border-right: 1px solid var(--it-line); }
+  .mir-tile { padding-left: 26px; padding-right: 26px; }
+  .mir-tile:nth-child(odd) { padding-left: 4px; }
+}
+@media (max-width: 560px) {
+  .mir-wall { grid-template-columns: 1fr; }
+  .mir-tile, .mir-tile:not(:nth-child(2n)) { border-right: 0; padding-left: 4px; padding-right: 0; }
+}
+
+/* ---- C · the turn (DARK): name the cause, in serif ---- */
+.mir-turn-name {
+  font-family: var(--mir-serif); font-weight: 400; font-style: normal;
+  font-size: clamp(2.2rem, 4vw, 3.4rem); line-height: 1.08; letter-spacing: -0.01em;
+  color: var(--it-on-dark); margin: 0; max-width: 16ch; text-wrap: balance;
+}
+.mir-turn-body {
+  font-family: var(--it-sans); font-size: 18px; line-height: 1.62;
+  color: var(--it-on-dark-2); max-width: 60ch; margin: 26px 0 0;
+}
+.mir-turn-coda {
+  font-family: var(--it-sans); font-size: 16px; line-height: 1.6;
+  color: var(--it-on-dark); max-width: 58ch;
+  margin: 28px 0 0; padding-top: 24px; border-top: 1px solid var(--it-on-dark-line);
+}
+
+/* ---- D · what it's costing you (white): named columns, words only, no $ ---- */
+.mir-cost {
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+  border-top: 1px solid var(--it-line);
+}
+.mir-cost-col {
+  padding: 28px 22px 28px 0; border-bottom: 1px solid var(--it-line);
+}
+.mir-cost-col:not(:last-child) { border-right: 1px solid var(--it-line); padding-right: 22px; }
+.mir-cost-col:not(:first-child) { padding-left: 22px; }
+.mir-cost-col:first-child { padding-left: 4px; }
+.mir-cost-name {
+  font-family: var(--it-sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-blue);
+  margin: 0 0 14px;
+}
+.mir-cost-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mir-cost-items li { font-family: var(--it-sans); font-size: 14px; line-height: 1.45; color: var(--it-text-2); }
+.mir-cost-fine {
+  font-family: var(--it-sans); font-size: 13px; line-height: 1.55; color: var(--it-muted);
+  margin: 24px 0 0; max-width: 66ch;
+}
+@media (max-width: 980px) {
+  .mir-cost { grid-template-columns: 1fr 1fr; }
+  .mir-cost-col:not(:last-child) { border-right: 0; }
+  .mir-cost-col:not(:nth-child(2n)) { border-right: 1px solid var(--it-line); }
+  .mir-cost-col { padding-left: 22px; padding-right: 22px; }
+  .mir-cost-col:nth-child(odd) { padding-left: 4px; }
+}
+@media (max-width: 560px) {
+  .mir-cost { grid-template-columns: 1fr; }
+  .mir-cost-col, .mir-cost-col:not(:nth-child(2n)) { border-right: 0; padding-left: 4px; padding-right: 0; }
+}
+
+/* ---- E · why now (alt): trigger chips with a severity dot, names only ---- */
+.mir-trigs { display: flex; flex-wrap: wrap; gap: 10px; }
+.mir-trig {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: var(--it-sans); font-size: 14px; color: var(--it-text-2);
+  background: var(--it-bg); border: 1px solid var(--it-line-2);
+  border-radius: 6px; padding: 9px 14px;
+}
+.mir-trig-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--it-faint); flex: none; }
+.mir-bridge { font-family: var(--it-sans); font-size: 15.5px; line-height: 1.55; color: var(--it-muted); margin: 26px 0 0; max-width: 60ch; }
+.mir-bridge a { color: var(--it-blue); font-weight: 600; text-decoration: none; }
+.mir-bridge a:hover { color: var(--it-blue-hover); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---- F · the two doors (DARK, the fork): the accent's home ---- */
+.mir-doors { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mir-door {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--it-on-dark-line); border-radius: var(--it-r);
+  padding: 38px; background: oklch(1 0 0 / 0.03);
+}
+.mir-door-lab {
+  font-family: var(--it-sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--it-blue-d);
+  margin-bottom: 16px;
+}
+.mir-door-line {
+  font-family: var(--mir-serif); font-style: italic; font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  line-height: 1.18; color: var(--it-on-dark); margin: 0 0 14px; max-width: 18ch;
+}
+.mir-door-tease { font-family: var(--it-sans); font-size: 15px; line-height: 1.55; color: var(--it-on-dark-2); margin: 0 0 28px; }
+.mir-door-go {
+  margin-top: auto; align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--it-sans); font-size: 15px; font-weight: 600;
+  color: var(--it-on-dark); background: var(--it-blue);
+  border: 1px solid var(--it-blue); border-radius: 6px; padding: 13px 20px;
+  text-decoration: none; transition: background 0.16s ease;
+}
+.mir-door-go:hover { background: var(--it-blue-hover); }
+@media (max-width: 760px) { .mir-doors { grid-template-columns: 1fr; } }
+
+/* ---- I · proof (alt) ---- */
+.mir-proof { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 24px; align-items: stretch; }
+.mir-proof-fig {
+  border: 1px solid var(--it-blue-border); background: var(--it-blue-tint);
+  border-radius: var(--it-r); padding: 36px; display: flex; flex-direction: column;
+}
+.mir-proof-pretag { font-family: var(--it-sans); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--it-blue); margin-bottom: 16px; }
+.mir-proof-pct { font-family: var(--mir-serif); font-size: clamp(48px, 6.4vw, 76px); font-weight: 400; line-height: 1; letter-spacing: -0.02em; color: var(--it-blue); }
+.mir-proof-ctx { font-family: var(--it-sans); font-size: 16px; line-height: 1.55; color: var(--it-text); margin: 18px 0 0; }
+.mir-proof-ctx b { font-weight: 600; }
+.mir-proof-attr { margin-top: auto; padding-top: 20px; font-family: var(--it-sans); font-size: 12.5px; color: var(--it-muted); }
+.mir-proof-side { display: flex; flex-direction: column; gap: 16px; }
+.mir-proof-names { list-style: none; border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 28px; display: grid; gap: 16px; margin: 0; }
+.mir-proof-names li { display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--it-line); }
+.mir-proof-names li:last-child { border-bottom: 0; padding-bottom: 0; }
+.mir-proof-names b { font-family: var(--it-sans); font-size: 15px; font-weight: 600; color: var(--it-text); }
+.mir-proof-names span { font-family: var(--it-sans); font-size: 13px; color: var(--it-muted); line-height: 1.45; }
+@media (max-width: 860px) { .mir-proof { grid-template-columns: 1fr; } }
+
+/* ---- J · why Unifize (white): incumbents track documents vs we reconstruct ---- */
+.mir-compete { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.mir-compete-col { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 30px; background: var(--it-bg); }
+.mir-compete-col.is-us { border-color: var(--it-blue-border); background: var(--it-blue-tint); }
+.mir-compete-lab { font-family: var(--it-sans); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-muted); }
+.mir-compete-col.is-us .mir-compete-lab { color: var(--it-blue); }
+.mir-compete-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
+.mir-compete-list li { font-family: var(--it-sans); font-size: 14.5px; line-height: 1.45; color: var(--it-text-2); }
+.mir-compete-list li b { display: block; font-weight: 600; color: var(--it-text); font-size: 15px; margin-bottom: 2px; }
+.mir-compete-us-body { font-family: var(--it-sans); font-size: 16px; line-height: 1.6; color: var(--it-text); margin: 18px 0 0; }
+.mir-compete-coexist { font-family: var(--it-sans); font-size: 13px; color: var(--it-muted); margin: 20px 0 0; }
+@media (max-width: 760px) { .mir-compete { grid-template-columns: 1fr; } }
+
+/* the eyebrows in this direction sit in sans but read quieter than the template's */
+.v-mirror .it-eyebrow { color: var(--it-blue); letter-spacing: 0.06em; }
+/* the section h2s pick up the serif when they carry the buyer's framing (B, C) is
+ * handled inline; default h2 stays sans for structural sections. */
+
+/* motion: restraint only, no JS observers; honor reduced-motion globally */
+@media (prefers-reduced-motion: reduce) {
+  .v-mirror .mir-door-go, .v-mirror .it-btn { transition: none; }
+}

@@ -1,0 +1,315 @@
+/* ============================================================================
+ * 06 · The Two Doors, fresh visual language ("threshold + doorway").
+ * Layered on _base.css. Token overrides on the .it.v-doors root re-skin the
+ * shared system into a near-monochrome, enterprise-minimal register: paper
+ * white / ink near-black with a graphite mid-tone, sections separated by
+ * full-bleed hairline rules (the "thresholds"), not colored bands.
+ *
+ * The two doors carry the ONLY real color, and they are equal in weight: Door A
+ * a warm clay, Door B a cool slate, set at IDENTICAL oklch lightness and chroma
+ * (0.92 / 0.03), hue-only difference (70 vs 245), ink text on both, verified AA.
+ * One accent ink (deep authoritative teal) overrides --it-blue and appears ONLY
+ * on live links, the proof number, and the primary CTA. Mono is reserved for
+ * regulatory tokens and clock badges. Distinct from the ledger's warm-paper /
+ * ledger-green statement-grade skin. No JS; CSS hover only; reduced-motion safe.
+ * ========================================================================== */
+.it.v-doors {
+  /* near-monochrome paper base */
+  --it-bg: #fcfbf9;
+  --it-alt: #f5f4f1;
+  --it-text: #16181c;
+  --it-text-2: #3c4047;
+  --it-muted: #5c616a;
+  --it-faint: #767b84;
+  --it-line: #e6e4df;
+  --it-line-2: #d6d3cc;
+
+  /* graphite mid-tone, the structural ink for seams and hairlines */
+  --td-graphite: #9a9890;
+  --td-ink: #16181c;
+
+  /* one accent ink, a deep authoritative teal, AA on paper. The ONLY place
+     the eye is allowed to be pulled: live links, the proof number, the CTA. */
+  --it-blue: #176b78;
+  --it-blue-hover: #115a65;
+  --it-blue-tint: #e8f1f2;
+  --it-blue-border: #c6e0e2;
+  --it-blue-d: oklch(0.78 0.08 200); /* lighter teal for dark surfaces */
+
+  /* the two doors, identical L (0.92) and C (0.03); only hue differs.
+     Verified in sRGB gamut, ink contrast ~14:1 (AA pass on both). */
+  --td-door-a: oklch(0.92 0.03 70);   /* warm clay / sand, "who you are" */
+  --td-door-a-line: oklch(0.84 0.04 70);
+  --td-door-b: oklch(0.92 0.03 245);  /* cool slate / steel, "what broke" */
+  --td-door-b-line: oklch(0.84 0.04 245);
+
+  /* dark close surface, one step warm off the hero ink */
+  --it-dark: #14171b;
+}
+
+/* ---- shared: the threshold rule. Sections separate by a full-bleed hairline
+   (the "threshold you cross"), never a colored band. We neutralise the base
+   alt-fill so the page reads as one continuous sheet of paper. ---- */
+.v-doors .it-section-alt { background: var(--it-bg); }
+.v-doors .it-section:not(.is-dark) + .it-section:not(.is-dark) { border-top: 1px solid var(--it-line); }
+
+/* a faint vertical guide-line, the extended seam, runs down the measure on the
+   door-bearing sections, reminding you two paths run in parallel to one place. */
+.td-seamed { position: relative; }
+.td-seamed::before {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+  width: 1px; background: var(--it-line); transform: translateX(-0.5px);
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------------------
+ * A · HERO, paper, not the dark template hero. Restraint, wide measure, the
+ * two-door promise stated in prose; the only forward motion is toward the doors.
+ * ------------------------------------------------------------------------- */
+.v-doors .it-hero {
+  background: var(--it-bg);
+  color: var(--it-text);
+  min-height: auto;
+  padding: clamp(88px, 11vw, 144px) 0 clamp(64px, 7vw, 96px);
+}
+.v-doors .it-hero::after { display: none; }
+.v-doors .it-hero-shot { display: none; }
+.v-doors .it-hero > .it-wrap { max-width: 1180px; }
+.td-hero-inner { max-width: 880px; }
+.td-eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--it-muted); margin-bottom: 26px;
+}
+.td-eyebrow .it-dot { background: var(--it-blue); box-shadow: 0 0 0 4px var(--it-blue-tint); }
+.td-h1 {
+  font-family: var(--it-display); font-weight: 600;
+  font-size: clamp(40px, 5.4vw, 68px); line-height: 1.04; letter-spacing: -0.03em;
+  color: var(--it-text); margin: 0 0 26px; max-width: 18ch; text-wrap: balance;
+}
+.td-hero-sub {
+  font-size: clamp(18px, 1.7vw, 21px); line-height: 1.55; color: var(--it-text-2);
+  max-width: 62ch; margin: 0 0 30px;
+}
+.td-hero-sub b { color: var(--it-text); font-weight: 600; }
+.td-hero-number {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 18px 0; border-top: 1px solid var(--it-line); border-bottom: 1px solid var(--it-line);
+  max-width: 62ch; margin: 0 0 26px;
+}
+.td-hero-number .td-num {
+  font-family: var(--it-display); font-weight: 600; font-size: clamp(22px, 2.4vw, 30px);
+  letter-spacing: -0.02em; color: var(--it-text); white-space: nowrap;
+}
+.td-hero-number .td-num-cap { font-size: 15px; line-height: 1.45; color: var(--it-muted); }
+.td-regframe { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0 0 36px; }
+.td-regframe li {
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.02em; color: var(--it-muted);
+  background: var(--it-alt); border: 1px solid var(--it-line); border-radius: 5px; padding: 7px 11px;
+}
+.td-scrollcue {
+  display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--it-faint); transition: color 0.15s ease;
+}
+.td-scrollcue:hover { color: var(--it-text); }
+
+/* ---------------------------------------------------------------------------
+ * B · THE THRESHOLD, one stakes line + one economic anchor framed as scale.
+ * Deliberately short; its job is to earn the doors, not compete with them.
+ * ------------------------------------------------------------------------- */
+.td-threshold { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+.td-stakes {
+  font-family: var(--it-display); font-weight: 600; letter-spacing: -0.015em;
+  font-size: clamp(21px, 2.5vw, 29px); line-height: 1.32; color: var(--it-text);
+  margin: 0; max-width: 30ch; text-wrap: balance;
+}
+.td-stakes b { color: var(--it-blue); font-weight: 600; }
+.td-scale {
+  border-left: 1px solid var(--it-line); padding-left: clamp(24px, 3vw, 40px);
+}
+.td-scale-lab {
+  display: block; font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--it-muted); margin-bottom: 12px;
+}
+.td-scale-val {
+  font-family: var(--it-display); font-weight: 600; font-size: clamp(26px, 3vw, 38px);
+  letter-spacing: -0.02em; color: var(--it-text); display: block; line-height: 1.1;
+}
+.td-scale-val .td-to { color: var(--it-muted); font-weight: 400; padding: 0 4px; }
+.td-scale-meta { display: block; margin-top: 12px; font-size: 13.5px; line-height: 1.5; color: var(--it-muted); }
+@media (max-width: 860px) {
+  .td-threshold { grid-template-columns: 1fr; gap: 28px; }
+  .td-scale { border-left: 0; padding-left: 0; border-top: 1px solid var(--it-line); padding-top: 24px; }
+}
+
+/* ---------------------------------------------------------------------------
+ * C · THE TWO DOORS, the chooser. Two equal panels, a true 6+6 split with a
+ * thin seam between them. Hue-only color difference, identical dimensions,
+ * identical type scale, mirrored copy structure. Neither louder. (Must-land.)
+ * ------------------------------------------------------------------------- */
+.td-doors {
+  display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0;
+  border: 1px solid var(--it-line); border-radius: var(--it-r); overflow: hidden;
+}
+.td-seam { background: var(--td-graphite); opacity: 0.5; }
+.td-door {
+  display: flex; flex-direction: column; text-decoration: none; color: var(--td-ink);
+  padding: clamp(34px, 4vw, 52px); min-height: 340px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.td-door.is-a { background: var(--td-door-a); }
+.td-door.is-b { background: var(--td-door-b); }
+.td-door:hover { transform: translateY(-4px); box-shadow: 0 18px 38px -16px rgba(20, 23, 27, 0.32); }
+/* equality preserved: neither door dims the other; a hovered door simply lifts. */
+.td-door-arch {
+  width: 30px; height: 38px; margin-bottom: 26px;
+  border: 1.5px solid var(--td-ink); border-bottom: 0;
+  border-radius: 15px 15px 0 0; opacity: 0.65;
+}
+.td-door-tag {
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--td-ink); opacity: 0.6; margin-bottom: 14px;
+}
+.td-door-label {
+  font-family: var(--it-display); font-weight: 600; font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.08; letter-spacing: -0.025em; color: var(--td-ink); margin: 0 0 16px;
+}
+.td-door-sub {
+  font-size: clamp(15px, 1.4vw, 17px); line-height: 1.55; color: var(--td-ink);
+  opacity: 0.82; margin: 0 0 24px; max-width: 34ch;
+}
+.td-door-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 7px; padding: 0; margin: 0 0 28px; }
+.td-door-chips li {
+  font-size: 12.5px; color: var(--td-ink); opacity: 0.92;
+  background: oklch(1 0 0 / 0.42); border: 1px solid oklch(0.2 0.01 260 / 0.12);
+  border-radius: 5px; padding: 5px 10px;
+}
+.td-door-foot {
+  margin-top: auto; padding-top: 22px; border-top: 1px solid oklch(0.2 0.01 260 / 0.14);
+  font-family: var(--it-display); font-size: 16px; font-weight: 600; letter-spacing: -0.01em;
+  color: var(--td-ink); display: inline-flex; align-items: center; gap: 8px;
+}
+@media (max-width: 760px) {
+  /* stack with identical heights; a seam row keeps neither reading as primary */
+  .td-doors { grid-template-columns: 1fr; }
+  .td-seam { height: 1px; width: auto; }
+}
+
+/* ---------------------------------------------------------------------------
+ * D / E · DOOR EXPANSIONS, a quiet section header that names the door, then
+ * the reused PERSONA / MODULE ingress component. A small color cue ties each
+ * expansion to its door without breaking the monochrome page.
+ * ------------------------------------------------------------------------- */
+.td-expand-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.td-expand-marker {
+  width: 14px; height: 14px; border-radius: 4px; flex: none; align-self: center;
+  border: 1px solid var(--it-line-2);
+}
+.td-expand-marker.is-a { background: var(--td-door-a); border-color: var(--td-door-a-line); }
+.td-expand-marker.is-b { background: var(--td-door-b); border-color: var(--td-door-b-line); }
+.td-expand-tag {
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--it-muted);
+}
+
+/* ---------------------------------------------------------------------------
+ * F · WHY-NOW TRIGGERS, the cross-router band. The moments that send you
+ * through a door. Each chip badged with its clock; routes to module + owner.
+ * ------------------------------------------------------------------------- */
+.td-trigs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.td-trig {
+  display: flex; flex-direction: column; text-decoration: none; color: var(--it-text);
+  border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 20px; background: var(--it-bg);
+}
+.td-trig:not(.is-live) { background: var(--it-alt); }
+.td-trig.is-live { transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease; }
+.td-trig.is-live:hover { border-color: var(--it-blue); transform: translateY(-2px); box-shadow: var(--it-elev-2); }
+.td-trig-clock {
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.02em; color: var(--it-muted);
+  display: inline-flex; align-items: center; gap: 7px; margin-bottom: 12px;
+}
+.td-trig-tick { width: 3px; height: 12px; border-radius: 1px; background: var(--td-graphite); }
+.td-trig-tick.is-urgent { background: var(--it-urgent); }
+.td-trig-name { font-size: 14.5px; font-weight: 600; line-height: 1.32; margin: 0 0 16px; }
+.td-trig-route { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--it-line); display: grid; gap: 3px; }
+.td-trig-mod { font-size: 13px; font-weight: 600; color: var(--it-text); display: inline-flex; align-items: center; gap: 7px; }
+.td-trig.is-live .td-trig-mod { color: var(--it-blue); }
+.td-trig-owner { font-size: 12px; color: var(--it-muted); }
+.td-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--it-blue); display: inline-block; }
+@media (max-width: 980px) { .td-trigs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .td-trigs { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------------
+ * G · THE STRUCTURAL WHY, one quiet full-measure line. Two doors, one cause.
+ * ------------------------------------------------------------------------- */
+.td-why { max-width: 760px; }
+.td-why-lead {
+  font-family: var(--it-display); font-weight: 600; font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.22; letter-spacing: -0.02em; color: var(--it-text); margin: 0 0 24px;
+}
+.td-why-cause { display: grid; gap: 18px; }
+.td-why-row { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: baseline; }
+.td-why-num { font-family: var(--it-mono); font-size: 12px; color: var(--it-blue); }
+.td-why-name { font-weight: 600; color: var(--it-text); }
+.td-why-body { font-size: 16px; line-height: 1.6; color: var(--it-text-2); margin: 4px 0 0; }
+
+/* ---------------------------------------------------------------------------
+ * H · PROOF, the one signed-off number (in accent teal), named customers, and
+ * a labeled placeholder slot. Never a faked shipped UI.
+ * ------------------------------------------------------------------------- */
+.td-proof { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 24px; align-items: stretch; }
+.td-proof-fig {
+  border: 1px solid var(--it-blue-border); background: var(--it-blue-tint); border-radius: var(--it-r);
+  padding: 36px; display: flex; flex-direction: column;
+}
+.td-proof-pretag { font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-blue); margin-bottom: 16px; }
+.td-proof-amt {
+  font-family: var(--it-display); font-variant-numeric: tabular-nums;
+  font-size: clamp(40px, 5.4vw, 60px); font-weight: 600; color: var(--it-blue);
+  line-height: 1; letter-spacing: -0.03em;
+}
+.td-proof-pct { font-size: 0.4em; color: var(--it-text-2); font-weight: 600; }
+.td-proof-ctx { font-size: 16px; line-height: 1.55; color: var(--it-text); margin: 18px 0 0; }
+.td-proof-ctx b { font-weight: 600; }
+.td-proof-attr { margin-top: auto; padding-top: 20px; font-size: 12.5px; color: var(--it-muted); }
+.td-proof-side { display: flex; flex-direction: column; gap: 16px; }
+.td-proof-names { list-style: none; border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 28px; margin: 0; display: grid; gap: 16px; }
+.td-proof-names li { display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--it-line); }
+.td-proof-names li:last-child { border-bottom: 0; padding-bottom: 0; }
+.td-proof-names b { font-size: 15px; font-weight: 600; }
+.td-proof-names span { font-size: 13px; color: var(--it-muted); line-height: 1.45; }
+@media (max-width: 860px) { .td-proof { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------------
+ * I · WHY UNIFIZE, both doors end where incumbents cannot reach.
+ * ------------------------------------------------------------------------- */
+.td-compete { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.td-compete-col { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 30px; background: var(--it-bg); }
+.td-compete-col.is-us { border-color: var(--it-blue-border); background: var(--it-blue-tint); }
+.td-compete-lab { font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-muted); }
+.td-compete-col.is-us .td-compete-lab { color: var(--it-blue); }
+.td-compete-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
+.td-compete-list li { font-size: 14.5px; line-height: 1.45; color: var(--it-text-2); }
+.td-compete-list li b { display: block; font-weight: 600; color: var(--it-text); font-size: 15px; margin-bottom: 2px; }
+.td-compete-us-body { font-size: 16px; line-height: 1.6; color: var(--it-text); margin: 18px 0 0; }
+.td-coexist { margin: 20px 0 0; font-size: 14.5px; color: var(--it-muted); }
+@media (max-width: 760px) { .td-compete { grid-template-columns: 1fr; } }
+
+/* ---------------------------------------------------------------------------
+ * J · CLOSE, dark, reuses .it-close. Re-states the choice as the close.
+ * ------------------------------------------------------------------------- */
+.v-doors .it-close-btn { background: var(--it-blue); border-color: var(--it-blue); }
+.v-doors .it-close-btn:hover { background: var(--it-blue-hover); }
+.td-close-alt { margin-top: 4px; font-size: 14px; }
+.td-close-alt a { color: var(--it-blue-d); text-decoration: none; }
+.td-close-alt a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------------------
+ * Motion, restraint. Respect prefers-reduced-motion: doors no longer lift.
+ * ------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .td-door, .td-trig.is-live { transition: none; }
+  .td-door:hover { transform: none; box-shadow: none; }
+  .td-trig.is-live:hover { transform: none; }
+}

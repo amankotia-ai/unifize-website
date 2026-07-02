@@ -1,0 +1,186 @@
+/* ============================================================================
+ * 01 · The Coordination Tax Ledger - fresh visual language ("statement-grade").
+ * Layered on _base.css. Token overrides on the .it.v-ledger root re-skin the
+ * shared system to a financial-statement register: warm paper, ledger green as
+ * the only accent (it appears only on real, reconciled numbers), a muted
+ * liability rust for the empty "-" amounts, tabular mono numerals, hairline
+ * rules instead of boxes. Distinct from the template's brand blue.
+ * ========================================================================== */
+.it.v-ledger {
+  /* warm paper base */
+  --it-bg: #fcfaf6;
+  --it-alt: #f6f1e8;
+  --it-warm: #f6f1e8;
+  --it-warm-line: #e7ddcc;
+  --it-line: #e8e0d2;
+  --it-line-2: #d8cdb9;
+  --it-text: #1c1f18;
+  --it-text-2: #43483d;
+  --it-muted: #5f6457;
+  --it-faint: #7c8073;
+
+  /* ledger green - the single accent, only on reconciled money */
+  --it-blue: #1f6f3a;
+  --it-blue-hover: #185a2f;
+  --it-blue-tint: #e9f2ea;
+  --it-blue-border: #cbe2d0;
+  --it-blue-d: oklch(0.8 0.13 155);
+
+  /* ink "cover-page" dark surfaces */
+  --it-dark: #14171d;
+  --it-ink: #14171d;
+  --it-cool: #e9f2ea;
+  --it-cool-line: #cbe2d0;
+
+  /* liability rust - only the unbilled "-" amounts and "recurring" tags */
+  --lg-liab: #9a5a2c;
+  --lg-liab-bg: #f3ebe0;
+}
+
+/* mono numerals everywhere in this direction read as a ledger */
+.v-ledger .it-num-mono,
+.v-ledger .lg-amt,
+.v-ledger .lg-stat-val { font-family: var(--it-mono); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+
+/* ---- A · ledger hero (ink cover page; no product shot) ---- */
+.v-ledger .it-hero {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 47px, oklch(1 0 0 / 0.022) 47px 48px),
+    var(--it-dark);
+  min-height: auto; padding: clamp(96px, 11vw, 150px) 0;
+}
+.v-ledger .it-hero::after { display: none; }
+.v-ledger .it-hero-shot { display: none; }
+.v-ledger .it-hero-grid { grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; }
+.v-ledger .it-hero-copy { max-width: none; }
+.v-ledger .it-hero-title .lg-range { color: var(--it-blue-d); white-space: nowrap; }
+.lg-hero-range {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums;
+  font-size: clamp(28px, 4vw, 46px); font-weight: 600; color: var(--it-blue-d);
+  margin: 6px 0 18px; letter-spacing: -0.02em;
+}
+.lg-hero-range .lg-dash { color: var(--it-on-dark-2); font-weight: 400; }
+
+/* the statement metadata rail on the right of the hero */
+.lg-stat-rail {
+  border: 1px solid var(--it-on-dark-line); border-radius: var(--it-r);
+  background: oklch(1 0 0 / 0.03); padding: 28px 30px;
+}
+.lg-stat-rail-lab {
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--it-on-dark-2); display: block; margin-bottom: 14px;
+}
+.lg-stat-big {
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums;
+  font-size: clamp(26px, 3vw, 34px); font-weight: 600; color: var(--it-blue-d);
+  letter-spacing: -0.02em; line-height: 1.1; display: block;
+}
+.lg-stat-rows { list-style: none; margin: 22px 0 0; padding: 18px 0 0; border-top: 1px solid var(--it-on-dark-line); display: grid; gap: 12px; }
+.lg-stat-rows li { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.lg-stat-rows .lg-k { font-size: 13px; color: var(--it-on-dark-2); }
+.lg-stat-rows .lg-v { font-family: var(--it-mono); font-variant-numeric: tabular-nums; font-size: 14px; color: var(--it-on-dark); }
+.lg-hero-audit {
+  margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--it-on-dark-line);
+  font-family: var(--it-mono); font-size: 12px; letter-spacing: 0.02em; color: var(--it-on-dark-2);
+  line-height: 1.7;
+}
+.lg-hero-audit b { color: var(--it-on-dark); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-size: 10.5px; display: block; margin-bottom: 8px; }
+
+/* ---- B · liabilities schedule (the empty AMOUNT column is the argument) ---- */
+.lg-liab-table { border-top: 1px solid var(--it-line); }
+.lg-liab-head, .lg-liab-row {
+  display: grid; grid-template-columns: minmax(200px, 1fr) 2fr 150px; gap: 24px;
+  padding: 18px 4px; align-items: baseline; border-bottom: 1px solid var(--it-line);
+}
+.lg-liab-head {
+  font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--it-muted); padding-top: 0;
+}
+.lg-liab-item { font-size: 16px; font-weight: 600; color: var(--it-text); }
+.lg-liab-acc { font-size: 14.5px; line-height: 1.5; color: var(--it-muted); }
+.lg-liab-amt { text-align: right; }
+.lg-liab-dash {
+  display: inline-block; width: 22px; height: 2px; border-radius: 1px;
+  background: var(--lg-liab); vertical-align: middle;
+}
+.lg-liab-tag {
+  font-family: var(--it-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--lg-liab); background: var(--lg-liab-bg); border-radius: 4px; padding: 3px 8px;
+  display: inline-block; margin-top: 8px;
+}
+.lg-liab-cap { margin: 22px 0 0; font-size: 14.5px; line-height: 1.6; color: var(--it-muted); max-width: 70ch; }
+.lg-liab-cap strong { color: var(--it-text); font-weight: 600; }
+@media (max-width: 760px) {
+  .lg-liab-head { display: none; }
+  .lg-liab-row { grid-template-columns: 1fr; gap: 8px; }
+  .lg-liab-amt { text-align: left; }
+}
+
+/* ---- C · the general ledger (per-instance unit cost; posts to a module) ---- */
+.lg-gl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.lg-gl-card {
+  display: flex; flex-direction: column; border: 1px solid var(--it-line); border-radius: var(--it-r);
+  padding: 26px; background: var(--it-bg);
+}
+.lg-gl-name { font-size: 15px; font-weight: 600; color: var(--it-text); margin: 0; }
+.lg-gl-amt {
+  font-family: var(--it-mono); font-variant-numeric: tabular-nums;
+  font-size: clamp(24px, 2.6vw, 30px); font-weight: 600; color: var(--it-blue);
+  letter-spacing: -0.02em; margin: 16px 0 2px;
+}
+.lg-gl-unit { font-size: 12px; color: var(--it-muted); }
+.lg-gl-meta { list-style: none; margin: 20px 0 0; padding: 16px 0 0; border-top: 1px solid var(--it-line); display: grid; gap: 7px; }
+.lg-gl-meta li { display: flex; justify-content: space-between; gap: 12px; font-size: 12.5px; color: var(--it-muted); }
+.lg-gl-meta li b { font-family: var(--it-mono); color: var(--it-text-2); font-weight: 600; }
+.lg-gl-note { font-size: 12.5px; line-height: 1.5; color: var(--it-muted); margin: 16px 0 0; }
+.lg-gl-post {
+  margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--it-line);
+  font-size: 13px; font-weight: 600; color: var(--it-blue);
+  display: inline-flex; align-items: center; gap: 7px; text-decoration: none;
+}
+.lg-gl-post.is-stub { color: var(--it-faint); font-weight: 500; }
+.lg-gl-post .lg-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--it-blue); }
+.lg-gl-cap { margin: 22px 0 0; font-size: 13.5px; color: var(--it-muted); }
+@media (max-width: 860px) { .lg-gl { grid-template-columns: 1fr; } }
+
+/* ---- D · accounting note (two structural causes) ---- */
+.lg-note { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.lg-note-card { border-top: 2px solid var(--it-text); padding-top: 22px; }
+.lg-note-num { font-family: var(--it-mono); font-size: 13px; color: var(--it-blue); }
+.lg-note-name { font-family: var(--it-display); font-size: 22px; font-weight: 600; letter-spacing: -0.015em; margin: 10px 0 12px; }
+.lg-note-body { font-size: 15.5px; line-height: 1.6; color: var(--it-text-2); margin: 0; }
+.lg-note-trace { display: block; margin-top: 14px; font-family: var(--it-mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--it-blue); }
+@media (max-width: 760px) { .lg-note { grid-template-columns: 1fr; gap: 24px; } }
+
+/* ---- G · the one audited recovery ---- */
+.lg-recovery { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 24px; align-items: stretch; }
+.lg-rec-fig {
+  border: 1px solid var(--it-blue-border); background: var(--it-blue-tint); border-radius: var(--it-r);
+  padding: 36px; display: flex; flex-direction: column;
+}
+.lg-rec-pretag { font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-blue); margin-bottom: 16px; }
+.lg-rec-amt { font-family: var(--it-mono); font-variant-numeric: tabular-nums; font-size: clamp(40px, 5vw, 58px); font-weight: 600; color: var(--it-blue); line-height: 1; letter-spacing: -0.03em; }
+.lg-rec-pct { font-size: 0.42em; color: var(--it-text-2); }
+.lg-rec-ctx { font-size: 16px; line-height: 1.55; color: var(--it-text); margin: 18px 0 0; }
+.lg-rec-ctx b { font-weight: 600; }
+.lg-rec-attr { margin-top: auto; padding-top: 20px; font-size: 12.5px; color: var(--it-muted); }
+.lg-rec-side { display: flex; flex-direction: column; gap: 16px; }
+.lg-rec-names { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 28px; display: grid; gap: 16px; }
+.lg-rec-names li { list-style: none; display: grid; gap: 4px; padding-bottom: 16px; border-bottom: 1px solid var(--it-line); }
+.lg-rec-names li:last-child { border-bottom: 0; padding-bottom: 0; }
+.lg-rec-names b { font-size: 15px; font-weight: 600; }
+.lg-rec-names span { font-size: 13px; color: var(--it-muted); line-height: 1.45; }
+@media (max-width: 860px) { .lg-recovery { grid-template-columns: 1fr; } }
+
+/* ---- H · why incumbents can't close ---- */
+.lg-compete { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+.lg-compete-col { border: 1px solid var(--it-line); border-radius: var(--it-r); padding: 30px; background: var(--it-bg); }
+.lg-compete-col.is-us { border-color: var(--it-blue-border); background: var(--it-blue-tint); }
+.lg-compete-lab { font-family: var(--it-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--it-muted); }
+.lg-compete-col.is-us .lg-compete-lab { color: var(--it-blue); }
+.lg-compete-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 14px; }
+.lg-compete-list li { font-size: 14.5px; line-height: 1.45; color: var(--it-text-2); }
+.lg-compete-list li b { display: block; font-weight: 600; color: var(--it-text); font-size: 15px; margin-bottom: 2px; }
+.lg-compete-us-body { font-size: 16px; line-height: 1.6; color: var(--it-text); margin: 18px 0 0; }
+@media (max-width: 760px) { .lg-compete { grid-template-columns: 1fr; } }
