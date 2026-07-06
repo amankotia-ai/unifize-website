@@ -22,7 +22,7 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, SplitHeader, ShellFrame, HatchFrame, pad } from "./dms-primitives";
+import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
 import { BigStat } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
@@ -98,12 +98,14 @@ export default function DmsProductPage() {
       {/* ============================ 01 · THE DRIFT PROBLEM ============= */}
       <section className="dms-section">
         <div className="dms-wrap">
-          <SplitHeader
-            n={1}
-            eyebrow="The problem"
-            title="A document is only controlled if there is one of it."
-            lede="The same SOP lives in three places at three revisions. DMS collapses them into one governed record. Toggle the two worlds."
-          />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={1}>The problem</Eyebrow>
+            <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
+            <p className="dms-lede">
+              The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
+              Toggle the two worlds.
+            </p>
+          </div>
           <div data-reveal>
             <DriftToggle />
           </div>
@@ -113,12 +115,13 @@ export default function DmsProductPage() {
       {/* ============================ 02 · MODULES BUNDLED =============== */}
       <section className="dms-section dms-section--alt" id="modules">
         <div className="dms-wrap">
-          <SplitHeader
-            n={2}
-            eyebrow="What is bundled"
-            title="Three modules, one record."
-            lede="Not three tools bolted together. A change carries its evidence, drives the revision, and cascades into training."
-          />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={2}>What is bundled</Eyebrow>
+            <h2 className="dms-h2">Three modules, one record.</h2>
+            <p className="dms-lede">
+              Not three tools bolted together. A change carries its evidence, drives the revision, and cascades into training.
+            </p>
+          </div>
           <div data-reveal>
             <ModuleExplorer />
           </div>
@@ -128,12 +131,14 @@ export default function DmsProductPage() {
       {/* ============================ 03 · LIFECYCLE ===================== */}
       <section className="dms-section" id="lifecycle">
         <div className="dms-wrap">
-          <SplitHeader
-            n={3}
-            eyebrow="The lifecycle"
-            title="Every state has a gate. Every gate has an owner."
-            lede="Scroll through the six states a controlled document moves through. The thread on the right replays the revision that drives them, as it happens in Unifize."
-          />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={3}>The lifecycle</Eyebrow>
+            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
+            <p className="dms-lede">
+              Scroll through the six states a controlled document moves through. The thread on the right
+              replays the revision that drives them, as it happens in Unifize.
+            </p>
+          </div>
           <div data-reveal>
             <LifecycleExplorer />
           </div>
@@ -189,7 +194,10 @@ export default function DmsProductPage() {
       {/* ============================ 06 · TESTIMONIAL SLOT ============== */}
       <section className="dms-section dms-section--alt" aria-label="Customer proof">
         <div className="dms-wrap">
-          <SplitHeader n={6} eyebrow="Proof" title="What quality teams say." />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={6}>Proof</Eyebrow>
+            <h2 className="dms-h2">What quality teams say.</h2>
+          </div>
           <figure className="dms-proof" data-reveal>
             <div className="dms-proof__media">
               <img className="dms-proof__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
@@ -237,7 +245,10 @@ export default function DmsProductPage() {
       {/* ============================ 08 · COMPLIANCE + INDUSTRIES ======= */}
       <section className="dms-section dms-section--alt" id="compliance">
         <div className="dms-wrap">
-          <SplitHeader n={8} eyebrow="Compliance frame" title="One controlled lifecycle, whatever you are audited against." />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={8}>Compliance frame</Eyebrow>
+            <h2 className="dms-h2">One controlled lifecycle, whatever you are audited against.</h2>
+          </div>
           <div data-reveal>
             <HatchFrame>
               <div className="dms-comp__stats">

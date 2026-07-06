@@ -116,19 +116,6 @@
 .dms-head { display:flex; flex-direction:column; gap:var(--dms-s-5); max-width:800px; }
 .dms-head--center { margin-inline:auto; text-align:center; align-items:center; }
 
-/* asymmetric split header: eyebrow chip above a hairline, headline left, lede right */
-.dms-shead { display:flex; flex-direction:column; gap:var(--dms-s-5); }
-.dms-shead__grid { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,0.9fr);
-  gap:var(--dms-s-4) clamp(40px, 6vw, 120px); align-items:start;
-  border-top:1px solid var(--dms-hairline); padding-top:var(--dms-s-6); }
-.dms-shead__grid .dms-h2 { max-width:24ch; }
-.dms-shead__grid .dms-lede { justify-self:end; max-width:46ch; padding-top:8px; font-size:1rem; }
-.dms-section--alt .dms-shead__grid { border-top-color:var(--dms-hairline-warm); }
-@media (max-width:860px) {
-  .dms-shead__grid { grid-template-columns:1fr; }
-  .dms-shead__grid .dms-lede { justify-self:start; padding-top:0; }
-}
-
 /* buttons */
 .dms-btn { display:inline-flex; align-items:center; justify-content:center; gap:var(--dms-s-2); font-family:var(--dms-sans);
   font-size:0.9375rem; font-weight:500; line-height:1; letter-spacing:-0.003em; padding:13px 20px; border-radius:var(--dms-r-control);

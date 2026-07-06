@@ -2,8 +2,6 @@
  * dms-primitives.tsx - static furniture for the DMS product page.
  *   Eyebrow      - mono chapter chip (index + label). Sparse by design: only
  *                  where the index carries structure.
- *   SplitHeader  - asymmetric section header: chip above a hairline,
- *                  headline left, muted lede right.
  *   ShellFrame   - browser chrome around a product prototype.
  *   StagePanel   - gradient-noise field panel that stages a prototype.
  * Server components; no state.
@@ -19,30 +17,6 @@ export function Eyebrow({ n, children }: { n?: number; children: React.ReactNode
       )}
       {children}
     </span>
-  );
-}
-
-export function SplitHeader({
-  n,
-  eyebrow,
-  title,
-  lede,
-  id,
-}: {
-  n?: number;
-  eyebrow: React.ReactNode;
-  title: React.ReactNode;
-  lede?: React.ReactNode;
-  id?: string;
-}) {
-  return (
-    <header className="dms-shead" data-reveal>
-      <Eyebrow n={n}>{eyebrow}</Eyebrow>
-      <div className="dms-shead__grid">
-        <h2 className="dms-h2" id={id}>{title}</h2>
-        {lede != null && <p className="dms-lede">{lede}</p>}
-      </div>
-    </header>
   );
 }
 
