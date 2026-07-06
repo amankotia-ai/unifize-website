@@ -27,9 +27,9 @@
   --dms-display: var(--u-display); --dms-sans: var(--u-font); --dms-mono: var(--u-mono);
 
   /* ---------- COLOR ALIASES ---------- */
-  /* warm-grey middle surfaces (scoped values; no warm-grey ramp in globals yet) */
-  --dms-surface: var(--n-0); --dms-surface-alt: #f7f6f4; --dms-surface-sunk: #f1f0ed;
-  --dms-hairline-warm: #e5e3df;
+  /* light-grey middle surfaces: neutral, visibly offset from the white page */
+  --dms-surface: var(--n-0); --dms-surface-alt: #f1f2f4; --dms-surface-sunk: var(--n-100);
+  --dms-hairline-alt: var(--n-200);
   --dms-ink: var(--n-800); --dms-ink-2: var(--n-600); --dms-muted: var(--n-500); --dms-faint: var(--n-400);
   --dms-hairline: var(--n-150); --dms-line-strong: var(--n-200);
   --dms-accent: var(--u-primary); --dms-accent-hover: var(--u-primary-hover);
@@ -105,7 +105,7 @@
   letter-spacing:var(--dms-eyebrow-ls); text-transform:uppercase; color:var(--dms-muted);
   padding:6px 10px; border:1px solid var(--dms-hairline); border-radius:0; background:var(--dms-surface); align-self:flex-start; }
 .dms-eyebrow__num { color:var(--dms-faint); padding-right:var(--dms-s-2); border-right:1px solid var(--dms-hairline); }
-.dms-section--alt .dms-eyebrow { border-color:var(--dms-hairline-warm); }
+.dms-section--alt .dms-eyebrow { border-color:var(--dms-hairline-alt); }
 .dms-h1 { font-family:var(--dms-display); font-size:var(--dms-h1-size); font-weight:500; line-height:1.06; letter-spacing:-0.022em; margin:0; text-wrap:balance; }
 .dms-h2 { font-family:var(--dms-display); font-size:var(--dms-h2-size); font-weight:500; line-height:1.1; letter-spacing:-0.022em; color:var(--dms-ink); text-wrap:balance; margin:0; }
 .dms-h3 { font-family:var(--dms-display); font-size:var(--dms-h3-size); font-weight:600; line-height:1.2; letter-spacing:-0.014em; color:var(--dms-ink); margin:0; }
@@ -395,7 +395,7 @@
 .dms-modx__points { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:10px var(--dms-s-6); }
 .dms-modx__points li { display:flex; align-items:center; gap:9px; font-size:0.875rem; line-height:1.4; color:var(--dms-ink-2); }
 .dms-modx__pt-ic { display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; flex:none;
-  border-radius:var(--dms-r-pill); background:var(--dms-hairline-warm); color:var(--dms-ink-2); }
+  border-radius:var(--dms-r-pill); background:var(--dms-hairline-alt); color:var(--dms-ink-2); }
 .dms-modx__pt-ic svg { width:11px; height:11px; }
 .dms-modx__stds { font-family:var(--dms-mono); font-size:0.75rem; letter-spacing:0.04em; text-transform:uppercase;
   color:var(--dms-faint); margin:0; padding-top:var(--dms-s-4); border-top:1px solid var(--dms-hairline); white-space:pre-wrap; }
@@ -520,7 +520,7 @@
   font-size:clamp(1.4rem, 1.05rem + 1.6vw, 2.25rem); line-height:1.22; letter-spacing:-0.02em;
   color:var(--dms-ink); max-width:24ch; text-wrap:balance; }
 .dms-proof__who { display:flex; flex-direction:column; gap:4px; padding-top:var(--dms-s-5);
-  border-top:1px solid var(--dms-hairline-warm); min-width:220px; }
+  border-top:1px solid var(--dms-hairline-alt); min-width:220px; }
 .dms-proof__name { font-weight:500; font-size:0.9375rem; color:var(--dms-ink); }
 .dms-proof__role { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
   letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
@@ -530,30 +530,26 @@
 }
 
 /* ============================================================ 07 · PAINS
- * A findings register: mono failure-mode codes, severity on the right,
- * rows on hairlines. Reads like the audit log it prevents. */
-.dms-pains { list-style:none; margin:var(--dms-s-12) 0 0; padding:0; }
-.dms-pain { display:grid; grid-template-columns:clamp(120px, 16vw, 190px) minmax(0,1fr) 132px; grid-template-areas:"code main sev";
-  gap:var(--dms-s-6); align-items:start; border-top:1px solid var(--dms-hairline); padding:var(--dms-s-8) 4px;
-  transition:background var(--dms-dur) var(--dms-ease); }
-.dms-pain:last-child { border-bottom:1px solid var(--dms-hairline); }
-.dms-pain:hover { background:color-mix(in oklch, var(--dms-surface-sunk) 55%, transparent); }
-.dms-pain__code { grid-area:code; font-family:var(--dms-mono); font-weight:500; line-height:1;
-  font-size:clamp(1.5rem, 1.1rem + 1.8vw, 2.6rem); letter-spacing:-0.02em; color:var(--dms-faint); }
-.dms-pain__main { grid-area:main; display:flex; flex-direction:column; gap:6px; max-width:60ch; }
-.dms-pain__title { font-family:var(--dms-display); font-weight:600; font-size:1.25rem; line-height:1.25; letter-spacing:-0.014em;
-  color:var(--dms-ink); margin:0; text-wrap:balance; }
-.dms-pain__body { font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); margin:0; }
-.dms-pain__sev { grid-area:sev; display:flex; flex-direction:column; align-items:flex-end; gap:7px; justify-self:end;
-  font-family:var(--dms-mono); font-size:0.625rem; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:var(--dms-muted); }
-.dms-pain__bar { display:block; height:12px; border-top:2px solid var(--dms-lw-ink);
+ * Findings, ranked: 2x2 cards. Hierarchy: the severity bar signals first,
+ * then the failure mode, then its consequence. Code and level are quiet
+ * mono furniture. */
+.dms-pains { list-style:none; margin:var(--dms-s-10) 0 0; padding:0;
+  display:grid; grid-template-columns:1fr 1fr; gap:var(--dms-s-5); }
+.dms-pain { display:flex; flex-direction:column; gap:var(--dms-s-3); padding:var(--dms-s-8);
+  background:var(--dms-surface-sunk); border:1px solid var(--dms-hairline); }
+.dms-pain__bar { display:block; height:12px; margin-bottom:var(--dms-s-2); border-top:2px solid var(--dms-lw-ink);
   background-image:repeating-linear-gradient(90deg, color-mix(in srgb, var(--dms-lw-ink) 26%, transparent) 0 1px, transparent 1px 4px); }
-.dms-pain__sev.is-critical .dms-pain__bar { width:120px; }
-.dms-pain__sev.is-high .dms-pain__bar { width:82px; }
-.dms-pain__sev.is-medium .dms-pain__bar { width:46px; }
-@media (max-width:700px) {
-  .dms-pain { grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"code sev" "main main"; row-gap:var(--dms-s-2); }
-}
+.dms-pain.is-critical .dms-pain__bar { width:100%; }
+.dms-pain.is-high .dms-pain__bar { width:62%; }
+.dms-pain.is-medium .dms-pain__bar { width:34%; }
+.dms-pain__meta { display:flex; justify-content:space-between; align-items:baseline;
+  font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls);
+  text-transform:uppercase; color:var(--dms-muted); }
+.dms-pain__code { color:var(--dms-faint); }
+.dms-pain__title { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
+  line-height:1.2; letter-spacing:-0.016em; color:var(--dms-ink); margin:0; max-width:24ch; text-wrap:balance; }
+.dms-pain__body { font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); margin:0; max-width:52ch; }
+@media (max-width:760px) { .dms-pains { grid-template-columns:1fr; } }
 
 /* ============================================================ HATCH FRAME
  * Framed document surface: diagonal hatch band around an inner hairline
@@ -563,9 +559,7 @@
 .dms-hframe__inner { background:var(--dms-surface); border:1px solid var(--dms-hairline);
   padding:clamp(24px, 4vw, 56px); box-shadow:var(--dms-elev-raise); }
 
-/* compliance stat rail inside the frame */
-.dms-comp__stats { display:flex; flex-wrap:wrap; gap:var(--dms-s-6) clamp(48px, 7vw, 120px);
-  padding-bottom:var(--dms-s-8); }
+/* big-numeral stat (system primitive; not currently on the page) */
 .dms-bigstat { display:flex; flex-direction:column; gap:var(--dms-s-3); }
 .dms-bigstat__v { font-family:var(--dms-display); font-weight:500; font-size:var(--dms-num-size); line-height:1; letter-spacing:-0.02em; color:var(--dms-ink); }
 .dms-bigstat__l { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
@@ -573,20 +567,18 @@
 .dms-hframe .dms-frame { margin-top:var(--dms-s-8); padding-top:var(--dms-s-8); }
 
 /* ============================================================ 08 · STANDARDS
- * A compliance matrix: standard, scope, jurisdiction. Mono geo codes. */
-.dms-stds { list-style:none; margin:var(--dms-s-12) 0 0; padding:0; }
-.dms-std { display:grid; grid-template-columns:220px minmax(0,1fr) auto; grid-template-areas:"name body geo";
-  gap:var(--dms-s-6); align-items:baseline; border-top:1px solid var(--dms-hairline); padding:var(--dms-s-5) 4px;
-  transition:background var(--dms-dur) var(--dms-ease); }
-.dms-std:last-child { border-bottom:1px solid var(--dms-hairline); }
-.dms-std:hover { background:color-mix(in oklch, var(--dms-surface) 65%, transparent); }
-.dms-std__name { grid-area:name; font-family:var(--dms-display); font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em; color:var(--dms-ink); }
-.dms-std__body { grid-area:body; font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); margin:0; }
-.dms-std__geo { grid-area:geo; justify-self:end; font-family:var(--dms-mono); font-size:0.6875rem; font-weight:500;
-  text-transform:uppercase; letter-spacing:0.06em; color:var(--dms-faint); }
-@media (max-width:700px) {
-  .dms-std { grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"name geo" "body body"; row-gap:var(--dms-s-2); }
-}
+ * Certificate wall inside the document frame: geo eyebrow, standard name
+ * at display weight, one-line scope. The names carry the credibility. */
+.dms-stds { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3, 1fr); gap:var(--dms-s-5); }
+.dms-std { display:flex; flex-direction:column; gap:var(--dms-s-2); padding:var(--dms-s-6);
+  border:1px solid var(--dms-hairline); background:var(--dms-surface); }
+.dms-std__geo { font-family:var(--dms-mono); font-size:0.625rem; font-weight:500; letter-spacing:0.06em;
+  text-transform:uppercase; color:var(--dms-faint); }
+.dms-std__name { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  letter-spacing:-0.014em; color:var(--dms-ink); }
+.dms-std__body { font-size:0.875rem; line-height:1.5; color:var(--dms-muted); margin:0; }
+@media (max-width:900px) { .dms-stds { grid-template-columns:1fr 1fr; } }
+@media (max-width:560px) { .dms-stds { grid-template-columns:1fr; } }
 
 /* ============================================================ INDUSTRIES */
 .dms-frame { margin-top:var(--dms-s-12); padding-top:var(--dms-s-12); border-top:1px solid var(--dms-hairline); }
@@ -673,12 +665,14 @@
 .dms-hero__stds { animation:dms-hero-in .7s var(--dms-ease) .28s both; }
 .dms-hero__frame { animation:dms-hero-in .9s var(--dms-ease) .2s both; }
 
-.dms[data-motion] [data-reveal] { opacity:0; transform:translateY(20px); transition:opacity .7s var(--dms-ease), transform .7s var(--dms-ease); }
-.dms[data-motion] [data-reveal].is-in { opacity:1; transform:none; }
+/* fail-safe reveal: elements only hide once JS has tagged them
+ * .dms-will-reveal (below-viewport at registration). Untagged = visible. */
+.dms[data-motion] [data-reveal] { transition:opacity .7s var(--dms-ease), transform .7s var(--dms-ease); }
+.dms[data-motion] .dms-will-reveal:not(.is-in) { opacity:0; transform:translateY(20px); }
 
-/* severity bars draw in from zero once their row reveals */
-.dms[data-motion] .dms-pain[data-reveal] .dms-pain__bar { transform:scaleX(0); transform-origin:left; transition:transform .8s var(--dms-ease) .25s; }
-.dms[data-motion] .dms-pain[data-reveal].is-in .dms-pain__bar { transform:scaleX(1); }
+/* severity bars draw in from zero once their card reveals */
+.dms[data-motion] .dms-pain .dms-pain__bar { transform-origin:left; transition:transform .8s var(--dms-ease) .25s; }
+.dms[data-motion] .dms-pain.dms-will-reveal:not(.is-in) .dms-pain__bar { transform:scaleX(0); }
 
 @media (prefers-reduced-motion: reduce) {
   .dms *, .dms *::before, .dms *::after { animation:none !important; transition-duration:1ms !important; }

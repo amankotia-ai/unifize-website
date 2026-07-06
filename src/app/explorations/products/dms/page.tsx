@@ -23,7 +23,7 @@ import {
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
 import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
-import { BigStat, CapGlyph } from "./dms-linework";
+import { CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   DriftToggle,
@@ -230,16 +230,14 @@ export default function DmsProductPage() {
           </div>
           <ol className="dms-pains">
             {PAINS.map((pn, i) => (
-              <li className="dms-pain" key={pn.title} data-reveal>
-                <span className="dms-pain__code" aria-hidden="true">FM-{pad(i + 1)}</span>
-                <div className="dms-pain__main">
-                  <h3 className="dms-pain__title">{pn.title}</h3>
-                  <p className="dms-pain__body">{pn.body}</p>
-                </div>
-                <span className={"dms-pain__sev " + SEV_CLASS[pn.severity]}>
-                  <span className="dms-pain__bar" aria-hidden="true" />
-                  {pn.severity}
+              <li className={"dms-pain " + SEV_CLASS[pn.severity]} key={pn.title} data-reveal>
+                <span className="dms-pain__bar" aria-hidden="true" />
+                <span className="dms-pain__meta">
+                  <span className="dms-pain__code dms-data">FM-{pad(i + 1)}</span>
+                  <span className="dms-pain__sev">{pn.severity}</span>
                 </span>
+                <h3 className="dms-pain__title">{pn.title}</h3>
+                <p className="dms-pain__body">{pn.body}</p>
               </li>
             ))}
           </ol>
@@ -255,16 +253,12 @@ export default function DmsProductPage() {
           </div>
           <div data-reveal>
             <HatchFrame>
-              <div className="dms-comp__stats">
-                <BigStat value={pad(STANDARDS.length)} label="standards mapped" />
-                <BigStat value={pad(INDUSTRIES.length)} label="industries validated" />
-              </div>
               <ul className="dms-stds">
                 {STANDARDS.map((s) => (
                   <li className="dms-std" key={s.name}>
+                    <span className="dms-std__geo">{s.geo}</span>
                     <span className="dms-std__name">{s.name}</span>
                     <p className="dms-std__body">{s.body}</p>
-                    <span className="dms-std__geo">{s.geo}</span>
                   </li>
                 ))}
               </ul>
