@@ -67,16 +67,15 @@ export function DriftToggle() {
             <span className="dms-driftx__loc">{c.loc}</span>
             <span className="dms-driftx__ver dms-data">{c.ver}</span>
             <span className="dms-driftx__note">{c.note}</span>
-            <span className="dms-driftx__ruler" aria-hidden="true" />
           </div>
         ))}
       </div>
 
       <p className="dms-driftx__verdict" key={after ? "va" : "vb"}>
         {after ? (
-          <><span className="dms-driftx__vic is-ok" aria-hidden="true"><Check /></span><b>One effective revision</b>, everywhere you look. Stray copies retrieved.</>
+          <><b>One effective revision</b>, everywhere you look. Stray copies retrieved.</>
         ) : (
-          <><span className="dms-driftx__vic is-warn" aria-hidden="true">!</span><b>Three answers</b> to &ldquo;is this the latest?&rdquo; The finding writes itself.</>
+          <><b>Three answers</b> to &ldquo;is this the latest?&rdquo; The finding writes itself.</>
         )}
       </p>
     </div>

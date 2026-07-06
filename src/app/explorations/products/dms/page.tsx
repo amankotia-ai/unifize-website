@@ -22,7 +22,7 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
+import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
@@ -107,9 +107,7 @@ export default function DmsProductPage() {
             </p>
           </div>
           <div data-reveal>
-            <StagePanel className="dms-stage--flow">
-              <DriftToggle />
-            </StagePanel>
+            <DriftToggle />
           </div>
         </div>
       </section>

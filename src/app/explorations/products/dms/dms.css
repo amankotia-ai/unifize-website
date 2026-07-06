@@ -20,7 +20,7 @@
   --dms-h3-size: clamp(1.1875rem, 1rem + 0.7vw, 1.5rem);
   --dms-lede-size: clamp(1.02rem, 0.94rem + 0.35vw, 1.2rem);
   --dms-meta-size: 0.8125rem;
-  --dms-mega-size: clamp(3rem, 2.2rem + 3.6vw, 5rem);
+  --dms-mega-size: clamp(3.5rem, 2.4rem + 5vw, 7.5rem);
   --dms-num-size: clamp(2.75rem, 2rem + 3vw, 4.5rem);
   --dms-mono-size: 0.6875rem; --dms-mono-ls: 0.08em;
 
@@ -208,7 +208,6 @@
   background-image:var(--dms-grain); background-size:180px 180px;
   opacity:var(--dms-field-grain-o); mix-blend-mode:overlay; }
 .dms-stage__inner { position:relative; z-index:2; padding:clamp(24px, 3.5vw, 56px); }
-.dms-stage--flow { margin-top:var(--dms-s-10); }
 .dms-stage--crop-b .dms-stage__inner { padding-bottom:0; }
 
 .dms-appframe { border-radius:var(--dms-r-card); overflow:hidden; background:var(--dms-surface);
@@ -299,66 +298,31 @@
 .dms-seg__btn.is-active { background:var(--dms-surface); color:var(--dms-ink); box-shadow:var(--dms-elev-card); }
 
 /* ============================================================ 01 · DRIFT
- * Three locations as a typographic comparison: giant version numerals
- * separated by dashed rules. No cards - the numbers are the picture. */
-.dms-driftx { display:flex; flex-direction:column; gap:var(--dms-s-10); margin-top:var(--dms-s-12); }
-.dms-driftx__cols { display:grid; grid-template-columns:repeat(3,1fr); animation:dms-rise .45s var(--dms-ease) both; }
-.dms-driftx__col { display:flex; flex-direction:column; gap:var(--dms-s-3); padding:var(--dms-s-2) var(--dms-s-10);
+ * No stage, no boxes, no ornament. Three monumental numerals on the
+ * page; progressive fading IS the drift. Blue only on the one
+ * effective revision. */
+.dms-driftx { display:flex; flex-direction:column; gap:clamp(40px, 5vw, 72px); margin-top:var(--dms-s-12); }
+.dms-driftx__cols { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px, 4vw, 80px);
+  animation:dms-rise .45s var(--dms-ease) both; }
+.dms-driftx__col { display:flex; flex-direction:column; gap:var(--dms-s-4); min-width:0;
   transition:opacity var(--dms-dur) var(--dms-ease); }
-.dms-driftx__col:first-child { padding-left:4px; }
 .dms-driftx__loc { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; text-transform:uppercase; letter-spacing:var(--dms-mono-ls); color:var(--dms-muted); }
 .dms-driftx__ver { font-family:var(--dms-display); font-weight:500; font-size:var(--dms-mega-size); line-height:1; letter-spacing:-0.03em; color:var(--dms-ink); }
 .dms-driftx__note { font-size:0.9375rem; color:var(--dms-muted); }
-.dms-driftx__ruler { position:relative; display:block; height:15px; margin-top:var(--dms-s-4);
-  background-image:repeating-linear-gradient(90deg, color-mix(in srgb, var(--dms-lw-ink) 24%, transparent) 0 1px, transparent 1px var(--dms-hatch-gap));
-  background-size:100% 8px; background-position:bottom left; background-repeat:no-repeat; }
-.dms-driftx__ruler::before { content:""; position:absolute; left:0; top:-1px; width:0; height:0;
-  border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:6px solid var(--dms-lw-ink); }
-.dms-driftx__col.is-stale .dms-driftx__ver { color:var(--dms-muted); }
-.dms-driftx__col.is-old .dms-driftx__ver { color:var(--dms-faint); }
+.dms-driftx__col.is-stale .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 42%, transparent); }
+.dms-driftx__col.is-old .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 24%, transparent); }
 .dms-driftx__col.is-live .dms-driftx__ver { color:var(--dms-accent); }
 .dms-driftx__col.is-live .dms-driftx__note { color:var(--dms-ink-2); font-weight:500; }
-.dms-driftx__col.is-live .dms-driftx__ruler::before { border-bottom-color:var(--dms-accent); }
-.dms-driftx__col.is-retired { opacity:0.4; }
-.dms-driftx__col.is-retired .dms-driftx__ver { color:var(--dms-faint); text-decoration:line-through; text-decoration-thickness:3px; }
+.dms-driftx__col.is-retired .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 18%, transparent);
+  text-decoration:line-through; text-decoration-thickness:0.06em; }
+.dms-driftx__col.is-retired .dms-driftx__loc,
+.dms-driftx__col.is-retired .dms-driftx__note { color:var(--dms-faint); }
 
-/* drift on the dark stage panel: the mid-page report-slide moment.
- * The three locations are cards on the field; the ruler closes each card. */
-.dms-stage .dms-driftx { margin-top:0; gap:var(--dms-s-8); }
-.dms-stage .dms-driftx__cols { gap:var(--dms-s-5); }
-.dms-stage .dms-driftx__col { background:rgba(255,255,255,.03); border:1px solid var(--dms-d-hairline);
-  padding:var(--dms-s-6); }
-.dms-stage .dms-driftx__col:first-child { padding-left:var(--dms-s-6); }
-.dms-stage .dms-driftx__ruler { margin-top:var(--dms-s-5); }
-.dms-stage .dms-driftx__loc { color:var(--dms-d-ink-2); }
-.dms-stage .dms-driftx__ver { color:var(--dms-d-ink); }
-.dms-stage .dms-driftx__note { color:var(--dms-d-ink-2); }
-.dms-stage .dms-driftx__ruler { background-image:repeating-linear-gradient(90deg, color-mix(in srgb, #fff 32%, transparent) 0 1px, transparent 1px var(--dms-hatch-gap)); }
-.dms-stage .dms-driftx__ruler::before { border-bottom-color:var(--dms-d-ink); }
-.dms-stage .dms-driftx__col.is-stale .dms-driftx__ver { color:var(--dms-d-ink-2); }
-.dms-stage .dms-driftx__col.is-old .dms-driftx__ver { color:var(--dms-d-ink-3); }
-.dms-stage .dms-driftx__col.is-retired .dms-driftx__ver { color:var(--dms-d-ink-3); }
-.dms-stage .dms-driftx__col.is-live .dms-driftx__ver { color:var(--dms-d-accent); }
-.dms-stage .dms-driftx__col.is-live .dms-driftx__note { color:var(--dms-d-ink); }
-.dms-stage .dms-driftx__col.is-live .dms-driftx__ruler::before { border-bottom-color:var(--dms-d-accent); }
-.dms-stage .dms-driftx__verdict { border-top:0; padding-top:0; color:var(--dms-d-ink-2); }
-.dms-stage .dms-driftx__verdict b { color:var(--dms-d-ink); }
-.dms-stage .dms-seg { background:rgba(255,255,255,.05); border-color:var(--dms-d-hairline-2); }
-.dms-stage .dms-seg__btn { color:var(--dms-d-ink-2); }
-.dms-stage .dms-seg__btn:hover { color:var(--dms-d-ink); }
-.dms-stage .dms-seg__btn.is-active { background:var(--dms-surface); color:var(--dms-ink); box-shadow:none; }
 .dms-driftx__verdict { display:flex; align-items:center; gap:var(--dms-s-3); margin:0;
   font-size:1.0625rem; color:var(--dms-ink-2); animation:dms-rise .45s var(--dms-ease) both; }
 .dms-driftx__verdict b { font-family:var(--dms-display); font-weight:600; color:var(--dms-ink); }
-.dms-driftx__vic { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; flex:none; border-radius:var(--dms-r-pill); }
-.dms-driftx__vic svg { width:13px; height:13px; }
-.dms-driftx__vic.is-ok { background:color-mix(in oklch, var(--dms-ok) 18%, transparent); color:var(--dms-ok); }
-.dms-driftx__vic.is-warn { background:color-mix(in oklch, var(--dms-warn) 18%, transparent); color:var(--dms-warn);
-  font-family:var(--dms-display); font-weight:700; font-size:0.875rem; }
 @media (max-width:720px) {
-  .dms-driftx__cols { grid-template-columns:1fr; }
-  .dms-driftx__col { padding:var(--dms-s-5) 4px; }
-  .dms-stage .dms-driftx__col { padding:var(--dms-s-6); }
+  .dms-driftx__cols { grid-template-columns:1fr; gap:var(--dms-s-8); }
 }
 
 /* ============================================================ 02 · MODULES
