@@ -203,6 +203,16 @@ export const MOCK_TRAINING = {
   ] as { role: string; cells: ("done" | "assigned")[] }[],
 };
 
+/* outcomes band - ILLUSTRATIVE until canonical customer numbers land.
+ * The chart carries a mono "Illustrative" tag; swap in real values and
+ * remove the tag when they exist. */
+export const OUTCOMES: { label: string; value: number; display: string }[] = [
+  { label: "Q3 2025", value: 240, display: "240" },
+  { label: "Q4 2025", value: 610, display: "610" },
+  { label: "Q1 2026", value: 980, display: "980" },
+  { label: "Q2 2026", value: 1284, display: "1,284" },
+];
+
 /* revision trail for SOP-118 (document-control module mock) */
 export const MOCK_TRAIL = [
   { rev: "Rev D", state: "Effective 2026-07-02", note: "Signed QA · Part 11", key: true },

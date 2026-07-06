@@ -67,6 +67,7 @@ export function DriftToggle() {
             <span className="dms-driftx__loc">{c.loc}</span>
             <span className="dms-driftx__ver dms-data">{c.ver}</span>
             <span className="dms-driftx__note">{c.note}</span>
+            <span className="dms-driftx__ruler" aria-hidden="true" />
           </div>
         ))}
       </div>

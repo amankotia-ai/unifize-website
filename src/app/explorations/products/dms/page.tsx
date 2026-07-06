@@ -18,10 +18,12 @@ import {
   PAINS,
   STANDARDS,
   INDUSTRIES,
+  OUTCOMES,
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, SplitHeader, ShellFrame, StagePanel, pad } from "./dms-primitives";
+import { Eyebrow, SplitHeader, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
+import { BigStat, SteppedGrowth } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   DriftToggle,
@@ -230,7 +232,7 @@ export default function DmsProductPage() {
                   <p className="dms-pain__body">{pn.body}</p>
                 </div>
                 <span className={"dms-pain__sev " + SEV_CLASS[pn.severity]}>
-                  <span className="dms-dot" aria-hidden="true" />
+                  <span className="dms-pain__bar" aria-hidden="true" />
                   {pn.severity}
                 </span>
               </li>
@@ -243,32 +245,56 @@ export default function DmsProductPage() {
       <section className="dms-section dms-section--alt" id="compliance">
         <div className="dms-wrap">
           <SplitHeader n={8} eyebrow="Compliance frame" title="One controlled lifecycle, whatever you are audited against." />
-          <ul className="dms-stds">
-            {STANDARDS.map((s) => (
-              <li className="dms-std" key={s.name} data-reveal>
-                <span className="dms-std__name">{s.name}</span>
-                <p className="dms-std__body">{s.body}</p>
-                <span className="dms-std__geo">{s.geo}</span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="dms-frame" data-reveal>
-            <div className="dms-frame__inds">
-              <span className="dms-persona__lab">Validated across</span>
-              <div className="dms-inds">
-                {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
+          <div data-reveal>
+            <HatchFrame>
+              <div className="dms-comp__stats">
+                <BigStat value={pad(STANDARDS.length)} label="standards mapped" />
+                <BigStat value={pad(INDUSTRIES.length)} label="industries validated" />
               </div>
-            </div>
+              <ul className="dms-stds">
+                {STANDARDS.map((s) => (
+                  <li className="dms-std" key={s.name}>
+                    <span className="dms-std__name">{s.name}</span>
+                    <p className="dms-std__body">{s.body}</p>
+                    <span className="dms-std__geo">{s.geo}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="dms-frame">
+                <div className="dms-frame__inds">
+                  <span className="dms-persona__lab">Validated across</span>
+                  <div className="dms-inds">
+                    {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
+                  </div>
+                </div>
+              </div>
+            </HatchFrame>
           </div>
         </div>
       </section>
 
-      {/* ============================ 09 · FAQ =========================== */}
-      <section className="dms-section" id="faq">
+      {/* ============================ 09 · OUTCOMES ====================== */}
+      <section className="dms-section" aria-label="Outcomes">
+        <div className="dms-wrap">
+          <SplitHeader
+            n={9}
+            eyebrow="Outcomes"
+            title="One library, one answer, audit after audit."
+          />
+          <div data-reveal>
+            <SteppedGrowth
+              ariaLabel="Illustrative growth of documents under control across four quarters, from 240 to 1,284"
+              points={OUTCOMES}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ 10 · FAQ =========================== */}
+      <section className="dms-section dms-section--alt" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
-            <Eyebrow n={9}>FAQ</Eyebrow>
+            <Eyebrow n={10}>FAQ</Eyebrow>
             <h2 className="dms-h2">The questions procurement and QA ask first.</h2>
             <p className="dms-lede">
               Anything else, <a href="#dms-close-h">bring it to the walkthrough</a>.

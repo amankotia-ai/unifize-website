@@ -66,6 +66,14 @@ export function ShellFrame({
   );
 }
 
+export function HatchFrame({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div className={"dms-hframe" + (className ? " " + className : "")}>
+      <div className="dms-hframe__inner">{children}</div>
+    </div>
+  );
+}
+
 export function StagePanel({
   crop = "none",
   children,
