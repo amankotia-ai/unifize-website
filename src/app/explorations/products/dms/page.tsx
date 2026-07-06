@@ -6,7 +6,7 @@
  * ledgers and registers instead of card grids, mono indices, big display type.
  * Product visuals are explicit placeholders (DmsPlaceholder) awaiting real
  * screenshots. Content is sourced from the Unifize Products database (Notion):
- * DMS (UPD-2). The maturity note keeps the Goal Zero status honest (Pending).
+ * DMS (UPD-2).
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -289,16 +289,6 @@ export default function DmsProductPage() {
               <div className="dms-inds">
                 {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
               </div>
-            </div>
-            <div className="dms-maturity">
-              <span className="dms-maturity__badge">
-                <span className="dms-dot" aria-hidden="true" />
-                Goal Zero · {PRODUCT.goalZero}
-              </span>
-              <p className="dms-maturity__text">
-                Requirements are validated against the canonical set. The three-customer, three-industry deployment
-                validation is in progress, so we show the status rather than overclaim it.
-              </p>
             </div>
           </div>
         </div>
