@@ -298,7 +298,10 @@ export default function DmsProductPage() {
       <section className="dms-section dms-section--dark dms-close" aria-labelledby="dms-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
-            <h2 className="dms-close__h" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
+            <div className="dms-close__lead">
+              <span className="dms-close__eyebrow">Ready when you are</span>
+              <h2 className="dms-close__h" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
+            </div>
             <div className="dms-close__side">
               <p className="dms-lede">We will run it through the lifecycle live, from draft to Part 11 approval.</p>
               <div className="dms-close__cta">
@@ -333,7 +336,8 @@ export default function DmsProductPage() {
         </div>
         <div className="dms-wrap">
           <div className="dms-footer__base">
-            <span>© Unifize 2026 · Products, Document Management System (UPD-2)</span>
+            <span>© Unifize 2026</span>
+            <span>Document Management System · UPD-2</span>
           </div>
         </div>
       </footer>
