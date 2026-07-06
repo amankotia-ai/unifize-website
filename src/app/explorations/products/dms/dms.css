@@ -378,15 +378,32 @@
  * centered; the three modules run as a horizontal row beneath, tracking
  * left to right. Clicking a module scrolls to its segment. */
 .dms-modx-section { padding-block:0; min-height:0; display:block; }
-.dms-modx-scroll { height:300vh; }
-.dms-modx-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; padding-top:var(--dms-header-h); }
-.dms-modx { display:flex; flex-direction:column; gap:var(--dms-s-6); flex:1; min-height:0; width:100%;
-  padding-block:var(--dms-s-6) var(--dms-s-8); }
+.dms-modx-scroll { height:320vh; }
+.dms-modx-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center;
+  padding-top:var(--dms-header-h); }
+/* content is centred in the sticky with generous padding - it breathes
+ * rather than filling the viewport edge to edge. */
+.dms-modx { display:flex; flex-direction:column; gap:clamp(28px, 3.6vh, 52px); width:100%;
+  padding-block:clamp(32px, 4.5vh, 68px); }
 .dms-modx__head { flex:none; display:flex; flex-direction:column; gap:var(--dms-s-5); }
-.dms-modx__stage { flex:1; min-height:0; display:flex; }
+.dms-modx__stage { flex:none; min-height:clamp(340px, 42vh, 520px); display:flex; }
 .dms-modx__stage .dms-stage__inner { flex:1; display:flex; align-items:center; justify-content:center;
-  padding:clamp(20px, 3vw, 48px); }
+  padding:clamp(24px, 3.5vw, 60px); }
 .dms-modx__card { width:min(640px, 100%); animation:dms-rise .45s var(--dms-ease) both; }
+
+/* scroll-progress connector: junctions above each module, a line that
+ * fills left to right as scroll advances through the three. */
+.dms-modx__rail { flex:none; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(24px, 4vw, 72px); }
+.dms-modx__rail-cell { position:relative; height:12px; }
+.dms-modx__jn { position:absolute; left:0; top:50%; transform:translateY(-50%); width:11px; height:11px;
+  border-radius:50%; box-sizing:border-box; border:1.5px solid var(--dms-line-strong); background:var(--dms-surface-alt); z-index:1;
+  transition:border-color .3s var(--dms-ease), background .3s var(--dms-ease); }
+.dms-modx__jn.is-on { border-color:var(--dms-accent); background:var(--dms-accent); }
+.dms-modx__seg { position:absolute; left:11px; right:calc(-1 * clamp(24px, 4vw, 72px)); top:50%; transform:translateY(-50%);
+  height:1.5px; background:var(--dms-line-strong); overflow:hidden; }
+.dms-modx__seg-fill { display:block; height:100%; width:100%; background:var(--dms-accent);
+  transform-origin:left; transform:scaleX(0); transition:transform .12s linear; }
+
 .dms-modx__row { flex:none; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(24px, 4vw, 72px); }
 .dms-modx__it { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left;
   background:none; border:0; padding:0; cursor:pointer; font-family:var(--dms-sans); min-width:0; }
@@ -410,9 +427,10 @@
 
 @media (max-width:900px) {
   .dms-modx-scroll { height:auto; }
-  .dms-modx-sticky { position:static; height:auto; padding-top:0; }
-  .dms-modx { gap:var(--dms-s-8); padding-block:var(--dms-s-10); }
+  .dms-modx-sticky { position:static; height:auto; padding-top:0; justify-content:flex-start; }
+  .dms-modx { gap:var(--dms-s-8); padding-block:var(--dms-s-12); }
   .dms-modx__stage { min-height:min(70vw, 420px); }
+  .dms-modx__rail { display:none; }
   .dms-modx__row { grid-template-columns:1fr; gap:var(--dms-s-5); }
 }
 

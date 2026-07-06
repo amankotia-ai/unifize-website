@@ -37,6 +37,7 @@ const MODX_MQ = "(min-width: 901px)";
 
 export function ModuleExplorer() {
   const [active, setActive] = useState(0);
+  const [prog, setProg] = useState(0);
   const wrapRef = useRef<HTMLDivElement>(null);
   const n = MODULES.length;
 
@@ -50,6 +51,7 @@ export function ModuleExplorer() {
       if (total <= 0) return;
       const s = Math.min(1, Math.max(0, -rect.top / total));
       setActive(Math.min(n - 1, Math.floor(s * n)));
+      setProg(s);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -91,6 +93,21 @@ export function ModuleExplorer() {
               </ShellFrame>
             </div>
           </StagePanel>
+          <div className="dms-modx__rail" aria-hidden="true">
+            {MODULES.map((mod, i) => (
+              <div className="dms-modx__rail-cell" key={mod.key}>
+                <span className={"dms-modx__jn" + (prog >= i / (n - 1) - 0.02 ? " is-on" : "")} />
+                {i < n - 1 && (
+                  <span className="dms-modx__seg">
+                    <span
+                      className="dms-modx__seg-fill"
+                      style={{ transform: `scaleX(${Math.min(1, Math.max(0, (prog - i / (n - 1)) * (n - 1)))})` }}
+                    />
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
           <div className="dms-modx__row">
             {MODULES.map((mod, i) => (
               <button
