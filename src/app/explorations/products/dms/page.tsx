@@ -22,8 +22,8 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
-import { BigStat } from "./dms-linework";
+import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
+import { BigStat, CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   DriftToggle,
@@ -107,7 +107,9 @@ export default function DmsProductPage() {
             </p>
           </div>
           <div data-reveal>
-            <DriftToggle />
+            <StagePanel>
+              <DriftToggle />
+            </StagePanel>
           </div>
         </div>
       </section>
@@ -156,6 +158,7 @@ export default function DmsProductPage() {
           <ol className="dms-caps">
             {CAPABILITIES.map((c, i) => (
               <li className="dms-cap" key={c.title} data-reveal>
+                <CapGlyph name={c.glyph} />
                 <span className="dms-cap__idx dms-data" aria-hidden="true">{pad(i + 1)}</span>
                 <h3 className="dms-cap__title">{c.title}</h3>
                 <p className="dms-cap__body">{c.body}</p>
@@ -176,6 +179,7 @@ export default function DmsProductPage() {
           <div className="dms-personas">
             {PERSONAS.map((p) => (
               <article className="dms-persona" key={p.name} data-reveal>
+                <img className="dms-persona__photo" src={p.img} alt="" loading="lazy" />
                 <span className="dms-persona__tier">{p.tier}</span>
                 <h3 className="dms-persona__name">{p.name}</h3>
                 <p className="dms-persona__summary">{p.summary}</p>

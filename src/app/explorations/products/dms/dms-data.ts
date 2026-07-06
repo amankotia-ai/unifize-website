@@ -106,20 +106,23 @@ export const LIFECYCLE: { state: string; gate: string; detail: string; visual: s
   },
 ];
 
-/* capabilities - six, one short line each. */
-export const CAPABILITIES: { title: string; body: string }[] = [
-  { title: "Version history", body: "Every revision retained under the edition it shipped." },
-  { title: "Periodic review", body: "Review dates that route to an owner and expect an attestation." },
-  { title: "State watermarking", body: "DRAFT, EFFECTIVE, OBSOLETE stamped on the render." },
-  { title: "Part 11 e-signature", body: "Signer, meaning, and timestamp where the record requires it." },
-  { title: "Where-used lookup", body: "Reverse-trace a document to everything that references it." },
-  { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library." },
+/* capabilities - six, one short line each. glyph keys map to the line-work
+ * pictograms in dms-linework.tsx. */
+export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
+  { title: "Version history", body: "Every revision retained under the edition it shipped.", glyph: "versions" },
+  { title: "Periodic review", body: "Review dates that route to an owner and expect an attestation.", glyph: "review" },
+  { title: "State watermarking", body: "DRAFT, EFFECTIVE, OBSOLETE stamped on the render.", glyph: "watermark" },
+  { title: "Part 11 e-signature", body: "Signer, meaning, and timestamp where the record requires it.", glyph: "signature" },
+  { title: "Where-used lookup", body: "Reverse-trace a document to everything that references it.", glyph: "trace" },
+  { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library.", glyph: "access" },
 ];
 
-/* who owns this product day to day. short. */
-export const PERSONAS: { name: string; tier: string; summary: string; daily: string[]; variants: string }[] = [
+/* who owns this product day to day. short. Portraits are representative
+ * stock (same treatment as the itm proof section), not real customers. */
+export const PERSONAS: { name: string; tier: string; summary: string; daily: string[]; variants: string; img: string }[] = [
   {
     name: "Document Controller",
+    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&h=600&q=70",
     tier: "Primary owner",
     summary: "Owns the controlled document lifecycle and answers the one question every auditor asks: is this the latest?",
     daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
@@ -127,6 +130,7 @@ export const PERSONAS: { name: string; tier: string; summary: string; daily: str
   },
   {
     name: "Training Coordinator",
+    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&h=600&q=70",
     tier: "Primary owner",
     summary: "Owns “people are trained on the current revision”, mapping SOPs to roles and closing the loop for audits.",
     daily: ["Assign training off new revisions", "Chase incomplete training", "Report completion for audits"],

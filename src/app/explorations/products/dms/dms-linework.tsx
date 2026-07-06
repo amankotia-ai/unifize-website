@@ -5,6 +5,67 @@
  * marker per graphic. Server components, inline SVG.
  * -------------------------------------------------------------------------- */
 
+/* line-work pictograms for the capabilities ledger: hairline strokes,
+ * square caps, currentColor. */
+const GLYPHS: Record<string, React.ReactNode> = {
+  versions: (
+    <>
+      <path d="M3 10.5h10.5V21H3z" />
+      <path d="M6.75 6.75h10.5v10.5" />
+      <path d="M10.5 3H21v10.5" />
+    </>
+  ),
+  review: (
+    <>
+      <path d="M20.2 13.5a8.25 8.25 0 1 1-1.9-7.1" />
+      <path d="M20.5 2.5V7H16" />
+    </>
+  ),
+  watermark: (
+    <>
+      <rect x="4.5" y="3" width="15" height="18" />
+      <path d="M7.5 18.75 18 8.25M7.5 13.5l6-6M13.5 18.75l4.5-4.5" />
+    </>
+  ),
+  signature: (
+    <>
+      <path d="M3 16.5c2.2-4.5 4.2-6.3 5.2-4.3s-1.2 5.3 1 5.3 3-6.3 5-4.3 0 5.3 3.3 3.3" />
+      <path d="M3 21h18" />
+    </>
+  ),
+  trace: (
+    <>
+      <circle cx="12" cy="5.5" r="2.5" />
+      <circle cx="4.5" cy="18.5" r="2" />
+      <circle cx="12" cy="18.5" r="2" />
+      <circle cx="19.5" cy="18.5" r="2" />
+      <path d="M12 8v4m0 0-6 4.8M12 12v4.5m0-4.5 6 4.8" />
+    </>
+  ),
+  access: (
+    <>
+      <path d="M2.5 12S6.5 5.8 12 5.8 21.5 12 21.5 12 17.5 18.2 12 18.2 2.5 12 2.5 12Z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
+};
+
+export function CapGlyph({ name }: { name: string }) {
+  return (
+    <svg
+      className="dms-cap__glyph"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.25}
+      strokeLinecap="square"
+      aria-hidden="true"
+    >
+      {GLYPHS[name]}
+    </svg>
+  );
+}
+
 export function BigStat({ value, label }: { value: string; label: string }) {
   return (
     <div className="dms-bigstat">
