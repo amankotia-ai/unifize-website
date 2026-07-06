@@ -21,6 +21,7 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
+import { Eyebrow, SplitHeader, pad } from "./dms-primitives";
 import {
   DmsPlaceholder,
   DriftToggle,
@@ -50,16 +51,6 @@ const PERSONA_ICONS: React.ReactNode[] = [
 ];
 
 const SEV_CLASS: Record<string, string> = { Critical: "is-critical", High: "is-high", Medium: "is-medium" };
-
-const pad = (n: number) => String(n).padStart(2, "0");
-
-/* numbered chapter eyebrow */
-const Eyebrow = ({ n, children }: { n: number; children: React.ReactNode }) => (
-  <span className="dms-eyebrow">
-    <span className="dms-eyebrow__num dms-data" aria-hidden="true">{pad(n)}</span>
-    {children}
-  </span>
-);
 
 export default function DmsProductPage() {
   return (
@@ -109,10 +100,9 @@ export default function DmsProductPage() {
       {/* ============================ TRUST STRIP ======================= */}
       <section className="dms-section dms-trust" aria-label="Customers">
         <div className="dms-wrap dms-trust__inner">
-          <span className="dms-trust__lab">Trusted by quality teams across regulated manufacturing</span>
           <div className="dms-trust__logos" role="img" aria-label="Customer logos, placeholders">
             {[128, 96, 150, 108, 136, 92].map((w, i) => (
-              <span key={i} className="dms-skel dms-trust__mark" style={{ width: w }} />
+              <span key={i} className="dms-trust__mark" style={{ width: w }} />
             ))}
           </div>
         </div>
@@ -121,14 +111,12 @@ export default function DmsProductPage() {
       {/* ============================ 01 · THE DRIFT PROBLEM ============= */}
       <section className="dms-section">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={1}>The problem</Eyebrow>
-            <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
-            <p className="dms-lede">
-              The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
-              Toggle the two worlds.
-            </p>
-          </div>
+          <SplitHeader
+            n={1}
+            eyebrow="The problem"
+            title="A document is only controlled if there is one of it."
+            lede="The same SOP lives in three places at three revisions. DMS collapses them into one governed record. Toggle the two worlds."
+          />
           <div data-reveal>
             <DriftToggle />
           </div>
@@ -138,13 +126,12 @@ export default function DmsProductPage() {
       {/* ============================ 02 · MODULES BUNDLED =============== */}
       <section className="dms-section dms-section--alt" id="modules">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={2}>What is bundled</Eyebrow>
-            <h2 className="dms-h2">Three modules, one record.</h2>
-            <p className="dms-lede">
-              Not three tools bolted together. A change carries its evidence, drives the revision, and cascades into training.
-            </p>
-          </div>
+          <SplitHeader
+            n={2}
+            eyebrow="What is bundled"
+            title="Three modules, one record."
+            lede="Not three tools bolted together. A change carries its evidence, drives the revision, and cascades into training."
+          />
           <div data-reveal>
             <ModuleExplorer />
           </div>
@@ -154,14 +141,12 @@ export default function DmsProductPage() {
       {/* ============================ 03 · LIFECYCLE ===================== */}
       <section className="dms-section" id="lifecycle">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={3}>The lifecycle</Eyebrow>
-            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
-            <p className="dms-lede">
-              Scroll through the six states a controlled document moves through. The thread on the right
-              replays the revision that drives them, as it happens in Unifize.
-            </p>
-          </div>
+          <SplitHeader
+            n={3}
+            eyebrow="The lifecycle"
+            title="Every state has a gate. Every gate has an owner."
+            lede="Scroll through the six states a controlled document moves through. The thread on the right replays the revision that drives them, as it happens in Unifize."
+          />
           <div data-reveal>
             <LifecycleExplorer />
           </div>
@@ -171,10 +156,7 @@ export default function DmsProductPage() {
       {/* ============================ 04 · CAPABILITIES ================== */}
       <section className="dms-section dms-section--alt" id="capabilities">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={4}>Capabilities</Eyebrow>
-            <h2 className="dms-h2">The controls a regulated library runs on.</h2>
-          </div>
+          <SplitHeader n={4} eyebrow="Capabilities" title="The controls a regulated library runs on." />
           <ol className="dms-caps">
             {CAPABILITIES.map((c, i) => (
               <li className="dms-cap" key={c.title} data-reveal>
@@ -190,10 +172,7 @@ export default function DmsProductPage() {
       {/* ============================ 05 · WHO OWNS IT =================== */}
       <section className="dms-section" id="who">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={5}>Who owns it</Eyebrow>
-            <h2 className="dms-h2">Built for the two people the audit finds first.</h2>
-          </div>
+          <SplitHeader n={5} eyebrow="Who owns it" title="Built for the two people the audit finds first." />
           <div className="dms-personas">
             {PERSONAS.map((p, i) => (
               <article className="dms-persona" key={p.name} data-reveal>
@@ -216,10 +195,7 @@ export default function DmsProductPage() {
       {/* ============================ 06 · TESTIMONIAL SLOT ============== */}
       <section className="dms-section dms-section--alt" aria-label="Customer proof">
         <div className="dms-wrap">
-          <div className="dms-head dms-head--center" data-reveal>
-            <Eyebrow n={6}>Proof</Eyebrow>
-            <h2 className="dms-h2">What quality teams say.</h2>
-          </div>
+          <SplitHeader n={6} eyebrow="Proof" title="What quality teams say." />
           <figure className="dms-quote" data-reveal>
             <span className="dms-ph__tag">Customer quote · placeholder</span>
             <svg className="dms-quote__mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -244,10 +220,7 @@ export default function DmsProductPage() {
       {/* ============================ 07 · PAINS CLOSED ================== */}
       <section className="dms-section">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={7}>What it closes</Eyebrow>
-            <h2 className="dms-h2">The four failure modes that become audit findings.</h2>
-          </div>
+          <SplitHeader n={7} eyebrow="What it closes" title="The four failure modes that become audit findings." />
           <ol className="dms-pains">
             {PAINS.map((pn, i) => (
               <li className="dms-pain" key={pn.title} data-reveal>
@@ -269,10 +242,7 @@ export default function DmsProductPage() {
       {/* ============================ 08 · COMPLIANCE + INDUSTRIES ======= */}
       <section className="dms-section dms-section--alt" id="compliance">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={8}>Compliance frame</Eyebrow>
-            <h2 className="dms-h2">One controlled lifecycle, whatever you are audited against.</h2>
-          </div>
+          <SplitHeader n={8} eyebrow="Compliance frame" title="One controlled lifecycle, whatever you are audited against." />
           <ul className="dms-stds">
             {STANDARDS.map((s) => (
               <li className="dms-std" key={s.name} data-reveal>
