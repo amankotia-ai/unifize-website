@@ -206,12 +206,12 @@ export function LifecycleExplorer() {
   return (
     <div className="dms-lifex-scroll" ref={wrapRef}>
       <div className="dms-lifex-sticky">
-        <div className="dms-wrap dms-lifex-wrap">
-          <div className="dms-lifex__head">
-            <Eyebrow n={4}>The lifecycle</Eyebrow>
-            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
-          </div>
-          <StagePanel className="dms-stage--brand dms-lifex__stage">
+        <StagePanel className="dms-stage--brand dms-lifex__stage">
+          <div className="dms-wrap dms-lifex-wrap">
+            <div className="dms-lifex__head">
+              <Eyebrow n={4}>The lifecycle</Eyebrow>
+              <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
+            </div>
             <div className="dms-lifex">
           <aside className="dms-lifex__trail">
             <span className="dms-lifex__lab">How a revision moves</span>
@@ -258,8 +258,8 @@ export function LifecycleExplorer() {
             <span className="dms-lifex__mobile-id">CC-2148 · raise → review → Part 11 approval → effective → seal</span>
           </div>
             </div>
-          </StagePanel>
-        </div>
+          </div>
+        </StagePanel>
       </div>
     </div>
   );

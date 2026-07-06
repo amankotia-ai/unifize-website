@@ -441,11 +441,16 @@
  * the states. Trail text runs light on the field. */
 .dms-lifex-section { padding-block:0; min-height:0; display:block; }
 .dms-lifex-scroll { height:420vh; }
-.dms-lifex-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center;
-  padding-top:var(--dms-header-h); }
-.dms-lifex-wrap { display:flex; flex-direction:column; gap:var(--dms-s-6); width:100%; }
+.dms-lifex-sticky { position:sticky; top:0; height:100vh; }
+/* the brand field is the whole section: full-bleed, head included */
+.dms-lifex__stage { height:100%; }
+.dms-lifex__stage .dms-stage__inner { height:100%; display:flex; flex-direction:column; justify-content:center;
+  padding:calc(var(--dms-header-h) + clamp(24px, 4vh, 56px)) 0 clamp(24px, 4vh, 56px); }
+.dms-lifex-wrap { display:flex; flex-direction:column; gap:clamp(28px, 3.6vh, 52px); width:100%; }
 .dms-lifex__head { display:flex; flex-direction:column; gap:var(--dms-s-5); }
-.dms-lifex__stage .dms-stage__inner { padding:clamp(20px, 2.4vw, 44px); }
+.dms-lifex__stage .dms-h2 { color:#fff; }
+.dms-lifex__stage .dms-eyebrow { color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.4); background:transparent; }
+.dms-lifex__stage .dms-eyebrow__num { color:rgba(255,255,255,.55); }
 .dms-lifex { display:grid; grid-template-columns:minmax(240px, 340px) minmax(0,1fr); gap:clamp(32px, 4vw, 72px);
   align-items:center; }
 .dms-lifex__trail { min-width:0; }
@@ -476,7 +481,9 @@
 .dms-lifex__mobile { display:none; }
 @media (max-width:940px) {
   .dms-lifex-scroll { height:auto; }
-  .dms-lifex-sticky { position:static; height:auto; padding-top:var(--dms-s-10); }
+  .dms-lifex-sticky { position:static; height:auto; }
+  .dms-lifex__stage { height:auto; }
+  .dms-lifex__stage .dms-stage__inner { height:auto; display:block; padding:var(--dms-s-12) 0; }
   .dms-lifex { grid-template-columns:1fr; gap:var(--dms-s-8); }
   .dms-lifex__live { display:none; }
   .dms-lifex__mobile { display:flex; flex-direction:column; gap:6px; border:1px solid rgba(255,255,255,.24);
