@@ -220,7 +220,7 @@ export default function DmsProductPage() {
           <ol className="dms-pains">
             {PAINS.map((pn, i) => (
               <li className={"dms-pain " + SEV_CLASS[pn.severity]} key={pn.title} data-reveal>
-                <div className="dms-pain__top">
+                <div className="dms-pain__sig">
                   <SeverityIcon severity={pn.severity} />
                   <span className="dms-pain__sev">{pn.severity}</span>
                 </div>
