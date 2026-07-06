@@ -163,6 +163,21 @@ export const INDUSTRIES = [
   "Automotive",
 ];
 
+/* prototype mock content - illustrative rows for the coded product
+ * prototypes. Grounded in the same fiction as the rest of the page
+ * (SOP-118 Rev C to D, change CC-2148). */
+export const MOCK_REGISTER: {
+  no: string; title: string; rev: string; state: "Effective" | "In Approval" | "Draft" | "Obsolete";
+  next: string; key?: boolean;
+}[] = [
+  { no: "SOP-118", title: "Cleaning validation of process equipment", rev: "D", state: "In Approval", next: "2027-03-01", key: true },
+  { no: "SOP-104", title: "Supplier qualification and monitoring", rev: "F", state: "Effective", next: "2026-11-14" },
+  { no: "WI-092", title: "Line clearance, packaging area", rev: "B", state: "Effective", next: "2026-09-02" },
+  { no: "SOP-121", title: "Deviation and CAPA intake", rev: "A", state: "Draft", next: "Pending" },
+  { no: "FRM-201", title: "Training record, read and understood", rev: "C", state: "Effective", next: "2027-01-20" },
+  { no: "SOP-077", title: "Labeling control and reconciliation", rev: "E", state: "Obsolete", next: "Retired" },
+];
+
 /* FAQ - answers grounded in the canonical product copy above. */
 export const FAQS: { q: string; a: string }[] = [
   {

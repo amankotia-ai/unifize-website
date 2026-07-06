@@ -21,9 +21,9 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, SplitHeader, pad } from "./dms-primitives";
+import { Eyebrow, SplitHeader, ShellFrame, StagePanel, pad } from "./dms-primitives";
+import { MockDocRegister } from "./dms-mocks";
 import {
-  DmsPlaceholder,
   DriftToggle,
   ModuleExplorer,
   LifecycleExplorer,
@@ -60,40 +60,40 @@ export default function DmsProductPage() {
 
       {/* ============================ HERO ============================= */}
       <section className="dms-section dms-hero" aria-label="Document Management System">
-        <div className="dms-hero__glow" aria-hidden="true" />
-        <div className="dms-wrap dms-hero__inner dms-hero__inner--center">
-          <div className="dms-hero__copy dms-hero__copy--center">
-            <div className="dms-hero__crumb">
-              <span className="dms-dot dms-dot--accent" aria-hidden="true" />
-              <Link href="/platform">Products</Link>
-              <span className="dms-hero__crumb-sep" aria-hidden="true">/</span>
-              <span>Document Management System</span>
+        <div className="dms-wrap dms-hero__inner">
+          <div className="dms-hero__grid">
+            <div className="dms-hero__left">
+              <div className="dms-hero__crumb">
+                <Link href="/platform">Products</Link>
+                <span className="dms-hero__crumb-sep" aria-hidden="true">/</span>
+                <span>Document Management System</span>
+              </div>
+              <h1 className="dms-hero__title">
+                The current version shouldn&rsquo;t depend on <span className="dms-hero__turn">where you look.</span>
+              </h1>
             </div>
-            <h1 className="dms-hero__title">
-              The current version shouldn&rsquo;t depend on <span className="dms-hero__turn">where you look.</span>
-            </h1>
-            <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
-            <ul className="dms-hero__stds" aria-label="Standards supported">
-              {HERO_STANDARDS.map((s) => (
-                <li key={s} className="dms-hero__std">{s}</li>
-              ))}
-            </ul>
-            <div className="dms-hero__ctas">
-              <button type="button" className="dms-btn">Book a demo &rarr;</button>
-              <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
+            <div className="dms-hero__right">
+              <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
+              <div className="dms-hero__ctas">
+                <button type="button" className="dms-btn">Book a demo &rarr;</button>
+                <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
+              </div>
             </div>
           </div>
+          <ul className="dms-hero__stds" aria-label="Standards supported">
+            {HERO_STANDARDS.map((s) => (
+              <li key={s} className="dms-hero__std">{s}</li>
+            ))}
+          </ul>
         </div>
 
-        {/* the one hero visual - full-bleed product frame, overlapping below */}
+        {/* the one hero visual - coded prototype staged on the field, overlapping below */}
         <div className="dms-wrap dms-hero__frame">
-          <div className="dms-appframe">
-            <div className="dms-appframe__bar" aria-hidden="true">
-              <span className="dms-dot" /><span className="dms-dot" /><span className="dms-dot" />
-              <span className="dms-appframe__url">app.unifize.com / documents</span>
-            </div>
-            <DmsPlaceholder label="Product visual · Document library overview" hint="Full app screenshot · 2880 × 1620" tall />
-          </div>
+          <StagePanel crop="bottom">
+            <ShellFrame url="app.unifize.com / documents">
+              <MockDocRegister />
+            </ShellFrame>
+          </StagePanel>
         </div>
       </section>
 
@@ -282,7 +282,6 @@ export default function DmsProductPage() {
 
       {/* ============================ CLOSE ============================= */}
       <section className="dms-section dms-section--dark dms-close" aria-labelledby="dms-close-h">
-        <div className="dms-close__glow" aria-hidden="true" />
         <div className="dms-wrap">
           <div className="dms-head dms-head--center" data-reveal>
             <h2 className="dms-h2" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
