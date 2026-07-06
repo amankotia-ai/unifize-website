@@ -178,6 +178,38 @@ export const MOCK_REGISTER: {
   { no: "SOP-077", title: "Labeling control and reconciliation", rev: "E", state: "Obsolete", next: "Retired" },
 ];
 
+/* change order CC-2148 approval route (change-control module mock) */
+export const MOCK_CHANGE = {
+  id: "CC-2148",
+  title: "Update cleaning validation per new equipment",
+  state: "In Approval" as const,
+  route: [
+    { who: "R. Mehta", role: "Quality Assurance", meaning: "Approved, Part 11", date: "2026-06-28" },
+    { who: "S. Okafor", role: "Process Engineering", meaning: "Approved, Part 11", date: "2026-06-30" },
+    { who: "J. Lindqvist", role: "Operations", meaning: "Pending signature", date: "", key: true },
+  ],
+  impact: "SOP-118 Rev C to D · training cascade on release",
+};
+
+/* role-to-document training matrix (training module mock).
+ * done = trained on current rev; assigned = new obligation from Rev D. */
+export const MOCK_TRAINING = {
+  docs: ["SOP-118 D", "WI-092 B", "FRM-201 C"],
+  keyDoc: 0,
+  rows: [
+    { role: "Line Operator", cells: ["assigned", "done", "done"] },
+    { role: "QA Analyst", cells: ["assigned", "done", "done"] },
+    { role: "Maintenance", cells: ["assigned", "assigned", "done"] },
+  ] as { role: string; cells: ("done" | "assigned")[] }[],
+};
+
+/* revision trail for SOP-118 (document-control module mock) */
+export const MOCK_TRAIL = [
+  { rev: "Rev D", state: "Effective 2026-07-02", note: "Signed QA · Part 11", key: true },
+  { rev: "Rev C", state: "Superseded", note: "Retained read-only" },
+  { rev: "Rev B", state: "Superseded", note: "Retained read-only" },
+];
+
 /* FAQ - answers grounded in the canonical product copy above. */
 export const FAQS: { q: string; a: string }[] = [
   {

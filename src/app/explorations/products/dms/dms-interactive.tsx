@@ -2,35 +2,21 @@
 
 /* ----------------------------------------------------------------------------
  * dms-interactive.tsx - the interactive layer of the DMS product page.
- *   DmsPlaceholder     - labeled frame where a real product visual will land.
  *   DriftToggle        - "Without DMS / With DMS" typographic comparison.
- *   ModuleExplorer     - numbered editorial tab list with a visual panel.
+ *   ModuleExplorer     - module accordion with a staged prototype per module.
  *   LifecycleExplorer  - node-rail lifecycle diagram with a detail panel.
  *   FaqAccordion       - one-open-at-a-time FAQ.
- * Design: editorial, hairline-based, no card boxes - big Geist type, mono
- * indices, dashed rules. All state is local and degrades to a sensible
- * default without JS (first tab, Effective state, first FAQ open).
+ * Design: editorial, hairline-based - big Geist type, mono indices, staged
+ * prototype mocks on gradient-noise fields. All state is local and degrades
+ * to a sensible default without JS (first module, Effective state, first
+ * FAQ open).
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useRef, useState } from "react";
 import { ChatShell } from "@/components/organisms";
 import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
-
-/* ============================================================ placeholder */
-
-export function DmsPlaceholder({ label, hint, tall = false }: { label: string; hint?: string; tall?: boolean }) {
-  return (
-    <div className={"dms-ph" + (tall ? " dms-ph--tall" : "")} role="img" aria-label={label}>
-      <span className="dms-ph__icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-        </svg>
-      </span>
-      <span className="dms-ph__label">{label}</span>
-      {hint && <span className="dms-ph__hint">{hint}</span>}
-    </div>
-  );
-}
+import { ShellFrame, StagePanel } from "./dms-primitives";
+import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mocks";
 
 /* ============================================================ shared bits */
 
@@ -96,7 +82,26 @@ export function DriftToggle() {
   );
 }
 
-/* ============================================================ module tabs */
+/* ============================================================ module accordion
+ * Accordion semantics (aria-expanded + region, mirrors FaqAccordion). One
+ * module always open. Each module stages its prototype fragment: in the
+ * sticky panel on desktop, inline in the body below 900px. */
+
+const MODULE_MOCKS: Record<string, React.ReactNode> = {
+  "document-control": <MockRevisionTrail />,
+  "change-control": <MockChangeOrder />,
+  "training-management": <MockTrainingMatrix />,
+};
+
+function ModuleStage({ moduleKey }: { moduleKey: string }) {
+  return (
+    <StagePanel>
+      <ShellFrame panel url={`app.unifize.com / ${moduleKey.replace(/-/g, " ")}`}>
+        {MODULE_MOCKS[moduleKey]}
+      </ShellFrame>
+    </StagePanel>
+  );
+}
 
 export function ModuleExplorer() {
   const [active, setActive] = useState(0);
@@ -104,27 +109,26 @@ export function ModuleExplorer() {
 
   return (
     <div className="dms-modx">
-      <div className="dms-modx__list" role="tablist" aria-label="Bundled modules" aria-orientation="vertical">
+      <div className="dms-modx__list">
         {MODULES.map((mod, i) => (
           <div className={"dms-modx__item" + (i === active ? " is-active" : "")} key={mod.key}>
             <h3 className="dms-modx__h">
               <button
                 type="button"
-                role="tab"
                 id={`dms-modtab-${mod.key}`}
-                aria-selected={i === active}
+                aria-expanded={i === active}
                 aria-controls={`dms-modbody-${mod.key}`}
                 className="dms-modx__trigger"
                 onClick={() => setActive(i)}
               >
                 <span className="dms-modx__idx">{pad(i + 1)}</span>
                 <span className="dms-modx__name">{mod.name}</span>
-                <svg className="dms-modx__arrow" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M2 10a1 1 0 0 1 1-1h11.6l-3.9-3.9a1 1 0 1 1 1.4-1.4l5.6 5.6a1 1 0 0 1 0 1.4l-5.6 5.6a1 1 0 0 1-1.4-1.4l3.9-3.9H3a1 1 0 0 1-1-1Z" clipRule="evenodd" />
+                <svg className="dms-modx__ic" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1Z" clipRule="evenodd" />
                 </svg>
               </button>
             </h3>
-            <div className="dms-modx__body" id={`dms-modbody-${mod.key}`} role="tabpanel" aria-labelledby={`dms-modtab-${mod.key}`} aria-hidden={i !== active}>
+            <div className="dms-modx__body" id={`dms-modbody-${mod.key}`} role="region" aria-labelledby={`dms-modtab-${mod.key}`} aria-hidden={i !== active}>
               <div className="dms-modx__body-inner">
                 <span className="dms-modx__promise">{mod.promise}</span>
                 <p className="dms-modx__desc">{mod.blurb}</p>
@@ -133,6 +137,9 @@ export function ModuleExplorer() {
                     <li key={p}><span className="dms-modx__pt-ic" aria-hidden="true"><Check /></span>{p}</li>
                   ))}
                 </ul>
+                <div className="dms-modx__fragment">
+                  <ModuleStage moduleKey={mod.key} />
+                </div>
                 <p className="dms-modx__stds" aria-label="Standards">{mod.standards.join("  ·  ")}</p>
               </div>
             </div>
@@ -141,13 +148,7 @@ export function ModuleExplorer() {
       </div>
 
       <div className="dms-modx__panel" key={"v-" + m.key} aria-hidden="true">
-        <div className="dms-appframe dms-appframe--panel">
-          <div className="dms-appframe__bar">
-            <span className="dms-dot" /><span className="dms-dot" /><span className="dms-dot" />
-            <span className="dms-appframe__url">app.unifize.com / {m.key.replace(/-/g, " ")}</span>
-          </div>
-          <DmsPlaceholder label={`Product visual · ${m.visual}`} hint="Screenshot placeholder · 16:10" />
-        </div>
+        <ModuleStage moduleKey={m.key} />
       </div>
     </div>
   );

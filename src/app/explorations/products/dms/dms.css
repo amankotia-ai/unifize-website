@@ -224,30 +224,12 @@
 .dms-appframe__bar .dms-dot { width:9px; height:9px; }
 .dms-appframe__url { margin-inline:auto; font-size:0.75rem; color:var(--dms-muted); padding:5px 16px;
   border-radius:var(--dms-r-pill); background:var(--dms-surface); border:1px solid var(--dms-hairline); }
-.dms-appframe--panel { box-shadow:var(--dms-elev-raise); }
 .dms-appframe--panel .dms-appframe__bar { height:40px; }
-.dms-appframe--panel .dms-ph { min-height:clamp(240px, 26vw, 380px); border:0; border-radius:0; }
 
-/* ============================================================ PLACEHOLDER FRAMES
- * Explicit slots where real product visuals land. Dashed frame + faint grid
- * so they read as intentional placeholders, not broken images. */
-.dms-ph { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
-  min-height:260px; padding:var(--dms-s-8); text-align:center; overflow:hidden;
-  border:1.5px dashed var(--dms-line-strong); border-radius:var(--dms-r-card-sm);
-  background-color:var(--dms-surface-sunk);
-  background-image:
-    linear-gradient(color-mix(in oklch, var(--dms-ink) 5%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in oklch, var(--dms-ink) 5%, transparent) 1px, transparent 1px);
-  background-size:26px 26px; }
-.dms-ph--tall { min-height:clamp(320px, 42vw, 580px); border:0; border-radius:0; }
-.dms-ph__icon { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:12px;
-  background:var(--dms-surface); border:1px solid var(--dms-hairline); color:var(--dms-faint); box-shadow:var(--dms-elev-card); }
-.dms-ph__icon svg { width:21px; height:21px; }
-.dms-ph__label { font-family:var(--dms-display); font-weight:600; font-size:0.9375rem; color:var(--dms-ink-2); letter-spacing:-0.008em; }
-.dms-ph__hint { font-size:0.75rem; color:var(--dms-faint); }
-.dms-ph__tag { position:absolute; top:14px; right:14px; z-index:1; font-size:0.6875rem; font-weight:600; letter-spacing:0.06em;
-  text-transform:uppercase; color:var(--dms-faint); padding:4px 10px; border-radius:var(--dms-r-pill);
-  border:1px dashed var(--dms-line-strong); background:var(--dms-surface); }
+/* placeholder tag - the one surviving placeholder marker (testimonial slot) */
+.dms-ph__tag { position:absolute; top:14px; right:14px; z-index:1; font-family:var(--dms-mono); font-size:0.625rem;
+  font-weight:500; letter-spacing:0.06em; text-transform:uppercase; color:var(--dms-faint); padding:4px 10px;
+  border-radius:4px; border:1px dashed var(--dms-line-strong); background:var(--dms-surface); }
 
 /* ============================================================ PROTOTYPE MOCKS
  * Coded product prototypes staged inside shell chrome. Illustrative rows;
@@ -272,6 +254,32 @@
   .dms-mock__grid { grid-template-columns:80px minmax(0,1fr) 100px; }
   .dms-mock__next, .dms-mock__rev { display:none; }
 }
+.dms-mock__foot { display:flex; align-items:center; gap:var(--dms-s-2); padding:10px var(--dms-s-5);
+  border-top:1px solid var(--dms-hairline); font-family:var(--dms-mono); font-size:0.625rem;
+  letter-spacing:0.05em; text-transform:uppercase; color:var(--dms-faint); }
+.dms-mock__foot .dms-mocktm__dot { margin-right:2px; }
+.dms-mock__foot .dms-mocktm__dot + * { margin-left:var(--dms-s-3); }
+
+/* change order route */
+.dms-mockco__head { display:flex; align-items:baseline; gap:var(--dms-s-4); padding:12px var(--dms-s-5); }
+.dms-mockco__title { flex:1; min-width:0; }
+.dms-mockco__row { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 86px;
+  gap:var(--dms-s-4); align-items:center; padding:10px var(--dms-s-5); }
+.dms-mockco__who { display:flex; flex-direction:column; gap:1px; min-width:0; }
+.dms-mockco__role { font-size:0.6875rem; color:var(--dms-faint); }
+.dms-mockco__meaning { font-size:0.75rem; color:var(--dms-muted); }
+
+/* training matrix */
+.dms-mocktm__grid { display:grid; grid-template-columns:minmax(0,1.3fr) repeat(3, minmax(0,1fr));
+  gap:var(--dms-s-4); align-items:center; padding:10px var(--dms-s-5); }
+.dms-mocktm__key { color:var(--dms-accent-text); }
+.dms-mocktm__dot { width:10px; height:10px; border-radius:var(--dms-r-pill); justify-self:start; flex:none; display:inline-block; }
+.dms-mocktm__dot.is-done { background:var(--dms-ink-2); }
+.dms-mocktm__dot.is-assigned { border:1.5px solid var(--dms-accent); background:var(--dms-accent-tint); }
+
+/* revision trail */
+.dms-mocktr__grid { display:grid; grid-template-columns:88px minmax(0,1fr) minmax(0,1fr);
+  gap:var(--dms-s-4); align-items:center; padding:11px var(--dms-s-5); }
 
 /* skeleton shimmer - shared by the trust marks and the quote placeholder */
 .dms-skel { display:block; height:13px; border-radius:7px;
@@ -347,18 +355,19 @@
 .dms-modx__trigger:hover .dms-modx__name { color:var(--dms-ink); }
 .dms-modx__item.is-active .dms-modx__name { color:var(--dms-ink); }
 .dms-modx__item.is-active .dms-modx__idx { color:var(--dms-accent-text); }
-.dms-modx__arrow { width:20px; height:20px; color:var(--dms-accent);
-  opacity:0; transform:translateX(-6px); transition:opacity var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease); }
-.dms-modx__item.is-active .dms-modx__arrow { opacity:1; transform:none; }
+.dms-modx__ic { width:18px; height:18px; justify-self:end; color:var(--dms-faint);
+  transition:transform .28s var(--dms-ease), color var(--dms-dur) var(--dms-ease); }
+.dms-modx__item.is-active .dms-modx__ic { transform:rotate(45deg); color:var(--dms-ink); }
 .dms-modx__body { display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s var(--dms-ease); }
 .dms-modx__item.is-active .dms-modx__body { grid-template-rows:1fr; }
 .dms-modx__body-inner { overflow:hidden; display:flex; flex-direction:column; gap:var(--dms-s-5);
   padding:0 4px 0 calc(44px + var(--dms-s-4)); }
 .dms-modx__body-inner > .dms-modx__stds { padding-bottom:var(--dms-s-8); }
-.dms-modx__promise { font-family:var(--dms-display); font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em;
-  color:var(--dms-accent-text); }
+.dms-modx__promise { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem; letter-spacing:-0.01em;
+  color:var(--dms-ink); }
 .dms-modx__panel { position:sticky; top:calc(var(--dms-header-h) + var(--dms-s-6)); animation:dms-rise .45s var(--dms-ease) both; }
-.dms-modx__panel .dms-ph { min-height:clamp(320px, 32vw, 480px); }
+.dms-modx .dms-stage__inner { padding:clamp(16px, 2.5vw, 40px); }
+.dms-modx__fragment { display:none; }
 .dms-modx__desc { font-size:1rem; line-height:1.6; color:var(--dms-ink-2); margin:0; max-width:56ch; }
 .dms-modx__points { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:10px var(--dms-s-6); }
 .dms-modx__points li { display:flex; align-items:center; gap:9px; font-size:0.875rem; line-height:1.4; color:var(--dms-ink-2); }
@@ -370,6 +379,8 @@
 @media (max-width:900px) {
   .dms-modx { grid-template-columns:1fr; }
   .dms-modx__points { grid-template-columns:1fr; }
+  .dms-modx__panel { display:none; }
+  .dms-modx__fragment { display:block; }
 }
 
 /* ============================================================ 03 · LIFECYCLE
