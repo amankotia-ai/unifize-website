@@ -18,12 +18,12 @@ import {
   PAINS,
   STANDARDS,
   INDUSTRIES,
-  OUTCOMES,
+  TESTIMONIAL,
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, SplitHeader, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
-import { BigStat, SteppedGrowth } from "./dms-linework";
+import { Eyebrow, SplitHeader, ShellFrame, HatchFrame, pad } from "./dms-primitives";
+import { BigStat } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   DriftToggle,
@@ -38,19 +38,6 @@ export const metadata: Metadata = {
   description:
     "DMS bundles Document Control, Change Control, and Training into one governed record. Controlled documents from draft to obsolete, with 21 CFR Part 11 e-signature where required.",
 };
-
-const PERSONA_ICONS: React.ReactNode[] = [
-  (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
-    </svg>
-  ),
-  (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
-    </svg>
-  ),
-];
 
 const SEV_CLASS: Record<string, string> = { Critical: "is-critical", High: "is-high", Medium: "is-medium" };
 
@@ -89,13 +76,11 @@ export default function DmsProductPage() {
           </ul>
         </div>
 
-        {/* the one hero visual - coded prototype staged on the field, overlapping below */}
+        {/* the one hero visual - coded prototype floating on the hero, overlapping below */}
         <div className="dms-wrap dms-hero__frame">
-          <StagePanel crop="bottom">
-            <ShellFrame url="app.unifize.com / documents">
-              <MockDocRegister />
-            </ShellFrame>
-          </StagePanel>
+          <ShellFrame url="app.unifize.com / documents">
+            <MockDocRegister />
+          </ShellFrame>
         </div>
       </section>
 
@@ -155,10 +140,14 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 04 · CAPABILITIES ================== */}
+      {/* ============================ 04 · CAPABILITIES ==================
+       * Composition: sticky header rail left, indexed ledger right. */}
       <section className="dms-section dms-section--alt" id="capabilities">
-        <div className="dms-wrap">
-          <SplitHeader n={4} eyebrow="Capabilities" title="The controls a regulated library runs on." />
+        <div className="dms-wrap dms-caps-grid">
+          <header className="dms-caps__rail" data-reveal>
+            <Eyebrow n={4}>Capabilities</Eyebrow>
+            <h2 className="dms-h2">The controls a regulated library runs on.</h2>
+          </header>
           <ol className="dms-caps">
             {CAPABILITIES.map((c, i) => (
               <li className="dms-cap" key={c.title} data-reveal>
@@ -171,14 +160,17 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 05 · WHO OWNS IT =================== */}
+      {/* ============================ 05 · WHO OWNS IT ===================
+       * Composition: stacked head, then two profiles on a center hairline. */}
       <section className="dms-section" id="who">
         <div className="dms-wrap">
-          <SplitHeader n={5} eyebrow="Who owns it" title="Built for the two people the audit finds first." />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={5}>Who owns it</Eyebrow>
+            <h2 className="dms-h2">Built for the two people the audit finds first.</h2>
+          </div>
           <div className="dms-personas">
-            {PERSONAS.map((p, i) => (
+            {PERSONAS.map((p) => (
               <article className="dms-persona" key={p.name} data-reveal>
-                <span className="dms-persona__avatar" aria-hidden="true">{PERSONA_ICONS[i]}</span>
                 <span className="dms-persona__tier">{p.tier}</span>
                 <h3 className="dms-persona__name">{p.name}</h3>
                 <p className="dms-persona__summary">{p.summary}</p>
@@ -198,31 +190,32 @@ export default function DmsProductPage() {
       <section className="dms-section dms-section--alt" aria-label="Customer proof">
         <div className="dms-wrap">
           <SplitHeader n={6} eyebrow="Proof" title="What quality teams say." />
-          <figure className="dms-quote" data-reveal>
-            <span className="dms-ph__tag">Customer quote · placeholder</span>
-            <svg className="dms-quote__mark" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M9.5 8.25c-2.9.6-4.75 2.6-4.75 5.9v1.6h4.5v-4.5h-2.1c.2-1.2 1-2 2.35-2.4v-.6Zm9 0c-2.9.6-4.75 2.6-4.75 5.9v1.6h4.5v-4.5h-2.1c.2-1.2 1-2 2.35-2.4v-.6Z" />
-            </svg>
-            <div className="dms-quote__lines" aria-label="Quote text placeholder">
-              <span className="dms-skel" style={{ width: "100%" }} />
-              <span className="dms-skel" style={{ width: "92%" }} />
-              <span className="dms-skel" style={{ width: "58%" }} />
+          <figure className="dms-proof" data-reveal>
+            <div className="dms-proof__media">
+              <img className="dms-proof__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
             </div>
-            <figcaption className="dms-quote__who">
-              <span className="dms-quote__avatar" aria-hidden="true" />
-              <span className="dms-quote__id" aria-label="Attribution placeholder">
-                <span className="dms-skel dms-skel--name" />
-                <span className="dms-skel dms-skel--role" />
-              </span>
-            </figcaption>
+            <div className="dms-proof__body">
+              <span className="dms-ph__tag">Sample story</span>
+              <blockquote className="dms-proof__q">&ldquo;{TESTIMONIAL.quote}&rdquo;</blockquote>
+              <figcaption className="dms-proof__who">
+                <span className="dms-proof__name">{TESTIMONIAL.name}</span>
+                <span className="dms-proof__role">{TESTIMONIAL.title}</span>
+              </figcaption>
+            </div>
           </figure>
         </div>
       </section>
 
-      {/* ============================ 07 · PAINS CLOSED ================== */}
+      {/* ============================ 07 · PAINS CLOSED ==================
+       * Composition: stacked head, then a findings register with the
+       * failure-mode code at display scale. Reads like the audit log it
+       * prevents. */}
       <section className="dms-section">
         <div className="dms-wrap">
-          <SplitHeader n={7} eyebrow="What it closes" title="The four failure modes that become audit findings." />
+          <div className="dms-head" data-reveal>
+            <Eyebrow n={7}>What it closes</Eyebrow>
+            <h2 className="dms-h2">The four failure modes that become audit findings.</h2>
+          </div>
           <ol className="dms-pains">
             {PAINS.map((pn, i) => (
               <li className="dms-pain" key={pn.title} data-reveal>
@@ -273,28 +266,11 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 09 · OUTCOMES ====================== */}
-      <section className="dms-section" aria-label="Outcomes">
-        <div className="dms-wrap">
-          <SplitHeader
-            n={9}
-            eyebrow="Outcomes"
-            title="One library, one answer, audit after audit."
-          />
-          <div data-reveal>
-            <SteppedGrowth
-              ariaLabel="Illustrative growth of documents under control across four quarters, from 240 to 1,284"
-              points={OUTCOMES}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ 10 · FAQ =========================== */}
+      {/* ============================ 09 · FAQ =========================== */}
       <section className="dms-section dms-section--alt" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
-            <Eyebrow n={10}>FAQ</Eyebrow>
+            <Eyebrow n={9}>FAQ</Eyebrow>
             <h2 className="dms-h2">The questions procurement and QA ask first.</h2>
             <p className="dms-lede">
               Anything else, <a href="#dms-close-h">bring it to the walkthrough</a>.
@@ -309,12 +285,14 @@ export default function DmsProductPage() {
       {/* ============================ CLOSE ============================= */}
       <section className="dms-section dms-section--dark dms-close" aria-labelledby="dms-close-h">
         <div className="dms-wrap">
-          <div className="dms-head dms-head--center" data-reveal>
-            <h2 className="dms-h2" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
-            <p className="dms-lede">We will run it through the lifecycle live, from draft to Part 11 approval.</p>
-            <div className="dms-close__cta">
-              <button type="button" className="dms-btn">Book a 30-minute walkthrough</button>
-              <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
+          <div className="dms-close__grid" data-reveal>
+            <h2 className="dms-close__h" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
+            <div className="dms-close__side">
+              <p className="dms-lede">We will run it through the lifecycle live, from draft to Part 11 approval.</p>
+              <div className="dms-close__cta">
+                <button type="button" className="dms-btn">Book a 30-minute walkthrough</button>
+                <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
+              </div>
             </div>
           </div>
         </div>

@@ -203,9 +203,21 @@ export const MOCK_TRAINING = {
   ] as { role: string; cells: ("done" | "assigned")[] }[],
 };
 
-/* outcomes band - ILLUSTRATIVE until canonical customer numbers land.
- * The chart carries a mono "Illustrative" tag; swap in real values and
- * remove the tag when they exist. */
+/* customer proof - a human, not a skeleton. Sample story borrowed from the
+ * industry-template-modern proof section (fictional brand, stock portrait,
+ * tagged SAMPLE on the page); replace with a real, verified story before
+ * shipping. */
+export const TESTIMONIAL = {
+  quote:
+    "Audit prep stopped being a fire drill. Everything the investigator asked for was already on the record.",
+  name: "James Okafor",
+  title: "Quality Director · Steriva",
+  img: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=900&h=1200&q=70",
+};
+
+/* outcomes data - NOT RENDERED. The outcomes band was cut from the page
+ * until canonical customer numbers exist; the SteppedGrowth primitive and
+ * this shape stay ready for that day. */
 export const OUTCOMES: { label: string; value: number; display: string }[] = [
   { label: "Q3 2025", value: 240, display: "240" },
   { label: "Q4 2025", value: 610, display: "610" },
