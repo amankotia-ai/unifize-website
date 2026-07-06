@@ -203,22 +203,20 @@ export default function DmsProductPage() {
       </section>
 
       {/* ============================ 06 · TESTIMONIAL SLOT ============== */}
-      <section className="dms-section dms-section--alt" aria-label="Customer proof">
-        <div className="dms-wrap">
+      <section className="dms-section dms-proof-section" aria-label="Customer proof">
+        <img className="dms-proof-section__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
+        <div className="dms-wrap dms-proof">
           <div className="dms-head" data-reveal>
             <Eyebrow n={6}>Proof</Eyebrow>
             <h2 className="dms-h2">What quality teams say.</h2>
           </div>
-          <figure className="dms-proof" data-reveal>
-            <img className="dms-proof__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
-            <div className="dms-proof__body">
-              <span className="dms-ph__tag">Sample story</span>
-              <blockquote className="dms-proof__q">&ldquo;{TESTIMONIAL.quote}&rdquo;</blockquote>
-              <figcaption className="dms-proof__who">
-                <span className="dms-proof__name">{TESTIMONIAL.name}</span>
-                <span className="dms-proof__role">{TESTIMONIAL.title}</span>
-              </figcaption>
-            </div>
+          <figure className="dms-proof__fig" data-reveal>
+            <span className="dms-ph__tag">Sample story</span>
+            <blockquote className="dms-proof__q">&ldquo;{TESTIMONIAL.quote}&rdquo;</blockquote>
+            <figcaption className="dms-proof__who">
+              <span className="dms-proof__name">{TESTIMONIAL.name}</span>
+              <span className="dms-proof__role">{TESTIMONIAL.title}</span>
+            </figcaption>
           </figure>
         </div>
       </section>

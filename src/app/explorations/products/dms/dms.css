@@ -458,22 +458,29 @@
 }
 
 /* ============================================================ 06 · PROOF
- * Same construction as the personas: wide photo, quote panel overlapping
- * its bottom edge on a raise shadow. One composed object, SAMPLE-tagged
- * until a real, verified story replaces it. */
-.dms-proof { display:flex; flex-direction:column; max-width:920px; margin:var(--dms-s-12) 0 0; }
-.dms-proof__photo { display:block; width:100%; aspect-ratio:2/1; object-fit:cover; }
-.dms-proof__body { position:relative; z-index:1; display:flex; flex-direction:column; align-items:flex-start; gap:var(--dms-s-6);
-  background:var(--dms-surface); box-shadow:var(--dms-elev-raise);
-  margin:clamp(-72px, -6vw, -48px) var(--dms-s-8) 0; padding:var(--dms-s-8); }
-.dms-proof__body .dms-ph__tag { position:static; align-self:flex-start; }
+ * The whole section IS the customer photo (audit-hero reference):
+ * full-bleed cover, left scrim, head top-left and quote bottom-left in
+ * white. SAMPLE-tagged until a real, verified story replaces it. */
+.dms-proof-section { position:relative; overflow:hidden; }
+.dms-proof-section__photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  object-position:70% 30%; z-index:0; }
+.dms-proof-section::after { content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(90deg, rgba(6, 10, 20, 0.78) 0%, rgba(6, 10, 20, 0.42) 55%, rgba(6, 10, 20, 0.08) 85%); }
+.dms-proof-section .dms-wrap { position:relative; z-index:2; }
+.dms-proof { display:flex; flex-direction:column; justify-content:space-between; gap:clamp(64px, 10vw, 160px); }
+.dms-proof-section .dms-h2 { color:#fff; }
+.dms-proof-section .dms-eyebrow { color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.4); background:transparent; }
+.dms-proof-section .dms-eyebrow__num { color:rgba(255,255,255,.55); }
+.dms-proof__fig { margin:0; display:flex; flex-direction:column; align-items:flex-start; gap:var(--dms-s-6); max-width:680px; }
+.dms-proof__fig .dms-ph__tag { position:static; align-self:flex-start;
+  border-color:rgba(255,255,255,.55); color:rgba(255,255,255,.85); background:transparent; }
 .dms-proof__q { margin:0; font-family:var(--dms-display); font-weight:500;
-  font-size:clamp(1.4rem, 1.05rem + 1.4vw, 2rem); line-height:1.22; letter-spacing:-0.02em;
-  color:var(--dms-ink); max-width:26ch; text-wrap:balance; }
+  font-size:clamp(1.5rem, 1.1rem + 1.6vw, 2.375rem); line-height:1.2; letter-spacing:-0.02em;
+  color:#fff; max-width:24ch; text-wrap:balance; }
 .dms-proof__who { display:flex; flex-direction:column; gap:4px; min-width:220px; }
-.dms-proof__name { font-weight:500; font-size:0.9375rem; color:var(--dms-ink); }
+.dms-proof__name { font-weight:500; font-size:0.9375rem; color:#fff; }
 .dms-proof__role { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:rgba(255,255,255,.72); }
 
 /* ============================================================ 07 · PAINS
  * Findings, ranked: 2x2 cards. Hierarchy: the severity bar signals first,
