@@ -210,9 +210,7 @@ export default function DmsProductPage() {
             <h2 className="dms-h2">What quality teams say.</h2>
           </div>
           <figure className="dms-proof" data-reveal>
-            <div className="dms-proof__media">
-              <img className="dms-proof__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
-            </div>
+            <img className="dms-proof__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
             <div className="dms-proof__body">
               <span className="dms-ph__tag">Sample story</span>
               <blockquote className="dms-proof__q">&ldquo;{TESTIMONIAL.quote}&rdquo;</blockquote>

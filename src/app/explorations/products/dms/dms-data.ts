@@ -227,7 +227,7 @@ export const TESTIMONIAL = {
     "Audit prep stopped being a fire drill. Everything the investigator asked for was already on the record.",
   name: "James Okafor",
   title: "Quality Director · Steriva",
-  img: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=900&h=1200&q=70",
+  img: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&crop=faces&w=1600&h=800&q=70",
 };
 
 /* outcomes data - NOT RENDERED. The outcomes band was cut from the page
