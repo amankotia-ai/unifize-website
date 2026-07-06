@@ -21,6 +21,17 @@ export const PRODUCT = {
 /* short chips for the hero */
 export const HERO_STANDARDS = ["ISO 9001", "21 CFR Part 11", "ISO 13485", "21 CFR Part 820", "EU GMP"];
 
+/* the drift comparison - both worlds shown at once, no toggle.
+ * without: three competing answers; with: the one effective revision. */
+export const DRIFT = {
+  without: [
+    { loc: "Controlled system", ver: "v3.2", note: "Approved, current" },
+    { loc: "Working file share", ver: "v3.1", note: "A local edit" },
+    { loc: "Laminated at the station", ver: "v2.8", note: "Last reprint" },
+  ],
+  withDms: { ver: "v3.2", note: "Effective, watermarked, everywhere you look. Stray copies retrieved." },
+};
+
 /* the three bundled modules - the core of the product. points feed the
  * interactive explorer; visual captions label the screenshot placeholders. */
 export const MODULES: {
@@ -117,12 +128,12 @@ export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
   { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library.", glyph: "access" },
 ];
 
-/* who owns this product day to day. short. Portraits are representative
- * stock (same treatment as the itm proof section), not real customers. */
+/* who owns this product day to day. short. Portraits are generated
+ * representative imagery, not real customers. */
 export const PERSONAS: { name: string; tier: string; summary: string; daily: string[]; variants: string; img: string }[] = [
   {
     name: "Document Controller",
-    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&h=600&q=70",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
     tier: "Primary owner",
     summary: "Owns the controlled document lifecycle and answers the one question every auditor asks: is this the latest?",
     daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
@@ -130,7 +141,7 @@ export const PERSONAS: { name: string; tier: string; summary: string; daily: str
   },
   {
     name: "Training Coordinator",
-    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&h=600&q=70",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
     tier: "Primary owner",
     summary: "Owns “people are trained on the current revision”, mapping SOPs to roles and closing the loop for audits.",
     daily: ["Assign training off new revisions", "Chase incomplete training", "Report completion for audits"],

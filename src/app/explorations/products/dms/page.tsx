@@ -13,6 +13,7 @@ import Link from "next/link";
 import {
   PRODUCT,
   HERO_STANDARDS,
+  DRIFT,
   CAPABILITIES,
   PERSONAS,
   PAINS,
@@ -26,7 +27,6 @@ import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
-  DriftToggle,
   ModuleExplorer,
   LifecycleExplorer,
   FaqAccordion,
@@ -103,11 +103,29 @@ export default function DmsProductPage() {
             <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
             <p className="dms-lede">
               The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
-              Toggle the two worlds.
             </p>
           </div>
-          <div data-reveal>
-            <DriftToggle />
+          <div className="dms-drift" data-reveal>
+            <div className="dms-drift__world">
+              <span className="dms-drift__lab">Without DMS</span>
+              <ul className="dms-drift__list">
+                {DRIFT.without.map((d, i) => (
+                  <li className={"dms-drift__row" + (i === 1 ? " is-stale" : i === 2 ? " is-old" : "")} key={d.loc}>
+                    <span className="dms-drift__ver dms-data">{d.ver}</span>
+                    <span className="dms-drift__meta">
+                      <span className="dms-drift__loc">{d.loc}</span>
+                      <span className="dms-drift__note">{d.note}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="dms-drift__sum"><b>Three answers</b> to &ldquo;is this the latest?&rdquo; The finding writes itself.</p>
+            </div>
+            <div className="dms-drift__world">
+              <span className="dms-drift__lab">With DMS</span>
+              <span className="dms-drift__one dms-data">{DRIFT.withDms.ver}</span>
+              <p className="dms-drift__sum"><b>One effective revision.</b> {DRIFT.withDms.note}</p>
+            </div>
           </div>
         </div>
       </section>

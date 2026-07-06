@@ -2,7 +2,6 @@
 
 /* ----------------------------------------------------------------------------
  * dms-interactive.tsx - the interactive layer of the DMS product page.
- *   DriftToggle        - "Without DMS / With DMS" typographic comparison.
  *   ModuleExplorer     - module accordion with a staged prototype per module.
  *   LifecycleExplorer  - node-rail lifecycle diagram with a detail panel.
  *   FaqAccordion       - one-open-at-a-time FAQ.
@@ -25,62 +24,6 @@ const Check = () => (
 );
 
 const pad = (n: number) => String(n).padStart(2, "0");
-
-/* ============================================================ drift toggle */
-
-const DRIFT_BEFORE = [
-  { loc: "Controlled system", ver: "v3.2", note: "Approved, current", cls: "" },
-  { loc: "Working file share", ver: "v3.1", note: "A local edit", cls: " is-stale" },
-  { loc: "Laminated at the station", ver: "v2.8", note: "Last reprint", cls: " is-old" },
-];
-const DRIFT_AFTER = [
-  { loc: "Controlled system", ver: "v3.2", note: "Effective, watermarked", cls: " is-live" },
-  { loc: "Working file share", ver: "v3.1", note: "Copy retrieved", cls: " is-retired" },
-  { loc: "Laminated at the station", ver: "v2.8", note: "Copy retrieved", cls: " is-retired" },
-];
-
-export function DriftToggle() {
-  const [after, setAfter] = useState(false);
-  const cols = after ? DRIFT_AFTER : DRIFT_BEFORE;
-
-  return (
-    <div className="dms-driftx">
-      <div className="dms-seg" role="tablist" aria-label="Before and after DMS">
-        <button type="button" role="tab" aria-selected={!after} className={"dms-seg__btn" + (!after ? " is-active" : "")} onClick={() => setAfter(false)}>
-          Without DMS
-        </button>
-        <button type="button" role="tab" aria-selected={after} className={"dms-seg__btn" + (after ? " is-active" : "")} onClick={() => setAfter(true)}>
-          With DMS
-        </button>
-      </div>
-
-      <div
-        className="dms-driftx__cols"
-        key={after ? "after" : "before"}
-        role="img"
-        aria-label={after
-          ? "With DMS: one effective revision 3.2, stray copies retrieved."
-          : "Version drift: controlled system 3.2, file share 3.1, shop floor 2.8."}
-      >
-        {cols.map((c) => (
-          <div className={"dms-driftx__col" + c.cls} key={c.loc}>
-            <span className="dms-driftx__loc">{c.loc}</span>
-            <span className="dms-driftx__ver dms-data">{c.ver}</span>
-            <span className="dms-driftx__note">{c.note}</span>
-          </div>
-        ))}
-      </div>
-
-      <p className="dms-driftx__verdict" key={after ? "va" : "vb"}>
-        {after ? (
-          <><b>One effective revision</b>, everywhere you look. Stray copies retrieved.</>
-        ) : (
-          <><b>Three answers</b> to &ldquo;is this the latest?&rdquo; The finding writes itself.</>
-        )}
-      </p>
-    </div>
-  );
-}
 
 /* ============================================================ module accordion
  * Accordion semantics (aria-expanded + region, mirrors FaqAccordion). One

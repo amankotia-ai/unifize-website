@@ -288,41 +288,31 @@
   padding-block:var(--dms-s-6); }
 .dms-trust__mark { height:18px; border-radius:2px; background:var(--dms-hairline); }
 
-/* ============================================================ SEGMENTED TOGGLE */
-.dms-seg { display:inline-flex; align-self:flex-start; gap:4px; padding:4px;
-  border-radius:var(--dms-r-control); background:var(--dms-surface-sunk); border:1px solid var(--dms-hairline); }
-.dms-seg__btn { font-family:var(--dms-sans); font-size:0.875rem; font-weight:500; letter-spacing:-0.003em; color:var(--dms-muted);
-  padding:8px 16px; border:0; border-radius:2px; background:transparent; cursor:pointer;
-  transition:color var(--dms-dur) var(--dms-ease), background var(--dms-dur) var(--dms-ease), box-shadow var(--dms-dur) var(--dms-ease); }
-.dms-seg__btn:hover { color:var(--dms-ink); }
-.dms-seg__btn.is-active { background:var(--dms-surface); color:var(--dms-ink); box-shadow:var(--dms-elev-card); }
-
 /* ============================================================ 01 · DRIFT
- * No stage, no boxes, no ornament. Three monumental numerals on the
- * page; progressive fading IS the drift. Blue only on the one
- * effective revision. */
-.dms-driftx { display:flex; flex-direction:column; gap:clamp(40px, 5vw, 72px); margin-top:var(--dms-s-12); }
-.dms-driftx__cols { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(24px, 4vw, 80px);
-  animation:dms-rise .45s var(--dms-ease) both; }
-.dms-driftx__col { display:flex; flex-direction:column; gap:var(--dms-s-4); min-width:0;
-  transition:opacity var(--dms-dur) var(--dms-ease); }
-.dms-driftx__loc { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; text-transform:uppercase; letter-spacing:var(--dms-mono-ls); color:var(--dms-muted); }
-.dms-driftx__ver { font-family:var(--dms-display); font-weight:500; font-size:var(--dms-mega-size); line-height:1; letter-spacing:-0.03em; color:var(--dms-ink); }
-.dms-driftx__note { font-size:0.9375rem; color:var(--dms-muted); }
-.dms-driftx__col.is-stale .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 42%, transparent); }
-.dms-driftx__col.is-old .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 24%, transparent); }
-.dms-driftx__col.is-live .dms-driftx__ver { color:var(--dms-accent); }
-.dms-driftx__col.is-live .dms-driftx__note { color:var(--dms-ink-2); font-weight:500; }
-.dms-driftx__col.is-retired .dms-driftx__ver { color:color-mix(in srgb, var(--dms-ink) 18%, transparent);
-  text-decoration:line-through; text-decoration-thickness:0.06em; }
-.dms-driftx__col.is-retired .dms-driftx__loc,
-.dms-driftx__col.is-retired .dms-driftx__note { color:var(--dms-faint); }
-
-.dms-driftx__verdict { display:flex; align-items:center; gap:var(--dms-s-3); margin:0;
-  font-size:1.0625rem; color:var(--dms-ink-2); animation:dms-rise .45s var(--dms-ease) both; }
-.dms-driftx__verdict b { font-family:var(--dms-display); font-weight:600; color:var(--dms-ink); }
-@media (max-width:720px) {
-  .dms-driftx__cols { grid-template-columns:1fr; gap:var(--dms-s-8); }
+ * IA: both worlds visible at once, no toggle. Left: three competing
+ * answers, fading with staleness. Right: the one effective revision,
+ * monumental, in the only blue on screen. The asymmetry is the argument. */
+.dms-drift { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
+  gap:var(--dms-s-10) clamp(48px, 8vw, 160px); align-items:start; margin-top:var(--dms-s-12); }
+.dms-drift__world { display:flex; flex-direction:column; min-width:0; }
+.dms-drift__lab { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); margin-bottom:var(--dms-s-8); }
+.dms-drift__list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--dms-s-6); }
+.dms-drift__row { display:flex; align-items:baseline; gap:var(--dms-s-6); }
+.dms-drift__ver { flex:none; min-width:4.6ch; font-family:var(--dms-display); font-weight:500;
+  font-size:clamp(2rem, 1.5rem + 1.8vw, 3rem); line-height:1; letter-spacing:-0.03em; color:var(--dms-ink); }
+.dms-drift__meta { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.dms-drift__loc { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
+.dms-drift__note { font-size:0.9375rem; color:var(--dms-muted); }
+.dms-drift__row.is-stale .dms-drift__ver { color:color-mix(in srgb, var(--dms-ink) 42%, transparent); }
+.dms-drift__row.is-old .dms-drift__ver { color:color-mix(in srgb, var(--dms-ink) 24%, transparent); }
+.dms-drift__one { display:block; font-family:var(--dms-display); font-weight:500; font-size:var(--dms-mega-size);
+  line-height:0.95; letter-spacing:-0.035em; color:var(--dms-accent); }
+.dms-drift__sum { margin:var(--dms-s-8) 0 0; font-size:1.0625rem; line-height:1.5; color:var(--dms-ink-2); max-width:36ch; }
+.dms-drift__sum b { font-family:var(--dms-display); font-weight:500; color:var(--dms-ink); }
+@media (max-width:860px) {
+  .dms-drift { grid-template-columns:1fr; }
 }
 
 /* ============================================================ 02 · MODULES
