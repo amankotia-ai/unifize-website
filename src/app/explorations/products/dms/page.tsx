@@ -195,7 +195,6 @@ export default function DmsProductPage() {
                       <li key={d}><span className="dms-persona__num dms-data" aria-hidden="true">{pad(j + 1)}</span>{d}</li>
                     ))}
                   </ol>
-                  <span className="dms-persona__variants">{p.variants}</span>
                 </div>
               </article>
             ))}
