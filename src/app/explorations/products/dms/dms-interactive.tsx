@@ -244,9 +244,6 @@ export function LifecycleExplorer() {
                 </li>
               ))}
             </ol>
-            <p className="dms-lifex__foot">
-              SOP-118 Rev C to Rev D, sealed as a 21 CFR Part 11 audit trail. The thread is the record.
-            </p>
           </aside>
 
           <div className="dms-lifex__live" aria-label="Change-control thread CC-2148, scrubbed by scroll">
