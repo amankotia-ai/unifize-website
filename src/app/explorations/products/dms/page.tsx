@@ -107,7 +107,7 @@ export default function DmsProductPage() {
             </p>
           </div>
           <div data-reveal>
-            <StagePanel>
+            <StagePanel className="dms-stage--flow">
               <DriftToggle />
             </StagePanel>
           </div>

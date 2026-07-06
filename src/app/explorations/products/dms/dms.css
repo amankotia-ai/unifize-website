@@ -206,12 +206,11 @@
     radial-gradient(60% 50% at 82% -10%, var(--dms-field-bloom-1), transparent 65%),
     radial-gradient(50% 60% at 8% 110%, var(--dms-field-bloom-2), transparent 70%);
   border:1px solid var(--dms-field-border); }
-.dms-stage::before { content:""; position:absolute; inset:10px; pointer-events:none; z-index:1;
-  border:1px solid color-mix(in srgb, #fff 6%, transparent); }
 .dms-stage::after { content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
   background-image:var(--dms-grain); background-size:180px 180px;
   opacity:var(--dms-field-grain-o); mix-blend-mode:overlay; }
-.dms-stage__inner { position:relative; z-index:2; padding:clamp(24px, 4.5vw, 72px); }
+.dms-stage__inner { position:relative; z-index:2; padding:clamp(24px, 3.5vw, 56px); }
+.dms-stage--flow { margin-top:var(--dms-s-10); }
 .dms-stage--crop-b .dms-stage__inner { padding-bottom:0; }
 
 .dms-appframe { border-radius:var(--dms-r-card); overflow:hidden; background:var(--dms-surface);
@@ -326,7 +325,14 @@
 .dms-driftx__col.is-retired { opacity:0.4; }
 .dms-driftx__col.is-retired .dms-driftx__ver { color:var(--dms-faint); text-decoration:line-through; text-decoration-thickness:3px; }
 
-/* drift on the dark stage panel: the mid-page report-slide moment */
+/* drift on the dark stage panel: the mid-page report-slide moment.
+ * The three locations are cards on the field; the ruler closes each card. */
+.dms-stage .dms-driftx { margin-top:0; gap:var(--dms-s-8); }
+.dms-stage .dms-driftx__cols { gap:var(--dms-s-5); }
+.dms-stage .dms-driftx__col { background:rgba(255,255,255,.03); border:1px solid var(--dms-d-hairline);
+  padding:var(--dms-s-6); }
+.dms-stage .dms-driftx__col:first-child { padding-left:var(--dms-s-6); }
+.dms-stage .dms-driftx__ruler { margin-top:var(--dms-s-5); }
 .dms-stage .dms-driftx__loc { color:var(--dms-d-ink-2); }
 .dms-stage .dms-driftx__ver { color:var(--dms-d-ink); }
 .dms-stage .dms-driftx__note { color:var(--dms-d-ink-2); }
@@ -339,7 +345,7 @@
 .dms-stage .dms-driftx__col.is-live .dms-driftx__ver { color:var(--dms-d-accent); }
 .dms-stage .dms-driftx__col.is-live .dms-driftx__note { color:var(--dms-d-ink); }
 .dms-stage .dms-driftx__col.is-live .dms-driftx__ruler::before { border-bottom-color:var(--dms-d-accent); }
-.dms-stage .dms-driftx__verdict { border-top-color:var(--dms-d-hairline); color:var(--dms-d-ink-2); }
+.dms-stage .dms-driftx__verdict { border-top:0; padding-top:0; color:var(--dms-d-ink-2); }
 .dms-stage .dms-driftx__verdict b { color:var(--dms-d-ink); }
 .dms-stage .dms-seg { background:rgba(255,255,255,.05); border-color:var(--dms-d-hairline-2); }
 .dms-stage .dms-seg__btn { color:var(--dms-d-ink-2); }
