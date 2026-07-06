@@ -511,26 +511,24 @@
  * then the failure mode, then its consequence. Code and level are quiet
  * mono furniture. */
 .dms-pains { list-style:none; margin:var(--dms-s-12) 0 0; padding:0;
-  display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px, 3vw, 40px); }
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:clamp(16px, 1.5vw, 24px); }
 .dms-pain { position:relative; display:flex; flex-direction:column; gap:var(--dms-s-5);
-  padding:clamp(28px, 3vw, 44px); background:var(--dms-surface); box-shadow:var(--dms-elev-raise); }
-.dms-pain__top { display:flex; align-items:center; justify-content:space-between; gap:var(--dms-s-4); }
-.dms-sev { width:clamp(40px, 4vw, 52px); height:clamp(40px, 4vw, 52px); flex:none; display:block; }
+  padding:clamp(22px, 1.8vw, 32px); background:var(--dms-surface); box-shadow:var(--dms-elev-raise); }
+.dms-pain__top { display:flex; align-items:center; justify-content:space-between; gap:var(--dms-s-3); }
+.dms-sev { width:44px; height:44px; flex:none; display:block; }
 .dms-sev__shape { fill:var(--dms-faint); }
 .dms-sev--critical .dms-sev__shape { fill:var(--dms-err); }
 .dms-sev--high .dms-sev__shape { fill:var(--dms-warn); }
 .dms-sev--medium .dms-sev__shape { fill:var(--dms-faint); }
-.dms-pain__meta { display:flex; flex-direction:column; align-items:flex-end; gap:3px;
-  font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls);
-  text-transform:uppercase; }
-.dms-pain__code { color:var(--dms-faint); }
-.dms-pain__sev { color:var(--dms-muted); }
+.dms-pain__sev { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
 .dms-pain.is-critical .dms-pain__sev { color:var(--dms-err); }
 .dms-pain.is-high .dms-pain__sev { color:var(--dms-warn); }
-.dms-pain__title { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.3125rem, 1.05rem + 0.9vw, 1.75rem);
-  line-height:1.18; letter-spacing:-0.016em; color:var(--dms-ink); margin:0; max-width:22ch; text-wrap:balance; }
-.dms-pain__body { font-size:0.9375rem; line-height:1.55; color:var(--dms-muted); margin:auto 0 0; max-width:48ch; }
-@media (max-width:760px) { .dms-pains { grid-template-columns:1fr; } }
+.dms-pain__title { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.125rem, 0.95rem + 0.5vw, 1.375rem);
+  line-height:1.2; letter-spacing:-0.014em; color:var(--dms-ink); margin:0; text-wrap:balance; }
+.dms-pain__body { font-size:0.875rem; line-height:1.55; color:var(--dms-muted); margin:auto 0 0; }
+@media (max-width:1080px) { .dms-pains { grid-template-columns:1fr 1fr; } }
+@media (max-width:600px) { .dms-pains { grid-template-columns:1fr; } }
 
 /* ============================================================ HATCH FRAME
  * Framed document surface: diagonal hatch band around an inner hairline

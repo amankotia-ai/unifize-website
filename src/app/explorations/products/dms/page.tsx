@@ -222,10 +222,7 @@ export default function DmsProductPage() {
               <li className={"dms-pain " + SEV_CLASS[pn.severity]} key={pn.title} data-reveal>
                 <div className="dms-pain__top">
                   <SeverityIcon severity={pn.severity} />
-                  <span className="dms-pain__meta">
-                    <span className="dms-pain__code dms-data">FM-{pad(i + 1)}</span>
-                    <span className="dms-pain__sev">{pn.severity}</span>
-                  </span>
+                  <span className="dms-pain__sev">{pn.severity}</span>
                 </div>
                 <h3 className="dms-pain__title">{pn.title}</h3>
                 <p className="dms-pain__body">{pn.body}</p>
