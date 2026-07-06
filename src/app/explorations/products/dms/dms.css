@@ -288,32 +288,88 @@
   padding-block:var(--dms-s-6); }
 .dms-trust__mark { height:18px; border-radius:2px; background:var(--dms-hairline); }
 
-/* ============================================================ 01 · DRIFT
- * IA: both worlds visible at once, no toggle. Left: three competing
- * answers, fading with staleness. Right: the one effective revision,
- * monumental, in the only blue on screen. The asymmetry is the argument. */
-.dms-drift { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);
-  gap:var(--dms-s-10) clamp(48px, 8vw, 160px); align-items:start; margin-top:var(--dms-s-12); }
-.dms-drift__world { display:flex; flex-direction:column; min-width:0; }
-.dms-drift__lab { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); margin-bottom:var(--dms-s-8); }
-.dms-drift__list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--dms-s-6); }
-.dms-drift__row { display:flex; align-items:baseline; gap:var(--dms-s-6); }
-.dms-drift__row + .dms-drift__row { border-top:1px dashed var(--dms-line-strong); padding-top:var(--dms-s-6); }
-.dms-drift__ver { flex:none; min-width:4.6ch; font-family:var(--dms-display); font-weight:500;
-  font-size:clamp(2rem, 1.5rem + 1.8vw, 3rem); line-height:1; letter-spacing:-0.03em; color:var(--dms-ink); }
-.dms-drift__meta { display:flex; flex-direction:column; gap:2px; min-width:0; }
-.dms-drift__loc { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); }
-.dms-drift__note { font-size:0.9375rem; color:var(--dms-muted); }
-.dms-drift__row.is-stale .dms-drift__ver { color:color-mix(in srgb, var(--dms-ink) 42%, transparent); }
-.dms-drift__row.is-old .dms-drift__ver { color:color-mix(in srgb, var(--dms-ink) 24%, transparent); }
-.dms-drift__one { display:block; font-family:var(--dms-display); font-weight:500; font-size:var(--dms-mega-size);
-  line-height:0.95; letter-spacing:-0.035em; color:var(--dms-accent); }
-.dms-drift__sum { margin:var(--dms-s-8) 0 0; font-size:1.0625rem; line-height:1.5; color:var(--dms-ink-2); max-width:36ch; }
-.dms-drift__sum b { font-family:var(--dms-display); font-weight:500; color:var(--dms-ink); }
-@media (max-width:860px) {
-  .dms-drift { grid-template-columns:1fr; }
+/* ============================================================ 01 · PROBLEM
+ * IA: one asymmetry across two columns. Left, the head over the WITHOUT
+ * register: three competing answers, marker and version fading with
+ * staleness. Right, the WITH DMS record staged on the section-02 field
+ * container: one effective revision, the drifted copies now governed and
+ * verified around it. A three-up payoff register closes the section. */
+.dms-problem__grid { display:grid; grid-template-columns:minmax(0,0.92fr) minmax(0,1.15fr);
+  gap:clamp(32px, 5vw, 80px); align-items:stretch; }
+.dms-problem__left { display:flex; flex-direction:column; gap:clamp(32px, 4vw, 56px); }
+
+/* WITHOUT register - plain editorial block, dashed row rules, no container */
+.dms-noctl__lab { display:block; font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); margin-bottom:var(--dms-s-6); }
+.dms-noctl__list { list-style:none; margin:0; padding:0; }
+.dms-noctl__row { display:flex; align-items:center; gap:var(--dms-s-6); }
+.dms-noctl__row + .dms-noctl__row { border-top:1px dashed var(--dms-line-strong);
+  margin-top:var(--dms-s-5); padding-top:var(--dms-s-5); }
+.dms-noctl__ver { flex:none; min-width:4.4ch; font-family:var(--dms-display); font-weight:500;
+  font-size:clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem); line-height:1; letter-spacing:-0.03em; color:var(--dms-ink); }
+.dms-noctl__row--warn .dms-noctl__ver { color:color-mix(in srgb, var(--dms-ink) 46%, transparent); }
+.dms-noctl__row--old  .dms-noctl__ver { color:color-mix(in srgb, var(--dms-ink) 28%, transparent); }
+.dms-noctl__meta { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.dms-noctl__loc { display:inline-flex; align-items:center; gap:var(--dms-s-3);
+  font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-ink-2); }
+.dms-noctl__note { font-size:0.9375rem; color:var(--dms-muted); }
+.dms-noctl__dot { width:8px; height:8px; border-radius:var(--dms-r-pill); flex:none; }
+.dms-noctl__dot--live { background:var(--dms-accent); }
+.dms-noctl__dot--warn { background:var(--dms-warn); }
+.dms-noctl__dot--old  { background:var(--dms-err); }
+
+/* WITH DMS - the section-02 field container, lightened. Same StagePanel
+ * primitive; the field and ink move to the light palette so the record and
+ * its governed copies read as solid blue on white cards. */
+.dms-problem__right { display:flex; min-width:0; }
+.dms-with { flex:1; min-height:clamp(440px, 46vw, 580px);
+  background-color:#eef2f8;
+  background-image:
+    radial-gradient(65% 55% at 80% -8%, color-mix(in oklch, var(--u-primary) 15%, transparent), transparent 62%),
+    radial-gradient(55% 60% at 6% 112%, color-mix(in oklch, var(--u-primary) 8%, transparent), transparent 70%);
+  border:1px solid var(--dms-hairline); }
+.dms-with::after { opacity:.03; mix-blend-mode:multiply; }
+.dms-with .dms-stage__inner { height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:clamp(12px, 1.6vw, 22px); text-align:center; }
+.dms-with__lab { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:0.14em; text-transform:uppercase; color:var(--dms-muted); }
+.dms-with__orbit { width:100%; max-width:520px; }
+.dms-with__sum { margin:0; max-width:40ch; font-size:1.0625rem; line-height:1.5; color:var(--dms-ink-2); }
+.dms-with__sum b { font-family:var(--dms-display); font-weight:500; color:var(--dms-ink); }
+
+/* the orbit data graphic (inline SVG on the light field) */
+.dms-orbit__svg { display:block; width:100%; height:auto; }
+.dms-orbit__ring { fill:none; stroke:color-mix(in srgb, var(--dms-ink) 11%, transparent);
+  stroke-width:1.25; stroke-dasharray:2 7; }
+.dms-orbit__link { stroke:color-mix(in srgb, var(--dms-ink) 18%, transparent);
+  stroke-width:1.5; stroke-dasharray:2 6; stroke-linecap:round; }
+.dms-orbit__card { fill:#fff; filter:drop-shadow(0 10px 20px rgba(11,13,17,.10)); }
+.dms-orbit__page { fill:var(--dms-accent); }
+.dms-orbit__fold { fill:color-mix(in srgb, #fff 45%, var(--dms-accent)); }
+.dms-orbit__lines { fill:none; stroke:#fff; stroke-width:1.7; stroke-linecap:round; }
+.dms-orbit__badge { fill:var(--dms-accent);
+  filter:drop-shadow(0 6px 12px color-mix(in srgb, var(--dms-accent) 42%, transparent)); }
+.dms-orbit__tick { fill:none; stroke:#fff; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; }
+.dms-orbit__ver { font-family:var(--dms-display); font-weight:500; font-size:150px; letter-spacing:-0.04em;
+  fill:var(--dms-accent); }
+.dms-orbit__ver-v { font-size:0.6em; fill:color-mix(in srgb, var(--dms-accent) 55%, #fff); }
+
+/* three-up payoff register */
+.dms-problem__feats { list-style:none; margin:clamp(56px, 7vw, 96px) 0 0; padding:clamp(36px, 4vw, 56px) 0 0;
+  border-top:1px solid var(--dms-hairline); display:grid; grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:clamp(28px, 4vw, 64px); }
+.dms-pf { display:grid; grid-template-columns:auto minmax(0,1fr); column-gap:var(--dms-s-4); align-items:start; }
+.dms-pf__glyph { grid-row:1 / span 2; width:26px; height:26px; color:var(--dms-accent); fill:currentColor; margin-top:1px; }
+.dms-pf__glyph .dms-glyph-mark { fill:none; stroke:#fff; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.dms-pf__glyph .dms-glyph-hole { fill:var(--dms-surface); }
+.dms-pf__title { grid-column:2; font-family:var(--dms-display); font-weight:600; font-size:1.0625rem;
+  letter-spacing:-0.01em; line-height:1.25; color:var(--dms-ink); margin:0; }
+.dms-pf__body { grid-column:2; margin:6px 0 0; font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); }
+
+@media (max-width:960px) {
+  .dms-problem__grid { grid-template-columns:1fr; }
+  .dms-problem__feats { grid-template-columns:1fr; gap:var(--dms-s-8); }
 }
 
 /* ============================================================ 02 · MODULES
@@ -361,49 +417,54 @@
 }
 
 /* ============================================================ 03 · LIFECYCLE
- * The "difference" pattern from industry-template-modern: a sticky decision
- * trail (nodes on a gradient line) beside the live chat shell. Clicking a
- * state scrubs the thread; the active state expands its detail copy. */
-.dms-lifex-scroll { height:420vh; margin-top:var(--dms-s-10); }
+ * Sticky scroll story on the brand field (mirrors section 02): head at the
+ * top, then a gradient-noise container holding BOTH the decision trail and
+ * the live chat shell. Clicking a state scrubs the thread; scroll advances
+ * the states. Trail text runs light on the field. */
+.dms-lifex-section { padding-block:0; min-height:0; display:block; }
+.dms-lifex-scroll { height:420vh; }
 .dms-lifex-sticky { position:sticky; top:0; height:100vh; display:flex; flex-direction:column; justify-content:center;
   padding-top:var(--dms-header-h); }
-.dms-lifex { display:grid; grid-template-columns:minmax(280px, 380px) minmax(0,1fr); gap:clamp(48px, 5vw, 96px);
+.dms-lifex-wrap { display:flex; flex-direction:column; gap:var(--dms-s-6); width:100%; }
+.dms-lifex__head { display:flex; flex-direction:column; gap:var(--dms-s-5); }
+.dms-lifex__stage .dms-stage__inner { padding:clamp(20px, 2.4vw, 44px); }
+.dms-lifex { display:grid; grid-template-columns:minmax(240px, 340px) minmax(0,1fr); gap:clamp(32px, 4vw, 72px);
   align-items:center; }
 .dms-lifex__trail { min-width:0; }
 .dms-lifex__lab { display:block; font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted); margin-bottom:var(--dms-s-6); }
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:var(--dms-s-6); }
 .dms-lifex__steps { position:relative; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--dms-s-5); }
 .dms-lifex__steps::before { content:""; position:absolute; left:6px; top:10px; bottom:10px; width:1px;
-  background:var(--dms-hairline); }
+  background:rgba(255,255,255,.22); }
 .dms-lifex__step { position:relative; }
 .dms-lifex__btn { display:flex; flex-direction:column; gap:3px; width:100%; text-align:left;
   font-family:var(--dms-sans); background:none; border:0; padding:0 0 0 var(--dms-s-6); cursor:pointer; }
 .dms-lifex__node { position:absolute; left:0; top:10px; width:13px; height:2px; border-radius:0;
-  background:var(--dms-line-strong);
+  background:rgba(255,255,255,.4);
   transition:background var(--dms-dur) var(--dms-ease), width var(--dms-dur) var(--dms-ease); }
-.dms-lifex__step:hover .dms-lifex__node { background:var(--dms-ink-2); }
-.dms-lifex__step.is-past .dms-lifex__node { background:var(--dms-ink-2); }
-.dms-lifex__step.is-active .dms-lifex__node { background:var(--dms-accent); width:18px; }
-.dms-lifex__t { font-family:var(--dms-display); font-weight:600; font-size:1.0625rem; letter-spacing:-0.012em;
-  color:var(--dms-muted); transition:color var(--dms-dur) var(--dms-ease); }
-.dms-lifex__step:hover .dms-lifex__t, .dms-lifex__step.is-active .dms-lifex__t { color:var(--dms-ink); }
-.dms-lifex__meta { font-size:var(--dms-meta-size); color:var(--dms-muted); }
+.dms-lifex__step:hover .dms-lifex__node { background:rgba(255,255,255,.7); }
+.dms-lifex__step.is-past .dms-lifex__node { background:rgba(255,255,255,.7); }
+.dms-lifex__step.is-active .dms-lifex__node { background:#fff; width:18px; }
+.dms-lifex__t { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem; letter-spacing:-0.012em;
+  color:rgba(255,255,255,.58); transition:color var(--dms-dur) var(--dms-ease); }
+.dms-lifex__step:hover .dms-lifex__t, .dms-lifex__step.is-active .dms-lifex__t { color:#fff; }
+.dms-lifex__meta { font-size:var(--dms-meta-size); color:rgba(255,255,255,.5); }
 .dms-lifex__detail { display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s var(--dms-ease); }
 .dms-lifex__step.is-active .dms-lifex__detail { grid-template-rows:1fr; }
 .dms-lifex__detail-inner { overflow:hidden; padding-left:var(--dms-s-6); }
-.dms-lifex__detail-inner p { margin:0; padding-top:8px; font-size:0.9rem; line-height:1.55; color:var(--dms-ink-2); max-width:36ch; }
-.dms-lifex__foot { margin:var(--dms-s-8) 0 0; font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); max-width:34ch; }
+.dms-lifex__detail-inner p { margin:0; padding-top:8px; font-size:0.9rem; line-height:1.55; color:rgba(255,255,255,.82); max-width:34ch; }
+.dms-lifex__foot { margin:var(--dms-s-8) 0 0; font-size:0.9375rem; line-height:1.5; color:rgba(255,255,255,.6); max-width:34ch; }
 .dms-lifex__live { min-width:0; }
 .dms-lifex__mobile { display:none; }
 @media (max-width:940px) {
-  .dms-lifex-scroll { height:auto; margin-top:var(--dms-s-12); }
-  .dms-lifex-sticky { position:static; height:auto; padding-top:0; }
-  .dms-lifex { grid-template-columns:1fr; gap:var(--dms-s-10); }
+  .dms-lifex-scroll { height:auto; }
+  .dms-lifex-sticky { position:static; height:auto; padding-top:var(--dms-s-10); }
+  .dms-lifex { grid-template-columns:1fr; gap:var(--dms-s-8); }
   .dms-lifex__live { display:none; }
-  .dms-lifex__mobile { display:flex; flex-direction:column; gap:6px; border:1px dashed var(--dms-line-strong);
-    border-radius:var(--dms-r-card); background:var(--dms-surface-sunk); padding:var(--dms-s-6); }
-  .dms-lifex__mobile-lab { font-family:var(--dms-display); font-weight:600; font-size:1.0625rem; color:var(--dms-ink); }
-  .dms-lifex__mobile-id { font-size:var(--dms-meta-size); color:var(--dms-muted); }
+  .dms-lifex__mobile { display:flex; flex-direction:column; gap:6px; border:1px solid rgba(255,255,255,.24);
+    background:rgba(255,255,255,.06); padding:var(--dms-s-6); }
+  .dms-lifex__mobile-lab { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem; color:#fff; }
+  .dms-lifex__mobile-id { font-size:var(--dms-meta-size); color:rgba(255,255,255,.6); }
 }
 
 /* ============================================================ 04 · CAPABILITIES

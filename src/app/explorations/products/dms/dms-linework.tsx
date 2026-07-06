@@ -48,12 +48,37 @@ const GLYPHS: Record<string, React.ReactNode> = {
       <circle cx="12" cy="12" r="3" />
     </>
   ),
+  shield: (
+    <>
+      <path d="M12 2.5 4.5 5.3v6c0 4.8 3.2 8 7.5 9.7 4.3-1.7 7.5-4.9 7.5-9.7v-6L12 2.5Z" />
+      <path d="m8.6 11.8 2.4 2.4 4.4-4.7" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="m20.5 20.5-5.4-5.4" />
+    </>
+  ),
+  sync: (
+    <>
+      <path d="M4.2 9.6a8 8 0 0 1 13.3-3.2l2.3 2.1" />
+      <path d="M20 3.4v5h-5" />
+      <path d="M19.8 14.4a8 8 0 0 1-13.3 3.2l-2.3-2.1" />
+      <path d="M4 20.6v-5h5" />
+    </>
+  ),
 };
 
 export function CapGlyph({ name }: { name: string }) {
+  return <Glyph name={name} className="dms-cap__glyph" />;
+}
+
+/* generic hairline pictogram - same line-work language, any class/size. */
+export function Glyph({ name, className }: { name: string; className?: string }) {
   return (
     <svg
-      className="dms-cap__glyph"
+      className={className}
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -62,6 +87,128 @@ export function CapGlyph({ name }: { name: string }) {
       aria-hidden="true"
     >
       {GLYPHS[name]}
+    </svg>
+  );
+}
+
+/* solid (filled) counterparts, for contexts that want weight to match the
+ * orbit renders - e.g. the problem payoff register. Base shapes fill with
+ * currentColor; a mark knocks out white, a hole knocks out the surface. */
+const SOLID_GLYPHS: Record<string, React.ReactNode> = {
+  shield: (
+    <>
+      <path d="M12 2.4 4.6 5.1V11c0 4.7 3.1 7.9 7.4 9.6 4.3-1.7 7.4-4.9 7.4-9.6V5.1L12 2.4Z" />
+      <path className="dms-glyph-mark" d="m8.7 11.7 2.3 2.3 4.4-4.7" />
+    </>
+  ),
+  search: (
+    <>
+      <circle cx="10.5" cy="10.5" r="7.4" />
+      <circle className="dms-glyph-hole" cx="10.5" cy="10.5" r="3.7" />
+      <rect x="15" y="15.4" width="7" height="2.8" rx="1.4" transform="rotate(45 15 16.8)" />
+    </>
+  ),
+  sync: (
+    <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" />
+  ),
+};
+
+export function SolidGlyph({ name, className }: { name: string; className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      {SOLID_GLYPHS[name]}
+    </svg>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * WithDmsOrbit - the "with DMS" data graphic: one effective revision at the
+ * centre, the copies that used to drift now orbiting it as governed renders,
+ * each verified. Pure inline SVG so it scales with its container. Rendered on
+ * the lightened stage field; the renders are solid blue documents on white
+ * cards, the revision and the check marks carry the colour. */
+
+const ORBIT_CENTER = { x: 340, y: 280 };
+/* five governed renders around the record (card centres) */
+const ORBIT_DOCS = [
+  { x: 150, y: 172 },
+  { x: 530, y: 172 },
+  { x: 118, y: 360 },
+  { x: 562, y: 360 },
+  { x: 340, y: 468 },
+];
+/* four verification marks distributed on the outer ring */
+const ORBIT_CHECKS = [
+  { x: 176, y: 112 },
+  { x: 504, y: 112 },
+  { x: 168, y: 402 },
+  { x: 512, y: 402 },
+];
+
+function DocRender({ x, y }: { x: number; y: number }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <rect className="dms-orbit__card" x={-42} y={-42} width={84} height={84} rx={16} />
+      <path className="dms-orbit__page" d="M-12 -16 H5 L12 -9 V16 H-12 Z" />
+      <path className="dms-orbit__fold" d="M5 -16 V-9 H12 Z" />
+      <g className="dms-orbit__lines">
+        <path d="M-7 -2 H7" />
+        <path d="M-7 4 H7" />
+        <path d="M-7 10 H1" />
+      </g>
+    </g>
+  );
+}
+
+function CheckMark({ x, y }: { x: number; y: number }) {
+  return (
+    <g transform={`translate(${x} ${y})`}>
+      <circle className="dms-orbit__badge" r={15} />
+      <path className="dms-orbit__tick" d="M-6 0 L-2 4 L7 -6" />
+    </g>
+  );
+}
+
+export function WithDmsOrbit() {
+  const { x: cx, y: cy } = ORBIT_CENTER;
+  return (
+    <svg
+      className="dms-orbit__svg"
+      viewBox="0 0 680 560"
+      role="img"
+      aria-label="One effective revision, v3.2, at the centre. The copies that used to drift now orbit it as governed, verified renders."
+    >
+      {/* concentric governed field */}
+      <ellipse className="dms-orbit__ring" cx={cx} cy={cy} rx={172} ry={150} />
+      <ellipse className="dms-orbit__ring" cx={cx} cy={cy} rx={250} ry={224} />
+
+      {/* dashed connectors from the record out to each render */}
+      {ORBIT_DOCS.map((d, i) => {
+        const vx = d.x - cx;
+        const vy = d.y - cy;
+        return (
+          <line
+            key={i}
+            className="dms-orbit__link"
+            x1={cx + vx * 0.42}
+            y1={cy + vy * 0.42}
+            x2={cx + vx * 0.8}
+            y2={cy + vy * 0.8}
+          />
+        );
+      })}
+
+      {ORBIT_DOCS.map((d, i) => (
+        <DocRender key={i} x={d.x} y={d.y} />
+      ))}
+      {ORBIT_CHECKS.map((c, i) => (
+        <CheckMark key={i} x={c.x} y={c.y} />
+      ))}
+
+      {/* the one effective revision */}
+      <text className="dms-orbit__ver" x={cx} y={cy + 52} textAnchor="middle">
+        <tspan className="dms-orbit__ver-v">v</tspan>3.2
+      </text>
     </svg>
   );
 }

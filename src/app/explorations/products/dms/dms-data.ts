@@ -22,15 +22,25 @@ export const PRODUCT = {
 export const HERO_STANDARDS = ["ISO 9001", "21 CFR Part 11", "ISO 13485", "21 CFR Part 820", "EU GMP"];
 
 /* the drift comparison - both worlds shown at once, no toggle.
- * without: three competing answers; with: the one effective revision. */
+ * without: three competing answers, fading with staleness (tone drives the
+ * marker + the version fade); with: the one effective revision. */
 export const DRIFT = {
   without: [
-    { loc: "Controlled system", ver: "v3.2", note: "Approved, current" },
-    { loc: "Working file share", ver: "v3.1", note: "A local edit" },
-    { loc: "Laminated at the station", ver: "v2.8", note: "Last reprint" },
+    { loc: "Controlled system", ver: "v3.2", note: "Approved, current", tone: "live" as const },
+    { loc: "Working file share", ver: "v3.1", note: "A local edit", tone: "warn" as const },
+    { loc: "Laminated at the station", ver: "v2.8", note: "Last reprint", tone: "old" as const },
   ],
   withDms: { ver: "v3.2", note: "Effective, watermarked, everywhere you look. Stray copies retrieved." },
 };
+
+/* the three payoffs, shown as a hairline register beneath the problem.
+ * Distilled from the core value props; glyph keys map to the line-work
+ * pictograms in dms-linework.tsx. */
+export const PROBLEM_FEATURES: { title: string; body: string; glyph: string }[] = [
+  { title: "One source of truth", body: "Single governed record, always current, always controlled.", glyph: "shield" },
+  { title: "Easy to find, easy to trust", body: "Watermarked and effective, so teams know what's real.", glyph: "search" },
+  { title: "Compliant by design", body: "Stray copies identified and retrieved. Audit ready, every time.", glyph: "sync" },
+];
 
 /* the three bundled modules - the core of the product. points feed the
  * interactive explorer; visual captions label the screenshot placeholders. */

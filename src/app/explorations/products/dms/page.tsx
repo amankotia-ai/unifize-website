@@ -14,6 +14,7 @@ import {
   PRODUCT,
   HERO_STANDARDS,
   DRIFT,
+  PROBLEM_FEATURES,
   CAPABILITIES,
   PERSONAS,
   PAINS,
@@ -22,8 +23,8 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
-import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
-import { CapGlyph, SeverityIcon } from "./dms-linework";
+import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
+import { CapGlyph, SolidGlyph, SeverityIcon, WithDmsOrbit } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   ModuleExplorer,
@@ -95,38 +96,62 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 01 · THE DRIFT PROBLEM ============= */}
-      <section className="dms-section">
+      {/* ============================ 01 · THE DRIFT PROBLEM =============
+       * Two columns on one asymmetry: left, the head over the WITHOUT
+       * register (three competing answers, fading with staleness); right,
+       * the WITH DMS record staged on the section-02 field container, one
+       * effective revision with the drifted copies now governed around it.
+       * A three-up payoff register closes the section. */}
+      <section className="dms-section dms-problem">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={1}>The problem</Eyebrow>
-            <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
-            <p className="dms-lede">
-              The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
-            </p>
-          </div>
-          <div className="dms-drift" data-reveal>
-            <div className="dms-drift__world">
-              <span className="dms-drift__lab">Without DMS</span>
-              <ul className="dms-drift__list">
-                {DRIFT.without.map((d, i) => (
-                  <li className={"dms-drift__row" + (i === 1 ? " is-stale" : i === 2 ? " is-old" : "")} key={d.loc}>
-                    <span className="dms-drift__ver dms-data">{d.ver}</span>
-                    <span className="dms-drift__meta">
-                      <span className="dms-drift__loc">{d.loc}</span>
-                      <span className="dms-drift__note">{d.note}</span>
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <p className="dms-drift__sum"><b>Three answers</b> to &ldquo;is this the latest?&rdquo; The finding writes itself.</p>
+          <div className="dms-problem__grid">
+            <div className="dms-problem__left">
+              <div className="dms-head" data-reveal>
+                <Eyebrow n={1}>The problem</Eyebrow>
+                <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
+                <p className="dms-lede">
+                  The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
+                </p>
+              </div>
+              <div className="dms-noctl" data-reveal>
+                <span className="dms-noctl__lab">Without DMS</span>
+                <ul className="dms-noctl__list">
+                  {DRIFT.without.map((d) => (
+                    <li className={"dms-noctl__row dms-noctl__row--" + d.tone} key={d.loc}>
+                      <span className="dms-noctl__ver dms-data">{d.ver}</span>
+                      <span className="dms-noctl__meta">
+                        <span className="dms-noctl__loc">
+                          <span className={"dms-noctl__dot dms-noctl__dot--" + d.tone} aria-hidden="true" />
+                          {d.loc}
+                        </span>
+                        <span className="dms-noctl__note">{d.note}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <div className="dms-drift__world">
-              <span className="dms-drift__lab">With DMS</span>
-              <span className="dms-drift__one dms-data">{DRIFT.withDms.ver}</span>
-              <p className="dms-drift__sum"><b>One effective revision.</b> {DRIFT.withDms.note}</p>
+
+            <div className="dms-problem__right" data-reveal>
+              <StagePanel className="dms-with">
+                <span className="dms-with__lab">With DMS</span>
+                <div className="dms-with__orbit">
+                  <WithDmsOrbit />
+                </div>
+                <p className="dms-with__sum"><b>One effective revision.</b> {DRIFT.withDms.note}</p>
+              </StagePanel>
             </div>
           </div>
+
+          <ul className="dms-problem__feats" data-reveal>
+            {PROBLEM_FEATURES.map((f) => (
+              <li className="dms-pf" key={f.title}>
+                <SolidGlyph name={f.glyph} className="dms-pf__glyph" />
+                <h3 className="dms-pf__title">{f.title}</h3>
+                <p className="dms-pf__body">{f.body}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -137,29 +162,12 @@ export default function DmsProductPage() {
         <ModuleExplorer />
       </section>
 
-      {/* ============================ 03 · LIFECYCLE ===================== */}
-      <section className="dms-section" id="lifecycle">
-        <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={3}>The lifecycle</Eyebrow>
-            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
-            <p className="dms-lede">
-              Scroll through the six states a controlled document moves through. The thread on the right
-              replays the revision that drives them, as it happens in Unifize.
-            </p>
-          </div>
-          <div data-reveal>
-            <LifecycleExplorer />
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ 04 · CAPABILITIES ==================
+      {/* ============================ 03 · CAPABILITIES ==================
        * Composition: sticky header rail left, indexed ledger right. */}
       <section className="dms-section dms-section--alt" id="capabilities">
         <div className="dms-wrap dms-caps-grid">
           <header className="dms-caps__rail" data-reveal>
-            <Eyebrow n={4}>Capabilities</Eyebrow>
+            <Eyebrow n={3}>Capabilities</Eyebrow>
             <h2 className="dms-h2">The controls a regulated library runs on.</h2>
           </header>
           <ol className="dms-caps">
@@ -172,6 +180,13 @@ export default function DmsProductPage() {
             ))}
           </ol>
         </div>
+      </section>
+
+      {/* ============================ 04 · LIFECYCLE =====================
+       * Sticky scroll story (mirrors section 02): the component owns the
+       * head, the brand field container, and the trail + shell inside it. */}
+      <section className="dms-section dms-lifex-section" id="lifecycle">
+        <LifecycleExplorer />
       </section>
 
       {/* ============================ 05 · WHO OWNS IT ===================
