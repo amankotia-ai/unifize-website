@@ -165,7 +165,7 @@
  * right. Standards as a mono hairline band above the staged prototype.
  * No glows: hairlines are the structural device. */
 .dms-hero { position:relative; background:var(--dms-hero-bg);
-  padding-top:calc(var(--dms-header-h) + clamp(56px, 8vw, 120px)); padding-bottom:0;
+  padding-top:calc(var(--dms-header-h) + clamp(56px, 8vw, 120px)); padding-bottom:clamp(56px, 7vw, 96px);
   margin-top:calc(-1 * var(--dms-header-h)); justify-content:flex-start; }
 .dms-hero__inner { position:relative; z-index:2; }
 .dms-hero__grid { display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,0.75fr);
@@ -192,8 +192,8 @@
 }
 
 /* hero product frame - the prototype floats directly on the hero (no
- * container), deep layered shadow, overlapping the section below */
-.dms-hero__frame { position:relative; z-index:3; margin-top:clamp(40px, 5vw, 64px); margin-bottom:calc(-1 * var(--dms-overlap)); }
+ * container), deep layered shadow, fully composed inside the dark section */
+.dms-hero__frame { position:relative; z-index:3; margin-top:clamp(40px, 5vw, 64px); }
 .dms-hero__frame .dms-appframe { border-color:color-mix(in srgb, #fff 14%, transparent);
   box-shadow:0 48px 100px -40px rgba(3, 7, 18, 0.85), 0 12px 32px -14px rgba(3, 7, 18, 0.55); }
 
@@ -285,7 +285,7 @@
 /* ============================================================ TRUST STRIP
  * Slim hairline logo row. No label (text restraint). Static placeholder
  * marks until real customer logos land. */
-.dms-trust { padding-top:calc(var(--dms-overlap) + clamp(40px, 4vw, 56px)); padding-bottom:clamp(40px, 4vw, 56px); min-height:0; }
+.dms-trust { padding-top:clamp(40px, 4vw, 56px); padding-bottom:clamp(40px, 4vw, 56px); min-height:0; }
 .dms-trust__inner { display:flex; flex-direction:column; align-items:stretch; gap:0; }
 .dms-trust__logos { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:var(--dms-s-5) var(--dms-s-12);
   padding-block:var(--dms-s-6); border-top:1px solid var(--dms-hairline); border-bottom:1px solid var(--dms-hairline); }
