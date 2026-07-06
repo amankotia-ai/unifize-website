@@ -130,20 +130,11 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 02 · MODULES BUNDLED =============== */}
-      <section className="dms-section dms-section--alt" id="modules">
-        <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={2}>What is bundled</Eyebrow>
-            <h2 className="dms-h2">Three modules, one record.</h2>
-            <p className="dms-lede">
-              Not three tools bolted together. A change carries its evidence, drives the revision, and cascades into training.
-            </p>
-          </div>
-          <div data-reveal>
-            <ModuleExplorer />
-          </div>
-        </div>
+      {/* ============================ 02 · MODULES BUNDLED ===============
+       * Sticky scroll story: the component owns the full 300vh region,
+       * head included. */}
+      <section className="dms-section dms-section--alt dms-modx-section" id="modules">
+        <ModuleExplorer />
       </section>
 
       {/* ============================ 03 · LIFECYCLE ===================== */}

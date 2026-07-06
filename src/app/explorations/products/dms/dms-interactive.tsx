@@ -14,21 +14,18 @@
 import { useEffect, useRef, useState } from "react";
 import { ChatShell } from "@/components/organisms";
 import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
-import { ShellFrame, StagePanel } from "./dms-primitives";
+import { Eyebrow, ShellFrame, StagePanel } from "./dms-primitives";
 import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mocks";
 
 /* ============================================================ shared bits */
 
-const Check = () => (
-  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fillRule="evenodd" d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0l-3.5-3.5a1 1 0 1 1 1.4-1.4l2.8 2.8 6.8-6.8a1 1 0 0 1 1.4 0Z" clipRule="evenodd" /></svg>
-);
-
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/* ============================================================ module accordion
- * Accordion semantics (aria-expanded + region, mirrors FaqAccordion). One
- * module always open. Each module stages its prototype fragment: in the
- * sticky panel on desktop, inline in the body below 900px. */
+/* ============================================================ module story
+ * Sticky scroll: three modules, one per viewport-height of scroll. The
+ * brand-blue field stages the active module's prototype; the module row
+ * beneath tracks left to right. Clicking a module scrolls to its
+ * segment. Below 900px: static, tap to switch. */
 
 const MODULE_MOCKS: Record<string, React.ReactNode> = {
   "document-control": <MockRevisionTrail />,
@@ -36,62 +33,80 @@ const MODULE_MOCKS: Record<string, React.ReactNode> = {
   "training-management": <MockTrainingMatrix />,
 };
 
-function ModuleStage({ moduleKey }: { moduleKey: string }) {
-  return (
-    <StagePanel>
-      <ShellFrame panel url={`app.unifize.com / ${moduleKey.replace(/-/g, " ")}`}>
-        {MODULE_MOCKS[moduleKey]}
-      </ShellFrame>
-    </StagePanel>
-  );
-}
+const MODX_MQ = "(min-width: 901px)";
 
 export function ModuleExplorer() {
   const [active, setActive] = useState(0);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const n = MODULES.length;
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (!window.matchMedia(MODX_MQ).matches) return;
+      const el = wrapRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      if (total <= 0) return;
+      const s = Math.min(1, Math.max(0, -rect.top / total));
+      setActive(Math.min(n - 1, Math.floor(s * n)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [n]);
+
+  const onStep = (i: number) => {
+    const el = wrapRef.current;
+    if (el && window.matchMedia(MODX_MQ).matches) {
+      const rect = el.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      window.scrollTo({
+        top: window.scrollY + rect.top + ((i + 0.5) / n) * total,
+        behavior: "smooth",
+      });
+    } else {
+      setActive(i);
+    }
+  };
+
   const m = MODULES[active];
 
   return (
-    <div className="dms-modx">
-      <div className="dms-modx__list">
-        {MODULES.map((mod, i) => (
-          <div className={"dms-modx__item" + (i === active ? " is-active" : "")} key={mod.key}>
-            <h3 className="dms-modx__h">
+    <div className="dms-modx-scroll" ref={wrapRef}>
+      <div className="dms-modx-sticky">
+        <div className="dms-wrap dms-modx">
+          <div className="dms-modx__head">
+            <Eyebrow n={2}>What is bundled</Eyebrow>
+            <h2 className="dms-h2">Three modules, one record.</h2>
+          </div>
+          <StagePanel className="dms-stage--brand dms-modx__stage">
+            <div className="dms-modx__card" key={m.key}>
+              <ShellFrame panel url={`app.unifize.com / ${m.key.replace(/-/g, " ")}`}>
+                {MODULE_MOCKS[m.key]}
+              </ShellFrame>
+            </div>
+          </StagePanel>
+          <div className="dms-modx__row">
+            {MODULES.map((mod, i) => (
               <button
                 type="button"
-                id={`dms-modtab-${mod.key}`}
-                aria-expanded={i === active}
-                aria-controls={`dms-modbody-${mod.key}`}
-                className="dms-modx__trigger"
-                onClick={() => setActive(i)}
+                key={mod.key}
+                className={"dms-modx__it" + (i === active ? " is-active" : "")}
+                aria-pressed={i === active}
+                onClick={() => onStep(i)}
               >
-                <span className="dms-modx__idx">{pad(i + 1)}</span>
+                <span className="dms-modx__idx dms-data">{pad(i + 1)}</span>
                 <span className="dms-modx__name">{mod.name}</span>
-                <svg className="dms-modx__ic" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fillRule="evenodd" d="M10 3a1 1 0 0 1 1 1v5h5a1 1 0 1 1 0 2h-5v5a1 1 0 1 1-2 0v-5H4a1 1 0 1 1 0-2h5V4a1 1 0 0 1 1-1Z" clipRule="evenodd" />
-                </svg>
+                <p className="dms-modx__blurb">{mod.blurb}</p>
               </button>
-            </h3>
-            <div className="dms-modx__body" id={`dms-modbody-${mod.key}`} role="region" aria-labelledby={`dms-modtab-${mod.key}`} aria-hidden={i !== active}>
-              <div className="dms-modx__body-inner">
-                <span className="dms-modx__promise">{mod.promise}</span>
-                <p className="dms-modx__desc">{mod.blurb}</p>
-                <ul className="dms-modx__points">
-                  {mod.points.map((p) => (
-                    <li key={p}><span className="dms-modx__pt-ic" aria-hidden="true"><Check /></span>{p}</li>
-                  ))}
-                </ul>
-                <div className="dms-modx__fragment">
-                  <ModuleStage moduleKey={mod.key} />
-                </div>
-                <p className="dms-modx__stds" aria-label="Standards">{mod.standards.join("  ·  ")}</p>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-
-      <div className="dms-modx__panel" key={"v-" + m.key} aria-hidden="true">
-        <ModuleStage moduleKey={m.key} />
+        </div>
       </div>
     </div>
   );
