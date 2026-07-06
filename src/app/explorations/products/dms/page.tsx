@@ -163,10 +163,9 @@ export default function DmsProductPage() {
             <h2 className="dms-h2">The controls a regulated library runs on.</h2>
           </header>
           <ol className="dms-caps">
-            {CAPABILITIES.map((c, i) => (
+            {CAPABILITIES.map((c) => (
               <li className="dms-cap" key={c.title} data-reveal>
                 <CapGlyph name={c.glyph} />
-                <span className="dms-cap__idx dms-data" aria-hidden="true">{pad(i + 1)}</span>
                 <h3 className="dms-cap__title">{c.title}</h3>
                 <p className="dms-cap__body">{c.body}</p>
               </li>
@@ -187,15 +186,17 @@ export default function DmsProductPage() {
             {PERSONAS.map((p) => (
               <article className="dms-persona" key={p.name} data-reveal>
                 <img className="dms-persona__photo" src={p.img} alt="" loading="lazy" />
-                <span className="dms-persona__tier">{p.tier}</span>
-                <h3 className="dms-persona__name">{p.name}</h3>
-                <p className="dms-persona__summary">{p.summary}</p>
-                <ol className="dms-persona__daily">
-                  {p.daily.map((d, j) => (
-                    <li key={d}><span className="dms-persona__num dms-data" aria-hidden="true">{pad(j + 1)}</span>{d}</li>
-                  ))}
-                </ol>
-                <span className="dms-persona__variants">{p.variants}</span>
+                <div className="dms-persona__body">
+                  <span className="dms-persona__tier">{p.tier}</span>
+                  <h3 className="dms-persona__name">{p.name}</h3>
+                  <p className="dms-persona__summary">{p.summary}</p>
+                  <ol className="dms-persona__daily">
+                    {p.daily.map((d, j) => (
+                      <li key={d}><span className="dms-persona__num dms-data" aria-hidden="true">{pad(j + 1)}</span>{d}</li>
+                    ))}
+                  </ol>
+                  <span className="dms-persona__variants">{p.variants}</span>
+                </div>
               </article>
             ))}
           </div>
