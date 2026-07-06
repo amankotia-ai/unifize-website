@@ -66,6 +66,29 @@ export function CapGlyph({ name }: { name: string }) {
   );
 }
 
+/* severity icon: shape + color both encode the level (never color alone).
+ * Critical = red octagon, High = amber triangle, Medium = gray circle;
+ * a knocked-out exclamation keeps them one family. */
+const SEV_SHAPE: Record<string, React.ReactNode> = {
+  Critical: <path d="M7.6 2h8.8L22 7.6v8.8L16.4 22H7.6L2 16.4V7.6L7.6 2Z" />,
+  High: <path d="M12 2.6 22 20.4a1.4 1.4 0 0 1-1.2 2.1H3.2A1.4 1.4 0 0 1 2 20.4L12 2.6Z" />,
+  Medium: <circle cx="12" cy="12" r="10" />,
+};
+const SEV_MARK: Record<string, React.ReactNode> = {
+  Critical: <><rect x="10.8" y="7" width="2.4" height="7" rx="1.2" /><circle cx="12" cy="17.4" r="1.4" /></>,
+  High: <><rect x="10.8" y="9" width="2.4" height="6" rx="1.2" /><circle cx="12" cy="18" r="1.3" /></>,
+  Medium: <><rect x="10.8" y="7" width="2.4" height="7" rx="1.2" /><circle cx="12" cy="17.4" r="1.4" /></>,
+};
+
+export function SeverityIcon({ severity }: { severity: string }) {
+  return (
+    <svg className={"dms-sev dms-sev--" + severity.toLowerCase()} viewBox="0 0 24 24" aria-hidden="true">
+      <g className="dms-sev__shape">{SEV_SHAPE[severity]}</g>
+      <g className="dms-sev__mark" fill="#fff">{SEV_MARK[severity]}</g>
+    </svg>
+  );
+}
+
 export function BigStat({ value, label }: { value: string; label: string }) {
   return (
     <div className="dms-bigstat">

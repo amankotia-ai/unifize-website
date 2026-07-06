@@ -27,8 +27,8 @@
   --dms-display: var(--u-display); --dms-sans: var(--u-font); --dms-mono: var(--u-mono);
 
   /* ---------- COLOR ALIASES ---------- */
-  /* light-grey middle surfaces: neutral, visibly offset from the white page */
-  --dms-surface: var(--n-0); --dms-surface-alt: #f1f2f4; --dms-surface-sunk: var(--n-100);
+  /* light-grey middle surfaces: neutral, softly offset from the white page */
+  --dms-surface: var(--n-0); --dms-surface-alt: #f6f7f8; --dms-surface-sunk: #f1f2f4;
   --dms-hairline-alt: var(--n-200);
   --dms-ink: var(--n-800); --dms-ink-2: var(--n-600); --dms-muted: var(--n-500); --dms-faint: var(--n-400);
   --dms-hairline: var(--n-150); --dms-line-strong: var(--n-200);
@@ -506,25 +506,30 @@
 }
 
 /* ============================================================ 07 · PAINS
- * Findings, ranked: 2x2 cards. Hierarchy: the severity bar signals first,
+ * Findings, ranked: 2x2 raised white cards (same elevation language as
+ * the persona panels in 05). The line-work severity bar signals first,
  * then the failure mode, then its consequence. Code and level are quiet
  * mono furniture. */
-.dms-pains { list-style:none; margin:var(--dms-s-10) 0 0; padding:0;
-  display:grid; grid-template-columns:1fr 1fr; gap:var(--dms-s-5); }
-.dms-pain { display:flex; flex-direction:column; gap:var(--dms-s-3); padding:var(--dms-s-8);
-  background:var(--dms-surface-sunk); }
-.dms-pain__bar { display:block; height:12px; margin-bottom:var(--dms-s-2); border-top:2px solid var(--dms-lw-ink);
-  background-image:repeating-linear-gradient(90deg, color-mix(in srgb, var(--dms-lw-ink) 26%, transparent) 0 1px, transparent 1px 4px); }
-.dms-pain.is-critical .dms-pain__bar { width:100%; }
-.dms-pain.is-high .dms-pain__bar { width:62%; }
-.dms-pain.is-medium .dms-pain__bar { width:34%; }
-.dms-pain__meta { display:flex; justify-content:space-between; align-items:baseline;
+.dms-pains { list-style:none; margin:var(--dms-s-12) 0 0; padding:0;
+  display:grid; grid-template-columns:1fr 1fr; gap:clamp(24px, 3vw, 40px); }
+.dms-pain { position:relative; display:flex; flex-direction:column; gap:var(--dms-s-5);
+  padding:clamp(28px, 3vw, 44px); background:var(--dms-surface); box-shadow:var(--dms-elev-raise); }
+.dms-pain__top { display:flex; align-items:center; justify-content:space-between; gap:var(--dms-s-4); }
+.dms-sev { width:clamp(40px, 4vw, 52px); height:clamp(40px, 4vw, 52px); flex:none; display:block; }
+.dms-sev__shape { fill:var(--dms-faint); }
+.dms-sev--critical .dms-sev__shape { fill:var(--dms-err); }
+.dms-sev--high .dms-sev__shape { fill:var(--dms-warn); }
+.dms-sev--medium .dms-sev__shape { fill:var(--dms-faint); }
+.dms-pain__meta { display:flex; flex-direction:column; align-items:flex-end; gap:3px;
   font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls);
-  text-transform:uppercase; color:var(--dms-muted); }
+  text-transform:uppercase; }
 .dms-pain__code { color:var(--dms-faint); }
-.dms-pain__title { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.25rem, 1.05rem + 0.8vw, 1.625rem);
-  line-height:1.2; letter-spacing:-0.016em; color:var(--dms-ink); margin:0; max-width:24ch; text-wrap:balance; }
-.dms-pain__body { font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); margin:0; max-width:52ch; }
+.dms-pain__sev { color:var(--dms-muted); }
+.dms-pain.is-critical .dms-pain__sev { color:var(--dms-err); }
+.dms-pain.is-high .dms-pain__sev { color:var(--dms-warn); }
+.dms-pain__title { font-family:var(--dms-display); font-weight:500; font-size:clamp(1.3125rem, 1.05rem + 0.9vw, 1.75rem);
+  line-height:1.18; letter-spacing:-0.016em; color:var(--dms-ink); margin:0; max-width:22ch; text-wrap:balance; }
+.dms-pain__body { font-size:0.9375rem; line-height:1.55; color:var(--dms-muted); margin:auto 0 0; max-width:48ch; }
 @media (max-width:760px) { .dms-pains { grid-template-columns:1fr; } }
 
 /* ============================================================ HATCH FRAME

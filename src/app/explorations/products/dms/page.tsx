@@ -23,7 +23,7 @@ import {
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
 import { Eyebrow, ShellFrame, HatchFrame, pad } from "./dms-primitives";
-import { CapGlyph } from "./dms-linework";
+import { CapGlyph, SeverityIcon } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import {
   ModuleExplorer,
@@ -220,11 +220,13 @@ export default function DmsProductPage() {
           <ol className="dms-pains">
             {PAINS.map((pn, i) => (
               <li className={"dms-pain " + SEV_CLASS[pn.severity]} key={pn.title} data-reveal>
-                <span className="dms-pain__bar" aria-hidden="true" />
-                <span className="dms-pain__meta">
-                  <span className="dms-pain__code dms-data">FM-{pad(i + 1)}</span>
-                  <span className="dms-pain__sev">{pn.severity}</span>
-                </span>
+                <div className="dms-pain__top">
+                  <SeverityIcon severity={pn.severity} />
+                  <span className="dms-pain__meta">
+                    <span className="dms-pain__code dms-data">FM-{pad(i + 1)}</span>
+                    <span className="dms-pain__sev">{pn.severity}</span>
+                  </span>
+                </div>
                 <h3 className="dms-pain__title">{pn.title}</h3>
                 <p className="dms-pain__body">{pn.body}</p>
               </li>
