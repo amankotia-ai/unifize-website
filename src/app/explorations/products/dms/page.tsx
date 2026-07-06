@@ -19,7 +19,6 @@ import {
   PAINS,
   STANDARDS,
   INDUSTRIES,
-  TESTIMONIAL,
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
@@ -29,6 +28,7 @@ import { MockDocRegister } from "./dms-mocks";
 import {
   ModuleExplorer,
   LifecycleExplorer,
+  ProofCarousel,
   FaqAccordion,
 } from "./dms-interactive";
 import "./dms.css";
@@ -202,23 +202,9 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 06 · TESTIMONIAL SLOT ============== */}
+      {/* ============================ 06 · PROOF (carousel) ============= */}
       <section className="dms-section dms-proof-section" aria-label="Customer proof">
-        <img className="dms-proof-section__photo" src={TESTIMONIAL.img} alt="" loading="lazy" />
-        <div className="dms-wrap dms-proof">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={6}>Proof</Eyebrow>
-            <h2 className="dms-h2">What quality teams say.</h2>
-          </div>
-          <figure className="dms-proof__fig" data-reveal>
-            <span className="dms-ph__tag">Sample story</span>
-            <blockquote className="dms-proof__q">&ldquo;{TESTIMONIAL.quote}&rdquo;</blockquote>
-            <figcaption className="dms-proof__who">
-              <span className="dms-proof__name">{TESTIMONIAL.name}</span>
-              <span className="dms-proof__role">{TESTIMONIAL.title}</span>
-            </figcaption>
-          </figure>
-        </div>
+        <ProofCarousel />
       </section>
 
       {/* ============================ 07 · PAINS CLOSED ==================

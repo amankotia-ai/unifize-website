@@ -218,17 +218,29 @@ export const MOCK_TRAINING = {
   ] as { role: string; cells: ("done" | "assigned")[] }[],
 };
 
-/* customer proof - a human, not a skeleton. Sample story borrowed from the
- * industry-template-modern proof section (fictional brand, stock portrait,
- * tagged SAMPLE on the page); replace with a real, verified story before
- * shipping. */
-export const TESTIMONIAL = {
-  quote:
-    "Audit prep stopped being a fire drill. Everything the investigator asked for was already on the record.",
-  name: "James Okafor",
-  title: "Quality Director · Steriva",
-  img: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-};
+/* customer proof carousel - humans, not skeletons. Sample stories in the
+ * industry-template-modern fiction (fictional brands, stock portraits);
+ * replace with real, verified stories before shipping. */
+export const TESTIMONIALS: { quote: string; name: string; title: string; img: string }[] = [
+  {
+    quote: "Audit prep stopped being a fire drill. Everything the investigator asked for was already on the record.",
+    name: "James Okafor",
+    title: "Quality Director · Steriva",
+    img: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
+  },
+  {
+    quote: "Nine days from change request to sealed record. That used to be a quarter.",
+    name: "Marco Reyes",
+    title: "Head of Regulatory Affairs · Aveline Devices",
+    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
+  },
+  {
+    quote: "Every question the auditor asked had exactly one answer. Our findings list has never been shorter.",
+    name: "Priya Nair",
+    title: "Chief Operating Officer · Corevance",
+    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
+  },
+];
 
 /* outcomes data - NOT RENDERED. The outcomes band was cut from the page
  * until canonical customer numbers exist; the SteppedGrowth primitive and

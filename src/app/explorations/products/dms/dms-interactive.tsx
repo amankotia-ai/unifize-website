@@ -13,7 +13,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChatShell } from "@/components/organisms";
-import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
+import { MODULES, LIFECYCLE, FAQS, TESTIMONIALS } from "./dms-data";
 import { Eyebrow, ShellFrame, StagePanel } from "./dms-primitives";
 import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mocks";
 
@@ -237,6 +237,59 @@ export function LifecycleExplorer() {
         </div>
       </div>
     </div>
+  );
+}
+
+/* ============================================================ proof carousel
+ * Full-bleed customer photo per story; head top-left, quote bottom-left,
+ * forward/back controls bottom-right. Photos crossfade; the quote block
+ * re-rises on change. */
+
+export function ProofCarousel() {
+  const [i, setI] = useState(0);
+  const n = TESTIMONIALS.length;
+  const t = TESTIMONIALS[i];
+  const go = (d: number) => setI((prev) => (prev + d + n) % n);
+
+  return (
+    <>
+      {TESTIMONIALS.map((s, j) => (
+        <img
+          key={s.img}
+          className={"dms-proof-section__photo" + (j === i ? " is-on" : "")}
+          src={s.img}
+          alt=""
+        />
+      ))}
+      <div className="dms-wrap dms-proof">
+        <header className="dms-proof__head">
+          <Eyebrow n={6}>Proof</Eyebrow>
+          <span className="dms-proof__kicker">What quality teams say</span>
+        </header>
+        <figure className="dms-proof__fig">
+          <blockquote className="dms-proof__q" key={"q-" + i}>&ldquo;{t.quote}&rdquo;</blockquote>
+          <div className="dms-proof__bar">
+            <figcaption className="dms-proof__who" key={"who-" + i}>
+              <span className="dms-proof__name">{t.name}</span>
+              <span className="dms-proof__role">{t.title}</span>
+            </figcaption>
+            <div className="dms-proof__nav">
+              <span className="dms-proof__count dms-data" aria-live="polite">{pad(i + 1)}&thinsp;/&thinsp;{pad(n)}</span>
+              <button type="button" className="dms-proof__btn" aria-label="Previous story" onClick={() => go(-1)}>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <path strokeLinecap="square" d="m12 4-6 6 6 6" />
+                </svg>
+              </button>
+              <button type="button" className="dms-proof__btn" aria-label="Next story" onClick={() => go(1)}>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
+                  <path strokeLinecap="square" d="m8 4 6 6-6 6" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </>
   );
 }
 

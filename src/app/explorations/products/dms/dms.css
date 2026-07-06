@@ -463,24 +463,47 @@
  * white. SAMPLE-tagged until a real, verified story replaces it. */
 .dms-proof-section { position:relative; overflow:hidden; }
 .dms-proof-section__photo { position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  object-position:70% 30%; z-index:0; }
+  object-position:70% 30%; z-index:0; opacity:0; transition:opacity .6s var(--dms-ease); }
+.dms-proof-section__photo.is-on { opacity:1; }
 .dms-proof-section::after { content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(90deg, rgba(6, 10, 20, 0.78) 0%, rgba(6, 10, 20, 0.42) 55%, rgba(6, 10, 20, 0.08) 85%); }
 .dms-proof-section .dms-wrap { position:relative; z-index:2; }
-.dms-proof { display:flex; flex-direction:column; justify-content:space-between; gap:clamp(64px, 10vw, 160px); }
-.dms-proof-section .dms-h2 { color:#fff; }
+.dms-proof { display:flex; flex-direction:column; justify-content:space-between;
+  min-height:clamp(540px, 74vh, 820px); gap:var(--dms-s-10); }
+
+/* header: quiet marker, eyebrow + kicker on one baseline */
+.dms-proof__head { display:flex; align-items:baseline; gap:var(--dms-s-5); flex-wrap:wrap; }
 .dms-proof-section .dms-eyebrow { color:rgba(255,255,255,.85); border-color:rgba(255,255,255,.4); background:transparent; }
 .dms-proof-section .dms-eyebrow__num { color:rgba(255,255,255,.55); }
-.dms-proof__fig { margin:0; display:flex; flex-direction:column; align-items:flex-start; gap:var(--dms-s-6); max-width:680px; }
-.dms-proof__fig .dms-ph__tag { position:static; align-self:flex-start;
-  border-color:rgba(255,255,255,.55); color:rgba(255,255,255,.85); background:transparent; }
+.dms-proof__kicker { font-family:var(--dms-display); font-weight:500; font-size:1.25rem; letter-spacing:-0.014em; color:#fff; }
+
+/* the quote is the hero */
+.dms-proof__fig { margin:0; display:flex; flex-direction:column; align-items:flex-start; gap:clamp(28px, 4vw, 48px);
+  max-width:min(720px, 60%); }
 .dms-proof__q { margin:0; font-family:var(--dms-display); font-weight:500;
-  font-size:clamp(1.5rem, 1.1rem + 1.6vw, 2.375rem); line-height:1.2; letter-spacing:-0.02em;
-  color:#fff; max-width:24ch; text-wrap:balance; }
-.dms-proof__who { display:flex; flex-direction:column; gap:4px; min-width:220px; }
-.dms-proof__name { font-weight:500; font-size:0.9375rem; color:#fff; }
+  font-size:clamp(1.75rem, 1.2rem + 2.2vw, 3rem); line-height:1.14; letter-spacing:-0.024em;
+  color:#fff; text-wrap:balance; animation:dms-rise .5s var(--dms-ease) both; }
+
+/* bottom bar: attribution left, nav right, on a hairline */
+.dms-proof__bar { align-self:stretch; display:flex; align-items:flex-end; justify-content:space-between; gap:var(--dms-s-8);
+  padding-top:var(--dms-s-5); border-top:1px solid rgba(255,255,255,.24); }
+.dms-proof__who { display:flex; flex-direction:column; gap:3px; min-width:0; animation:dms-rise .5s var(--dms-ease) .05s both; }
+.dms-proof__name { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem; letter-spacing:-0.01em; color:#fff; }
 .dms-proof__role { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
   letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:rgba(255,255,255,.72); }
+.dms-proof__nav { display:flex; align-items:center; gap:var(--dms-s-4); flex:none; }
+.dms-proof__count { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); color:rgba(255,255,255,.72); }
+.dms-proof__btn { display:inline-flex; align-items:center; justify-content:center; width:46px; height:46px; flex:none;
+  background:transparent; border:1px solid rgba(255,255,255,.4); border-radius:var(--dms-r-control); color:#fff; cursor:pointer;
+  transition:background var(--dms-dur) var(--dms-ease), border-color var(--dms-dur) var(--dms-ease); }
+.dms-proof__btn:hover { background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.75); }
+.dms-proof__btn svg { width:18px; height:18px; }
+.dms-proof-section :where(button):focus-visible { box-shadow:var(--dms-ring-dark); }
+@media (max-width:820px) {
+  .dms-proof__fig { max-width:100%; }
+  .dms-proof__bar { flex-wrap:wrap; gap:var(--dms-s-5); }
+}
 
 /* ============================================================ 07 · PAINS
  * Findings, ranked: 2x2 cards. Hierarchy: the severity bar signals first,
