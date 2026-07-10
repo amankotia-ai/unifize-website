@@ -1,11 +1,12 @@
 /* ============================================================================
  * INDUSTRY PAGE TEMPLATE — MODERN SKIN (Medical Devices instance).
- * Direction: refined dark-tech, PRODUCT-LED (Linear/Vercel flagship energy),
- * within Unifize's brand (Geist display + Inter body, JetBrains mono on data
- * only, Unifize blue as the single accent). Same content + data as the champion
- * ("The Decision Trace"), verbatim; new, more ambitious visual system.
- * Craft = depth, scale, real product framing, restrained motion. Altitude
- * discipline preserved; labeled placeholders stay placeholders.
+ * Reworked onto Unifize enterprise design system v1 (the DMS language): flat
+ * editorial dark hero/close/footer with hairlines (no glows), light neutral-grey
+ * middle, Geist display + Inter body + JetBrains mono furniture, Unifize blue on
+ * CTAs and one key marker per graphic, near-square corners, editorial registers
+ * over shadowed card grids. Same content + flow as before; the skin now matches
+ * /explorations/products/dms. Altitude discipline preserved; labeled placeholders
+ * stay placeholders.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -21,6 +22,7 @@ import { ModuleIndex } from "./module-index";
 import { CostLedger } from "./cost-ledger";
 import { CustomerSuccess } from "./customer-success";
 import { ItmMotion } from "./itm-motion";
+import { Eyebrow, ShellFrame, SeverityIcon } from "./itm-primitives";
 import { ChatShell } from "@/components/organisms";
 import "./itm.css";
 
@@ -106,7 +108,7 @@ export default function IndustryTemplateModernPage() {
           </div>
         </div>
 
-        {/* trust strip — dashed top divider (1 of 2) */}
+        {/* trust strip — named customers */}
         <div className="itm-wrap itm-wrap--wide">
           <div className="itm-trust" aria-label="Customers and compliance">
             <div className="itm-trust__who">
@@ -128,7 +130,7 @@ export default function IndustryTemplateModernPage() {
       <section className="itm-section itm-section--tall" id="thesis">
         <div className="itm-wrap">
           <div className="itm-head-block" data-reveal>
-            <span className="itm-eyebrow">The difference</span>
+            <Eyebrow n={1}>The difference</Eyebrow>
             <h2 className="itm-h2">The decision lives in the thread, not the status field.</h2>
             <p className="itm-lede">
               Incumbents track document status. Unifize reconstructs the decision trace across every
@@ -152,9 +154,11 @@ export default function IndustryTemplateModernPage() {
             </aside>
 
             <div className="itm-thread" data-reveal>
-              {/* real product screen — rendered free, no wrapping container */}
+              {/* real product screen — staged in shell chrome */}
               <div className="itm-thread__live">
-                <ChatShell variant="change-control" />
+                <ShellFrame url="app.unifize.com / change-control / CC-2148">
+                  <ChatShell variant="change-control" />
+                </ShellFrame>
               </div>
               <Link
                 href="/industries/medical-devices/change-control"
@@ -175,10 +179,10 @@ export default function IndustryTemplateModernPage() {
         <IngressNav />
 
         {/* D · PERSONAS */}
-        <section className="itm-section" id="by-role">
+        <section className="itm-section itm-section--dark" id="by-role">
           <div className="itm-wrap">
             <div className="itm-head-block" data-reveal>
-              <span className="itm-eyebrow">By your role</span>
+              <Eyebrow n={2}>By your role</Eyebrow>
               <h2 className="itm-h2">When the investigator is in the room, someone reconstructs it.</h2>
               <p className="itm-lede">The reconstruction always lands on someone. Find your seat, and see what you own when the trace has to hold up at audit.</p>
             </div>
@@ -187,10 +191,10 @@ export default function IndustryTemplateModernPage() {
         </section>
 
         {/* E · MODULE INDEX */}
-        <section className="itm-section itm-section--alt" id="modules">
+        <section className="itm-section itm-section--dark" id="modules">
           <div className="itm-wrap">
             <div className="itm-head-block" data-reveal>
-              <span className="itm-eyebrow">Coverage</span>
+              <Eyebrow n={3}>Coverage</Eyebrow>
               <h2 className="itm-h2">Nine domains. In each one, the same question: can you replay the decision?</h2>
               <p className="itm-lede">Filter by the regulation you are audited against to see which controls evidence it.</p>
             </div>
@@ -198,31 +202,36 @@ export default function IndustryTemplateModernPage() {
           </div>
         </section>
 
-        {/* F · TRIGGER BAND */}
-        <section className="itm-section itm-section--alt itm-trigs-sec" id="whats-breaking">
+        {/* F · TRIGGER BAND: a status board on ink, one severity-coded
+             card per statutory moment; severity leads, then the clock + routing. */}
+        <section className="itm-section itm-section--dark itm-trigs-sec" id="whats-breaking">
           <div className="itm-wrap">
             <div className="itm-head-block" data-reveal>
-              <span className="itm-eyebrow">What's breaking</span>
+              <Eyebrow n={4}>What's breaking</Eyebrow>
               <h2 className="itm-h2">The moments that start a clock you don't control.</h2>
               <p className="itm-lede">Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response.</p>
             </div>
-            <div className="itm-trigs">
+            <div className="itm-trigs" data-reveal>
               {TRIGGERS.map((t) => {
                 const sev = t.severity === "Urgent" ? " is-urgent" : " is-high";
                 const inner = (
                   <>
                     <div className="itm-trig__top">
-                      <span className="itm-trig__clock">{t.clock}</span>
-                      <span className={"itm-trig__sev" + sev}>
-                        <span className="itm-dot" aria-hidden="true" />
+                      <span className="itm-trig__sev">
+                        <span className="itm-trig__sev-ic" aria-hidden="true">
+                          <SeverityIcon severity={t.severity} />
+                        </span>
                         {t.severity}
                       </span>
                     </div>
                     <p className="itm-trig__name">{t.name}</p>
+                    <span className="itm-trig__clock">{t.clock}</span>
                     <div className="itm-trig__foot">
-                      <span className="itm-trig__mod">{t.routesTo}</span>
-                      <span className="itm-trig__owner">{t.owner}</span>
-                      {t.href ? <span className="itm-trig__go">Open the workflow →</span> : null}
+                      <span className="itm-trig__route">
+                        <span className="itm-trig__mod">{t.routesTo}</span>
+                        <span className="itm-trig__owner">{t.owner}</span>
+                      </span>
+                    <span className="itm-trig__go">{t.href ? "Open the workflow →" : " "}</span>
                     </div>
                   </>
                 );
@@ -230,11 +239,11 @@ export default function IndustryTemplateModernPage() {
                   <Link
                     key={t.name}
                     href={t.href}
-                    className="itm-trig itm-trig--live"
-                    aria-label={`Open the change control workflow: ${t.name}`}
+                    className={"itm-trig itm-trig--live" + sev}
+                    aria-label={`Open the page for: ${t.name}`}
                   >{inner}</Link>
                 ) : (
-                  <div key={t.name} className="itm-trig">{inner}</div>
+                  <div key={t.name} className={"itm-trig" + sev}>{inner}</div>
                 );
               })}
             </div>
@@ -247,8 +256,8 @@ export default function IndustryTemplateModernPage() {
         <div className="itm-wrap">
           <div className="itm-coexist">
             <div className="itm-coexist__head" data-reveal>
-              <span className="itm-eyebrow">Coexistence</span>
-              <h2 className="itm-h3">It sits on the stack you have already validated.</h2>
+              <Eyebrow n={5}>Coexistence</Eyebrow>
+              <h2 className="itm-h2">It sits on the stack you have already validated.</h2>
               <div className="itm-sor">
                 {MD_COEXISTENCE.systemsOfRecord.map((s) => <span key={s} className="itm-chip">{s}</span>)}
               </div>
@@ -287,7 +296,7 @@ export default function IndustryTemplateModernPage() {
       <section className="itm-section itm-section--alt itm-cost-sec" id="cost">
         <div className="itm-wrap">
           <div className="itm-head-block" data-reveal>
-            <span className="itm-eyebrow">Cost of inaction</span>
+            <Eyebrow n={6}>Cost of inaction</Eyebrow>
             <h2 className="itm-h2">The cost is real. It just never lands on a line you can see.</h2>
           </div>
           <CostLedger />
@@ -298,15 +307,15 @@ export default function IndustryTemplateModernPage() {
       <section className="itm-section itm-section--short" id="validated">
         <div className="itm-wrap">
           <div className="itm-head-block" data-reveal>
-            <span className="itm-eyebrow">{VALIDATED.eyebrow}</span>
+            <Eyebrow n={7}>{VALIDATED.eyebrow}</Eyebrow>
             <h2 className="itm-h2">{VALIDATED.headline}</h2>
           </div>
-          <ul className="itm-valgrid">
+          <ul className="itm-valgrid" data-reveal>
             {VALIDATED.points.map((pt) => (
-              <li key={pt.label} className="itm-card itm-card--hover itm-valcard" data-reveal>
+              <li key={pt.label} className="itm-valcard">
                 <span className="itm-valcard__icon" aria-hidden="true">{VAL_ICONS[pt.icon]}</span>
-                <h3 className="itm-h3">{pt.label}</h3>
-                <p className="itm-body-sm">{pt.body}</p>
+                <h3>{pt.label}</h3>
+                <p>{pt.body}</p>
               </li>
             ))}
           </ul>
@@ -319,15 +328,22 @@ export default function IndustryTemplateModernPage() {
       {/* ============= J · PROOF (folded into the customer-success carousel) */}
       <CustomerSuccess />
 
-      {/* ============================ K · CLOSE ========================== */}
-      <section className="itm-section itm-section--tall itm-section--dark itm-close" aria-labelledby="itm-close-h">
-        <div className="itm-close__glow" aria-hidden="true" />
-        <div className="itm-wrap">
-          <div className="itm-head-block itm-head-block--center" data-reveal>
-            <h2 className="itm-h2" id="itm-close-h">Incumbents track documents. Unifize reconstructs the decision.</h2>
-            <p className="itm-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
-            <div className="itm-close__cta">
-              <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
+      {/* ============================ K · CLOSE ==========================
+       * Flat editorial dark, asymmetric like the hero: mono kicker + display
+       * headline left, lede + CTA right, on a defining top hairline. No glow. */}
+      <section className="itm-section itm-section--dark itm-close" aria-labelledby="itm-close-h">
+        <div className="itm-wrap itm-wrap--wide">
+          <div className="itm-close__grid" data-reveal>
+            <div className="itm-close__lead">
+              <span className="itm-close__eyebrow">Ready when you are</span>
+              <h2 className="itm-close__h" id="itm-close-h">Incumbents track documents. Unifize reconstructs the decision.</h2>
+            </div>
+            <div className="itm-close__side">
+              <p className="itm-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
+              <div className="itm-close__cta">
+                <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
+                <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -355,7 +371,8 @@ export default function IndustryTemplateModernPage() {
         </div>
         <div className="itm-wrap itm-wrap--wide">
           <div className="itm-footer__base">
-            <span>© Unifize 2026 · Industry template, Medical Devices instance</span>
+            <span>© Unifize 2026</span>
+            <span>Industry template · Medical Devices instance</span>
           </div>
         </div>
       </footer>

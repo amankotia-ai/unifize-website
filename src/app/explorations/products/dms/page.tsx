@@ -15,6 +15,7 @@ import {
   HERO_STANDARDS,
   DRIFT,
   PROBLEM_FEATURES,
+  INTEGRATIONS,
   CAPABILITIES,
   PERSONAS,
   PAINS,
@@ -23,6 +24,8 @@ import {
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { DmsMotion } from "./dms-motion";
+import { CoordinationTax } from "./dms-coordination";
+import { IntegrationLayer } from "./dms-integrations";
 import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
 import { CapGlyph, SolidGlyph, SeverityIcon, WithDmsOrbit } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
@@ -96,6 +99,25 @@ export default function DmsProductPage() {
         </div>
       </section>
 
+      {/* ==================== THE COORDINATION TAX =====================
+       * Thesis interstitial before the numbered walkthrough: the category
+       * premise, resolved with the DMS-specific collapse line. */}
+      <CoordinationTax
+        leaks={[
+          { surface: "Inbox", name: "The approval chase", note: "A revision waits on a signature that lives in someone's inbox, not on the record." },
+          { surface: "Drive", name: "The three copies", note: "The same SOP sits in a folder, a share, and an attachment, each at a different revision." },
+          { surface: "Sheet", name: "The training log", note: "Who is trained on the current version is tracked in a spreadsheet no one fully trusts." },
+          { surface: "Meeting", name: "The change review", note: "A document change waits for the next review meeting instead of routing itself." },
+          { surface: "Audit", name: "The version scramble", note: "The auditor asks which copy is effective, and answering takes an afternoon." },
+        ]}
+        summary={
+          <>
+            <b>The document becomes the conversation.</b> The current version, its approval, and everyone who
+            depends on it sit on one record, so there is no thread to chase and no copy to reconcile.
+          </>
+        }
+      />
+
       {/* ============================ 01 · THE DRIFT PROBLEM =============
        * Two columns on one asymmetry: left, the head over the WITHOUT
        * register (three competing answers, fading with staleness); right,
@@ -133,7 +155,7 @@ export default function DmsProductPage() {
             </div>
 
             <div className="dms-problem__right" data-reveal>
-              <StagePanel className="dms-with">
+              <StagePanel className="dms-with dms-stage--brand">
                 <span className="dms-with__lab">With DMS</span>
                 <div className="dms-with__orbit">
                   <WithDmsOrbit />
@@ -157,14 +179,14 @@ export default function DmsProductPage() {
 
       {/* ============================ 02 · MODULES BUNDLED ===============
        * Sticky scroll story: the component owns the full 300vh region,
-       * head included. */}
-      <section className="dms-section dms-section--alt dms-modx-section" id="modules">
+       * head included. Runs on ink (near-black block, sections 02-04). */}
+      <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer />
       </section>
 
       {/* ============================ 03 · CAPABILITIES ==================
-       * Composition: sticky header rail left, indexed ledger right. */}
-      <section className="dms-section dms-section--alt" id="capabilities">
+       * Composition: sticky header rail left, indexed ledger right. On ink. */}
+      <section className="dms-section dms-section--dark pk-caps-ink" id="capabilities">
         <div className="dms-wrap dms-caps-grid">
           <header className="dms-caps__rail" data-reveal>
             <Eyebrow n={3}>Capabilities</Eyebrow>
@@ -184,10 +206,17 @@ export default function DmsProductPage() {
 
       {/* ============================ 04 · LIFECYCLE =====================
        * Sticky scroll story (mirrors section 02): the component owns the
-       * head, the brand field container, and the trail + shell inside it. */}
-      <section className="dms-section dms-lifex-section" id="lifecycle">
+       * head, the brand field container, and the trail + shell inside it.
+       * On ink: near-black field + black bottom breathing room. */}
+      <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
         <LifecycleExplorer />
       </section>
+
+      {/* ==================== INTEGRATIONS (connector layer) ===========
+       * Connective beat after the lifecycle: the controlled document does not
+       * stop at Unifize's edge. Unnumbered interstitial, on ink, so it continues
+       * the dark block (02-04) one section longer before the light 05. */}
+      <IntegrationLayer data={INTEGRATIONS} />
 
       {/* ============================ 05 · WHO OWNS IT ===================
        * Composition: stacked head, then two profiles on a center hairline. */}
@@ -325,6 +354,7 @@ export default function DmsProductPage() {
             <a href="#modules">What is bundled</a>
             <a href="#lifecycle">The lifecycle</a>
             <a href="#capabilities">Capabilities</a>
+            <a href="#integrations">Integrations</a>
           </nav>
           <nav className="dms-footer__col" aria-label="More">
             <span className="dms-footer__lab">More</span>

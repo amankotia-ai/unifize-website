@@ -1,13 +1,14 @@
 "use client";
 
 /* ============================================================================
- * Module index (modern skin) — the MODULE INGRESS (Coverage section). An
- * interactive domain explorer: a vertical tab list of the 9 domains + a panel
- * showing the selected domain's modules, cross-filterable "by standard". Logic
- * is identical to the champion; the class names (itm-mi, itm-explorer, itm-tab,
- * itm-mod) and a11y are the only changes:
- *   - disabled (0-count) domain tabs convey their reason via aria-describedby
- *     pointing at a visually-hidden explanation (not title-only).
+ * Coverage (Unifize enterprise design system, ink treatment) — the MODULE
+ * INGRESS, redesigned as an indexed domain ledger. The nine coordination
+ * domains read as a spec sheet: mono index 01–09, domain name, its promise,
+ * and a live count of the modules that evidence the selected standard. Opening
+ * a domain reveals those modules inline (accordion), so the whole surface is a
+ * single scannable register rather than a tabbed panel. Logic + data
+ * (MD_DOMAIN_MAP, STANDARD_FILTERS) are unchanged; only the presentation and
+ * the cross-filter are reworked.
  * ========================================================================== */
 
 import { useMemo, useState } from "react";
@@ -15,9 +16,11 @@ import Link from "next/link";
 import { MD_DOMAIN_MAP } from "@/lib/platform-data/md-module-map";
 import { STANDARD_FILTERS } from "./industry-data";
 
+const pad = (n: number) => String(n).padStart(2, "0");
+
 export function ModuleIndex() {
   const [standard, setStandard] = useState<string | null>(null);
-  const [slug, setSlug] = useState(MD_DOMAIN_MAP[0].slug);
+  const [open, setOpen] = useState<string>(MD_DOMAIN_MAP[0].slug);
 
   const domains = useMemo(
     () =>
@@ -28,23 +31,19 @@ export function ModuleIndex() {
     [standard],
   );
 
-  const available = domains.filter((d) => d.filtered.length > 0);
-  // keep selection valid as the filter narrows the set
-  const activeSlug = available.some((d) => d.slug === slug) ? slug : (available[0]?.slug ?? slug);
-  const active = domains.find((d) => d.slug === activeSlug) ?? domains[0];
-
   return (
-    <div className="itm-mi">
-      <span id="itm-mi-disabled-reason" className="itm-sr-only">
+    <div className="itm-cov">
+      <span id="itm-cov-empty" className="itm-sr-only">
         No modules evidence the selected standard
       </span>
 
-      <div className="itm-mi__bar">
-        <div className="itm-mi__filters" role="group" aria-label="Filter modules by standard">
+      <div className="itm-cov__filter" role="group" aria-label="Filter modules by standard">
+        <span className="itm-cov__filter-lab">Audited against</span>
+        <div className="itm-cov__chips">
           <button
             type="button"
             aria-pressed={standard === null}
-            className={"itm-mi__filter" + (standard === null ? " is-active" : "")}
+            className={"itm-cov__chip" + (standard === null ? " is-active" : "")}
             onClick={() => setStandard(null)}
           >
             All standards
@@ -54,7 +53,7 @@ export function ModuleIndex() {
               key={s}
               type="button"
               aria-pressed={standard === s}
-              className={"itm-mi__filter" + (standard === s ? " is-active" : "")}
+              className={"itm-cov__chip" + (standard === s ? " is-active" : "")}
               onClick={() => setStandard((cur) => (cur === s ? null : s))}
             >
               {s}
@@ -63,70 +62,72 @@ export function ModuleIndex() {
         </div>
       </div>
 
-      <div className="itm-explorer">
-        <div className="itm-explorer__tabs" role="group" aria-label="Coordination domains">
-          {domains.map((d) => {
-            const disabled = d.filtered.length === 0;
-            const isActive = d.slug === active.slug;
-            return (
+      <ol className="itm-cov__ledger">
+        {domains.map((d, i) => {
+          const empty = d.filtered.length === 0;
+          const isOpen = open === d.slug && !empty;
+          return (
+            <li key={d.slug} className={"itm-cov__row" + (isOpen ? " is-open" : "") + (empty ? " is-empty" : "")}>
               <button
-                key={d.slug}
                 type="button"
-                aria-pressed={isActive}
-                aria-disabled={disabled}
-                aria-describedby={disabled ? "itm-mi-disabled-reason" : undefined}
-                tabIndex={disabled ? -1 : undefined}
-                className={"itm-tab" + (isActive ? " is-active" : "") + (disabled ? " is-disabled" : "")}
-                onClick={() => { if (!disabled) setSlug(d.slug); }}
+                className="itm-cov__head"
+                aria-expanded={isOpen}
+                aria-disabled={empty || undefined}
+                aria-describedby={empty ? "itm-cov-empty" : undefined}
+                onClick={() => { if (!empty) setOpen((cur) => (cur === d.slug ? "" : d.slug)); }}
               >
-                <span className="itm-tab__name">{d.name}</span>
-                <span className="itm-tab__meta">
-                  <span className="itm-data itm-tab__count">{d.filtered.length}</span>
+                <span className="itm-cov__idx itm-data" aria-hidden="true">{pad(i + 1)}</span>
+                <span className="itm-cov__name">{d.name}</span>
+                <span className="itm-cov__promise">{d.promise}</span>
+                <span className="itm-cov__count">
+                  <span className="itm-data">{d.filtered.length}</span>
+                  <span className="itm-cov__count-lab">{d.filtered.length === 1 ? "module" : "modules"}</span>
+                </span>
+                <span className="itm-cov__chev" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}><path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" /></svg>
                 </span>
               </button>
-            );
-          })}
-        </div>
 
-        <div className="itm-explorer__panel" role="tabpanel" key={active.slug}>
-          <div className="itm-explorer__head">
-            <h3>{active.name}</h3>
-            <p className="itm-explorer__promise">{active.promise}</p>
-          </div>
-          <div className="itm-explorer__mods">
-            {active.filtered.map((m) => {
-              const live = Boolean(m.href);
-              const inner = (
-                <>
-                  <div className="itm-mod__top">
-                    <span className="itm-mod__name">{m.name}</span>
-                    {live ? (
-                      <span className="itm-mod__badge">
-                        <span className="itm-dot" aria-hidden="true" />
-                        Live
-                      </span>
-                    ) : null}
+              <div className="itm-cov__panel">
+                <div className="itm-cov__panel-inner">
+                  <div className="itm-cov__mods">
+                    {d.filtered.map((m) => {
+                      const live = Boolean(m.href);
+                      const inner = (
+                        <>
+                          <div className="itm-cov__mod-top">
+                            <span className="itm-cov__mod-name">{m.name}</span>
+                            {live ? (
+                              <span className="itm-cov__mod-badge">
+                                <span className="itm-dot" aria-hidden="true" />
+                                Live
+                              </span>
+                            ) : null}
+                          </div>
+                          <p className="itm-cov__mod-blurb">{m.blurb}</p>
+                          {m.standards && m.standards.length > 0 ? (
+                            <div className="itm-cov__mod-std">
+                              {m.standards.map((s) => (
+                                <span key={s} className={"itm-cov__tag" + (standard === s ? " is-hit" : "")}>{s}</span>
+                              ))}
+                            </div>
+                          ) : null}
+                          {live ? <span className="itm-cov__mod-go">Open module →</span> : null}
+                        </>
+                      );
+                      return live ? (
+                        <Link key={m.name} href={m.href!} className="itm-cov__mod is-live">{inner}</Link>
+                      ) : (
+                        <div key={m.name} className="itm-cov__mod is-soon">{inner}</div>
+                      );
+                    })}
                   </div>
-                  <p className="itm-mod__blurb">{m.blurb}</p>
-                  {m.standards && m.standards.length > 0 ? (
-                    <div className="itm-mod__std">
-                      {m.standards.map((s) => (
-                        <span key={s} className={"itm-chip" + (standard === s ? " is-hit" : "")}>{s}</span>
-                      ))}
-                    </div>
-                  ) : null}
-                  {live ? <span className="itm-mod__go">Open module →</span> : null}
-                </>
-              );
-              return live ? (
-                <Link key={m.name} href={m.href!} className="itm-mod is-live">{inner}</Link>
-              ) : (
-                <div key={m.name} className="itm-mod is-soon">{inner}</div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }

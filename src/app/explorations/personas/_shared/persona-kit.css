@@ -1,0 +1,167 @@
+/* ============================================================================
+ * persona-kit.css - supplemental styles for the shared PERSONA-page kit.
+ * Loaded AFTER dms.css + product-kit.css. It does NOT redefine any DMS token or
+ * rule; it only adds `.pn-*` companion classes for the two section patterns the
+ * persona page introduces that the product kit does not have:
+ *   - the hero caseload queue grid          (.pn-q__grid)
+ *   - the "workflows you own" link register  (.pn-reg)
+ *   - the "who you work with" people cards    (.pn-people)
+ * Everything else (hero, positioning, pains, flow, capabilities, compliance,
+ * FAQ, close, footer) reuses the DMS classes unchanged. Used inside `.dms`, so
+ * every var(--dms-*) token resolves.
+ * ========================================================================== */
+
+/* ---- persona hero: identity + live-queue split ----
+ * Distinct from the product hero (text | text + full-width mock below): here the
+ * crumb runs full-width on top, the copy sits left, the role's caseload mock is
+ * elevated into the fold on the right, and an "also known as" title roster closes
+ * the hero. */
+.pn-hero__crumb { display: flex; margin-bottom: clamp(28px, 4vw, 44px); }
+.pn-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.94fr);
+  gap: clamp(32px, 5vw, 72px); align-items: center; }
+.pn-hero__lead { display: flex; flex-direction: column; align-items: flex-start; gap: var(--dms-s-6); min-width: 0; }
+.pn-hero__tier { display: inline-flex; align-items: center; font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size); font-weight: 500; letter-spacing: var(--dms-mono-ls); text-transform: uppercase;
+  color: var(--dms-d-accent); padding: 6px 11px; border: 1px solid var(--dms-d-hairline-2); border-radius: 2px;
+  background: rgba(255, 255, 255, 0.03); }
+.pn-hero__title { max-width: 15ch; }
+.pn-hero__lede { max-width: 46ch; }
+.pn-hero__panel { position: relative; min-width: 0; display: flex; flex-direction: column; gap: var(--dms-s-3); }
+.pn-hero__panel-lab { font-family: var(--dms-mono); font-size: var(--dms-mono-size); font-weight: 500;
+  letter-spacing: var(--dms-mono-ls); text-transform: uppercase; color: var(--dms-d-ink-3); align-self: flex-start; }
+.pn-hero__panel .dms-appframe { border-color: color-mix(in srgb, #fff 14%, transparent);
+  box-shadow: 0 40px 90px -36px rgba(3, 7, 18, 0.85), 0 12px 30px -14px rgba(3, 7, 18, 0.55); }
+.pn-hero__roster { display: flex; align-items: baseline; gap: var(--dms-s-5); flex-wrap: wrap;
+  margin-top: clamp(40px, 5vw, 68px); padding-top: var(--dms-s-6); border-top: 1px solid var(--dms-d-hairline); }
+.pn-hero__roster-lab { font-family: var(--dms-mono); font-size: var(--dms-mono-size); font-weight: 500;
+  letter-spacing: var(--dms-mono-ls); text-transform: uppercase; color: var(--dms-d-ink-3); flex: none; }
+.pn-hero__roster-list { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 0; list-style: none; margin: 0; padding: 0; }
+.pn-hero__roster-it { display: inline-flex; align-items: center; font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size); font-weight: 500; letter-spacing: var(--dms-mono-ls); text-transform: uppercase;
+  color: var(--dms-d-ink-2); }
+.pn-hero__roster-it:not(:first-child)::before { content: ""; width: 3px; height: 3px; border-radius: var(--dms-r-pill);
+  background: var(--dms-d-ink-3); margin-inline: 13px; flex: none; }
+
+/* entrance: the product hero animates .dms-hero__left/right children; this hero
+ * has its own structure, so re-declare the reveal for its parts. */
+.pn-hero__lead > * { animation: dms-hero-in .7s var(--dms-ease) both; }
+.pn-hero__lead > *:nth-child(1) { animation-delay: .04s; }
+.pn-hero__lead > *:nth-child(2) { animation-delay: .10s; }
+.pn-hero__lead > *:nth-child(3) { animation-delay: .16s; }
+.pn-hero__lead > *:nth-child(4) { animation-delay: .22s; }
+.pn-hero__panel { animation: dms-hero-in .9s var(--dms-ease) .18s both; }
+.pn-hero__roster { animation: dms-hero-in .7s var(--dms-ease) .3s both; }
+
+@media (max-width: 900px) {
+  .pn-hero__grid { grid-template-columns: 1fr; gap: var(--dms-s-10); align-items: start; }
+  .pn-hero__title { max-width: 18ch; }
+}
+
+/* ---- hero visual: the questions you're on the hook to answer ----
+ * NOT a product screen. An editorial register on the dark hero: each question
+ * in display type with who asks it in mono below, dashed dividers, one accent.
+ * It mirrors the reader's reality instead of demoing the app; the headline then
+ * answers it. */
+.pn-ask { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--dms-d-hairline-2); }
+.pn-ask__item { padding: clamp(15px, 1.7vw, 22px) 0; }
+.pn-ask__item + .pn-ask__item { border-top: 1px dashed var(--dms-d-hairline); }
+.pn-ask__q { margin: 0; font-family: var(--dms-display); font-weight: 500;
+  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.375rem); line-height: 1.22; letter-spacing: -0.016em; color: var(--dms-d-ink); }
+.pn-ask__who { display: block; margin-top: 7px; font-family: var(--dms-mono); font-size: var(--dms-mono-size);
+  font-weight: 500; letter-spacing: var(--dms-mono-ls); text-transform: uppercase; color: var(--dms-d-ink-3); }
+.pn-ask__item.is-key .pn-ask__who { color: var(--dms-d-accent); }
+
+/* ---- the gap: the same record, empty vs filled ----
+ * Two product-record panels in shell chrome (elevated). The left shows the bare
+ * system of record - its fields left as blank, unfilled form-lines. The right
+ * shows the decision trace - the same fields filled with evidence chips, a Part
+ * 11 check, and one accent row. The empty panel beside the full one is the
+ * argument, made visible rather than described. */
+.pn-gap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 3.5vw, 56px);
+  margin-top: var(--dms-s-12); align-items: start; }
+.pn-reccol { margin: 0; display: flex; flex-direction: column; gap: var(--dms-s-4); min-width: 0; }
+.pn-reccol__cap { font-family: var(--dms-mono); font-size: var(--dms-mono-size); font-weight: 500;
+  letter-spacing: var(--dms-mono-ls); text-transform: uppercase; }
+.pn-reccol__cap--record { color: var(--dms-muted); }
+.pn-reccol__cap--trace { color: var(--dms-accent-text); }
+.pn-reccol .dms-appframe { box-shadow: var(--dms-elev-raise); }
+
+.pn-rec { background: var(--dms-surface); font-size: 0.8125rem; color: var(--dms-ink-2); }
+.pn-rec__head { display: flex; align-items: center; justify-content: space-between; gap: var(--dms-s-4);
+  padding: 12px var(--dms-s-5); border-bottom: 1px solid var(--dms-hairline); }
+.pn-rec__id { font-family: var(--dms-mono); font-size: 0.6875rem; letter-spacing: 0.02em; color: var(--dms-ink-2); }
+.pn-rec__badge { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 4px 8px; border-radius: 2px; border: 1px solid var(--dms-hairline); }
+.pn-rec__badge--muted { color: var(--dms-faint); border-style: dashed; }
+.pn-rec__badge--accent { color: var(--dms-accent-text); border-color: var(--dms-accent-border); background: var(--dms-accent-tint); }
+.pn-rec__rows { list-style: none; margin: 0; padding: 0; }
+.pn-rec__row { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: var(--dms-s-4);
+  align-items: center; min-height: 48px; padding: 9px var(--dms-s-5); }
+.pn-rec__row + .pn-rec__row { border-top: 1px solid var(--dms-hairline); }
+.pn-rec__row.is-key { background: var(--dms-accent-tint); box-shadow: inset 2px 0 0 var(--dms-accent); }
+.pn-rec__k { color: var(--dms-muted); min-width: 0; }
+.pn-rec__v { display: flex; align-items: center; justify-content: flex-end; gap: 6px; text-align: right;
+  font-weight: 500; color: var(--dms-ink); }
+.pn-rec__v.is-muted { color: var(--dms-faint); font-weight: 400; }
+.pn-rec__row.is-key .pn-rec__v { color: var(--dms-accent-text); }
+.pn-rec__blank { justify-self: end; width: min(120px, 62%); height: 0; border-bottom: 1px dashed var(--dms-line-strong); }
+.pn-rec__chips { display: flex; flex-wrap: wrap; gap: 5px; justify-content: flex-end; }
+.pn-rec__chip { font-family: var(--dms-mono); font-size: 0.5625rem; font-weight: 500; letter-spacing: 0.04em;
+  text-transform: uppercase; color: var(--dms-ink-2); padding: 3px 7px; border: 1px solid var(--dms-hairline);
+  border-radius: 2px; background: var(--dms-surface-alt); }
+.pn-rec__check { width: 13px; height: 13px; flex: none; color: var(--dms-accent); }
+@media (max-width: 760px) {
+  .pn-gap { grid-template-columns: 1fr; gap: var(--dms-s-8); }
+}
+
+/* ---- workflows you own: editorial link register (ingress into products) ----
+ * No boxes, no shadows: transparent rows on a top hairline, divided by dashed
+ * rules (the register pattern). Each row is a whole-row link with a product tag,
+ * the workflow name + one line, and a trailing arrow. */
+.pn-reg { list-style: none; margin: var(--dms-s-12) 0 0; padding: 0;
+  border-top: 1px solid var(--dms-line-strong); }
+.pn-reg__row + .pn-reg__row { border-top: 1px dashed var(--dms-line-strong); }
+.pn-reg__link { display: grid; grid-template-columns: 76px minmax(0, 1fr) 22px; align-items: center;
+  gap: var(--dms-s-6); padding: var(--dms-s-6) 4px; text-decoration: none; color: inherit;
+  transition: background var(--dms-dur) var(--dms-ease); }
+.pn-reg__link:hover { background: color-mix(in oklch, var(--dms-surface) 65%, transparent); }
+.pn-reg__tag { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--dms-accent-text); padding: 5px 8px; align-self: start;
+  border: 1px solid var(--dms-accent-border); background: var(--dms-accent-tint); border-radius: 2px; }
+.pn-reg__meta { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.pn-reg__name { font-family: var(--dms-display); font-weight: 600; font-size: 1.1875rem;
+  letter-spacing: -0.012em; color: var(--dms-ink); transition: color var(--dms-dur) var(--dms-ease); }
+.pn-reg__link:hover .pn-reg__name { color: var(--dms-accent-text); }
+.pn-reg__body { font-size: 0.9375rem; line-height: 1.5; color: var(--dms-muted); max-width: 60ch; }
+.pn-arrow { width: 20px; height: 20px; flex: none; color: var(--dms-faint);
+  transition: color var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease); }
+.pn-reg__link:hover .pn-arrow { color: var(--dms-accent); transform: translateX(3px); }
+@media (max-width: 640px) {
+  .pn-reg__link { grid-template-columns: minmax(0, 1fr) 20px; row-gap: var(--dms-s-3); }
+  .pn-reg__tag { grid-row: 1; grid-column: 1 / -1; justify-self: start; }
+  .pn-reg__meta { grid-column: 1; }
+}
+
+/* ---- who you work with: adjacent-persona cards (cross-links) ----
+ * Raised cards in the shared elevation language (like pk-owner). Cards with an
+ * href become links with a CTA arrow; the rest carry an honest "coming soon"
+ * marker rather than a dead link. */
+.pn-people { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: clamp(20px, 2.4vw, 32px); margin-top: var(--dms-s-12); align-items: stretch; }
+.pn-person { display: flex; flex-direction: column; gap: var(--dms-s-5); background: var(--dms-surface);
+  box-shadow: var(--dms-elev-raise); padding: clamp(24px, 2.4vw, 32px); text-decoration: none; color: inherit; }
+.pn-person--link { transition: box-shadow var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease); }
+.pn-person--link:hover { transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(11,13,17,.05), 0 18px 40px -14px rgba(11,13,17,.22), 0 0 0 1px rgba(11,13,17,.05); }
+.pn-person__head { display: flex; flex-direction: column; gap: var(--dms-s-2); }
+.pn-person__tag { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--dms-faint); }
+.pn-person__name { font-family: var(--dms-display); font-weight: 600; font-size: 1.25rem;
+  letter-spacing: -0.014em; color: var(--dms-ink); margin: 0; }
+.pn-person__owns { font-size: 0.9375rem; line-height: 1.55; color: var(--dms-ink-2); margin: 0; }
+.pn-person__cta { margin-top: auto; display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--dms-accent-text); }
+.pn-person--link:hover .pn-person__cta .pn-arrow { color: var(--dms-accent); transform: translateX(3px); }
+.pn-person__soon { margin-top: auto; font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }

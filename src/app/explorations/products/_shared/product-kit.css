@@ -1,0 +1,143 @@
+/* ============================================================================
+ * product-kit.css - supplemental styles for the shared product-page kit.
+ * Loaded by the QMS / PLM / MES pages AFTER dms.css. It does NOT redefine any
+ * DMS token or DMS rule; it only adds `.pk-*` companion classes that let the
+ * sticky-scroll module and flow sections scale to any item count N (the DMS
+ * page hardcodes 3 modules / 6 lifecycle states; these pages vary). Source
+ * order guarantees these win over the fixed heights in dms.css.
+ *   --pk-n : number of items in the section (set inline on the scroll wrapper)
+ * ========================================================================== */
+
+/* ---- module scroll-story: height + rail/row columns scale with N ---- */
+.pk-modx-scroll { height: calc(var(--pk-n, 3) * 96vh); }
+.pk-modx__rail,
+.pk-modx__row { grid-template-columns: repeat(var(--pk-n, 3), minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .pk-modx-scroll { height: auto; }
+  .pk-modx__row { grid-template-columns: 1fr; }
+}
+
+/* ---- flow (lifecycle) scroll-scrub: height scales with number of steps ---- */
+.pk-flow-scroll { height: calc(var(--pk-n, 6) * 68vh); }
+@media (max-width: 940px) {
+  .pk-flow-scroll { height: auto; }
+}
+
+/* ---- module explorer, vertical variant (used when N is large, e.g. QMS) ----
+ * A stationary two-column explorer: a selectable module ledger on the left,
+ * the staged brand-field prototype on the right. Same design language as the
+ * scroll story (brand stage, mono indices, dashed row rules) without asking
+ * the reader to scroll a viewport per module. */
+.pk-modv { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.15fr);
+  gap: clamp(32px, 4vw, 72px); align-items: stretch; margin-top: var(--dms-s-12); }
+.pk-modv__list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--dms-line-strong); }
+.pk-modv__it { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--dms-s-4);
+  align-items: baseline; width: 100%; text-align: left; background: none; border: 0; cursor: pointer;
+  font-family: var(--dms-sans); padding: var(--dms-s-6) 4px;
+  transition: background var(--dms-dur) var(--dms-ease); }
+.pk-modv__row + .pk-modv__row { border-top: 1px dashed var(--dms-line-strong); }
+.pk-modv__it:hover { background: color-mix(in oklch, var(--dms-surface) 65%, transparent); }
+.pk-modv__idx { font-family: var(--dms-mono); font-size: var(--dms-mono-size); letter-spacing: var(--dms-mono-ls);
+  color: var(--dms-faint); }
+.pk-modv__it.is-active .pk-modv__idx { color: var(--dms-accent-text); }
+.pk-modv__meta { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.pk-modv__name { font-family: var(--dms-display); font-weight: 600; font-size: 1.1875rem;
+  letter-spacing: -0.012em; color: var(--dms-muted); transition: color var(--dms-dur) var(--dms-ease); }
+.pk-modv__it:hover .pk-modv__name,
+.pk-modv__it.is-active .pk-modv__name { color: var(--dms-ink); }
+.pk-modv__blurb { margin: 0; font-size: 0.9375rem; line-height: 1.5; color: var(--dms-faint);
+  transition: color var(--dms-dur) var(--dms-ease); max-width: 52ch; }
+.pk-modv__it.is-active .pk-modv__blurb { color: var(--dms-muted); }
+.pk-modv__stagewrap { display: flex; min-width: 0; }
+.pk-modv__stage { flex: 1; display: flex; min-height: clamp(360px, 40vw, 560px); }
+.pk-modv__stage .dms-stage__inner { flex: 1; display: flex; align-items: center; justify-content: center; }
+.pk-modv__card { width: min(560px, 100%); animation: dms-rise .45s var(--dms-ease) both; }
+@media (max-width: 900px) {
+  .pk-modv { grid-template-columns: 1fr; gap: var(--dms-s-8); }
+}
+
+/* ---- the ink block: modules ledger (02) + capabilities (03) on near-black ----
+ * When these two mid-page beats run on ink (tone:"dark" in the page data), the
+ * section swaps to the DMS dark palette. `dms-section--dark` already re-points
+ * the head (eyebrow, h2, lede); these rules re-point the ledger + capability ink
+ * that otherwise default to the light-mode palette. Mirrors the trigger page's
+ * tg-lifex-ink / tg-record-ink treatment so the block reads the same across
+ * product and trigger pages. */
+
+/* modules ledger (02) on ink */
+.pk-modv-ink .pk-modv__list { border-top-color: var(--dms-d-border); }
+.pk-modv-ink .pk-modv__row + .pk-modv__row { border-top-color: var(--dms-d-border); }
+.pk-modv-ink .pk-modv__it:hover { background: rgba(255, 255, 255, 0.04); }
+.pk-modv-ink .pk-modv__idx { color: var(--dms-d-ink-3); }
+.pk-modv-ink .pk-modv__it.is-active .pk-modv__idx { color: var(--dms-d-accent); }
+.pk-modv-ink .pk-modv__name { color: var(--dms-d-ink-2); }
+.pk-modv-ink .pk-modv__it:hover .pk-modv__name,
+.pk-modv-ink .pk-modv__it.is-active .pk-modv__name { color: var(--dms-d-ink); }
+.pk-modv-ink .pk-modv__blurb { color: var(--dms-d-ink-3); }
+.pk-modv-ink .pk-modv__it.is-active .pk-modv__blurb { color: var(--dms-d-ink-2); }
+/* the staged prototype field keeps its brand-blue gradient - a deliberate pop
+ * of blue against the near-black block, not flattened to ink. */
+
+/* NOTE: the ink treatments for the scroll-story modules (.pk-modx-ink), the
+ * capability ledger (.pk-caps-ink), and the lifecycle field (.pk-lifex-ink)
+ * live in dms.css, not here - they reference only core `dms-*` classes and so
+ * are shared by the standalone DMS page (which loads dms.css but not this kit).
+ * Only .pk-modv-ink (above) is product-kit-specific, since it re-points the
+ * ledger's own .pk-modv__* classes. */
+
+/* ---- mock helpers (states, severity, notes) shared by the product mocks ----
+ * The DMS base defines is-in-approval / is-draft / is-obsolete; these add the
+ * record states the QMS / PLM / MES prototypes use. Anything unmatched falls
+ * back to the neutral `.dms-mock__state` styling, which is fine. */
+.dms-mock__state.is-complete, .dms-mock__state.is-effective, .dms-mock__state.is-verified,
+.dms-mock__state.is-approved, .dms-mock__state.is-sealed, .dms-mock__state.is-signed,
+.dms-mock__state.is-done, .dms-mock__state.is-released {
+  color: var(--dms-accent-text); border-color: var(--dms-accent-border); background: var(--dms-accent-tint); }
+.dms-mock__state.is-running, .dms-mock__state.is-in-process, .dms-mock__state.is-investigation,
+.dms-mock__state.is-effectiveness, .dms-mock__state.is-in-progress, .dms-mock__state.is-triage,
+.dms-mock__state.is-in-test, .dms-mock__state.is-capa-raised {
+  color: var(--dms-ink); border-color: var(--dms-line-strong); }
+.dms-mock__state.is-on-watch, .dms-mock__state.is-conditional {
+  color: var(--dms-warn); border-color: color-mix(in srgb, var(--dms-warn) 40%, transparent); }
+.dms-mock__state.is-pending, .dms-mock__state.is-queued, .dms-mock__state.is-planned, .dms-mock__state.is-open {
+  color: var(--dms-faint); border-style: dashed; }
+
+/* sub-header note line inside a record mock (e.g. RCA method) */
+.pk-mock__note { padding: 9px var(--dms-s-5); border-top: 1px solid var(--dms-hairline);
+  font-family: var(--dms-mono); font-size: 0.625rem; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--dms-muted); }
+
+/* inline severity token in a register (shape-free; text + colour) */
+.pk-sev { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--dms-muted); }
+.pk-sev--critical { color: var(--dms-err); }
+.pk-sev--major { color: var(--dms-warn); }
+.pk-sev--minor { color: var(--dms-muted); }
+
+/* high RPN emphasis in the FMEA mock */
+.pk-rpn-hi { color: var(--dms-err) !important; font-weight: 600; }
+
+/* ---- owners register (photo-less "Who owns it") ----
+ * These products' personas have no portrait imagery, so ownership is shown as
+ * an editorial register of raised cards (tier, role, aka, summary, day-to-day)
+ * rather than the DMS photo panels. Same depth language, no fake photos. */
+.pk-owners { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: clamp(20px, 2.4vw, 32px); margin-top: var(--dms-s-12); align-items: start; }
+.pk-owner { display: flex; flex-direction: column; gap: var(--dms-s-5); background: var(--dms-surface);
+  box-shadow: var(--dms-elev-raise); padding: clamp(24px, 2.4vw, 34px); }
+.pk-owner__head { display: flex; flex-direction: column; gap: var(--dms-s-2); }
+.pk-owner__aka { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--dms-faint); }
+.pk-owner__summary { font-size: 1rem; line-height: 1.55; color: var(--dms-ink-2); margin: 0; }
+.pk-owner__daily { list-style: none; margin: auto 0 0; padding: 0; display: flex; flex-direction: column; }
+.pk-owner__daily li { display: flex; align-items: baseline; gap: var(--dms-s-4); padding: var(--dms-s-3) 0;
+  font-size: 0.875rem; line-height: 1.45; color: var(--dms-ink-2); }
+.pk-owner__daily li + li { border-top: 1px dashed var(--dms-line-strong); }
+.pk-owner__daily .dms-persona__num { position: relative; top: -1px; }
+
+/* ---- owners on the DMS photo layout (`.dms-personas`) ----
+ * When a product's personas carry portraits (QMS), the shared owners render on
+ * the DMS 2-up photo grid instead of the register above. This tucks the
+ * title-variant line (`.pk-owner__aka`) up under the name: the body's s-5 flex
+ * gap is too airy for a mono sub-label. */
+.pk-personas .pk-owner__aka { margin-top: calc(var(--dms-s-2) - var(--dms-s-5)); }

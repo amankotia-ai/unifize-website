@@ -215,7 +215,13 @@ export function LifecycleExplorer() {
             <div className="dms-lifex">
           <aside className="dms-lifex__trail">
             <span className="dms-lifex__lab">How a revision moves</span>
-            <ol className="dms-lifex__steps" role="tablist" aria-label="Controlled document lifecycle" aria-orientation="vertical">
+            <ol
+              className="dms-lifex__steps"
+              role="tablist"
+              aria-label="Controlled document lifecycle"
+              aria-orientation="vertical"
+              style={{ ["--lifex-fill" as string]: N_STATES > 1 ? active / (N_STATES - 1) : 0 }}
+            >
               {LIFECYCLE.map((st, i) => (
                 <li
                   className={

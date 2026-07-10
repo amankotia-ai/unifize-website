@@ -6,6 +6,7 @@
  * Document Controller (PPS-5), Training Coordinator (PPS-6).
  * Copy is kept deliberately short: every string earns its place on screen.
  * ========================================================================== */
+import type { IntegrationData } from "./dms-integrations";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -126,6 +127,20 @@ export const LIFECYCLE: { state: string; gate: string; detail: string; visual: s
     visual: "Obsolete record with retrieval log",
   },
 ];
+
+/* integrations - the connector section after the lifecycle. Unifize as the
+ * coordination layer over the systems of record a document library lives
+ * against: ERP (part masters), PLM (specs it controls), identity (who is
+ * trained), and content sources it consolidates.
+ * NOTE: hubSystems are REPRESENTATIVE of the stack Unifize coexists with
+ * (grounded in the industry coexistence copy), not a certified connector list.
+ * Verify against the real connector catalogue before shipping. */
+export const INTEGRATIONS: IntegrationData = {
+  heading: "A controlled document is filed against the record it governs.",
+  lede: "A document never lives alone. Unifize sits over the ERP, PLM, and identity systems you already run, so a controlled document is filed against the real part, distributed to the real people, and never becomes a fourth copy.",
+  record: "the controlled document",
+  hubSystems: ["SAP", "Oracle", "NetSuite", "Windchill", "Arena", "Okta", "Entra ID", "SharePoint"],
+};
 
 /* capabilities - six, one short line each. glyph keys map to the line-work
  * pictograms in dms-linework.tsx. */

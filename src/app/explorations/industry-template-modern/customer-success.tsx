@@ -13,6 +13,7 @@
 
 import { useRef } from "react";
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
+import { Eyebrow } from "./itm-primitives";
 
 const usd = (n: number) => "$" + n.toLocaleString("en-US");
 const U = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&h=1200&q=70`;
@@ -95,7 +96,7 @@ export function CustomerSuccess() {
     <section className="itm-section itm-section--alt itm-cs" id="proof" aria-label="Customer success">
       <div className="itm-wrap itm-wrap--wide itm-cs__head">
         <div className="itm-head-block">
-          <span className="itm-eyebrow">Proof</span>
+          <Eyebrow n={8}>Proof</Eyebrow>
           <h2 className="itm-h2">Results, honestly stated, from device teams in your class.</h2>
         </div>
         <div className="itm-cs__nav">

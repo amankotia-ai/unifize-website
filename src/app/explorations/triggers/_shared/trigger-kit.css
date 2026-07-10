@@ -1,0 +1,213 @@
+/* ============================================================================
+ * trigger-kit.css - supplemental styles for the shared TRIGGER-page kit.
+ * Loaded AFTER dms.css + product-kit.css. It does NOT redefine any DMS token or
+ * rule; it only adds `.tg-*` companion classes for the three patterns a trigger
+ * page introduces:
+ *   - the statutory clock strip              (.tg-clock)
+ *   - the hero response-tracker grid         (.tg-r__grid)
+ *   - the owning-persona cross-link card      (.tg-owner)
+ *   - the related-triggers register           (.tg-related)
+ * Everything else reuses the DMS classes unchanged. Used inside `.dms`, so every
+ * var(--dms-*) token resolves. Status colour (err/warn) is semantic here - it
+ * encodes urgency, not decoration - which the single-blue rule permits.
+ * ========================================================================== */
+
+/* ---- trigger hero: the statutory-clock instrument line ----
+ * Reuses the standard hero grid (headline leads, single focal point). The clock
+ * is one quiet line above the headline - a status dot, a mono label, the value,
+ * and the severity word - with NO box, NO fill, NO gradient, and no display-scale
+ * number competing with the headline. A thin hairline divides the label from the
+ * value. The signature is the restraint. */
+.tg-clockline { display: inline-flex; align-items: center; gap: var(--dms-s-3); flex-wrap: wrap;
+  align-self: flex-start; }
+.tg-clockline__dot { width: 8px; height: 8px; border-radius: var(--dms-r-pill); flex: none; background: var(--dms-err); }
+.tg-hero--high .tg-clockline__dot { background: var(--dms-warn); }
+.tg-clockline__val { font-size: 0.9375rem; font-weight: 500; letter-spacing: -0.003em; color: var(--dms-d-ink); }
+@media (prefers-reduced-motion: no-preference) {
+  .tg-clockline__dot { animation: tg-tick 2s var(--dms-ease) infinite; }
+}
+@keyframes tg-tick { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ---- trigger hero layout: copy left, the Form 483 artifact right ----
+ * Mirrors the persona hero. Crumb full-width on top, then a grid: the clock
+ * line + headline + lede + CTAs stack in the left column, the document sits in
+ * the fold on the right. Standards band closes it full-width. */
+.tg-hero__crumb { display: flex; flex-wrap: wrap; margin-bottom: clamp(28px, 4vw, 44px); }
+.tg-hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.86fr);
+  gap: clamp(32px, 5vw, 72px); align-items: start; }
+.tg-hero__lead { display: flex; flex-direction: column; align-items: flex-start; gap: clamp(20px, 2.2vw, 30px); min-width: 0;
+  padding-top: clamp(8px, 1.5vw, 20px); }
+.tg-hero__lead .dms-hero__title { max-width: 15ch; }
+.tg-hero__lead .dms-hero__sub { max-width: 42ch; }
+.tg-hero__panel { min-width: 0; }
+.tg-hero__panel .tg-form { max-width: 100%; }
+.tg-hero__lead > * { animation: dms-hero-in .7s var(--dms-ease) both; }
+.tg-hero__lead > *:nth-child(1) { animation-delay: .04s; }
+.tg-hero__lead > *:nth-child(2) { animation-delay: .10s; }
+.tg-hero__lead > *:nth-child(3) { animation-delay: .16s; }
+.tg-hero__lead > *:nth-child(4) { animation-delay: .22s; }
+.tg-hero__panel { animation: dms-hero-in .9s var(--dms-ease) .2s both; }
+@media (max-width: 900px) {
+  .tg-hero__grid { grid-template-columns: 1fr; gap: var(--dms-s-10); align-items: start; }
+}
+
+/* ---- escalation fork: the stakes as a branching path ----
+ * A centred fork diagram: the lead-up sequence (inspection -> 483 issued ->
+ * response window) flows down a central spine, then an SVG bracket SPLITS it into
+ * the two ways it ends - green "closes" on one branch, red "escalates" on the
+ * other. The split is the payoff the "only two ways it ends" headline promises.
+ * Square nodes (design language); the 483 is the blue key marker; the outcomes
+ * carry semantic colour and a soft halo ring. */
+.tg-fork { display: flex; flex-direction: column; align-items: center;
+  max-width: 560px; margin: clamp(44px, 5vw, 68px) auto 0; }
+
+.tg-fork__seq { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;
+  align-items: center; width: 100%; }
+.tg-fork__conn { width: 1px; height: clamp(20px, 2.4vw, 28px); background: var(--dms-line-strong); }
+.tg-fork__step { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.tg-fork__node { width: 11px; height: 11px; box-sizing: border-box; border: 1.5px solid var(--dms-line-strong);
+  background: var(--dms-surface); }
+.tg-fork__step--trigger .tg-fork__node { border-color: var(--dms-accent); background: var(--dms-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dms-accent) 15%, transparent); }
+.tg-fork__time { font-family: var(--dms-mono); font-size: var(--dms-mono-size); font-weight: 500;
+  letter-spacing: var(--dms-mono-ls); text-transform: uppercase; color: var(--dms-faint); margin-top: 3px; }
+.tg-fork__step--trigger .tg-fork__time { color: var(--dms-accent-text); }
+.tg-fork__title { font-family: var(--dms-display); font-weight: 600; font-size: 1.0625rem;
+  letter-spacing: -0.01em; line-height: 1.25; color: var(--dms-ink); }
+
+.tg-fork__bracket { display: block; width: 100%; height: 46px; color: var(--dms-line-strong); }
+
+.tg-fork__outs { list-style: none; margin: 0; padding: 0; width: 100%; display: grid;
+  grid-template-columns: 1fr 1fr; gap: clamp(14px, 2vw, 30px); }
+.tg-fork__out { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.tg-fork__out--ok .tg-fork__node { border-color: var(--dms-ok); background: var(--dms-ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dms-ok) 18%, transparent); }
+.tg-fork__out--bad .tg-fork__node { border-color: var(--dms-err); background: var(--dms-err);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dms-err) 18%, transparent); }
+.tg-fork__out--ok .tg-fork__time { color: var(--dms-ok); }
+.tg-fork__out--bad .tg-fork__time { color: var(--dms-err); }
+.tg-fork__note { font-size: 0.875rem; line-height: 1.5; color: var(--dms-muted); margin: 3px 0 0; max-width: 30ch; }
+@media (max-width: 540px) {
+  .tg-fork__outs { grid-template-columns: 1fr; gap: var(--dms-s-8); justify-items: center; }
+}
+
+/* ---- hero artifact: a stylized FDA Form 483 (the document, NOT a product UI) ----
+ * A paper document staged on the dark hero: heavy header/footer rules like an
+ * official form, mono furniture, the real preamble, illustrative observations.
+ * It mirrors the reader's exact moment instead of demoing the app. */
+.tg-form { position: relative; max-width: 620px; margin-inline: auto; background: var(--dms-surface);
+  border: 1px solid color-mix(in srgb, #fff 14%, transparent); color: var(--dms-ink-2);
+  padding: clamp(24px, 3vw, 40px);
+  box-shadow: 0 48px 100px -40px rgba(3, 7, 18, 0.85), 0 12px 32px -14px rgba(3, 7, 18, 0.55); }
+.tg-form__tag { position: absolute; top: 12px; right: 12px; font-family: var(--dms-mono); font-size: 0.5625rem;
+  font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint);
+  padding: 3px 8px; border: 1px dashed var(--dms-line-strong); background: var(--dms-surface); }
+.tg-form__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--dms-s-6);
+  padding-bottom: var(--dms-s-4); border-bottom: 2px solid var(--dms-ink); }
+.tg-form__gov { display: flex; flex-direction: column; gap: 3px; font-family: var(--dms-mono); font-size: 0.625rem;
+  letter-spacing: 0.05em; text-transform: uppercase; color: var(--dms-muted); max-width: 26ch; }
+.tg-form__titles { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex: none; text-align: right; }
+.tg-form__form { font-family: var(--dms-display); font-weight: 500; font-size: 1.375rem; letter-spacing: -0.014em; color: var(--dms-ink); }
+.tg-form__kind { font-family: var(--dms-mono); font-size: 0.5625rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dms-muted); }
+.tg-form__meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--dms-s-4);
+  padding: var(--dms-s-5) 0; border-bottom: 1px solid var(--dms-hairline); }
+.tg-form__meta > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.tg-form__lab { font-family: var(--dms-mono); font-size: 0.5625rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dms-faint); }
+.tg-form__val { font-family: var(--dms-mono); font-size: 0.75rem; letter-spacing: 0.06em; color: var(--dms-muted); }
+.tg-form__preamble { margin: 0; padding: var(--dms-s-5) 0; font-size: 0.75rem; line-height: 1.55; color: var(--dms-muted);
+  border-bottom: 1px solid var(--dms-hairline); }
+.tg-form__obs { list-style: none; margin: 0; padding: 0; }
+.tg-form__ob { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: var(--dms-s-4); padding: var(--dms-s-4) 0; align-items: baseline; }
+.tg-form__ob + .tg-form__ob { border-top: 1px solid var(--dms-hairline); }
+.tg-form__ob-n { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-ink); }
+.tg-form__ob-t { margin: 0; font-size: 0.8125rem; line-height: 1.5; color: var(--dms-ink-2); }
+.tg-form__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--dms-s-4);
+  margin-top: var(--dms-s-4); padding-top: var(--dms-s-5); border-top: 2px solid var(--dms-ink);
+  font-family: var(--dms-mono); font-size: 0.5625rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-muted); }
+@media (max-width: 620px) {
+  .tg-form__head { flex-direction: column; gap: var(--dms-s-3); }
+  .tg-form__titles { align-items: flex-start; text-align: left; }
+  .tg-form__meta { grid-template-columns: 1fr; gap: var(--dms-s-2); }
+  .tg-form__ob { grid-template-columns: 1fr; gap: 4px; }
+}
+
+.tg-arrow { width: 20px; height: 20px; flex: none; color: var(--dms-faint);
+  transition: color var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease); }
+
+/* ---- who owns the response: a single raised cross-link card ---- */
+.tg-owner-wrap { margin-top: var(--dms-s-12); max-width: 640px; }
+.tg-owner { display: flex; flex-direction: column; gap: var(--dms-s-5); background: var(--dms-surface);
+  box-shadow: var(--dms-elev-raise); padding: clamp(28px, 3vw, 40px); text-decoration: none; color: inherit; }
+.tg-owner--link { transition: box-shadow var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease); }
+.tg-owner--link:hover { transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(11,13,17,.05), 0 18px 40px -14px rgba(11,13,17,.22), 0 0 0 1px rgba(11,13,17,.05); }
+.tg-owner__head { display: flex; flex-direction: column; gap: var(--dms-s-2); }
+.tg-owner__tag { font-family: var(--dms-mono); font-size: 0.625rem; font-weight: 500; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--dms-faint); }
+.tg-owner__name { font-family: var(--dms-display); font-weight: 600; font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  letter-spacing: -0.016em; color: var(--dms-ink); margin: 0; }
+.tg-owner__owns { font-size: 1.0625rem; line-height: 1.55; color: var(--dms-ink-2); margin: 0; max-width: 48ch; }
+.tg-owner__cta { display: inline-flex; align-items: center; gap: 6px; font-family: var(--dms-mono);
+  font-size: 0.625rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-accent-text); }
+.tg-owner--link:hover .tg-owner__cta .tg-arrow { color: var(--dms-accent); transform: translateX(3px); }
+
+/* ---- related triggers register: name (with severity dot) · clock · owner ----
+ * Editorial register: transparent rows on a top hairline, dashed dividers, no
+ * boxes. Live rows link; the rest carry an honest "Soon" marker, never a dead
+ * link. */
+.tg-related { list-style: none; margin: var(--dms-s-12) 0 0; padding: 0;
+  border-top: 1px solid var(--dms-line-strong); }
+.tg-related__head { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.9fr) 22px;
+  gap: var(--dms-s-6); align-items: center; padding: var(--dms-s-4) 4px; font-family: var(--dms-mono);
+  font-size: 0.625rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dms-faint);
+  border-bottom: 1px dashed var(--dms-line-strong); }
+.tg-related__row + .tg-related__row { border-top: 1px dashed var(--dms-line-strong); }
+.tg-related__link { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.9fr) 22px;
+  gap: var(--dms-s-6); align-items: center; padding: var(--dms-s-5) 4px; text-decoration: none; color: inherit;
+  transition: background var(--dms-dur) var(--dms-ease); }
+.tg-related__link:not(.tg-related__link--static):hover { background: color-mix(in oklch, var(--dms-surface) 65%, transparent); }
+.tg-related__link--static { cursor: default; }
+.tg-related__name { display: inline-flex; align-items: center; gap: var(--dms-s-4); min-width: 0;
+  font-family: var(--dms-display); font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; color: var(--dms-ink); }
+.tg-related__link:not(.tg-related__link--static):hover .tg-related__name { color: var(--dms-accent-text); }
+.tg-related__dot { width: 8px; height: 8px; border-radius: var(--dms-r-pill); flex: none; }
+.tg-related__dot--urgent { background: var(--dms-err); }
+.tg-related__dot--high { background: var(--dms-warn); }
+.tg-related__clock { font-family: var(--dms-mono); font-size: 0.75rem; letter-spacing: 0.02em; color: var(--dms-muted); min-width: 0; }
+.tg-related__owner { font-size: 0.875rem; color: var(--dms-ink-2); min-width: 0; }
+.tg-related__soon { justify-self: end; font-family: var(--dms-mono); font-size: 0.5625rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.tg-related__link:not(.tg-related__link--static):hover .tg-arrow { color: var(--dms-accent); transform: translateX(3px); }
+@media (max-width: 760px) {
+  .tg-related__head { display: none; }
+  .tg-related__link { grid-template-columns: minmax(0, 1fr) 20px; row-gap: 4px; padding: var(--dms-s-5) 4px; }
+  .tg-related__name { grid-column: 1; }
+  .tg-related__clock { grid-column: 1; }
+  .tg-related__owner { grid-column: 1; }
+  .tg-related__soon, .tg-related__link .tg-arrow { grid-column: 2; grid-row: 1; }
+}
+
+/* ---- the ink block: the response (lifecycle) + the record run on black ----
+ * These two mid-page beats sit on ink instead of the brand blue / light-grey,
+ * so the trigger reads as one heavier "the governed response and what it leaves"
+ * block. The lifecycle text already runs light on the field, so the field just
+ * swaps the brand hue for flat near-black - no blue bloom, matching the record
+ * below (the grain overlay keeps a hint of texture). The record is the DMS dark
+ * section; only its capabilities ledger needs its ink tokens re-pointed, since
+ * the caps default to the light-mode palette. */
+.tg-lifex-ink .dms-stage--brand { background-color: var(--dms-d-bg); background-image: none; }
+/* the head sits closer to the fixed header than the field wants; on desktop
+ * shift the whole sticky story down (heavier top padding, lighter bottom) so the
+ * eyebrow gets real breathing room under the nav without clipping the chat card. */
+@media (min-width: 941px) {
+  .tg-lifex-ink .dms-lifex__stage .dms-stage__inner {
+    padding-top: calc(var(--dms-header-h) + clamp(44px, 7vh, 88px));
+    padding-bottom: clamp(12px, 2vh, 28px); }
+}
+
+.tg-record-ink .dms-cap + .dms-cap { border-top-color: var(--dms-d-border); }
+.tg-record-ink .dms-cap__glyph { color: var(--dms-d-ink-2); }
+.tg-record-ink .dms-cap:hover .dms-cap__glyph { color: var(--dms-d-ink); }
+.tg-record-ink .dms-cap:hover { background: rgba(255, 255, 255, 0.04); }
+.tg-record-ink .dms-cap__title { color: var(--dms-d-ink); }
+.tg-record-ink .dms-cap__body { color: var(--dms-d-ink-2); }

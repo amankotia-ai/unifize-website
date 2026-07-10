@@ -146,16 +146,22 @@
 .dms-header__logo { display:block; height:26px; width:auto; transition:opacity var(--dms-dur) var(--dms-ease); }
 .dms-header__logo--light { position:relative; opacity:1; }
 .dms-header__logo--dark { position:absolute; left:0; top:0; opacity:0; }
-.dms-header.is-scrolled .dms-header__logo--light { opacity:0; }
-.dms-header.is-scrolled .dms-header__logo--dark { opacity:1; }
+/* content-aware: light/alt surfaces flip the logo to the dark mark and the nav
+ * to ink; dark surfaces (the default) keep the light mark + light nav */
+.dms-header.is-light .dms-header__logo--light, .dms-header.is-alt .dms-header__logo--light { opacity:0; }
+.dms-header.is-light .dms-header__logo--dark, .dms-header.is-alt .dms-header__logo--dark { opacity:1; }
 .dms-header__nav { display:flex; align-items:center; gap:var(--dms-s-6); }
 .dms-header__link { font-family:var(--dms-sans); font-size:0.875rem; font-weight:500; letter-spacing:-0.003em; color:var(--dms-d-ink-2); text-decoration:none; transition:color var(--dms-dur) var(--dms-ease); }
 .dms-header__link:hover { color:var(--dms-d-ink); }
-.dms-header.is-scrolled .dms-header__link { color:var(--dms-ink-2); }
-.dms-header.is-scrolled .dms-header__link:hover { color:var(--dms-ink); }
-.dms-header.is-scrolled { background:color-mix(in oklch, var(--dms-surface) 88%, transparent);
-  -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4); border-bottom-color:var(--dms-hairline); }
-.dms-header.is-scrolled a:not(.dms-btn):focus-visible, .dms-header.is-scrolled button:focus-visible { box-shadow:var(--dms-ring); }
+.dms-header.is-light .dms-header__link, .dms-header.is-alt .dms-header__link { color:var(--dms-ink-2); }
+.dms-header.is-light .dms-header__link:hover, .dms-header.is-alt .dms-header__link:hover { color:var(--dms-ink); }
+/* frosted bar (once the header leaves the hero) tinted to the surface beneath */
+.dms-header.is-frosted { -webkit-backdrop-filter:blur(16px) saturate(1.4); backdrop-filter:blur(16px) saturate(1.4); }
+.dms-header.is-frosted.is-light { background:color-mix(in oklch, var(--dms-surface) 88%, transparent); border-bottom-color:var(--dms-hairline); }
+.dms-header.is-frosted.is-alt { background:color-mix(in oklch, var(--dms-surface-alt) 90%, transparent); border-bottom-color:var(--dms-hairline-alt); }
+.dms-header.is-frosted.is-dark { background:color-mix(in oklch, var(--dms-d-bg) 82%, transparent); border-bottom-color:var(--dms-d-border); }
+.dms-header.is-light a:not(.dms-btn):focus-visible, .dms-header.is-light button:focus-visible,
+.dms-header.is-alt a:not(.dms-btn):focus-visible, .dms-header.is-alt button:focus-visible { box-shadow:var(--dms-ring); }
 .dms-header__cta { margin-left:var(--dms-s-2); }
 
 /* dropdowns (Products, Industries) - CSS hover/focus, no gap flicker */
@@ -164,21 +170,78 @@
   background:none; border:0; padding:0; cursor:pointer; }
 .dms-header__chev { width:13px; height:13px; opacity:.7; transition:transform var(--dms-dur) var(--dms-ease); }
 .dms-header__dd:hover .dms-header__chev, .dms-header__dd:focus-within .dms-header__chev { transform:rotate(180deg); }
-.dms-header__pop { position:absolute; top:100%; left:50%; z-index:60; min-width:238px; padding:8px;
+
+/* --- mega-panels: rich, multi-column dropdowns. Always render on the white
+ *     surface so they read as floating overlays over any bar theme. The panel
+ *     opens flush under the 68px bar (top:100%), so the lower half of the
+ *     trigger's hit-area bridges the gap - no hover flicker. Default: centred
+ *     under the trigger; placePops() (in DmsHeader) then pins `left` in px,
+ *     clamped to the viewport, so a wide panel next to the right-aligned nav
+ *     can never open off-screen at any width. --dms-pop-x keeps the entrance
+ *     animation composable with that horizontal offset. */
+.dms-header__pop { position:absolute; top:100%; left:50%; z-index:60; overflow:hidden;
+  --dms-pop-x:-50%;
   background:var(--dms-surface); border:1px solid var(--dms-hairline); border-radius:var(--dms-r-card); box-shadow:var(--dms-elev-raise);
-  display:flex; flex-direction:column; gap:2px; opacity:0; visibility:hidden; pointer-events:none;
-  transform:translateX(-50%) translateY(-6px); transition:opacity var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease), visibility var(--dms-dur); }
-.dms-header__dd:hover .dms-header__pop, .dms-header__dd:focus-within .dms-header__pop { opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%) translateY(0); }
-.dms-header__pop-item { display:flex; flex-direction:column; gap:2px; padding:9px 12px; border-radius:var(--dms-r-control); text-decoration:none; transition:background var(--dms-dur) var(--dms-ease); }
-.dms-header__pop-item:hover { background:var(--dms-surface-sunk); }
-.dms-header__pop-label { font-family:var(--dms-sans); font-size:0.875rem; font-weight:600; color:var(--dms-ink); letter-spacing:-0.003em; }
-.dms-header__pop-desc { font-size:0.75rem; color:var(--dms-muted); }
+  opacity:0; visibility:hidden; pointer-events:none;
+  transform:translate(var(--dms-pop-x), -6px);
+  transition:opacity var(--dms-dur) var(--dms-ease), transform var(--dms-dur) var(--dms-ease), visibility var(--dms-dur); }
+.dms-header__dd:hover .dms-header__pop, .dms-header__dd:focus-within .dms-header__pop {
+  opacity:1; visibility:visible; pointer-events:auto; transform:translate(var(--dms-pop-x), 0); }
+.dms-header__pop--products   { width:600px; }
+.dms-header__pop--industries { width:min(840px, calc(100vw - 32px)); }
+.dms-header__pop--domains    { width:min(880px, calc(100vw - 32px)); }
+.dms-header__pop--resources  { width:440px; }
+
+.dms-header__pop-body { padding:14px; }
+.dms-header__pop-grid { display:grid; }
+.dms-header__pop-grid--1 { grid-template-columns:1fr; gap:4px; }
+.dms-header__pop-grid--2 { grid-template-columns:1fr 1fr; gap:4px; }
+.dms-header__pop-grid--3 { grid-template-columns:repeat(3, 1fr); gap:8px; }
+
+/* card row (products, resources): glyph tile + code/name/blurb */
+.dms-header__card { display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start;
+  padding:11px 12px; border-radius:var(--dms-r-control); text-decoration:none;
+  transition:background var(--dms-dur) var(--dms-ease); }
+.dms-header__card:hover { background:var(--dms-surface-sunk); }
+.dms-header__card-ic { width:34px; height:34px; flex:none; display:grid; place-items:center;
+  border:1px solid var(--dms-hairline); border-radius:var(--dms-r-control); background:var(--dms-surface); color:var(--dms-ink-2);
+  transition:border-color var(--dms-dur) var(--dms-ease), color var(--dms-dur) var(--dms-ease), background var(--dms-dur) var(--dms-ease); }
+.dms-header__card-ic svg { width:18px; height:18px; }
+.dms-header__card:hover .dms-header__card-ic { border-color:var(--dms-accent-border); color:var(--dms-accent); background:var(--dms-accent-tint); }
+.dms-header__card-tx { min-width:0; display:flex; flex-direction:column; gap:2px; }
+.dms-header__card-code { font-family:var(--dms-mono); font-size:0.625rem; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; color:var(--dms-faint); }
+.dms-header__card-title { font-family:var(--dms-sans); font-size:0.875rem; font-weight:600; color:var(--dms-ink); letter-spacing:-0.003em; }
+.dms-header__card-desc { font-size:0.75rem; line-height:1.45; color:var(--dms-muted); }
+
+/* column group (industries) */
+.dms-header__col { display:flex; flex-direction:column; }
+.dms-header__col-h { display:flex; align-items:center; gap:7px; margin:2px 8px 8px; padding-bottom:9px;
+  border-bottom:1px solid var(--dms-hairline);
+  font-family:var(--dms-mono); font-size:0.625rem; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; color:var(--dms-faint); }
+.dms-header__col-h svg { width:15px; height:15px; color:var(--dms-muted); }
+.dms-header__row { display:block; padding:7px 8px; border-radius:var(--dms-r-control); text-decoration:none; transition:background var(--dms-dur) var(--dms-ease); }
+.dms-header__row:hover { background:var(--dms-surface-sunk); }
+.dms-header__row-label { display:block; font-size:0.8125rem; font-weight:600; color:var(--dms-ink); letter-spacing:-0.003em; }
+.dms-header__row-desc { display:block; margin-top:1px; font-size:0.6875rem; line-height:1.4; color:var(--dms-muted); }
+
+/* footer strip: a soft alt band with a mono call-to-action */
+.dms-header__pop-foot { display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:13px 20px; background:var(--dms-surface-alt); border-top:1px solid var(--dms-hairline); text-decoration:none; }
+.dms-header__foot-tx { display:flex; flex-direction:column; gap:2px; }
+.dms-header__foot-title { font-size:0.8125rem; font-weight:600; color:var(--dms-ink); letter-spacing:-0.003em; }
+.dms-header__foot-desc { font-size:0.6875rem; color:var(--dms-muted); }
+.dms-header__foot-cta { display:inline-flex; align-items:center; gap:6px; flex:none;
+  font-family:var(--dms-mono); font-size:0.625rem; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; color:var(--dms-ink-2);
+  transition:color var(--dms-dur) var(--dms-ease); }
+.dms-header__foot-cta svg { width:14px; height:14px; transition:transform var(--dms-dur) var(--dms-ease); }
+.dms-header__pop-foot:hover .dms-header__foot-cta { color:var(--dms-accent); }
+.dms-header__pop-foot:hover .dms-header__foot-cta svg { transform:translateX(3px); }
 
 /* mobile menu button + sheet */
 .dms-header__menu { display:none; width:40px; height:40px; border:1px solid var(--dms-d-border-2); border-radius:var(--dms-r-control); background:rgba(255,255,255,.04); cursor:pointer; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
 .dms-header__menu-bar { width:16px; height:1.5px; background:var(--dms-d-ink); border-radius:2px; }
-.dms-header.is-scrolled .dms-header__menu { border-color:var(--dms-line-strong); background:var(--dms-surface); }
-.dms-header.is-scrolled .dms-header__menu-bar { background:var(--dms-ink); }
+.dms-header.is-light .dms-header__menu, .dms-header.is-alt .dms-header__menu { border-color:var(--dms-line-strong); background:var(--dms-surface); }
+.dms-header.is-light .dms-header__menu-bar, .dms-header.is-alt .dms-header__menu-bar { background:var(--dms-ink); }
 .dms-header__sheet { display:none; }
 .dms-header__sheet.is-open { display:flex; flex-direction:column; gap:var(--dms-s-2); padding:var(--dms-s-4) var(--dms-gutter) var(--dms-s-6); background:var(--dms-d-bg-2); border-top:1px solid var(--dms-d-border); }
 .dms-header__sheet-nav { display:flex; flex-direction:column; }
@@ -193,7 +256,7 @@
  * Flat editorial dark. Asymmetric grid: display headline left, lede + CTAs
  * right. Standards as a mono hairline band above the staged prototype.
  * No glows: hairlines are the structural device. */
-.dms-hero { position:relative; background:var(--dms-hero-bg);
+.dms-hero { position:relative; background:var(--dms-d-bg);
   padding-top:calc(var(--dms-header-h) + clamp(56px, 8vw, 120px)); padding-bottom:clamp(56px, 7vw, 96px);
   margin-top:calc(-1 * var(--dms-header-h)); justify-content:flex-start; }
 .dms-hero__inner { position:relative; z-index:2; }
@@ -350,24 +413,31 @@
 .dms-noctl__dot--warn { background:var(--dms-warn); }
 .dms-noctl__dot--old  { background:var(--dms-err); }
 
-/* WITH DMS - the section-02 field container, lightened. Same StagePanel
- * primitive; the field and ink move to the light palette so the record and
- * its governed copies read as solid blue on white cards. */
+/* WITH DMS - the record and its governed copies staged on the SAME brand
+ * field as section 02 (dms-stage--brand, applied in the markup), so the two
+ * product visuals share one gradient. The orbit and labels run light on the
+ * field: white cards, white v3.2, translucent-white rings and text, mirroring
+ * the lifecycle field. */
 .dms-problem__right { display:flex; min-width:0; }
-.dms-with { flex:1; min-height:clamp(440px, 46vw, 580px);
-  background-color:#eef2f8;
-  background-image:
-    radial-gradient(65% 55% at 80% -8%, color-mix(in oklch, var(--u-primary) 15%, transparent), transparent 62%),
-    radial-gradient(55% 60% at 6% 112%, color-mix(in oklch, var(--u-primary) 8%, transparent), transparent 70%);
-  border:1px solid var(--dms-hairline); }
-.dms-with::after { opacity:.03; mix-blend-mode:multiply; }
+.dms-with { flex:1; min-height:clamp(440px, 46vw, 580px); }
 .dms-with .dms-stage__inner { height:100%; display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:clamp(12px, 1.6vw, 22px); text-align:center; }
 .dms-with__lab { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:0.14em; text-transform:uppercase; color:var(--dms-muted); }
+  letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,.7); }
 .dms-with__orbit { width:100%; max-width:520px; }
-.dms-with__sum { margin:0; max-width:40ch; font-size:1.0625rem; line-height:1.5; color:var(--dms-ink-2); }
-.dms-with__sum b { font-family:var(--dms-display); font-weight:500; color:var(--dms-ink); }
+.dms-with__sum { margin:0; max-width:40ch; font-size:1.0625rem; line-height:1.5; color:rgba(255,255,255,.82); }
+.dms-with__sum b { font-family:var(--dms-display); font-weight:500; color:#fff; }
+
+/* orbit retuned for the brand field: cards lift off the blue, the revision
+ * and rings run white, and the verification badges flip to white with a blue
+ * tick so they read on the field instead of dissolving into it. */
+.dms-with .dms-orbit__ring { stroke:rgba(255,255,255,.22); }
+.dms-with .dms-orbit__link { stroke:rgba(255,255,255,.34); }
+.dms-with .dms-orbit__card { filter:drop-shadow(0 14px 26px rgba(3,7,18,.30)); }
+.dms-with .dms-orbit__ver { fill:#fff; }
+.dms-with .dms-orbit__ver-v { fill:rgba(255,255,255,.62); }
+.dms-with .dms-orbit__badge { fill:#fff; filter:drop-shadow(0 6px 14px rgba(3,7,18,.34)); }
+.dms-with .dms-orbit__tick { stroke:var(--dms-accent); }
 
 /* the orbit data graphic (inline SVG on the light field) */
 .dms-orbit__svg { display:block; width:100%; height:auto; }
@@ -488,17 +558,27 @@
 .dms-lifex__lab { display:block; font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
   letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:var(--dms-s-6); }
 .dms-lifex__steps { position:relative; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:var(--dms-s-5); }
-.dms-lifex__steps::before { content:""; position:absolute; left:6px; top:10px; bottom:10px; width:1px;
-  background:rgba(255,255,255,.22); }
-.dms-lifex__step { position:relative; }
+.dms-lifex__steps::before { content:""; position:absolute; left:6px; top:11px; bottom:11px; width:2px;
+  background:rgba(255,255,255,.2); }
+/* blue progress bar: fills top-down to the active junction. --lifex-fill
+ * (0..1) is set inline from the active step index. */
+.dms-lifex__steps::after { content:""; position:absolute; left:6px; top:11px; bottom:11px; width:2px;
+  background:var(--dms-accent); transform-origin:top; transform:scaleY(var(--lifex-fill, 0));
+  transition:transform .24s var(--dms-ease); }
+.dms-lifex__step { position:relative; z-index:1; }
 .dms-lifex__btn { display:flex; flex-direction:column; gap:3px; width:100%; text-align:left;
   font-family:var(--dms-sans); background:none; border:0; padding:0 0 0 var(--dms-s-6); cursor:pointer; }
-.dms-lifex__node { position:absolute; left:0; top:10px; width:13px; height:2px; border-radius:0;
-  background:rgba(255,255,255,.4);
-  transition:background var(--dms-dur) var(--dms-ease), width var(--dms-dur) var(--dms-ease); }
-.dms-lifex__step:hover .dms-lifex__node { background:rgba(255,255,255,.7); }
-.dms-lifex__step.is-past .dms-lifex__node { background:rgba(255,255,255,.7); }
-.dms-lifex__step.is-active .dms-lifex__node { background:#fff; width:18px; }
+/* ring nodes (the medical-devices "difference" trail treatment): hollow while
+ * upcoming, filled brand-blue once completed - past and active junctions carry
+ * the accent, the active one with a soft halo. Reads on the ink field. */
+.dms-lifex__node { position:absolute; left:0; top:4px; width:14px; height:14px; border-radius:50%;
+  background:transparent; border:2px solid rgba(255,255,255,.4); box-shadow:0 0 0 4px transparent;
+  transition:background var(--dms-dur) var(--dms-ease), border-color var(--dms-dur) var(--dms-ease),
+    box-shadow var(--dms-dur) var(--dms-ease); }
+.dms-lifex__step:hover .dms-lifex__node { border-color:rgba(255,255,255,.7); }
+.dms-lifex__step.is-past .dms-lifex__node { background:var(--dms-accent); border-color:var(--dms-accent); }
+.dms-lifex__step.is-active .dms-lifex__node { background:var(--dms-accent); border-color:var(--dms-accent);
+  box-shadow:0 0 0 4px color-mix(in oklch, var(--dms-accent) 24%, transparent); }
 .dms-lifex__t { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem; letter-spacing:-0.012em;
   color:rgba(255,255,255,.58); transition:color var(--dms-dur) var(--dms-ease); }
 .dms-lifex__step:hover .dms-lifex__t, .dms-lifex__step.is-active .dms-lifex__t { color:#fff; }
@@ -756,9 +836,9 @@
 /* ============================================================ FOOTER */
 .dms-footer { background:var(--dms-d-bg-2); color:var(--dms-d-ink); padding-top:var(--dms-s-16); padding-bottom:var(--dms-s-8);
   border-top:1px solid var(--dms-d-hairline); }
-.dms-footer__grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:var(--dms-s-10); }
-.dms-footer__brand { display:flex; flex-direction:column; gap:var(--dms-s-4); }
-.dms-footer__logo { height:26px; width:auto; }
+.dms-footer__grid { display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:var(--dms-s-10); align-items:start; }
+.dms-footer__brand { display:flex; flex-direction:column; align-items:flex-start; gap:var(--dms-s-4); }
+.dms-footer__logo { display:block; height:26px; width:auto; align-self:flex-start; }
 .dms-footer__tag { font-size:0.9375rem; line-height:1.5; color:var(--dms-d-ink-2); max-width:32ch; }
 .dms-footer__col { display:flex; flex-direction:column; gap:var(--dms-s-3); }
 .dms-footer__lab { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; text-transform:uppercase; letter-spacing:var(--dms-mono-ls); color:var(--dms-d-ink-2); margin-bottom:var(--dms-s-1); }
@@ -792,4 +872,172 @@
 @media (prefers-reduced-motion: reduce) {
   .dms *, .dms *::before, .dms *::after { animation:none !important; transition-duration:1ms !important; }
   .dms[data-motion] [data-reveal] { opacity:1 !important; transform:none !important; }
+}
+
+/* ============================================================ INK SECTIONS
+ * Opt-in dark ("ink") treatment for the mid-page block: sections 02 (modules
+ * scroll story), 03 (capabilities ledger) and 04 (lifecycle field) can run on
+ * near-black instead of the light-grey / brand-blue defaults. Applied via
+ * `dms-section--dark` + the companion class below on the section wrapper.
+ * These live here (not in the product kit) because they reference only core
+ * `dms-*` classes, so the standalone DMS page and the QMS / PLM / MES product
+ * pages share them. Placed last so they win over the base rules they re-point.
+ * (The ledger-mode modules variant is .pk-modv-ink in product-kit.css, since
+ * it re-points that kit's own .pk-modv__* classes.) */
+
+/* 02 · modules scroll story on ink - text, rail junctions, and the scroll
+ * connector re-point to the dark palette; the accent (on / active) is kept and
+ * the staged prototype field keeps its brand-blue gradient. */
+.pk-modx-ink .dms-modx__idx { color:var(--dms-d-ink-3); }
+.pk-modx-ink .dms-modx__name { color:var(--dms-d-ink-2); }
+.pk-modx-ink .dms-modx__it:hover .dms-modx__name,
+.pk-modx-ink .dms-modx__it.is-active .dms-modx__name { color:var(--dms-d-ink); }
+.pk-modx-ink .dms-modx__blurb { color:var(--dms-d-ink-3); }
+.pk-modx-ink .dms-modx__it.is-active .dms-modx__blurb { color:var(--dms-d-ink-2); }
+.pk-modx-ink .dms-modx__it.is-active .dms-modx__idx { color:var(--dms-d-accent); }
+.pk-modx-ink .dms-modx__jn { border-color:var(--dms-d-border-2); background:var(--dms-d-bg); }
+.pk-modx-ink .dms-modx__seg { background:var(--dms-d-border-2); }
+
+/* 03 · capabilities ledger on ink */
+.pk-caps-ink .dms-cap + .dms-cap { border-top-color:var(--dms-d-border); }
+.pk-caps-ink .dms-cap__glyph { color:var(--dms-d-ink-2); }
+.pk-caps-ink .dms-cap:hover .dms-cap__glyph { color:var(--dms-d-ink); }
+.pk-caps-ink .dms-cap:hover { background:rgba(255,255,255,.04); }
+.pk-caps-ink .dms-cap__title { color:var(--dms-d-ink); }
+.pk-caps-ink .dms-cap__body { color:var(--dms-d-ink-2); }
+
+/* 04 · lifecycle field on ink - the brand hue swaps for flat near-black, and
+ * the otherwise padding-less full-bleed section gets black bottom breathing
+ * room so the block ends cleanly before the next (light) section. */
+.pk-lifex-ink { background-color:var(--dms-d-bg); padding-bottom:var(--dms-section-y); }
+.pk-lifex-ink .dms-stage--brand { background-color:var(--dms-d-bg); background-image:none; }
+
+/* ============================================================================
+ * Integrations - the connector section after the lifecycle (component in
+ * dms-integrations.tsx). Runs on ink, continuing the dark block the lifecycle
+ * ends on. Left copy + 2x2 value props beside a right RADIAL HUB (Unifize at the
+ * centre, systems of record orbiting on a dashed ring, wired back through blue
+ * connector nodes), over a bottom strip of platform facts. The one pop of brand
+ * blue is the hub's nodes + centre bloom. Shared by the DMS page and the
+ * data-driven ProductPage. */
+.dms-intg__top { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);
+  gap:clamp(36px,5vw,80px); align-items:center; margin-top:clamp(20px,2vw,32px); }
+.dms-intg__copy { display:flex; flex-direction:column; gap:clamp(28px,3vw,44px); }
+
+/* the 2x2 value-prop grid */
+.dms-intg__feats { list-style:none; margin:0; padding:0; display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr)); gap:clamp(20px,2.2vw,32px) clamp(20px,2.4vw,40px); }
+.dms-intg__feat { display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--dms-s-4);
+  align-items:start; }
+.dms-intg__feat-ico { display:inline-flex; align-items:center; justify-content:center;
+  width:40px; height:40px; flex:none; border:1px solid var(--dms-d-border-2);
+  background:rgba(255,255,255,.03); color:var(--dms-d-accent); }
+.dms-intg__feat-glyph { width:20px; height:20px; }
+.dms-intg__feat-body { display:flex; flex-direction:column; gap:6px; min-width:0; }
+.dms-intg__feat-title { font-family:var(--dms-display); font-weight:600; font-size:1.0625rem;
+  letter-spacing:-0.012em; color:var(--dms-d-ink); margin:0; }
+.dms-intg__feat-text { margin:0; font-size:0.9375rem; line-height:1.5; color:var(--dms-d-ink-2); }
+.dms-intg__cta { display:flex; }
+
+/* the radial hub */
+.dms-intg__hub { display:flex; flex-direction:column; align-items:center; gap:var(--dms-s-6); }
+.dms-intg__hub-svg { width:100%; max-width:min(100%, 560px); height:auto; display:block; }
+.dms-intg__bloom { opacity:0.9; }
+.dms-intg__bloom-0 { stop-color:var(--dms-d-accent); stop-opacity:0.20; }
+.dms-intg__bloom-1 { stop-color:var(--dms-d-accent); stop-opacity:0; }
+.dms-intg__ring { fill:none; stroke:var(--dms-d-border-2); stroke-width:1; stroke-dasharray:2 5;
+  vector-effect:non-scaling-stroke; }
+.dms-intg__wire { stroke:var(--dms-d-border-2); stroke-width:1; stroke-dasharray:2 4;
+  vector-effect:non-scaling-stroke; }
+.dms-intg__node { fill:var(--dms-d-accent); }
+.dms-intg__core { fill:var(--dms-d-bg-2); stroke:var(--dms-field-border); stroke-width:1;
+  vector-effect:non-scaling-stroke; }
+.dms-intg__tile-box { fill:rgba(255,255,255,.035); stroke:var(--dms-d-border-2); stroke-width:1;
+  vector-effect:non-scaling-stroke; }
+.dms-intg__tile-tx { fill:var(--dms-d-ink); font-family:var(--dms-mono); font-size:15px;
+  letter-spacing:0.02em; }
+.dms-intg__hub-cap { margin:0; max-width:40ch; text-align:center; font-family:var(--dms-mono);
+  font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls);
+  text-transform:uppercase; line-height:1.7; color:var(--dms-d-ink-3); }
+
+/* the bottom strip of platform facts */
+.dms-intg__stats { list-style:none; margin:clamp(44px,5vw,72px) 0 0; padding:clamp(28px,3vw,40px) 0 0;
+  border-top:1px solid var(--dms-d-hairline-2); display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr)); gap:clamp(24px,3vw,48px); }
+.dms-intg__stat { display:grid; grid-template-columns:auto minmax(0,1fr); gap:var(--dms-s-4);
+  align-items:center; }
+.dms-intg__stat-glyph { width:26px; height:26px; flex:none; color:var(--dms-d-accent); }
+.dms-intg__stat-main { display:flex; flex-direction:column; gap:2px; min-width:0; }
+.dms-intg__stat-v { font-family:var(--dms-display); font-weight:500; font-size:1.125rem;
+  letter-spacing:-0.014em; color:var(--dms-d-ink); }
+.dms-intg__stat-sub { font-size:0.9375rem; line-height:1.5; color:var(--dms-d-ink-2); }
+
+@media (max-width:960px) {
+  .dms-intg__top { grid-template-columns:1fr; gap:clamp(40px,6vw,64px); }
+  .dms-intg__hub { order:-1; }
+  .dms-intg__hub-svg { max-width:min(100%, 480px); }
+}
+@media (max-width:620px) {
+  .dms-intg__feats { grid-template-columns:1fr; }
+  .dms-intg__stats { grid-template-columns:1fr; gap:var(--dms-s-6); }
+}
+
+/* ============================================================================
+ * The coordination tax - thesis interstitial between the hero and section 01
+ * (component in dms-coordination.tsx). Two worlds on one asymmetry: left, the
+ * tax itemised as a register of disconnected surfaces; right, the Unifize
+ * answer as one connected governed thread on a single raised panel. Line-work
+ * only; brand blue is spent solely on the sealed terminal node. Shared by the
+ * DMS page and the data-driven ProductPage. */
+.dms-ctax__grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(32px,5vw,72px); align-items:start; margin-top:clamp(40px,5vw,72px); }
+
+.dms-ctax__lab { display:block; font-family:var(--dms-mono); font-size:var(--dms-mono-size);
+  font-weight:500; letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-muted);
+  margin-bottom:var(--dms-s-8); }
+
+/* left - the tax, itemised as a register of disconnected surfaces */
+.dms-ctax__leaks { list-style:none; margin:0; padding:0; }
+.dms-ctax__leak { display:grid; grid-template-columns:minmax(0,7rem) minmax(0,1fr); gap:0 var(--dms-s-6);
+  align-items:baseline; }
+.dms-ctax__leak + .dms-ctax__leak { border-top:1px dashed var(--dms-line-strong);
+  margin-top:var(--dms-s-5); padding-top:var(--dms-s-5); }
+.dms-ctax__surface { display:inline-flex; align-items:center; gap:var(--dms-s-3);
+  font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
+  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-faint); }
+.dms-ctax__surface::before { content:""; width:6px; height:6px; flex:none; background:var(--dms-line-strong); }
+.dms-ctax__leak-main { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.dms-ctax__leak-name { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem;
+  letter-spacing:-0.012em; color:var(--dms-ink); }
+.dms-ctax__leak-note { font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); }
+
+/* right - the answer, one connected governed thread on a raised panel */
+.dms-ctax__fix { background:var(--dms-surface); box-shadow:var(--dms-elev-raise);
+  padding:clamp(28px,3.4vw,44px); }
+.dms-ctax__lab--fix { color:var(--dms-accent-text); }
+.dms-ctax__thread { list-style:none; margin:0; padding:0; }
+.dms-ctax__node { position:relative; display:grid; grid-template-columns:16px minmax(0,1fr);
+  gap:0 var(--dms-s-5); padding-bottom:var(--dms-s-8); }
+.dms-ctax__node:last-child { padding-bottom:0; }
+.dms-ctax__node:not(:last-child)::before { content:""; position:absolute; left:7px; top:8px; bottom:-8px;
+  width:2px; background:var(--dms-line-strong); }
+.dms-ctax__mark { position:relative; z-index:1; align-self:start; width:16px; height:16px;
+  display:flex; align-items:center; justify-content:center; color:var(--dms-ink);
+  background:var(--dms-surface); border:1.5px solid var(--dms-ink-2); }
+.dms-ctax__node.is-key .dms-ctax__mark { background:var(--dms-accent); border-color:var(--dms-accent); color:#fff; }
+.dms-ctax__tick { width:11px; height:11px; }
+.dms-ctax__node-main { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.dms-ctax__node-name { font-family:var(--dms-display); font-weight:500; font-size:1.0625rem;
+  letter-spacing:-0.012em; color:var(--dms-ink); }
+.dms-ctax__node-note { font-size:0.9375rem; line-height:1.5; color:var(--dms-muted); }
+.dms-ctax__sum { margin:var(--dms-s-8) 0 0; padding-top:var(--dms-s-6);
+  border-top:1px solid var(--dms-hairline); font-size:1.0625rem; line-height:1.55;
+  color:var(--dms-ink-2); max-width:48ch; }
+.dms-ctax__sum b { font-family:var(--dms-display); font-weight:500; color:var(--dms-ink); }
+
+@media (max-width:900px) {
+  .dms-ctax__grid { grid-template-columns:minmax(0,1fr); gap:var(--dms-s-12); }
+}
+@media (max-width:520px) {
+  .dms-ctax__leak { grid-template-columns:minmax(0,1fr); gap:var(--dms-s-2) 0; }
 }
