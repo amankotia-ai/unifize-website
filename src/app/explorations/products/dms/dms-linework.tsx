@@ -122,94 +122,50 @@ export function SolidGlyph({ name, className }: { name: string; className?: stri
 }
 
 /* ---------------------------------------------------------------------------
- * WithDmsOrbit - the "with DMS" data graphic: one effective revision at the
- * centre, the copies that used to drift now orbiting it as governed renders,
- * each verified. Pure inline SVG so it scales with its container. Rendered on
- * the lightened stage field; the renders are solid blue documents on white
- * cards, the revision and the check marks carry the colour. */
+ * WithDmsOrbit - one effective revision expressed as a controlled distribution
+ * map. The previous orbit was visually expressive but made the governance
+ * model harder to scan. This version behaves like an operational record: one
+ * source at the top, four explicit downstream surfaces, one verification state. */
 
-const ORBIT_CENTER = { x: 340, y: 280 };
-/* five governed renders around the record (card centres) */
-const ORBIT_DOCS = [
-  { x: 150, y: 172 },
-  { x: 530, y: 172 },
-  { x: 118, y: 360 },
-  { x: 562, y: 360 },
-  { x: 340, y: 468 },
+const GOVERNED_OUTPUTS = [
+  { surface: "Point of use", state: "Verified render" },
+  { surface: "Training", state: "Current assignment" },
+  { surface: "Audit access", state: "Scoped copy" },
+  { surface: "Archive", state: "Prior revisions retained" },
 ];
-/* four verification marks distributed on the outer ring */
-const ORBIT_CHECKS = [
-  { x: 176, y: 112 },
-  { x: 504, y: 112 },
-  { x: 168, y: 402 },
-  { x: 512, y: 402 },
-];
-
-function DocRender({ x, y }: { x: number; y: number }) {
-  return (
-    <g transform={`translate(${x} ${y})`}>
-      <rect className="dms-orbit__card" x={-42} y={-42} width={84} height={84} rx={16} />
-      <path className="dms-orbit__page" d="M-12 -16 H5 L12 -9 V16 H-12 Z" />
-      <path className="dms-orbit__fold" d="M5 -16 V-9 H12 Z" />
-      <g className="dms-orbit__lines">
-        <path d="M-7 -2 H7" />
-        <path d="M-7 4 H7" />
-        <path d="M-7 10 H1" />
-      </g>
-    </g>
-  );
-}
-
-function CheckMark({ x, y }: { x: number; y: number }) {
-  return (
-    <g transform={`translate(${x} ${y})`}>
-      <circle className="dms-orbit__badge" r={15} />
-      <path className="dms-orbit__tick" d="M-6 0 L-2 4 L7 -6" />
-    </g>
-  );
-}
 
 export function WithDmsOrbit() {
-  const { x: cx, y: cy } = ORBIT_CENTER;
   return (
-    <svg
-      className="dms-orbit__svg"
-      viewBox="0 0 680 560"
+    <div
+      className="dms-governance-map"
       role="img"
-      aria-label="One effective revision, v3.2, at the centre. The copies that used to drift now orbit it as governed, verified renders."
+      aria-label="Revision 3.2 is the single effective record. Verified renders flow to point of use, training, audit access, and the archive."
     >
-      {/* concentric governed field */}
-      <ellipse className="dms-orbit__ring" cx={cx} cy={cy} rx={172} ry={150} />
-      <ellipse className="dms-orbit__ring" cx={cx} cy={cy} rx={250} ry={224} />
-
-      {/* dashed connectors from the record out to each render */}
-      {ORBIT_DOCS.map((d, i) => {
-        const vx = d.x - cx;
-        const vy = d.y - cy;
-        return (
-          <line
-            key={i}
-            className="dms-orbit__link"
-            x1={cx + vx * 0.42}
-            y1={cy + vy * 0.42}
-            x2={cx + vx * 0.8}
-            y2={cy + vy * 0.8}
-          />
-        );
-      })}
-
-      {ORBIT_DOCS.map((d, i) => (
-        <DocRender key={i} x={d.x} y={d.y} />
-      ))}
-      {ORBIT_CHECKS.map((c, i) => (
-        <CheckMark key={i} x={c.x} y={c.y} />
-      ))}
-
-      {/* the one effective revision */}
-      <text className="dms-orbit__ver" x={cx} y={cy + 52} textAnchor="middle">
-        <tspan className="dms-orbit__ver-v">v</tspan>3.2
-      </text>
-    </svg>
+      <div className="dms-governance-map__record">
+        <span className="dms-governance-map__version dms-data">v3.2</span>
+        <span className="dms-governance-map__record-copy">
+          <strong>Effective revision</strong>
+          <span>Approved · controlled · current</span>
+        </span>
+        <span className="dms-governance-map__status">Live</span>
+      </div>
+      <div className="dms-governance-map__connector" aria-hidden="true" />
+      <ul className="dms-governance-map__outputs">
+        {GOVERNED_OUTPUTS.map((output) => (
+          <li key={output.surface}>
+            <span className="dms-governance-map__check" aria-hidden="true">✓</span>
+            <span>
+              <strong>{output.surface}</strong>
+              <span>{output.state}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="dms-governance-map__seal">
+        <span>Distribution status</span>
+        <strong>4 of 4 verified</strong>
+      </div>
+    </div>
   );
 }
 

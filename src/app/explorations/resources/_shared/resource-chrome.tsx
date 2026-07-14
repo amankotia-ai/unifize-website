@@ -7,6 +7,7 @@
  * ========================================================================== */
 import Link from "next/link";
 import { RESOURCE_FOOTER, type ModuleTag } from "./resources-data";
+import { SiteFooter } from "../../_shared/site-footer";
 
 /* -------------------------------------------------------------- masthead */
 export function ResourceMast({
@@ -101,36 +102,9 @@ export function ResourceCTA({
   );
 }
 
-/* footer */
+/* footer - the shared mega footer with the resources tagline */
 export function ResourceFooter() {
-  return (
-    <footer className="dms-footer">
-      <div className="dms-wrap dms-footer__grid">
-        <div className="dms-footer__brand">
-          <img className="dms-footer__logo" src="/logo_light.svg" alt="Unifize" />
-          <span className="dms-footer__tag">{RESOURCE_FOOTER.tagline}</span>
-        </div>
-        {RESOURCE_FOOTER.nav.map((col) => (
-          <nav className="dms-footer__col" aria-label={col.label} key={col.label}>
-            <span className="dms-footer__lab">{col.label}</span>
-            {col.links.map((l) =>
-              l.href.startsWith("/") ? (
-                <Link key={l.label} href={l.href}>{l.label}</Link>
-              ) : (
-                <a key={l.label} href={l.href}>{l.label}</a>
-              ),
-            )}
-          </nav>
-        ))}
-      </div>
-      <div className="dms-wrap">
-        <div className="dms-footer__base">
-          <span>© Unifize 2026</span>
-          <span>{RESOURCE_FOOTER.baseRight}</span>
-        </div>
-      </div>
-    </footer>
-  );
+  return <SiteFooter tagline={RESOURCE_FOOTER.tagline} note={RESOURCE_FOOTER.baseRight} />;
 }
 
 export function initials(name: string) {

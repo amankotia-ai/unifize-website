@@ -173,9 +173,13 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export function ModuleIndex({
   domains: domainMap,
   standardFilters,
+  showCounts = true,
 }: {
   domains: MapDomain[];
   standardFilters: string[];
+  /** Hide the per-row module-count readout (the domain pages' no-inventory-
+   *  numbers rule); the industry pages keep it. */
+  showCounts?: boolean;
 }) {
   const [standard, setStandard] = useState<string | null>(null);
   const [open, setOpen] = useState<string>(domainMap[0].slug);
@@ -235,10 +239,12 @@ export function ModuleIndex({
                 <span className="itm-cov__idx itm-data" aria-hidden="true">{pad(i + 1)}</span>
                 <span className="itm-cov__name">{d.name}</span>
                 <span className="itm-cov__promise">{d.promise}</span>
-                <span className="itm-cov__count">
-                  <span className="itm-data">{d.filtered.length}</span>
-                  <span className="itm-cov__count-lab">{d.filtered.length === 1 ? "module" : "modules"}</span>
-                </span>
+                {showCounts ? (
+                  <span className="itm-cov__count">
+                    <span className="itm-data">{d.filtered.length}</span>
+                    <span className="itm-cov__count-lab">{d.filtered.length === 1 ? "module" : "modules"}</span>
+                  </span>
+                ) : null}
                 <span className="itm-cov__chev" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6}><path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" /></svg>
                 </span>
@@ -255,6 +261,8 @@ export function ModuleIndex({
                             <span className="itm-cov__mod-name">{m.name}</span>
                             {live ? (
                               <span className="itm-cov__mod-badge"><span className="itm-dot" aria-hidden="true" />Live</span>
+                            ) : m.soon ? (
+                              <span className="itm-cov__mod-badge itm-cov__mod-badge--soon"><span className="itm-dot" aria-hidden="true" />{m.soon}</span>
                             ) : null}
                           </div>
                           <p className="itm-cov__mod-blurb">{m.blurb}</p>

@@ -16,6 +16,7 @@ import {
 } from "@/lib/platform-data/medical-devices-canonical";
 import { TRIGGERS, VALIDATED } from "./industry-data";
 import { SiteHeader } from "./site-header";
+import { SiteFooter } from "../_shared/site-footer";
 import { IngressNav } from "./ingress-nav";
 import { PersonaExplorer } from "./persona-explorer";
 import { ModuleIndex } from "./module-index";
@@ -96,7 +97,7 @@ export default function IndustryTemplateModernPage() {
             </ul>
             <div className="itm-hero__ctas">
               <button type="button" className="itm-btn">Book a demo →</button>
-              <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+              <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
             </div>
           </div>
         </div>
@@ -342,7 +343,7 @@ export default function IndustryTemplateModernPage() {
               <p className="itm-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
               <div className="itm-close__cta">
                 <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
-                <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+                <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>
@@ -350,32 +351,7 @@ export default function IndustryTemplateModernPage() {
       </section>
 
       {/* ----------------------------------------------------- site footer */}
-      <footer className="itm-section--dark itm-footer">
-        <div className="itm-wrap itm-wrap--wide itm-footer__grid">
-          <div className="itm-footer__brand">
-            <img className="itm-footer__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="itm-footer__tag">The decision trace for regulated operations.</span>
-          </div>
-          <nav className="itm-footer__col" aria-label="Industries">
-            <span className="itm-footer__lab">Industries</span>
-            <Link href="/industries/medical-devices" aria-current="page">Medical devices</Link>
-            <Link href="/platform#industries">Pharmaceuticals</Link>
-            <Link href="/platform#industries">Aerospace</Link>
-          </nav>
-          <nav className="itm-footer__col" aria-label="Coverage">
-            <span className="itm-footer__lab">Coverage</span>
-            <Link href="/industries/medical-devices/change-control">Change control</Link>
-            <a href="#modules">All modules</a>
-            <a href="#by-role">By role</a>
-          </nav>
-        </div>
-        <div className="itm-wrap itm-wrap--wide">
-          <div className="itm-footer__base">
-            <span>© Unifize 2026</span>
-            <span>Industry template · Medical Devices instance</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter tagline="The decision trace for regulated operations." note="Industry template · Medical Devices instance" />
     </main>
   );
 }

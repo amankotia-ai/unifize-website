@@ -3,13 +3,10 @@
  * The lifecycle shows a governed record moving through its states inside
  * Unifize; this beat shows the record does not stop at Unifize's edge.
  *
- * Composition (mirrors the classic integrations layout, in this page's flat /
- * square / mono idiom): a left copy column - heading, lede, a 2x2 value-prop
- * grid, and a CTA - beside a right RADIAL HUB. The hub draws Unifize at the
- * centre with the systems of record orbiting it on a dashed ring, each wired
- * back through a blue connector node. A bottom strip carries three platform
- * facts. The one pop of brand blue is the hub's connector nodes and centre
- * bloom - the section's single data graphic.
+ * The default composition is a feature-led systems matrix for shared product
+ * pages. The DMS redesign uses the minimal variant: a quiet logo grid followed
+ * by one CTA block, so this reads as a connective beat rather than a second
+ * platform chapter.
  *
  * Runs on ink (near-black), continuing the dark block the lifecycle ends on.
  * Product-specific (from data): heading, lede, the `record` it keeps in sync,
@@ -17,10 +14,9 @@
  * platform-level and shared across all four product pages. Used by the
  * standalone DMS page and the data-driven ProductPage.
  *
- * NOTE: the orbiting systems are REPRESENTATIVE of the stack Unifize coexists
- * with (grounded in the industry coexistence copy), not a certified connector
- * list, and are shown as names (no third-party logos). Verify against the real
- * connector catalogue before shipping. Server component, no state.
+ * NOTE: the systems are REPRESENTATIVE of the stack Unifize coexists with,
+ * not a certified connector list. Verify against the real connector catalogue
+ * before shipping. Server component, no state.
  * -------------------------------------------------------------------------- */
 import { Eyebrow } from "./dms-primitives";
 import { Glyph } from "./dms-linework";
@@ -54,83 +50,28 @@ const FACTS: { glyph: string; stat: string; sub: string }[] = [
   { glyph: "versions", stat: "Always current", sub: "One record, every system in step." },
 ];
 
-/* hub geometry - a single inline SVG so it scales with its container (mirrors
- * WithDmsOrbit). All radii are in the 0..HUB_VIEW user space. */
-const HUB_VIEW = 580;
-const HUB_C = HUB_VIEW / 2;
-const R_RING = 214;   // dashed ring the tiles sit on
-const R_NODE = 120;   // blue connector nodes (inner ring)
-const R_CORE = 66;    // centre disc
-const R_WIRE_OUT = 172;
-
-function hubGeometry(systems: string[]) {
-  const n = systems.length;
-  return systems.map((name, i) => {
-    const a = ((-90 + (360 / n) * i) * Math.PI) / 180;
-    const c = Math.cos(a);
-    const s = Math.sin(a);
-    const w = Math.max(66, name.length * 9 + 26); // tile width fits the name
-    return {
-      name,
-      tx: HUB_C + R_RING * c,
-      ty: HUB_C + R_RING * s,
-      w,
-      x1: HUB_C + R_CORE * c,
-      y1: HUB_C + R_CORE * s,
-      x2: HUB_C + R_WIRE_OUT * c,
-      y2: HUB_C + R_WIRE_OUT * s,
-      nx: HUB_C + R_NODE * c,
-      ny: HUB_C + R_NODE * s,
-    };
-  });
-}
+const LOGO_INTEGRATIONS = [
+  { name: "SAP", logo: "https://api.iconify.design/logos:sap.svg" },
+  { name: "Oracle", logo: "https://api.iconify.design/logos:oracle.svg" },
+  { name: "NetSuite", logo: "https://api.iconify.design/cib:oracle-netsuite.svg?color=%232D5B86" },
+  { name: "Okta", logo: "https://api.iconify.design/logos:okta.svg" },
+  { name: "SharePoint", logo: "https://api.iconify.design/streamline-logos:microsoft-sharepoint-logo-block.svg?color=%230078D4" },
+  { name: "Microsoft Teams", logo: "https://api.iconify.design/logos:microsoft-teams.svg" },
+  { name: "Google Drive", logo: "https://api.iconify.design/logos:google-drive.svg" },
+] as const;
 
 function IntegrationHub({ systems, record }: { systems: string[]; record: string }) {
-  const tiles = hubGeometry(systems);
   return (
     <div className="dms-intg__hub" data-reveal>
-      <svg
-        className="dms-intg__hub-svg"
-        viewBox={`0 0 ${HUB_VIEW} ${HUB_VIEW}`}
-        role="img"
-        aria-label={`Unifize at the centre, syncing ${record} both ways with ${systems.join(", ")}.`}
-      >
-        <defs>
-          <radialGradient id="dmsIntgBloom" cx="50%" cy="50%" r="50%">
-            <stop className="dms-intg__bloom-0" offset="0%" />
-            <stop className="dms-intg__bloom-1" offset="100%" />
-          </radialGradient>
-        </defs>
-
-        {/* the brand bloom behind the centre - the one soft pop of blue */}
-        <circle className="dms-intg__bloom" cx={HUB_C} cy={HUB_C} r={150} fill="url(#dmsIntgBloom)" />
-
-        {/* dashed ring the systems dock onto */}
-        <circle className="dms-intg__ring" cx={HUB_C} cy={HUB_C} r={R_RING} />
-
-        {/* connectors + blue nodes, drawn under the tiles */}
-        {tiles.map((t) => (
-          <line key={`w-${t.name}`} className="dms-intg__wire" x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />
-        ))}
-        {tiles.map((t) => (
-          <rect key={`n-${t.name}`} className="dms-intg__node" x={t.nx - 3} y={t.ny - 3} width={6} height={6} />
-        ))}
-
-        {/* the centre disc + Unifize wordmark */}
-        <circle className="dms-intg__core" cx={HUB_C} cy={HUB_C} r={R_CORE} />
-        <image href="/logo_light.svg" x={HUB_C - 54} y={HUB_C - 12.4} width={108} height={24.8} />
-
-        {/* the system tiles */}
-        {tiles.map((t) => (
-          <g key={`t-${t.name}`}>
-            <rect className="dms-intg__tile-box" x={t.tx - t.w / 2} y={t.ty - 21} width={t.w} height={42} rx={4} />
-            <text className="dms-intg__tile-tx" x={t.tx} y={t.ty} textAnchor="middle" dominantBaseline="central">
-              {t.name}
-            </text>
-          </g>
-        ))}
-      </svg>
-
+      <div className="dms-intg__network" role="img" aria-label={`Unifize syncing ${record} both ways with ${systems.join(", ")}.`}>
+        <div className="dms-intg__systems">
+          {systems.map((system) => <span className="dms-intg__system" key={system}>{system}</span>)}
+        </div>
+        <div className="dms-intg__core">
+          <img src="/logo_light.svg" alt="" aria-hidden="true" />
+          <span>Governed integration layer</span>
+        </div>
+      </div>
       <p className="dms-intg__hub-cap">
         Two-way sync. Unifize keeps {record} and your systems of record in step.
       </p>
@@ -138,7 +79,43 @@ function IntegrationHub({ systems, record }: { systems: string[]; record: string
   );
 }
 
-export function IntegrationLayer({ data }: { data: IntegrationData }) {
+export function IntegrationLayer({
+  data,
+  variant = "full",
+}: {
+  data: IntegrationData;
+  variant?: "full" | "minimal";
+}) {
+  if (variant === "minimal") {
+    return (
+      <section className="dms-section dms-section--dark dms-intg dms-intg--minimal" id="integrations" aria-labelledby="dms-integrations-title">
+        <div className="dms-wrap">
+          <header className="dms-intg__minimal-head" data-reveal>
+            <h2 className="dms-h2" id="dms-integrations-title">Works with the systems you already run.</h2>
+            <p className="dms-lede">Connect document control to the tools already holding your product, people, and process data.</p>
+          </header>
+
+          <div className="dms-intg__logo-grid" data-reveal>
+            {LOGO_INTEGRATIONS.map((integration) => (
+              <div className="dms-intg__logo-card" key={integration.name}>
+                <img src={integration.logo} alt={`${integration.name} logo`} />
+                <span>{integration.name}</span>
+              </div>
+            ))}
+
+            <div className="dms-intg__minimal-cta">
+              <div>
+                <h3>Don&rsquo;t see your system?</h3>
+                <p>We are always adding connectors. Bring us the stack you need to keep in step.</p>
+              </div>
+              <button type="button">Talk to us &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="dms-section dms-section--dark dms-intg" id="integrations" aria-label="Integrations">
       <div className="dms-wrap">

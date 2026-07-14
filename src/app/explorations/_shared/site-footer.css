@@ -1,0 +1,81 @@
+/* ============================================================================
+ * site-footer.css - the shared site footer (.sft namespace).
+ * Kit-agnostic: aliases only the global --u / --n / --d tokens from
+ * globals.css, so it renders identically inside the itm and dms shells.
+ * Same dark editorial surface as the kit footers it replaces: --d-bg-2,
+ * hairline structure, mono furniture, square corners, zero glows.
+ *
+ * Anchor rules are written as `.sft a`-level selectors on purpose: the kits
+ * paint every `.dms :where(a)` / `.itm :where(a)` in accent blue, and the
+ * footer must win that tie regardless of import order.
+ * ========================================================================== */
+
+.sft {
+  --sft-sans: var(--u-font);
+  --sft-mono: var(--u-mono);
+  --sft-bg: var(--d-bg-2);
+  --sft-ink: var(--d-text);
+  --sft-ink-2: var(--d-text-2);
+  --sft-ink-3: var(--d-text-3);
+  --sft-hairline: color-mix(in srgb, var(--d-text) 10%, transparent);
+  --sft-hairline-2: color-mix(in srgb, var(--d-text) 16%, transparent);
+  --sft-mono-size: 0.6875rem;
+  --sft-mono-ls: 0.08em;
+  --sft-dur: 0.18s;
+  --sft-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+  background: var(--sft-bg);
+  color: var(--sft-ink);
+  font-family: var(--sft-sans);
+  border-top: 1px solid var(--sft-hairline);
+  padding-top: 64px;
+  padding-bottom: 32px;
+}
+
+/* same rhythm as .dms-wrap / .itm-wrap--wide (both 1440 / 24-32-48) */
+.sft__wrap { width: 100%; max-width: 1440px; margin-inline: auto; padding-inline: 24px; }
+@media (min-width: 768px)  { .sft__wrap { padding-inline: 32px; } }
+@media (min-width: 1280px) { .sft__wrap { padding-inline: 48px; } }
+
+/* ------------------------------------------------------------- column grid */
+.sft__grid { display: grid; grid-template-columns: 1.3fr 1fr 2fr 1fr 1fr; gap: 40px 40px; align-items: start; }
+
+.sft__brand { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.sft__logo { display: block; height: 26px; width: auto; }
+.sft__tag { font-size: 0.9375rem; line-height: 1.5; color: var(--sft-ink-2); max-width: 26ch; }
+
+.sft__col { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; }
+/* nested column pair (Resources over Company) */
+.sft__col .sft__col { gap: 12px; }
+.sft__col .sft__col + .sft__col { margin-top: 28px; }
+
+.sft__lab {
+  font-family: var(--sft-mono); font-size: var(--sft-mono-size); font-weight: 500;
+  letter-spacing: var(--sft-mono-ls); text-transform: uppercase; color: var(--sft-ink-3);
+}
+
+.sft__links { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+/* Solutions: one labelled column, links balanced across two */
+.sft__col--wide .sft__links { display: block; column-count: 2; column-gap: 40px; }
+.sft__col--wide .sft__links .sft__link { break-inside: avoid; margin-bottom: 10px; }
+
+.sft a.sft__link {
+  display: block; width: fit-content;
+  font-size: 0.9375rem; line-height: 1.4; color: var(--sft-ink-2);
+  text-decoration: none; transition: color var(--sft-dur) var(--sft-ease);
+}
+.sft a.sft__link:hover { color: var(--sft-ink); }
+
+/* ---------------------------------------------------------------- base line */
+.sft__base { margin-top: 48px; padding-top: 24px; border-top: 1px dashed var(--sft-hairline-2); display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+.sft__base span { font-family: var(--sft-mono); font-size: var(--sft-mono-size); letter-spacing: 0.03em; color: var(--sft-ink-3); }
+
+/* --------------------------------------------------------------- responsive */
+@media (max-width: 1279px) {
+  .sft__grid { grid-template-columns: 1fr 2fr 1fr; }
+  .sft__brand { grid-column: 1 / -1; }
+}
+@media (max-width: 767px) {
+  .sft__grid { grid-template-columns: 1fr; gap: 32px; }
+  .sft__col--wide .sft__links { column-count: 1; }
+}

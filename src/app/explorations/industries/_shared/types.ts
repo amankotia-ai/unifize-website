@@ -24,6 +24,9 @@ export interface MapModule {
   standards?: string[];
   /** Live module page, if one exists yet. None do for these industries today. */
   href?: string;
+  /** Honest status label for modules with no live page (e.g. "In development").
+   *  Unlabelled unlinked cards read as roadmap dressed as product. */
+  soon?: string;
 }
 
 /** A coordination domain — the grouping the coverage ledger reads by. */

@@ -341,6 +341,7 @@
   border:1px solid var(--dms-hairline); border-radius:2px; color:var(--dms-muted); background:var(--dms-surface); }
 .dms-mock__state.is-in-approval { color:var(--dms-ink); border-color:var(--dms-line-strong); }
 .dms-mock__state.is-draft { color:var(--dms-faint); border-style:dashed; }
+.dms-mock__state.is-review-due { color:var(--dms-warn); border-color:color-mix(in srgb, var(--dms-warn) 40%, transparent); }
 .dms-mock__state.is-obsolete { color:var(--dms-faint); }
 @media (max-width:760px) {
   .dms-mock__grid { grid-template-columns:80px minmax(0,1fr) 100px; }

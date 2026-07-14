@@ -21,10 +21,10 @@
 import Link from "next/link";
 import { ChatShell } from "@/components/organisms";
 import { SiteHeader } from "../../industry-template-modern/site-header";
+import { SiteFooter } from "../../_shared/site-footer";
 import { ItmMotion } from "../../industry-template-modern/itm-motion";
 import { Eyebrow, ShellFrame, SeverityIcon } from "../../industry-template-modern/itm-primitives";
 import { IngressNav, PersonaExplorer, ModuleIndex, CostLedger } from "./industry-interactive";
-import { ALL_INDUSTRIES } from "./industries-list";
 import type { IndustryData } from "./types";
 import "../../industry-template-modern/itm.css";
 import "./industry-kit.css";
@@ -75,7 +75,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
             </ul>
             <div className="itm-hero__ctas">
               <button type="button" className="itm-btn">Book a demo →</button>
-              <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+              <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
             </div>
           </div>
         </div>
@@ -310,7 +310,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
               <p className="itm-lede">{d.close.lede}</p>
               <div className="itm-close__cta">
                 <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
-                <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+                <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>
@@ -318,32 +318,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
       </section>
 
       {/* ----------------------------------------------------- site footer */}
-      <footer className="itm-section--dark itm-footer">
-        <div className="itm-wrap itm-wrap--wide itm-footer__grid">
-          <div className="itm-footer__brand">
-            <img className="itm-footer__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="itm-footer__tag">The decision trace for regulated operations.</span>
-          </div>
-          <nav className="itm-footer__col" aria-label="Industries">
-            <span className="itm-footer__lab">Industries</span>
-            {ALL_INDUSTRIES.map((f) => (
-              <Link key={f.slug} href={f.href} aria-current={f.slug === d.slug ? "page" : undefined}>{f.label}</Link>
-            ))}
-          </nav>
-          <nav className="itm-footer__col" aria-label="Coverage">
-            <span className="itm-footer__lab">Coverage</span>
-            <a href="#modules">All modules</a>
-            <a href="#by-role">By role</a>
-            <a href="#whats-breaking">What&rsquo;s breaking</a>
-          </nav>
-        </div>
-        <div className="itm-wrap itm-wrap--wide">
-          <div className="itm-footer__base">
-            <span>© Unifize 2026</span>
-            <span>Industry template · {d.name} instance</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter tagline="The decision trace for regulated operations." note={`Industry template · ${d.name} instance`} />
     </main>
   );
 }

@@ -280,7 +280,7 @@ export const PLM_DATA: ProductPageData = {
           { label: "Who owns it", href: "#who" },
           { label: "Compliance", href: "#compliance" },
           { label: "FAQ", href: "#faq" },
-          { label: "All products", href: "/platform" },
+          { label: "All products", href: "/explorations/platform" },
         ],
       },
     ],

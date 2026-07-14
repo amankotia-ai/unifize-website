@@ -19,6 +19,75 @@ export const PRODUCT = {
     "Document Control, Change Control, and Training on one governed record, from draft to obsolete.",
 };
 
+export type DmsCoordinationProblem = {
+  visual: "retrieval" | "versions" | "drift" | "audit";
+  category: string;
+  /* rail one-liner in the problem spotlight */
+  title: string;
+  quote: string;
+  /* one supporting sentence on the spotlight stage */
+  detail: string;
+  metric: string;
+  metricLabel: string;
+  work: string;
+  tax: [string, string];
+  outcome: string;
+};
+
+/* One source for the Problem spotlight and Coordination Tax timeline. Each
+ * symptom becomes an accountable block in one sequence and keeps the real
+ * metric and unit used in the section above. */
+export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
+  {
+    visual: "retrieval",
+    category: "Audit retrieval",
+    title: "Forty minutes to find one SOP",
+    quote: "The auditor asked for one SOP. It took us forty minutes.",
+    detail: "Retrieval under audit pressure is slow because documents live in five places at once.",
+    metric: "40 min",
+    metricLabel: "Average retrieval under audit",
+    work: "Answer the request",
+    tax: ["Search every location", "Verify the latest copy"],
+    outcome: "One governed record",
+  },
+  {
+    visual: "versions",
+    category: "Version control",
+    title: "Nobody knows which version is live",
+    quote: "Nobody can tell me which version is running on the floor right now.",
+    detail: "Multiple revisions coexist. Operators keep working from the copy they printed last quarter.",
+    metric: "3+",
+    metricLabel: "Versions live at any time",
+    work: "Use the procedure",
+    tax: ["Compare competing copies", "Confirm the effective date"],
+    outcome: "One effective version",
+  },
+  {
+    visual: "drift",
+    category: "Periodic review",
+    title: "Paper drifts from the process",
+    quote: "The SOP was written in 2021. The process changed twice since.",
+    detail: "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit.",
+    metric: "1 in 4",
+    metricLabel: "SOPs past review date",
+    work: "Review the procedure",
+    tax: ["Find the accountable owner", "Chase the overdue review"],
+    outcome: "Named owner and review date",
+  },
+  {
+    visual: "audit",
+    category: "Evidence assembly",
+    title: "Days to assemble one record",
+    quote: "When auditors want the full record, we spend days pulling it together.",
+    detail: "Evidence is scattered, so audit prep becomes a fire drill instead of a filter.",
+    metric: "2–3 days",
+    metricLabel: "Time to assemble one audit record",
+    work: "Answer the audit",
+    tax: ["Collect scattered records", "Reconcile signatures"],
+    outcome: "Evidence already bound",
+  },
+];
+
 /* short chips for the hero */
 export const HERO_STANDARDS = ["ISO 9001", "21 CFR Part 11", "ISO 13485", "21 CFR Part 820", "EU GMP"];
 
@@ -33,15 +102,6 @@ export const DRIFT = {
   ],
   withDms: { ver: "v3.2", note: "Effective, watermarked, everywhere you look. Stray copies retrieved." },
 };
-
-/* the three payoffs, shown as a hairline register beneath the problem.
- * Distilled from the core value props; glyph keys map to the line-work
- * pictograms in dms-linework.tsx. */
-export const PROBLEM_FEATURES: { title: string; body: string; glyph: string }[] = [
-  { title: "One source of truth", body: "Single governed record, always current, always controlled.", glyph: "shield" },
-  { title: "Easy to find, easy to trust", body: "Watermarked and effective, so teams know what's real.", glyph: "search" },
-  { title: "Compliant by design", body: "Stray copies identified and retrieved. Audit ready, every time.", glyph: "sync" },
-];
 
 /* the three bundled modules - the core of the product. points feed the
  * interactive explorer; visual captions label the screenshot placeholders. */
@@ -85,7 +145,7 @@ export const MODULES: {
     points: [
       "Role-to-document training matrix",
       "Auto-assignment on new revisions",
-      "Read-and-understood or assessed",
+      "AI-generated quizzes from the SOP",
       "Completion reporting for audits",
     ],
     visual: "Training matrix by role and revision",
@@ -153,26 +213,54 @@ export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
   { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library.", glyph: "access" },
 ];
 
-/* who owns this product day to day. short. Portraits are generated
- * representative imagery, not real customers. */
-export const PERSONAS: { name: string; tier: string; summary: string; daily: string[]; variants: string; img: string }[] = [
-  {
-    name: "Document Controller",
-    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-    tier: "Primary owner",
-    summary: "Owns the controlled document lifecycle and answers the one question every auditor asks: is this the latest?",
-    daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
-    variants: "DC · QMS Administrator · Records Manager",
+/* who it is for - section 05. The two personas Notion lists as DMS Target
+ * Personas (PPS-5 Document Controller, PPS-6 Training Coordinator) own the
+ * record day to day; the Quality Manager (PPS-2, whose module relations span
+ * all three bundled modules) is the approving seat. Each card leads with the
+ * one question that role answers for, and an "owns" span in the section 04
+ * lifecycle vocabulary. Portraits are generated representative imagery, not
+ * real customers. */
+export const AUDIENCE: {
+  lede: string;
+  owners: { role: string; owns: string; question: string; aka: string; daily: string[]; img: string }[];
+  approver: { role: string; owns: string; question: string; aka: string; daily: string[]; href: string; linkLabel: string };
+} = {
+  lede: "A Document Controller and a Training Coordinator run the record day to day. The Quality Manager signs what ships and answers for it under audit.",
+  owners: [
+    {
+      role: "Document Controller",
+      owns: "Owns Draft → Effective",
+      question: "Is this the latest revision?",
+      // source: Personas DB PPS-5, Title Variants
+      aka: "DC · Doc Control Specialist · QMS Administrator · Records Manager",
+      // source: Personas DB PPS-5, Daily Activities
+      daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
+      img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    },
+    {
+      role: "Training Coordinator",
+      owns: "Owns Effective → trained",
+      question: "Is everyone trained on the current version?",
+      // source: Personas DB PPS-6, Title Variants
+      aka: "Training Lead · QA Training Specialist · Compliance Training Manager",
+      // source: Personas DB PPS-6, Daily Activities
+      daily: ["Assign training off new revisions", "Chase incomplete training", "Report completion for audits"],
+      img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    },
+  ],
+  approver: {
+    role: "Quality Manager",
+    owns: "Signs at In Approval",
+    question: "Can we prove it under audit?",
+    // source: Personas DB PPS-2, common titles in Description
+    aka: "QA Manager · Director of Quality · Head of Quality",
+    // source: Personas DB PPS-2, Description (approves changes and documents
+    // of consequence, owns the audit programme, chairs management review)
+    daily: ["Approve changes of consequence", "Own the audit programme", "Chair management review"],
+    href: "/explorations/personas/quality-manager",
+    linkLabel: "See how quality managers work",
   },
-  {
-    name: "Training Coordinator",
-    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-    tier: "Primary owner",
-    summary: "Owns “people are trained on the current revision”, mapping SOPs to roles and closing the loop for audits.",
-    daily: ["Assign training off new revisions", "Chase incomplete training", "Report completion for audits"],
-    variants: "Training Lead · QA Training Specialist",
-  },
-];
+};
 
 /* the failure modes DMS is built to close. one line each. */
 export const PAINS: { title: string; body: string; severity: "Critical" | "High" | "Medium" }[] = [
@@ -183,13 +271,13 @@ export const PAINS: { title: string; body: string; severity: "Critical" | "High"
 ];
 
 /* the standards frame. short bodies. */
-export const STANDARDS: { name: string; geo: string; body: string }[] = [
-  { name: "ISO 9001", geo: "ISO · Global", body: "Quality management system requirements." },
-  { name: "21 CFR Part 11", geo: "FDA · US", body: "Trustworthy electronic records and signatures." },
-  { name: "ISO 13485", geo: "ISO · Global", body: "QMS for medical devices." },
-  { name: "21 CFR Part 820", geo: "FDA · US", body: "Quality System Regulation for device cGMP." },
-  { name: "EU GMP", geo: "EC · EU", body: "GMP for medicinal products." },
-  { name: "GMP", geo: "WHO · Global", body: "Consistent, controlled production." },
+export const STANDARDS: { name: string; geo: string; body: string; issuer: string; logo?: string }[] = [
+  { name: "ISO 9001", geo: "ISO · Global", body: "Quality management system requirements.", issuer: "ISO", logo: "/standards/iso.png" },
+  { name: "21 CFR Part 11", geo: "FDA · US", body: "Trustworthy electronic records and signatures.", issuer: "FDA", logo: "/standards/fda.png" },
+  { name: "ISO 13485", geo: "ISO · Global", body: "QMS for medical devices.", issuer: "ISO", logo: "/standards/iso.png" },
+  { name: "21 CFR Part 820", geo: "FDA · US", body: "Quality System Regulation for device cGMP.", issuer: "FDA", logo: "/standards/fda.png" },
+  { name: "EU GMP", geo: "EC · EU", body: "GMP for medicinal products.", issuer: "EU" },
+  { name: "GMP", geo: "WHO · Global", body: "Consistent, controlled production.", issuer: "WHO" },
 ];
 
 /* validated across regulated manufacturing */
@@ -207,12 +295,13 @@ export const INDUSTRIES = [
  * prototypes. Grounded in the same fiction as the rest of the page
  * (SOP-118 Rev C to D, change CC-2148). */
 export const MOCK_REGISTER: {
-  no: string; title: string; rev: string; state: "Effective" | "In Approval" | "Draft" | "Obsolete";
+  no: string; title: string; rev: string; state: "Effective" | "In Approval" | "Draft" | "Obsolete" | "Review Due";
   next: string; key?: boolean;
 }[] = [
   { no: "SOP-118", title: "Cleaning validation of process equipment", rev: "D", state: "In Approval", next: "2027-03-01", key: true },
   { no: "SOP-104", title: "Supplier qualification and monitoring", rev: "F", state: "Effective", next: "2026-11-14" },
   { no: "WI-092", title: "Line clearance, packaging area", rev: "B", state: "Effective", next: "2026-09-02" },
+  { no: "SOP-093", title: "Supplier audit checklist, periodic review", rev: "C", state: "Review Due", next: "2026-07-01" },
   { no: "SOP-121", title: "Deviation and CAPA intake", rev: "A", state: "Draft", next: "Pending" },
   { no: "FRM-201", title: "Training record, read and understood", rev: "C", state: "Effective", next: "2027-01-20" },
   { no: "SOP-077", title: "Labeling control and reconciliation", rev: "E", state: "Obsolete", next: "Retired" },

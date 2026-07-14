@@ -100,7 +100,7 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
         </div>
       </section>
 
-      <ResourceCTA heading="Your team has a story like this waiting to happen." ctaSecondary={{ label: "See the platform", href: "/platform" }} />
+      <ResourceCTA heading="Your team has a story like this waiting to happen." ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }} />
       <ResourceFooter />
     </ResourceShell>
   );

@@ -96,7 +96,7 @@ export const TESTIMONIALS: Testimonial[] = [
     duration: "5:03",
     headline: "Batch release went from days to the same shift",
     quote:
-      "Review-by-exception means my team only touches the deviations. A clean batch releases itself the moment the record is complete.",
+      "Review-by-exception means my team only touches the deviations. A clean batch is ready for release the moment the record is complete.",
     featured: true,
     poster: PORTRAIT_TRAIN,
     chapters: [
@@ -286,6 +286,51 @@ export const TESTIMONIALS: Testimonial[] = [
     metrics: [
       { value: "70%", label: "faster disposition" },
       { value: "-55%", label: "WIP on hold" },
+    ],
+  },
+  {
+    slug: "northpin-aerospace-eco",
+    person: "Lena Vogt",
+    role: "Director of Engineering",
+    company: "Northpin Aerospace",
+    companyKind: "Tier-1 structures supplier",
+    industry: "Aerospace & Defense",
+    modules: ["PLM", "QMS"],
+    duration: "4:21",
+    headline: "Change orders stopped living in review meetings",
+    quote:
+      "The ECO carries its own sign-off chain now - engineering, quality, production, in the open. Nobody builds to a dead revision anymore.",
+    chapters: [
+      { t: "0:00", label: "The ECO that stalled a line" },
+      { t: "1:15", label: "Joint sign-offs, visible" },
+      { t: "2:30", label: "Effectivity and the supplier notice" },
+      { t: "3:40", label: "Design history without the crunch" },
+    ],
+    metrics: [
+      { value: "6 days", label: "ECO cycle, was 21" },
+      { value: "0", label: "builds on old revisions" },
+    ],
+  },
+  {
+    slug: "veremark-devices-doc-control",
+    person: "Ines Marchetti",
+    role: "Document Controller",
+    company: "Veremark Devices",
+    companyKind: "Class II diagnostics",
+    industry: "Medical Devices",
+    modules: ["DMS"],
+    duration: "3:29",
+    headline: "Periodic reviews stopped ambushing us",
+    quote:
+      "A revision routes itself, training follows it, and periodic reviews come to me before they are due - not in an audit finding.",
+    chapters: [
+      { t: "0:00", label: "The review that surfaced in an audit" },
+      { t: "1:05", label: "Routing that closes itself" },
+      { t: "2:10", label: "Training tied to the revision" },
+    ],
+    metrics: [
+      { value: "3 days", label: "revision cycle, was 14" },
+      { value: "0", label: "overdue periodic reviews" },
     ],
   },
 ];

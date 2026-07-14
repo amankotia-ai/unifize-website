@@ -5,15 +5,15 @@
  *   ModuleExplorer     - module accordion with a staged prototype per module.
  *   LifecycleExplorer  - node-rail lifecycle diagram with a detail panel.
  *   FaqAccordion       - one-open-at-a-time FAQ.
- * Design: editorial, hairline-based - big Geist type, mono indices, staged
- * prototype mocks on gradient-noise fields. All state is local and degrades
+ * Design: wide, quiet, and systems-led, with staged product prototypes and
+ * direct tab controls. All state is local and degrades
  * to a sensible default without JS (first module, Effective state, first
  * FAQ open).
  * -------------------------------------------------------------------------- */
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { ChatShell } from "@/components/organisms";
-import { MODULES, LIFECYCLE, FAQS, TESTIMONIALS } from "./dms-data";
+import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
 import { Eyebrow, ShellFrame, StagePanel } from "./dms-primitives";
 import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mocks";
 
@@ -21,11 +21,84 @@ import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mo
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/* ============================================================ module story
- * Sticky scroll: three modules, one per viewport-height of scroll. The
- * brand-blue field stages the active module's prototype; the module row
- * beneath tracks left to right. Clicking a module scrolls to its
- * segment. Below 900px: static, tap to switch. */
+const MODULE_POINT_ICONS: Record<string, string[]> = {
+  "document-control": ["template", "route", "distribute", "review"],
+  "change-control": ["change", "matrix", "evidence", "training"],
+  "training-management": ["roles", "assign", "assessment", "report"],
+};
+
+const POINT_GLYPHS: Record<string, React.ReactNode> = {
+  template: (
+    <>
+      <path d="M3 1.5h6.5L13 5v9.5H3V1.5Z" />
+      <path className="dms-modx__icon-cut" d="M9.25 1.75v3.5h3.5M5.4 8h5.2M5.4 10.5h4" />
+    </>
+  ),
+  route: (
+    <>
+      <circle cx="4" cy="3" r="2" /><circle cx="4" cy="13" r="2" /><circle cx="12" cy="8" r="2" />
+      <path d="M3.25 4.8h1.5v2.45h5.4v1.5h-5.4v2.45h-1.5V4.8Z" />
+    </>
+  ),
+  distribute: <path d="M6.25 1.5h3.5v5H13L8 11.5 3 6.5h3.25v-5ZM2 12h12v2.5H2V12Z" />,
+  review: (
+    <>
+      <circle cx="8" cy="8" r="6.5" />
+      <path className="dms-modx__icon-cut" d="M8 4.2v4.1l2.8 1.7" />
+    </>
+  ),
+  change: (
+    <>
+      <path d="M2.5 1.5h7.25L13 4.75V10l-4.5 4.5h-6V1.5Z" />
+      <path d="m9.2 12.7 4.45-4.45 1.1 1.1-4.45 4.45-1.8.7.7-1.8Z" />
+      <path className="dms-modx__icon-cut" d="M9.5 1.8V5h3.2" />
+    </>
+  ),
+  matrix: (
+    <>
+      <rect x="1.5" y="1.5" width="5.5" height="5.5" /><rect x="9" y="1.5" width="5.5" height="5.5" />
+      <rect x="1.5" y="9" width="5.5" height="5.5" /><rect x="9" y="9" width="5.5" height="5.5" />
+    </>
+  ),
+  evidence: (
+    <>
+      <path d="M3 1.5h7l3 3v10H3v-13Z" />
+      <path className="dms-modx__icon-cut" d="M9.7 1.8v3h3M5.5 8h5M5.5 10.5h3.5" />
+      <circle cx="11.75" cy="12.25" r="2.25" />
+    </>
+  ),
+  training: (
+    <>
+      <path d="m1 5 7-3.5L15 5 8 8.5 1 5Z" />
+      <path d="M3.5 7.2 8 9.45l4.5-2.25v3.3c-2.7 2.2-6.3 2.2-9 0V7.2Z" />
+      <rect x="13.5" y="5" width="1.3" height="5" />
+    </>
+  ),
+  roles: (
+    <>
+      <circle cx="5" cy="5" r="3" /><circle cx="11.5" cy="5.5" r="2.3" />
+      <path d="M.75 14.5c.2-4 1.8-6 4.25-6s4.05 2 4.25 6H.75ZM9 14.5c.1-3.1 1.2-4.8 3.1-4.8 1.85 0 2.9 1.7 3.15 4.8H9Z" />
+    </>
+  ),
+  assign: <path d="M9.1.75 2.4 8.9h4.2l-.4 6.35 7.4-9h-4.3L9.1.75Z" />,
+  assessment: (
+    <>
+      <circle cx="8" cy="8" r="6.5" />
+      <path className="dms-modx__icon-cut" d="m4.6 8.2 2.2 2.2 4.7-4.8" />
+    </>
+  ),
+  report: <path d="M1.5 12h2.75v2.5H1.5V12Zm3.75-5h2.75v7.5H5.25V7ZM9 9.5h2.75v5H9v-5ZM12.75 2h2.25v12.5h-2.25V2Z" />,
+};
+
+function ModulePointIcon({ name }: { name: string }) {
+  return (
+    <svg className="dms-modx__point-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      {POINT_GLYPHS[name]}
+    </svg>
+  );
+}
+
+/* ============================================================ module story */
 
 const MODULE_MOCKS: Record<string, React.ReactNode> = {
   "document-control": <MockRevisionTrail />,
@@ -33,96 +106,65 @@ const MODULE_MOCKS: Record<string, React.ReactNode> = {
   "training-management": <MockTrainingMatrix />,
 };
 
-const MODX_MQ = "(min-width: 901px)";
-
 export function ModuleExplorer() {
   const [active, setActive] = useState(0);
-  const [prog, setProg] = useState(0);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const n = MODULES.length;
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (!window.matchMedia(MODX_MQ).matches) return;
-      const el = wrapRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      if (total <= 0) return;
-      const s = Math.min(1, Math.max(0, -rect.top / total));
-      setActive(Math.min(n - 1, Math.floor(s * n)));
-      setProg(s);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, [n]);
-
-  const onStep = (i: number) => {
-    const el = wrapRef.current;
-    if (el && window.matchMedia(MODX_MQ).matches) {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      window.scrollTo({
-        top: window.scrollY + rect.top + ((i + 0.5) / n) * total,
-        behavior: "smooth",
-      });
-    } else {
-      setActive(i);
-    }
-  };
 
   const m = MODULES[active];
 
   return (
-    <div className="dms-modx-scroll" ref={wrapRef}>
-      <div className="dms-modx-sticky">
-        <div className="dms-wrap dms-modx">
-          <div className="dms-modx__head">
-            <Eyebrow n={2}>What is bundled</Eyebrow>
-            <h2 className="dms-h2">Three modules, one record.</h2>
+    <div className="dms-wrap dms-modx">
+      <div className="dms-modx__head">
+        <Eyebrow n={2}>What is bundled</Eyebrow>
+        <h2 className="dms-h2">Three modules. One continuous record.</h2>
+        <p className="dms-lede">The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.</p>
+      </div>
+      <div className="dms-modx__layout">
+        <div className="dms-modx__row" role="group" aria-label="DMS modules">
+          {MODULES.map((mod, i) => (
+            <button
+              type="button"
+              key={mod.key}
+              className={"dms-modx__it" + (i === active ? " is-active" : "")}
+              aria-pressed={i === active}
+              aria-controls="dms-module-panel"
+              onClick={() => setActive(i)}
+            >
+              <span className="dms-modx__idx dms-data">{pad(i + 1)}</span>
+              <span className="dms-modx__name">{mod.name}</span>
+              <span className="dms-modx__blurb">{mod.promise}</span>
+            </button>
+          ))}
+        </div>
+        <div className="dms-modx__panel" id="dms-module-panel" aria-live="polite">
+          <div className="dms-modx__copy">
+            <p>{m.blurb}</p>
+            <ul>
+              {m.points.map((point, pointIndex) => (
+                <li key={point}>
+                  <ModulePointIcon name={MODULE_POINT_ICONS[m.key][pointIndex]} />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
           </div>
           <StagePanel className="dms-stage--brand dms-modx__stage">
-            <div className="dms-modx__card" key={m.key}>
-              <ShellFrame panel url={`app.unifize.com / ${m.key.replace(/-/g, " ")}`}>
-                {MODULE_MOCKS[m.key]}
-              </ShellFrame>
+            <div className="dms-modx__screens">
+              {MODULES.map((module, moduleIndex) => (
+                <div
+                  className={`dms-modx__card${moduleIndex === active ? " is-active" : ""}`}
+                  key={module.key}
+                  aria-hidden={moduleIndex !== active}
+                >
+                  <ShellFrame panel url={`app.unifize.com / ${module.key.replace(/-/g, " ")}`}>
+                    {MODULE_MOCKS[module.key]}
+                  </ShellFrame>
+                </div>
+              ))}
+            </div>
+            <div className="dms-modx__standards" aria-label="Standards supported by this module">
+              {m.standards.map((standard) => <span key={standard}>{standard}</span>)}
             </div>
           </StagePanel>
-          <div className="dms-modx__rail" aria-hidden="true">
-            {MODULES.map((mod, i) => (
-              <div className="dms-modx__rail-cell" key={mod.key}>
-                <span className={"dms-modx__jn" + (prog >= i / (n - 1) - 0.02 ? " is-on" : "")} />
-                {i < n - 1 && (
-                  <span className="dms-modx__seg">
-                    <span
-                      className="dms-modx__seg-fill"
-                      style={{ transform: `scaleX(${Math.min(1, Math.max(0, (prog - i / (n - 1)) * (n - 1)))})` }}
-                    />
-                  </span>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="dms-modx__row">
-            {MODULES.map((mod, i) => (
-              <button
-                type="button"
-                key={mod.key}
-                className={"dms-modx__it" + (i === active ? " is-active" : "")}
-                aria-pressed={i === active}
-                onClick={() => onStep(i)}
-              >
-                <span className="dms-modx__idx dms-data">{pad(i + 1)}</span>
-                <span className="dms-modx__name">{mod.name}</span>
-                <p className="dms-modx__blurb">{mod.blurb}</p>
-              </button>
-            ))}
-          </div>
         </div>
       </div>
     </div>
@@ -130,194 +172,74 @@ export function ModuleExplorer() {
 }
 
 /* ============================================================ lifecycle
- * The industry-template-modern "difference" pattern, scroll-driven: the trail
- * and the live chat shell sit inside a sticky viewport while a tall scroll
- * region drives the progression. Scrolling advances the lifecycle state and
- * scrubs the CC-2148 thread to the moment that state is decided. Clicking a
- * step smooth-scrolls to its segment. */
+ * A direct state selector keeps the full lifecycle and the corresponding
+ * CC-2148 evidence visible in one frame without a scroll-jacked sequence. */
 
 /* Scrub points into the ChatShell timeline (0..1) per lifecycle state:
  * Draft → change raised; In Review → cross-functional review; In Approval →
  * Part 11 signature; Effective → record card lands; Superseded → "Rev D live,
  * Rev C retired" row ticks; Obsolete → audit trail sealed. */
 const LIFE_PROGRESS = [0.17, 0.49, 0.72, 0.94, 0.97, 1];
-const N_STATES = LIFE_PROGRESS.length;
-const SCROLL_MQ = "(min-width: 941px)";
-
-/* piecewise-linear map: scroll fraction (0..1) → shell timeline progress,
- * anchoring each state's chat moment to the middle of its scroll segment */
-function shellProgressAt(s: number): number {
-  const pts: [number, number][] = [
-    [0, 0],
-    ...LIFE_PROGRESS.map((p, i) => [(i + 0.5) / N_STATES, p] as [number, number]),
-    [1, 1],
-  ];
-  for (let i = 1; i < pts.length; i++) {
-    if (s <= pts[i][0]) {
-      const [s0, p0] = pts[i - 1];
-      const [s1, p1] = pts[i];
-      return p0 + (p1 - p0) * ((s - s0) / (s1 - s0));
-    }
-  }
-  return 1;
-}
-
 export function LifecycleExplorer() {
   const [active, setActive] = useState(0);
-  const [progress, setProgress] = useState(0);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onScroll = () => {
-      if (!window.matchMedia(SCROLL_MQ).matches) return;
-      const el = wrapRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      if (total <= 0) return;
-      const s = Math.min(1, Math.max(0, -rect.top / total));
-      setActive(Math.min(N_STATES - 1, Math.floor(s * N_STATES)));
-      setProgress(shellProgressAt(s));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const onStep = (i: number) => {
-    const el = wrapRef.current;
-    if (el && window.matchMedia(SCROLL_MQ).matches) {
-      const rect = el.getBoundingClientRect();
-      const total = rect.height - window.innerHeight;
-      window.scrollTo({
-        top: window.scrollY + rect.top + ((i + 0.5) / N_STATES) * total,
-        behavior: "smooth",
-      });
-    } else {
-      setActive(i);
-      setProgress(LIFE_PROGRESS[i]);
-    }
-  };
+  const progress = LIFE_PROGRESS[active];
 
   return (
-    <div className="dms-lifex-scroll" ref={wrapRef}>
-      <div className="dms-lifex-sticky">
-        <StagePanel className="dms-stage--brand dms-lifex__stage">
-          <div className="dms-wrap dms-lifex-wrap">
-            <div className="dms-lifex__head">
-              <Eyebrow n={4}>The lifecycle</Eyebrow>
-              <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
-            </div>
-            <div className="dms-lifex">
-          <aside className="dms-lifex__trail">
-            <span className="dms-lifex__lab">How a revision moves</span>
-            <ol
-              className="dms-lifex__steps"
-              role="tablist"
-              aria-label="Controlled document lifecycle"
-              aria-orientation="vertical"
-              style={{ ["--lifex-fill" as string]: N_STATES > 1 ? active / (N_STATES - 1) : 0 }}
-            >
-              {LIFECYCLE.map((st, i) => (
-                <li
-                  className={
-                    "dms-lifex__step" +
-                    (i === active ? " is-active" : "") +
-                    (i < active ? " is-past" : "")
-                  }
-                  key={st.state}
-                >
-                  <button
-                    type="button"
-                    role="tab"
-                    id={`dms-lifetab-${i}`}
-                    aria-selected={i === active}
-                    aria-controls={`dms-lifedetail-${i}`}
-                    className="dms-lifex__btn"
-                    onClick={() => onStep(i)}
+    <div className="dms-lifex-scroll">
+      <StagePanel className="dms-stage--brand dms-lifex__stage">
+        <div className="dms-wrap dms-lifex-wrap">
+          <div className="dms-lifex__head">
+            <Eyebrow n={4}>The lifecycle</Eyebrow>
+            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
+          </div>
+          <div className="dms-lifex">
+            <aside className="dms-lifex__trail">
+              <span className="dms-lifex__lab">How a revision moves</span>
+              <ol
+                className="dms-lifex__steps"
+                aria-label="Controlled document lifecycle"
+              >
+                {LIFECYCLE.map((st, i) => (
+                  <li
+                    className={
+                      "dms-lifex__step" +
+                      (i === active ? " is-active" : "") +
+                      (i < active ? " is-past" : "")
+                    }
+                    key={st.state}
                   >
-                    <span className="dms-lifex__node" aria-hidden="true" />
-                    <span className="dms-lifex__t">{st.state}</span>
-                    <span className="dms-lifex__meta">{st.gate}</span>
-                  </button>
-                  <div className="dms-lifex__detail" id={`dms-lifedetail-${i}`} role="tabpanel" aria-labelledby={`dms-lifetab-${i}`} aria-hidden={i !== active}>
-                    <div className="dms-lifex__detail-inner"><p>{st.detail}</p></div>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </aside>
+                    <button
+                      type="button"
+                      id={`dms-lifetab-${i}`}
+                      aria-pressed={i === active}
+                      aria-controls={`dms-lifedetail-${i}`}
+                      className="dms-lifex__btn"
+                      onClick={() => setActive(i)}
+                    >
+                      <span className="dms-lifex__node" aria-hidden="true" />
+                      <span className="dms-lifex__t">{st.state}</span>
+                      <span className="dms-lifex__meta">{st.gate}</span>
+                    </button>
+                    <div className="dms-lifex__detail" id={`dms-lifedetail-${i}`} role="region" aria-labelledby={`dms-lifetab-${i}`} aria-hidden={i !== active}>
+                      <div className="dms-lifex__detail-inner"><p>{st.detail}</p></div>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </aside>
 
-          <div className="dms-lifex__live" aria-label="Change-control thread CC-2148, scrubbed by scroll">
-            <ChatShell variant="change-control" progress={progress} />
-          </div>
+            <div className="dms-lifex__live" aria-label="Change-control thread CC-2148, updated by lifecycle state">
+              <ChatShell variant="change-control" progress={progress} />
+            </div>
 
-          <div className="dms-lifex__mobile" aria-hidden="true">
-            <span className="dms-lifex__mobile-lab">Change-control thread</span>
-            <span className="dms-lifex__mobile-id">CC-2148 · raise → review → Part 11 approval → effective → seal</span>
-          </div>
+            <div className="dms-lifex__mobile" aria-hidden="true">
+              <span className="dms-lifex__mobile-lab">Change-control thread</span>
+              <span className="dms-lifex__mobile-id">CC-2148 · raise → review → Part 11 approval → effective → seal</span>
             </div>
           </div>
-        </StagePanel>
-      </div>
+        </div>
+      </StagePanel>
     </div>
-  );
-}
-
-/* ============================================================ proof carousel
- * Full-bleed customer photo per story; head top-left, quote bottom-left,
- * forward/back controls bottom-right. Photos crossfade; the quote block
- * re-rises on change. */
-
-export function ProofCarousel() {
-  const [i, setI] = useState(0);
-  const n = TESTIMONIALS.length;
-  const t = TESTIMONIALS[i];
-  const go = (d: number) => setI((prev) => (prev + d + n) % n);
-
-  return (
-    <>
-      {TESTIMONIALS.map((s, j) => (
-        <img
-          key={s.img}
-          className={"dms-proof-section__photo" + (j === i ? " is-on" : "")}
-          src={s.img}
-          alt=""
-        />
-      ))}
-      <div className="dms-wrap dms-proof">
-        <header className="dms-proof__head">
-          <Eyebrow n={6}>Proof</Eyebrow>
-          <span className="dms-proof__kicker">What quality teams say</span>
-        </header>
-        <figure className="dms-proof__fig">
-          <blockquote className="dms-proof__q" key={"q-" + i}>&ldquo;{t.quote}&rdquo;</blockquote>
-          <div className="dms-proof__bar">
-            <figcaption className="dms-proof__who" key={"who-" + i}>
-              <span className="dms-proof__name">{t.name}</span>
-              <span className="dms-proof__role">{t.title}</span>
-            </figcaption>
-            <div className="dms-proof__nav">
-              <span className="dms-proof__count dms-data" aria-live="polite">{pad(i + 1)}&thinsp;/&thinsp;{pad(n)}</span>
-              <button type="button" className="dms-proof__btn" aria-label="Previous story" onClick={() => go(-1)}>
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-                  <path strokeLinecap="square" d="m12 4-6 6 6 6" />
-                </svg>
-              </button>
-              <button type="button" className="dms-proof__btn" aria-label="Next story" onClick={() => go(1)}>
-                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
-                  <path strokeLinecap="square" d="m8 4 6 6-6 6" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </figure>
-      </div>
-    </>
   );
 }
 

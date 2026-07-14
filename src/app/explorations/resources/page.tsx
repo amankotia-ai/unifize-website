@@ -45,7 +45,7 @@ export default function ResourcesHubPage() {
         </div>
       </section>
 
-      <ResourceCTA heading="See it run on your own processes." ctaSecondary={{ label: "See the platform", href: "/platform" }} />
+      <ResourceCTA heading="See it run on your own processes." ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }} />
       <ResourceFooter />
     </ResourceShell>
   );

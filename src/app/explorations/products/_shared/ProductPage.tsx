@@ -8,6 +8,7 @@
  * ========================================================================== */
 import Link from "next/link";
 import { DmsHeader } from "../dms/dms-header";
+import { SiteFooter } from "../../_shared/site-footer";
 import { DmsMotion } from "../dms/dms-motion";
 import { CoordinationTax, type CoordinationLeak } from "../dms/dms-coordination";
 import { IntegrationLayer, type IntegrationData } from "../dms/dms-integrations";
@@ -123,7 +124,7 @@ export function ProductPage({ data }: { data: ProductPageData }) {
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
               <div className="dms-hero__crumb">
-                <Link href="/platform">Products</Link>
+                <Link href="/explorations/platform">Products</Link>
                 <span className="dms-hero__crumb-sep" aria-hidden="true">/</span>
                 <span>{data.crumbLabel}</span>
               </div>
@@ -420,32 +421,7 @@ export function ProductPage({ data }: { data: ProductPageData }) {
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <footer className="dms-footer">
-        <div className="dms-wrap dms-footer__grid">
-          <div className="dms-footer__brand">
-            <img className="dms-footer__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="dms-footer__tag">{data.footer.tagline}</span>
-          </div>
-          {data.footer.nav.map((col) => (
-            <nav className="dms-footer__col" aria-label={col.label} key={col.label}>
-              <span className="dms-footer__lab">{col.label}</span>
-              {col.links.map((l) => (
-                l.href.startsWith("/") ? (
-                  <Link key={l.label} href={l.href}>{l.label}</Link>
-                ) : (
-                  <a key={l.label} href={l.href}>{l.label}</a>
-                )
-              ))}
-            </nav>
-          ))}
-        </div>
-        <div className="dms-wrap">
-          <div className="dms-footer__base">
-            <span>© Unifize 2026</span>
-            <span>{data.footer.baseRight}</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter tagline={data.footer.tagline} note={data.footer.baseRight} />
     </main>
   );
 }

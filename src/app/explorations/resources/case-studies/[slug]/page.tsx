@@ -132,7 +132,7 @@ export default async function CaseStudyItemPage({ params }: { params: Promise<{ 
         </div>
       </section>
 
-      <ResourceCTA heading={`Run the play ${c.company} ran, on your own quality processes.`} ctaSecondary={{ label: "See the platform", href: "/platform" }} />
+      <ResourceCTA heading={`Run the play ${c.company} ran, on your own quality processes.`} ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }} />
       <ResourceFooter />
     </ResourceShell>
   );

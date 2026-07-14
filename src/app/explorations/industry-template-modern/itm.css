@@ -528,6 +528,8 @@
 .itm-cov__mod-name { font-family:var(--itm-display); font-weight:500; font-size:1rem; color:var(--itm-d-ink); letter-spacing:-0.012em; }
 .itm-cov__mod-badge { display:inline-flex; align-items:center; gap:5px; font-family:var(--itm-mono); font-size:0.5625rem; font-weight:500; text-transform:uppercase; letter-spacing:0.06em; color:var(--itm-ok); }
 .itm-cov__mod-badge .itm-dot { background:var(--itm-ok); }
+.itm-cov__mod-badge--soon { color:var(--itm-d-ink-3); }
+.itm-cov__mod-badge--soon .itm-dot { background:var(--itm-d-ink-3); }
 .itm-cov__mod-blurb { font-size:0.8125rem; line-height:1.5; color:var(--itm-d-ink-2); margin:0; }
 .itm-cov__mod-std { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
 .itm-cov__tag { font-family:var(--itm-mono); font-size:0.5625rem; letter-spacing:0.04em; text-transform:uppercase; color:var(--itm-d-ink-2); padding:3px 7px; border:1px solid var(--itm-d-border-2); }

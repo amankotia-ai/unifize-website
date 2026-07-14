@@ -18,6 +18,7 @@
  * ========================================================================== */
 import Link from "next/link";
 import { DmsHeader } from "../../products/dms/dms-header";
+import { SiteFooter } from "../../_shared/site-footer";
 import { DmsMotion } from "../../products/dms/dms-motion";
 import { Eyebrow, HatchFrame } from "../../products/dms/dms-primitives";
 import { CapGlyph, SeverityIcon } from "../../products/dms/dms-linework";
@@ -381,32 +382,7 @@ export function TriggerPage({ data }: { data: TriggerPageData }) {
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <footer className="dms-footer">
-        <div className="dms-wrap dms-footer__grid">
-          <div className="dms-footer__brand">
-            <img className="dms-footer__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="dms-footer__tag">{data.footer.tagline}</span>
-          </div>
-          {data.footer.nav.map((col) => (
-            <nav className="dms-footer__col" aria-label={col.label} key={col.label}>
-              <span className="dms-footer__lab">{col.label}</span>
-              {col.links.map((l) => (
-                l.href.startsWith("/") ? (
-                  <Link key={l.label} href={l.href}>{l.label}</Link>
-                ) : (
-                  <a key={l.label} href={l.href}>{l.label}</a>
-                )
-              ))}
-            </nav>
-          ))}
-        </div>
-        <div className="dms-wrap">
-          <div className="dms-footer__base">
-            <span>© Unifize 2026</span>
-            <span>{data.footer.baseRight}</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter tagline={data.footer.tagline} note={data.footer.baseRight} />
     </main>
   );
 }

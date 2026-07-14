@@ -12,30 +12,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   PRODUCT,
-  HERO_STANDARDS,
-  DRIFT,
-  PROBLEM_FEATURES,
+  DMS_PROBLEMS,
   INTEGRATIONS,
   CAPABILITIES,
-  PERSONAS,
-  PAINS,
+  AUDIENCE,
   STANDARDS,
   INDUSTRIES,
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
-import { DmsMotion } from "./dms-motion";
+import { SiteFooter } from "../../_shared/site-footer";
+import { NAV } from "../../_shared/nav-data";
 import { CoordinationTax } from "./dms-coordination";
 import { IntegrationLayer } from "./dms-integrations";
-import { Eyebrow, ShellFrame, StagePanel, HatchFrame, pad } from "./dms-primitives";
-import { CapGlyph, SolidGlyph, SeverityIcon, WithDmsOrbit } from "./dms-linework";
+import { Eyebrow, ShellFrame } from "./dms-primitives";
+import { CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
+import { DmsProblemSpotlight } from "./dms-problem-visuals";
+import { DmsHeroVideo } from "./dms-hero-video";
+import { CustomerSuccess } from "../../industry-template-modern/customer-success";
 import {
   ModuleExplorer,
   LifecycleExplorer,
-  ProofCarousel,
   FaqAccordion,
 } from "./dms-interactive";
+import "../../industry-template-modern/itm.css";
 import "./dms.css";
+import "./dms-redesign.css";
 
 export const metadata: Metadata = {
   title: "Document Management System · Unifize",
@@ -43,12 +45,23 @@ export const metadata: Metadata = {
     "DMS bundles Document Control, Change Control, and Training into one governed record. Controlled documents from draft to obsolete, with 21 CFR Part 11 e-signature where required.",
 };
 
-const SEV_CLASS: Record<string, string> = { Critical: "is-critical", High: "is-high", Medium: "is-medium" };
+const DMS_TRUST_INDUSTRY_NAMES = new Set([
+  "Medical Devices",
+  "Pharmaceuticals",
+  "Laboratories",
+  "Cosmetics",
+  "Food Processing",
+  "Aerospace",
+]);
+
+const DMS_TRUST_INDUSTRIES =
+  NAV.find((item) => item.label === "Industries")?.cols
+    ?.flatMap((column) => column.items.map((item) => item.label))
+    .filter((label) => DMS_TRUST_INDUSTRY_NAMES.has(label)) ?? [];
 
 export default function DmsProductPage() {
   return (
-    <main className="dms">
-      <DmsMotion />
+    <main className="dms dms--redesign">
       <DmsHeader />
 
       {/* ============================ HERO ============================= */}
@@ -56,13 +69,18 @@ export default function DmsProductPage() {
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
-              <div className="dms-hero__crumb">
-                <Link href="/platform">Products</Link>
-                <span className="dms-hero__crumb-sep" aria-hidden="true">/</span>
+              <Link className="dms-hero__product" href="/explorations/platform">
+                <span className="dms-hero__product-mark" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path className="dms-hero__product-sheet" d="M7 3.75h7.4L18 7.35v12.9H7V3.75Z" />
+                    <path className="dms-hero__product-detail" d="M14 3.75v4h4M9.75 12h5.5M9.75 15.5h5.5" />
+                  </svg>
+                </span>
                 <span>Document Management System</span>
-              </div>
+              </Link>
               <h1 className="dms-hero__title">
-                The current version shouldn&rsquo;t depend on <span className="dms-hero__turn">where you look.</span>
+                <span className="dms-hero__line">One current version.</span>
+                <span className="dms-hero__line dms-hero__turn">Everywhere you look.</span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -73,113 +91,63 @@ export default function DmsProductPage() {
               </div>
             </div>
           </div>
-          <ul className="dms-hero__stds" aria-label="Standards supported">
-            {HERO_STANDARDS.map((s) => (
-              <li key={s} className="dms-hero__std">{s}</li>
-            ))}
-          </ul>
-        </div>
 
-        {/* the one hero visual - coded prototype floating on the hero, overlapping below */}
-        <div className="dms-wrap dms-hero__frame">
-          <ShellFrame url="app.unifize.com / documents">
-            <MockDocRegister />
-          </ShellFrame>
+          <div className="dms-hero__frame dms-hero__product-demo">
+            <div className="dms-hero__stage">
+              <DmsHeroVideo>
+                <ShellFrame url="app.unifize.com / documents">
+                  <MockDocRegister />
+                </ShellFrame>
+              </DmsHeroVideo>
+            </div>
+          </div>
+
         </div>
       </section>
 
       {/* ============================ TRUST STRIP ======================= */}
-      <section className="dms-section dms-trust" aria-label="Customers">
+      <section className="dms-section dms-trust" aria-label="Industries served">
         <div className="dms-wrap dms-trust__inner">
-          <div className="dms-trust__logos" role="img" aria-label="Customer logos, placeholders">
-            {[128, 96, 150, 108, 136, 92].map((w, i) => (
-              <span key={i} className="dms-trust__mark" style={{ width: w }} />
+          <p className="dms-trust__label">One controlled record across regulated operations</p>
+          <ul className="dms-trust__logos" aria-label="Representative industries">
+            {DMS_TRUST_INDUSTRIES.map((industry) => (
+              <li key={industry} className="dms-trust__mark">{industry}</li>
             ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ============================ THE PROBLEM ======================= */}
+      <section className="dms-section dms-problems" id="problem" aria-labelledby="dms-problems-title">
+        <div className="dms-wrap dms-problems__inner">
+          <header className="dms-problems__intro">
+            <div className="dms-problems__head">
+              <Eyebrow>The problem</Eyebrow>
+              <h2 className="dms-h2" id="dms-problems-title">
+                You have the document. Nobody can find it when it matters.
+              </h2>
+            </div>
+            <p className="dms-lede">
+              Quality teams spend up to a third of their week hunting for controlled documents across shared drives,
+              QMS folders, and email threads.
+            </p>
+          </header>
+
+          {/* Spotlight: index rail left, one symptom on stage at a time. */}
+          <DmsProblemSpotlight items={DMS_PROBLEMS} />
+
+          <div className="dms-problems__bridge">
+            <p><strong>Four symptoms, one root cause.</strong> The work isn’t the bottleneck; the coordination around it is.</p>
           </div>
         </div>
       </section>
 
       {/* ==================== THE COORDINATION TAX =====================
-       * Thesis interstitial before the numbered walkthrough: the category
-       * premise, resolved with the DMS-specific collapse line. */}
-      <CoordinationTax
-        leaks={[
-          { surface: "Inbox", name: "The approval chase", note: "A revision waits on a signature that lives in someone's inbox, not on the record." },
-          { surface: "Drive", name: "The three copies", note: "The same SOP sits in a folder, a share, and an attachment, each at a different revision." },
-          { surface: "Sheet", name: "The training log", note: "Who is trained on the current version is tracked in a spreadsheet no one fully trusts." },
-          { surface: "Meeting", name: "The change review", note: "A document change waits for the next review meeting instead of routing itself." },
-          { surface: "Audit", name: "The version scramble", note: "The auditor asks which copy is effective, and answering takes an afternoon." },
-        ]}
-        summary={
-          <>
-            <b>The document becomes the conversation.</b> The current version, its approval, and everyone who
-            depends on it sit on one record, so there is no thread to chase and no copy to reconcile.
-          </>
-        }
-      />
-
-      {/* ============================ 01 · THE DRIFT PROBLEM =============
-       * Two columns on one asymmetry: left, the head over the WITHOUT
-       * register (three competing answers, fading with staleness); right,
-       * the WITH DMS record staged on the section-02 field container, one
-       * effective revision with the drifted copies now governed around it.
-       * A three-up payoff register closes the section. */}
-      <section className="dms-section dms-problem">
-        <div className="dms-wrap">
-          <div className="dms-problem__grid">
-            <div className="dms-problem__left">
-              <div className="dms-head" data-reveal>
-                <Eyebrow n={1}>The problem</Eyebrow>
-                <h2 className="dms-h2">A document is only controlled if there is one of it.</h2>
-                <p className="dms-lede">
-                  The same SOP lives in three places at three revisions. DMS collapses them into one governed record.
-                </p>
-              </div>
-              <div className="dms-noctl" data-reveal>
-                <span className="dms-noctl__lab">Without DMS</span>
-                <ul className="dms-noctl__list">
-                  {DRIFT.without.map((d) => (
-                    <li className={"dms-noctl__row dms-noctl__row--" + d.tone} key={d.loc}>
-                      <span className="dms-noctl__ver dms-data">{d.ver}</span>
-                      <span className="dms-noctl__meta">
-                        <span className="dms-noctl__loc">
-                          <span className={"dms-noctl__dot dms-noctl__dot--" + d.tone} aria-hidden="true" />
-                          {d.loc}
-                        </span>
-                        <span className="dms-noctl__note">{d.note}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="dms-problem__right" data-reveal>
-              <StagePanel className="dms-with dms-stage--brand">
-                <span className="dms-with__lab">With DMS</span>
-                <div className="dms-with__orbit">
-                  <WithDmsOrbit />
-                </div>
-                <p className="dms-with__sum"><b>One effective revision.</b> {DRIFT.withDms.note}</p>
-              </StagePanel>
-            </div>
-          </div>
-
-          <ul className="dms-problem__feats" data-reveal>
-            {PROBLEM_FEATURES.map((f) => (
-              <li className="dms-pf" key={f.title}>
-                <SolidGlyph name={f.glyph} className="dms-pf__glyph" />
-                <h3 className="dms-pf__title">{f.title}</h3>
-                <p className="dms-pf__body">{f.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+       * The four daily symptoms roll up into one measurable root cause. */}
+      <CoordinationTax variant="revision" problems={DMS_PROBLEMS} />
 
       {/* ============================ 02 · MODULES BUNDLED ===============
-       * Sticky scroll story: the component owns the full 300vh region,
-       * head included. Runs on ink (near-black block, sections 02-04). */}
+       * The Unifize product story begins after the problem is fully framed. */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer />
       </section>
@@ -216,102 +184,124 @@ export default function DmsProductPage() {
        * Connective beat after the lifecycle: the controlled document does not
        * stop at Unifize's edge. Unnumbered interstitial, on ink, so it continues
        * the dark block (02-04) one section longer before the light 05. */}
-      <IntegrationLayer data={INTEGRATIONS} />
+      <IntegrationLayer data={INTEGRATIONS} variant="minimal" />
 
-      {/* ============================ 05 · WHO OWNS IT ===================
-       * Composition: stacked head, then two profiles on a center hairline. */}
-      <section className="dms-section" id="who">
+      {/* ============================ 05 · WHO IT IS FOR =================
+       * The two canonical DMS target personas (Notion: PPS-5, PPS-6) own the
+       * record day to day; the Quality Manager (PPS-2) is the approving seat.
+       * Question-led cards: each role is one audit question answered. */}
+      <section className="dms-section dms-audience" id="who" aria-labelledby="dms-audience-title">
         <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={5}>Who owns it</Eyebrow>
-            <h2 className="dms-h2">Built for the two people the audit finds first.</h2>
-          </div>
-          <div className="dms-personas">
-            {PERSONAS.map((p) => (
-              <article className="dms-persona" key={p.name} data-reveal>
-                <img className="dms-persona__photo" src={p.img} alt="" loading="lazy" />
-                <div className="dms-persona__body">
-                  <span className="dms-persona__tier">{p.tier}</span>
-                  <h3 className="dms-persona__name">{p.name}</h3>
-                  <p className="dms-persona__summary">{p.summary}</p>
-                  <ol className="dms-persona__daily">
-                    {p.daily.map((d, j) => (
-                      <li key={d}><span className="dms-persona__num dms-data" aria-hidden="true">{pad(j + 1)}</span>{d}</li>
-                    ))}
-                  </ol>
+          <header className="dms-audience__head" data-reveal>
+            <Eyebrow n={5}>Who it is for</Eyebrow>
+            <h2 className="dms-h2" id="dms-audience-title">For the teams that keep every document current.</h2>
+            <p className="dms-lede">{AUDIENCE.lede}</p>
+          </header>
+
+          <div className="dms-audience__owners">
+            {AUDIENCE.owners.map((owner) => (
+              <article className="dms-owner" key={owner.role} data-reveal>
+                <img className="dms-owner__photo" src={owner.img} alt="" loading="lazy" />
+                <div className="dms-owner__body">
+                  <div className="dms-owner__kicker">
+                    <h3 className="dms-owner__role">{owner.role}</h3>
+                    <span className="dms-owner__owns">{owner.owns}</span>
+                  </div>
+                  <p className="dms-owner__aka">Also answers to {owner.aka}</p>
+                  <p className="dms-owner__q">“{owner.question}”</p>
+                  <div className="dms-owner__work">
+                    <span className="dms-owner__lab">Day to day</span>
+                    <ol className="dms-owner__daily">
+                      {owner.daily.map((d, i) => (
+                        <li key={d}><span aria-hidden="true">0{i + 1}</span>{d}</li>
+                      ))}
+                    </ol>
+                  </div>
+                  <span className="dms-owner__soon">Full persona page · soon</span>
                 </div>
               </article>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* ============================ 06 · PROOF (carousel) ============= */}
-      <section className="dms-section dms-proof-section" aria-label="Customer proof">
-        <ProofCarousel />
-      </section>
-
-      {/* ============================ 07 · PAINS CLOSED ==================
-       * Composition: stacked head, then a findings register with the
-       * failure-mode code at display scale. Reads like the audit log it
-       * prevents. */}
-      <section className="dms-section">
-        <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={7}>What it closes</Eyebrow>
-            <h2 className="dms-h2">The four failure modes that become audit findings.</h2>
-          </div>
-          <ol className="dms-pains">
-            {PAINS.map((pn, i) => (
-              <li className={"dms-pain " + SEV_CLASS[pn.severity]} key={pn.title} data-reveal>
-                <div className="dms-pain__sig">
-                  <SeverityIcon severity={pn.severity} />
-                  <span className="dms-pain__sev">{pn.severity}</span>
-                </div>
-                <h3 className="dms-pain__title">{pn.title}</h3>
-                <p className="dms-pain__body">{pn.body}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ============================ 08 · COMPLIANCE + INDUSTRIES ======= */}
-      <section className="dms-section dms-section--alt" id="compliance">
-        <div className="dms-wrap">
-          <div className="dms-head" data-reveal>
-            <Eyebrow n={8}>Compliance frame</Eyebrow>
-            <h2 className="dms-h2">One controlled lifecycle, whatever you are audited against.</h2>
-          </div>
-          <div data-reveal>
-            <HatchFrame>
-              <ul className="dms-stds">
-                {STANDARDS.map((s) => (
-                  <li className="dms-std" key={s.name}>
-                    <span className="dms-std__geo">{s.geo}</span>
-                    <span className="dms-std__name">{s.name}</span>
-                    <p className="dms-std__body">{s.body}</p>
-                  </li>
-                ))}
-              </ul>
-              <div className="dms-frame">
-                <div className="dms-frame__inds">
-                  <span className="dms-persona__lab">Validated across</span>
-                  <div className="dms-inds">
-                    {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
-                  </div>
-                </div>
+          <aside className="dms-audience__approver" data-reveal aria-label="The approving seat">
+            <div className="dms-apr__main">
+              <div className="dms-owner__kicker">
+                <h3 className="dms-owner__role">{AUDIENCE.approver.role}</h3>
+                <span className="dms-owner__owns">{AUDIENCE.approver.owns}</span>
               </div>
-            </HatchFrame>
+              <p className="dms-owner__aka">Also answers to {AUDIENCE.approver.aka}</p>
+              <p className="dms-owner__q">“{AUDIENCE.approver.question}”</p>
+              <Link className="dms-audience__link" href={AUDIENCE.approver.href}>
+                <span>{AUDIENCE.approver.linkLabel}</span>
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </div>
+            <div className="dms-apr__side">
+              <span className="dms-owner__lab">Day to day</span>
+              <ol className="dms-owner__daily">
+                {AUDIENCE.approver.daily.map((d, i) => (
+                  <li key={d}><span aria-hidden="true">0{i + 1}</span>{d}</li>
+                ))}
+              </ol>
+            </div>
+          </aside>
+
+          <p className="dms-audience__readside" data-reveal>
+            <strong>Everyone else on the floor?</strong> They see one thing: the current effective version, at the point of use.
+          </p>
+        </div>
+      </section>
+
+      {/* ============================ 06 · PROOF =========================
+       * Reuses the section 08 proof pattern from industry-template-modern. */}
+      <div className="itm dms-proof-reference">
+        <CustomerSuccess
+          eyebrowNumber={6}
+          title="Results, honestly stated, from quality teams like yours."
+          ariaLabel="Customer proof"
+        />
+      </div>
+
+      {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
+      <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="dms-compliance-title">
+        <div className="dms-wrap">
+          <div className="dms-compliance__head" data-reveal>
+            <div className="dms-head">
+              <Eyebrow n={7}>Compliance frame</Eyebrow>
+              <h2 className="dms-h2" id="dms-compliance-title">One lifecycle. Every standard.</h2>
+            </div>
+            <p className="dms-lede">Control the record once, then prove it against whatever governs your operation.</p>
+          </div>
+
+          <div className="dms-compliance__body" data-reveal>
+            <ol className="dms-compliance__standards">
+              {STANDARDS.map((s) => (
+                <li className="dms-compliance__standard" key={s.name}>
+                  <div className={`dms-std__logo dms-std__logo--${s.issuer.toLowerCase()}`} aria-hidden="true">
+                    {s.logo ? <img src={s.logo} alt="" /> : <span>{s.issuer}</span>}
+                  </div>
+                  <span className="dms-std__geo">{s.geo}</span>
+                  <span className="dms-std__name">{s.name}</span>
+                  <p className="dms-std__body">{s.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="dms-compliance__industries" data-reveal>
+            <span className="dms-persona__lab">Validated across</span>
+            <div className="dms-inds">
+              {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============================ 09 · FAQ =========================== */}
+      {/* ============================ 08 · FAQ =========================== */}
       <section className="dms-section dms-section--alt" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
-            <Eyebrow n={9}>FAQ</Eyebrow>
+            <Eyebrow n={8}>FAQ</Eyebrow>
             <h2 className="dms-h2">The questions procurement and QA ask first.</h2>
             <p className="dms-lede">
               Anything else, <a href="#dms-close-h">bring it to the walkthrough</a>.
@@ -343,34 +333,7 @@ export default function DmsProductPage() {
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <footer className="dms-footer">
-        <div className="dms-wrap dms-footer__grid">
-          <div className="dms-footer__brand">
-            <img className="dms-footer__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="dms-footer__tag">One governed home for every controlled document.</span>
-          </div>
-          <nav className="dms-footer__col" aria-label="Product">
-            <span className="dms-footer__lab">Document Management System</span>
-            <a href="#modules">What is bundled</a>
-            <a href="#lifecycle">The lifecycle</a>
-            <a href="#capabilities">Capabilities</a>
-            <a href="#integrations">Integrations</a>
-          </nav>
-          <nav className="dms-footer__col" aria-label="More">
-            <span className="dms-footer__lab">More</span>
-            <a href="#who">Who owns it</a>
-            <a href="#compliance">Compliance</a>
-            <a href="#faq">FAQ</a>
-            <Link href="/platform">All products</Link>
-          </nav>
-        </div>
-        <div className="dms-wrap">
-          <div className="dms-footer__base">
-            <span>© Unifize 2026</span>
-            <span>Document Management System · UPD-2</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter tagline="One governed home for every controlled document." note="Document Management System · UPD-2" />
     </main>
   );
 }

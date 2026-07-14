@@ -81,7 +81,17 @@ const CS_CARDS: CSCard[] = [
   },
 ];
 
-export function CustomerSuccess() {
+type CustomerSuccessProps = {
+  eyebrowNumber?: number;
+  title?: string;
+  ariaLabel?: string;
+};
+
+export function CustomerSuccess({
+  eyebrowNumber = 8,
+  title = "Results, honestly stated, from device teams in your class.",
+  ariaLabel = "Customer success",
+}: CustomerSuccessProps = {}) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   const scroll = (dir: number) => {
@@ -93,11 +103,11 @@ export function CustomerSuccess() {
   };
 
   return (
-    <section className="itm-section itm-section--alt itm-cs" id="proof" aria-label="Customer success">
+    <section className="itm-section itm-section--alt itm-cs" id="proof" aria-label={ariaLabel}>
       <div className="itm-wrap itm-wrap--wide itm-cs__head">
         <div className="itm-head-block">
-          <Eyebrow n={8}>Proof</Eyebrow>
-          <h2 className="itm-h2">Results, honestly stated, from device teams in your class.</h2>
+          <Eyebrow n={eyebrowNumber}>Proof</Eyebrow>
+          <h2 className="itm-h2">{title}</h2>
         </div>
         <div className="itm-cs__nav">
           <button type="button" className="itm-cs__arrow" aria-label="Previous stories" onClick={() => scroll(-1)}>
