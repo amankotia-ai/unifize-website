@@ -356,6 +356,147 @@ export const TESTIMONIALS: { quote: string; name: string; title: string; img: st
   },
 ];
 
+/* customer proof films - REAL customer videos from the Webflow CMS Content
+ * collection (inventory: dms-testimonial-videos.html, 2026-07-15). Top 10 of
+ * 34 customer-attributed DMS-tagged films, picked for page relevance: the
+ * revision->training thesis, migration off a legacy eQMS, approvals/sign-off
+ * chasing, audits, and the engineering seat the page under-serves. Posters
+ * are the Webflow CMS thumbnails (cdn.prod.website-files.com); links go to
+ * the live unifize.com content page; wistia kept for future inline embeds. */
+export type ProofFilm = {
+  url: string;
+  title: string;
+  person: string;
+  role?: string;
+  company: string;
+  industry: string;
+  modules: ("Document Control" | "Change Control" | "Training")[];
+  duration: string;
+  wistia: string;
+  poster: string;
+};
+
+const WF = "https://cdn.prod.website-files.com/6475b503eba1a8c129c44339/";
+const CONTENT = "https://www.unifize.com/content/";
+
+export const PROOF_FILMS: ProofFilm[] = [
+  {
+    url: `${CONTENT}how-unifize-ensures-everyone-is-trained-on-the-right-version-of-documents-and-sops`,
+    title: "How Unifize ensures everyone is trained on the right version of documents and SOPs",
+    person: "Jesse Kolstad",
+    role: "Director of Quality",
+    company: "Biovation Labs",
+    industry: "Nutritional Supplements",
+    modules: ["Document Control", "Change Control"],
+    duration: "02:27",
+    wistia: "qayx823k6h",
+    poster: `${WF}657aa71727b24f9d0cb1c49a_BL-JK-13%20Training%20on%20right%20documents%20and%20SOPs.webp`,
+  },
+  {
+    url: `${CONTENT}why-biovation-moved-from-mastercontrol-to-unifize`,
+    title: "Why Biovation moved from MasterControl to Unifize",
+    person: "Jesse Kolstad",
+    role: "Director of Quality",
+    company: "Biovation Labs",
+    industry: "Nutritional Supplements",
+    modules: ["Document Control"],
+    duration: "05:21",
+    wistia: "r8sesxmui9",
+    poster: `${WF}657aa7b7bb4aa8b07a62ea84_BL-JK-03%20Why%20Biovation%20moved%20from%20MasterControl%20to%20Unifize.webp`,
+  },
+  {
+    url: `${CONTENT}streamlining-change-control-on-unifize`,
+    title: "Streamlining Change Control on Unifize",
+    person: "Clarissa Archer",
+    company: "Harmonic Bionics",
+    industry: "Medical Devices",
+    modules: ["Change Control"],
+    duration: "05:37",
+    wistia: "juwzkpk7sw",
+    poster: `${WF}657aa52c4b198b064ebbdcd7_HB-CA-13%20Streamlining%20change%20control.webp`,
+  },
+  {
+    url: `${CONTENT}handling-audits-made-simple-with-unifize`,
+    title: "Handling audits made simple with Unifize",
+    person: "Wilson Lin",
+    company: "Applechem",
+    industry: "Cosmetics",
+    modules: ["Change Control", "Document Control"],
+    duration: "00:48",
+    wistia: "f1hnfv4qc6",
+    poster: `${WF}65cca2c42eedfec5a5d1dea8_AC-WL-N03%20-%20Handling%20audits%20made%20simple%20with%20Unifize.webp`,
+  },
+  {
+    url: `${CONTENT}unifize-as-an-engineering-system-of-record`,
+    title: "How we use Unifize as an engineering system of record",
+    person: "Michael Hogan",
+    role: "Mechanical Engineer",
+    company: "Harmonic Bionics",
+    industry: "Medical Devices",
+    modules: ["Change Control", "Document Control"],
+    duration: "01:23",
+    wistia: "xwv3jvzgzv",
+    poster: `${WF}657aab4cd685df933c53ffe0_HB-MH-08%20-%20How%20we%20use%20Unifize%20as%20an%20engineering%20system%20of%20record.webp`,
+  },
+  {
+    url: `${CONTENT}how-unifize-helped-reduce-our-training-time-and-costs`,
+    title: "How Unifize helped reduce our training time and costs",
+    person: "Jesse Kolstad",
+    role: "Director of Quality",
+    company: "Biovation Labs",
+    industry: "Nutritional Supplements",
+    modules: ["Training"],
+    duration: "01:43",
+    wistia: "7sk4uqb9d3",
+    poster: `${WF}657aa704727faaa188ffb1dc_BL-JK-14%20Reducing%20training%20time%20and%20costs.webp`,
+  },
+  {
+    url: `${CONTENT}using-unifize-to-simplify-approval-processes`,
+    title: "Using Unifize to simplify approval processes",
+    person: "Clarissa Archer",
+    company: "Harmonic Bionics",
+    industry: "Medical Devices",
+    modules: ["Change Control"],
+    duration: "02:55",
+    wistia: "vfemm3b81u",
+    poster: `${WF}657aa4b71633a02988282512_HB-CA-18%20Simplifying%20approval%20processes.webp`,
+  },
+  {
+    url: `${CONTENT}getting-engineering-to-adopt-a-new-eqms`,
+    title: "Getting engineering to adopt a new eQMS",
+    person: "Clarissa Archer",
+    company: "Harmonic Bionics",
+    industry: "Medical Devices",
+    modules: ["Document Control"],
+    duration: "02:33",
+    wistia: "imfmnb7pjo",
+    poster: `${WF}657aabc5eeb9f695a7629933_HB-CA-09%20Getting%20engineers%20to%20adopt%20a%20new%20eQMS.webp`,
+  },
+  {
+    url: `${CONTENT}problems-with-managing-quality-using-excel-and-word`,
+    title: "Problems with managing quality using Excel and Word",
+    person: "Wilson Lin",
+    company: "Applechem",
+    industry: "Cosmetics",
+    modules: ["Document Control"],
+    duration: "01:08",
+    wistia: "jtnswkzidv",
+    poster: `${WF}65cc9b48d39fc00a44906715_AC-WL-E04%20-%20Problems%20with%20managing%20using%20Excel%20and%20Word.webp`,
+  },
+  {
+    url: `${CONTENT}what-attracted-us-the-most-about-unifize`,
+    title: "What attracted us the most about Unifize",
+    person: "Tedd Carr",
+    role: "Director of Quality Control",
+    company: "The Will-Burt Company",
+    industry: "Manufacturing",
+    modules: ["Training"],
+    duration: "03:00",
+    wistia: "i43nixcmyj",
+    poster: `${WF}657aa41761d3b23b6023750a_WB-TC-05-%20What%20attracted%20us%20the%20most%20about%20Unifize.webp`,
+  },
+];
+
 /* outcomes data - NOT RENDERED. The outcomes band was cut from the page
  * until canonical customer numbers exist; the SteppedGrowth primitive and
  * this shape stay ready for that day. */

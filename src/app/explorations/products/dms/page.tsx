@@ -17,7 +17,6 @@ import {
   CAPABILITIES,
   AUDIENCE,
   STANDARDS,
-  INDUSTRIES,
 } from "./dms-data";
 import { DmsHeader } from "./dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
@@ -29,7 +28,8 @@ import { CapGlyph } from "./dms-linework";
 import { MockDocRegister } from "./dms-mocks";
 import { DmsProblemSpotlight } from "./dms-problem-visuals";
 import { DmsHeroVideo } from "./dms-hero-video";
-import { CustomerSuccess } from "../../industry-template-modern/customer-success";
+import { DmsIndustryIcon } from "./dms-industry-icons";
+import { DmsProofFilms } from "./dms-proof";
 import {
   ModuleExplorer,
   LifecycleExplorer,
@@ -87,7 +87,9 @@ export default function DmsProductPage() {
               <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
               <div className="dms-hero__ctas">
                 <button type="button" className="dms-btn">Book a demo &rarr;</button>
-                <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
+                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
+                  Take Coordination Tax Assessment
+                </Link>
               </div>
             </div>
           </div>
@@ -111,7 +113,10 @@ export default function DmsProductPage() {
           <p className="dms-trust__label">One controlled record across regulated operations</p>
           <ul className="dms-trust__logos" aria-label="Representative industries">
             {DMS_TRUST_INDUSTRIES.map((industry) => (
-              <li key={industry} className="dms-trust__mark">{industry}</li>
+              <li key={industry} className="dms-trust__mark">
+                <DmsIndustryIcon industry={industry} />
+                <span>{industry}</span>
+              </li>
             ))}
           </ul>
         </div>
@@ -253,46 +258,47 @@ export default function DmsProductPage() {
       </section>
 
       {/* ============================ 06 · PROOF =========================
-       * Reuses the section 08 proof pattern from industry-template-modern. */}
+       * Real customer films from the Webflow CMS (see PROOF_FILMS), on the
+       * itm carousel shell; the attested figure keeps the lead card. */}
       <div className="itm dms-proof-reference">
-        <CustomerSuccess
-          eyebrowNumber={6}
-          title="Results, honestly stated, from quality teams like yours."
-          ariaLabel="Customer proof"
-        />
+        <DmsProofFilms />
       </div>
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
       <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="dms-compliance-title">
         <div className="dms-wrap">
-          <div className="dms-compliance__head" data-reveal>
+          <header className="dms-compliance__head" data-reveal>
             <div className="dms-head">
               <Eyebrow n={7}>Compliance frame</Eyebrow>
               <h2 className="dms-h2" id="dms-compliance-title">One lifecycle. Every standard.</h2>
             </div>
             <p className="dms-lede">Control the record once, then prove it against whatever governs your operation.</p>
-          </div>
+          </header>
 
           <div className="dms-compliance__body" data-reveal>
-            <ol className="dms-compliance__standards">
+            <ul className="dms-compliance__standards">
               {STANDARDS.map((s) => (
                 <li className="dms-compliance__standard" key={s.name}>
-                  <div className={`dms-std__logo dms-std__logo--${s.issuer.toLowerCase()}`} aria-hidden="true">
-                    {s.logo ? <img src={s.logo} alt="" /> : <span>{s.issuer}</span>}
+                  <span className="dms-std__issuer" aria-hidden="true">{s.issuer}</span>
+                  <div className="dms-std__details">
+                    <span className="dms-std__name">{s.name}</span>
+                    <span className="dms-std__geo">{s.geo}</span>
                   </div>
-                  <span className="dms-std__geo">{s.geo}</span>
-                  <span className="dms-std__name">{s.name}</span>
-                  <p className="dms-std__body">{s.body}</p>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
 
           <div className="dms-compliance__industries" data-reveal>
             <span className="dms-persona__lab">Validated across</span>
-            <div className="dms-inds">
-              {INDUSTRIES.map((n) => <span key={n} className="dms-ind">{n}</span>)}
-            </div>
+            <ul className="dms-inds" aria-label="Validated industries">
+              {DMS_TRUST_INDUSTRIES.map((industry) => (
+                <li key={industry} className="dms-ind">
+                  <DmsIndustryIcon industry={industry} />
+                  <span>{industry}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -314,18 +320,35 @@ export default function DmsProductPage() {
       </section>
 
       {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close" aria-labelledby="dms-close-h">
+      <section className="dms-section dms-section--dark dms-close" id="demo" aria-labelledby="dms-close-h">
+        <svg className="dms-close__circuit" viewBox="0 0 1600 760" fill="none" aria-hidden="true">
+          <path d="M138 0v128h150v106h222v-92h188V0M510 234v146h-96v166H228v214M698 142h192v84h224v-96h348V0M890 226v154h170v154h212v226M1114 226h164v126h184v198h138" />
+          <path d="M0 466h228M1272 534h328M288 128h92M414 546h-88M1060 380h94M1462 130h138" />
+          <rect x="675" y="42" width="250" height="100" />
+          <rect x="510" y="338" width="180" height="84" />
+          <rect x="1128" y="550" width="144" height="92" />
+          <circle cx="288" cy="128" r="8" />
+          <circle cx="510" cy="234" r="8" />
+          <circle cx="890" cy="226" r="8" />
+          <circle cx="1060" cy="380" r="8" />
+          <circle cx="1272" cy="534" r="8" />
+          <circle cx="1462" cy="130" r="8" />
+          <path d="M676 78h-38v30h38M924 78h38v30h-38M546 338v-34h34v34M620 422v36h34v-36M1164 550v-34h32v34M1204 642v34h32v-34" />
+        </svg>
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
+            <div className="dms-close__mark" aria-hidden="true">
+              <svg viewBox="0 2.2 21 22" fill="none">
+                <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
+                <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
+              </svg>
+            </div>
             <div className="dms-close__lead">
               <span className="dms-close__eyebrow">Ready when you are</span>
               <h2 className="dms-close__h" id="dms-close-h">Bring the SOP you could not find the current version of.</h2>
-            </div>
-            <div className="dms-close__side">
               <p className="dms-lede">We will run it through the lifecycle live, from draft to Part 11 approval.</p>
               <div className="dms-close__cta">
                 <button type="button" className="dms-btn">Book a 30-minute walkthrough</button>
-                <a href="#modules" className="dms-btn dms-btn-ghost">See what is bundled</a>
               </div>
             </div>
           </div>
