@@ -1,6 +1,6 @@
 /* ============================================================================
  * plm-data.tsx - content for the PLM (Product Lifecycle Management) page.
- * Sourced from the Unifize Products database in Notion: PLM (ID 4). Modules:
+ * Sourced from the Unifize Products database in Notion: PLM (UPD-4). Modules:
  * Product Specifications, Product Risk Management, Design Controls &
  * Traceability, Inspection & Process Parameters, FMEA & Control Plan
  * Definition. Personas: Design Engineer, Engineering Manager. Module and
@@ -8,35 +8,106 @@
  * record IDs in the mocks are illustrative.
  * ========================================================================== */
 import type { ProductPageData } from "../_shared/ProductPage";
+import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 
 const HERO_STANDARDS = ["ISO 13485", "21 CFR 820", "ISO 14971", "IATF 16949", "AS 9100", "IEC 62304"];
 
-const MODULES = [
+/* the five bundled modules (blurbs from each module's Notion Description;
+ * promises and points distilled from the same source, one short line each). */
+export const PLM_MODULES = [
   {
     key: "product-specifications",
     name: "Product Specifications",
+    promise: "The definition is never in doubt.",
     blurb: "Specification records for raw materials, finished goods, assemblies, and parts, carried with version history and an approval workflow.",
+    points: ["Specs for materials, parts, and finished goods", "Version history on every revision", "Approval workflow on the record", "Characteristics, tolerances, and methods"],
+    standards: ["ISO 13485", "IATF 16949", "AS 9100"],
   },
   {
     key: "product-risk-management",
     name: "Product Risk Management",
+    promise: "Risk lives on the product record.",
     blurb: "A risk register and assessment for the product itself: hazards, controls, and verification tracked through the product lifecycle.",
+    points: ["Governed product risk register", "Hazards traced to their controls", "Controls verified on the record", "Reviewed through the lifecycle"],
+    standards: ["ISO 14971", "ISO 13485"],
   },
   {
     key: "design-controls-traceability",
     name: "Design Controls & Traceability",
+    promise: "Requirement to result, no gaps.",
     blurb: "Design input, output, verification, and validation records with full traceability from requirement to test result, per 21 CFR 820.",
+    points: ["Design inputs captured as requirements", "Outputs linked to the inputs they satisfy", "Verification and validation close the chain", "The DHF assembles as you work"],
+    standards: ["21 CFR 820", "ISO 13485", "IEC 62304"],
   },
   {
     key: "inspection-process-parameters",
     name: "Inspection & Process Parameters",
+    promise: "Inspection tied to the definition.",
     blurb: "Inspection plans, process parameters, sampling rules, and characteristic specifications tied to the product definition.",
+    points: ["Inspection plans on the product record", "Process parameters with limits", "Sampling rules by characteristic", "Characteristic-level specifications"],
+    standards: ["IATF 16949", "AS 9100"],
   },
   {
     key: "fmea-control-plan",
     name: "FMEA & Control Plan Definition",
+    promise: "The riskiest mode is the most controlled.",
     blurb: "Design FMEA and process FMEA, plus control-plan definition at the product or process level.",
+    points: ["Design and process FMEA", "Severity, occurrence, detection scored", "RPN feeds the control plan", "High-risk modes escalate to review"],
+    standards: ["IATF 16949", "ISO 14971"],
+  },
+];
+
+/* The same four PLM failure modes drive both the problem spotlight and the
+ * coordination comparison, keeping the page's diagnosis and remedy aligned. */
+export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
+  {
+    visual: "retrieval",
+    category: "Design traceability",
+    title: "The trace breaks between tools",
+    quote: "Inputs, outputs, and verification live in a spreadsheet that drifts from what shipped.",
+    detail: "Requirements sit in one tool and test results in another, so the requirement-to-result chain cannot be reconstructed.",
+    metric: "Broken",
+    metricLabel: "No requirement-to-result chain",
+    work: "Prove the design",
+    tax: ["Rebuild the trace matrix", "Chase the test results"],
+    outcome: "Input linked to result",
+  },
+  {
+    visual: "versions",
+    category: "Engineering change",
+    title: "A change with an unknown blast radius",
+    quote: "A change waits for the next design review to learn what it might break.",
+    detail: "Nothing links a specification to the FMEAs and control plans it feeds, so approval happens blind and something breaks downstream.",
+    metric: "Blind",
+    metricLabel: "Impact unknown at approval",
+    work: "Approve the ECO",
+    tax: ["Hunt the affected documents", "Wait for the design review"],
+    outcome: "Impact on the record",
+  },
+  {
+    visual: "drift",
+    category: "Verification & validation",
+    title: "Verification you can't point to",
+    quote: "The requirement is in the spec. Nobody can point to the test that closed it.",
+    detail: "A requirement with no linked result passes review silently and becomes a predictable finding at the audit.",
+    metric: "Unclosed",
+    metricLabel: "Requirement with no linked result",
+    work: "Close the requirement",
+    tax: ["Search the test archive", "Re-run the test to be sure"],
+    outcome: "Result linked, requirement closed",
+  },
+  {
+    visual: "audit",
+    category: "FMEA & control plan",
+    title: "The FMEA lives in a spreadsheet",
+    quote: "The FMEA was scored in a workshop. The control plan never heard about it.",
+    detail: "RPN never reaches the control plan, so the highest-risk failure mode is not the most controlled characteristic.",
+    metric: "Detached",
+    metricLabel: "RPN never reaches the control plan",
+    work: "Control the risk",
+    tax: ["Reconcile FMEA versions", "Re-key the control plan"],
+    outcome: "RPN drives the control plan",
   },
 ];
 
@@ -105,7 +176,8 @@ export const PLM_DATA: ProductPageData = {
     tone: "dark",
     eyebrowN: 2,
     heading: "Five disciplines, one product record.",
-    items: MODULES,
+    lede: "A requirement that starts as a design input ends in a verification you can point to, without leaving the record.",
+    items: PLM_MODULES,
     mocks: PLM_MODULE_MOCKS,
     urlBase: "plm",
   },
@@ -152,14 +224,19 @@ export const PLM_DATA: ProductPageData = {
 
   owners: {
     eyebrowN: 5,
-    heading: "Built for the people who own the product definition.",
+    heading: "For the people who own the product definition.",
+    // NOTE: `img` values are PLACEHOLDERS — the two existing DMS persona
+    // portraits, reused so the photo layout is visible now. Swap each for an
+    // art-directed portrait of the actual role (see persona-image-art-direction:
+    // low-key film look, fg+bg ghost motion blur, 3:2, sourced >=1800x1200).
     items: [
       {
         name: "Design Engineer",
         tier: "Primary owner",
         aka: "R&D Engineer · Mechanical · Electrical · NPD Engineer",
         summary: "Owns that the product can be made, used, and supported. Drafts design inputs, runs design reviews, completes FMEAs, and releases drawings and specifications to manufacturing.",
-        daily: ["Author design documents, run design reviews", "Complete FMEAs and risk assessments", "Raise and process engineering change orders", "Close design verification and validation"],
+        daily: ["Author design documents, run design reviews", "Complete FMEAs and risk assessments", "Close design verification and validation"],
+        img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
       },
       {
         name: "Engineering Manager",
@@ -167,6 +244,7 @@ export const PLM_DATA: ProductPageData = {
         aka: "Director of Engineering · R&D Manager · Engineering Lead",
         summary: "Approves design and change decisions for the engineering function. Chairs design reviews, signs off engineering change orders, and balances cost against quality against schedule.",
         daily: ["Approve ECOs, chair design reviews", "Review FMEAs, allocate engineering resource", "Report engineering metrics to management review"],
+        img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
       },
     ],
   },

@@ -1,0 +1,362 @@
+/* QMS-specific linework layered on the shared DMS editorial system. */
+
+.qms.dms--redesign :is(
+  .qms-gfx-owner,
+  .qms-gfx-handoff,
+  .qms-gfx-clock,
+  .qms-gfx-capa-gate,
+  .qms-gfx-capa-seal,
+  .qms-gfx-repeat,
+  .qms-gfx-scar-gap,
+  .qms-gfx-audit-lens,
+  .qms-gfx-evidence,
+  .qms-gfx-record-core,
+  .qms-gfx-missing-link
+) {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.qms.dms--redesign .qms-gfx-route {
+  fill: none;
+  stroke: var(--dms-gfx-line);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+
+.qms.dms--redesign .qms-gfx-route--broken {
+  stroke-dasharray: 7 10;
+  opacity: 0.72;
+}
+
+/* Unowned finding: one signal, three possible owners, no accountable handoff. */
+.qms.dms--redesign .qms-gfx-owner {
+  filter: drop-shadow(0 3px 5px var(--dms-gfx-shadow-soft));
+}
+.qms.dms--redesign .qms-gfx-owner > circle:first-child {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-owner__head {
+  fill: var(--dms-gfx-blue-soft);
+  stroke: var(--dms-accent);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-owner path {
+  fill: none;
+  stroke: var(--dms-gfx-muted);
+  stroke-linecap: round;
+  stroke-width: 1.5;
+}
+.qms.dms--redesign .qms-gfx-owner text,
+.qms.dms--redesign .qms-gfx-clock text {
+  fill: var(--dms-gfx-muted);
+  font-size: 9px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-handoff {
+  filter: drop-shadow(0 8px 12px var(--dms-gfx-shadow));
+}
+.qms.dms--redesign .qms-gfx-handoff > circle:first-child {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-dasharray: 4 6;
+  stroke-width: 2;
+}
+.qms.dms--redesign .qms-gfx-handoff__core {
+  fill: var(--dms-accent);
+  stroke: none;
+}
+.qms.dms--redesign .qms-gfx-handoff__question {
+  fill: #fff;
+  font-family: var(--u-display) !important;
+  font-size: 24px;
+  font-weight: 650;
+}
+.qms.dms--redesign .qms-gfx-handoff__label {
+  fill: var(--dms-accent);
+  font-size: 9px;
+  font-weight: 750;
+}
+.qms.dms--redesign .qms-gfx-clock circle {
+  fill: var(--dms-gfx-surface-muted);
+  stroke: var(--dms-gfx-line);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-clock path {
+  fill: none;
+  stroke: var(--dms-gfx-muted);
+  stroke-linecap: round;
+  stroke-width: 1.6;
+}
+
+/* Unproven CAPA: the closure seal lands before the loop reaches verification. */
+.qms.dms--redesign .qms-gfx-loop {
+  fill: none;
+  stroke-linecap: round;
+}
+.qms.dms--redesign .qms-gfx-loop--base {
+  stroke: var(--dms-gfx-line-soft);
+  stroke-dasharray: 3 7;
+  stroke-width: 2;
+}
+.qms.dms--redesign .qms-gfx-loop--live {
+  stroke: var(--dms-accent);
+  stroke-width: 4;
+}
+.qms.dms--redesign .qms-gfx-capa-gate circle {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 3;
+}
+.qms.dms--redesign .qms-gfx-capa-gate > path {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.2;
+}
+.qms.dms--redesign .qms-gfx-capa-gate.is-missing circle {
+  fill: var(--dms-gfx-surface-muted);
+  stroke: var(--dms-gfx-muted);
+  stroke-dasharray: 3 4;
+}
+.qms.dms--redesign .qms-gfx-capa-gate.is-missing > path { stroke: var(--dms-gfx-muted); }
+.qms.dms--redesign .qms-gfx-capa-gate__label {
+  fill: var(--dms-gfx-ink);
+  font-size: 9px;
+  font-weight: 750;
+}
+.qms.dms--redesign .qms-gfx-capa-gate__detail {
+  fill: var(--dms-gfx-muted);
+  font-size: 7px;
+  font-weight: 650;
+}
+.qms.dms--redesign .qms-gfx-capa-gap path {
+  fill: none;
+  stroke: var(--dms-gfx-muted);
+  stroke-dasharray: 3 5;
+  stroke-width: 1.2;
+}
+.qms.dms--redesign .qms-gfx-capa-gap text,
+.qms.dms--redesign .qms-gfx-capa-reopen text {
+  fill: var(--dms-gfx-muted);
+  font-size: 8px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-capa-seal {
+  filter: drop-shadow(0 9px 14px var(--dms-gfx-shadow));
+}
+.qms.dms--redesign .qms-gfx-capa-seal > circle:first-child {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 2;
+}
+.qms.dms--redesign .qms-gfx-capa-seal > circle:nth-child(2) {
+  fill: var(--dms-gfx-blue-soft);
+  stroke: var(--dms-accent);
+  stroke-dasharray: 3 4;
+  stroke-width: 1.2;
+}
+.qms.dms--redesign .qms-gfx-capa-seal__eyebrow,
+.qms.dms--redesign .qms-gfx-capa-seal__meta {
+  fill: var(--dms-accent);
+  font-size: 8px;
+  font-weight: 750;
+}
+.qms.dms--redesign .qms-gfx-capa-seal__title {
+  fill: var(--dms-gfx-ink);
+  font-family: var(--u-display) !important;
+  font-size: 28px;
+  font-weight: 650;
+}
+.qms.dms--redesign .qms-gfx-capa-reopen path {
+  fill: none;
+  stroke: var(--dms-gfx-muted);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+}
+
+/* Supplier recurrence: three repeated signals stop before the SCAR relation. */
+.qms.dms--redesign .qms-gfx-repeat__line {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-linecap: round;
+  stroke-width: 2.2;
+}
+.qms.dms--redesign .qms-gfx-repeat circle {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 2.4;
+}
+.qms.dms--redesign .qms-gfx-repeat__stop {
+  fill: var(--dms-gfx-blue-soft) !important;
+  stroke-dasharray: 3 3;
+}
+.qms.dms--redesign .qms-gfx-repeat text {
+  fill: var(--dms-gfx-muted);
+  font-size: 8px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-repeat__delay { fill: var(--dms-accent) !important; }
+.qms.dms--redesign .qms-gfx-scar-gap > path {
+  fill: none;
+  stroke: var(--dms-gfx-muted);
+  stroke-dasharray: 4 7;
+  stroke-width: 1.5;
+}
+.qms.dms--redesign .qms-gfx-scar-gap rect {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-dasharray: 3 3;
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-scar-gap__title {
+  fill: var(--dms-gfx-ink);
+  font-size: 11px;
+  font-weight: 750;
+}
+.qms.dms--redesign .qms-gfx-scar-gap__meta {
+  fill: var(--dms-accent);
+  font-size: 7px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-audit-lens {
+  filter: drop-shadow(0 8px 12px var(--dms-gfx-shadow));
+}
+.qms.dms--redesign .qms-gfx-audit-lens > circle:first-child {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 3;
+}
+.qms.dms--redesign .qms-gfx-audit-lens > circle:nth-child(2) {
+  fill: var(--dms-gfx-blue-soft);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1;
+}
+.qms.dms--redesign .qms-gfx-audit-lens path {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-linecap: round;
+  stroke-width: 8;
+}
+.qms.dms--redesign .qms-gfx-audit-lens__title {
+  fill: var(--dms-gfx-ink);
+  font-family: var(--u-display) !important;
+  font-size: 25px;
+  font-weight: 650;
+}
+.qms.dms--redesign .qms-gfx-audit-lens__meta {
+  fill: var(--dms-accent);
+  font-size: 7px;
+  font-weight: 750;
+}
+
+/* Audit finding: evidence fragments orbit a record whose last link is absent. */
+.qms.dms--redesign .qms-gfx-evidence {
+  filter: drop-shadow(0 4px 6px var(--dms-gfx-shadow-soft));
+}
+.qms.dms--redesign .qms-gfx-evidence rect {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.1;
+}
+.qms.dms--redesign .qms-gfx-evidence circle {
+  fill: var(--dms-gfx-blue-soft);
+  stroke: var(--dms-accent);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-evidence > path {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+.qms.dms--redesign .qms-gfx-evidence__lines {
+  stroke: var(--dms-gfx-line) !important;
+  stroke-width: 1.1 !important;
+}
+.qms.dms--redesign .qms-gfx-evidence text {
+  fill: var(--dms-gfx-muted);
+  font-size: 8px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-evidence.is-missing rect {
+  fill: var(--dms-gfx-surface-muted);
+  stroke: var(--dms-accent);
+  stroke-dasharray: 4 4;
+}
+.qms.dms--redesign .qms-gfx-evidence.is-missing circle { fill: var(--dms-gfx-surface); }
+.qms.dms--redesign .qms-gfx-record-core {
+  filter: drop-shadow(0 10px 16px var(--dms-gfx-shadow));
+}
+.qms.dms--redesign .qms-gfx-record-core__shadow { fill: var(--dms-gfx-shadow); stroke: none; }
+.qms.dms--redesign .qms-gfx-record-core > circle:nth-child(2) {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 2;
+}
+.qms.dms--redesign .qms-gfx-record-core > path:not(.qms-gfx-record-core__check) {
+  fill: var(--dms-gfx-blue-soft);
+  stroke: var(--dms-accent);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-record-core__check {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 5;
+}
+.qms.dms--redesign .qms-gfx-record-core__eyebrow {
+  fill: var(--dms-gfx-muted);
+  font-size: 8px;
+  font-weight: 700;
+}
+.qms.dms--redesign .qms-gfx-record-core__title {
+  fill: var(--dms-gfx-ink);
+  font-family: var(--u-display) !important;
+  font-size: 19px;
+  font-weight: 650;
+}
+.qms.dms--redesign .qms-gfx-missing-link > path {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-dasharray: 3 4;
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-missing-link circle {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-accent);
+  stroke-width: 1.4;
+}
+.qms.dms--redesign .qms-gfx-missing-link path:last-child {
+  stroke-dasharray: none;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+/* QMS keeps four compact persona cards and quote-led proof cards. */
+.qms.dms--redesign .dms-audience__personas {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 1380px;
+}
+.qms.dms--redesign .dms-owner__q { font-size: clamp(1.05rem, 1.3vw, 1.28rem); }
+.qms.dms--redesign .qms-story__quote {
+  font-size: clamp(1.18rem, 1.45vw, 1.42rem);
+  font-weight: 540;
+  line-height: 1.35;
+}
+.qms.dms--redesign .qms-story .dms-film__body { min-height: 240px; }
+.qms.dms--redesign .qms-story .dms-film__foot { margin-top: auto; }
+
+@media (max-width: 1100px) {
+  .qms.dms--redesign .dms-audience__personas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .qms.dms--redesign .dms-audience__personas { grid-template-columns: 1fr; }
+}

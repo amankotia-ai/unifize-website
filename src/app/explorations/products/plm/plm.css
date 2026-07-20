@@ -1,0 +1,27 @@
+/* PLM-specific visuals layered on the shared DMS redesign system. The problem
+ * spotlight draws its scenes with the shared `.dms-gfx*` illustration classes
+ * (dms-redesign.css), so only page-level PLM adjustments live here. */
+
+/* the lifecycle live panel stages a swapped product mock instead of the chat */
+.plm.dms--redesign .dms-lifex__stagemock {
+  display: grid;
+  align-content: center;
+  height: 100%;
+  min-height: 420px;
+  padding: clamp(18px, 2.4vw, 32px);
+}
+
+/* PLM's FMEA mock flags the high RPN (class from product-kit, restated here
+ * so it wins regardless of stylesheet order on this route) */
+.plm.dms--redesign .pk-rpn-hi { color: var(--dms-err) !important; font-weight: 600; }
+
+/* two owning personas, centered, instead of the DMS three-up register */
+.plm.dms--redesign .dms-audience__personas { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 880px; }
+
+.plm.dms--redesign .plm-story__quote { font-size: clamp(1.18rem, 1.45vw, 1.42rem); font-weight: 540; line-height: 1.35; }
+.plm.dms--redesign .plm-story .dms-film__body { min-height: 240px; }
+.plm.dms--redesign .plm-story .dms-film__foot { margin-top: auto; }
+
+@media (max-width: 680px) {
+  .plm.dms--redesign .dms-audience__personas { grid-template-columns: 1fr; }
+}

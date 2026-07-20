@@ -1,0 +1,38 @@
+/* MES-specific styles layered on the shared DMS redesign system.
+ * The problem-spotlight scenes use the shared `.dms-gfx*` illustration
+ * vocabulary from dms-redesign.css and need no rules here. */
+
+/* ---------------------------------------------------------------- lifecycle
+ * The live panel stages a product prototype per step instead of a chat. */
+.mes.dms--redesign .dms-lifex__stagemock {
+  width: min(620px, 100%);
+  margin-inline: auto;
+  animation: dms-rise 0.45s var(--dms-ease) both;
+}
+
+/* ---------------------------------------------------------------- proof rail */
+.mes.dms--redesign .mes-story__quote {
+  font-size: clamp(1.18rem, 1.45vw, 1.42rem);
+  font-weight: 540;
+  line-height: 1.35;
+}
+.mes.dms--redesign .mes-story .dms-film__body { min-height: 240px; }
+.mes.dms--redesign .mes-story .dms-film__foot { margin-top: auto; }
+
+/* ---------------------------------------------------------------- mock states
+ * Record states the MES prototypes use beyond the shared kit's set. */
+.mes .dms-mock__state.is-pass {
+  color: var(--dms-accent-text);
+  border-color: var(--dms-accent-border);
+  background: var(--dms-accent-tint);
+}
+.mes .dms-mock__state.is-fail,
+.mes .dms-mock__state.is-on-hold {
+  color: var(--dms-err);
+  border-color: color-mix(in srgb, var(--dms-err) 40%, transparent);
+}
+.mes .dms-mock__state.is-disposition {
+  color: var(--dms-warn);
+  border-color: color-mix(in srgb, var(--dms-warn) 40%, transparent);
+}
+.mes .dms-mock__state.is-paused { color: var(--dms-faint); border-style: dashed; }

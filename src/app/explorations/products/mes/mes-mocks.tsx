@@ -115,10 +115,88 @@ export function MesBatchRecord() {
   );
 }
 
+/* in-process inspection checklist — a failed check holds the line in real time */
+const INSPECTION = {
+  id: "INS-0876",
+  title: "In-process inspection · op 40 leak test",
+  state: "On hold",
+  rows: [
+    { check: "Fixture verified", spec: "WI-114 A", result: "Pass" },
+    { check: "Pressure decay", spec: "≤ 0.4 kPa/min", result: "Pass" },
+    { check: "Leak rate, unit 128", spec: "≤ 2.0 sccm", result: "Fail", key: true },
+    { check: "Sample per AQL 1.0", spec: "n = 13", result: "Paused" },
+  ],
+};
+
+export function MesInspection() {
+  const cols = "minmax(0,1fr) 128px 88px";
+  return (
+    <div className="dms-mock" role="img" aria-label="Product prototype: in-process inspection with a failed check raising a hold on the line.">
+      <div aria-hidden="true">
+        <div className="dms-mockco__head">
+          <span className="dms-mock__mono">{INSPECTION.id}</span>
+          <span className="dms-mock__title dms-mockco__title">{INSPECTION.title}</span>
+          <span className={"dms-mock__state " + stateClass(INSPECTION.state)}>{INSPECTION.state}</span>
+        </div>
+        <div className="dms-mock__grid dms-mock__head" style={{ gridTemplateColumns: cols }}>
+          <span>Check</span><span>Spec</span><span>Result</span>
+        </div>
+        {INSPECTION.rows.map((r) => (
+          <div key={r.check} className={"dms-mock__grid dms-mock__row" + (r.key ? " is-key" : "")} style={{ gridTemplateColumns: cols }}>
+            <span className="dms-mock__title">{r.check}</span>
+            <span className="dms-mock__mono">{r.spec}</span>
+            <span className={"dms-mock__state " + stateClass(r.result)}>{r.result}</span>
+          </div>
+        ))}
+        <div className="dms-mock__foot">Failed check → hold raised on the line · deviation opened at the operation</div>
+      </div>
+    </div>
+  );
+}
+
+/* FAI / control-plan execution — characteristic results with disposition */
+const FAI = {
+  id: "FAI-0412",
+  title: "First article · housing rev D",
+  state: "Disposition",
+  rows: [
+    { char: "CH-01 · Bore Ø 12.10", spec: "±0.05", result: "12.08 · Pass" },
+    { char: "CH-02 · Flatness", spec: "0.02 max", result: "0.015 · Pass" },
+    { char: "CH-03 · Torque, insert", spec: "2.2–2.6 N·m", result: "2.05 · Fail", key: true },
+    { char: "CH-04 · Surface finish", spec: "Ra 1.6", result: "1.4 · Pass" },
+  ],
+};
+
+export function MesControlPlan() {
+  const cols = "minmax(0,1fr) 104px 132px";
+  return (
+    <div className="dms-mock" role="img" aria-label="Product prototype: first article inspection results with a failed characteristic escalated for disposition.">
+      <div aria-hidden="true">
+        <div className="dms-mockco__head">
+          <span className="dms-mock__mono">{FAI.id}</span>
+          <span className="dms-mock__title dms-mockco__title">{FAI.title}</span>
+          <span className={"dms-mock__state " + stateClass(FAI.state)}>{FAI.state}</span>
+        </div>
+        <div className="dms-mock__grid dms-mock__head" style={{ gridTemplateColumns: cols }}>
+          <span>Characteristic</span><span>Spec</span><span>Result</span>
+        </div>
+        {FAI.rows.map((r) => (
+          <div key={r.char} className={"dms-mock__grid dms-mock__row" + (r.key ? " is-key" : "")} style={{ gridTemplateColumns: cols }}>
+            <span className="dms-mock__title">{r.char}</span>
+            <span className="dms-mock__mono">{r.spec}</span>
+            <span className="dms-mock__mono">{r.result}</span>
+          </div>
+        ))}
+        <div className="dms-mock__foot">Results captured on the floor · failed characteristic escalated with disposition</div>
+      </div>
+    </div>
+  );
+}
+
 export const MES_MODULE_MOCKS: Record<string, React.ReactNode> = {
   "work-order-management": <MesWorkOrder />,
   "etravellers": <MesTraveller />,
-  "fai-control-plan-execution": <MesTraveller />,
-  "inspections-forms-checklists": <MesTraveller />,
+  "fai-control-plan-execution": <MesControlPlan />,
+  "inspections-forms-checklists": <MesInspection />,
   "electronic-batch-lot-records": <MesBatchRecord />,
 };

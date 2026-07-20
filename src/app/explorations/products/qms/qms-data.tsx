@@ -9,6 +9,7 @@
  * Activities fields; record IDs in the mocks are illustrative.
  * ========================================================================== */
 import type { ProductPageData } from "../_shared/ProductPage";
+import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
 
 /* real short-names of the QMS external standards (Notion External Standards) */
@@ -16,36 +17,107 @@ const HERO_STANDARDS = ["ISO 9001", "ISO 13485", "21 CFR 820", "IATF 16949", "AS
 
 /* the six featured QMS modules (blurbs distilled from each module's Notion
  * Description). Non-conformance and CAPA are the flagship intake + closure. */
-const MODULES = [
+export const QMS_MODULES = [
   {
     key: "non-conformance",
     name: "Non-conformance",
+    promise: "Every event starts accountable.",
     blurb: "Capture, disposition, and closure of non-conformances with required fields, named ownership, and evidence binding. Escalates into CAPA when it is warranted.",
+    points: ["Required intake fields", "Named owner and due date", "Disposition evidence bound in", "Escalation into CAPA"],
+    standards: ["ISO 9001", "ISO 13485", "21 CFR 820"],
   },
   {
     key: "capa",
     name: "Corrective & Preventive Actions",
+    promise: "Nothing closes unproven.",
     blurb: "Root-cause acceptance, action plan, effectiveness verification, and closure, with the relation back to the event that raised it.",
+    points: ["Approved root-cause method", "Owned action plan", "Effectiveness window", "Automatic reopen if ineffective"],
+    standards: ["ISO 9001", "ISO 13485", "ICH Q10"],
   },
   {
     key: "complaint-handling",
     name: "Complaint Handling",
+    promise: "One trace from intake to close.",
     blurb: "Intake, triage, investigation, and closure of customer complaints, with regulatory reportability assessed on the record.",
+    points: ["Structured complaint intake", "Triage and investigation", "Reportability assessment", "Evidence-backed closure"],
+    standards: ["ISO 13485", "21 CFR 820", "MDSAP"],
   },
   {
     key: "audit-management",
     name: "Audit Management",
+    promise: "Every finding stays on the record.",
     blurb: "Scheduling, finding tracking, response routing, and effectiveness verification across internal, external, and customer audits.",
+    points: ["Audit scheduling", "Finding ownership", "Response routing", "Effectiveness verification"],
+    standards: ["ISO 9001", "AS 9100", "MDSAP"],
   },
   {
     key: "supplier-quality",
     name: "Supplier Quality",
+    promise: "Supplier signals become action.",
     blurb: "SCAR lifecycle, supplier qualification, incoming-inspection alignment, and scorecard maintenance on one supplier record.",
+    points: ["SCAR lifecycle", "Supplier qualification", "Incoming-inspection alignment", "Composite scorecards"],
+    standards: ["IATF 16949", "AS 9100", "ISO 13485"],
   },
   {
     key: "quality-risk-management",
     name: "Quality Risk Management",
+    promise: "Risk controls stay current.",
     blurb: "Risk register, assessment workflows, control verification, and periodic review, aligned to ISO 14971 and ICH Q9.",
+    points: ["Governed risk register", "Assessment workflows", "Control verification", "Periodic review"],
+    standards: ["ISO 14971", "ICH Q9", "ISO 13485"],
+  },
+];
+
+/* The same four QMS failure modes drive both the problem spotlight and the
+ * coordination comparison, keeping the page's diagnosis and remedy aligned. */
+export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
+  {
+    visual: "retrieval",
+    category: "Non-conformance ownership",
+    title: "A finding opens with no owner",
+    quote: "A non-conformance sits open because the next owner was never named.",
+    detail: "Without required ownership and a due date at intake, the record has no clock and no accountable next step.",
+    metric: "Unowned",
+    metricLabel: "The finding has no accountable clock",
+    work: "Contain the event",
+    tax: ["Find the accountable owner", "Rebuild the missing context"],
+    outcome: "Named owner and due date",
+  },
+  {
+    visual: "versions",
+    category: "CAPA effectiveness",
+    title: "The paperwork closes before the fix is proven",
+    quote: "Whether a CAPA worked is argued in a review instead of checked on a date.",
+    detail: "A signed action plan is not proof of effectiveness, so the same failure can return after the record is closed.",
+    metric: "Unchecked",
+    metricLabel: "No verified effectiveness window",
+    work: "Close the CAPA",
+    tax: ["Reconcile the action tracker", "Debate whether the fix worked"],
+    outcome: "Effectiveness verified",
+  },
+  {
+    visual: "drift",
+    category: "Supplier quality",
+    title: "The supplier issue repeats until the audit",
+    quote: "A recurring supplier issue surfaces at the audit, with no SCAR trail behind it.",
+    detail: "Incoming failures stay isolated from the supplier record, so recurrence never becomes a visible quality signal.",
+    metric: "Recurring",
+    metricLabel: "The signal never reaches a supplier scorecard",
+    work: "Control the supplier",
+    tax: ["Compare incoming failures", "Reconstruct the SCAR trail"],
+    outcome: "SCAR linked to scorecard",
+  },
+  {
+    visual: "audit",
+    category: "Audit management",
+    title: "Findings live in a spreadsheet",
+    quote: "Responses and effectiveness live off the record, and the next audit reopens them.",
+    detail: "When findings, actions, and evidence are split across tools, closure is a status in a cell instead of a defensible record.",
+    metric: "Off-record",
+    metricLabel: "Actions and evidence are separated",
+    work: "Answer the audit",
+    tax: ["Collect scattered responses", "Reconcile closure evidence"],
+    outcome: "Finding and proof together",
   },
 ];
 
@@ -117,7 +189,7 @@ export const QMS_DATA: ProductPageData = {
     eyebrowN: 2,
     heading: "The quality system, bundled.",
     lede: "Six disciplines on one governed deployment, so an event that starts on the floor ends in a defensible, closed record.",
-    items: MODULES,
+    items: QMS_MODULES,
     mocks: QMS_MODULE_MOCKS,
     urlBase: "qms",
   },
