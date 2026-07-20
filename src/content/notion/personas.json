@@ -1,0 +1,35 @@
+[
+  {
+    "pageId": "361860e6-b45e-8183-9ea3-dd204c736ed2",
+    "id": "PPS-5",
+    "name": "Document Controller",
+    "description": "Owns the controlled-document lifecycle from draft to effective.",
+    "daily": [
+      "Issue revisions, chase approvers",
+      "Pull document trees for audits",
+      "Close out periodic reviews"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8105-8c22-e32266e39830",
+    "id": "PPS-6",
+    "name": "Training Coordinator",
+    "description": "Turns effective revisions into completed, evidenced training.",
+    "daily": [
+      "Assign training from new revisions",
+      "Chase incomplete training",
+      "Report completion for audits"
+    ]
+  },
+  {
+    "pageId": "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+    "id": "PPS-2",
+    "name": "Quality Manager",
+    "description": "Approves changes and documents of consequence, owns the audit programme, chairs management review.",
+    "daily": [
+      "Approve changes of consequence",
+      "Own the audit programme",
+      "Chair management review"
+    ]
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "hero.line1": {
+    "element": "Hero · headline line 1",
+    "text": "One current version."
+  },
+  "hero.line2": {
+    "element": "Hero · headline line 2",
+    "text": "Everywhere you look."
+  },
+  "trust.label": {
+    "element": "Trust strip · label",
+    "text": "One controlled record across regulated operations"
+  },
+  "problem.heading": {
+    "element": "01 The problem · heading",
+    "text": "You have the document. Nobody can find it when it matters."
+  },
+  "problem.lede": {
+    "element": "01 The problem · lede",
+    "text": "Quality teams spend up to a third of their week hunting for controlled documents across shared drives, QMS folders, and email threads."
+  },
+  "capabilities.heading": {
+    "element": "03 Capabilities · heading",
+    "text": "The controls a regulated library runs on."
+  },
+  "audience.heading": {
+    "element": "05 Who it is for · heading",
+    "text": "For the teams that keep every document current."
+  },
+  "compliance.heading": {
+    "element": "07 Compliance frame · heading",
+    "text": "One lifecycle. Every standard."
+  },
+  "compliance.lede": {
+    "element": "07 Compliance frame · lede",
+    "text": "Control the record once, then prove it against whatever governs your operation."
+  },
+  "faq.heading": {
+    "element": "08 FAQ · heading",
+    "text": "The questions procurement and QA ask first."
+  },
+  "close.heading": {
+    "element": "Close · heading",
+    "text": "Bring the SOP you could not find the current version of."
+  },
+  "close.lede": {
+    "element": "Close · lede",
+    "text": "We will run it through the lifecycle live, from draft to Part 11 approval."
+  },
+  "footer.tagline": {
+    "element": "Footer · tagline",
+    "text": "One governed home for every controlled document."
+  }
+}
