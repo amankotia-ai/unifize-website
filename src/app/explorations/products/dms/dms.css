@@ -317,6 +317,18 @@
   color:var(--dms-muted); padding:5px 14px; border-radius:var(--dms-r-control);
   background:var(--dms-surface); border:1px solid var(--dms-hairline); }
 .dms-appframe--panel .dms-appframe__bar { height:40px; }
+.dms-appframe__bar--window { height:52px; min-height:52px; padding-inline:18px; }
+.dms-appframe__window-controls { display:flex; align-items:center; gap:8px; }
+.dms-appframe__bar--window .dms-dot { width:9px; height:9px; }
+.dms-appframe__bar--window .dms-dot--close { background:#e46b6f; }
+.dms-appframe__bar--window .dms-dot--minimize { background:#deb05b; }
+.dms-appframe__bar--window .dms-dot--maximize { background:#70ba7d; }
+.dms-appframe__brand { display:block; width:96px; height:auto; margin-left:12px; }
+.dms-appframe__live { display:inline-flex; align-items:center; gap:7px; margin-left:auto;
+  color:var(--dms-accent-text); font-family:var(--dms-mono); font-size:0.6875rem;
+  font-weight:500; text-transform:uppercase; }
+.dms-appframe__live i { width:8px; height:8px; border:4px solid var(--dms-accent-tint);
+  border-radius:var(--dms-r-pill); background:var(--dms-accent); }
 
 /* placeholder tag - the one surviving placeholder marker (testimonial slot) */
 .dms-ph__tag { position:absolute; top:14px; right:14px; z-index:1; font-family:var(--dms-mono); font-size:0.625rem;

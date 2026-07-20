@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Eyebrow } from "./dms-primitives";
 import type { DmsCoordinationProblem } from "./dms-data";
 import "./dms-coordination-visual.css";
 
@@ -40,17 +40,12 @@ function BeforeStep({ problem, index }: { problem: DmsCoordinationProblem; index
       <span className="dms-ctv__rule" aria-hidden="true" />
       <span className="dms-ctv__metric">{problem.metric}</span>
       <small>{problem.metricLabel}</small>
-    </li>
-  );
-}
-
-function CoordinationGap({ labels }: { labels: DmsCoordinationProblem["tax"] }) {
-  return (
-    <li className="dms-ctv__gap">
-      <GapIcon />
-      <span>{labels[0]}</span>
-      <span className="dms-ctv__gap-rule" aria-hidden="true" />
-      <span>{labels[1]}</span>
+      <span className="dms-ctv__gap">
+        <GapIcon />
+        <span>
+          {problem.tax[0]} <span aria-hidden="true">·</span> {problem.tax[1]}
+        </span>
+      </span>
     </li>
   );
 }
@@ -73,13 +68,13 @@ export function DmsCoordinationVisual({ problems }: CoordinationVisualProps) {
     <div className="dms-ctv">
       <div className="dms-ctv__stage">
         <header className="dms-ctv__narration" id="dms-ctax-title">
-          <span className="dms-eyebrow">The deeper problem</span>
-          <h2 className="dms-h2">Shorten the path from question to proof.</h2>
+          <Eyebrow>The cost of fragmentation</Eyebrow>
+          <h2 className="dms-h2">The coordination tax sits between question and proof.</h2>
           <p>Work moves faster, accountability stays visible, and the evidence is already audit-ready.</p>
         </header>
 
         <span className="dms-sr-only">
-          Before Unifize, four document-management steps are separated by coordination work: searching every
+          Before Unifize, four regulated-work steps are separated by coordination work: searching every
           location, comparing copies, finding owners, and reconciling evidence. With Unifize, the same stages remain
           connected to one governed record. The problem metrics retain their original units and are not plotted on a
           shared numeric scale.
@@ -96,10 +91,7 @@ export function DmsCoordinationVisual({ problems }: CoordinationVisualProps) {
             <div className="dms-ctv__lane-scroll">
               <ol className="dms-ctv__before-track">
                 {problems.map((problem, index) => (
-                  <Fragment key={problem.visual}>
-                    <BeforeStep index={index} problem={problem} />
-                    {index < problems.length - 1 ? <CoordinationGap labels={problem.tax} /> : null}
-                  </Fragment>
+                  <BeforeStep index={index} key={problem.visual} problem={problem} />
                 ))}
               </ol>
             </div>
@@ -107,7 +99,6 @@ export function DmsCoordinationVisual({ problems }: CoordinationVisualProps) {
 
           <div className="dms-ctv__shift">
             <span className="dms-ctv__shift-line" aria-hidden="true" />
-            <span className="dms-ctv__shift-icon"><GapIcon /></span>
             <p><strong>The work stays.</strong> The coordination gaps do not.</p>
             <span className="dms-ctv__shift-line" aria-hidden="true" />
           </div>
@@ -120,19 +111,18 @@ export function DmsCoordinationVisual({ problems }: CoordinationVisualProps) {
             </header>
 
             <div className="dms-ctv__lane-scroll">
-              <div className="dms-ctv__after-track">
-                <ol className="dms-ctv__after-steps">
-                  {problems.map((problem, index) => (
-                    <AfterStep index={index} key={problem.visual} problem={problem} />
-                  ))}
-                </ol>
-                <div className="dms-ctv__record-bar">
-                  <span><RecordIcon />One governed record</span>
-                  <span>Every handoff stays attached</span>
-                </div>
-              </div>
+              <ol className="dms-ctv__after-steps">
+                {problems.map((problem, index) => (
+                  <AfterStep index={index} key={problem.visual} problem={problem} />
+                ))}
+              </ol>
             </div>
           </section>
+
+          <div className="dms-ctv__record-bar">
+            <span><RecordIcon />One governed record</span>
+            <span>Every handoff stays attached</span>
+          </div>
         </div>
       </div>
     </div>

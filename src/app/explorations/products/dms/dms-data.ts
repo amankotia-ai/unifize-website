@@ -7,6 +7,8 @@
  * Copy is kept deliberately short: every string earns its place on screen.
  * ========================================================================== */
 import type { IntegrationData } from "./dms-integrations";
+import productsMirror from "@/content/notion/products.json";
+import personasMirror from "@/content/notion/personas.json";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -213,53 +215,75 @@ export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
   { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library.", glyph: "access" },
 ];
 
-/* who it is for - section 05. The two personas Notion lists as DMS Target
- * Personas (PPS-5 Document Controller, PPS-6 Training Coordinator) own the
- * record day to day; the Quality Manager (PPS-2, whose module relations span
- * all three bundled modules) is the approving seat. Each card leads with the
- * one question that role answers for, and an "owns" span in the section 04
- * lifecycle vocabulary. Portraits are generated representative imagery, not
- * real customers. */
+/* who it is for - section 05. Derived from the Notion mirrors, not
+ * hand-typed. Membership = the persona relation on the DMS row (UPD-2) in
+ * src/content/notion/products.json; facts (role name, daily activities) come
+ * from the personas mirror. Adding or removing a persona on the DMS row in
+ * Notion adds or removes the card here on the next sync. Presentation
+ * (lifecycle span, portrait, route, copy-tightened daily lines) stays
+ * page-owned below, keyed by persona ID; a persona without an entry still
+ * renders from mirror facts with a fallback portrait. Personas missing name
+ * or daily activities are held back rather than rendered broken. */
+type PersonaMirrorRow = {
+  pageId: string;
+  id: string;
+  name: string;
+  daily: string[];
+};
+
+const PERSONA_PRESENTATION: Record<
+  string,
+  { owns?: string; img?: string; href?: string; daily?: string[] }
+> = {
+  "PPS-5": {
+    owns: "Draft → Effective",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
+  },
+  "PPS-6": {
+    owns: "Effective → Trained",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Assign training from new revisions", "Chase incomplete training", "Report completion for audits"],
+  },
+  "PPS-2": {
+    owns: "Approval → Release",
+    // Reuse a representative portrait from the two primary persona cards.
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    href: "/explorations/personas/quality-manager",
+    daily: ["Approve changes of consequence", "Own the audit programme", "Chair management review"],
+  },
+};
+
+const FALLBACK_PORTRAIT = "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png";
+
+const dmsProductRow = productsMirror.find((product) => product.id === PRODUCT.id);
+
+const dmsPersonaCards = (dmsProductRow?.personas ?? [])
+  .map((pageId) => (personasMirror as PersonaMirrorRow[]).find((p) => p.pageId === pageId))
+  .filter((p): p is PersonaMirrorRow => Boolean(p && p.name && p.daily.length > 0))
+  .map((p) => {
+    const presentation = PERSONA_PRESENTATION[p.id] ?? {};
+    return {
+      role: p.name,
+      owns: presentation.owns ?? "",
+      daily: (presentation.daily ?? p.daily).slice(0, 3),
+      img: presentation.img ?? FALLBACK_PORTRAIT,
+      href: presentation.href,
+    };
+  });
+
 export const AUDIENCE: {
   lede: string;
-  owners: { role: string; owns: string; question: string; aka: string; daily: string[]; img: string }[];
-  approver: { role: string; owns: string; question: string; aka: string; daily: string[]; href: string; linkLabel: string };
+  personas: {
+    role: string;
+    owns: string;
+    daily: string[];
+    img: string;
+    href?: string;
+  }[];
 } = {
-  lede: "A Document Controller and a Training Coordinator run the record day to day. The Quality Manager signs what ships and answers for it under audit.",
-  owners: [
-    {
-      role: "Document Controller",
-      owns: "Owns Draft → Effective",
-      question: "Is this the latest revision?",
-      // source: Personas DB PPS-5, Title Variants
-      aka: "DC · Doc Control Specialist · QMS Administrator · Records Manager",
-      // source: Personas DB PPS-5, Daily Activities
-      daily: ["Issue revisions, chase approvers", "Pull document trees for audits", "Close out periodic reviews"],
-      img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-    },
-    {
-      role: "Training Coordinator",
-      owns: "Owns Effective → trained",
-      question: "Is everyone trained on the current version?",
-      // source: Personas DB PPS-6, Title Variants
-      aka: "Training Lead · QA Training Specialist · Compliance Training Manager",
-      // source: Personas DB PPS-6, Daily Activities
-      daily: ["Assign training off new revisions", "Chase incomplete training", "Report completion for audits"],
-      img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-    },
-  ],
-  approver: {
-    role: "Quality Manager",
-    owns: "Signs at In Approval",
-    question: "Can we prove it under audit?",
-    // source: Personas DB PPS-2, common titles in Description
-    aka: "QA Manager · Director of Quality · Head of Quality",
-    // source: Personas DB PPS-2, Description (approves changes and documents
-    // of consequence, owns the audit programme, chairs management review)
-    daily: ["Approve changes of consequence", "Own the audit programme", "Chair management review"],
-    href: "/explorations/personas/quality-manager",
-    linkLabel: "See how quality managers work",
-  },
+  lede: "From first draft to audit evidence, every role works from the same current record.",
+  personas: dmsPersonaCards,
 };
 
 /* the failure modes DMS is built to close. one line each. */

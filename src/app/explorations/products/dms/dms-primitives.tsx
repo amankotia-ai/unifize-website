@@ -30,10 +30,18 @@ export function ShellFrame({
   children: React.ReactNode;
 }) {
   return (
-    <div className={"dms-appframe" + (panel ? " dms-appframe--panel" : "")}>
-      <div className="dms-appframe__bar" aria-hidden="true">
-        <span className="dms-dot" /><span className="dms-dot" /><span className="dms-dot" />
-        <span className="dms-appframe__url">{url}</span>
+    <div
+      className={"dms-appframe" + (panel ? " dms-appframe--panel" : "")}
+      data-frame-url={url}
+    >
+      <div className="dms-appframe__bar dms-appframe__bar--window" aria-hidden="true">
+        <span className="dms-appframe__window-controls">
+          <span className="dms-dot dms-dot--close" />
+          <span className="dms-dot dms-dot--minimize" />
+          <span className="dms-dot dms-dot--maximize" />
+        </span>
+        <img className="dms-appframe__brand" src="/logo_dark.svg" alt="" width="96" height="22" />
+        <span className="dms-appframe__live"><i />Live</span>
       </div>
       {children}
     </div>

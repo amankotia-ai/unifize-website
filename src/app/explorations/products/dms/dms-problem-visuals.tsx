@@ -95,21 +95,21 @@ function RetrievalGraphic(props: GraphicProps) {
 
       <g transform="translate(235 73) rotate(-5 38 48)">
         <motion.g className="dms-gfx-paper" variants={graphicItem}>
-          <rect width="76" height="96" rx="4" />
+          <rect width="76" height="96" rx="6" />
           <path d="M13 23h40M13 37h49M13 51h33" />
           <text x="13" y="80">SIGNED</text>
         </motion.g>
       </g>
       <g transform="translate(270 192) rotate(3 38 48)">
         <motion.g className="dms-gfx-paper" variants={graphicItem}>
-          <rect width="76" height="96" rx="4" />
+          <rect width="76" height="96" rx="6" />
           <path d="M13 23h40M13 37h49M13 51h33" />
           <text x="13" y="80">FINAL</text>
         </motion.g>
       </g>
       <g transform="translate(230 312) rotate(-4 38 48)">
         <motion.g className="dms-gfx-paper" variants={graphicItem}>
-          <rect width="76" height="96" rx="4" />
+          <rect width="76" height="96" rx="6" />
           <path d="M13 23h40M13 37h49M13 51h33" />
           <text x="13" y="80">OLD COPY</text>
         </motion.g>
@@ -118,7 +118,7 @@ function RetrievalGraphic(props: GraphicProps) {
       <motion.g className="dms-gfx-lens" variants={graphicPop}>
         <circle cx="500" cy="240" r="88" />
         <path d="m562 302 50 50" />
-        <rect x="438" y="206" width="124" height="68" rx="4" />
+        <rect x="438" y="206" width="124" height="68" rx="6" />
         <text x="500" y="235" textAnchor="middle">CONTROLLED SOP</text>
         <text x="500" y="255" textAnchor="middle">MULTIPLE RESULTS</text>
       </motion.g>
@@ -136,7 +136,7 @@ function VersionsGraphic(props: GraphicProps) {
 
       <g transform="translate(105 146) rotate(-10 90 119)">
         <motion.g className="dms-gfx-version dms-gfx-version--old" variants={graphicFade}>
-          <rect width="180" height="238" rx="5" />
+          <rect width="180" height="238" rx="8" />
           <text className="dms-gfx-version__eyebrow" x="20" y="34">CONTROLLED SOP</text>
           <text className="dms-gfx-version__number" x="20" y="94">PRINTED</text>
           <path d="M21 122h99M21 141h129M21 160h89M21 193h116" />
@@ -145,7 +145,7 @@ function VersionsGraphic(props: GraphicProps) {
       </g>
       <g transform="translate(176 106) rotate(-2 90 119)">
         <motion.g className="dms-gfx-version dms-gfx-version--mid" variants={graphicFade}>
-          <rect width="180" height="238" rx="5" />
+          <rect width="180" height="238" rx="8" />
           <text className="dms-gfx-version__eyebrow" x="20" y="34">CONTROLLED SOP</text>
           <text className="dms-gfx-version__number" x="20" y="94">SHARED</text>
           <path d="M21 122h99M21 141h129M21 160h89M21 193h116" />
@@ -154,7 +154,7 @@ function VersionsGraphic(props: GraphicProps) {
       </g>
       <g transform="translate(250 132) rotate(6 90 119)">
         <motion.g className="dms-gfx-version dms-gfx-version--key" variants={graphicPop}>
-          <rect width="180" height="238" rx="5" />
+          <rect width="180" height="238" rx="8" />
           <text className="dms-gfx-version__eyebrow" x="20" y="34">CONTROLLED SOP</text>
           <text className="dms-gfx-version__number" x="20" y="94">CURRENT</text>
           <path d="M21 122h99M21 141h129M21 160h89M21 193h116" />
@@ -224,45 +224,49 @@ function AuditGraphic(props: GraphicProps) {
 
       <g transform="translate(70 82) rotate(-5 67 50)">
         <motion.g className="dms-gfx-evidence" variants={graphicItem}>
-          <rect width="135" height="100" rx="4" />
+          <rect width="135" height="100" rx="7" />
           <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
           <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
           <text x="20" y="90">REVISION HISTORY</text>
         </motion.g>
       </g>
       <g transform="translate(515 82) rotate(5 67 50)">
         <motion.g className="dms-gfx-evidence" variants={graphicItem}>
-          <rect width="135" height="100" rx="4" />
+          <rect width="135" height="100" rx="7" />
           <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
           <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
           <text x="20" y="90">APPROVALS</text>
         </motion.g>
       </g>
       <g transform="translate(70 306) rotate(5 67 50)">
         <motion.g className="dms-gfx-evidence" variants={graphicItem}>
-          <rect width="135" height="100" rx="4" />
+          <rect width="135" height="100" rx="7" />
           <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
           <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
           <text x="20" y="90">SIGNATURES</text>
         </motion.g>
       </g>
       <g transform="translate(515 306) rotate(-5 67 50)">
         <motion.g className="dms-gfx-evidence" variants={graphicItem}>
-          <rect width="135" height="100" rx="4" />
+          <rect width="135" height="100" rx="7" />
           <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
           <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
           <text x="20" y="90">TRAINING</text>
         </motion.g>
       </g>
 
       <motion.g className="dms-gfx-dossier" variants={graphicPop}>
-        <rect className="dms-gfx-dossier__shadow" x="274" y="113" width="190" height="266" rx="6" />
-        <rect x="266" y="105" width="190" height="266" rx="6" />
-        <rect className="dms-gfx-dossier__spine" x="266" y="105" width="28" height="266" rx="6" />
+        <rect className="dms-gfx-dossier__shadow" x="274" y="113" width="190" height="266" rx="8" />
+        <rect x="266" y="105" width="190" height="266" rx="8" />
+        <rect className="dms-gfx-dossier__spine" x="266" y="105" width="28" height="266" rx="8" />
         <text className="dms-gfx-dossier__eyebrow" x="318" y="149">AUDIT RECORD</text>
         <text className="dms-gfx-dossier__title" x="318" y="188">SOP DOSSIER</text>
         <path d="M319 219h97M319 241h76M319 263h91" />
-        <rect className="dms-gfx-dossier__missing" x="318" y="296" width="102" height="38" rx="4" />
+        <rect className="dms-gfx-dossier__missing" x="318" y="296" width="102" height="38" rx="6" />
         <text className="dms-gfx-dossier__missing-label" x="369" y="319" textAnchor="middle">MISSING EVIDENCE</text>
       </motion.g>
     </GraphicCanvas>

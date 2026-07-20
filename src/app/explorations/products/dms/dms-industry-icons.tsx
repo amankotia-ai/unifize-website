@@ -22,6 +22,9 @@ const INDUSTRY_ICON_PATHS: Record<string, React.ReactNode> = {
   Aerospace: (
     <path d="m21.5 14.1-7.5-6V4a2 2 0 1 0-4 0v4.1l-7.5 6v2.4l7.5-3.4V19l-2 1.5V22l4-1 4 1v-1.5L14 19v-5.9l7.5 3.4v-2.4Z" />
   ),
+  Automotive: (
+    <path d="M5.4 5.5h13.2l2.2 6.1c.75.38 1.2 1.17 1.2 2.05V19h-2v2h-3v-2H7v2H4v-2H2v-5.35c0-.88.45-1.67 1.2-2.05l2.2-6.1ZM6.8 8l-1.2 3.3h12.8L17.2 8H6.8ZM6 14a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm12 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" fillRule="evenodd" clipRule="evenodd" />
+  ),
 };
 
 export function DmsIndustryIcon({ industry }: DmsIndustryIconProps) {

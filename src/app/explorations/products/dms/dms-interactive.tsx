@@ -11,11 +11,12 @@
  * FAQ open).
  * -------------------------------------------------------------------------- */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChatShell } from "@/components/organisms";
+import { cn } from "@/lib/cn";
 import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
 import { Eyebrow, ShellFrame, StagePanel } from "./dms-primitives";
-import { MockChangeOrder, MockRevisionTrail, MockTrainingMatrix } from "./dms-mocks";
+import { MockChangeWorkspace, MockDocumentWorkspace, MockTrainingWorkspace } from "./dms-mocks";
 
 /* ============================================================ shared bits */
 
@@ -101,69 +102,122 @@ function ModulePointIcon({ name }: { name: string }) {
 /* ============================================================ module story */
 
 const MODULE_MOCKS: Record<string, React.ReactNode> = {
-  "document-control": <MockRevisionTrail />,
-  "change-control": <MockChangeOrder />,
-  "training-management": <MockTrainingMatrix />,
+  "document-control": <MockDocumentWorkspace />,
+  "change-control": <MockChangeWorkspace />,
+  "training-management": <MockTrainingWorkspace />,
 };
 
-export function ModuleExplorer() {
+export type DmsModuleExplorerItem = {
+  key: string;
+  name: string;
+  promise?: string;
+  blurb: string;
+  points?: string[];
+  standards?: string[];
+};
+
+type ModuleExplorerProps = {
+  modules?: DmsModuleExplorerItem[];
+  mocks?: Record<string, React.ReactNode>;
+  heading?: string;
+  lede?: string;
+  ariaLabel?: string;
+  urlBase?: string;
+  pointIcons?: Record<string, string[]>;
+};
+
+export function ModuleExplorer({
+  modules = MODULES,
+  mocks = MODULE_MOCKS,
+  heading = "Three modules. One continuous record.",
+  lede = "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.",
+  ariaLabel = "DMS modules",
+  urlBase = "",
+  pointIcons = MODULE_POINT_ICONS,
+}: ModuleExplorerProps = {}) {
   const [active, setActive] = useState(0);
 
-  const m = MODULES[active];
+  const m = modules[active];
 
   return (
     <div className="dms-wrap dms-modx">
       <div className="dms-modx__head">
         <Eyebrow n={2}>What is bundled</Eyebrow>
-        <h2 className="dms-h2">Three modules. One continuous record.</h2>
-        <p className="dms-lede">The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.</p>
+        <h2 className="dms-h2">{heading}</h2>
+        <p className="dms-lede">{lede}</p>
       </div>
       <div className="dms-modx__layout">
-        <div className="dms-modx__row" role="group" aria-label="DMS modules">
-          {MODULES.map((mod, i) => (
-            <button
-              type="button"
-              key={mod.key}
-              className={"dms-modx__it" + (i === active ? " is-active" : "")}
-              aria-pressed={i === active}
-              aria-controls="dms-module-panel"
-              onClick={() => setActive(i)}
-            >
-              <span className="dms-modx__idx dms-data">{pad(i + 1)}</span>
-              <span className="dms-modx__name">{mod.name}</span>
-              <span className="dms-modx__blurb">{mod.promise}</span>
-            </button>
-          ))}
+        <div className="dms-modx__sidebar">
+          <div className="dms-modx__row" role="group" aria-label={ariaLabel}>
+            {modules.map((mod, i) => {
+              const modIcons = pointIcons[mod.key] ?? ["evidence", "route", "review", "report"];
+              const isActive = i === active;
+
+              return (
+                <div className={`dms-modx__item${isActive ? " is-active" : ""}`} key={mod.key}>
+                  <button
+                    type="button"
+                    id={`dms-module-button-${i}`}
+                    className={"dms-modx__it" + (isActive ? " is-active" : "")}
+                    aria-pressed={isActive}
+                    aria-expanded={isActive}
+                    aria-controls={`dms-module-detail-${i} dms-module-panel`}
+                    onClick={() => setActive(i)}
+                  >
+                    <span className="dms-modx__idx dms-data">{pad(i + 1)}</span>
+                    <span className="dms-modx__name">{mod.name}</span>
+                    <span className="dms-modx__blurb">{mod.promise ?? mod.blurb}</span>
+                  </button>
+                  <div
+                    className="dms-modx__copy"
+                    id={`dms-module-detail-${i}`}
+                    role="region"
+                    aria-labelledby={`dms-module-button-${i}`}
+                    hidden={!isActive}
+                  >
+                    <div className="dms-modx__summary">
+                      <span className="dms-modx__copy-label">What it does</span>
+                      <p>{mod.blurb}</p>
+                    </div>
+                    {(mod.points ?? []).length ? (
+                      <div className="dms-modx__controls">
+                        <span className="dms-modx__copy-label">Included controls</span>
+                        <ul>
+                          {(mod.points ?? []).map((point, pointIndex) => (
+                            <li key={point}>
+                              <ModulePointIcon name={modIcons[pointIndex] ?? "evidence"} />
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
         <div className="dms-modx__panel" id="dms-module-panel" aria-live="polite">
-          <div className="dms-modx__copy">
-            <p>{m.blurb}</p>
-            <ul>
-              {m.points.map((point, pointIndex) => (
-                <li key={point}>
-                  <ModulePointIcon name={MODULE_POINT_ICONS[m.key][pointIndex]} />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
           <StagePanel className="dms-stage--brand dms-modx__stage">
             <div className="dms-modx__screens">
-              {MODULES.map((module, moduleIndex) => (
+              {modules.map((module, moduleIndex) => (
                 <div
                   className={`dms-modx__card${moduleIndex === active ? " is-active" : ""}`}
                   key={module.key}
                   aria-hidden={moduleIndex !== active}
                 >
-                  <ShellFrame panel url={`app.unifize.com / ${module.key.replace(/-/g, " ")}`}>
-                    {MODULE_MOCKS[module.key]}
+                  <ShellFrame panel url={`app.unifize.com / ${urlBase ? `${urlBase} / ` : ""}${module.key.replace(/-/g, " ")}`}>
+                    {mocks[module.key]}
                   </ShellFrame>
                 </div>
               ))}
             </div>
-            <div className="dms-modx__standards" aria-label="Standards supported by this module">
-              {m.standards.map((standard) => <span key={standard}>{standard}</span>)}
-            </div>
+            {m.standards?.length ? (
+              <div className="dms-modx__standards" aria-label="Standards supported by this module">
+                {m.standards.map((standard) => <span key={standard}>{standard}</span>)}
+              </div>
+            ) : null}
           </StagePanel>
         </div>
       </div>
@@ -172,17 +226,167 @@ export function ModuleExplorer() {
 }
 
 /* ============================================================ lifecycle
- * A direct state selector keeps the full lifecycle and the corresponding
- * CC-2148 evidence visible in one frame without a scroll-jacked sequence. */
+ * Shared selector by default; DMS can opt into the homepage-style scroll
+ * story, where the live record stays pinned beside the lifecycle copy. */
 
 /* Scrub points into the ChatShell timeline (0..1) per lifecycle state:
  * Draft → change raised; In Review → cross-functional review; In Approval →
  * Part 11 signature; Effective → record card lands; Superseded → "Rev D live,
  * Rev C retired" row ticks; Obsolete → audit trail sealed. */
 const LIFE_PROGRESS = [0.17, 0.49, 0.72, 0.94, 0.97, 1];
-export function LifecycleExplorer() {
+type LifecycleExplorerProps = {
+  steps?: { state: string; gate: string; detail: string; visual?: string }[];
+  heading?: string;
+  trailLabel?: string;
+  ariaLabel?: string;
+  liveLabel?: string;
+  chatVariant?: "capa" | "change-control";
+  progressPoints?: number[];
+  /** one pre-rendered prototype per step, staged in the live panel instead of
+   * the ChatShell (for products whose lifecycle has no chat script). */
+  stageMocks?: React.ReactNode[];
+  stageUrl?: string;
+  mobileLabel?: string;
+  mobileId?: string;
+  idPrefix?: string;
+  layout?: "selector" | "sticky-visual";
+};
+
+export function LifecycleExplorer({
+  steps = LIFECYCLE,
+  heading = "Every state has a gate. Every gate has an owner.",
+  trailLabel = "How a revision moves",
+  ariaLabel = "Controlled document lifecycle",
+  liveLabel = "Change-control thread CC-2148, updated by lifecycle state",
+  chatVariant = "change-control",
+  progressPoints = LIFE_PROGRESS,
+  stageMocks,
+  stageUrl = "app.unifize.com",
+  mobileLabel = "Change-control thread",
+  mobileId = "CC-2148 · raise → review → Part 11 approval → effective → seal",
+  idPrefix = "dms-life",
+  layout = "selector",
+}: LifecycleExplorerProps = {}) {
   const [active, setActive] = useState(0);
-  const progress = LIFE_PROGRESS[active];
+  const stepRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const ratios = useRef<number[]>([]);
+  const manualUntil = useRef(0);
+  const progress = progressPoints[active] ?? progressPoints[progressPoints.length - 1] ?? 1;
+
+  useEffect(() => {
+    if (layout !== "sticky-visual") return;
+
+    ratios.current = Array.from({ length: steps.length }, () => 0);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const index = stepRefs.current.indexOf(entry.target as HTMLButtonElement);
+        if (index >= 0) ratios.current[index] = entry.intersectionRatio;
+      });
+
+      const best = ratios.current.reduce(
+        (winner, ratio, index, all) => ratio > (all[winner] ?? 0) ? index : winner,
+        0,
+      );
+      if (Date.now() > manualUntil.current && (ratios.current[best] ?? 0) > 0.08) {
+        setActive(best);
+      }
+    }, { rootMargin: "-12% 0px -12% 0px", threshold: [0.08, 0.25, 0.5, 0.75] });
+
+    stepRefs.current.forEach((node) => {
+      if (node) observer.observe(node);
+    });
+    return () => observer.disconnect();
+  }, [layout, steps.length]);
+
+  const select = (index: number) => {
+    manualUntil.current = Date.now() + 1000;
+    setActive(index);
+  };
+
+  const livePanel = (
+    <div
+      className="dms-lifex__live"
+      id={`${idPrefix}-live`}
+      aria-label={`${liveLabel}. Current state: ${steps[active]?.state ?? ""}`}
+    >
+      {stageMocks ? (
+        <div className="dms-lifex__stagemock" key={active}>
+          <ShellFrame panel url={stageUrl}>
+            {stageMocks[Math.min(active, stageMocks.length - 1)]}
+          </ShellFrame>
+        </div>
+      ) : (
+        <ChatShell variant={chatVariant} progress={progress} />
+      )}
+    </div>
+  );
+
+  if (layout === "sticky-visual") {
+    return (
+      <div className="dms-lifex-scroll dms-lifex-scroll--story">
+        <StagePanel className="dms-stage--brand dms-lifex__stage">
+          <div className="dms-wrap dms-lifex-wrap">
+            <div className="dms-lifex__head">
+              <Eyebrow n={4}>The lifecycle</Eyebrow>
+              <h2 className="dms-h2">{heading}</h2>
+            </div>
+
+            <div className="dms-lifex dms-lifex--story">
+              <div className="dms-lifex__visual">
+                <div
+                  className="dms-lifex__progress"
+                  style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
+                  aria-label={`Lifecycle state ${active + 1} of ${steps.length}`}
+                >
+                  {steps.map((step, index) => (
+                    <button
+                      key={step.state}
+                      type="button"
+                      className={cn(index === active && "is-active")}
+                      aria-label={`Show lifecycle state ${index + 1}: ${step.state}`}
+                      aria-controls={`${idPrefix}-live`}
+                      onClick={() => select(index)}
+                    >
+                      <span>{pad(index + 1)}</span>
+                    </button>
+                  ))}
+                </div>
+                {livePanel}
+              </div>
+
+              <ol className="dms-lifex__story-steps" aria-label={ariaLabel}>
+                {steps.map((step, index) => (
+                  <li className="dms-lifex__story-item" key={step.state}>
+                    <button
+                      ref={(node) => { stepRefs.current[index] = node; }}
+                      type="button"
+                      className={cn("dms-lifex__story-step", index === active && "is-active")}
+                      aria-current={index === active ? "step" : undefined}
+                      aria-controls={`${idPrefix}-live`}
+                      onClick={() => select(index)}
+                    >
+                      <span className="dms-lifex__story-index dms-data">{pad(index + 1)}</span>
+                      <span className="dms-lifex__story-copy">
+                        <span className="dms-lifex__story-label">{step.state}</span>
+                        <strong>{step.gate}</strong>
+                        <span className="dms-lifex__story-body">{step.detail}</span>
+                        {step.visual ? (
+                          <span className="dms-lifex__story-outcome">
+                            <i aria-hidden="true">✓</i>
+                            {step.visual}
+                          </span>
+                        ) : null}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </StagePanel>
+      </div>
+    );
+  }
 
   return (
     <div className="dms-lifex-scroll">
@@ -190,37 +394,33 @@ export function LifecycleExplorer() {
         <div className="dms-wrap dms-lifex-wrap">
           <div className="dms-lifex__head">
             <Eyebrow n={4}>The lifecycle</Eyebrow>
-            <h2 className="dms-h2">Every state has a gate. Every gate has an owner.</h2>
+            <h2 className="dms-h2">{heading}</h2>
           </div>
           <div className="dms-lifex">
             <aside className="dms-lifex__trail">
-              <span className="dms-lifex__lab">How a revision moves</span>
+              <span className="dms-lifex__lab">{trailLabel}</span>
               <ol
                 className="dms-lifex__steps"
-                aria-label="Controlled document lifecycle"
+                aria-label={ariaLabel}
               >
-                {LIFECYCLE.map((st, i) => (
+                {steps.map((st, i) => (
                   <li
-                    className={
-                      "dms-lifex__step" +
-                      (i === active ? " is-active" : "") +
-                      (i < active ? " is-past" : "")
-                    }
+                    className={cn("dms-lifex__step", i === active && "is-active", i < active && "is-past")}
                     key={st.state}
                   >
                     <button
                       type="button"
-                      id={`dms-lifetab-${i}`}
+                      id={`${idPrefix}-tab-${i}`}
                       aria-pressed={i === active}
-                      aria-controls={`dms-lifedetail-${i}`}
+                      aria-controls={`${idPrefix}-detail-${i}`}
                       className="dms-lifex__btn"
-                      onClick={() => setActive(i)}
+                      onClick={() => select(i)}
                     >
                       <span className="dms-lifex__node" aria-hidden="true" />
                       <span className="dms-lifex__t">{st.state}</span>
                       <span className="dms-lifex__meta">{st.gate}</span>
                     </button>
-                    <div className="dms-lifex__detail" id={`dms-lifedetail-${i}`} role="region" aria-labelledby={`dms-lifetab-${i}`} aria-hidden={i !== active}>
+                    <div className="dms-lifex__detail" id={`${idPrefix}-detail-${i}`} role="region" aria-labelledby={`${idPrefix}-tab-${i}`} aria-hidden={i !== active}>
                       <div className="dms-lifex__detail-inner"><p>{st.detail}</p></div>
                     </div>
                   </li>
@@ -228,13 +428,11 @@ export function LifecycleExplorer() {
               </ol>
             </aside>
 
-            <div className="dms-lifex__live" aria-label="Change-control thread CC-2148, updated by lifecycle state">
-              <ChatShell variant="change-control" progress={progress} />
-            </div>
+            {livePanel}
 
             <div className="dms-lifex__mobile" aria-hidden="true">
-              <span className="dms-lifex__mobile-lab">Change-control thread</span>
-              <span className="dms-lifex__mobile-id">CC-2148 · raise → review → Part 11 approval → effective → seal</span>
+              <span className="dms-lifex__mobile-lab">{mobileLabel}</span>
+              <span className="dms-lifex__mobile-id">{mobileId}</span>
             </div>
           </div>
         </div>
@@ -245,19 +443,19 @@ export function LifecycleExplorer() {
 
 /* ============================================================ FAQ */
 
-export function FaqAccordion() {
+export function FaqAccordion({ faqs = FAQS, idPrefix = "dms-faq" }: { faqs?: { q: string; a: string }[]; idPrefix?: string } = {}) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
     <div className="dms-faq">
-      {FAQS.map((f, i) => (
+      {faqs.map((f, i) => (
         <div className={"dms-faq__item" + (open === i ? " is-open" : "")} key={f.q}>
           <h3 className="dms-faq__h">
             <button
               type="button"
               className="dms-faq__q"
               aria-expanded={open === i}
-              aria-controls={`dms-faq-a-${i}`}
+              aria-controls={`${idPrefix}-a-${i}`}
               onClick={() => setOpen(open === i ? null : i)}
             >
               <span>{f.q}</span>
@@ -266,7 +464,7 @@ export function FaqAccordion() {
               </svg>
             </button>
           </h3>
-          <div className="dms-faq__a" id={`dms-faq-a-${i}`} role="region" aria-hidden={open !== i}>
+          <div className="dms-faq__a" id={`${idPrefix}-a-${i}`} role="region" aria-hidden={open !== i}>
             <div className="dms-faq__a-inner"><p>{f.a}</p></div>
           </div>
         </div>

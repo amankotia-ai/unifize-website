@@ -82,17 +82,26 @@ function IntegrationHub({ systems, record }: { systems: string[]; record: string
 export function IntegrationLayer({
   data,
   variant = "full",
+  minimalLede = "Connect document control to the tools already holding your product, people, and process data.",
+  minimalEyebrow,
 }: {
   data: IntegrationData;
   variant?: "full" | "minimal";
+  /** the one product-specific line of the minimal variant; defaults to the
+   * DMS copy so the standalone DMS page is unchanged. */
+  minimalLede?: string;
+  /** Optional section label for product pages that treat the minimal connector
+   * layer as a named beat in the page hierarchy. */
+  minimalEyebrow?: React.ReactNode;
 }) {
   if (variant === "minimal") {
     return (
       <section className="dms-section dms-section--dark dms-intg dms-intg--minimal" id="integrations" aria-labelledby="dms-integrations-title">
         <div className="dms-wrap">
           <header className="dms-intg__minimal-head" data-reveal>
+            {minimalEyebrow ? <Eyebrow>{minimalEyebrow}</Eyebrow> : null}
             <h2 className="dms-h2" id="dms-integrations-title">Works with the systems you already run.</h2>
-            <p className="dms-lede">Connect document control to the tools already holding your product, people, and process data.</p>
+            <p className="dms-lede">{minimalLede}</p>
           </header>
 
           <div className="dms-intg__logo-grid" data-reveal>
