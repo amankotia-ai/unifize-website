@@ -2,12 +2,16 @@ name: Sync website content from Notion
 
 on:
   workflow_dispatch:
+  # Fired by the Vercel endpoint /api/notion-sync when a Notion webhook
+  # reports an edit, so an approved change lands within a couple of minutes.
+  repository_dispatch:
+    types: [notion-content-edit]
   schedule:
-    # Hourly. Every push to main auto-deploys via Vercel, so a Notion edit
-    # reaches the live site within the hour, or immediately via Run workflow.
-    # If a sync ever breaks the build, Vercel keeps serving the last good
+    # Every 10 minutes as the fallback cadence (repo is public, Actions
+    # minutes are free). Every push to main auto-deploys via Vercel. If a
+    # sync ever breaks the build, Vercel keeps serving the last good
     # deployment; nothing goes dark.
-    - cron: "17 * * * *"
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: write
