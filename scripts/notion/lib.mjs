@@ -45,6 +45,18 @@ export async function queryAllRows(token, databaseId) {
   return rows.filter((row) => !row.archived);
 }
 
+export async function listBlockChildren(token, blockId) {
+  const blocks = [];
+  let cursor;
+  do {
+    const qs = `?page_size=100${cursor ? `&start_cursor=${cursor}` : ""}`;
+    const json = await notionRequest(token, "GET", `blocks/${blockId}/children${qs}`);
+    blocks.push(...json.results);
+    cursor = json.has_more ? json.next_cursor : undefined;
+  } while (cursor);
+  return blocks;
+}
+
 export const richText = (content) => [{ type: "text", text: { content } }];
 
 export const plainText = (richTextArray) =>

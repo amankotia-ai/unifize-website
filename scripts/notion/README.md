@@ -4,9 +4,11 @@ Two pipes, one principle: Notion is the source of truth for content, git is
 the audit trail, the page can never render broken from a Notion edit.
 
 ```
-                       ┌─ PIPE 1: page copy (editorial strings) ─────────────┐
- Notion "Website Copy" │ one DB for ALL pages, keys "dms/hero.line1",        │
- DB (CPY-##)           │ per-page filtered views embedded on Site Pages rows │
+                       ┌─ PIPE 1: page copy (approved prose) ────────────────┐
+ Notion Content Blocks │ ONE DB, one row per page section (DMS-S01...), the  │
+ DB on Website 3.0     │ body's "## Copy" fields are the canonical prose;    │
+ (single source of     │ registry.mjs maps Section ID + field label to the   │
+ truth for prose)      │ copy key. Only Copy Status Approved/Live syncs.     │
         │  sync-copy.mjs
         ▼
  src/app/explorations/**/<page>-copy.json     read via dmsCopy(key, fallback)
@@ -34,7 +36,9 @@ content in the Personas DB (the "Auditor" case) is held back with a GAP
 warning in the sync log instead of rendering a broken card.
 
 Safety rules:
-- Copy pipe: deleted or blanked Notion rows keep the last shipped string.
+- Copy pipe: only blocks with Copy Status Approved or Live sync; a differing
+  draft is reported as HELD. Deleted or blanked fields keep the last shipped
+  string.
 - Sources pipe: relations are authoritative (removals cascade), but a source
   returning zero rows is treated as an error and the mirror is kept.
 - Every change is a readable git commit; a build-breaking commit only fails
@@ -43,33 +47,32 @@ Safety rules:
 ## One-time setup
 
 1. Create an internal integration at notion.so/my-integrations.
-2. In Notion, connect it to: the page that will hold the Website Copy DB
-   (recommended: the canonical tracker page), the Products DB, and the
-   Personas DB (⋯ menu → Connections on each).
+2. In Notion, connect it to: the Website 3.0 page (holds the Content Blocks
+   DB), the Products DB, and the Personas DB (⋯ menu → Connections on each).
 3. Verify the source schemas, then correct `registry.mjs` if needed:
    `NOTION_TOKEN=... node scripts/notion/introspect-db.mjs <database_id>`
    (If an id 404s, copy the 32-char id from the DB's URL in the browser.)
-4. Seed the copy DB:
-   `NOTION_TOKEN=... NOTION_PARENT_PAGE_ID=<page id> node scripts/notion/seed-copy.mjs`
-   Commit the `copy-db.config.json` it writes.
-5. First mirror pull: `NOTION_TOKEN=... node scripts/notion/sync-sources.mjs`
+4. First mirror pull: `NOTION_TOKEN=... node scripts/notion/sync-sources.mjs`
    Review the diff (real Notion values replace the seeded baseline), commit.
-6. Add `NOTION_TOKEN` as a GitHub Actions secret.
+5. Add `NOTION_TOKEN` as a GitHub Actions secret.
 
 ## Onboarding another page (QMS, PLM, MES, home, ...)
 
 1. Create `<page>-copy.json` + a `dmsCopy`-style helper, wire call sites.
 2. Uncomment/add the page in `COPY_TARGETS` in `registry.mjs`.
-3. Re-run `seed-copy.mjs` (it only seeds missing keys).
+3. Author the page's Content Blocks rows (Section ID QMS-S01..., a "## Copy"
+   section per row) and add their field-to-key map under
+   `CONTENT_BLOCKS.sections`.
 4. For structured sections, add the source DB to `SOURCES` (verify with
    introspect-db.mjs) and derive the section from the mirror like the DMS
    audience adapter in `dms-data.ts`.
 
 ## Day-to-day
 
-- Copy edit: change the Text cell in Website Copy. Relation change: edit the
-  real DB row. Both land within the hour, or immediately via Run workflow on
-  the "Sync website content from Notion" action.
+- Copy edit: change the "## Copy" fields in the section's Content Block, set
+  Copy Status to Approved. Relation change: edit the real DB row. Both land
+  within the hour, or immediately via Run workflow on the "Sync website
+  content from Notion" action.
 - Local check before a demo:
   `NOTION_TOKEN=... node scripts/notion/sync-copy.mjs && NOTION_TOKEN=... node scripts/notion/sync-sources.mjs`
   then reload localhost.

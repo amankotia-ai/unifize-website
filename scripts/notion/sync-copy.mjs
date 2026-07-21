@@ -1,66 +1,116 @@
 /* ============================================================================
- * sync-copy.mjs - pulls the "Website Copy" database and regenerates every
- * page copy file registered in COPY_TARGETS.
+ * sync-copy.mjs - pulls approved page prose out of the Content Blocks
+ * database (the single source of truth, on the Website 3.0 page) and
+ * regenerates every page copy file registered in COPY_TARGETS.
  *
- * Merge rules (deletion-safe by design):
- *   - A Notion row with a known "prefix/key" and non-empty Text updates it.
- *   - Empty Text or a missing row keeps the current string (warning).
- *   - Keys not wired on any page are skipped (warning). Wiring a new string
- *     means adding it to the page's copy JSON and a call site first.
+ * Contract: each section row (Section ID like DMS-S01) carries a "## Copy"
+ * heading in its body followed by "**Label:** value" lines. The
+ * CONTENT_BLOCKS.sections map in registry.mjs translates Section ID + label
+ * into the namespaced copy key the page renders.
+ *
+ * Merge rules (deletion-safe, approval-gated):
+ *   - Only rows whose Copy Status is in approved_statuses sync; a differing
+ *     value on any other row is reported as HELD and the site keeps the
+ *     current string. This is what makes "approved edits flow to the site"
+ *     literally true.
+ *   - An empty field or a missing block keeps the current string (warning).
+ *   - Mapped fields with no wired key on any page are reported (SKIP).
  * Files are only rewritten when something changed, so CI can use a plain
  * `git status` check to decide whether to commit.
  *
  * Usage:
  *   NOTION_TOKEN=secret_xxx node scripts/notion/sync-copy.mjs
  * ========================================================================== */
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { requireToken, queryAllRows, plainText } from "./lib.mjs";
-import { COPY_TARGETS } from "./registry.mjs";
+import { requireToken, queryAllRows, listBlockChildren, extractProperty, plainText } from "./lib.mjs";
+import { COPY_TARGETS, CONTENT_BLOCKS } from "./registry.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "../..");
-const CONFIG_PATH = join(HERE, "copy-db.config.json");
 
 const token = requireToken();
+const { database_id, approved_statuses, sections } = CONTENT_BLOCKS;
 
-const databaseId =
-  process.env.NOTION_COPY_DB_ID ??
-  (existsSync(CONFIG_PATH) ? JSON.parse(readFileSync(CONFIG_PATH, "utf8")).database_id : undefined);
-if (!databaseId) {
-  console.error("No database id. Run seed-copy.mjs first or set NOTION_COPY_DB_ID.");
-  process.exit(1);
+/* "**Label:** value" -> [label, value]. The label is the leading run of bold
+ * text; the colon may sit inside or just after the bold span. */
+function parseField(richTextArray) {
+  if (!richTextArray?.length) return null;
+  let i = 0;
+  let label = "";
+  while (i < richTextArray.length && richTextArray[i].annotations?.bold) {
+    label += richTextArray[i].plain_text ?? "";
+    i += 1;
+  }
+  label = label.trim();
+  if (!label) return null;
+  let value = richTextArray.slice(i).map((t) => t.plain_text ?? "").join("");
+  if (label.endsWith(":")) label = label.slice(0, -1).trim();
+  else if (value.startsWith(":")) value = value.slice(1);
+  return [label, value.trim()];
 }
 
-const fromNotion = new Map();
-for (const row of await queryAllRows(token, databaseId)) {
-  const key = plainText(row.properties?.Key?.rich_text);
-  const text = plainText(row.properties?.Text?.rich_text);
-  if (key) fromNotion.set(key, text);
+/* All "**Label:** value" fields between the "## Copy" heading and the next
+ * heading of the same or higher level. */
+function copyFields(blocks) {
+  const fields = new Map();
+  let inCopy = false;
+  for (const block of blocks) {
+    const heading = block.type?.startsWith("heading") ? plainText(block[block.type]?.rich_text) : null;
+    if (heading !== null) {
+      inCopy = heading.toLowerCase() === "copy";
+      continue;
+    }
+    if (!inCopy) continue;
+    const rich = block[block.type]?.rich_text;
+    const parsed = parseField(rich);
+    if (parsed) fields.set(parsed[0], parsed[1]);
+  }
+  return fields;
+}
+
+const fromNotion = new Map(); // namespaced key -> { text, status, section }
+for (const row of await queryAllRows(token, database_id)) {
+  const sectionId = extractProperty(row.properties?.["Section ID"]);
+  const fieldMap = sections[sectionId];
+  if (!fieldMap) continue;
+  const status = extractProperty(row.properties?.["Copy Status"]);
+  const fields = copyFields(await listBlockChildren(token, row.id));
+  for (const [label, key] of Object.entries(fieldMap)) {
+    if (!fields.has(label)) {
+      console.warn(`KEPT   ${key}: no "${label}" field under ## Copy in ${sectionId}.`);
+      continue;
+    }
+    fromNotion.set(key, { text: fields.get(label), status, section: sectionId });
+  }
 }
 
 let totalChanged = 0;
+const held = [];
 for (const [prefix, target] of Object.entries(COPY_TARGETS)) {
   const path = join(ROOT, target);
   const copy = JSON.parse(readFileSync(path, "utf8"));
   let changed = 0;
   for (const [key, slot] of Object.entries(copy)) {
     const namespaced = `${prefix}/${key}`;
-    if (!fromNotion.has(namespaced)) {
-      console.warn(`KEPT   ${namespaced}: no Notion row found, keeping current text.`);
+    const entry = fromNotion.get(namespaced);
+    if (!entry) {
+      console.warn(`KEPT   ${namespaced}: not mapped to any Content Block field, keeping current text.`);
       continue;
     }
-    const text = fromNotion.get(namespaced);
-    if (!text) {
-      console.warn(`KEPT   ${namespaced}: Notion Text is empty, keeping current text.`);
+    if (!entry.text) {
+      console.warn(`KEPT   ${namespaced}: Content Block field is empty, keeping current text.`);
       continue;
     }
-    if (text !== slot.text) {
-      console.log(`UPDATE ${namespaced}: "${slot.text}" -> "${text}"`);
-      slot.text = text;
-      changed += 1;
+    if (entry.text === slot.text) continue;
+    if (!approved_statuses.includes(entry.status)) {
+      held.push(`${namespaced}: ${entry.section} edit pending (Copy Status "${entry.status}")`);
+      continue;
     }
+    console.log(`UPDATE ${namespaced}: "${slot.text}" -> "${entry.text}"`);
+    slot.text = entry.text;
+    changed += 1;
   }
   if (changed > 0) {
     writeFileSync(path, JSON.stringify(copy, null, 2) + "\n");
@@ -75,7 +125,11 @@ const wired = new Set(
   ),
 );
 for (const key of fromNotion.keys()) {
-  if (!wired.has(key)) console.warn(`SKIP   ${key}: not wired on any page yet.`);
+  if (!wired.has(key)) console.warn(`SKIP   ${key}: mapped in registry but not wired on any page.`);
 }
 
+if (held.length) {
+  console.warn(`HELD   ${held.length} edit(s) awaiting approval (Copy Status must be one of: ${approved_statuses.join(", ")}):`);
+  for (const h of held) console.warn(`       ${h}`);
+}
 if (totalChanged === 0) console.log("No copy changes.");

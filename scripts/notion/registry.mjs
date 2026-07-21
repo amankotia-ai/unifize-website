@@ -4,17 +4,35 @@
  * ========================================================================== */
 
 /* ---- Page copy ------------------------------------------------------------
- * ONE Notion database ("Website Copy", CPY-##) holds editorial strings for
- * every page. Keys are namespaced "prefix/key" in Notion; the prefix picks
- * the target file below and is stripped when writing it. Each page's Site
- * Pages row embeds a linked view of the DB filtered to its prefix, so
- * reviewers still see per-page copy in one place without DB sprawl. */
+ * The Content Blocks database on the Website 3.0 page is the single source
+ * of truth for page prose (Ben's decision, Jul 20). One row per page section
+ * (Section ID like DMS-S01); each row's body carries a "## Copy" heading
+ * followed by "**Label:** value" lines. CONTENT_BLOCKS.sections maps a
+ * Section ID and field label to the namespaced copy key the page renders.
+ * Only rows whose Copy Status is Approved or Live sync; everything else is
+ * reported as HELD, so drafts in a block never reach the site. */
 export const COPY_TARGETS = {
   dms: "src/app/explorations/products/dms/dms-copy.json",
   // qms: "src/app/explorations/products/qms/qms-copy.json",
   // plm: "src/app/explorations/products/plm/plm-copy.json",
   // mes: "src/app/explorations/products/mes/mes-copy.json",
   // home: "src/app/explorations/home/home-copy.json",
+};
+
+export const CONTENT_BLOCKS = {
+  database_id: "0abf824396d14805848539473eb336b4",
+  approved_statuses: ["Approved", "Live"],
+  sections: {
+    "DMS-S01": { "Headline line 1": "dms/hero.line1", "Headline line 2": "dms/hero.line2" },
+    "DMS-S02": { Label: "dms/trust.label" },
+    "DMS-S03": { Subhead: "dms/problem.heading", Lede: "dms/problem.lede" },
+    "DMS-S06": { Heading: "dms/capabilities.heading" },
+    "DMS-S09": { Heading: "dms/audience.heading" },
+    "DMS-S11": { Heading: "dms/compliance.heading", Subhead: "dms/compliance.lede" },
+    "DMS-S12": { Heading: "dms/faq.heading" },
+    "DMS-S13": { Subhead: "dms/close.heading", Body: "dms/close.lede" },
+    "DMS-S14": { Tagline: "dms/footer.tagline" },
+  },
 };
 
 /* ---- Structured sources ---------------------------------------------------
