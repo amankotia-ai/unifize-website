@@ -16,9 +16,15 @@
 import { NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "node:crypto";
 
+type NotionWebhookPayload = {
+  verification_token?: string;
+  type?: string;
+  authors?: { id?: string; type?: string }[];
+};
+
 export async function POST(req: Request) {
   const raw = await req.text();
-  let payload: { verification_token?: string; type?: string } = {};
+  let payload: NotionWebhookPayload = {};
   try {
     payload = JSON.parse(raw);
   } catch {
@@ -42,6 +48,18 @@ export async function POST(req: Request) {
     if (a.length !== b.length || !timingSafeEqual(a, b)) {
       return new NextResponse("bad signature", { status: 401 });
     }
+  }
+
+  /* Loop guard: the sync workflow writes Live Text / Last Synced / Renders
+   * back into Notion after every deploy. Those edits arrive here as webhook
+   * events authored by the integration's own bot. Dispatching on them would
+   * trigger a pointless second run (and with every future write-back, a
+   * steady echo). A human editor always appears as a person author, so an
+   * event whose authors are all bots is dropped. */
+  const authors = payload.authors ?? [];
+  if (authors.length > 0 && authors.every((a) => a.type === "bot" || a.type === "agent")) {
+    console.log("Skipping bot-authored event (sync write-back echo):", payload.type ?? "unknown");
+    return NextResponse.json({ ok: true, skipped: "bot-authored" });
   }
 
   const token = process.env.GITHUB_DISPATCH_TOKEN;

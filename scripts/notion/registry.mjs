@@ -28,6 +28,15 @@ export const CONTENT_BLOCKS = {
   approved_statuses: ["Approved", "Live"],
 };
 
+/* Which canonical Products row drives each page's Relation rows (industry
+ * chips, persona cards, standards cards). writeback-copy.mjs computes what
+ * those rows currently render, from the mirrors, and writes it into the
+ * Renders column so the canonical data is visible where it is used. */
+export const WRITEBACK_PRODUCTS = {
+  dms: "UPD-2",
+  // qms: "UPD-1", plm: "UPD-3", mes: "UPD-4" when those pages onboard
+};
+
 /* ---- Structured sources ---------------------------------------------------
  * Ben's real databases, mirrored one JSON file per DB under
  * src/content/notion/. Pages join these mirrors (e.g. the DMS audience

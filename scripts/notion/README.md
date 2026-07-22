@@ -21,9 +21,32 @@ the audit trail, the page can never render broken from a Notion edit.
         ▼
  src/content/notion/{products,personas}.json  joined by page adapters
 
- Both: GitHub Action (hourly + Run workflow button) commits diffs to main,
- Vercel redeploys the same stable URL.
+ Both: GitHub Action (webhook-fired + 10-min cron + Run workflow button)
+ commits diffs to main, Vercel redeploys the same stable URL. A final
+ write-back step (writeback-copy.mjs) then reports the shipped state INTO
+ Notion: Live Text + Last Synced on every Copy Fields row, Renders on the
+ Relation rows (the canonical values they currently produce), Last Pushed
+ on the blocks. The /api/notion-sync endpoint drops webhook events authored
+ by the integration's own bot so the write-back cannot re-trigger the run.
 ```
+
+## The editing surface (one table)
+
+Ben edits ONE view: **"DMS · Page editor"** on the Copy Fields DB (also
+embedded on the DMS row in Site Pages). The whole page reads top to bottom,
+grouped by section, one row per rendered element:
+
+- **Text** - what Ben wants the site to say. Edit in place.
+- **Live Text** - what the site currently says (written by the sync).
+- **Ships?** - the row's state at a glance: 🟢 live, ✏️ edited and pending,
+  ⏸/status via the Status rollup, 🔗 canonical, 🔒 code.
+- **Renders** - for Relation rows, the actual canonical values in use
+  (industry chips, persona cards, standards cards). Editing those happens at
+  the canonical row (the Edit at relation); seeing happens here.
+- **Kind** - Text (editable here) / Relation (edit at source) / Code (repo).
+
+The Page select on every row scopes the per-page views (view-DSL cannot
+filter on relations or rollups - the select is the documented workaround).
 
 ## How a relation change cascades
 
@@ -58,11 +81,14 @@ Safety rules:
 
 ## Onboarding another page (QMS, PLM, MES, home, ...)
 
-1. Create `<page>-copy.json` + a `dmsCopy`-style helper, wire call sites.
-2. Uncomment/add the page in `COPY_TARGETS` in `registry.mjs`.
-3. Author the page's Content Blocks rows (Section ID QMS-S01...) and one
-   Copy Fields row per string (Key, Text, Block relation, Block Key), plus a
-   filtered "Copy" view on each block page.
+1. Create `<page>-copy.json` + a `dmsCopy`-style helper, wire call sites
+   (card copy included - wrap the strings in the page's data module, see
+   dms-data.ts).
+2. Uncomment/add the page in `COPY_TARGETS`; add the page's product row to
+   `WRITEBACK_PRODUCTS` in `registry.mjs`.
+3. Author the page's Copy Fields rows: Key, Text, Kind Text, Page select,
+   Block relation + Block Key (the blocks already exist for QMS/PLM/MES).
+   Then a "<PAGE> · Page editor" view filtered on the Page select.
 4. For structured sections, add the source DB to `SOURCES` (verify with
    introspect-db.mjs) and derive the section from the mirror like the DMS
    audience adapter in `dms-data.ts`.

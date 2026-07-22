@@ -122,5 +122,277 @@
   "close.cta": {
     "element": "Close · CTA label",
     "text": "Book a 30-minute walkthrough"
+  },
+  "problem.card1.title": {
+    "element": "01 The problem · card 1 · title",
+    "text": "Forty minutes to find one SOP"
+  },
+  "problem.card1.quote": {
+    "element": "01 The problem · card 1 · quote",
+    "text": "The auditor asked for one SOP. It took us forty minutes."
+  },
+  "problem.card1.detail": {
+    "element": "01 The problem · card 1 · detail",
+    "text": "Retrieval under audit pressure is slow because documents live in five places at once."
+  },
+  "problem.card2.title": {
+    "element": "01 The problem · card 2 · title",
+    "text": "Nobody knows which version is live"
+  },
+  "problem.card2.quote": {
+    "element": "01 The problem · card 2 · quote",
+    "text": "Nobody can tell me which version is running on the floor right now."
+  },
+  "problem.card2.detail": {
+    "element": "01 The problem · card 2 · detail",
+    "text": "Multiple revisions coexist. Operators keep working from the copy they printed last quarter."
+  },
+  "problem.card3.title": {
+    "element": "01 The problem · card 3 · title",
+    "text": "Paper drifts from the process"
+  },
+  "problem.card3.quote": {
+    "element": "01 The problem · card 3 · quote",
+    "text": "The SOP was written in 2021. The process changed twice since."
+  },
+  "problem.card3.detail": {
+    "element": "01 The problem · card 3 · detail",
+    "text": "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit."
+  },
+  "problem.card4.title": {
+    "element": "01 The problem · card 4 · title",
+    "text": "Days to assemble one record"
+  },
+  "problem.card4.quote": {
+    "element": "01 The problem · card 4 · quote",
+    "text": "When auditors want the full record, we spend days pulling it together."
+  },
+  "problem.card4.detail": {
+    "element": "01 The problem · card 4 · detail",
+    "text": "Evidence is scattered, so audit prep becomes a fire drill instead of a filter."
+  },
+  "modules.card1.promise": {
+    "element": "02 Modules · Document Control · promise",
+    "text": "One true copy."
+  },
+  "modules.card1.blurb": {
+    "element": "02 Modules · Document Control · blurb",
+    "text": "Author, review, approve, distribute, and periodically review controlled documents with full version history."
+  },
+  "modules.card1.point1": {
+    "element": "02 Modules · Document Control · point 1",
+    "text": "Controlled templates and numbering"
+  },
+  "modules.card1.point2": {
+    "element": "02 Modules · Document Control · point 2",
+    "text": "Review and approval routing"
+  },
+  "modules.card1.point3": {
+    "element": "02 Modules · Document Control · point 3",
+    "text": "Watermarked, distributed renders"
+  },
+  "modules.card1.point4": {
+    "element": "02 Modules · Document Control · point 4",
+    "text": "Periodic review with an owner"
+  },
+  "modules.card2.promise": {
+    "element": "02 Modules · Change Control · promise",
+    "text": "Every revision carries its evidence."
+  },
+  "modules.card2.blurb": {
+    "element": "02 Modules · Change Control · blurb",
+    "text": "Change orders and revisions routed through configurable approvals, with impact assessment on the record."
+  },
+  "modules.card2.point1": {
+    "element": "02 Modules · Change Control · point 1",
+    "text": "Change orders with impact assessment"
+  },
+  "modules.card2.point2": {
+    "element": "02 Modules · Change Control · point 2",
+    "text": "Configurable approval matrices"
+  },
+  "modules.card2.point3": {
+    "element": "02 Modules · Change Control · point 3",
+    "text": "Evidence attached to the revision"
+  },
+  "modules.card2.point4": {
+    "element": "02 Modules · Change Control · point 4",
+    "text": "Cascades into training on release"
+  },
+  "modules.card3.promise": {
+    "element": "02 Modules · Training Management · promise",
+    "text": "The change reaches the people."
+  },
+  "modules.card3.blurb": {
+    "element": "02 Modules · Training Management · blurb",
+    "text": "A revision cascades into the training obligation, so people are always current on the version they use."
+  },
+  "modules.card3.point1": {
+    "element": "02 Modules · Training Management · point 1",
+    "text": "Role-to-document training matrix"
+  },
+  "modules.card3.point2": {
+    "element": "02 Modules · Training Management · point 2",
+    "text": "Auto-assignment on new revisions"
+  },
+  "modules.card3.point3": {
+    "element": "02 Modules · Training Management · point 3",
+    "text": "AI-generated quizzes from the SOP"
+  },
+  "modules.card3.point4": {
+    "element": "02 Modules · Training Management · point 4",
+    "text": "Completion reporting for audits"
+  },
+  "capabilities.card1.title": {
+    "element": "03 Capabilities · card 1 · title",
+    "text": "Version history"
+  },
+  "capabilities.card1.body": {
+    "element": "03 Capabilities · card 1 · body",
+    "text": "Every revision retained under the edition it shipped."
+  },
+  "capabilities.card2.title": {
+    "element": "03 Capabilities · card 2 · title",
+    "text": "Periodic review"
+  },
+  "capabilities.card2.body": {
+    "element": "03 Capabilities · card 2 · body",
+    "text": "Review dates that route to an owner and expect an attestation."
+  },
+  "capabilities.card3.title": {
+    "element": "03 Capabilities · card 3 · title",
+    "text": "State watermarking"
+  },
+  "capabilities.card3.body": {
+    "element": "03 Capabilities · card 3 · body",
+    "text": "DRAFT, EFFECTIVE, OBSOLETE stamped on the render."
+  },
+  "capabilities.card4.title": {
+    "element": "03 Capabilities · card 4 · title",
+    "text": "Part 11 e-signature"
+  },
+  "capabilities.card4.body": {
+    "element": "03 Capabilities · card 4 · body",
+    "text": "Signer, meaning, and timestamp where the record requires it."
+  },
+  "capabilities.card5.title": {
+    "element": "03 Capabilities · card 5 · title",
+    "text": "Where-used lookup"
+  },
+  "capabilities.card5.body": {
+    "element": "03 Capabilities · card 5 · body",
+    "text": "Reverse-trace a document to everything that references it."
+  },
+  "capabilities.card6.title": {
+    "element": "03 Capabilities · card 6 · title",
+    "text": "Scoped auditor access"
+  },
+  "capabilities.card6.body": {
+    "element": "03 Capabilities · card 6 · body",
+    "text": "Read-only, watermarked, without handing over the library."
+  },
+  "lifecycle.state1.gate": {
+    "element": "04 Lifecycle · Draft · gate",
+    "text": "From a controlled template"
+  },
+  "lifecycle.state1.detail": {
+    "element": "04 Lifecycle · Draft · detail",
+    "text": "Authored from a controlled template with automatic numbering. Nothing reaches the floor from here: the render is watermarked DRAFT and cannot be distributed."
+  },
+  "lifecycle.state2.gate": {
+    "element": "04 Lifecycle · In Review · gate",
+    "text": "Technical accuracy checked"
+  },
+  "lifecycle.state2.detail": {
+    "element": "04 Lifecycle · In Review · detail",
+    "text": "Routed to reviewers for technical accuracy. Comments and redlines stay on the record, so the review is part of the document's history, not an email thread."
+  },
+  "lifecycle.state3.gate": {
+    "element": "04 Lifecycle · In Approval · gate",
+    "text": "QA signs, Part 11"
+  },
+  "lifecycle.state3.detail": {
+    "element": "04 Lifecycle · In Approval · detail",
+    "text": "QA signs with 21 CFR Part 11 meaning where the record requires it: signer, meaning of signature, and timestamp, permanently attached to the revision."
+  },
+  "lifecycle.state4.gate": {
+    "element": "04 Lifecycle · Effective · gate",
+    "text": "Watermarked, training assigned"
+  },
+  "lifecycle.state4.detail": {
+    "element": "04 Lifecycle · Effective · detail",
+    "text": "Watermarked EFFECTIVE and distributed. Training assignments open the moment it goes live, so people are current on the version they actually use."
+  },
+  "lifecycle.state5.gate": {
+    "element": "04 Lifecycle · Superseded · gate",
+    "text": "Prior revision retained"
+  },
+  "lifecycle.state5.detail": {
+    "element": "04 Lifecycle · Superseded · detail",
+    "text": "The prior revision is retained read-only under the edition it shipped. Every historical version stays retrievable for the auditor who asks."
+  },
+  "lifecycle.state6.gate": {
+    "element": "04 Lifecycle · Obsolete · gate",
+    "text": "Copies retrieved, records archived"
+  },
+  "lifecycle.state6.detail": {
+    "element": "04 Lifecycle · Obsolete · detail",
+    "text": "Distributed copies are retrieved and the record is archived per your retention policy. The watermark flips to OBSOLETE on every render."
+  },
+  "integrations.diagram.heading": {
+    "element": "Integrations · diagram heading",
+    "text": "A controlled document is filed against the record it governs."
+  },
+  "integrations.diagram.lede": {
+    "element": "Integrations · diagram lede",
+    "text": "A document never lives alone. Unifize sits over the ERP, PLM, and identity systems you already run, so a controlled document is filed against the real part, distributed to the real people, and never becomes a fourth copy."
+  },
+  "faq.q1.question": {
+    "element": "08 FAQ · Q1 · question",
+    "text": "What exactly is bundled in DMS?"
+  },
+  "faq.q1.answer": {
+    "element": "08 FAQ · Q1 · answer",
+    "text": "Three modules on one record: Document Control, Change Control, and Training Management. A change order drives the revision, and the revision drives the training assignment, without re-entry between tools."
+  },
+  "faq.q2.question": {
+    "element": "08 FAQ · Q2 · question",
+    "text": "Does it support 21 CFR Part 11 electronic signatures?"
+  },
+  "faq.q2.answer": {
+    "element": "08 FAQ · Q2 · answer",
+    "text": "Yes, where the record requires it. Approvals capture the signer, the meaning of the signature, and a timestamp, and the signature travels with the revision it approved."
+  },
+  "faq.q3.question": {
+    "element": "08 FAQ · Q3 · question",
+    "text": "What happens to superseded and obsolete revisions?"
+  },
+  "faq.q3.answer": {
+    "element": "08 FAQ · Q3 · answer",
+    "text": "Superseded revisions are retained read-only under the edition they shipped. When a document goes obsolete, distributed copies are retrieved and the record is archived per your retention policy."
+  },
+  "faq.q4.question": {
+    "element": "08 FAQ · Q4 · question",
+    "text": "How do auditors access the library?"
+  },
+  "faq.q4.answer": {
+    "element": "08 FAQ · Q4 · answer",
+    "text": "Through scoped, read-only, watermarked access. You share the document trees the audit needs without handing over the whole library."
+  },
+  "faq.q5.question": {
+    "element": "08 FAQ · Q5 · question",
+    "text": "How does training stay current with revisions?"
+  },
+  "faq.q5.answer": {
+    "element": "08 FAQ · Q5 · answer",
+    "text": "A new effective revision cascades into a training obligation for every role mapped to the document, so people are always trained on the version they actually use."
+  },
+  "faq.q6.question": {
+    "element": "08 FAQ · Q6 · question",
+    "text": "Which standards does the lifecycle map to?"
+  },
+  "faq.q6.answer": {
+    "element": "08 FAQ · Q6 · answer",
+    "text": "ISO 9001, ISO 13485, 21 CFR Part 11, 21 CFR Part 820, EU GMP, and WHO GMP. One controlled lifecycle, whatever you are audited against."
   }
 }

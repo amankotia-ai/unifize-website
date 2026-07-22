@@ -16,6 +16,13 @@ on:
 permissions:
   contents: write
 
+# One sync at a time: overlapping runs would race each other's git push and
+# the Notion write-back. A run that arrives while one is active waits; if
+# several queue up, GitHub keeps only the newest pending one.
+concurrency:
+  group: notion-sync
+  cancel-in-progress: false
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -47,3 +54,13 @@ jobs:
           else
             echo "No content changes."
           fi
+      - name: Write back to Notion (Live Text, Last Synced, Renders)
+        # After the shipped state is on main, report it back into the Copy
+        # Fields DB so every row shows what is actually live. Delta-only:
+        # rows already up to date are not touched. Runs even if a sync step
+        # failed, so the columns never go stale silently; its own failure
+        # marks the run red without holding the push hostage (it runs last).
+        if: ${{ !cancelled() }}
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+        run: node scripts/notion/writeback-copy.mjs

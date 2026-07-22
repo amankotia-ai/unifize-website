@@ -11,6 +11,7 @@ import productsMirror from "@/content/notion/products.json";
 import personasMirror from "@/content/notion/personas.json";
 import industriesMirror from "@/content/notion/industries.json";
 import standardsMirror from "@/content/notion/standards.json";
+import { dmsCopy } from "./dms-copy";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -45,9 +46,9 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
     visual: "retrieval",
     category: "Audit retrieval",
-    title: "Forty minutes to find one SOP",
-    quote: "The auditor asked for one SOP. It took us forty minutes.",
-    detail: "Retrieval under audit pressure is slow because documents live in five places at once.",
+    title: dmsCopy("problem.card1.title", "Forty minutes to find one SOP"),
+    quote: dmsCopy("problem.card1.quote", "The auditor asked for one SOP. It took us forty minutes."),
+    detail: dmsCopy("problem.card1.detail", "Retrieval under audit pressure is slow because documents live in five places at once."),
     metric: "40 min",
     metricLabel: "Average retrieval under audit",
     work: "Answer the request",
@@ -57,9 +58,9 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
     visual: "versions",
     category: "Version control",
-    title: "Nobody knows which version is live",
-    quote: "Nobody can tell me which version is running on the floor right now.",
-    detail: "Multiple revisions coexist. Operators keep working from the copy they printed last quarter.",
+    title: dmsCopy("problem.card2.title", "Nobody knows which version is live"),
+    quote: dmsCopy("problem.card2.quote", "Nobody can tell me which version is running on the floor right now."),
+    detail: dmsCopy("problem.card2.detail", "Multiple revisions coexist. Operators keep working from the copy they printed last quarter."),
     metric: "3+",
     metricLabel: "Versions live at any time",
     work: "Use the procedure",
@@ -69,9 +70,9 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
     visual: "drift",
     category: "Periodic review",
-    title: "Paper drifts from the process",
-    quote: "The SOP was written in 2021. The process changed twice since.",
-    detail: "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit.",
+    title: dmsCopy("problem.card3.title", "Paper drifts from the process"),
+    quote: dmsCopy("problem.card3.quote", "The SOP was written in 2021. The process changed twice since."),
+    detail: dmsCopy("problem.card3.detail", "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit."),
     metric: "1 in 4",
     metricLabel: "SOPs past review date",
     work: "Review the procedure",
@@ -81,9 +82,9 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
     visual: "audit",
     category: "Evidence assembly",
-    title: "Days to assemble one record",
-    quote: "When auditors want the full record, we spend days pulling it together.",
-    detail: "Evidence is scattered, so audit prep becomes a fire drill instead of a filter.",
+    title: dmsCopy("problem.card4.title", "Days to assemble one record"),
+    quote: dmsCopy("problem.card4.quote", "When auditors want the full record, we spend days pulling it together."),
+    detail: dmsCopy("problem.card4.detail", "Evidence is scattered, so audit prep becomes a fire drill instead of a filter."),
     metric: "2–3 days",
     metricLabel: "Time to assemble one audit record",
     work: "Answer the audit",
@@ -116,13 +117,13 @@ export const MODULES: {
   {
     key: "document-control",
     name: "Document Control",
-    promise: "One true copy.",
-    blurb: "Author, review, approve, distribute, and periodically review controlled documents with full version history.",
+    promise: dmsCopy("modules.card1.promise", "One true copy."),
+    blurb: dmsCopy("modules.card1.blurb", "Author, review, approve, distribute, and periodically review controlled documents with full version history."),
     points: [
-      "Controlled templates and numbering",
-      "Review and approval routing",
-      "Watermarked, distributed renders",
-      "Periodic review with an owner",
+      dmsCopy("modules.card1.point1", "Controlled templates and numbering"),
+      dmsCopy("modules.card1.point2", "Review and approval routing"),
+      dmsCopy("modules.card1.point3", "Watermarked, distributed renders"),
+      dmsCopy("modules.card1.point4", "Periodic review with an owner"),
     ],
     visual: "Document library with lifecycle states",
     standards: ["ISO 9001", "21 CFR Part 11", "ISO 13485", "21 CFR Part 820"],
@@ -130,13 +131,13 @@ export const MODULES: {
   {
     key: "change-control",
     name: "Change Control",
-    promise: "Every revision carries its evidence.",
-    blurb: "Change orders and revisions routed through configurable approvals, with impact assessment on the record.",
+    promise: dmsCopy("modules.card2.promise", "Every revision carries its evidence."),
+    blurb: dmsCopy("modules.card2.blurb", "Change orders and revisions routed through configurable approvals, with impact assessment on the record."),
     points: [
-      "Change orders with impact assessment",
-      "Configurable approval matrices",
-      "Evidence attached to the revision",
-      "Cascades into training on release",
+      dmsCopy("modules.card2.point1", "Change orders with impact assessment"),
+      dmsCopy("modules.card2.point2", "Configurable approval matrices"),
+      dmsCopy("modules.card2.point3", "Evidence attached to the revision"),
+      dmsCopy("modules.card2.point4", "Cascades into training on release"),
     ],
     visual: "Change order routed for approval",
     standards: ["ISO 9001", "21 CFR Part 820", "ISO 13485"],
@@ -144,13 +145,13 @@ export const MODULES: {
   {
     key: "training-management",
     name: "Training Management",
-    promise: "The change reaches the people.",
-    blurb: "A revision cascades into the training obligation, so people are always current on the version they use.",
+    promise: dmsCopy("modules.card3.promise", "The change reaches the people."),
+    blurb: dmsCopy("modules.card3.blurb", "A revision cascades into the training obligation, so people are always current on the version they use."),
     points: [
-      "Role-to-document training matrix",
-      "Auto-assignment on new revisions",
-      "AI-generated quizzes from the SOP",
-      "Completion reporting for audits",
+      dmsCopy("modules.card3.point1", "Role-to-document training matrix"),
+      dmsCopy("modules.card3.point2", "Auto-assignment on new revisions"),
+      dmsCopy("modules.card3.point3", "AI-generated quizzes from the SOP"),
+      dmsCopy("modules.card3.point4", "Completion reporting for audits"),
     ],
     visual: "Training matrix by role and revision",
     standards: ["ISO 9001", "21 CFR Part 820", "ISO 13485"],
@@ -161,33 +162,33 @@ export const MODULES: {
  * details and visual captions feed the interactive lifecycle explorer. */
 export const LIFECYCLE: { state: string; gate: string; detail: string; visual: string }[] = [
   {
-    state: "Draft", gate: "From a controlled template",
-    detail: "Authored from a controlled template with automatic numbering. Nothing reaches the floor from here: the render is watermarked DRAFT and cannot be distributed.",
+    state: "Draft", gate: dmsCopy("lifecycle.state1.gate", "From a controlled template"),
+    detail: dmsCopy("lifecycle.state1.detail", "Authored from a controlled template with automatic numbering. Nothing reaches the floor from here: the render is watermarked DRAFT and cannot be distributed."),
     visual: "Authoring view with DRAFT watermark",
   },
   {
-    state: "In Review", gate: "Technical accuracy checked",
-    detail: "Routed to reviewers for technical accuracy. Comments and redlines stay on the record, so the review is part of the document's history, not an email thread.",
+    state: "In Review", gate: dmsCopy("lifecycle.state2.gate", "Technical accuracy checked"),
+    detail: dmsCopy("lifecycle.state2.detail", "Routed to reviewers for technical accuracy. Comments and redlines stay on the record, so the review is part of the document's history, not an email thread."),
     visual: "Review thread with redlines on the record",
   },
   {
-    state: "In Approval", gate: "QA signs, Part 11",
-    detail: "QA signs with 21 CFR Part 11 meaning where the record requires it: signer, meaning of signature, and timestamp, permanently attached to the revision.",
+    state: "In Approval", gate: dmsCopy("lifecycle.state3.gate", "QA signs, Part 11"),
+    detail: dmsCopy("lifecycle.state3.detail", "QA signs with 21 CFR Part 11 meaning where the record requires it: signer, meaning of signature, and timestamp, permanently attached to the revision."),
     visual: "Part 11 signature dialog",
   },
   {
-    state: "Effective", gate: "Watermarked, training assigned",
-    detail: "Watermarked EFFECTIVE and distributed. Training assignments open the moment it goes live, so people are current on the version they actually use.",
+    state: "Effective", gate: dmsCopy("lifecycle.state4.gate", "Watermarked, training assigned"),
+    detail: dmsCopy("lifecycle.state4.detail", "Watermarked EFFECTIVE and distributed. Training assignments open the moment it goes live, so people are current on the version they actually use."),
     visual: "Effective document with training status",
   },
   {
-    state: "Superseded", gate: "Prior revision retained",
-    detail: "The prior revision is retained read-only under the edition it shipped. Every historical version stays retrievable for the auditor who asks.",
+    state: "Superseded", gate: dmsCopy("lifecycle.state5.gate", "Prior revision retained"),
+    detail: dmsCopy("lifecycle.state5.detail", "The prior revision is retained read-only under the edition it shipped. Every historical version stays retrievable for the auditor who asks."),
     visual: "Version history with retained revisions",
   },
   {
-    state: "Obsolete", gate: "Copies retrieved, records archived",
-    detail: "Distributed copies are retrieved and the record is archived per your retention policy. The watermark flips to OBSOLETE on every render.",
+    state: "Obsolete", gate: dmsCopy("lifecycle.state6.gate", "Copies retrieved, records archived"),
+    detail: dmsCopy("lifecycle.state6.detail", "Distributed copies are retrieved and the record is archived per your retention policy. The watermark flips to OBSOLETE on every render."),
     visual: "Obsolete record with retrieval log",
   },
 ];
@@ -200,8 +201,8 @@ export const LIFECYCLE: { state: string; gate: string; detail: string; visual: s
  * (grounded in the industry coexistence copy), not a certified connector list.
  * Verify against the real connector catalogue before shipping. */
 export const INTEGRATIONS: IntegrationData = {
-  heading: "A controlled document is filed against the record it governs.",
-  lede: "A document never lives alone. Unifize sits over the ERP, PLM, and identity systems you already run, so a controlled document is filed against the real part, distributed to the real people, and never becomes a fourth copy.",
+  heading: dmsCopy("integrations.diagram.heading", "A controlled document is filed against the record it governs."),
+  lede: dmsCopy("integrations.diagram.lede", "A document never lives alone. Unifize sits over the ERP, PLM, and identity systems you already run, so a controlled document is filed against the real part, distributed to the real people, and never becomes a fourth copy."),
   record: "the controlled document",
   hubSystems: ["SAP", "Oracle", "NetSuite", "Windchill", "Arena", "Okta", "Entra ID", "SharePoint"],
 };
@@ -209,12 +210,12 @@ export const INTEGRATIONS: IntegrationData = {
 /* capabilities - six, one short line each. glyph keys map to the line-work
  * pictograms in dms-linework.tsx. */
 export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
-  { title: "Version history", body: "Every revision retained under the edition it shipped.", glyph: "versions" },
-  { title: "Periodic review", body: "Review dates that route to an owner and expect an attestation.", glyph: "review" },
-  { title: "State watermarking", body: "DRAFT, EFFECTIVE, OBSOLETE stamped on the render.", glyph: "watermark" },
-  { title: "Part 11 e-signature", body: "Signer, meaning, and timestamp where the record requires it.", glyph: "signature" },
-  { title: "Where-used lookup", body: "Reverse-trace a document to everything that references it.", glyph: "trace" },
-  { title: "Scoped auditor access", body: "Read-only, watermarked, without handing over the library.", glyph: "access" },
+  { title: dmsCopy("capabilities.card1.title", "Version history"), body: dmsCopy("capabilities.card1.body", "Every revision retained under the edition it shipped."), glyph: "versions" },
+  { title: dmsCopy("capabilities.card2.title", "Periodic review"), body: dmsCopy("capabilities.card2.body", "Review dates that route to an owner and expect an attestation."), glyph: "review" },
+  { title: dmsCopy("capabilities.card3.title", "State watermarking"), body: dmsCopy("capabilities.card3.body", "DRAFT, EFFECTIVE, OBSOLETE stamped on the render."), glyph: "watermark" },
+  { title: dmsCopy("capabilities.card4.title", "Part 11 e-signature"), body: dmsCopy("capabilities.card4.body", "Signer, meaning, and timestamp where the record requires it."), glyph: "signature" },
+  { title: dmsCopy("capabilities.card5.title", "Where-used lookup"), body: dmsCopy("capabilities.card5.body", "Reverse-trace a document to everything that references it."), glyph: "trace" },
+  { title: dmsCopy("capabilities.card6.title", "Scoped auditor access"), body: dmsCopy("capabilities.card6.body", "Read-only, watermarked, without handing over the library."), glyph: "access" },
 ];
 
 /* who it is for - section 05. Derived from the Notion mirrors, not
@@ -587,27 +588,27 @@ export const MOCK_TRAIL = [
 /* FAQ - answers grounded in the canonical product copy above. */
 export const FAQS: { q: string; a: string }[] = [
   {
-    q: "What exactly is bundled in DMS?",
-    a: "Three modules on one record: Document Control, Change Control, and Training Management. A change order drives the revision, and the revision drives the training assignment, without re-entry between tools.",
+    q: dmsCopy("faq.q1.question", "What exactly is bundled in DMS?"),
+    a: dmsCopy("faq.q1.answer", "Three modules on one record: Document Control, Change Control, and Training Management. A change order drives the revision, and the revision drives the training assignment, without re-entry between tools."),
   },
   {
-    q: "Does it support 21 CFR Part 11 electronic signatures?",
-    a: "Yes, where the record requires it. Approvals capture the signer, the meaning of the signature, and a timestamp, and the signature travels with the revision it approved.",
+    q: dmsCopy("faq.q2.question", "Does it support 21 CFR Part 11 electronic signatures?"),
+    a: dmsCopy("faq.q2.answer", "Yes, where the record requires it. Approvals capture the signer, the meaning of the signature, and a timestamp, and the signature travels with the revision it approved."),
   },
   {
-    q: "What happens to superseded and obsolete revisions?",
-    a: "Superseded revisions are retained read-only under the edition they shipped. When a document goes obsolete, distributed copies are retrieved and the record is archived per your retention policy.",
+    q: dmsCopy("faq.q3.question", "What happens to superseded and obsolete revisions?"),
+    a: dmsCopy("faq.q3.answer", "Superseded revisions are retained read-only under the edition they shipped. When a document goes obsolete, distributed copies are retrieved and the record is archived per your retention policy."),
   },
   {
-    q: "How do auditors access the library?",
-    a: "Through scoped, read-only, watermarked access. You share the document trees the audit needs without handing over the whole library.",
+    q: dmsCopy("faq.q4.question", "How do auditors access the library?"),
+    a: dmsCopy("faq.q4.answer", "Through scoped, read-only, watermarked access. You share the document trees the audit needs without handing over the whole library."),
   },
   {
-    q: "How does training stay current with revisions?",
-    a: "A new effective revision cascades into a training obligation for every role mapped to the document, so people are always trained on the version they actually use.",
+    q: dmsCopy("faq.q5.question", "How does training stay current with revisions?"),
+    a: dmsCopy("faq.q5.answer", "A new effective revision cascades into a training obligation for every role mapped to the document, so people are always trained on the version they actually use."),
   },
   {
-    q: "Which standards does the lifecycle map to?",
-    a: "ISO 9001, ISO 13485, 21 CFR Part 11, 21 CFR Part 820, EU GMP, and WHO GMP. One controlled lifecycle, whatever you are audited against.",
+    q: dmsCopy("faq.q6.question", "Which standards does the lifecycle map to?"),
+    a: dmsCopy("faq.q6.answer", "ISO 9001, ISO 13485, 21 CFR Part 11, 21 CFR Part 820, EU GMP, and WHO GMP. One controlled lifecycle, whatever you are audited against."),
   },
 ];
