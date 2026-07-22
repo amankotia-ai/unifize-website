@@ -9,6 +9,7 @@
 import type { IntegrationData } from "./dms-integrations";
 import productsMirror from "@/content/notion/products.json";
 import personasMirror from "@/content/notion/personas.json";
+import industriesMirror from "@/content/notion/industries.json";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -257,6 +258,19 @@ const PERSONA_PRESENTATION: Record<
 const FALLBACK_PORTRAIT = "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png";
 
 const dmsProductRow = productsMirror.find((product) => product.id === PRODUCT.id);
+
+/* trust strip + compliance "validated across" chips. Derived from the
+ * Industries relation on the DMS row (UPD-2), joined to the industries
+ * mirror; rows with Website Status "Hidden" are excluded. Add or remove an
+ * industry on the product row in Notion and the chips follow on the next
+ * sync - same cascade contract as the persona cards. */
+export const TRUST_INDUSTRIES: string[] = (dmsProductRow?.industries ?? [])
+  .map((relId) => industriesMirror.find((row) => row.pageId === relId))
+  .filter(
+    (row): row is (typeof industriesMirror)[number] =>
+      Boolean(row?.name) && row?.websiteStatus !== "Hidden",
+  )
+  .map((row) => row.name);
 
 const dmsPersonaCards = (dmsProductRow?.personas ?? [])
   .map((pageId) => (personasMirror as PersonaMirrorRow[]).find((p) => p.pageId === pageId))

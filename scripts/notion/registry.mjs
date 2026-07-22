@@ -56,7 +56,17 @@ export const SOURCES = {
       name: { property: "Name" },
       description: { property: "Description" },
       personas: { property: "Target Personas" },
-      modules: { property: "Modules" },
+      modules: { property: "Modules Bundled" },
+      industries: { property: "Industries" },
+    },
+  },
+  industries: {
+    database_id: "390b252c39bd44169c1ea907c4279732",
+    mirror: "src/content/notion/industries.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      websiteStatus: { property: "Website Status" },
     },
   },
   personas: {

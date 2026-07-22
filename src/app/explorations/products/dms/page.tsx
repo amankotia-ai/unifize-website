@@ -17,11 +17,11 @@ import {
   CAPABILITIES,
   AUDIENCE,
   STANDARDS,
+  TRUST_INDUSTRIES,
 } from "./dms-data";
 import { dmsCopy } from "./dms-copy";
 import { DmsHeader } from "./dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
-import { NAV } from "../../_shared/nav-data";
 import { CoordinationTax } from "./dms-coordination";
 import { IntegrationLayer } from "./dms-integrations";
 import { Eyebrow, ShellFrame } from "./dms-primitives";
@@ -45,20 +45,6 @@ export const metadata: Metadata = {
   description:
     "DMS bundles Document Control, Change Control, and Training into one governed record. Controlled documents from draft to obsolete, with 21 CFR Part 11 e-signature where required.",
 };
-
-const DMS_TRUST_INDUSTRY_NAMES = new Set([
-  "Medical Devices",
-  "Pharmaceuticals",
-  "Laboratories",
-  "Cosmetics",
-  "Food Processing",
-  "Aerospace",
-]);
-
-const DMS_TRUST_INDUSTRIES =
-  NAV.find((item) => item.label === "Industries")?.cols
-    ?.flatMap((column) => column.items.map((item) => item.label))
-    .filter((label) => DMS_TRUST_INDUSTRY_NAMES.has(label)) ?? [];
 
 export default function DmsProductPage() {
   return (
@@ -113,7 +99,7 @@ export default function DmsProductPage() {
         <div className="dms-wrap dms-trust__inner">
           <p className="dms-trust__label">{dmsCopy("trust.label", "One controlled record across regulated operations")}</p>
           <ul className="dms-trust__logos" aria-label="Representative industries">
-            {DMS_TRUST_INDUSTRIES.map((industry) => (
+            {TRUST_INDUSTRIES.map((industry) => (
               <li key={industry} className="dms-trust__mark">
                 <DmsIndustryIcon industry={industry} />
                 <span>{industry}</span>
@@ -282,7 +268,7 @@ export default function DmsProductPage() {
           <div className="dms-compliance__industries" data-reveal>
             <span className="dms-persona__lab">Validated across</span>
             <ul className="dms-inds" aria-label="Validated industries">
-              {DMS_TRUST_INDUSTRIES.map((industry) => (
+              {TRUST_INDUSTRIES.map((industry) => (
                 <li key={industry} className="dms-ind">
                   <DmsIndustryIcon industry={industry} />
                   <span>{industry}</span>
