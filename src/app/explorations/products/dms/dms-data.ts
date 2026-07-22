@@ -10,6 +10,7 @@ import type { IntegrationData } from "./dms-integrations";
 import productsMirror from "@/content/notion/products.json";
 import personasMirror from "@/content/notion/personas.json";
 import industriesMirror from "@/content/notion/industries.json";
+import standardsMirror from "@/content/notion/standards.json";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -309,14 +310,45 @@ export const PAINS: { title: string; body: string; severity: "Critical" | "High"
 ];
 
 /* the standards frame. short bodies. */
-export const STANDARDS: { name: string; geo: string; body: string; issuer: string; logo?: string }[] = [
-  { name: "ISO 9001", geo: "ISO · Global", body: "Quality management system requirements.", issuer: "ISO", logo: "/standards/iso.png" },
-  { name: "21 CFR Part 11", geo: "FDA · US", body: "Trustworthy electronic records and signatures.", issuer: "FDA", logo: "/standards/fda.png" },
-  { name: "ISO 13485", geo: "ISO · Global", body: "QMS for medical devices.", issuer: "ISO", logo: "/standards/iso.png" },
-  { name: "21 CFR Part 820", geo: "FDA · US", body: "Quality System Regulation for device cGMP.", issuer: "FDA", logo: "/standards/fda.png" },
-  { name: "EU GMP", geo: "EC · EU", body: "GMP for medicinal products.", issuer: "EU" },
-  { name: "GMP", geo: "WHO · Global", body: "Consistent, controlled production.", issuer: "WHO" },
-];
+/* compliance standards - section 07. Membership and order come from the
+ * External Standards relation on the DMS row (UPD-2), joined to the
+ * standards mirror; add or remove a standard on the product row in Notion
+ * and the card follows on the next sync. Presentation (short display name,
+ * geo label, card body, logo) stays page-owned below, keyed by standard
+ * pageId; an unmapped standard still renders from mirror facts. */
+const STANDARD_PRESENTATION: Record<
+  string,
+  { display?: string; geo?: string; body?: string; logo?: string }
+> = {
+  /* ISO 9001 */
+  "e6dfdb52-f86a-463b-941d-dde4d96397ad": { geo: "ISO · Global", body: "Quality management system requirements.", logo: "/standards/iso.png" },
+  /* FDA 21 CFR Part 11 */
+  "e11ef55d-7667-44dd-bc9d-2e08d0368ba5": { display: "21 CFR Part 11", geo: "FDA · US", body: "Trustworthy electronic records and signatures.", logo: "/standards/fda.png" },
+  /* ISO 13485 */
+  "173ab229-ed9c-4f08-a64c-bd25dea753b2": { geo: "ISO · Global", body: "QMS for medical devices.", logo: "/standards/iso.png" },
+  /* FDA 21 CFR Part 820 */
+  "cd6042e4-d95f-45f5-b387-5ac408a09d15": { display: "21 CFR Part 820", geo: "FDA · US", body: "Quality System Regulation for device cGMP.", logo: "/standards/fda.png" },
+  /* EU GMP / EudraLex Vol. 4 */
+  "31b860e6-b45e-8136-a302-c009790a9dbb": { display: "EU GMP", geo: "EC · EU", body: "GMP for medicinal products." },
+  /* GMP (WHO) */
+  "92a9e0bc-dea1-4e5b-94c8-310992d47afa": { geo: "WHO · Global", body: "Consistent, controlled production." },
+};
+
+export const STANDARDS: { name: string; geo: string; body: string; issuer: string; logo?: string }[] =
+  (dmsProductRow?.standards ?? [])
+    .map((relId) => {
+      const row = standardsMirror.find((standard) => standard.pageId === relId);
+      if (!row?.name) return null;
+      const presentation = STANDARD_PRESENTATION[row.pageId];
+      return {
+        name: presentation?.display ?? row.name,
+        issuer: row.issuer || "",
+        geo: presentation?.geo ?? [row.issuer, row.geography?.[0]].filter(Boolean).join(" · "),
+        body: presentation?.body ?? "Mapped to the controlled document lifecycle.",
+        ...(presentation?.logo ? { logo: presentation.logo } : {}),
+      };
+    })
+    .filter((standard): standard is NonNullable<typeof standard> => standard !== null);
 
 /* validated across regulated manufacturing */
 export const INDUSTRIES = [

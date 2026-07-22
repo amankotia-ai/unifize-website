@@ -49,6 +49,78 @@
   },
   "footer.tagline": {
     "element": "Footer · tagline",
-    "text": "this is a test"
+    "text": "One governed home for every controlled document."
+  },
+  "hero.sub": {
+    "element": "Hero · subhead",
+    "text": "Document Control, Change Control, and Training on one governed record, from draft to obsolete."
+  },
+  "hero.cta1": {
+    "element": "Hero · primary CTA",
+    "text": "Book a demo"
+  },
+  "hero.cta2": {
+    "element": "Hero · secondary CTA",
+    "text": "Take Coordination Tax Assessment"
+  },
+  "ctax.heading": {
+    "element": "Coordination tax · heading",
+    "text": "The work is rarely the bottleneck. The coordination is."
+  },
+  "ctax.lede": {
+    "element": "Coordination tax · lede",
+    "text": "In a regulated operation, a task seldom stalls because it is hard. It stalls in the gaps between people, documents, and systems: an approval waiting in an inbox, a version no one can vouch for, the same fact keyed into three tools that now disagree. Every gap is a tax, paid in time and in the ability to prove the work was done right."
+  },
+  "modules.heading": {
+    "element": "02 Modules · heading",
+    "text": "Three modules. One continuous record."
+  },
+  "modules.lede": {
+    "element": "02 Modules · lede",
+    "text": "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature."
+  },
+  "lifecycle.heading": {
+    "element": "04 Lifecycle · heading",
+    "text": "Every state has a gate. Every gate has an owner."
+  },
+  "integrations.heading": {
+    "element": "Integrations · heading",
+    "text": "Works with the systems you already run."
+  },
+  "integrations.lede": {
+    "element": "Integrations · lede",
+    "text": "Connect document control to the tools already holding your product, people, and process data."
+  },
+  "integrations.cta.heading": {
+    "element": "Integrations · CTA heading",
+    "text": "Don’t see your system?"
+  },
+  "integrations.cta.body": {
+    "element": "Integrations · CTA body",
+    "text": "We are always adding connectors. Bring us the stack you need to keep in step."
+  },
+  "integrations.cta.label": {
+    "element": "Integrations · CTA label",
+    "text": "Talk to us"
+  },
+  "audience.lede": {
+    "element": "05 Who it is for · lede",
+    "text": "From first draft to audit evidence, every role works from the same current record."
+  },
+  "proof.heading": {
+    "element": "06 Proof · heading",
+    "text": "Results, honestly stated, from quality teams like yours."
+  },
+  "proof.sub": {
+    "element": "06 Proof · lede",
+    "text": "Short, candid accounts of document control, training, and change management from the people doing the work."
+  },
+  "close.eyebrow": {
+    "element": "Close · eyebrow",
+    "text": "Ready when you are"
+  },
+  "close.cta": {
+    "element": "Close · CTA label",
+    "text": "Book a 30-minute walkthrough"
   }
 }

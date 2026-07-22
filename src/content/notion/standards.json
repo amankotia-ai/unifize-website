@@ -1,0 +1,44 @@
+[
+  {
+    "pageId": "e6dfdb52-f86a-463b-941d-dde4d96397ad",
+    "id": "3",
+    "name": "ISO 9001",
+    "issuer": "ISO",
+    "geography": ["Global"]
+  },
+  {
+    "pageId": "e11ef55d-7667-44dd-bc9d-2e08d0368ba5",
+    "id": "39",
+    "name": "FDA 21 CFR Part 11",
+    "issuer": "FDA",
+    "geography": ["United States"]
+  },
+  {
+    "pageId": "173ab229-ed9c-4f08-a64c-bd25dea753b2",
+    "id": "1",
+    "name": "ISO 13485",
+    "issuer": "ISO",
+    "geography": ["Global"]
+  },
+  {
+    "pageId": "cd6042e4-d95f-45f5-b387-5ac408a09d15",
+    "id": "4",
+    "name": "FDA 21 CFR Part 820",
+    "issuer": "FDA",
+    "geography": ["United States"]
+  },
+  {
+    "pageId": "31b860e6-b45e-8136-a302-c009790a9dbb",
+    "id": "84",
+    "name": "EU GMP / EudraLex Vol. 4",
+    "issuer": "European Commission",
+    "geography": ["European Union"]
+  },
+  {
+    "pageId": "92a9e0bc-dea1-4e5b-94c8-310992d47afa",
+    "id": "35",
+    "name": "GMP",
+    "issuer": "WHO",
+    "geography": ["Global"]
+  }
+]

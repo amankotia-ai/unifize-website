@@ -82,17 +82,25 @@ function IntegrationHub({ systems, record }: { systems: string[]; record: string
 export function IntegrationLayer({
   data,
   variant = "full",
+  minimalHeading = "Works with the systems you already run.",
   minimalLede = "Connect document control to the tools already holding your product, people, and process data.",
   minimalEyebrow,
+  ctaHeading = "Don’t see your system?",
+  ctaBody = "We are always adding connectors. Bring us the stack you need to keep in step.",
+  ctaLabel = "Talk to us",
 }: {
   data: IntegrationData;
   variant?: "full" | "minimal";
-  /** the one product-specific line of the minimal variant; defaults to the
-   * DMS copy so the standalone DMS page is unchanged. */
+  /** minimal-variant strings; defaults are the DMS copy so the standalone
+   * DMS page is unchanged when no overrides are passed. */
+  minimalHeading?: string;
   minimalLede?: string;
   /** Optional section label for product pages that treat the minimal connector
    * layer as a named beat in the page hierarchy. */
   minimalEyebrow?: React.ReactNode;
+  ctaHeading?: string;
+  ctaBody?: string;
+  ctaLabel?: string;
 }) {
   if (variant === "minimal") {
     return (
@@ -100,7 +108,7 @@ export function IntegrationLayer({
         <div className="dms-wrap">
           <header className="dms-intg__minimal-head" data-reveal>
             {minimalEyebrow ? <Eyebrow>{minimalEyebrow}</Eyebrow> : null}
-            <h2 className="dms-h2" id="dms-integrations-title">Works with the systems you already run.</h2>
+            <h2 className="dms-h2" id="dms-integrations-title">{minimalHeading}</h2>
             <p className="dms-lede">{minimalLede}</p>
           </header>
 
@@ -114,10 +122,10 @@ export function IntegrationLayer({
 
             <div className="dms-intg__minimal-cta">
               <div>
-                <h3>Don&rsquo;t see your system?</h3>
-                <p>We are always adding connectors. Bring us the stack you need to keep in step.</p>
+                <h3>{ctaHeading}</h3>
+                <p>{ctaBody}</p>
               </div>
-              <button type="button">Talk to us &rarr;</button>
+              <button type="button">{ctaLabel} &rarr;</button>
             </div>
           </div>
         </div>

@@ -71,11 +71,11 @@ export default function DmsProductPage() {
               </h1>
             </div>
             <div className="dms-hero__right">
-              <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
+              <p className="dms-lede dms-hero__sub">{dmsCopy("hero.sub", PRODUCT.description)}</p>
               <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">Book a demo &rarr;</button>
+                <button type="button" className="dms-btn">{dmsCopy("hero.cta1", "Book a demo")} &rarr;</button>
                 <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                  Take Coordination Tax Assessment
+                  {dmsCopy("hero.cta2", "Take Coordination Tax Assessment")}
                 </Link>
               </div>
             </div>
@@ -143,7 +143,10 @@ export default function DmsProductPage() {
       {/* ============================ 02 · MODULES BUNDLED ===============
        * The Unifize product story begins after the problem is fully framed. */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
-        <ModuleExplorer />
+        <ModuleExplorer
+          heading={dmsCopy("modules.heading", "Three modules. One continuous record.")}
+          lede={dmsCopy("modules.lede", "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.")}
+        />
       </section>
 
       {/* ============================ 03 · CAPABILITIES ==================
@@ -171,14 +174,26 @@ export default function DmsProductPage() {
        * head, the brand field container, and the trail + shell inside it.
        * On ink: near-black field + black bottom breathing room. */}
       <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
-        <LifecycleExplorer layout="sticky-visual" />
+        <LifecycleExplorer
+          layout="sticky-visual"
+          heading={dmsCopy("lifecycle.heading", "Every state has a gate. Every gate has an owner.")}
+        />
       </section>
 
       {/* ==================== INTEGRATIONS (connector layer) ===========
        * Connective beat after the lifecycle: the controlled document does not
        * stop at Unifize's edge. Unnumbered interstitial, on ink, so it continues
        * the dark block (02-04) one section longer before the light 05. */}
-      <IntegrationLayer data={INTEGRATIONS} variant="minimal" minimalEyebrow="Integrations" />
+      <IntegrationLayer
+        data={INTEGRATIONS}
+        variant="minimal"
+        minimalEyebrow="Integrations"
+        minimalHeading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
+        minimalLede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
+        ctaHeading={dmsCopy("integrations.cta.heading", "Don’t see your system?")}
+        ctaBody={dmsCopy("integrations.cta.body", "We are always adding connectors. Bring us the stack you need to keep in step.")}
+        ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}
+      />
 
       {/* ============================ 05 · WHO IT IS FOR =================
        * Three roles in one compact row. Each card shows the lifecycle span
@@ -188,7 +203,7 @@ export default function DmsProductPage() {
           <header className="dms-audience__head" data-reveal>
             <Eyebrow n={5}>Who it is for</Eyebrow>
             <h2 className="dms-h2" id="dms-audience-title">{dmsCopy("audience.heading", "For the teams that keep every document current.")}</h2>
-            <p className="dms-lede">{AUDIENCE.lede}</p>
+            <p className="dms-lede">{dmsCopy("audience.lede", AUDIENCE.lede)}</p>
           </header>
 
           <div className="dms-audience__personas">
@@ -308,11 +323,11 @@ export default function DmsProductPage() {
               </div>
             </div>
             <div className="dms-close__lead">
-              <Eyebrow>Ready when you are</Eyebrow>
+              <Eyebrow>{dmsCopy("close.eyebrow", "Ready when you are")}</Eyebrow>
               <h2 className="dms-close__h" id="dms-close-h">{dmsCopy("close.heading", "Bring the SOP you could not find the current version of.")}</h2>
               <p className="dms-lede">{dmsCopy("close.lede", "We will run it through the lifecycle live, from draft to Part 11 approval.")}</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">Book a 30-minute walkthrough</button>
+                <button type="button" className="dms-btn">{dmsCopy("close.cta", "Book a 30-minute walkthrough")}</button>
               </div>
             </div>
           </div>

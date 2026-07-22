@@ -13,6 +13,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import { Eyebrow } from "./dms-primitives";
 import { PROOF_FILMS } from "./dms-data";
+import { dmsCopy } from "./dms-copy";
 
 const usd = (n: number) => "$" + n.toLocaleString("en-US");
 
@@ -71,8 +72,8 @@ export function DmsProofFilms() {
         <header className="dms-films__head">
           <div className="dms-head">
             <Eyebrow n={6}>Customer proof</Eyebrow>
-            <h2 className="dms-h2" id="dms-proof-title">Results, honestly stated, from quality teams like yours.</h2>
-            <p className="dms-lede">Short, candid accounts of document control, training, and change management from the people doing the work.</p>
+            <h2 className="dms-h2" id="dms-proof-title">{dmsCopy("proof.heading", "Results, honestly stated, from quality teams like yours.")}</h2>
+            <p className="dms-lede">{dmsCopy("proof.sub", "Short, candid accounts of document control, training, and change management from the people doing the work.")}</p>
           </div>
 
           <div className="dms-films__controls">

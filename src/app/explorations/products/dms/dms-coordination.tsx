@@ -4,6 +4,7 @@
 import { Eyebrow } from "./dms-primitives";
 import { DmsCoordinationVisual } from "./dms-coordination-visual";
 import type { DmsCoordinationProblem } from "./dms-data";
+import { dmsCopy } from "./dms-copy";
 
 /* one line-item of the tax: the surface it is paid on, the leak, the cost. */
 export type CoordinationLeak = { surface: string; name: string; note: string; metric?: string };
@@ -46,12 +47,12 @@ export function CoordinationTax(props: CoordinationTaxProps) {
       <div className="dms-wrap">
         <div className="dms-head" data-reveal>
           <Eyebrow>The coordination tax</Eyebrow>
-          <h2 className="dms-h2">The work is rarely the bottleneck. The coordination is.</h2>
+          <h2 className="dms-h2">{dmsCopy("ctax.heading", "The work is rarely the bottleneck. The coordination is.")}</h2>
           <p className="dms-lede">
-            In a regulated operation, a task seldom stalls because it is hard. It stalls in the gaps between people,
-            documents, and systems: an approval waiting in an inbox, a version no one can vouch for, the same fact
-            keyed into three tools that now disagree. Every gap is a tax, paid in time and in the ability to prove the
-            work was done right.
+            {dmsCopy(
+              "ctax.lede",
+              "In a regulated operation, a task seldom stalls because it is hard. It stalls in the gaps between people, documents, and systems: an approval waiting in an inbox, a version no one can vouch for, the same fact keyed into three tools that now disagree. Every gap is a tax, paid in time and in the ability to prove the work was done right.",
+            )}
           </p>
           {metric ? <p className="dms-ctax__metric dms-data">{metric}</p> : null}
           {modelNote ? <p className="dms-ctax__model-note">{modelNote}</p> : null}
