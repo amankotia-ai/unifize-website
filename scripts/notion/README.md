@@ -60,19 +60,20 @@ Safety rules:
 
 1. Create `<page>-copy.json` + a `dmsCopy`-style helper, wire call sites.
 2. Uncomment/add the page in `COPY_TARGETS` in `registry.mjs`.
-3. Author the page's Content Blocks rows (Section ID QMS-S01..., a "## Copy"
-   section per row) and add their field-to-key map under
-   `CONTENT_BLOCKS.sections`.
+3. Author the page's Content Blocks rows (Section ID QMS-S01...) and one
+   Copy Fields row per string (Key, Text, Block relation, Block Key), plus a
+   filtered "Copy" view on each block page.
 4. For structured sections, add the source DB to `SOURCES` (verify with
    introspect-db.mjs) and derive the section from the mirror like the DMS
    audience adapter in `dms-data.ts`.
 
 ## Day-to-day
 
-- Copy edit: change the "## Copy" fields in the section's Content Block, set
-  Copy Status to Approved. Relation change: edit the real DB row. Both land
-  within the hour, or immediately via Run workflow on the "Sync website
-  content from Notion" action.
+- Copy edit: change the Text cell in the Copy table on the section's Content
+  Block page (all rows live in the one Copy Fields DB), set the block's Copy
+  Status to Approved. Relation change: edit the real DB row. Both land within
+  ten minutes, or immediately via Run workflow on the "Sync website content
+  from Notion" action.
 - Local check before a demo:
   `NOTION_TOKEN=... node scripts/notion/sync-copy.mjs && NOTION_TOKEN=... node scripts/notion/sync-sources.mjs`
   then reload localhost.

@@ -1,20 +1,21 @@
 /* ============================================================================
- * sync-copy.mjs - pulls approved page prose out of the Content Blocks
- * database (the single source of truth, on the Website 3.0 page) and
- * regenerates every page copy file registered in COPY_TARGETS.
+ * sync-copy.mjs - pulls approved page prose out of Notion and regenerates
+ * every page copy file registered in COPY_TARGETS.
  *
- * Contract: each section row (Section ID like DMS-S01) carries a "## Copy"
- * heading in its body followed by "**Label:** value" lines. The
- * CONTENT_BLOCKS.sections map in registry.mjs translates Section ID + label
- * into the namespaced copy key the page renders.
+ * Two databases cooperate (see registry.mjs CONTENT_BLOCKS):
+ *   - Copy Fields: one row per rendered string (Key, Text, Block relation).
+ *     Each Content Block page embeds a filtered table of its own rows, so
+ *     editors change table cells, never markdown.
+ *   - Content Blocks: one row per page section; its Copy Status is the
+ *     approval gate for every field related to it.
  *
  * Merge rules (deletion-safe, approval-gated):
- *   - Only rows whose Copy Status is in approved_statuses sync; a differing
- *     value on any other row is reported as HELD and the site keeps the
- *     current string. This is what makes "approved edits flow to the site"
- *     literally true.
- *   - An empty field or a missing block keeps the current string (warning).
- *   - Mapped fields with no wired key on any page are reported (SKIP).
+ *   - A field only syncs when its parent block's Copy Status is in
+ *     approved_statuses; a differing value on any other block is reported
+ *     as HELD and the site keeps the current string.
+ *   - Empty Text, a missing row, or a row with no Block relation keeps the
+ *     current string (warning).
+ *   - Rows whose Key is not wired on any page are reported (SKIP).
  * Files are only rewritten when something changed, so CI can use a plain
  * `git status` check to decide whether to commit.
  *
@@ -24,66 +25,37 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { requireToken, queryAllRows, listBlockChildren, extractProperty, plainText } from "./lib.mjs";
+import { requireToken, queryAllRows, extractProperty } from "./lib.mjs";
 import { COPY_TARGETS, CONTENT_BLOCKS } from "./registry.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "../..");
 
 const token = requireToken();
-const { database_id, approved_statuses, sections } = CONTENT_BLOCKS;
+const { database_id, fields_database_id, approved_statuses } = CONTENT_BLOCKS;
 
-/* "**Label:** value" -> [label, value]. The label is the leading run of bold
- * text; the colon may sit inside or just after the bold span. */
-function parseField(richTextArray) {
-  if (!richTextArray?.length) return null;
-  let i = 0;
-  let label = "";
-  while (i < richTextArray.length && richTextArray[i].annotations?.bold) {
-    label += richTextArray[i].plain_text ?? "";
-    i += 1;
-  }
-  label = label.trim();
-  if (!label) return null;
-  let value = richTextArray.slice(i).map((t) => t.plain_text ?? "").join("");
-  if (label.endsWith(":")) label = label.slice(0, -1).trim();
-  else if (value.startsWith(":")) value = value.slice(1);
-  return [label, value.trim()];
-}
-
-/* All "**Label:** value" fields between the "## Copy" heading and the next
- * heading of the same or higher level. */
-function copyFields(blocks) {
-  const fields = new Map();
-  let inCopy = false;
-  for (const block of blocks) {
-    const heading = block.type?.startsWith("heading") ? plainText(block[block.type]?.rich_text) : null;
-    if (heading !== null) {
-      inCopy = heading.toLowerCase() === "copy";
-      continue;
-    }
-    if (!inCopy) continue;
-    const rich = block[block.type]?.rich_text;
-    const parsed = parseField(rich);
-    if (parsed) fields.set(parsed[0], parsed[1]);
-  }
-  return fields;
-}
-
-const fromNotion = new Map(); // namespaced key -> { text, status, section }
+/* block pageId -> { status, section } */
+const blocks = new Map();
 for (const row of await queryAllRows(token, database_id)) {
-  const sectionId = extractProperty(row.properties?.["Section ID"]);
-  const fieldMap = sections[sectionId];
-  if (!fieldMap) continue;
-  const status = extractProperty(row.properties?.["Copy Status"]);
-  const fields = copyFields(await listBlockChildren(token, row.id));
-  for (const [label, key] of Object.entries(fieldMap)) {
-    if (!fields.has(label)) {
-      console.warn(`KEPT   ${key}: no "${label}" field under ## Copy in ${sectionId}.`);
-      continue;
-    }
-    fromNotion.set(key, { text: fields.get(label), status, section: sectionId });
+  blocks.set(row.id, {
+    status: extractProperty(row.properties?.["Copy Status"]),
+    section: extractProperty(row.properties?.["Section ID"]),
+  });
+}
+
+/* namespaced key -> { text, status, section } */
+const fromNotion = new Map();
+for (const row of await queryAllRows(token, fields_database_id)) {
+  const key = extractProperty(row.properties?.Key);
+  if (!key) continue;
+  const text = extractProperty(row.properties?.Text);
+  const blockId = extractProperty(row.properties?.Block)[0];
+  const block = blockId ? blocks.get(blockId) : undefined;
+  if (!block) {
+    console.warn(`KEPT   ${key}: field row has no Block relation, keeping current text.`);
+    continue;
   }
+  fromNotion.set(key, { text, status: block.status, section: block.section });
 }
 
 let totalChanged = 0;
@@ -96,11 +68,11 @@ for (const [prefix, target] of Object.entries(COPY_TARGETS)) {
     const namespaced = `${prefix}/${key}`;
     const entry = fromNotion.get(namespaced);
     if (!entry) {
-      console.warn(`KEPT   ${namespaced}: not mapped to any Content Block field, keeping current text.`);
+      console.warn(`KEPT   ${namespaced}: no Copy Fields row, keeping current text.`);
       continue;
     }
     if (!entry.text) {
-      console.warn(`KEPT   ${namespaced}: Content Block field is empty, keeping current text.`);
+      console.warn(`KEPT   ${namespaced}: Text is empty, keeping current text.`);
       continue;
     }
     if (entry.text === slot.text) continue;
@@ -125,7 +97,7 @@ const wired = new Set(
   ),
 );
 for (const key of fromNotion.keys()) {
-  if (!wired.has(key)) console.warn(`SKIP   ${key}: mapped in registry but not wired on any page.`);
+  if (!wired.has(key)) console.warn(`SKIP   ${key}: in Copy Fields but not wired on any page.`);
 }
 
 if (held.length) {
