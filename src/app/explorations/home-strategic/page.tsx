@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MockOpsHolds } from "../home/home-mocks";
+import { ArcadeStepScene } from "../products/_shared/arcade/arcade";
+import { HOME_HERO_OPS_CONFIG } from "../home/home-arcade";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../products/dms/dms-redesign.css";
@@ -178,7 +179,9 @@ export default function StrategicHomePage() {
               </span>
             </div>
             <div className="sv-product-window__body">
-              <MockOpsHolds />
+              {/* the shared stylized-arcade ops scene (holds & release), same
+                * world the homepage hero stages */}
+              <ArcadeStepScene config={HOME_HERO_OPS_CONFIG} />
             </div>
           </div>
         </section>

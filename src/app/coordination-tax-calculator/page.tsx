@@ -1,65 +1,38 @@
 /* ------------------------------------------------------------
- * /coordination-tax-calculator — the "See your numbers" page.
+ * /coordination-tax-calculator - the Coordination Tax Assessment.
  *
- * Ben 2026-06-03 (action item): "Create a 'coordination tax
- * calculator' dashboard including demo booking options and customer
- * success stories to provide social proof and substantiate claims."
- * Linked from the §06 money shot's "See your numbers" CTA.
- *
- * Model grounding: the internal CT estimation method (Notion,
- * Account Coordination Tax Scoring v1.6) reduced to its Stage 3
- * customer-facing form: confirmed volumes × waiting per record,
- * through the page's dictated story (80% of NVA is CT, Unifize
- * reduces CT by 65%).
+ * Reworked Aug 2026 to Ben's prototype pair (assessment + full
+ * report HTMLs): a cold read built from public data with every
+ * figure labelled by source, a persona lens, the modelled theme
+ * mix, the benchmark band, and the path into the full report at
+ * ./report. Runs in the DMS page shell (DmsHeader, dms-section
+ * system, SiteFooter) so it reads as the current site. Linked
+ * from the DMS pages' "Take Coordination Tax Assessment" CTA.
  * ------------------------------------------------------------ */
 import type { Metadata } from "next";
-import Link from "next/link";
-import { SiteHeader } from "../home/site-header";
-import { CTCalculator } from "./ct-calculator";
+import { DmsHeader } from "../explorations/products/dms/dms-header";
+import { SiteFooter } from "../explorations/_shared/site-footer";
+import { CtaxAssessment } from "./assessment";
+import "../explorations/industry-template-modern/itm.css";
+import "../explorations/products/dms/dms.css";
+import "../explorations/products/dms/dms-redesign.css";
+import "./cta-assessment.css";
 
 export const metadata: Metadata = {
-  title: "Coordination tax calculator · Unifize",
+  title: "Coordination Tax Assessment · Unifize",
   description:
-    "Your volumes, your rates: what the waiting in your processes costs every year, and what Unifize gives back.",
+    "Where coordination tax is likely hurting you the most: a cold read from public data, every figure labelled by source, sharpened as you confirm your numbers.",
 };
 
-export default function CoordinationTaxCalculatorPage() {
+export default function CoordinationTaxAssessmentPage() {
   return (
-    <main>
-      <SiteHeader />
-      <CTCalculator />
-      <SiteFooter />
+    <main className="dms dms--redesign dms--consistent-eyebrows">
+      <DmsHeader />
+      <CtaxAssessment />
+      <SiteFooter
+        tagline="The number behind the coordination you can feel."
+        note="Coordination Tax Assessment · figures labelled by source"
+      />
     </main>
-  );
-}
-
-function SiteFooter() {
-  return (
-    <footer className="site-footer surface dark">
-      <div className="site-footer-inner">
-        <div className="site-footer-brand">
-          <strong>Unifize</strong>
-          <span>People. Process. AI. Outcomes.</span>
-        </div>
-        <div className="site-footer-cols">
-          <div>
-            <span className="lab">Explore</span>
-            <Link href="/platform#industries">By industry</Link>
-            <Link href="/platform#domains">By domain</Link>
-            <Link href="/platform#buyer">By buyer</Link>
-          </div>
-          <div>
-            <span className="lab">Problem</span>
-            <Link href="/#thesis">Coordination tax</Link>
-            <Link href="/#seam">The seam</Link>
-            <Link href="/#how">The governed layer</Link>
-          </div>
-        </div>
-      </div>
-      <div className="site-footer-rule" />
-      <div className="site-footer-base">
-        <span>© Unifize 2026</span>
-      </div>
-    </footer>
   );
 }

@@ -27,6 +27,7 @@ import { DomainIngressNav, LeakRegister } from "./domain-interactive";
 import type { DomainPageData, WorkGlyph } from "./types";
 import "../../industry-template-modern/itm.css";
 import "./domain-kit.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 /* Outline glyphs for the six flagship workstreams (heroicons-style, 1.5
  * stroke — the same family as the validated-state cards). */
@@ -75,7 +76,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
               {d.hero.chips.map((s) => <li key={s} className="itm-hero__std">{s}</li>)}
             </ul>
             <div className="itm-hero__ctas">
-              <button type="button" className="itm-btn">Book a demo →</button>
+              <BookDemoButton className="itm-btn" source="hero">Book a demo →</BookDemoButton>
               <a href="#work" className="itm-btn itm-btn-ghost">See the work it covers</a>
             </div>
           </div>
@@ -497,7 +498,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
             <div className="itm-close__side">
               <p className="itm-lede">{d.close.lede}</p>
               <div className="itm-close__cta">
-                <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
+                <BookDemoButton className="itm-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
                 <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>

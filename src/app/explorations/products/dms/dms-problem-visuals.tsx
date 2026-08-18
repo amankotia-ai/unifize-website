@@ -5,7 +5,13 @@ import { motion, useInView, useReducedMotion, type Variants } from "motion/react
 import { useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-export type DmsProblemIllustrationKind = "retrieval" | "versions" | "drift" | "audit";
+export type DmsProblemIllustrationKind =
+  | "retrieval"
+  | "versions"
+  | "drift"
+  | "audit"
+  | "change"
+  | "training";
 
 export type DmsProblemItem = {
   visual: DmsProblemIllustrationKind;
@@ -273,10 +279,104 @@ function AuditGraphic(props: GraphicProps) {
   );
 }
 
+/* Change effectivity: the approved revision holds a straight line while the
+ * floor keeps building to the old one; the gap between them is the lag. */
+function ChangeGraphic(props: GraphicProps) {
+  return (
+    <GraphicCanvas {...props}>
+      <motion.path className="dms-gfx-drift__gap" d="M155 190H620V340C560 340 520 340 470 325C410 306 380 282 315 260C250 238 215 238 155 238Z" variants={graphicFade} />
+
+      <motion.path className="dms-gfx-drift__document" d="M115 190H620" variants={graphicDraw} />
+      <motion.path className="dms-gfx-drift__process" d="M115 238C215 238 250 238 315 260C380 282 410 306 470 325C520 340 560 340 620 340" variants={graphicDraw} />
+
+      <motion.g className="dms-gfx-drift__origin" variants={graphicPop}>
+        <circle cx="115" cy="214" r="40" />
+        <path d="M102 194h21l8 8v32h-29zM123 194v8h8M109 213h15M109 222h15" />
+        <text x="115" y="276" textAnchor="middle">APPROVED</text>
+      </motion.g>
+
+      <motion.g className="dms-gfx-drift__node" variants={graphicItem}>
+        <circle cx="315" cy="260" r="16" />
+        <text x="315" y="300" textAnchor="middle">NOTIFICATION MISSED</text>
+      </motion.g>
+      <motion.g className="dms-gfx-drift__node" variants={graphicItem}>
+        <circle cx="470" cy="325" r="16" />
+        <text x="470" y="366" textAnchor="middle">TRAINING PENDING</text>
+      </motion.g>
+      <motion.g className="dms-gfx-drift__node dms-gfx-drift__node--end" variants={graphicPop}>
+        <circle cx="620" cy="340" r="26" />
+        <text x="620" y="396" textAnchor="middle">FLOOR BUILDS OLD</text>
+      </motion.g>
+
+      <motion.g className="dms-gfx-drift__frozen" variants={graphicItem}>
+        <circle cx="620" cy="190" r="26" />
+        <path d="m609 179 22 22M631 179l-22 22" />
+        <text x="620" y="143" textAnchor="middle">NEW REVISION</text>
+        <text x="620" y="158" textAnchor="middle">ON PAPER ONLY</text>
+      </motion.g>
+
+      <motion.path className="dms-gfx-drift__measure" d="M198 190v53M191 190h14M191 243h14" variants={graphicDraw} />
+      <motion.text className="dms-gfx-drift__measure-label" x="214" y="220" variants={graphicFade}>LAG</motion.text>
+    </GraphicCanvas>
+  );
+}
+
+/* Training cascade: the effective revision fans out to the people mapped to
+ * it; two are verified, one is still working to the old version. */
+function TrainingGraphic(props: GraphicProps) {
+  return (
+    <GraphicCanvas {...props}>
+      <motion.circle className="dms-gfx__halo" cx="560" cy="360" r="104" variants={graphicPop} />
+
+      <motion.path className="dms-gfx__route" d="M268 214C346 186 420 152 500 130" variants={graphicDraw} />
+      <motion.path className="dms-gfx__route" d="M268 244C352 246 428 248 500 250" variants={graphicDraw} />
+      <motion.path className="dms-gfx__route" d="M268 274C346 302 424 334 508 356" variants={graphicDraw} />
+
+      <g transform="translate(84 122) rotate(-2 90 119)">
+        <motion.g className="dms-gfx-version dms-gfx-version--key" variants={graphicPop}>
+          <rect width="180" height="238" rx="8" />
+          <text className="dms-gfx-version__eyebrow" x="20" y="34">CONTROLLED SOP</text>
+          <text className="dms-gfx-version__number" x="20" y="94">NEW REV</text>
+          <path d="M21 122h99M21 141h129M21 160h89M21 193h116" />
+          <rect className="dms-gfx-version__stamp" x="20" y="196" width="82" height="23" rx="11" />
+          <text className="dms-gfx-version__state" x="61" y="212" textAnchor="middle">EFFECTIVE</text>
+        </motion.g>
+      </g>
+
+      <g transform="translate(462 82) rotate(3 67 50)">
+        <motion.g className="dms-gfx-evidence" variants={graphicItem}>
+          <rect width="135" height="100" rx="7" />
+          <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
+          <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
+          <text x="20" y="90">TRAINED · NEW REV</text>
+        </motion.g>
+      </g>
+      <g transform="translate(474 202) rotate(-3 67 50)">
+        <motion.g className="dms-gfx-evidence" variants={graphicItem}>
+          <rect width="135" height="100" rx="7" />
+          <circle cx="27" cy="27" r="10" />
+          <path className="dms-gfx-evidence__check" d="m22 27 3 3 7-8" />
+          <path d="M47 23h61M47 33h44M20 57h92M20 72h72" />
+          <text x="20" y="90">TRAINED · NEW REV</text>
+        </motion.g>
+      </g>
+
+      <motion.g className="dms-gfx-question" variants={graphicPop}>
+        <circle cx="560" cy="360" r="54" />
+        <text x="560" y="379" textAnchor="middle">?</text>
+        <text className="dms-gfx-question__label" x="560" y="438" textAnchor="middle">STILL ON THE OLD REV</text>
+      </motion.g>
+    </GraphicCanvas>
+  );
+}
+
 function ProblemGraphic({ kind, play, staticMode }: GraphicProps & { kind: DmsProblemIllustrationKind }) {
   if (kind === "versions") return <VersionsGraphic play={play} staticMode={staticMode} />;
   if (kind === "drift") return <DriftGraphic play={play} staticMode={staticMode} />;
   if (kind === "audit") return <AuditGraphic play={play} staticMode={staticMode} />;
+  if (kind === "change") return <ChangeGraphic play={play} staticMode={staticMode} />;
+  if (kind === "training") return <TrainingGraphic play={play} staticMode={staticMode} />;
   return <RetrievalGraphic play={play} staticMode={staticMode} />;
 }
 

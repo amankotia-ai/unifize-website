@@ -1,0 +1,102 @@
+/**
+ * Unifize Open Ledger — directional design tokens
+ * Scope behind `.theme-open-ledger` until the direction is approved.
+ */
+
+.theme-open-ledger {
+  color-scheme: light;
+
+  /* Color: hex fallback followed by OKLCH source of truth. */
+  --ol-paper: #fbf8f3;
+  --ol-paper: oklch(0.98 0.007 80.7);
+  --ol-paper-inset: #f4efe7;
+  --ol-paper-inset: oklch(0.954 0.012 79.8);
+  --ol-white: #fff;
+  --ol-white: oklch(1 0 0);
+  --ol-ink: #0f1115;
+  --ol-ink: oklch(0.177 0.009 264.3);
+  --ol-ink-secondary: #5c6069;
+  --ol-ink-secondary: oklch(0.489 0.015 266.6);
+  --ol-graphite: #8a8f98;
+  --ol-graphite: oklch(0.649 0.015 262.4);
+  --ol-rule: #d7d1c7;
+  --ol-rule: oklch(0.863 0.015 80.7);
+  --ol-cobalt: #1e5bff;
+  --ol-cobalt: oklch(0.547 0.25 264);
+  --ol-success: #137333;
+  --ol-success: oklch(0.488 0.13 149);
+  --ol-critical: #b3261e;
+  --ol-critical: oklch(0.501 0.178 28.7);
+
+  /* Semantic aliases. */
+  --ol-bg: var(--ol-paper);
+  --ol-surface: var(--ol-white);
+  --ol-surface-subtle: var(--ol-paper-inset);
+  --ol-text: var(--ol-ink);
+  --ol-text-secondary: var(--ol-ink-secondary);
+  --ol-text-disabled: var(--ol-graphite);
+  --ol-border: var(--ol-rule);
+  --ol-link: var(--ol-cobalt);
+  --ol-focus: var(--ol-cobalt);
+
+  /* Typography. */
+  --ol-font-display: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --ol-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --ol-font-evidence: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  --ol-display-01: clamp(4.5rem, 7.6vw, 7rem);
+  --ol-display-02: clamp(3.25rem, 5.4vw, 5rem);
+  --ol-heading-01: clamp(2.5rem, 4vw, 4rem);
+  --ol-heading-02: clamp(1.75rem, 2.4vw, 2.5rem);
+  --ol-body-lg: clamp(1.125rem, 1.4vw, 1.25rem);
+  --ol-body: 1rem;
+  --ol-label: 0.75rem;
+  --ol-leading-display: 0.94;
+  --ol-leading-heading: 1.08;
+  --ol-leading-body: 1.6;
+  --ol-tracking-display: -0.035em;
+  --ol-tracking-label: 0.045em;
+
+  /* Five / ten spacing rhythm. */
+  --ol-space-1: 0.3125rem; /* 5 */
+  --ol-space-2: 0.625rem; /* 10 */
+  --ol-space-3: 0.9375rem; /* 15 */
+  --ol-space-4: 1.25rem; /* 20 */
+  --ol-space-5: 1.875rem; /* 30 */
+  --ol-space-6: 2.5rem; /* 40 */
+  --ol-space-7: 3.125rem; /* 50 */
+  --ol-space-8: 3.75rem; /* 60 */
+  --ol-space-9: 5rem; /* 80 */
+  --ol-space-10: 6.25rem; /* 100 */
+  --ol-space-11: 7.5rem; /* 120 */
+  --ol-space-12: 10rem; /* 160 */
+
+  /* Layout. */
+  --ol-canvas-max: 92.5rem; /* 1480 */
+  --ol-reading-max: 68ch;
+  --ol-gutter: clamp(1.25rem, 3.4vw, 4rem);
+  --ol-grid-gap: clamp(1.25rem, 1.7vw, 1.5rem);
+  --ol-rule-width: 1px;
+  --ol-radius: 0;
+  --ol-radius-media: 2px;
+
+  /* Motion. */
+  --ol-duration-fast: 160ms;
+  --ol-duration-enter: 280ms;
+  --ol-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ol-hover-shift: 4px;
+
+  /* One exceptional elevation for overlays only. */
+  --ol-shadow-lift: 0 24px 64px rgb(15 17 21 / 10%);
+
+  background: var(--ol-bg);
+  color: var(--ol-text);
+  font-family: var(--ol-font-body);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-open-ledger {
+    --ol-duration-fast: 0ms;
+    --ol-duration-enter: 0ms;
+    --ol-hover-shift: 0;
+  }
+}

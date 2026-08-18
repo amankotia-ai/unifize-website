@@ -1,0 +1,2046 @@
+[
+  {
+    "file": "arcade_97vz7kR7cL01p5CbNQE8.html",
+    "name": "Create and Approve Documents on Unifize",
+    "description": "",
+    "stepCount": 65,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Create and Approve Documents on Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "From the Home screen, click on **Document** to begin drafting your new document."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/a0bd8d37-4b9f-4a08-8656-2052248b84cb.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Document"
+      },
+      {
+        "i": 2,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter a title for your document, such as **Facility Maintenance Procedure**"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/db4ee80b-ef27-44e1-9aa3-b40b6b7ad8b8.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize automatically assigns the owner and adds participants to the document"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/db4ee80b-ef27-44e1-9aa3-b40b6b7ad8b8.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Tap **Create** to begin crafting your document draft."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/62f2304c-e9b3-4c18-a715-0279137af025.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Notice the document is now in **DRAFT**, your starting point for edits, reviews, and approvals."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/3637e9ab-24f6-4b69-837b-74b3c0c601ef.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "DRAFT\nvs\nVictor Smith\n1\nDue\nNormal\nMore\nMandatory\n7"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the **DOCUMENT CLASSIFICATION** section to set key document details."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/016ccea6-1835-4eaa-ab45-2c80fceac6e4.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "DOCUMENT CLASSIFICATION\n2"
+      },
+      {
+        "i": 8,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Specify your type of document "
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/33eaafcd-ec74-41e0-9367-8bc39b76fea9.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Add Type of Document"
+      },
+      {
+        "i": 9,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/3cd75a9c-796a-4c4d-98e3-65707a4e6782.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Standard Operating Procedure"
+      },
+      {
+        "i": 10,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Assign the responsible department"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/45378f6a-9cb6-4fff-b0de-26bdf4044676.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Add Department"
+      },
+      {
+        "i": 11,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4d5b1e0a-7510-4e17-84fe-cb50189e4112.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Facility Operations"
+      },
+      {
+        "i": 12,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize automatically assigns Document Approver(s) based on the Department selected."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/3b0aa1fc-852a-4d78-9121-e850bbbd7f9d.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "A\nautomator\nUpdated checklist\nDocument Approver(s)\nDerek Shaw Pending\n04:24 pm"
+      },
+      {
+        "i": 13,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add a document description"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/381b2bf9-24a0-4719-a595-afcf65981e64.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add Rich Text"
+      },
+      {
+        "i": 14,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/37bec644-1ef9-4c00-8fbb-bd2da2606c66.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Department\nFacility Operations"
+      },
+      {
+        "i": 15,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Categorize your document easily by adding tags."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/491a4c78-35c9-44d1-843e-48e38f4c9e26.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add Tag"
+      },
+      {
+        "i": 16,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 17,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand **RELATED DOCUMENTS** for easy cross-referencing."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/06645409-c1db-47af-b3a6-a62702362c43.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "RELATED DOCUMENT(S)"
+      },
+      {
+        "i": 18,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Attach a parent document to establish hierarchy between documents."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/6b19df02-ad17-4b16-be2c-bbc134167a2a.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add Document"
+      },
+      {
+        "i": 19,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/70fa524c-e11b-4dea-9471-57c104be98ed.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "#89: Facility Safety Compliance Policy"
+      },
+      {
+        "i": 20,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 21,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the **FILE(S)** section to manage associated files and attachments."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/bbfb8028-b671-43ae-aa00-74e8942ac52f.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "FILE(S)\n1"
+      },
+      {
+        "i": 22,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Attach native files directly from your computer."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4e7710f4-0f4b-4fc2-bc57-551908724eb2.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Attach File"
+      },
+      {
+        "i": 23,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/c9c996da-1f78-4335-af51-ad8e4c091433.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Computer"
+      },
+      {
+        "i": 24,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 25,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand **DOCUMENT SETTINGS** to tailor document controls."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4d1ac8c4-585e-46e8-aced-3ac9bedd7093.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "DOCUMENT SETTINGS\n4"
+      },
+      {
+        "i": 26,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 27,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Set  up document numbering to fit your compliance framework."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4f98e569-b128-4611-a51c-2d2ddf8788ea.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Document Numbering"
+      },
+      {
+        "i": 28,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4343d683-b7d6-491c-8631-9c746bdcd338.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 29,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the periodic review section "
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/27fbb1da-d540-433d-b596-476b14869e74.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Periodic Document Review"
+      },
+      {
+        "i": 30,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 31,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Specify if your document needs regular compliance reviews."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/7ed95d27-912f-4ec7-a9d0-7756a1366df8.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 32,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Choose Yes to require periodic compliance reviews."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/1b096f4a-1cba-49ec-baa9-80508f750e9b.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 33,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select review frequency to keep your documentation up-to-date."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/7d2eb871-f3b4-4028-88d5-5c0510d4a8d1.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 34,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/c1058f1d-7fb9-478d-83c6-391ccae4526f.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Quarterly"
+      },
+      {
+        "i": 35,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Assign a reviewer to ensure accountable compliance checks."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/576eb3a1-6fa3-4429-9f01-7645e86428ca.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add User"
+      },
+      {
+        "i": 36,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/8a09a78e-77ae-4fc6-b42f-b0400254651a.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Brandon Wu\n\nbrandon.wu@unifize.com"
+      },
+      {
+        "i": 37,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 38,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Set training requirements to drive compliance awareness."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/8b9d00d3-2d60-46c5-962a-0af76cfe600e.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Training on Document"
+      },
+      {
+        "i": 39,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Specify if formal change control is needed for revisions."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4d13b4d0-45e4-4c3b-a374-d56e31a8729d.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 40,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/74b2d14b-be84-491a-b551-2ab7af29c3d8.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 41,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Set your document's effective date for precise compliance tracking."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/01ad66a7-52e2-4386-9c16-51ab54963e0b.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Effective Date"
+      },
+      {
+        "i": 42,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/79ff33cf-0306-4ba8-8e67-086c6c3a6b90.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "No"
+      },
+      {
+        "i": 43,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Specify your preferred period for the effective date after approval."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/08c1efec-904e-455c-a8a9-4d19687f097b.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add Number"
+      },
+      {
+        "i": 44,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/a0c11dd0-7536-4f19-a3e0-19968ee3b4ff.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Does the document become effective immediately on approval?\n\nNo\n\nDays from approval\nDone\nEffective Date\n+ Add Date"
+      },
+      {
+        "i": 45,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/2981958e-7fe0-4c78-bfd2-2699199d33c7.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "+ Add Date"
+      },
+      {
+        "i": 46,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/e006c8b7-2433-4393-a049-d0e3d97c0697.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Done"
+      },
+      {
+        "i": 47,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/274b39a5-76f4-4beb-ab5d-62b8a8a04681.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Done"
+      },
+      {
+        "i": 48,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 49,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once all the details are filled, Request for Approval"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/c5c16955-c430-4bc7-a393-4c6af58c6826.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Request Approval"
+      },
+      {
+        "i": 50,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          },
+          {
+            "label": "Unifize adds Signatories and notifies them to approve the document"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/8695730c-3f83-4d23-81b9-35abb40c2a58.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Signature 1"
+      },
+      {
+        "i": 51,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Begin by entering your Email ID, your password, and any additional comments you’d like to include before moving forward."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/73b2e544-c157-4d4e-a7f5-f479efdef698.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Email id*"
+      },
+      {
+        "i": 52,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once done, click on confirm and sign."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/9e71964e-5d1e-45cb-9551-0eebd44fe187.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Confirm and sign"
+      },
+      {
+        "i": 53,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 54,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/7acc275f-b87e-42cf-af18-f6efdd608f53.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Signature 1"
+      },
+      {
+        "i": 55,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/a99b145c-bdd9-4e0b-93b2-c166203c7118.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Email id*"
+      },
+      {
+        "i": 56,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/192fc669-920b-42b9-b98d-54db04bf6be8.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Confirm and sign"
+      },
+      {
+        "i": 57,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 58,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "The status of the document automatically changes to **APPROVED** once all the authorities have approved the document."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/cd0d3824-0209-410c-9722-86b0e49d9f73.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "APPROVED\nvs\nVictor Smith\n6\nDue\nNormal\nMore\nChecklist"
+      },
+      {
+        "i": 59,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand **SIGNED DOCUMENT** to access the PDF"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/bb191db2-a1ed-4173-bcf7-b1f08b974e4c.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "SIGNED DOCUMENT"
+      },
+      {
+        "i": 60,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 61,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/4285e443-7582-4161-82a6-1c1d10f8efe4.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Document-91-Facility_Maintenance_Procedure.pdf"
+      },
+      {
+        "i": 62,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Scan the QR code on the covering sheet to instantly access this specific document record on your mobile device."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/dac785e3-00ce-48a3-8ac3-d2b3bca0b1a5.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Revision History\n\n\nDocument Classification\n\n\nRev\n\n\nNo\n \nTitle\n \nCurrent\n \nComment\n \nOwner\n \nStatus\n\n\n1\n \nFacility Maintenance Procedure\n \nYes\n \nVictor Smith\n \nApproved\n\n\nOwner\n \nVictor Smith\n \nEffective Date\n \nNov 15, 2025\n\n\nDocument Type\n \nStandard Operating Procedure\n \nDepartment\n \nFacility Operations\n\n\nDescription\n \nThe purpose of this procedure is to establish a systematic approach for maintaining all facility assets,\n\n\nequipment, and infrastructure in safe and efficient working condition. It ensures compliance with company\n\n\nstandards and applicable regulatory requirements while minimizing downtime and maintenance costs.\n\n\nDocument Controller Approver\n\n\nVictor Smith\n\n\n31 Oct 2025 11:02:25 UTC\n\n\n1a895f0192c98978fd4de4089ddb945eb48893a\n\n\n86a1dcae6d6dcd53d0ae54559\n\n\nApproved By\n \n:\n\n\nApproved Date :\n\n\nSignature ID :\n\n\nFacility Maintenance Procedure\n\n\nPowered by PDF Generator API\nFacility Maintenance Procedure\n\n\nDocument No.:\n \nFMP-001\n\n\nRevision No.:\n \n1.0\n\n\nEffective Date:\n \n2025-10-31\n\n\nDepartment:\n \nFacility Operations\n\n\nPrepared By:\n \nFacility Supervisor\n\n\nApproved By:\n \nOperations Manager\n\n\n1. Purpose\n\n\nThe purpose of this procedure is to establish a systematic approach for maintaining all\n\n\nfacility assets, equipment, and infrastructure in safe and efficient working condition. It\n\n\nensures compliance with company standards and applicable regulatory requirements while\n\n\nminimizing downtime and maintenance costs.\n\n\n2. Scope\n\n\nThis procedure applies to all facility-related assets, including HVAC systems, lighting,\n\n\nplumbing, electrical panels, and safety installations across all company premises.\n\n\nIt covers both\n \npreventive\n \nand\n \ncorrective\n \nmaintenance activities.\n\n\n3. Responsibilities\n\n\n●\n \nFacility Manager:\n \nOversees implementation of maintenance plans and approves\n\n\nmaintenance schedules.\n\n\n●\n \nMaintenance Technicians:\n \nPerform maintenance tasks as per this procedure and\n\n\ndocument completion.\n\n\n●\n \nSafety Officer:\n \nEnsures all maintenance work complies with safety regulations.\n\n\n●\n \nDocument Controller:\n \nMaintains updated records of maintenance logs, schedules,\n\n\nand revisions.\n\n\n4. Definitions"
+      },
+      {
+        "i": 63,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 64,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "file": "arcade_J24xnufajlJNKjRqMPVl.html",
+    "name": "Approve and Sign a Pending Document",
+    "description": "",
+    "stepCount": 9,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Approve Documents from the Homescreen in Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "rom the home screen, navigate to the Documents Pending Approval tile."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/8d90eecb-e06f-4260-b5f4-26fc92568ad4.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Document #69: Asset Transfer Form"
+      },
+      {
+        "i": 2,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click on the document you need to approve."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/b62aded5-1be3-49ae-9ace-c040e0f088a8.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "Asset Transfer Form\nMe\n:\nFilled a checklist\n02:54 pm\nDocument\n#69\nLinda Torres Pending\nNEEDS DOC CONTROLLER APPROVAL"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the SIGNATURE(S) section "
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/2ccaefe6-f1a4-48d6-a49b-77a467a28f3d.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "SIGNATURE(S)"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Add Signature"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/1cb1b1af-1c29-462a-aee8-b66abf7a4e22.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "+ Add Signature 1"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter your email address and password to authenticate."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/3f0b9b6b-2d2f-48ab-9df4-7f8b399980a5.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "Email id*"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Confirm and Sign to finalize your approval."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/b737b34e-31ca-4e3d-8147-34d05c0ba5a6.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "Confirm and sign"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once signed, the document’s status automatically updates to **APPROVED**."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/J24xnufajlJNKjRqMPVl/image/eb365e91-0bcb-4ddd-b07c-358425df3b3e.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "APPROVED"
+      },
+      {
+        "i": 8,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "file": "arcade_K1AESVTNqwBJwRBUMsEG.html",
+    "name": "Create a Training Quiz for a Document in Unifize",
+    "description": "",
+    "stepCount": 35,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Create a Training Quiz for a Document in Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "On the home screen, navigate to **Documents pending approval** tile and click on any of the documents."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EEbVnJWe0W6Rg4VMZmFC/image/8cbb2800-406c-45e6-9ae4-f2eba30ab668.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Document #91: Facility Maintenance Procedure"
+      },
+      {
+        "i": 2,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "From the inbox view, click the document for which you want to create training."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EEbVnJWe0W6Rg4VMZmFC/image/1df0636e-5ff1-4ec0-afb9-861997c6466e.png",
+        "pageContext": "https://app.unifize.com/conversation/WD6X657KE?templateId=22942"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "This takes you directly to the document record, where you can start working on creating the training."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/aBpyhZrmgoPdoPisvPIP/image/40d5a9ed-b288-4f6e-949c-7e4b7b7cb2ba.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Document #91:\nFacility Maintenance Procedure"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "In the Document Settings section, find the Training on Document option."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/cldQeJA3CJ8WAhfGEORP/image/218f4037-d387-4f42-81f6-a6e1b8f78704.png",
+        "pageContext": "https://app.unifize.com/conversation/WE2P446WE?templateId=22942",
+        "clickContext": "Training on Document"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select **Yes** as the option"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/f9badb6d-1d3e-4d4d-800d-21a8e9591cc2.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/26f82e9e-9df5-464f-80be-e9a15ae154a8.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select **Quiz** as the option from the picklist"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/e59b2b2d-b2e9-4fce-b7b7-6c0ee28ccc80.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Quiz"
+      },
+      {
+        "i": 8,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Set refresher training as Yes / No"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/4668aee6-2f56-4e7f-b3de-933ff98f9ce0.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 9,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Define the frequency of training"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/a0e52a7b-9238-4550-9723-f9de33445e12.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Select"
+      },
+      {
+        "i": 10,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/73bec928-882e-47e9-b12f-0d38a83dc542.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "Quiz"
+      },
+      {
+        "i": 11,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click on **Generate Questions** to use AI to generate quiz questions."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/T2xPgxBquBkQriG0P8vt/image/f4eea595-fbd2-4c81-8276-7147b7a35a9d.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G",
+        "clickContext": "🪄 Generate Questions (Beta)"
+      },
+      {
+        "i": 12,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "AI reads through the document  - generates either multiple-choice or true/false quiz questions with the answers"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Y6vxFhf63VlOkHZswKjg/image/8cc41039-8eac-44f4-ad6a-cfbd3dfc410a.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Document\t\nWhat is the main purpose of the facility maintenance procedure?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nTo minimize downtime and maintenance costs while ensuring safety and compliance\n\n\n(B)\n\t\nTo maximize office utilization\n\n\n(C)\n\t\nTo authorize employee vacations\n\n\n(D)\n\t\nTo upgrade all equipment annually\n\n\nCorrect Answer\n\t\nA\nWhich assets does the facility maintenance procedure apply to?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nOnly HVAC systems\n\n\n(B)\n\t\nOnly lighting and plumbing\n\n\n(C)\n\t\nAll facility-related assets such as HVAC, lighting, plumbing, and safety installations\n\n\n(D)\n\t\nOnly safety installations\n\n\nCorrect Answer\n\t\nC\nWho is responsible for overseeing the implementation of maintenance plans?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nMaintenance Technician\n\n\n(B)\n\t\nFacility Manager\n\n\n(C)\n\t\nDocument Controller\n\n\n(D)\n\t\nSafety Officer\n\n\nCorrect Answer\n\t\nB\nWhat should be developed annually to cover all critical assets?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nAnnual preventive maintenance plan\n\n\n(B)\n\t\nAnnual recruitment plan\n\n\n(C)\n\t\nAnnual party schedule\n\n\n(D)\n\t\nAnnual sales projection\n\n\nCorrect Answer\n\t\nA\nHow are maintenance intervals determined for preventive maintenance?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nBased on guesswork\n\n\n(B)\n\t\nBased on manufacturer recommendations or equipment usage\n\n\n(C)\n\t\nRandom assignment\n\n\n(D)\n\t\nBy employee preference\n\n\nCorrect Answer\n\t\nB\nWhich system is used to record all preventive tasks?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nEmail system\n\n\n(B)\n\t\nMaintenance management system\n\n\n(C)\n\t\nPayroll system\n\n\n(D)\n\t\nInventory system\n\n\nCorrect Answer\n\t\nB\nTrue or False: Maintenance Technicians must update checklists and record findings after performing preventive tasks.\nEmbedded field\tSuggested Value\n\nType\n\t\nTrue/False\n\n\n(A)\n\t\n\n\n(B)\n\t\n\n\n(C)\n\t\n\n\n(D)\n\t\n\n\nCorrect Answer\n\t\nTrue\nWho reviews completion status and signs off after a preventive maintenance task?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nFacility Manager\n\n\n(B)\n\t\nDocument Controller\n\n\n(C)\n\t\nSupervisor\n\n\n(D)\n\t\nSafety Officer\n\n\nCorrect Answer\n\t\nC\nWhat type of maintenance involves repairing equipment after a fault occurs?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nPreventive Maintenance\n\n\n(B)\n\t\nCorrective Maintenance\n\n\n(C)\n\t\nRoutine Cleaning\n\n\n(D)\n\t\nInventory check\n\n\nCorrect Answer\n\t\nB\nWhat action must any employee take upon noticing a fault in equipment?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nFix the fault themselves\n\n\n(B)\n\t\nRaise a maintenance request through the DMS\n\n\n(C)\n\t\nIgnore the fault\n\n\n(D)\n\t\nReplace the equipment\n\n\nCorrect Answer\n\t\nB\nTrue or False: Only the Facility Manager can diagnose and repair faults detected in the facility.\nEmbedded field\tSuggested Value\n\nType\n\t\nTrue/False\n\n\n(A)\n\t\n\n\n(B)\n\t\n\n\n(C)\n\t\n\n\n(D)\n\t\n\n\nCorrect Answer\n\t\nFalse\nWhat should always be isolated before repair work?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nWater supply\n\n\n(B)\n\t\nElectrical power\n\n\n(C)\n\t\nInternet connection\n\n\n(D)\n\t\nAir conditioning\n\n\nCorrect Answer\n\t\nB\nWhich personal protective equipment (PPE) rule must be followed during maintenance?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nUse appropriate PPE at all times during maintenance\n\n\n(B)\n\t\nNo PPE is required\n\n\n(C)\n\t\nOnly wear sunglasses\n\n\n(D)\n\t\nAny clothing is acceptable\n\n\nCorrect Answer\n\t\nA\nHow long must all maintenance records be retained?\nEmbedded field\tSuggested Value\n\nType\n\t\nMultiple choice\n\n\n(A)\n\t\nOne year\n\n\n(B)\n\t\nTwo years\n\n\n(C)\n\t\nFive years\n\n\n(D)\n\t\nIndefinitely\n\n\nCorrect Answer\n\t\nC\nTrue or False: Following Lockout/Tagout (LOTO) procedures is required where applicable during maintenance.\nEmbedded field\tSuggested Value\n\nType\n\t\nTrue/False\n\n\n(A)\n\t\n\n\n(B)\n\t\n\n\n(C)\n\t\n\n\n(D)\n\t\n\n\nCorrect Answer\n\t\nTrue"
+      },
+      {
+        "i": 13,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Y6vxFhf63VlOkHZswKjg/image/25b21f41-c9d0-469b-b156-1fff88549b36.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Add to Checklist"
+      },
+      {
+        "i": 14,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/escLdjta3XxfV46Nk7U011bx7wbc8OF37pQ2qyXWoZ01o.m3u8"
+      },
+      {
+        "i": 15,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "AI automatically creates and fills in options into the checklist with the correct answer"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Y6vxFhf63VlOkHZswKjg/image/9bc70c6e-6f83-4ddf-aae7-220c4934c064.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Type\n\nMultiple choice"
+      },
+      {
+        "i": 16,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "You can add questions manually as well."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/5aed7724-22c8-4a51-a5d0-542eb73de118.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Question"
+      },
+      {
+        "i": 17,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select the number of applicable questions"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/c5d20170-65b0-46cb-b31f-165ab98fe993.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Number"
+      },
+      {
+        "i": 18,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add a minimum passing score"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/dd529cce-27dd-4a4e-8a1f-764a6c30321f.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Number"
+      },
+      {
+        "i": 19,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Decide whether to permit users attempts after failing the quiz "
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/b975ca17-2774-45a5-92b6-e17b069cde90.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Select"
+      },
+      {
+        "i": 20,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/64554c0f-9516-4c1c-b523-9a02a8edc284.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 21,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select the number of retest attempts"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/e40e89a4-948f-4a60-a0e8-3b9022840f56.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Number"
+      },
+      {
+        "i": 22,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select the authority to be notified after the person fails the final attempt"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/28d0b60c-a17a-4f72-90f7-11957a8b0a20.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Select"
+      },
+      {
+        "i": 23,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/4be84e8b-7c66-429d-91e4-2814b3b2838f.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Document Owner"
+      },
+      {
+        "i": 24,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Choose whether you'd like to display the quiz summary when a person fails."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/cba4b2ee-cfbf-4e13-81b2-87bda9fc56e4.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Select"
+      },
+      {
+        "i": 25,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/a84562b8-0adc-49d3-9b61-2fc08d669377.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 26,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/464a5f26-a738-4abb-b278-84cfe87a66f1.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Roles / Groups that require this training"
+      },
+      {
+        "i": 27,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Choose the specific number of days in which the training must be completed."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/2394793d-8f25-4259-9076-7b61667b2062.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Number"
+      },
+      {
+        "i": 28,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add a training group to assign the training directly to all the employees part of that training group"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/479ee19f-0cb6-458b-a5d9-ccd06998f906.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "+ Add Training Group"
+      },
+      {
+        "i": 29,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/80298ea5-2a17-459e-a301-81a81554de33.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Facility Operations"
+      },
+      {
+        "i": 30,
+        "type": 1,
+        "hotspots": [],
+        "url": "https://cdn.arcade.software/extension-uploads/dC6wxobxyLVf22DKmOMu/image/c73d426b-760b-4ba3-ba5d-aa7d50cfc93d.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Due date (days)\n\n5"
+      },
+      {
+        "i": 31,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once all the details are filled, Request for Approval in the **Signature(s)** Section"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/c5c16955-c430-4bc7-a393-4c6af58c6826.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "Request Approval"
+      },
+      {
+        "i": 32,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "The status of the document automatically changes to **APPROVED** once all the authorities have approved the document."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/97vz7kR7cL01p5CbNQE8/image/cd0d3824-0209-410c-9722-86b0e49d9f73.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "APPROVED\nvs\nVictor Smith\n6\nDue\nNormal\nMore\nChecklist"
+      },
+      {
+        "i": 33,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "A training record is created for each employee, with a due date and status for each record."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/rlO9QJCvdnbxFmo6L2qk/image/64457c14-2b00-4d04-a6f0-dcdb0dd34fb8.png",
+        "pageContext": "https://app.unifize.com/conversation/RGKQ7PM6G?templateId=22942",
+        "clickContext": "DOCUMENT CLASSIFICATION\nRELATED DOCUMENT(S)\nFILE(S)\nDOCUMENT SETTINGS\nTRAINING\nSIGNATURE(S)\nSIGNED DOCUMENT\nCHANGE CONTROL\nREVISION\nDOCUMENT OBSOLETION\nDOCUMENT REVIEW(S)\nTRAINING RECORD(S)\nTraining Record(s)\n#295: Facility Maintenance Procedure - Noah Williams\nPENDING\nBrandon Wu Pending\nWed\nView all fields\n#296: Facility Maintenance Procedure - Amelia Harris\nPENDING\nBrandon Wu Pending\nWed\nView all fields\n#297: Facility Maintenance Procedure - Isabella Thompson\nPENDING\nBrandon Wu Pending\nWed\nView all fields\n#298: Facility Maintenance Procedure - Jack Turner\nPENDING\nvs\nVictor Smith\nWed\nView all fields\n#299: Facility Maintenance Procedure - Daniel Allen\nPENDING\nvs\nVictor Smith\nWed\nView all fields\n+ Add Training Record\nRELATED RECORD(S)"
+      },
+      {
+        "i": 34,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "file": "arcade_Vk7OT6oFhnXA1OXUNq2Z.html",
+    "name": "Add a New Employee Record in Unifize",
+    "description": "",
+    "stepCount": 14,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Add a New Employee Record in Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "From the home screen, click Add a New Employee to create a new record."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/cfdfeaa9-9ae7-4cd9-a4f3-34136feb2b22.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Employee"
+      },
+      {
+        "i": 2,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter the employee’s name in the Title field."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/965c8021-fff7-454a-8717-bc5b3564a899.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Assign the owner as the employee or their supervisor (if the employee is not a Unifize user)."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/965c8021-fff7-454a-8717-bc5b3564a899.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Create"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/965c8021-fff7-454a-8717-bc5b3564a899.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the Employee Details section to fill in information."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/f3d0ef6f-024d-4266-9ceb-05a2489cb1e0.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "EMPLOYEE DETAILS"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter the employee’s date of joining."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/af2118a5-b41a-4c5f-835d-5b35392efec0.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "+ Add Date"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Link the user to the employee record. If the employee isn’t a Unifize user, link their supervisor or manager instead."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/jzSj9nQv69P1pdkR4IP4/image/9de20730-f782-4d36-892a-ae83a7294bf9.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "+ Add User"
+      },
+      {
+        "i": 8,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter the employee’s job title and department."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Vk7OT6oFhnXA1OXUNq2Z/image/bfb48217-be00-448d-91ea-993953e03e6f.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "+ Add Training Group"
+      },
+      {
+        "i": 9,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Assign the employee to a training group. This automatically creates all relevant training records."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Vk7OT6oFhnXA1OXUNq2Z/image/bfb48217-be00-448d-91ea-993953e03e6f.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "+ Add Training Group"
+      },
+      {
+        "i": 10,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Vk7OT6oFhnXA1OXUNq2Z/image/6a92ada3-5b61-4cd2-b816-87673ca2b348.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "Facility Operations"
+      },
+      {
+        "i": 11,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "In the Org Hierarchy section, add the employee’s supervisor and direct reportees."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Vk7OT6oFhnXA1OXUNq2Z/image/2eccc928-daf2-4da2-aa0f-b386a3bf61c7.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "TRAINING RECORD(S)"
+      },
+      {
+        "i": 12,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Under Training Records, view all automatically assigned training tasks for the employee, including due dates."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/Vk7OT6oFhnXA1OXUNq2Z/image/2dab499b-9559-44a5-88bf-27cbda675f96.png",
+        "pageContext": "https://app.unifize.com/conversation/2DVJV9NYD",
+        "clickContext": "Training Record(s)\n#301: Facility Safety Compliance Policy - Victor Smith\nPENDING\nvs\nThu\nView all fields\n+ Add Training Record"
+      },
+      {
+        "i": 13,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "file": "arcade_fpKoU6OliKzrdhQWlwck.html",
+    "name": "Complete pending trainings on Unifize",
+    "description": "",
+    "stepCount": 25,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Complete pending trainings in Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/JXfA00b1Tm00ijT502pkqPztvbIfJuooM7rl001w007xbT4o.m3u8"
+      },
+      {
+        "i": 2,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "From the home screen, navigate and click on the **Trainings You Need to Complete** tile."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/7c9593ce-5e69-4340-bc37-63da0e456981.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Training Record #299: Facility Maintenance Procedure - Victor Smith"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click on the training record you want to complete."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/a5b2b253-a020-4dcc-8339-83921b713e3d.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Facility Maintenance Procedure - Victor Smith\nMe\n:\nTitle updated from Facility Maintenance Procedure - Daniel Allen to Facility Maintenance Procedure - Victor Smith\n02:22 pm\nTraining Record\n#299\nvs\nVictor Smith\nPENDING"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "On the right, review the attached document or training module before proceeding."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/44a379d8-4173-4ba4-8bee-bc5e5ea8b0c2.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Open and review documents associated with this training."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/5ef04847-2af4-42d4-a8d9-98c2ecd257c8.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Document-91-Facility_Maintenance_Procedure.pdf"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Close the document viewer to go back to the main training record."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/a910b772-136b-4a00-89ef-616a519d9294.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "of 4\n%\nAutomatic Zoom\nActual Size\nPage Fit\npage-width\n50%\n75%\n100%\n125%\n150%\n200%\n300%\n400%\nRevision History\n\n\nDocument Classification\n\n\nRev\n\n\nNo\n \nTitle\n \nCurrent\n \nComment\n \nOwner\n \nStatus\n\n\n1\n \nFacility Maintenance Procedure\n \nYes\n \nVictor Smith\n \nApproved\n\n\nOwner\n \nVictor Smith\n \nEffective Date\n \nNov 15, 2025\n\n\nDocument Type\n \nStandard Operating Procedure\n \nDepartment\n \nFacility Operations\n\n\nDescription\n \nThe purpose of this procedure is to establish a systematic approach for maintaining all facility assets,\n\n\nequipment, and infrastructure in safe and efficient working condition. It ensures compliance with company\n\n\nstandards and applicable regulatory requirements while minimizing downtime and maintenance costs.\n\n\nDocument Controller Approver\n\n\nVictor Smith\n\n\n31 Oct 2025 11:02:25 UTC\n\n\n1a895f0192c98978fd4de4089ddb945eb48893a\n\n\n86a1dcae6d6dcd53d0ae54559\n\n\nApproved By\n \n:\n\n\nApproved Date :\n\n\nSignature ID :\n\n\nFacility Maintenance Procedure\n\n\nPowered by PDF Generator API\nFacility Maintenance Procedure\n\n\nDocument No.:\n \nFMP-001\n\n\nRevision No.:\n \n1.0\n\n\nEffective Date:\n \n2025-10-31\n\n\nDepartment:\n \nFacility Operations\n\n\nPrepared By:\n \nFacility Supervisor\n\n\nApproved By:\n \nOperations Manager\n\n\n1. Purpose\n\n\nThe purpose of this procedure is to establish a systematic approach for maintaining all\n\n\nfacility assets, equipment, and infrastructure in safe and efficient working condition. It\n\n\nensures compliance with company standards and applicable regulatory requirements while\n\n\nminimizing downtime and maintenance costs.\n\n\n2. Scope\n\n\nThis procedure applies to all facility-related assets, including HVAC systems, lighting,\n\n\nplumbing, electrical panels, and safety installations across all company premises.\n\n\nIt covers both\n \npreventive\n \nand\n \ncorrective\n \nmaintenance activities.\n\n\n3. Responsibilities\n\n\n●\n \nFacility Manager:\n \nOversees implementation of maintenance plans and approves\n\n\nmaintenance schedules.\n\n\n●\n \nMaintenance Technicians:\n \nPerform maintenance tasks as per this procedure and\n\n\ndocument completion.\n\n\n●\n \nSafety Officer:\n \nEnsures all maintenance work complies with safety regulations.\n\n\n●\n \nDocument Controller:\n \nMaintains updated records of maintenance logs, schedules,\n\n\nand revisions.\n\n\n4. Definitions\n●\n \nPreventive Maintenance (PM):\n \nRegular, scheduled maintenance to prevent\n\n\nequipment failure.\n\n\n●\n \nCorrective Maintenance (CM):\n \nRepair or replacement of equipment after a fault\n\n\noccurs.\n\n\n●\n \nWork Order:\n \nA formal document authorizing maintenance tasks.\n\n\n5. Procedure\n\n\n5.1 Preventive Maintenance\n\n\n1.\n \nDevelop an annual preventive maintenance plan covering all critical assets.\n\n\n2.\n \nAssign maintenance intervals based on manufacturer recommendations or\n\n\nequipment usage.\n\n\n3.\n \nRecord all preventive tasks in the maintenance management system.\n\n\n4.\n \nTechnicians perform the task, update checklists, and record findings.\n\n\n5.\n \nSupervisor reviews completion status and signs off.\n\n\n5.2 Corrective Maintenance\n\n\n1.\n \nAny employee noticing a fault must raise a maintenance request through the DMS.\n\n\n2.\n \nThe Facility Manager evaluates and prioritizes the request.\n\n\n3.\n \nMaintenance Technician diagnoses and performs necessary repairs.\n\n\n4.\n \nAll corrective actions are documented and verified post-completion.\n\n\n5.3 Safety Measures\n\n\n●\n \nAlways isolate electrical power before repair work.\n\n\n●\n \nUse appropriate PPE (Personal Protective Equipment).\n\n\n●\n \nEnsure work areas are properly cordoned off during maintenance.\n\n\n●\n \nFollow Lockout/Tagout (LOTO) procedures where applicable.\n6. Records and Documentation\n\n\n●\n \nPreventive Maintenance Logs\n\n\n●\n \nWork Order Forms\n\n\n●\n \nCorrective Maintenance Reports\n\n\n●\n \nEquipment Calibration Certificates\n\n\n●\n \nMaintenance Schedule Register\n\n\nAll records shall be retained for\n \na minimum of five years\n.\n\n\n7. References\n\n\n●\n \nISO 45001: Occupational Health & Safety Management Systems\n\n\n●\n \nISO 9001: Quality Management Systems\n\n\n●\n \nCompany Safety Policy\n\n\n●\n \nEquipment Manufacturer Manuals"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click View All Fields to expand and view all quiz questions and choices"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/2967b125-d1b1-46b9-91ca-9d4b19e63870.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 8,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Go through each question and select the most appropriate answer."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/d3e2a766-011a-4f7d-a221-4d54ad5a5b8a.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Select"
+      },
+      {
+        "i": 9,
+        "type": 1,
+        "hotspots": [],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/48b7f732-e51f-4dce-a9c7-165128155f78.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "B"
+      },
+      {
+        "i": 10,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "View supporting details to make informed decisions on quiz responses."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/143176a1-ce65-4bc0-9de7-6026968b4b74.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 11,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/8216fecc-f38e-42b6-97ee-60b8039cfc05.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Select"
+      },
+      {
+        "i": 12,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/848277ae-3a72-4807-bf6c-6e945a114d7e.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "B"
+      },
+      {
+        "i": 13,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/05df7fd4-cb3b-4512-bc38-ea88737318e6.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 14,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/7744e8b9-3d79-4d34-96cd-2ebb706af2f3.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Select"
+      },
+      {
+        "i": 15,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/62c361c2-9bd5-45f7-8043-269d3ef50c92.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "B"
+      },
+      {
+        "i": 16,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/a557d2bb-a6c1-4e97-b907-d4dca3e78ac9.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 17,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/b8f69113-db2d-46c5-b7ef-a88b22b3f1ef.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Select"
+      },
+      {
+        "i": 18,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/b4cc17e6-298f-4cf3-b69a-0500d436d0af.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "A"
+      },
+      {
+        "i": 19,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/f6b68a8d-9fef-43f0-9a0a-0ab7ccff5288.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 20,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/b286181b-4e16-40d5-b38a-c8315afa0423.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Select"
+      },
+      {
+        "i": 21,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": ""
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/87c3eacf-af1c-49aa-8e4d-95b04915fbe0.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "B"
+      },
+      {
+        "i": 22,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once all questions are answered, click Submit Answers to complete the quiz."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/83e96c6a-a33c-4a5f-8556-cb5d1505c983.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Submit answers?"
+      },
+      {
+        "i": 23,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize automatically calculates your quiz score upon submission"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/fpKoU6OliKzrdhQWlwck/image/3c33ee67-918e-416f-83b3-75c95d75a218.png",
+        "pageContext": "https://app.unifize.com/conversation/1DWKN5XKD?templateId=22940",
+        "clickContext": "Score (%)\n\n60"
+      },
+      {
+        "i": 24,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  },
+  {
+    "file": "arcade_h0Qb7qfLR3QVJoLj06PC.html",
+    "name": "Create and Approve Document Change Control on Unifize",
+    "description": "",
+    "stepCount": 32,
+    "steps": [
+      {
+        "i": 0,
+        "type": 3,
+        "title": "Creating Document Change Control on Unifize",
+        "subtitle": "",
+        "hotspots": []
+      },
+      {
+        "i": 1,
+        "type": 2,
+        "hotspots": [],
+        "url": "https://stream.mux.com/t02Uy9EpwXrDCyBpFwKfu9016r01tkUFYioTO9hQsFvdaQ.m3u8"
+      },
+      {
+        "i": 2,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "From the home screen, navigate to the **Change Control** section and click **Create New Document Change Control** to start a new record."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/12f24a0c-d1d1-4fc8-86f3-a72e62bd3500.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Document Change Control"
+      },
+      {
+        "i": 3,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter a title - e.g., “Request for Revision of Preventive Maintenance Procedure.”"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/73c02711-d945-4b9d-ae8f-8000f95b8040.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Revision of Preventive Maintenance Procedure"
+      },
+      {
+        "i": 4,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize automatically assigns the owner and adds relevant participants"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/73c02711-d945-4b9d-ae8f-8000f95b8040.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Revision of Preventive Maintenance Procedure"
+      },
+      {
+        "i": 5,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Create to initiate the document change control process."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/5001aee4-08ae-4245-a0e0-f9586d795dd8.png",
+        "pageContext": "https://app.unifize.com/home",
+        "clickContext": "Create"
+      },
+      {
+        "i": 6,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "The change control starts in Draft and moves through multiple stages."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/8e8d872c-f7ff-4fc3-bfee-bf60da321b5f.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "DRAFT"
+      },
+      {
+        "i": 7,
+        "type": 1,
+        "hotspots": [],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/f0859e6e-f49e-495c-b1c1-8912c1a34e5e.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Today\nYou started this conversation                                        \n12:54 pm\n\n\n\n\nCHANGE REQUEST SUBMITTER - GENERAL INFORMATION\n1\nINITIAL RISK ANALYSIS\nAFFECTED DOCUMENT\nDOCUMENT CHANGE CHECKLIST\nDECISION\nRELATED RECORD(S)"
+      },
+      {
+        "i": 8,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add participants to this record to help move the change forward."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/11b7c069-c2a2-4cf5-b6fd-6b059c91ee9c.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "3"
+      },
+      {
+        "i": 9,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the Change Request Submitter section to fill in the general information for this change."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/b77dd532-719b-41d4-b808-b80b9468aa99.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "CHANGE REQUEST SUBMITTER - GENERAL INFORMATION\n1"
+      },
+      {
+        "i": 10,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add reason for change and full change request description"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/7ffa205e-72ef-4850-87e8-2cecc51121e8.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Reason For Change\n\nTo improve clarity, consistency, and compliance in the preventive maintenance process. The update aims to enhance equipment reliability, ensure safety alignment, and incorporate lessons learned from recent maintenance reviews."
+      },
+      {
+        "i": 11,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "You can attach additional files from your computer"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/ac6f2f0f-15ba-440b-a6fd-90b460220ea8.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Reason For Change\n\nDuring the last internal audit, it was identified that the preventive maintenance checklist for critical machinery did not include calibration verification for new digital torque wrenches introduced last quarter.\n\nFull Change Request Description\n\nUpdate Preventive Maintenance Procedure PM-004 to include calibration verification steps for new digital torque wrenches (Model: DTW-X5).\n\nRevise maintenance checklist to reflect updated LOTO confirmation sequence.\n\nAdd requirement for technicians to document torque tool calibration status before each use.\n\nAttach the following supporting documents:\n\n\n\n\nAdditional Files\n+ Attach File\n\nPick Source\n\nComputer\n\nDesired effect of document(s)\nSelect"
+      },
+      {
+        "i": 12,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Select to specify the intended outcome of this document change."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/ea4b9fae-7d37-4123-bd1e-06f05ea67be5.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Select"
+      },
+      {
+        "i": 13,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select update to make changes to the existing document"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/5135a85d-3327-4a97-b791-d4e23fca02f6.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Update"
+      },
+      {
+        "i": 14,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Expand the INITIAL RISK ANALYSIS section to assess potential impacts"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/66d9a2d0-d333-4df1-8550-0fe4618b5025.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "INITIAL RISK ANALYSIS"
+      },
+      {
+        "i": 15,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Add your risk analysis, potential benefits, and recommendations"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/2f6a2ea5-d617-455a-9d0e-3ecc9f81dd81.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "AFFECTED DOCUMENT"
+      },
+      {
+        "i": 16,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Link the affected document from the list of existing documents"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/32148e6a-7780-4507-8975-94515bc4a640.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "+ Add Document"
+      },
+      {
+        "i": 17,
+        "type": 1,
+        "hotspots": [],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/11e6d4a9-fb0e-47ff-b840-97657f808782.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "DOCUMENT CHANGE CHECKLIST"
+      },
+      {
+        "i": 18,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Specify if this change impacts parts or products"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/ae5c194c-7dc5-468d-802a-6b7ac848867c.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Yes"
+      },
+      {
+        "i": 19,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "If the change affects any parts or products, specify the tasks needed to manage those impacts. These tasks will be automatically created in Unifize once the change is approved."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/c3ac346e-c4dd-4475-8cc8-d671c764321d.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "+ Add Text"
+      },
+      {
+        "i": 20,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Similarly, fill in the remaining checklist and define tasks wherever required"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/E8zFwbTK5CkLwMUU9OOc/image/10755089-a338-4d64-8b22-b89ee52ea35f.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "DECISION"
+      },
+      {
+        "i": 21,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Once all the details are filled in, request approval for the change."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/4f7ec095-2b53-415a-8172-cf196e485c8a.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Request Approval"
+      },
+      {
+        "i": 22,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Select the number of signatories required to approve the change, and choose from either individual users or user groups."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/a7a20078-bb11-49c1-863f-9a1de5f94672.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Confirm"
+      },
+      {
+        "i": 23,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "After the change is approved, Unifize creates a new revision of the affected document and automatically links it to this change control record."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/89a4f085-7303-46d6-9847-9fc633321b26.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "View all fields"
+      },
+      {
+        "i": 24,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize also creates implementation tasks based on the ones defined in the document change checklist."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/92ca5f10-d67f-4fa3-8508-cb0a7df14641.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Select"
+      },
+      {
+        "i": 25,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "When every implementation task is done and the revised document is approved, select Yes to move forward."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/mqtSn0kD55fnyxUV5OCc/image/f2c30400-df8f-47d3-b26f-6aab9a0b93c0.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D?templateId=22944",
+        "clickContext": "Implementation Task(s)\n#69: Assess Product Impact Due to Maintenance Procedure Update - Request for Revision of Preventive Maintenance Procedure\nCOMPLETED\nLogan Bennett Pending\nNov 15, 2025\nView all fields\n#70: Notify Customers About Preventive Maintenance Procedure Update - Request for Revision of Preventive Maintenance Procedure\nCOMPLETED\ntp\nTanya Pahuja Pending\nNov 30, 2025\nView all fields\n#71: Conduct Training on Updated Preventive Maintenance Procedure - Request for Revision of Preventive Maintenance Procedure\nCOMPLETED\nThilak T Pending\nNov 30, 2025\nView all fields\n+ Add Task"
+      },
+      {
+        "i": 26,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Click Request approval to verify the implementation of the change"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/16f61a0c-e68a-4b66-abb8-cdd62e72e32c.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Request Approval"
+      },
+      {
+        "i": 27,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Unifize automatically adds the required signatories to the change control record when an approval is requested."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/2cc6bee1-5a0d-4afe-b5ab-c1e11d472633.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "+ Add Signature 1"
+      },
+      {
+        "i": 28,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "Enter your email address and password, add comments if any, then confirm and sign to verify the change."
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/ac79b4f0-465e-49be-ada6-92aa3d750d0b.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "Confirm and sign"
+      },
+      {
+        "i": 29,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "The change is now approved!"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EiDURckTBjW8DbrVebJa/image/c668e289-e610-45f8-853d-12a0926c8321.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D",
+        "clickContext": "RELATED RECORD(S)"
+      },
+      {
+        "i": 30,
+        "type": 1,
+        "hotspots": [
+          {
+            "label": "The status automatically changes to **VERIFIED & APPROVED**"
+          }
+        ],
+        "url": "https://cdn.arcade.software/extension-uploads/EgjJxGtwkF3ogE4hLzt1/image/9f949bf7-b729-41cb-89e1-7fae76e0e57a.png",
+        "pageContext": "https://app.unifize.com/conversation/5D4R8M30D?templateId=22944",
+        "clickContext": "✔"
+      },
+      {
+        "i": 31,
+        "type": 3,
+        "title": "Thank you for watching!",
+        "subtitle": "",
+        "hotspots": []
+      }
+    ]
+  }
+]

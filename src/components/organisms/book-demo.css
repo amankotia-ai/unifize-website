@@ -1,0 +1,739 @@
+/* ============================================================================
+ * book-demo.css — the demo-request dialog, drawn as a miniature Unifize
+ * record window.
+ *
+ * Skin-neutral on purpose: the dialog portals onto <body>, outside .itm and
+ * .dms--redesign, so it aliases only the global --u / --n / --d tokens that
+ * every local system builds on. Enterprise language: square panel, 4px
+ * controls, hairlines as the structural device, a chrome bar with a mono code
+ * and live status chip, dark rail carrying the activity thread beside a white
+ * form, brand blue reserved for the submit and the live thread node.
+ * ========================================================================== */
+
+.uzd {
+  --uzd-d-bg: #17191f;
+  --uzd-d-bg-2: #1c1f26;
+  --uzd-d-border: #30343d;
+  --uzd-d-ink: #f7f8fa;
+  --uzd-d-ink-2: #b9bec8;
+  --uzd-d-ink-3: #949aa7;
+  --uzd-d-accent: oklch(0.72 0.15 263);
+  --uzd-r-control: 4px;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  font-family: var(--u-font);
+  color: var(--n-800);
+  letter-spacing: -0.005em;
+}
+
+.uzd__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 11, 15, 0.64);
+  backdrop-filter: blur(3px);
+  animation: uzd-fade 180ms ease-out both;
+}
+
+/* ---------------------------------------------------------------- panel --- */
+
+.uzd__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(960px, 100%);
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: var(--n-0);
+  border-radius: 0;
+  box-shadow:
+    0 1px 2px rgba(11, 13, 17, 0.08),
+    0 24px 64px -16px rgba(11, 13, 17, 0.42),
+    0 0 0 1px rgba(11, 13, 17, 0.09);
+  animation: uzd-rise 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* the panel takes focus on mobile so the dialog is announced; it is a
+ * container, not a control, so it never draws a ring */
+.uzd__panel:focus {
+  outline: none;
+}
+
+.uzd__split {
+  display: grid;
+  grid-template-columns: 348px 1fr;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ------------------------------------------------------------ record bar --- */
+
+.uzd__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px 0 16px;
+  height: 44px;
+  flex: none;
+  background: var(--n-0);
+  border-bottom: 1px solid var(--n-150);
+}
+
+.uzd__bar-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--u-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-600);
+}
+.uzd__bar-glyph {
+  width: 12px;
+  height: 12px;
+  color: var(--u-primary);
+}
+
+.uzd__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  font-family: var(--u-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+.uzd__chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.uzd__chip--draft {
+  color: var(--n-600);
+  background: var(--n-100);
+}
+.uzd__chip--draft .uzd__chip-dot {
+  color: var(--n-400);
+}
+.uzd__chip--sending {
+  color: var(--u-primary-hover);
+  background: var(--u-primary-tint);
+}
+.uzd__chip--sending .uzd__chip-dot {
+  animation: uzd-pulse 900ms ease-in-out infinite;
+}
+.uzd__chip--submitted {
+  color: var(--s-ok);
+  background: var(--s-ok-tint);
+}
+
+.uzd__bar-gap {
+  flex: 1;
+}
+
+.uzd__esc {
+  font-family: var(--u-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-500);
+  padding: 3px 7px 4px;
+  border: 1px solid var(--n-200);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  background: var(--n-25);
+}
+
+.uzd__close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--n-500);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--uzd-r-control);
+  cursor: pointer;
+  transition:
+    color 120ms ease,
+    background 120ms ease;
+}
+.uzd__close svg {
+  width: 16px;
+  height: 16px;
+}
+.uzd__close:hover {
+  color: var(--n-800);
+  background: var(--n-100);
+}
+
+/* ----------------------------------------------------------------- rail --- */
+
+.uzd__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px 28px 28px;
+  background: var(--uzd-d-bg);
+  color: var(--uzd-d-ink-2);
+}
+
+.uzd__title {
+  margin: 0;
+  font-family: var(--u-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.022em;
+  color: var(--uzd-d-ink);
+  text-wrap: balance;
+}
+
+.uzd__lede {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--uzd-d-ink-2);
+}
+
+/* the activity thread — the product's stations-on-a-line motif, standing in
+ * for "what happens next". The live station carries the only blue on the
+ * dark side; a completed station flips to the ok green with its check. */
+.uzd__thread {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0 0;
+  padding: 20px 0 0;
+  list-style: none;
+  border-top: 1px solid var(--uzd-d-border);
+}
+
+.uzd__ev {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 12px;
+  padding-bottom: 18px;
+}
+.uzd__ev:last-child {
+  padding-bottom: 0;
+}
+/* the spine: a hairline dropping from each node to the next */
+.uzd__ev::before {
+  content: "";
+  position: absolute;
+  left: 6.5px;
+  top: 16px;
+  bottom: 2px;
+  width: 1px;
+  background: var(--uzd-d-border);
+}
+.uzd__ev:last-child::before {
+  display: none;
+}
+
+.uzd__ev-node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 14px;
+  height: 14px;
+  margin-top: 1px;
+  border: 1px solid var(--uzd-d-border);
+  border-radius: 2px;
+  background: var(--uzd-d-bg-2);
+  color: transparent;
+}
+.uzd__ev-node svg {
+  width: 9px;
+  height: 9px;
+}
+.uzd__ev.is-now .uzd__ev-node {
+  border-color: var(--uzd-d-accent);
+  background: color-mix(in srgb, var(--uzd-d-accent) 22%, var(--uzd-d-bg));
+}
+.uzd__ev.is-now .uzd__ev-node::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border-radius: 1px;
+  background: var(--uzd-d-accent);
+}
+.uzd__ev.is-done .uzd__ev-node {
+  border-color: color-mix(in srgb, var(--s-ok) 60%, var(--uzd-d-bg));
+  background: color-mix(in srgb, var(--s-ok) 22%, var(--uzd-d-bg));
+  color: oklch(0.78 0.13 160.7);
+}
+
+.uzd__ev-body {
+  display: block;
+  min-width: 0;
+}
+.uzd__ev-title {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--uzd-d-ink);
+}
+.uzd__ev.is-now .uzd__ev-title {
+  color: var(--uzd-d-ink);
+}
+.uzd__ev-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--uzd-d-ink-3);
+}
+
+.uzd__foot {
+  margin: auto 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--uzd-d-border);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--uzd-d-ink-3);
+}
+.uzd__foot-stds {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--u-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--uzd-d-ink-3);
+}
+
+/* ----------------------------------------------------------------- form --- */
+
+.uzd__body {
+  padding: 32px;
+  min-width: 0;
+}
+
+.uzd__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.uzd__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 16px;
+}
+.uzd__field--wide {
+  grid-column: 1 / -1;
+}
+
+.uzd__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.uzd__label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 550;
+  color: var(--n-700);
+}
+.uzd__label span[aria-hidden] {
+  color: var(--u-primary);
+  font-weight: 600;
+}
+.uzd__optional {
+  margin-left: auto;
+  font-family: var(--u-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-500);
+}
+
+.uzd__input,
+.uzd__select,
+.uzd__textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: var(--n-800);
+  background: var(--n-25);
+  border: 1px solid var(--n-200);
+  border-radius: var(--uzd-r-control);
+  outline: none;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease,
+    box-shadow 120ms ease;
+}
+.uzd__textarea {
+  resize: vertical;
+  min-height: 84px;
+}
+.uzd__input::placeholder,
+.uzd__textarea::placeholder {
+  color: var(--n-500);
+}
+.uzd__input:hover,
+.uzd__select:hover,
+.uzd__textarea:hover {
+  border-color: var(--n-300);
+}
+.uzd__input:focus,
+.uzd__select:focus,
+.uzd__textarea:focus {
+  background: var(--n-0);
+  border-color: var(--u-primary);
+  box-shadow: 0 0 0 3px var(--u-primary-tint);
+}
+/* invalid reads from the error line plus a full border, never a single
+ * coloured edge */
+.uzd__input[aria-invalid="true"],
+.uzd__select[aria-invalid="true"],
+.uzd__textarea[aria-invalid="true"] {
+  border-color: var(--s-err);
+}
+.uzd__input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px var(--s-err-tint);
+}
+
+.uzd__select-wrap {
+  position: relative;
+}
+.uzd__select {
+  appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.uzd__select-chev {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  color: var(--n-500);
+  pointer-events: none;
+}
+
+.uzd__err {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--s-err);
+}
+
+.uzd__form-err {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.8125rem;
+  color: var(--n-700);
+  background: var(--s-err-tint);
+  border: 1px solid color-mix(in srgb, var(--s-err) 22%, transparent);
+  border-radius: var(--uzd-r-control);
+}
+.uzd__form-err a {
+  color: var(--u-primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* the honeypot: out of flow, out of the a11y tree, out of sight */
+.uzd__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.uzd__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid var(--n-150);
+}
+
+.uzd__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  color: #fff;
+  background: var(--u-primary);
+  border: 1px solid transparent;
+  border-radius: var(--uzd-r-control);
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    transform 120ms ease;
+}
+.uzd__submit:hover:not(:disabled) {
+  background: var(--u-primary-hover);
+  transform: translateY(-1px);
+}
+.uzd__submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+.uzd__submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.uzd__arr {
+  transition: transform 140ms ease;
+}
+.uzd__submit:hover:not(:disabled) .uzd__arr {
+  transform: translateX(2px);
+}
+
+.uzd__consent {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-align: right;
+  color: var(--n-500);
+}
+
+/* --------------------------------------------------------------- success --- */
+
+.uzd__done {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  justify-content: center;
+  min-height: 360px;
+  max-width: 400px;
+}
+.uzd__done-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 4px;
+  color: var(--s-ok);
+  background: var(--s-ok-tint);
+  border: 1px solid color-mix(in srgb, var(--s-ok) 24%, transparent);
+  border-radius: var(--uzd-r-control);
+}
+.uzd__done-mark svg {
+  width: 24px;
+  height: 24px;
+}
+/* the commit: the check draws itself once, then rests */
+.uzd__done-tick {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: uzd-draw 420ms 120ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.uzd__done-title {
+  margin: 0;
+  font-family: var(--u-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--n-800);
+}
+.uzd__done-stamp {
+  margin: 0;
+  font-family: var(--u-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--n-500);
+}
+.uzd__done-copy {
+  margin: 4px 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--n-600);
+}
+
+.uzd__ghost {
+  margin-top: 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 18px;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--n-800);
+  background: var(--n-0);
+  border: 1px solid var(--n-200);
+  border-radius: var(--uzd-r-control);
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    background 120ms ease;
+}
+.uzd__ghost:hover {
+  border-color: var(--n-300);
+  background: var(--n-25);
+}
+
+/* ------------------------------------------------------------- focus ring --- */
+
+.uzd :where(a, button, input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--n-0),
+    0 0 0 4px var(--u-primary);
+}
+.uzd__rail :where(a, button):focus-visible {
+  box-shadow:
+    0 0 0 2px var(--uzd-d-bg),
+    0 0 0 4px var(--uzd-d-accent);
+}
+
+/* -------------------------------------------------------------- responsive --- */
+
+@media (max-width: 880px) {
+  .uzd {
+    padding: 0;
+    place-items: end stretch;
+  }
+  .uzd__panel {
+    width: 100%;
+    max-height: 94dvh;
+    animation-name: uzd-sheet;
+  }
+  .uzd__bar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .uzd__esc {
+    display: none;
+  }
+  .uzd__split {
+    grid-template-columns: 1fr;
+  }
+  .uzd__rail {
+    padding: 24px 20px 22px;
+    gap: 10px;
+  }
+  .uzd__title {
+    font-size: 1.4rem;
+  }
+  .uzd__lede {
+    font-size: 0.875rem;
+  }
+  /* on a phone the rail is a header, not a column: keep the promise, fold the
+   * thread and standards so the form is reachable without a scroll */
+  .uzd__thread,
+  .uzd__foot {
+    display: none;
+  }
+  .uzd__body {
+    padding: 24px 20px 28px;
+  }
+  .uzd__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .uzd__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .uzd__submit {
+    justify-content: center;
+    padding: 14px 18px;
+  }
+  .uzd__consent {
+    text-align: center;
+  }
+  .uzd__consent br {
+    display: none;
+  }
+  .uzd__done {
+    min-height: 0;
+  }
+}
+
+@keyframes uzd-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes uzd-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes uzd-sheet {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes uzd-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes uzd-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uzd__scrim,
+  .uzd__panel,
+  .uzd__chip-dot,
+  .uzd__done-tick {
+    animation: none;
+  }
+  .uzd__done-tick {
+    stroke-dashoffset: 0;
+  }
+  .uzd__submit:hover:not(:disabled) {
+    transform: none;
+  }
+}

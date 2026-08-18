@@ -1,0 +1,118 @@
+/*
+ * Unifize Minimal Design System — reference tokens
+ *
+ * Documentation artifact only. This file is not imported by the live site.
+ * Values consolidate the existing homepage/DMS language into semantic roles.
+ */
+
+:root {
+  color-scheme: light dark;
+  font-synthesis: none;
+
+  /* Brand */
+  --ds-accent: oklch(0.528 0.263 262.9);
+  --ds-accent-hover: oklch(0.443 0.224 263);
+  --ds-accent-soft: oklch(0.967 0.015 270);
+  --ds-accent-border: oklch(0.909 0.044 271.3);
+
+  /* Neutral primitives */
+  --ds-neutral-0: oklch(1 0 0);
+  --ds-neutral-25: oklch(0.988 0.001 286.4);
+  --ds-neutral-50: oklch(0.976 0.002 247.8);
+  --ds-neutral-100: oklch(0.954 0.003 247.9);
+  --ds-neutral-150: oklch(0.927 0.006 255.5);
+  --ds-neutral-200: oklch(0.893 0.008 253.9);
+  --ds-neutral-300: oklch(0.8 0.014 258.4);
+  --ds-neutral-400: oklch(0.661 0.021 260.2);
+  --ds-neutral-500: oklch(0.526 0.022 262.9);
+  --ds-neutral-600: oklch(0.412 0.02 262.6);
+  --ds-neutral-700: oklch(0.305 0.017 266.4);
+  --ds-neutral-800: oklch(0.222 0.014 266.9);
+  --ds-neutral-900: oklch(0.159 0.009 264.3);
+
+  /* Semantic surfaces */
+  --ds-canvas: var(--ds-neutral-25);
+  --ds-surface: var(--ds-neutral-0);
+  --ds-surface-subtle: var(--ds-neutral-50);
+  --ds-ink: var(--ds-neutral-800);
+  --ds-ink-secondary: var(--ds-neutral-600);
+  --ds-ink-tertiary: var(--ds-neutral-500);
+  --ds-rule: var(--ds-neutral-150);
+  --ds-rule-strong: var(--ds-neutral-200);
+
+  --ds-dark-canvas: oklch(0.15 0.009 274.3);
+  --ds-dark-surface: oklch(0.183 0.013 270.6);
+  --ds-dark-surface-raised: oklch(0.222 0.014 266.9);
+  --ds-dark-ink: oklch(0.968 0.003 286.4);
+  --ds-dark-ink-secondary: oklch(0.747 0.017 266.2);
+  --ds-dark-ink-tertiary: oklch(0.551 0.023 264.4);
+  --ds-dark-rule: oklch(1 0 0 / 0.1);
+  --ds-dark-rule-strong: oklch(1 0 0 / 0.16);
+
+  /* Status — never communicate status by color alone */
+  --ds-success: oklch(0.58 0.129 160.7);
+  --ds-warning: oklch(0.68 0.148 68.1);
+  --ds-critical: oklch(0.56 0.224 22.5);
+
+  /* Typography */
+  --ds-font-display: var(--font-geist), var(--font-inter), system-ui, sans-serif;
+  --ds-font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --ds-font-data: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --ds-type-display-xl: clamp(3.5rem, 2.25rem + 5vw, 6rem);
+  --ds-type-display-lg: clamp(2.75rem, 2rem + 3vw, 4.5rem);
+  --ds-type-heading-lg: clamp(2rem, 1.5rem + 1.8vw, 3rem);
+  --ds-type-heading-md: clamp(1.5rem, 1.25rem + 0.8vw, 2rem);
+  --ds-type-heading-sm: 1.25rem;
+  --ds-type-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --ds-type-body: 1rem;
+  --ds-type-ui: 0.875rem;
+  --ds-type-caption: 0.8125rem;
+  --ds-type-data: 0.75rem;
+
+  /* 4px micro-unit; primary rhythm lands on the 8px grid */
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-6: 1.5rem;
+  --ds-space-8: 2rem;
+  --ds-space-10: 2.5rem;
+  --ds-space-12: 3rem;
+  --ds-space-16: 4rem;
+  --ds-space-20: 5rem;
+  --ds-space-24: 6rem;
+  --ds-space-32: 8rem;
+  --ds-space-40: 10rem;
+
+  /* Geometry */
+  --ds-radius-section: 0;
+  --ds-radius-control: 0.25rem;
+  --ds-radius-frame: 0.5rem;
+  --ds-radius-pill: 999px;
+  --ds-content-max: 90rem;
+  --ds-reading-max: 62ch;
+  --ds-gutter: clamp(1.5rem, 1rem + 2.2vw, 3rem);
+  --ds-section-space: clamp(6rem, 4.5rem + 4vw, 10rem);
+
+  /* Depth */
+  --ds-shadow-surface:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.06),
+    0 2px 4px oklch(0 0 0 / 0.04);
+  --ds-shadow-surface-hover:
+    0 0 0 1px oklch(0 0 0 / 0.08),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 2px 4px oklch(0 0 0 / 0.06);
+  --ds-outline-image-light: 1px solid oklch(0 0 0 / 0.1);
+  --ds-outline-image-dark: 1px solid oklch(1 0 0 / 0.1);
+
+  /* Motion */
+  --ds-duration-fast: 150ms;
+  --ds-duration-ui: 180ms;
+  --ds-duration-enter: 400ms;
+  --ds-duration-story: 600ms;
+  --ds-ease-ui: cubic-bezier(0.2, 0, 0, 1);
+  --ds-ease-enter: cubic-bezier(0.22, 1, 0.36, 1);
+}
+

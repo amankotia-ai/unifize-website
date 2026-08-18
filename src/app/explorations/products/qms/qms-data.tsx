@@ -10,6 +10,7 @@
  * ========================================================================== */
 import type { ProductPageData } from "../_shared/ProductPage";
 import type { DmsCoordinationProblem } from "../dms/dms-data";
+import { buildProductFlows } from "../_shared/product-flows";
 import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
 
 /* real short-names of the QMS external standards (Notion External Standards) */
@@ -69,57 +70,125 @@ export const QMS_MODULES = [
 ];
 
 /* The same four QMS failure modes drive both the problem spotlight and the
- * coordination comparison, keeping the page's diagnosis and remedy aligned. */
+ * coordination comparison, keeping the page's diagnosis and remedy aligned.
+ * Each card traces to a Pain Points DB row (PP id) and quotes its attached
+ * Symptom row verbatim, same discipline as the DMS page. */
 export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
+    /* PP-8 · High · Audit Management */
     visual: "retrieval",
-    category: "Non-conformance ownership",
-    title: "A finding opens with no owner",
-    quote: "A non-conformance sits open because the next owner was never named.",
-    detail: "Without required ownership and a due date at intake, the record has no clock and no accountable next step.",
+    category: "Finding ownership",
+    title: "The finding stalls at owner assignment",
+    quote: "Internal audits find things but nothing changes because nobody owns the follow-up.",
+    detail: "The finding sits in the audit report and the action sits in nobody's queue, so converting it into an owned, dated plan routinely stalls.",
     metric: "Unowned",
     metricLabel: "The finding has no accountable clock",
-    work: "Contain the event",
-    tax: ["Find the accountable owner", "Rebuild the missing context"],
+    work: "Close the finding",
+    tax: ["Find the accountable owner", "Chase the action into a queue"],
     outcome: "Named owner and due date",
   },
   {
+    /* PP-6 · Medium · Corrective and Preventive Actions */
     visual: "versions",
     category: "CAPA effectiveness",
-    title: "The paperwork closes before the fix is proven",
-    quote: "Whether a CAPA worked is argued in a review instead of checked on a date.",
-    detail: "A signed action plan is not proof of effectiveness, so the same failure can return after the record is closed.",
-    metric: "Unchecked",
-    metricLabel: "No verified effectiveness window",
+    title: "The CAPA closes before the fix is proven",
+    quote: "We cannot tell whether a CAPA actually fixed the problem or just addressed the symptom.",
+    detail: "Effectiveness verification has a target date but no enforced gate, so it slips by weeks and often closes on paperwork instead of a real recurrence test.",
+    metric: "Weeks",
+    metricLabel: "Verification slips past its target",
     work: "Close the CAPA",
-    tax: ["Reconcile the action tracker", "Debate whether the fix worked"],
-    outcome: "Effectiveness verified",
+    tax: ["Chase the verification date", "Debate whether the fix worked"],
+    outcome: "Effectiveness verified on a date",
   },
   {
+    /* PP-27 · High · Supplier Quality */
     visual: "drift",
     category: "Supplier quality",
-    title: "The supplier issue repeats until the audit",
-    quote: "A recurring supplier issue surfaces at the audit, with no SCAR trail behind it.",
-    detail: "Incoming failures stay isolated from the supplier record, so recurrence never becomes a visible quality signal.",
-    metric: "Recurring",
-    metricLabel: "The signal never reaches a supplier scorecard",
-    work: "Control the supplier",
-    tax: ["Compare incoming failures", "Reconstruct the SCAR trail"],
-    outcome: "SCAR linked to scorecard",
+    title: "The SCAR closes, the supplier doesn't change",
+    quote: "Supplier corrective actions get opened but rarely get verified as effective.",
+    detail: "Closure rests on supplier-submitted paperwork rather than verified behaviour change, so the same failure returns with the next lot.",
+    metric: "Repeat",
+    metricLabel: "Same failure, next delivery",
+    work: "Correct the supplier",
+    tax: ["Chase the supplier response", "Verify change beyond paperwork"],
+    outcome: "Closure on verified change",
   },
   {
+    /* PP-5 · Critical · Audit Management + Document Control */
     visual: "audit",
-    category: "Audit management",
-    title: "Findings live in a spreadsheet",
-    quote: "Responses and effectiveness live off the record, and the next audit reopens them.",
-    detail: "When findings, actions, and evidence are split across tools, closure is a status in a cell instead of a defensible record.",
-    metric: "Off-record",
-    metricLabel: "Actions and evidence are separated",
+    category: "Audit evidence",
+    title: "Passing the audit costs days of rebuild",
+    quote: "We pass audits but the day-to-day reality does not match what we showed the auditor.",
+    detail: "The full record of a deviation, change, or CAPA is stitched from exports, screenshots, and email forwards. The cost of passing is days of senior time per cycle.",
+    metric: "Days",
+    metricLabel: "Senior time per audit cycle",
     work: "Answer the audit",
-    tax: ["Collect scattered responses", "Reconcile closure evidence"],
-    outcome: "Finding and proof together",
+    tax: ["Collect scattered exports", "Reconcile closure evidence"],
+    outcome: "Evidence already bound",
   },
 ];
+
+/* ---- Product Flows: persona journeys for the QMS modules -----------------
+ * Curated slate from the Product Flows DB: intake to closure on one event,
+ * plus the supplier SCAR loop and the annual audit. Stations index into
+ * QMS_DATA.flow.steps (Event raised .. Closed, sealed). */
+export const QMS_FLOWS = buildProductFlows({
+  page: "qms",
+  moduleIds: [
+    "360860e6-b45e-8148-a0a4-de3e0fd91891" /* Non-conformance */,
+    "360860e6-b45e-81f9-b780-eed760e72d52" /* Corrective and Preventive Actions */,
+    "360860e6-b45e-8190-93dd-c339472bd5e8" /* Corrective Actions */,
+    "360860e6-b45e-816f-b15b-cfdc470fd359" /* Complaint Handling */,
+    "360860e6-b45e-8169-a2af-dd81b8e10128" /* Audit Management */,
+    "360860e6-b45e-817b-a763-c1d362e2de2d" /* Supplier Quality */,
+    "360860e6-b45e-8176-a514-d0c34e2bf0cd" /* Quality Risk Management */,
+  ],
+  curate: true,
+  presentation: {
+    "5": {
+      order: 0,
+      title: "Capture a non-conformance",
+      actor: "Quality Engineer",
+      description: "Capture, contain, and assess the event the same day it is found.",
+      stations: [0, 1],
+    },
+    "6": {
+      order: 1,
+      title: "Run root cause in the record",
+      actor: "Quality Engineer",
+      description: "Convene the analysis in the record's thread instead of a meeting room.",
+      stations: [2],
+    },
+    "7": {
+      order: 2,
+      title: "Disposition and route for approval",
+      actor: "Quality Engineer",
+      description: "Decide the disposition and route it with the rationale attached.",
+      stations: [3],
+    },
+    "3": {
+      order: 3,
+      title: "Close the CAPA with proof",
+      actor: "CAPA Investigator",
+      description: "Carry the corrective action to verified effectiveness and closure.",
+      stations: [4, 5],
+    },
+    "11": {
+      order: 4,
+      title: "Run a supplier SCAR",
+      actor: "Supplier Quality Engineer",
+      description: "Exchange notification, investigation, and corrective action across the company boundary.",
+      stations: [4],
+    },
+    "2": {
+      order: 5,
+      title: "Run the annual audit",
+      actor: "Quality Manager",
+      description: "Plan, conduct, and sign off the audit with findings routed to CAPA.",
+      stations: [5],
+    },
+  },
+});
 
 /* the QMS external standards (Notion External Standards relation) */
 const STANDARDS: ProductPageData["compliance"]["standards"] = [

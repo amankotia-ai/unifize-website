@@ -1,0 +1,165 @@
+/**
+ * Unifize Aperture — directional design tokens
+ *
+ * Documentation artifact. Scope behind .theme-aperture until the direction
+ * is approved and IBM Plex Sans has been added as local WOFF2 assets.
+ */
+
+.theme-aperture {
+  color-scheme: light;
+  font-synthesis: none;
+
+  /* Brand and neutral primitives.
+   * Hex values are sRGB fallbacks; OKLCH is the source of truth.
+   */
+  --ap-mineral: #f6f8fa;
+  --ap-mineral: oklch(0.978 0.003 247.9);
+  --ap-white: #ffffff;
+  --ap-white: oklch(1 0 0);
+  --ap-ink: #0e1116;
+  --ap-ink: oklch(0.178 0.01 258);
+  --ap-graphite: #4d5664;
+  --ap-graphite: oklch(0.446 0.022 258);
+  --ap-muted: #727b89;
+  --ap-muted: oklch(0.57 0.022 257);
+  --ap-blue-gray: #e5eaf1;
+  --ap-blue-gray: oklch(0.935 0.011 255);
+  --ap-blue-gray-soft: #f0f3f7;
+  --ap-blue-gray-soft: oklch(0.965 0.007 255);
+  --ap-rule: #d8dee7;
+  --ap-rule: oklch(0.893 0.011 255);
+  --ap-cobalt: #1a5bff;
+  --ap-cobalt: oklch(0.558 0.247 264.2);
+  --ap-cobalt-hover: #0f46d8;
+  --ap-cobalt-hover: oklch(0.488 0.219 264.2);
+  --ap-cobalt-soft: #eef3ff;
+  --ap-cobalt-soft: oklch(0.965 0.02 264.2);
+  --ap-effective: #137333;
+  --ap-effective: oklch(0.488 0.13 149);
+  --ap-effective-soft: #eef8f1;
+  --ap-effective-soft: oklch(0.967 0.025 149);
+  --ap-critical: #b3261e;
+  --ap-critical: oklch(0.501 0.178 28.7);
+
+  /* Semantic color roles. */
+  --ap-canvas: var(--ap-mineral);
+  --ap-surface: var(--ap-white);
+  --ap-surface-subtle: var(--ap-blue-gray-soft);
+  --ap-text: var(--ap-ink);
+  --ap-text-secondary: var(--ap-graphite);
+  --ap-text-tertiary: var(--ap-muted);
+  --ap-border: var(--ap-rule);
+  --ap-action: var(--ap-cobalt);
+  --ap-action-hover: var(--ap-cobalt-hover);
+  --ap-focus: var(--ap-cobalt);
+  --ap-selection-bg: var(--ap-cobalt);
+  --ap-selection-text: var(--ap-white);
+
+  /* Typography: IBM Plex Sans for every heading; Inter everywhere else. */
+  --ap-font-heading: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --ap-font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  --ap-display-xl: clamp(3.5rem, 2.2rem + 4.8vw, 6.5rem);
+  --ap-display-lg: clamp(2.75rem, 2rem + 3vw, 4.75rem);
+  --ap-heading-xl: clamp(2.25rem, 1.7rem + 2vw, 3.5rem);
+  --ap-heading-lg: clamp(1.75rem, 1.45rem + 1vw, 2.5rem);
+  --ap-heading-md: 1.5rem;
+  --ap-heading-sm: 1.25rem;
+  --ap-lede: clamp(1.0625rem, 1rem + 0.25vw, 1.25rem);
+  --ap-body: 1rem;
+  --ap-body-sm: 0.875rem;
+  --ap-caption: 0.8125rem;
+  --ap-label: 0.75rem;
+
+  --ap-leading-display: 0.98;
+  --ap-leading-heading: 1.1;
+  --ap-leading-body: 1.55;
+  --ap-tracking-display: -0.035em;
+  --ap-tracking-heading: -0.02em;
+  --ap-tracking-label: 0.06em;
+  --ap-reading-max: 65ch;
+
+  /* 4px micro-unit with primary rhythm on 8px. */
+  --ap-space-1: 0.25rem;
+  --ap-space-2: 0.5rem;
+  --ap-space-3: 0.75rem;
+  --ap-space-4: 1rem;
+  --ap-space-6: 1.5rem;
+  --ap-space-8: 2rem;
+  --ap-space-10: 2.5rem;
+  --ap-space-12: 3rem;
+  --ap-space-16: 4rem;
+  --ap-space-20: 5rem;
+  --ap-space-24: 6rem;
+  --ap-space-32: 8rem;
+  --ap-space-40: 10rem;
+
+  /* Layout. */
+  --ap-canvas-max: 90rem;
+  --ap-grid-columns: 12;
+  --ap-grid-gap: clamp(1rem, 1.7vw, 1.5rem);
+  --ap-gutter: clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+  --ap-section-space: clamp(6rem, 4rem + 5vw, 10rem);
+
+  /* Concentric surface geometry: 24 outer, 16 inner, 8 inset. */
+  --ap-radius-control: 0.625rem;
+  --ap-radius-inner: 1rem;
+  --ap-radius-aperture: 1.5rem;
+  --ap-radius-overlay: 1.25rem;
+  --ap-aperture-inset: 0.5rem;
+
+  /* Depth. Dividers remain borders; lifted objects use layered shadows. */
+  --ap-shadow-control:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.08);
+  --ap-shadow-aperture:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 2px 5px -2px oklch(0 0 0 / 0.08),
+    0 18px 48px -24px oklch(0 0 0 / 0.16);
+  --ap-shadow-overlay:
+    0 0 0 1px oklch(0 0 0 / 0.08),
+    0 24px 64px -24px oklch(0 0 0 / 0.2);
+  --ap-image-outline: 1px solid oklch(0 0 0 / 0.1);
+
+  /* Motion. */
+  --ap-duration-fast: 150ms;
+  --ap-duration-ui: 180ms;
+  --ap-duration-enter: 320ms;
+  --ap-duration-story: 480ms;
+  --ap-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ap-enter-shift: 12px;
+
+  background: var(--ap-canvas);
+  color: var(--ap-text);
+  font-family: var(--ap-font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.theme-aperture ::selection {
+  background: var(--ap-selection-bg);
+  color: var(--ap-selection-text);
+}
+
+.theme-aperture :where(h1, h2, h3, h4) {
+  font-family: var(--ap-font-heading);
+  text-wrap: balance;
+}
+
+.theme-aperture :where(p, li) {
+  text-wrap: pretty;
+}
+
+.theme-aperture :where(time, [data-numeric]) {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-aperture {
+    --ap-duration-fast: 0ms;
+    --ap-duration-ui: 0ms;
+    --ap-duration-enter: 0ms;
+    --ap-duration-story: 0ms;
+    --ap-enter-shift: 0;
+  }
+}

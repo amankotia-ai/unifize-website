@@ -21,6 +21,7 @@
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useState } from "react";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 import { NAV, NavGlyph as Glyph, type NavFoot, type NavItem, type NavLink } from "../../_shared/nav-data";
 
 type Theme = "dark" | "alt" | "light";
@@ -68,7 +69,10 @@ function Pop({ item }: { item: NavItem }) {
           <div className="dms-header__pop-grid dms-header__pop-grid--3">
             {item.cols.map((col) => (
               <div className="dms-header__col" key={col.heading}>
-                <div className="dms-header__col-h"><Glyph name={col.icon} />{col.heading}</div>
+                <div className="dms-header__col-h">
+                  <Glyph name={col.icon} />{col.heading}
+                  <span className="dms-header__col-n">{String(col.items.length).padStart(2, "0")}</span>
+                </div>
                 {col.items.map((x) => (
                   <a className="dms-header__row" href={x.href} role="menuitem" key={x.label}>
                     <span className="dms-header__row-label">{x.label}</span>
@@ -210,7 +214,7 @@ export function DmsHeader() {
               <a key={item.label} href={item.href} className="dms-header__link">{item.label}</a>
             ),
           )}
-          <button type="button" className="dms-btn dms-btn-sm dms-header__cta">Book a demo</button>
+          <BookDemoButton className="dms-btn dms-btn-sm dms-header__cta" source="nav" />
         </nav>
 
         <button
@@ -242,7 +246,11 @@ export function DmsHeader() {
             ),
           )}
         </nav>
-        <button type="button" className="dms-btn dms-header__sheet-cta">Book a demo</button>
+        <BookDemoButton
+          className="dms-btn dms-header__sheet-cta"
+          source="nav-mobile"
+          onClick={() => setMenuOpen(false)}
+        />
       </div>
     </header>
   );

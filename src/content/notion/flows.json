@@ -1,0 +1,624 @@
+[
+  {
+    "pageId": "361860e6-b45e-81bf-83b4-d62f0aa13d73",
+    "id": "2",
+    "name": "Quality Manager runs an annual ISO 13485 audit on the QMS Module",
+    "description": "Triggered by the audit calendar two weeks before the audit due date. Quality Manager is at her desk on a quiet morning. Session spans several days across the audit window (typically a week). Ends when the audit is signed off, findings are routed to Corrective Actions, and effectiveness reviews are scheduled. Crosses web (planning, recording, sign off), mobile (on-site capture), email and notification (stakeholder coordination).",
+    "status": "Testing",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [
+      "361860e6-b45e-810b-9207-f5445601016e",
+      "361860e6-b45e-812a-a16d-e9e2a94eb9c0",
+      "361860e6-b45e-8131-a17e-ea6472e27850",
+      "361860e6-b45e-8143-9249-cbc9d881cdf9",
+      "361860e6-b45e-817d-9e84-fb3863b4bb26",
+      "361860e6-b45e-819f-95ec-db9696063d67",
+      "361860e6-b45e-81b7-a6f1-c4fcc8b0fc3c",
+      "361860e6-b45e-81e9-b84c-f6b208d95c26"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-8135-9b6d-f7ced80b744a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-81eb-9e2e-e21e14582970"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-818f-8e92-cedcb65afcda",
+    "id": "3",
+    "name": "CAPA Investigator closes a corrective action triggered by a customer complaint",
+    "description": "Triggered by a CAPA assignment notification, usually within hours of the originating complaint or non-conformance being escalated. CAPA Investigator picks it up in the morning queue. Session spans two to six weeks depending on investigation depth and the effectiveness window. Ends when CAPA is closed and effectiveness is verified. Crosses web (investigation, plan, approval), email and notification (cross-functional coordination), and voice (interviews during root cause analysis).",
+    "status": "Testing",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8190-93dd-c339472bd5e8"
+    ],
+    "persona": [
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2"
+    ],
+    "steps": [
+      "361860e6-b45e-811c-8ff9-c46cf470ac1f",
+      "361860e6-b45e-8140-8826-c8e9ed0cf6b5",
+      "361860e6-b45e-8158-ba54-e6d1a75b64d2",
+      "361860e6-b45e-8165-9715-ef1cf66d16b0",
+      "361860e6-b45e-8189-8914-f0317a5c9d55",
+      "361860e6-b45e-819c-b6df-ec6f25d7df6d",
+      "361860e6-b45e-81c8-8e77-c9be94417fae",
+      "361860e6-b45e-81e5-8a34-fc659eb207c2"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-81cd-8712-e2394f3d6412",
+      "35f860e6-b45e-818c-a497-c57a7b4cdef4"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8195-b32e-c3b9b616a966",
+    "id": "4",
+    "name": "Document Approver approves a controlled SOP revision on the DMS Module",
+    "description": "Triggered by an approval request notification mid-task. Document Approver is interrupted with the notification and opens the document directly from it. Session is short (5 to 30 minutes per document). Ends when the document is signed and published, or when changes are requested and the document routes back to the author. Crosses web (review, diff, signature) and notification (assignment, completion).",
+    "status": "Testing",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [
+      "361860e6-b45e-8166-825d-da8da6dee86b",
+      "361860e6-b45e-8182-819a-d5f28cfe0997",
+      "361860e6-b45e-81be-898c-f12807f304d2",
+      "361860e6-b45e-81c7-b87a-df01e87a9a46",
+      "361860e6-b45e-81cc-bfb8-c329f0ff43ab",
+      "361860e6-b45e-81f2-b068-e64c6def0531"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35f860e6-b45e-8168-b9fa-d10eddf27735",
+      "35e860e6-b45e-816b-96f5-c4f0670f4366",
+      "35f860e6-b45e-81ed-83f6-d98c1385dd9e"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8102-9219-e07d87102b35",
+    "id": "5",
+    "name": "Quality Engineer captures and contains a non-conformance on the Non-conformance Module",
+    "description": "Triggered by a nonconformance identified on the floor during production, inspection, or receiving. The Quality Engineer is pulled off other work and needs the record captured, contained, and assessed the same day. Session is 20 to 60 minutes, split between the floor (mobile capture) and the desk (web). Ends when the non-conformance is contained, severity is assessed, and the record is ready for root cause analysis. Crosses mobile (point-of-detection capture), web (assessment), and notification (stakeholder alerting).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891"
+    ],
+    "persona": [
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2"
+    ],
+    "steps": [
+      "37b860e6-b45e-8131-895c-fb647a423fd7",
+      "37b860e6-b45e-8171-97fd-db3b4e8355e1",
+      "37b860e6-b45e-8172-8b49-ffd80216b501",
+      "37b860e6-b45e-818e-aa7b-e090b6768774",
+      "37b860e6-b45e-81a3-9ddd-c317b3f10996",
+      "37b860e6-b45e-81d2-a7ae-d456133990cd",
+      "37b860e6-b45e-81ea-92d1-e5393e1c6032",
+      "37c860e6-b45e-8148-ab65-c5e286cedf81"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-8198-8db5-e23150405bdd",
+      "35f860e6-b45e-81ad-96e9-ca58fde1d157"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-819e-8512-dc1296594511",
+    "id": "6",
+    "name": "Quality Engineer drives root cause analysis in the record thread on the Non-conformance Module",
+    "description": "Triggered when the non-conformance record is contained and assessed, typically a day or two after detection. The Quality Engineer convenes the root cause analysis in the record's thread rather than a meeting room. Session spans several days asynchronously, with a focused synchronous burst of 30 to 60 minutes if the cause is disputed. Ends when the root cause statement is agreed and documented on the record. Crosses web (analysis, documentation) and notification (participant pulls).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891"
+    ],
+    "persona": [
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2"
+    ],
+    "steps": [
+      "37b860e6-b45e-8126-bf11-efc8b0fcc964",
+      "37b860e6-b45e-8177-a588-e6e5c7c041b3",
+      "37b860e6-b45e-81d7-a3f5-cea3d173f1d0",
+      "37b860e6-b45e-81e2-9515-fdf72caa5bd7",
+      "37b860e6-b45e-81fb-b4db-c6244289e8b6"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-81ed-83f6-d98c1385dd9e",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35f860e6-b45e-8155-a39a-c17d2f806edc"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-819f-9a7f-f8a39ef79ad0",
+    "id": "7",
+    "name": "Quality Engineer dispositions the non-conformance and routes it for approval on the Non-conformance Module",
+    "description": "Triggered when the root cause is agreed and the nonconforming material needs a disposition decision. The Quality Engineer works at the desk on web. Session is 15 to 45 minutes of active work spread over a few days while engineering weighs in inside the record. Ends when the approved disposition is executed by production and completion is recorded. Crosses web (disposition work) and notification (concession requests, approval routing).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891"
+    ],
+    "persona": [
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2"
+    ],
+    "steps": [
+      "37b860e6-b45e-8102-acb1-eea544782606",
+      "37b860e6-b45e-8115-a513-ca3ad0734a5d",
+      "37b860e6-b45e-811f-85e6-e49497c29f16",
+      "37b860e6-b45e-8194-947f-def9507e5b4f",
+      "37b860e6-b45e-81af-8c29-ccf73147bf7e",
+      "37b860e6-b45e-81bf-8f34-d367b6b001e2"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d5-a225-d9512e4c98ac",
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-813f-8958-c860ed283892"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81f9-8b10-d546aad63c3d",
+    "id": "8",
+    "name": "Quality Manager approves a disposition on the Non-conformance Module",
+    "description": "Triggered by an approval request notification mid-task. The Quality Manager is interrupted and triages from the notification itself. Session is 5 to 15 minutes per decision. Ends when the disposition (or corrective action plan, or closure) is approved with a regulated signature, or routed back with comments. Crosses web (evidence review, signature) and notification (assignment, completion).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [
+      "37b860e6-b45e-812c-913b-c3d97011ff08",
+      "37b860e6-b45e-815a-af2e-d91e945caaec",
+      "37b860e6-b45e-81a9-a397-f21420adc06f",
+      "37b860e6-b45e-81f4-8c1f-d1f3a4be4036"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d5-a225-d9512e4c98ac",
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-813f-8958-c860ed283892",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81aa-b5d8-e51401022941",
+    "id": "9",
+    "name": "Inspector captures and records a non-conformance at dock on the Supplier Quality module",
+    "description": "Triggered by nonconforming material found during incoming inspection. The Inspector is on the floor with a mobile device. Session is 5 to 15 minutes at the dock. Ends with a live non-conformance record carrying photographic evidence, part and order context pulled from the Enterprise Resource Planning integration, a problem description, and the Supplier Quality Engineer auto-notified. Crosses mobile (point-of-detection capture) and notification (SQE alerting).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "steps": [
+      "37c860e6-b45e-8101-a9c5-f8609c73e67c",
+      "37c860e6-b45e-8108-ae17-ca6fc24a8e42"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-8198-8db5-e23150405bdd",
+      "35f860e6-b45e-81f5-914c-ea6e91131cd5"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81fe-812e-e7e18ad98c66",
+    "id": "10",
+    "name": "SQE contains and scopes impact of a supplier non-conformance on the Supplier Quality module",
+    "description": "Triggered when the non-conformance record is created and the Supplier Quality Engineer is notified. Session spans hours to a day, working at the desk on web with structured notifications to production. Ends with containment actions assigned as structured tasks, scope of affected lots determined, and quality manager notified automatically. Crosses web (assessment, task assignment) and notification (production coordination, manager alerting).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "37c860e6-b45e-81ce-a67c-f3bfa53f1793"
+    ],
+    "steps": [
+      "37c860e6-b45e-811c-99e9-d84357a1be9b",
+      "37c860e6-b45e-811d-b845-dc1b167350b5",
+      "37c860e6-b45e-819c-add9-f7a6bf6c6bd8"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35f860e6-b45e-819c-ae74-c61df3097310",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81d7-94c4-dcc25d862b01",
+    "id": "11",
+    "name": "SQE drives supplier notification, investigation, and SCAR exchange on the Supplier Quality module",
+    "description": "Triggered after containment when the supplier must be notified. The Supplier Quality Engineer works at the desk on web, exchanging structured correspondence across the company boundary. Session spans days to weeks asynchronously; covers supplier notification, investigation coordination with the supplier (including 8D or equivalent), and Supplier Corrective Action Request exchange. Ends with verified corrective action effectiveness. Crosses web (correspondence, evaluation), notification (supplier reminders, escalation), and supplier portal (boundary exchange).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "37c860e6-b45e-81ce-a67c-f3bfa53f1793"
+    ],
+    "steps": [
+      "37c860e6-b45e-810e-9856-ffc0097c14e1",
+      "37c860e6-b45e-8175-9897-fc5838581f53",
+      "37c860e6-b45e-8182-bfd1-c702cda7ff78",
+      "37c860e6-b45e-8185-8742-ff9f9236eafe",
+      "37c860e6-b45e-8190-9aba-f16f8f5045df",
+      "37c860e6-b45e-81a7-986c-f8e84912f3d8",
+      "37c860e6-b45e-81ad-95fe-d98b77fab217",
+      "37c860e6-b45e-81ad-96e3-dbdcc4b3c672",
+      "37c860e6-b45e-81af-a633-f5a74ae45231",
+      "37c860e6-b45e-81b5-b14f-f9cd3d7f77ff",
+      "37c860e6-b45e-81ca-8bc6-e5e733da2e79",
+      "37c860e6-b45e-81d2-b1d5-f03f76902a76"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-8198-8db5-e23150405bdd",
+      "35f860e6-b45e-819c-ae74-c61df3097310",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8192-869b-de39fbe430ee",
+    "id": "12",
+    "name": "SQE drives disposition with engineering concession on the Supplier Quality module",
+    "description": "Triggered when investigation findings are accepted and the nonconforming material needs a disposition decision. The Supplier Quality Engineer works at the desk on web. Session is 15 to 45 minutes of active work spread over a few days while engineering weighs in inside the record. Ends when the approved disposition is communicated to warehouse and supplier, and the record is ready for closure. Crosses web (disposition work, closure preparation) and notification (concession requests, approval routing, disposition communication).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "37c860e6-b45e-81ce-a67c-f3bfa53f1793"
+    ],
+    "steps": [
+      "37c860e6-b45e-8100-80a0-c72905c40719",
+      "37c860e6-b45e-811a-a558-e713bdd9a9f3",
+      "37c860e6-b45e-8129-b668-c9823aba832c",
+      "37c860e6-b45e-816c-86c4-f0484a3c8f7c",
+      "37c860e6-b45e-81aa-bbca-f50154070cfb",
+      "37c860e6-b45e-81e5-b6c2-c5e896812cd2"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-813f-8958-c860ed283892",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8174-9d4d-eeeeac0eaf11",
+    "id": "13",
+    "name": "Quality Manager approves disposition and closure on the Supplier Quality module",
+    "description": "Triggered by an approval request notification mid-task. The Quality Manager is interrupted and triages from the notification itself. Session is 5 to 15 minutes per decision. Ends when the disposition or closure is approved with a regulated signature, or routed back with comments. The same approval pattern serves both the disposition approval and the closure approval moments on this value stream. Crosses web (evidence review, signature) and notification (assignment, completion).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [
+      "37c860e6-b45e-81ba-ad14-f57f5a44e943",
+      "37c860e6-b45e-81f5-bba7-f5828ebfcfc4"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-8168-b9fa-d10eddf27735",
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-813f-8958-c860ed283892",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81bc-b6ae-c37d459f4c30",
+    "id": "14",
+    "name": "Supplier Quality Engineer drives a non-conformance to a supplier corrective action and CAPA",
+    "description": "Triggered when incoming inspection or in-process detection identifies a defect attributable to a supplier. The Supplier Quality Engineer is at the desk on web, coordinating containment, supplier notification, and root-cause work asynchronously across the company boundary. Session spans weeks elapsed, with focused bursts of 30 to 90 minutes per stage. Ends when the parent corrective action is closed and effectiveness is verified back at incoming inspection. Crosses web (record work, evaluation), notification (assignments, reminders, escalation), and supplier portal (cross-boundary exchange).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891",
+      "360860e6-b45e-817b-a763-c1d362e2de2d",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ],
+    "persona": [
+      "37c860e6-b45e-81ce-a67c-f3bfa53f1793"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35f860e6-b45e-81ad-96e9-ca58fde1d157",
+      "35f860e6-b45e-8198-8db5-e23150405bdd"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81f7-9cf8-e0491b549eb6",
+    "id": "15",
+    "name": "Incoming Quality Analyst escalates a certificate of analysis mismatch to a supplier corrective action",
+    "description": "Triggered when an ingested supplier certificate of analysis fails the auto-compare against plan specifications. The Incoming Quality Analyst is at the desk on web reviewing the flagged record. Session is 20 to 60 minutes per investigation, spread over one to three days while the supplier responds. Ends when the out-of-specification investigation is promoted to a nonconformance record and a supplier corrective action is opened with full evidence linkage. Crosses web (investigation, evidence review), notification (supplier prompt, internal alert), and supplier portal (cross-boundary exchange).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d",
+      "360860e6-b45e-8148-a0a4-de3e0fd91891"
+    ],
+    "persona": [
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35f860e6-b45e-8198-8db5-e23150405bdd"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81b1-a11e-deb02ec02234",
+    "id": "16",
+    "name": "Document Controller runs a document change and retraining loop",
+    "description": "Triggered when an approved change request revises a controlled standard operating procedure. The Document Controller is at the desk on web, releasing the new edition and confirming downstream training has fired. Session is 30 to 90 minutes at release, then short check-ins over one to four weeks until acknowledgements clear. Ends when every assigned person has been retrained and the read-and-understood acknowledgement is recorded. Crosses web (release, retraining setup, completion tracking), notification (training assignment, reminders, escalation), and mobile (read-and-understood acknowledgement on the floor).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a",
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ],
+    "persona": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-81eb-9e2e-e21e14582970",
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35f860e6-b45e-819c-ae74-c61df3097310"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8155-b9cf-ed501d367c85",
+    "id": "17",
+    "name": "Quality Manager drives an audit finding to corrective action and retraining",
+    "description": "Triggered when an internal or external audit logs a finding above the threshold for corrective action. The Quality Manager is at the desk on web, classifying severity and opening the corrective action with linkage to affected procedures. Session is 30 to 90 minutes per finding, then weeks to months while the corrective action runs. Ends when the corrective action closes with verified effectiveness and any affected personnel have completed retraining against the updated document. Crosses web (classification, planning, closure), notification (assignments, reminders, escalation), and mobile (retraining acknowledgement).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-81f9-b780-eed760e72d52",
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-81eb-9e2e-e21e14582970",
+      "35e860e6-b45e-81cb-bc48-cad09f705166"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8135-a4f7-d701aaabb959",
+    "id": "18",
+    "name": "Document Controller revises a controlled document through change control",
+    "description": "Triggered when a change request is approved with scope covering a controlled document. The Document Controller is at the desk on web, generating the new document version and linking parent and child change requests for traceability. Session is 20 to 60 minutes per revision, spread over days while approvers sign. Ends when the new version is effective and superseded versions are retired. Crosses web (revision authoring, linkage), notification (approver routing, completion), and mobile (acknowledgement against the new revision on the floor).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ],
+    "persona": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "steps": [
+      "3a4860e6-b45e-8118-a4b6-c3fcba560a49",
+      "3a4860e6-b45e-816f-a0ec-ddd0974b64af",
+      "3a4860e6-b45e-812a-ae99-dac9e76112fc",
+      "3a4860e6-b45e-81b3-ac5e-c5fd91b9b099",
+      "3a4860e6-b45e-81e8-950d-e1a505f55a2d",
+      "3a4860e6-b45e-81d7-bce1-dc107f7b1da1",
+      "3a4860e6-b45e-81f3-855c-db252116dffe",
+      "3a4860e6-b45e-81b5-aa83-e2266f1698b4",
+      "3a4860e6-b45e-81f8-a494-ecfa9c437319",
+      "3a4860e6-b45e-81a9-8840-dc0caf3d4c03"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-810b-9ed8-dac98eb96b74"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-814c-b6c4-c2ea0957def3",
+    "id": "19",
+    "name": "Complaint Handler drives a customer complaint to CAPA and document revision",
+    "description": "Triggered when a customer complaint enters intake via email, phone, or web form. The Complaint Handler is at the desk on web, triaging and opening the investigation record. Session is 30 to 90 minutes at intake, then days to weeks while the corrective action runs. Ends when the corrective action closes with verified effectiveness and any document revisions have been published through change control. Crosses web (intake, investigation, closure), notification (assignments, customer responses, escalation), and email (cross-customer correspondence).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-81f9-b780-eed760e72d52",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ],
+    "persona": [
+      "37c860e6-b45e-8142-9b05-efb882aa2932"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35f860e6-b45e-81ad-96e9-ca58fde1d157"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-817b-af7c-d6f5994457e4",
+    "id": "20",
+    "name": "Supplier Quality Engineer issues a supplier corrective action from a supplier audit",
+    "description": "Triggered when a supplier audit logs a finding that meets corrective action threshold. The Supplier Quality Engineer is at the desk on web, opening the supplier corrective action against the supplier and linking findings back to the supplier scorecard. Session is 30 to 60 minutes per finding, spread over weeks while the supplier responds. Ends when the supplier corrective action closes with verified effectiveness and the scorecard is updated. Crosses web (issuance, scoring, closure), notification (supplier reminders, escalation), and supplier portal (cross-boundary exchange).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ],
+    "persona": [
+      "37c860e6-b45e-81ce-a67c-f3bfa53f1793"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35f860e6-b45e-81ad-96e9-ca58fde1d157"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81a5-9dfd-ecc270e734a1",
+    "id": "21",
+    "name": "Risk Owner drives a high risk to mitigation and validation",
+    "description": "Triggered when a risk register entry crosses the risk priority number threshold for mandatory mitigation. The Risk Owner is at the desk on web, opening the change request for the mitigation and assigning verification owners. Session is 30 to 90 minutes at initiation, then weeks to months while the mitigation implements and effectiveness is verified. Ends when verification confirms the residual risk priority number is below threshold and the risk register entry is updated. Crosses web (initiation, planning, verification), notification (assignments, reminders, escalation), and email (cross-functional coordination).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8176-a514-d0c34e2bf0cd",
+      "360860e6-b45e-81f9-b902-df2000f4441e"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81cb-bc48-cad09f705166"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-816a-8b88-cb8fa10a54c7",
+    "id": "22",
+    "name": "Environment Health and Safety Manager drives a hazard to corrective action and training",
+    "description": "Triggered when a hazard observation or incident report is logged on the floor. The Environment Health and Safety Manager is at the desk on web while mobile capture happens upstream by the observer, classifying severity and opening the corrective action. Session is 20 to 60 minutes per record, spread over days to weeks while the corrective action runs. Ends when the corrective action closes with verified effectiveness and affected personnel have completed any required retraining. Crosses mobile (observation capture), web (classification, planning, closure), and notification (assignments, reminders, escalation).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-814b-af44-d6256e189a69",
+      "360860e6-b45e-81a5-ae3b-f412c021c770",
+      "360860e6-b45e-81e3-ad65-d9d9bac70aa0"
+    ],
+    "persona": [
+      "361860e6-b45e-810d-b38c-fa27d3add5b3"
+    ],
+    "steps": [],
+    "outcomes": [
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35f860e6-b45e-81eb-9e2e-e21e14582970"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81aa-a42e-d322a123ca6d",
+    "id": "28",
+    "name": "Change Sponsor runs a controlled change on the Change Control Module",
+    "description": "Triggered when a controlled change is proposed against any procedure, specification, equipment, supplier, or product. The Change Sponsor is at the desk on web, opening the change request and shepherding it through the review board, planning, implementation, and verification stages. Session is 30 to 90 minutes at initiation, then check-ins over days to months while the change runs. Ends when verification confirms the change is implemented as planned and the record is closed with audit-ready evidence. Crosses web (initiation, review, planning, verification, closure), notification (review board assignments, approval routing, completion), and email (cross-functional coordination).",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e"
+    ],
+    "persona": [
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "steps": [
+      "37c860e6-b45e-8112-9df2-c1c9cd1ac172",
+      "37c860e6-b45e-811a-8487-c5404b5d9b04",
+      "37c860e6-b45e-8125-9728-e0502a945680",
+      "37c860e6-b45e-8194-b863-ed5099b48943",
+      "37c860e6-b45e-81b0-9929-eaa3c3659475"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-813f-8958-c860ed283892",
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-810b-9ed8-dac98eb96b74"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8136-a709-fb6b8684d994",
+    "id": "29",
+    "name": "Shop Floor Operator finds and trusts the current version of a controlled document on the DMS Module",
+    "description": "Triggered mid-task anywhere on the floor: a Shop Floor Operator needs the current SOP or work instruction now. Under two minutes when it works, often on mobile or a shared terminal. Ends executing against the current revision, trusted without checking. Full depth on the page body.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ],
+    "persona": [
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e"
+    ],
+    "steps": [
+      "3a4860e6-b45e-818a-b013-ccb58e6c8b16",
+      "3a4860e6-b45e-819e-9c81-fd5784c03ac5",
+      "3a4860e6-b45e-8133-b9c8-f851de8a93fb",
+      "3a4860e6-b45e-81e7-ae5c-f60aaff97da1",
+      "3a4860e6-b45e-816a-84e0-c3b2ea63a6ca"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-8117-bdf8-c9a8a7329470",
+      "35e860e6-b45e-81c0-b68b-ce45a831c8c1",
+      "35e860e6-b45e-813d-956b-da804d63cccd"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8121-b027-ed7a344f97f9",
+    "id": "30",
+    "name": "Quality Manager runs the periodic review of a controlled document on the DMS Module",
+    "description": "Triggered by a review-due task at the document's review interval. The Quality Manager, as document owner, re-reads the document against current practice and records the outcome in 15 to 40 minutes. Ends with the next review date live, or a revision spawned into the revision flow. Full depth on the page body.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ],
+    "persona": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "steps": [
+      "3a4860e6-b45e-8184-996c-fd435748701c",
+      "3a4860e6-b45e-81fc-9727-c5baaf317281",
+      "3a4860e6-b45e-818e-89f4-f1a0e481db62",
+      "3a4860e6-b45e-818f-a080-dfaac81b5777",
+      "3a4860e6-b45e-818e-a5a2-ec7a9c7e09cb",
+      "3a4860e6-b45e-8179-9f6d-d67fe5166f7a"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35e860e6-b45e-8135-9b6d-f7ced80b744a"
+    ]
+  }
+]

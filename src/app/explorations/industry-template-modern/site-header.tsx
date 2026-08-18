@@ -22,6 +22,7 @@
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useState } from "react";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 import { NAV, NavGlyph as Glyph, type NavFoot, type NavItem, type NavLink } from "../_shared/nav-data";
 
 type Theme = "dark" | "alt" | "light";
@@ -71,7 +72,10 @@ function Pop({ item }: { item: NavItem }) {
           <div className="itm-header__pop-grid itm-header__pop-grid--3">
             {item.cols.map((col) => (
               <div className="itm-header__col" key={col.heading}>
-                <div className="itm-header__col-h"><Glyph name={col.icon} />{col.heading}</div>
+                <div className="itm-header__col-h">
+                  <Glyph name={col.icon} />{col.heading}
+                  <span className="itm-header__col-n">{String(col.items.length).padStart(2, "0")}</span>
+                </div>
                 {col.items.map((x) => (
                   <a className="itm-header__row" href={x.href} role="menuitem" key={x.label}>
                     <span className="itm-header__row-label">{x.label}</span>
@@ -206,7 +210,7 @@ export function SiteHeader() {
               <a key={item.label} href={item.href} className="itm-header__link">{item.label}</a>
             ),
           )}
-          <button type="button" className="itm-btn itm-btn-sm itm-header__cta">Book a demo</button>
+          <BookDemoButton className="itm-btn itm-btn-sm itm-header__cta" source="nav" />
         </nav>
 
         <button
@@ -238,7 +242,11 @@ export function SiteHeader() {
             ),
           )}
         </nav>
-        <button type="button" className="itm-btn itm-header__sheet-cta">Book a demo</button>
+        <BookDemoButton
+          className="itm-btn itm-header__sheet-cta"
+          source="nav-mobile"
+          onClick={() => setMenuOpen(false)}
+        />
       </div>
     </header>
   );

@@ -10,10 +10,7 @@
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  MD_PROOF,
-  MD_COEXISTENCE,
-} from "@/lib/platform-data/medical-devices-canonical";
+import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import { TRIGGERS, VALIDATED } from "./industry-data";
 import { SiteHeader } from "./site-header";
 import { SiteFooter } from "../_shared/site-footer";
@@ -21,11 +18,12 @@ import { IngressNav } from "./ingress-nav";
 import { PersonaExplorer } from "./persona-explorer";
 import { ModuleIndex } from "./module-index";
 import { CostLedger } from "./cost-ledger";
-import { CustomerSuccess } from "./customer-success";
+import { ProofFilms } from "./proof-films";
 import { ItmMotion } from "./itm-motion";
-import { Eyebrow, ShellFrame, SeverityIcon } from "./itm-primitives";
-import { ChatShell } from "@/components/organisms";
+import { Eyebrow, SeverityIcon } from "./itm-primitives";
+import { HeroArcade, DecisionTraceArcade } from "./itm-arcade";
 import "./itm.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: "Medical Devices · Unifize",
@@ -34,16 +32,6 @@ export const metadata: Metadata = {
 };
 
 const HERO_CHIPS = ["21 CFR 820", "ISO 13485", "ISO 14971", "EU MDR 2017/745", "21 CFR Part 11"];
-
-/* B · the decision trail beside the live chat surface. Mirrors the CC-2148
- * change-control thread beat for beat. Timestamps (T+N) are the only mono here. */
-const BFLOW = [
-  { t: "Change raised", who: "Lisa Martin", when: "T+0" },
-  { t: "Impact assessment bound", who: "Unifize", when: "T+0" },
-  { t: "Cross-functional review", who: "Rupa Kapoor", when: "T+5d" },
-  { t: "Approved · Part 11 e-signature", who: "Priya Ramesh · VP", when: "T+9d" },
-  { t: "Record sealed · 21 CFR 820.40", who: "Unifize", when: "T+9d" },
-];
 
 /* Restrained OUTLINE icons for the validation answer cards (Section I),
  * keyed by VALIDATED.points[].icon. Heroicons outline paths, inline. */
@@ -96,16 +84,17 @@ export default function IndustryTemplateModernPage() {
               ))}
             </ul>
             <div className="itm-hero__ctas">
-              <button type="button" className="itm-btn">Book a demo →</button>
+              <BookDemoButton className="itm-btn" source="hero">Book a demo →</BookDemoButton>
               <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
             </div>
           </div>
         </div>
 
-        {/* product screen — decorative, sits free (no container/frame) */}
+        {/* product stage — decorative, sits free: the arcade engine quietly
+             walking CC-2148 through raise → review → Part 11 sign → seal */}
         <div className="itm-hero__stage" aria-hidden="true">
           <div className="itm-hero__shot">
-            <img src="/hero-product.png" alt="" />
+            <HeroArcade />
           </div>
         </div>
 
@@ -139,38 +128,10 @@ export default function IndustryTemplateModernPage() {
             </p>
           </div>
 
-          <div className="itm-diff__grid">
-            <aside className="itm-trail" aria-label="How the decision moves" data-reveal>
-              <span className="itm-trail__lab">How the decision moves</span>
-              <ol className="itm-trail__steps">
-                {BFLOW.map((s, i) => (
-                  <li className={"itm-trail__step" + (i === BFLOW.length - 1 ? " is-sealed" : "")} key={s.t}>
-                    <span className="itm-trail__node" aria-hidden="true" />
-                    <span className="itm-trail__t">{s.t}</span>
-                    <span className="itm-trail__meta">{s.who} <span className="itm-data">· {s.when}</span></span>
-                  </li>
-                ))}
-              </ol>
-              <p className="itm-trail__foot">The same change, sealed as a 21 CFR Part 11 audit trail. The thread is the trace.</p>
-            </aside>
-
-            <div className="itm-thread" data-reveal>
-              {/* real product screen — staged in shell chrome */}
-              <div className="itm-thread__live">
-                <ShellFrame url="app.unifize.com / change-control / CC-2148">
-                  <ChatShell variant="change-control" />
-                </ShellFrame>
-              </div>
-              <Link
-                href="/industries/medical-devices/change-control"
-                className="itm-thread__mobile"
-                aria-label="View the full change-control thread CC-2148"
-              >
-                <span className="itm-thread__mobile-lab">Change-control thread</span>
-                <span className="itm-thread__mobile-id">CC-2148 · raise → impact → review → Part 11 approval → seal</span>
-                <span className="itm-thread__mobile-go">View full thread →</span>
-              </Link>
-            </div>
+          {/* the decision trail drives the arcade camera over one persistent
+               CC-2148 record: each step is a pose, not a new screen */}
+          <div data-reveal>
+            <DecisionTraceArcade />
           </div>
         </div>
       </section>
@@ -212,39 +173,31 @@ export default function IndustryTemplateModernPage() {
               <h2 className="itm-h2">The moments that start a clock you don't control.</h2>
               <p className="itm-lede">Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response.</p>
             </div>
-            <div className="itm-trigs" data-reveal>
-              {TRIGGERS.map((t) => {
-                const sev = t.severity === "Urgent" ? " is-urgent" : " is-high";
-                const inner = (
-                  <>
-                    <div className="itm-trig__top">
-                      <span className="itm-trig__sev">
-                        <span className="itm-trig__sev-ic" aria-hidden="true">
-                          <SeverityIcon severity={t.severity} />
-                        </span>
-                        {t.severity}
-                      </span>
+            <div className="itm-trigs-wrap">
+              {(["Urgent", "High"] as const).map((level) => {
+                const rows = TRIGGERS.filter((t) => t.severity === level);
+                return (
+                  <div key={level} className={"itm-trigs-band " + (level === "Urgent" ? "is-urgent" : "is-high")} data-reveal>
+                    <div className="itm-trigs-band__head">
+                      <SeverityIcon severity={level} />
+                      <span className="itm-trigs-band__lab">{level}</span>
+                      <span className="itm-trigs-band__n">{String(rows.length).padStart(2, "0")} moments</span>
                     </div>
-                    <p className="itm-trig__name">{t.name}</p>
-                    <span className="itm-trig__clock">{t.clock}</span>
-                    <div className="itm-trig__foot">
-                      <span className="itm-trig__route">
-                        <span className="itm-trig__mod">{t.routesTo}</span>
-                        <span className="itm-trig__owner">{t.owner}</span>
-                      </span>
-                    <span className="itm-trig__go">{t.href ? "Open the workflow →" : " "}</span>
+                    <div className="itm-trigs">
+                      {rows.map((t) => (
+                        <div key={t.name} className={"itm-trig" + (level === "Urgent" ? " is-urgent" : " is-high")}>
+                          <p className="itm-trig__name">{t.name}</p>
+                          <span className="itm-trig__clock">{t.clock}</span>
+                          <div className="itm-trig__foot">
+                            <span className="itm-trig__route">
+                              <span className="itm-trig__mod">{t.routesTo}</span>
+                              <span className="itm-trig__owner">{t.owner}</span>
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  </>
-                );
-                return t.href ? (
-                  <Link
-                    key={t.name}
-                    href={t.href}
-                    className={"itm-trig itm-trig--live" + sev}
-                    aria-label={`Open the page for: ${t.name}`}
-                  >{inner}</Link>
-                ) : (
-                  <div key={t.name} className={"itm-trig" + sev}>{inner}</div>
+                  </div>
                 );
               })}
             </div>
@@ -252,52 +205,11 @@ export default function IndustryTemplateModernPage() {
         </section>
       </div>
 
-      {/* ============================ G · COEXISTENCE ===================== */}
-      <section className="itm-section itm-section--short">
-        <div className="itm-wrap">
-          <div className="itm-coexist">
-            <div className="itm-coexist__head" data-reveal>
-              <Eyebrow n={5}>Coexistence</Eyebrow>
-              <h2 className="itm-h2">It sits on the stack you have already validated.</h2>
-              <div className="itm-sor">
-                {MD_COEXISTENCE.systemsOfRecord.map((s) => <span key={s} className="itm-chip">{s}</span>)}
-              </div>
-              <p className="itm-body">
-                Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the
-                decision trace goes missing. It does not displace your QMS, and approvals are {MD_COEXISTENCE.approval}.
-                No rip-and-replace, no revalidation of what already works.
-              </p>
-            </div>
-
-            <div
-              className="itm-diagram"
-              role="img"
-              aria-label="Diagram: Unifize sits as a coordination layer over your QMS, ERP, PLM and LIMS, which stay in place as your systems of record."
-              data-reveal
-            >
-              <div className="itm-diagram__unifize">
-                <b>Unifize</b>
-                <span>Coordination layer</span>
-              </div>
-              <div className="itm-diagram__sors" aria-hidden="true">
-                {MD_COEXISTENCE.systemsOfRecord.map((s) => (
-                  <div key={s} className="itm-diagram__sor">
-                    <b>{s}</b>
-                    <span>System of record</span>
-                  </div>
-                ))}
-              </div>
-              <p className="itm-diagram__cap">Unifize as the coordination layer over your QMS, ERP, PLM and LIMS.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ============================ H · COST LEDGER ==================== */}
       <section className="itm-section itm-section--alt itm-cost-sec" id="cost">
         <div className="itm-wrap">
           <div className="itm-head-block" data-reveal>
-            <Eyebrow n={6}>Cost of inaction</Eyebrow>
+            <Eyebrow n={5}>Cost of inaction</Eyebrow>
             <h2 className="itm-h2">The cost is real. It just never lands on a line you can see.</h2>
           </div>
           <CostLedger />
@@ -308,7 +220,7 @@ export default function IndustryTemplateModernPage() {
       <section className="itm-section itm-section--short" id="validated">
         <div className="itm-wrap">
           <div className="itm-head-block" data-reveal>
-            <Eyebrow n={7}>{VALIDATED.eyebrow}</Eyebrow>
+            <Eyebrow n={6}>{VALIDATED.eyebrow}</Eyebrow>
             <h2 className="itm-h2">{VALIDATED.headline}</h2>
           </div>
           <ul className="itm-valgrid" data-reveal>
@@ -326,8 +238,8 @@ export default function IndustryTemplateModernPage() {
         </div>
       </section>
 
-      {/* ============= J · PROOF (folded into the customer-success carousel) */}
-      <CustomerSuccess />
+      {/* ============= J · PROOF (real customer films, DMS film-rail layout) */}
+      <ProofFilms />
 
       {/* ============================ K · CLOSE ==========================
        * Flat editorial dark, asymmetric like the hero: mono kicker + display
@@ -342,7 +254,7 @@ export default function IndustryTemplateModernPage() {
             <div className="itm-close__side">
               <p className="itm-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
               <div className="itm-close__cta">
-                <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
+                <BookDemoButton className="itm-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
                 <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>

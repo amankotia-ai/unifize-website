@@ -13,6 +13,7 @@ import Link from "next/link";
 import {
   PRODUCT,
   DMS_PROBLEMS,
+  DMS_FLOWS,
   INTEGRATIONS,
   CAPABILITIES,
   AUDIENCE,
@@ -24,11 +25,10 @@ import { DmsHeader } from "./dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
 import { CoordinationTax } from "./dms-coordination";
 import { IntegrationLayer } from "./dms-integrations";
-import { Eyebrow, ShellFrame } from "./dms-primitives";
+import { Eyebrow } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
-import { MockDocRegister } from "./dms-mocks";
 import { DmsProblemSpotlight } from "./dms-problem-visuals";
-import { DmsHeroVideo } from "./dms-hero-video";
+import { DmsHeroSection } from "./dms-hero-visuals";
 import { DmsIndustryIcon } from "./dms-industry-icons";
 import { DmsProofFilms } from "./dms-proof";
 import {
@@ -39,6 +39,7 @@ import {
 import "../../industry-template-modern/itm.css";
 import "./dms.css";
 import "./dms-redesign.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: "Document Management System · Unifize",
@@ -52,47 +53,7 @@ export default function DmsProductPage() {
       <DmsHeader />
 
       {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="Document Management System">
-        <div className="dms-wrap dms-hero__inner">
-          <div className="dms-hero__grid">
-            <div className="dms-hero__left">
-              <Link className="dms-hero__product" href="/explorations/platform">
-                <span className="dms-hero__product-mark" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path className="dms-hero__product-sheet" d="M7 3.75h7.4L18 7.35v12.9H7V3.75Z" />
-                    <path className="dms-hero__product-detail" d="M14 3.75v4h4M9.75 12h5.5M9.75 15.5h5.5" />
-                  </svg>
-                </span>
-                <span>Document Management System</span>
-              </Link>
-              <h1 className="dms-hero__title">
-                <span className="dms-hero__line">{dmsCopy("hero.line1", "One current version.")}</span>
-                <span className="dms-hero__line dms-hero__turn">{dmsCopy("hero.line2", "Everywhere you look.")}</span>
-              </h1>
-            </div>
-            <div className="dms-hero__right">
-              <p className="dms-lede dms-hero__sub">{dmsCopy("hero.sub", PRODUCT.description)}</p>
-              <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">{dmsCopy("hero.cta1", "Book a demo")} &rarr;</button>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                  {dmsCopy("hero.cta2", "Take Coordination Tax Assessment")}
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="dms-hero__frame dms-hero__product-demo">
-            <div className="dms-hero__stage">
-              <DmsHeroVideo>
-                <ShellFrame url="app.unifize.com / documents">
-                  <MockDocRegister />
-                </ShellFrame>
-              </DmsHeroVideo>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      <DmsHeroSection variant="governed-record" />
 
       {/* ============================ TRUST STRIP ======================= */}
       <section className="dms-section dms-section--dark dms-trust" aria-label="Industries served">
@@ -177,6 +138,8 @@ export default function DmsProductPage() {
         <LifecycleExplorer
           layout="sticky-visual"
           heading={dmsCopy("lifecycle.heading", "Every state has a gate. Every gate has an owner.")}
+          flows={DMS_FLOWS}
+          flowsLabel={dmsCopy("flows.heading", "Follow the work through the lifecycle.")}
         />
       </section>
 
@@ -327,7 +290,7 @@ export default function DmsProductPage() {
               <h2 className="dms-close__h" id="dms-close-h">{dmsCopy("close.heading", "Bring the SOP you could not find the current version of.")}</h2>
               <p className="dms-lede">{dmsCopy("close.lede", "We will run it through the lifecycle live, from draft to Part 11 approval.")}</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">{dmsCopy("close.cta", "Book a 30-minute walkthrough")}</button>
+                <BookDemoButton className="dms-btn" source="close">{dmsCopy("close.cta", "Book a 30-minute walkthrough")}</BookDemoButton>
               </div>
             </div>
           </div>

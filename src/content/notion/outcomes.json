@@ -1,0 +1,392 @@
+[
+  {
+    "pageId": "35e860e6-b45e-813d-956b-da804d63cccd",
+    "id": "3",
+    "name": "Time to first meaningful action",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-81d5-a225-d9512e4c98ac",
+    "id": "4",
+    "name": "Decision turnaround time",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+    "id": "5",
+    "name": "Evidence completeness rate",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35e860e6-b45e-8135-9b6d-f7ced80b744a",
+    "id": "6",
+    "name": "Audit trail reconstructability",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35e860e6-b45e-810f-b9d7-e523983bf1a1",
+    "id": "7",
+    "name": "Coordination tax per Record",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-819b-98da-ecee5189d7de",
+    "id": "8",
+    "name": "Stage transition reliability",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-8155-bc67-ed35645a102b",
+    "id": "9",
+    "name": "Configuration safety",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35e860e6-b45e-81ad-9f5f-f653af63e68d",
+    "id": "10",
+    "name": "Integration uptime and latency",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35e860e6-b45e-8174-9b10-ff7ff0dcce2a",
+    "id": "11",
+    "name": "Decision auditability",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35e860e6-b45e-8176-9211-f47efb1b3d8f",
+    "id": "12",
+    "name": "Notification signal-to-noise ratio",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-816b-96f5-c4f0670f4366",
+    "id": "13",
+    "name": "Permissions correctness",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35e860e6-b45e-81cb-bc48-cad09f705166",
+    "id": "14",
+    "name": "Cycle time per Process instance",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-81c0-b68b-ce45a831c8c1",
+    "id": "15",
+    "name": "Discoverability of relevant Records",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-812c-9a96-d2bc59980261",
+    "id": "16",
+    "name": "Bulk operation throughput",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35e860e6-b45e-8178-b903-dfdbc683c893",
+    "id": "17",
+    "name": "Exception detection latency",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-8165-9b56-d249c3b5b7b9",
+    "id": "18",
+    "name": "Aggregate coordination tax per customer per quarter",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8117-82db-c49d238691af",
+    "id": "19",
+    "name": "Coordination tax reduction delta",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8155-a39a-c17d2f806edc",
+    "id": "20",
+    "name": "Status-chasing minutes per Persona per week",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8198-8db5-e23150405bdd",
+    "id": "21",
+    "name": "Reconciliation events per Record",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-810b-9ed8-dac98eb96b74",
+    "id": "22",
+    "name": "Hand-off context completeness rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81cd-8712-e2394f3d6412",
+    "id": "23",
+    "name": "Re-entry rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8117-bdf8-c9a8a7329470",
+    "id": "24",
+    "name": "Hunting time per session",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81bb-b4ac-f18f1a383171",
+    "id": "25",
+    "name": "Translation events per Record",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81a2-b78d-d111e5fbeed0",
+    "id": "26",
+    "name": "Records progressed per Doer per week",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81e5-a07c-c0e90511750d",
+    "id": "27",
+    "name": "Approver queue depth",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-819f-80b7-f0fb24de208b",
+    "id": "28",
+    "name": "Approval round-trip count per Record",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8141-8d07-f0a19e8376cd",
+    "id": "29",
+    "name": "Time to value at a new customer",
+    "type": "Revenue"
+  },
+  {
+    "pageId": "35f860e6-b45e-819f-9c62-da7c801f7f22",
+    "id": "30",
+    "name": "Records under management",
+    "type": "Revenue"
+  },
+  {
+    "pageId": "35f860e6-b45e-81eb-9e2e-e21e14582970",
+    "id": "31",
+    "name": "Framework coverage rate",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35f860e6-b45e-813f-8958-c860ed283892",
+    "id": "32",
+    "name": "First-time approval rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8126-a83c-caa5513ab3db",
+    "id": "33",
+    "name": "Approval evidence sufficiency at decision time",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35f860e6-b45e-81bb-a189-f21f116bbf71",
+    "id": "34",
+    "name": "Out-of-cycle approval rate",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35f860e6-b45e-8168-b9fa-d10eddf27735",
+    "id": "35",
+    "name": "Approval policy compliance",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-81d4-9966-dca5506afaaa",
+    "id": "36",
+    "name": "Approval rejection quality",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81e0-b7a1-f6687f50d018",
+    "id": "37",
+    "name": "Time to first productive action by a new user",
+    "type": "Revenue"
+  },
+  {
+    "pageId": "35f860e6-b45e-81e8-8da7-cbbe2d7fc850",
+    "id": "38",
+    "name": "Onboarding activation rate",
+    "type": "Revenue"
+  },
+  {
+    "pageId": "35f860e6-b45e-81a1-8fce-d7530de36ccf",
+    "id": "39",
+    "name": "Feature discovery rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-812e-8b4d-e11f6f8a12e7",
+    "id": "40",
+    "name": "Task success rate",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-8173-8d9b-e72831892125",
+    "id": "41",
+    "name": "Right-context delivery rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81bb-a284-f2dc71f3cb10",
+    "id": "42",
+    "name": "AI suggestion acceptance rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8137-9fad-edf69103b385",
+    "id": "43",
+    "name": "AI-initiated meaningful action rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-812a-8869-d1275e1f0f1b",
+    "id": "44",
+    "name": "Cognitive offload through AI summary",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-813b-9d7d-ebefe3185045",
+    "id": "45",
+    "name": "Time saved per AI-assisted action",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-816c-aae2-ebaab45ffa0f",
+    "id": "46",
+    "name": "Cross-industry portability index",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-81ed-83f6-d98c1385dd9e",
+    "id": "47",
+    "name": "Conversation completeness on Record",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-8111-978f-c4afe547544a",
+    "id": "48",
+    "name": "API completeness rate",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-81c2-b031-f26f9922dbe0",
+    "id": "49",
+    "name": "Time to assemble a cross-Process report",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81c7-9aa3-e32fa9a25d22",
+    "id": "50",
+    "name": "Time to author a new dashboard or report",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-810f-997a-d99f988ecf03",
+    "id": "51",
+    "name": "Report and dashboard self-service rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8169-b364-ee3bec6a9b39",
+    "id": "52",
+    "name": "Cross-source consolidation rate in dashboards",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8140-af14-d8164ad8a653",
+    "id": "53",
+    "name": "Dashboard data freshness",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-81ff-9a7d-fa6981093102",
+    "id": "54",
+    "name": "Dashboard reuse rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81bb-b63d-d5e6ac072b0b",
+    "id": "55",
+    "name": "Time to map an existing customer process onto the platform",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81ac-895b-ca4a347453bd",
+    "id": "56",
+    "name": "No-engineering configuration rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8159-a7a7-f8599c9b54fd",
+    "id": "57",
+    "name": "Configuration change velocity",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8142-b363-f682f8eda09a",
+    "id": "58",
+    "name": "Drag-and-drop adoption rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81ad-96e9-ca58fde1d157",
+    "id": "59",
+    "name": "Cross-functional information flow latency",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-815d-bdbd-e9d1d72165a2",
+    "id": "60",
+    "name": "External partner activation rate",
+    "type": "Revenue"
+  },
+  {
+    "pageId": "35f860e6-b45e-81f5-914c-ea6e91131cd5",
+    "id": "61",
+    "name": "Error catch rate",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-8147-95cf-c8e3e58b6ebb",
+    "id": "62",
+    "name": "Ownership clarity rate",
+    "type": "Trust"
+  },
+  {
+    "pageId": "35f860e6-b45e-819c-ae74-c61df3097310",
+    "id": "63",
+    "name": "Accountability follow-through rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-818c-a497-c57a7b4cdef4",
+    "id": "64",
+    "name": "Escalation latency",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-81fe-84d6-c8502a3d5d4b",
+    "id": "65",
+    "name": "Action item completion rate",
+    "type": "CT Reduction"
+  },
+  {
+    "pageId": "35f860e6-b45e-8103-bfec-de7406b355e7",
+    "id": "66",
+    "name": "Decision ownership traceability",
+    "type": "Compliance"
+  },
+  {
+    "pageId": "35f860e6-b45e-81f3-ad55-fef62397098c",
+    "id": "67",
+    "name": "Default-actor coverage",
+    "type": "Trust"
+  }
+]

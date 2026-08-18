@@ -11,6 +11,8 @@
  * ========================================================================== */
 import type { DmsCoordinationProblem } from "../dms/dms-data";
 import type { IntegrationData } from "../dms/dms-integrations";
+import { buildProductFlows } from "../_shared/product-flows";
+import { MES_DRAFT_FLOWS } from "./mes-arcade";
 
 export const PRODUCT = {
   id: "UPD-5",
@@ -23,58 +25,83 @@ export const PRODUCT = {
 };
 
 /* One source for the Problem spotlight and Coordination Tax timeline. Each
- * symptom becomes an accountable block in one sequence and keeps the real
- * metric and unit used in the section above. The `visual` keys reuse the four
- * generic spotlight slots; the MES graphics map them in mes-problem-visuals. */
+ * card traces to a Pain Points DB row (PP id) and quotes its attached Symptom
+ * row verbatim, same discipline as the DMS page. The `visual` keys reuse the
+ * four generic spotlight slots; the MES graphics map them in
+ * mes-problem-visuals. */
 export const MES_PROBLEMS: DmsCoordinationProblem[] = [
   {
+    /* PP-13 · High · eTravellers + Electronic Batch Records */
     visual: "retrieval",
     category: "Batch record assembly",
-    title: "The record is rebuilt after the run",
-    quote: "The batch record is reconstructed after the run instead of built as the work is done.",
-    detail: "Paper travellers get transcribed at the end of the run, so gaps surface at review, days after the operation that caused them.",
-    metric: "Days",
-    metricLabel: "Between the operation and its review",
+    title: "One batch, four records, no truth",
+    quote: "We have data in five systems but no single view of what is actually happening.",
+    detail: "Paper travellers on the floor, step completion in MES, consumption in ERP, inspection in QMS. Deviations between them surface at reconciliation, after the run.",
+    metric: "4",
+    metricLabel: "Parallel records of one batch",
     work: "Run the lot",
-    tax: ["Chase paper travellers", "Transcribe the run"],
-    outcome: "Record built at the operation",
+    tax: ["Reconcile paper against systems", "Rebuild the record after the run"],
+    outcome: "One record, built at the operation",
   },
   {
+    /* PP-14 · Medium · Inspections, Forms & Checklists + Work Orders */
     visual: "versions",
-    category: "Quality holds",
-    title: "The failure surfaces at final inspection",
-    quote: "A failed check is relayed by phone, and the line keeps running.",
-    detail: "Without a hold raised at the operation, value keeps being added to a lot that has already failed.",
-    metric: "End of line",
-    metricLabel: "Where the failure is finally caught",
-    work: "Catch the failure",
-    tax: ["Relay the hold by radio", "Rework the value added since"],
-    outcome: "Hold raised on the line",
+    category: "Inspection binding",
+    title: "The wrong revision inspects the lot",
+    quote: "We have the document but nobody can find it when it matters.",
+    detail: "Forms live in a library, work orders in the planning system, and matching this order to the right checklist at the right revision is operator memory.",
+    metric: "Memory",
+    metricLabel: "What binds the check to the order",
+    work: "Inspect the order",
+    tax: ["Find the right checklist", "Confirm the revision"],
+    outcome: "Checklist bound to the order",
   },
   {
+    /* PP-55 · Critical · Electronic Batch Records */
     visual: "drift",
     category: "Lot traceability",
-    title: "A recall becomes guesswork",
-    quote: "Tracing a lot means chasing paper travellers across the floor.",
-    detail: "Without a lot record that follows the product, a recall question turns into days of reconstructing where a lot went.",
+    title: "The recall runs on spreadsheets",
+    quote: "Material traceability breaks down at the supplier handoff.",
+    detail: "Which lots shipped where, what inputs, what parameters, what dispositions: assembled in spreadsheets and emailed exports while the regulator waits.",
     metric: "By hand",
-    metricLabel: "How the lot is traced downstream",
+    metricLabel: "Genealogy assembled under pressure",
     work: "Trace the lot",
-    tax: ["Pull paper from the floor", "Reconstruct the genealogy"],
-    outcome: "QR-coded lot record",
+    tax: ["Assemble spreadsheets and exports", "Chase the supplier handoff"],
+    outcome: "Genealogy already linked",
   },
   {
+    /* PP-12 · High · eTravellers + Electronic Batch Records */
     visual: "audit",
-    category: "Deviations on paper",
-    title: "The operator's signal is lost",
-    quote: "A deviation is scribbled on the traveller and never reaches the record.",
-    detail: "When deviations are raised on paper, the signal never reaches quality, so the same failure repeats shift after shift.",
+    category: "Shift handoff",
+    title: "The rationale leaves with the shift",
+    quote: "We cannot reconstruct what we knew and who decided what at the time.",
+    detail: "A deviation accepted or a parameter adjusted on one shift arrives at the next as a consequence without a reason. The decision lived in the handoff conversation.",
     metric: "Lost",
-    metricLabel: "Deviations that never reach a record",
-    work: "Raise the deviation",
-    tax: ["Decipher the margin note", "Re-key it into the QMS"],
-    outcome: "Deviation raised at the operation",
+    metricLabel: "Decision rationale between shifts",
+    work: "Hand over the shift",
+    tax: ["Rebuild the last shift's context", "Chase who decided what"],
+    outcome: "Rationale on the record",
   },
+];
+
+/* ---- Product Flows: persona journeys for the MES modules -----------------
+ * No flow in the Product Flows DB has steps for the MES modules yet; the
+ * Notion wiring below activates the moment Ben's team adds one. Until then
+ * the page carries the page-owned DRAFT journey from mes-arcade.tsx,
+ * labeled as such, whose step rows are proposed for the DB. */
+export const MES_FLOWS = [
+  ...buildProductFlows({
+    page: "mes",
+    moduleIds: [
+      "360860e6-b45e-81f9-ae92-cd8156553076" /* Work Order Management */,
+      "360860e6-b45e-8140-b854-db4f40b603fa" /* eTravellers */,
+      "360860e6-b45e-81cf-926b-da0e47ebac59" /* FAI & Control Plan Execution */,
+      "360860e6-b45e-819c-9ee6-e561035a55ba" /* Inspections, Forms & Checklists */,
+      "360860e6-b45e-8174-9963-ec1d6d753a56" /* Electronic Batch/Lot Records */,
+    ],
+    presentation: {},
+  }),
+  ...MES_DRAFT_FLOWS,
 ];
 
 /* the five bundled modules - the core of the product. points feed the module

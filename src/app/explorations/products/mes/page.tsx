@@ -10,9 +10,11 @@
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MES_ARCADE_FLOW_CONFIGS, MES_MODULE_ARCADE_CONFIGS } from "./mes-arcade";
 import {
   PRODUCT,
   MES_PROBLEMS,
+  MES_FLOWS,
   MODULES,
   MODULE_POINT_ICONS,
   LIFECYCLE,
@@ -53,6 +55,7 @@ import "../dms/dms.css";
 import "../_shared/product-kit.css";
 import "../dms/dms-redesign.css";
 import "./mes.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: "Manufacturing Execution System · Unifize",
@@ -104,7 +107,7 @@ export default function MesProductPage() {
             <div className="dms-hero__right">
               <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
               <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">Book a demo &rarr;</button>
+                <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
                 <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
                   Take Coordination Tax Assessment
                 </Link>
@@ -171,6 +174,7 @@ export default function MesProductPage() {
        * The Unifize product story begins after the problem is fully framed. */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer
+          arcadeConfigsByModule={MES_MODULE_ARCADE_CONFIGS}
           modules={MODULES}
           mocks={MES_MODULE_MOCKS}
           heading="Five disciplines, one shop floor."
@@ -205,12 +209,21 @@ export default function MesProductPage() {
        * The lot's path from released work order to sealed record. The live
        * panel stages the product prototype for the active step. On ink. */}
       <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
+        {/* Same treatment as the DMS page: sticky story layout, no map chip;
+          * the flow chips are arcade journeys on the persistent camera. */}
         <LifecycleExplorer
+          layout="sticky-visual"
+          mapChip={false}
+          stageByStation
           steps={LIFECYCLE}
           heading="From a released work order to a sealed batch record."
           trailLabel="How a lot moves"
           ariaLabel="Lot lifecycle"
           liveLabel="Lot L-2271, staged by lifecycle state"
+          flows={MES_FLOWS}
+          arcadeConfigsByFlow={MES_ARCADE_FLOW_CONFIGS}
+          flowsLabel="Follow the work through the lifecycle."
+          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
           stageMocks={[
             <MesWorkOrder key="released" />,
             <MesTraveller key="in-process" />,
@@ -391,7 +404,7 @@ export default function MesProductPage() {
               <h2 className="dms-close__h" id="mes-close-h">Bring the batch record you rebuild by hand.</h2>
               <p className="dms-lede">We will run a lot live, from a released work order to a sealed, traceable record, signed at every step.</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">Book a 30-minute walkthrough</button>
+                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
               </div>
             </div>
           </div>

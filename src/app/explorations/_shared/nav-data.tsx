@@ -23,26 +23,37 @@ export type NavItem = {
   foot?: NavFoot;
 };
 
-/* line-work glyphs (24-grid, 1.6 stroke) matching the system's data marks */
+/* solid glyphs (24-grid, filled geometry). Detail is carved out of the
+ * silhouette (evenodd holes, or opposite-winding subpaths where shapes union),
+ * so every mark stays one currentColor and works on any plate. */
 export const NAV_ICONS: Record<IconName, React.ReactNode> = {
-  qms: (<><path d="M12 3.2l6.8 2.6v4.8c0 4.3-2.9 7.4-6.8 8.7-3.9-1.3-6.8-4.4-6.8-8.7V5.8z" /><path d="M8.9 11.8l2.1 2.1 4.1-4.3" /></>),
-  dms: (<><path d="M6.5 3.2h6.5l4.5 4.5V20.8H6.5z" /><path d="M13 3.2v4.5h4.5" /><path d="M9 12.5h6M9 15.5h6" /></>),
-  mes: (<><circle cx="12" cy="12" r="3.1" /><path d="M12 4.2v2M12 17.8v2M4.2 12h2M17.8 12h2M6.5 6.5l1.4 1.4M16.1 16.1l1.4 1.4M17.5 6.5l-1.4 1.4M7.9 16.1l-1.4 1.4" /></>),
-  plm: (<><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3" /><path d="M19.8 4.5v4h-4" /></>),
-  flask: (<><path d="M9.5 3.2h5M10.6 3.2v5.3L6 17a2 2 0 0 0 1.8 2.9h8.4A2 2 0 0 0 18 17l-4.6-8.5V3.2" /><path d="M8 14.6h8" /></>),
+  /* shield, check carved out */
+  qms: (<path fillRule="evenodd" d="M12 2.6l7.4 2.8v5.1c0 4.7-3.1 8.1-7.4 9.7-4.3-1.6-7.4-5-7.4-9.7V5.4L12 2.6zM9.25 10.65l1.45 1.45 4.05-4.2 1.6 1.5-5.65 5.8-2.95-3.05z" />),
+  /* document with clipped fold corner, two record lines carved out */
+  dms: (<path fillRule="evenodd" d="M6.2 2.8h7l5.6 5.6v12.8H6.2V2.8zM9 12.4h6v1.5H9v-1.5zm0 3.2h6v1.5H9v-1.5z" />),
+  /* gear: body + 8 teeth union, hub carved by opposite winding */
+  mes: (<path d="M19.2 12A7.2 7.2 0 1 1 4.8 12A7.2 7.2 0 1 1 19.2 12z M18.8 10.45h3v3.1h-3z M17.9 15.71l2.13 2.12-2.2 2.2-2.12-2.13z M13.55 18.8v3h-3.1v-3z M8.29 17.9l-2.12 2.13-2.2-2.2 2.13-2.12z M5.2 13.55h-3v-3.1h3z M6.1 8.29L3.97 6.17l2.2-2.2 2.12 2.13z M10.45 5.2v-3h3.1v3z M15.71 6.1l2.12-2.13 2.2 2.2-2.13 2.12z M15.1 12A3.1 3.1 0 1 0 8.9 12A3.1 3.1 0 1 0 15.1 12z" />),
+  /* lifecycle loop with a solid station node bridging the band */
+  plm: (<path d="M19.2 12A7.2 7.2 0 1 1 4.8 12A7.2 7.2 0 1 1 19.2 12z M16.6 12A4.6 4.6 0 1 0 7.4 12A4.6 4.6 0 1 0 16.6 12z M14.7 6.1A2.7 2.7 0 1 1 9.3 6.1A2.7 2.7 0 1 1 14.7 6.1z" />),
+  flask: (<path d="M9.9 3.2h4.2v5.2l4.8 9a2.1 2.1 0 0 1-1.9 3.1H7a2.1 2.1 0 0 1-1.9-3.1l4.8-9V3.2z" />),
   droplet: (<path d="M12 3.4c2.8 3.6 5 6.2 5 9a5 5 0 0 1-10 0c0-2.8 2.2-5.4 5-9z" />),
-  cube: (<><path d="M12 3.4l7.4 4.2v8.8L12 20.6 4.6 16.4V7.6z" /><path d="M12 11.8v8.8M4.6 7.6L12 11.8l7.4-4.2" /></>),
-  stories: (<><rect x="3.5" y="5.5" width="17" height="13" /><path d="M10 9.6l4.4 2.4L10 14.4z" /></>),
-  case: (<><path d="M4 19.5h16" /><path d="M7 19.5v-5.5M12 19.5V8M17 19.5v-3.5" /></>),
-  blog: (<><path d="M4.6 19.4l1-3.8L15.5 5.7l2.8 2.8L8.4 18.4z" /><path d="M13.6 7.6l2.8 2.8" /></>),
-  shield: (<><path d="M12 3.2l6.8 2.6v4.8c0 4.3-2.9 7.4-6.8 8.7-3.9-1.3-6.8-4.4-6.8-8.7V5.8z" /><path d="M8.9 11.8l2.1 2.1 4.1-4.3" /></>),
-  ledger: (<><rect x="5" y="3.6" width="14" height="16.8" /><path d="M9 3.6V2.8h6v0.8" /><path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" /></>),
-  truck: (<><path d="M3 6.5h11v9H3z" /><path d="M14 9.5h4l3 3v3h-7z" /><circle cx="7" cy="17.5" r="1.6" /><circle cx="17.5" cy="17.5" r="1.6" /></>),
+  /* cube with the top face carved out */
+  cube: (<path fillRule="evenodd" d="M12 2.9l7.9 4.5v9.2L12 21.1l-7.9-4.5V7.4L12 2.9zm0 1.7L16.9 7.4 12 10.2 7.1 7.4 12 4.6z" />),
+  /* video card, play carved out */
+  stories: (<path fillRule="evenodd" d="M3.4 5.4h17.2v13.2H3.4V5.4zm6.8 3.9l4.6 2.7-4.6 2.7V9.3z" />),
+  /* bar chart on a solid baseline */
+  case: (<path d="M4.6 10.6h3.6v7.8H4.6z M10.2 5.9h3.6v12.5h-3.6z M15.8 8.4h3.6v10h-3.6z M4.6 18.4h14.8v1.6H4.6z" />),
+  /* pen with a separated cap */
+  blog: (<path d="M4.5 19.5l1-3.9 9.8-9.8 2.9 2.9-9.8 9.8z M16.1 5l1.8-1.8 2.9 2.9-1.8 1.8z" />),
+  shield: (<path fillRule="evenodd" d="M12 2.6l7.4 2.8v5.1c0 4.7-3.1 8.1-7.4 9.7-4.3-1.6-7.4-5-7.4-9.7V5.4L12 2.6zM9.25 10.65l1.45 1.45 4.05-4.2 1.6 1.5-5.65 5.8-2.95-3.05z" />),
+  /* clipboard: board + clip union, entry lines carved by opposite winding */
+  ledger: (<path d="M5.6 4h12.8v17H5.6z M9 2.4h6v3.2H9z M8.4 9.2v1.4h7.2V9.2z M8.4 12.4v1.4h7.2v-1.4z M8.4 15.6v1.4H13v-1.4z" />),
+  truck: (<><path d="M2.8 6h11.6v9.4H2.8z M14.4 9H18l3.2 3.2v3.2h-6.8z" /><circle cx="7" cy="17.3" r="1.9" /><circle cx="17.3" cy="17.3" r="1.9" /></>),
 };
 
 export function NavGlyph({ name }: { name: IconName }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
       {NAV_ICONS[name]}
     </svg>
   );
@@ -70,7 +81,10 @@ export const NAV: NavItem[] = [
           { label: "Quality", href: "/explorations/domains/quality", desc: "NCs, CAPA and audits on one quality record." },
           { label: "Compliance", href: "/explorations/domains/compliance", desc: "Stay inspection-ready against every standard." },
           { label: "Regulatory Affairs", href: "/explorations/domains/regulatory-affairs", desc: "Submissions, registrations and regulatory change." },
-          { label: "Supplier Quality", href: "/explorations/domains/supplier-quality", desc: "SCARs, approvals and supplier performance." },
+          // Renamed in the Domains DB on 2026-05-14 (Supplier Quality -> Supplier
+          // Management) to widen the buyer door past the Supplier Quality Director
+          // to the CPO / Head of Procurement. Slug follows the DB, not the old nav.
+          { label: "Supplier Management", href: "/explorations/domains/supplier-management", desc: "Qualification, SCARs and supplier performance." },
           { label: "Post-Market & Recall", href: "/explorations/domains/post-market-and-recall", desc: "Complaints, adverse events and recalls, closed." },
         ],
       },

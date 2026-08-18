@@ -1,0 +1,577 @@
+/* ============================================================================
+ * stylized-ctax.css - the coordination-tax comparison ledger on the stylized
+ * DMS page. One shared four-column template, header and rows alike:
+ * [stage] [today] [flip seam] [with unifize]. Each row pairs the drawn BEFORE
+ * scene (metric + the coordination it costs) with the AFTER scene (outcome)
+ * so the flip reads side by side. Scene colors are the problem section\'s
+ * --dms-gfx-* palette so both sections read as one drawing hand.
+ * ========================================================================== */
+
+.dms--stylized .sctx {
+  /* the drawing palette is the problem section\'s, which scopes these tokens
+   * to .dms-problems; the scenes are the same hand, so the section carries
+   * the same values rather than a second, drifting set */
+  --dms-gfx-surface: oklch(0.995 0.002 270);
+  --dms-gfx-surface-muted: oklch(0.958 0.02 270);
+  --dms-gfx-blue-soft: oklch(0.92 0.045 263);
+  --dms-gfx-line-soft: oklch(0.86 0.016 263);
+  --dms-gfx-line: oklch(0.7 0.025 263);
+  --dms-gfx-muted: oklch(0.5 0.018 263);
+  --dms-gfx-ink: oklch(0.3 0.02 263);
+  --dms-gfx-shadow: oklch(0.24 0.02 263 / 0.12);
+  --dms-gfx-shadow-soft: oklch(0.24 0.02 263 / 0.08);
+  border-bottom: 0;
+  background: var(--dms-surface);
+}
+
+.dms--stylized .sctx__head {
+  max-width: 62ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.dms--stylized .sctx__head .dms-h2 { max-width: 22ch; margin-inline: auto; }
+
+.dms--stylized .sctx__head .dms-lede { margin-inline: auto; }
+
+.dms--stylized .sctx__frame {
+  margin-top: clamp(36px, 4vw, 56px);
+  border: 1px solid var(--dms-hairline-alt);
+  background: var(--dms-surface);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 12px 28px -18px oklch(0.24 0.02 263 / 0.16),
+    0 32px 72px -36px oklch(0.24 0.02 263 / 0.3);
+}
+
+/* ---------------------------------------------------------------- ledger
+ * One shared column template for the header and every stage row, so the two
+ * world columns stay aligned from the header sentences down to the last row. */
+
+.dms--stylized .sctx__header,
+.dms--stylized .sctx__row {
+  display: grid;
+  grid-template-columns: minmax(148px, 188px) minmax(0, 1fr) clamp(44px, 4.4vw, 64px) minmax(0, 1fr);
+}
+
+/* the after column carries a continuous accent wash, header through rows */
+.dms--stylized .sctx__header-world.is-after,
+.dms--stylized .sctx__cell--after {
+  background: color-mix(in oklab, var(--dms-accent), #fff 95.5%);
+}
+
+/* ------------------------------------------------------------- header */
+
+.dms--stylized .sctx__header { border-bottom: 1px solid var(--dms-hairline); }
+
+.dms--stylized .sctx__header-stage {
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(18px, 2vw, 26px) clamp(16px, 1.8vw, 24px);
+  border-right: 1px solid var(--dms-hairline);
+}
+
+.dms--stylized .sctx__header-stage span {
+  max-width: 16ch;
+  color: var(--dms-faint);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+.dms--stylized .sctx__header-world {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: clamp(18px, 2vw, 26px) clamp(18px, 2vw, 28px);
+}
+
+.dms--stylized .sctx__world-kicker {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dms--stylized .sctx__header-world.is-after .sctx__world-kicker,
+.dms--stylized .sctx__header-world.is-after .sctx__world-name { color: var(--dms-accent); }
+
+.dms--stylized .sctx__world-name {
+  font-family: var(--dms-display);
+  font-size: clamp(1.4rem, 2.1vw, 1.85rem);
+  font-weight: 640;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+}
+
+.dms--stylized .sctx__world-note {
+  margin: 2px 0 0;
+  max-width: 42ch;
+  color: var(--dms-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* -------------------------------------------------------------- legend */
+
+.dms--stylized .sctx-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 18px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dms--stylized .sctx-legend li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--dms-ink-2);
+  font-size: 0.76rem;
+  font-weight: 550;
+}
+
+.dms--stylized .sctx__header-world.is-after .sctx-legend li { color: var(--dms-accent); }
+
+.dms--stylized .sctx-legend__i { width: 17px; height: 17px; flex: none; }
+
+.dms--stylized .sctx-legend__i .i-fill { fill: var(--dms-warn); }
+
+.dms--stylized .sctx-legend__i.is-handoff-auto .i-fill { fill: var(--dms-accent); }
+
+.dms--stylized .sctx-legend__i .i-line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-legend__i .i-ring {
+  fill: none;
+  stroke: var(--dms-warn);
+  stroke-width: 2;
+  stroke-dasharray: 3.4 3.2;
+  stroke-linecap: round;
+}
+
+.dms--stylized .sctx-legend__i .i-head {
+  fill: none;
+  stroke: var(--dms-warn);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-legend__i .i-shield { fill: var(--dms-accent); }
+
+/* ------------------------------------------------------------- rows */
+
+.dms--stylized .sctx__rows { margin: 0; padding: 0; list-style: none; }
+
+.dms--stylized .sctx__row { border-bottom: 1px solid var(--dms-hairline); }
+
+.dms--stylized .sctx__row:last-child { border-bottom: 0; }
+
+.dms--stylized .sctx__row-stage {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  padding: clamp(16px, 1.8vw, 24px);
+  border-right: 1px solid var(--dms-hairline);
+}
+
+.dms--stylized .sctx__n {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+}
+
+.dms--stylized .sctx__stage {
+  font-family: var(--dms-display);
+  font-size: 1.12rem;
+  font-weight: 630;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.dms--stylized .sctx__row-work {
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+}
+
+/* a cell = scene panel + copy, side by side, centered on the row */
+
+.dms--stylized .sctx__cell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: clamp(14px, 1.6vw, 22px);
+  align-items: center;
+  padding: clamp(16px, 1.8vw, 24px) clamp(18px, 2vw, 28px);
+}
+
+.dms--stylized .sctx__cell-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dms--stylized .sctx__metric {
+  font-family: var(--dms-display);
+  font-size: clamp(1.9rem, 2.6vw, 2.7rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 630;
+  letter-spacing: -0.015em;
+  line-height: 0.95;
+}
+
+.dms--stylized .sctx__metric-label {
+  color: var(--dms-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* the coordination the stage costs today, as warn-dotted line items */
+
+.dms--stylized .sctx__taxlist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 9px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dms--stylized .sctx__taxlist li {
+  position: relative;
+  padding-left: 15px;
+  color: var(--dms-ink-2);
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.dms--stylized .sctx__taxlist li::before {
+  position: absolute;
+  top: 0.42em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dms-warn);
+  content: "";
+}
+
+.dms--stylized .sctx__outcome {
+  font-family: var(--dms-display);
+  font-size: clamp(1.08rem, 1.4vw, 1.3rem);
+  font-weight: 630;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.dms--stylized .sctx__after-note {
+  color: var(--dms-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* the seam: churn handed over to flow */
+
+.dms--stylized .sctx__row-flip { display: grid; place-items: center; }
+
+.dms--stylized .sctx-flip { width: clamp(40px, 4vw, 58px); height: 20px; }
+
+.dms--stylized .sctx-flip svg { display: block; width: 100%; height: 100%; }
+
+.dms--stylized .sctx-flip__tail {
+  fill: none;
+  stroke: var(--dms-warn);
+  stroke-width: 2.2;
+  stroke-dasharray: 3 4.2;
+  stroke-linecap: round;
+}
+
+.dms--stylized .sctx-flip__lead,
+.dms--stylized .sctx-flip__head {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* no container around the drawings: the furniture floats directly on the row
+ * surface, anchored by its own drop shadows - the problem-section idiom. The
+ * fixed square footprint keeps the four rows' copy columns aligned. */
+
+.dms--stylized .sctx-fig {
+  display: grid;
+  width: clamp(140px, 12.2vw, 180px);
+  aspect-ratio: 1;
+}
+
+.dms--stylized .sctx-fig svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+/* ------------------------------------------------------------- close */
+
+.dms--stylized .sctx__coda {
+  margin: 0;
+  padding: 13px clamp(18px, 2vw, 28px);
+  border-top: 1px solid var(--dms-hairline);
+  color: var(--dms-muted);
+  font-size: 0.86rem;
+  text-align: center;
+}
+
+.dms--stylized .sctx__coda strong { color: var(--dms-ink); }
+
+.dms--stylized .sctx__record {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vw, 26px);
+  padding: 16px 20px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.dms--stylized .sctx__record span { display: inline-flex; align-items: center; gap: 10px; }
+
+.dms--stylized .sctx__record i { width: 1px; height: 18px; background: oklch(1 0 0 / 0.35); }
+
+.dms--stylized .sctx__record .sctx-legend__i { width: 20px; height: 20px; }
+
+.dms--stylized .sctx__record .sctx-legend__i .i-shield { fill: #fff; }
+
+.dms--stylized .sctx__record .sctx-legend__i .i-line { stroke: var(--dms-accent); }
+
+/* ============================================================== the scenes
+ * Same drawing hand as the problem section: a quiet halo, white surfaces with
+ * hairlines and soft shadows, line detail in the muted ink, one accent per
+ * frame. Status is a filled badge with a white ring - warn today, accent and
+ * sealed green on the record. */
+
+.dms--stylized .sctx-scatter {
+  fill: none;
+  stroke: var(--dms-gfx-line);
+  stroke-width: 1.6;
+  stroke-dasharray: 3.5 5;
+  stroke-linecap: round;
+}
+
+/* tiles + cards: the white furniture */
+
+.dms--stylized .sctx-tile { filter: drop-shadow(0 3px 5px var(--dms-gfx-shadow-soft)); }
+
+.dms--stylized .sctx-tile > rect {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.2;
+}
+
+.dms--stylized .sctx-glyph {
+  fill: none;
+  stroke: var(--dms-gfx-ink);
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-glyph-fill.is-sheet { fill: var(--dms-ok); stroke: none; }
+
+.dms--stylized .sctx-glyph.is-onfill { stroke: #fff; stroke-width: 1.3; }
+
+.dms--stylized .sctx-card { filter: drop-shadow(0 4px 7px var(--dms-gfx-shadow-soft)); }
+
+.dms--stylized .sctx-card > rect:first-of-type {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.2;
+}
+
+.dms--stylized .sctx-card.is-stale > rect:first-of-type { fill: var(--dms-gfx-surface-muted); }
+
+.dms--stylized .sctx-card.is-stale { opacity: 0.82; filter: none; }
+
+.dms--stylized .sctx-card.is-key { filter: drop-shadow(0 9px 14px var(--dms-gfx-shadow)); }
+
+.dms--stylized .sctx-card.is-key > rect:first-of-type {
+  stroke: color-mix(in oklab, var(--dms-accent), transparent 55%);
+  stroke-width: 1.4;
+}
+
+/* the accent-filled key card: the problem section\'s "one true version" move */
+.dms--stylized .sctx-card.is-accent { filter: drop-shadow(0 10px 16px color-mix(in oklab, var(--dms-accent), transparent 62%)); }
+
+.dms--stylized .sctx-card.is-accent > rect:first-of-type {
+  fill: var(--dms-accent);
+  stroke: var(--dms-accent);
+}
+
+.dms--stylized .sctx-card.is-accent .sctx-cardline { stroke: var(--dms-gfx-blue-soft); }
+
+.dms--stylized .sctx-spine { fill: var(--dms-accent); }
+
+.dms--stylized .sctx-cardline {
+  fill: none;
+  stroke: var(--dms-gfx-line);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.dms--stylized .sctx-fold {
+  fill: var(--dms-gfx-surface-muted);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-check {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-tag {
+  fill: var(--dms-gfx-muted);
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.dms--stylized .sctx-tag.is-warn { fill: var(--dms-warn); }
+
+.dms--stylized .sctx-vnum {
+  fill: var(--dms-gfx-muted);
+  font-family: var(--dms-display);
+  font-size: 15px;
+  font-weight: 640;
+  letter-spacing: -0.01em;
+}
+
+.dms--stylized .sctx-vnum.is-warn { fill: var(--dms-warn); }
+
+.dms--stylized .sctx-vnum.is-oncolor { fill: #fff; }
+
+.dms--stylized .sctx-pill rect { fill: var(--dms-accent); stroke: none; }
+
+.dms--stylized .sctx-pill text {
+  fill: #fff;
+  font-family: var(--dms-mono);
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-anchor: middle;
+}
+
+.dms--stylized .sctx-pill.is-inverse rect { fill: #fff; }
+
+.dms--stylized .sctx-pill.is-inverse text { fill: var(--dms-accent); }
+
+/* people + the change/training furniture */
+
+.dms--stylized .sctx-person { fill: var(--dms-gfx-ink); opacity: 0.82; }
+
+.dms--stylized .sctx-person.is-quiet { opacity: 0.45; }
+
+.dms--stylized .sctx-arc {
+  fill: none;
+  stroke: var(--dms-accent);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-arc.is-broken {
+  stroke: var(--dms-gfx-line);
+  stroke-dasharray: 4 5.5;
+  stroke-width: 1.9;
+}
+
+.dms--stylized .sctx-cal { filter: drop-shadow(0 4px 7px var(--dms-gfx-shadow-soft)); }
+
+.dms--stylized .sctx-cal rect {
+  fill: var(--dms-gfx-surface);
+  stroke: var(--dms-gfx-line-soft);
+  stroke-width: 1.2;
+}
+
+.dms--stylized .sctx-cal path {
+  fill: none;
+  stroke: var(--dms-gfx-line);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+.dms--stylized .sctx-cal text {
+  fill: var(--dms-warn);
+  font-family: var(--dms-display);
+  font-size: 18px;
+  font-weight: 640;
+  text-anchor: middle;
+}
+
+/* the badges: filled, white-ringed, softly lifted */
+
+.dms--stylized .sctx-badge { filter: drop-shadow(0 3px 5px oklch(0.24 0.02 263 / 0.22)); }
+
+.dms--stylized .sctx-badge circle { stroke: #fff; stroke-width: 2; }
+
+.dms--stylized .sctx-badge path {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--stylized .sctx-badge.is-err circle { fill: var(--dms-warn); }
+
+.dms--stylized .sctx-badge.is-ok circle { fill: var(--dms-ok); }
+
+.dms--stylized .sctx-badge.is-key circle,
+.dms--stylized .sctx-badge.is-clip circle { fill: var(--dms-accent); }
+
+/* ------------------------------------------------------------- responsive */
+
+@media (max-width: 1060px) {
+  .dms--stylized .sctx__header,
+  .dms--stylized .sctx__row { grid-template-columns: minmax(0, 1fr) clamp(36px, 4vw, 48px) minmax(0, 1fr); }
+
+  .dms--stylized .sctx__header-stage { display: none; }
+
+  .dms--stylized .sctx__row-stage {
+    grid-column: 1 / -1;
+    padding-bottom: 4px;
+    border-right: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .dms--stylized .sctx__header,
+  .dms--stylized .sctx__row { grid-template-columns: minmax(0, 1fr); }
+
+  .dms--stylized .sctx__header-flip,
+  .dms--stylized .sctx__row-flip { display: none; }
+
+  .dms--stylized .sctx__header-world { padding-block: 16px; }
+
+  .dms--stylized .sctx__cell { padding-block: 14px; }
+
+  .dms--stylized .sctx__record { flex-direction: column; gap: 6px; padding: 14px 18px; }
+
+  .dms--stylized .sctx__record i { display: none; }
+}

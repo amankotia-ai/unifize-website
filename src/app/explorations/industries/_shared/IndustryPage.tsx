@@ -28,6 +28,7 @@ import { IngressNav, PersonaExplorer, ModuleIndex, CostLedger } from "./industry
 import type { IndustryData } from "./types";
 import "../../industry-template-modern/itm.css";
 import "./industry-kit.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 /* Restrained outline icons for the validation answer cards (Section I). */
 const VAL_ICONS: Record<string, React.ReactNode> = {
@@ -74,7 +75,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
               {d.hero.chips.map((s) => <li key={s} className="itm-hero__std">{s}</li>)}
             </ul>
             <div className="itm-hero__ctas">
-              <button type="button" className="itm-btn">Book a demo →</button>
+              <BookDemoButton className="itm-btn" source="hero">Book a demo →</BookDemoButton>
               <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
             </div>
           </div>
@@ -309,7 +310,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
             <div className="itm-close__side">
               <p className="itm-lede">{d.close.lede}</p>
               <div className="itm-close__cta">
-                <button type="button" className="itm-btn">Book a 30-minute walkthrough</button>
+                <BookDemoButton className="itm-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
                 <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>

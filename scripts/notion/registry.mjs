@@ -92,4 +92,46 @@ export const SOURCES = {
       daily: { property: "Daily Activities", kind: "list" },
     },
   },
+  /* Product Flows + Steps are authored by Ben's controlled loop: mirror them
+   * read-only, never write back. The DMS lifecycle section renders the flows
+   * whose Module(s) intersect the page's modules and whose steps exist. */
+  flows: {
+    database_id: "5dce25e06e874ecfae06814f4d733c27",
+    mirror: "src/content/notion/flows.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      description: { property: "Description" },
+      status: { property: "Status" },
+      goalZero: { property: "Goal Zero Status" },
+      modules: { property: "Module(s)" },
+      persona: { property: "Primary Persona" },
+      steps: { property: "🚶‍♀️ Product Flow Steps" },
+      outcomes: { property: "Platform Outcomes" },
+    },
+  },
+  /* the outcomes a flow moves: closes each flow's value story on the page */
+  outcomes: {
+    database_id: "a6fe6cb75a1e4b98aadad78b5cab71b7",
+    mirror: "src/content/notion/outcomes.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      type: { property: "Type" },
+    },
+  },
+  flowSteps: {
+    database_id: "4847c63872db4831b66ef8b976d4f4e6",
+    mirror: "src/content/notion/flow-steps.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      index: { property: "Step Index" },
+      what: { property: "What Happens" },
+      decision: { property: "User Decision" },
+      role: { property: "Role-in-the-moment" },
+      primitives: { property: "CT Primitives at Risk" },
+      journey: { property: "Parent Journey" },
+    },
+  },
 };

@@ -17,7 +17,7 @@
   },
   "problem.lede": {
     "element": "01 The problem · lede",
-    "text": "Quality teams spend up to a third of their week hunting for controlled documents across shared drives, QMS folders, and email threads."
+    "text": "Four patterns repeat across regulated operations: the audit pull that takes days, the version that depends on where you look, the change the floor never hears about, and the retraining that arrives weeks late."
   },
   "capabilities.heading": {
     "element": "03 Capabilities · heading",
@@ -125,51 +125,51 @@
   },
   "problem.card1.title": {
     "element": "01 The problem · card 1 · title",
-    "text": "Forty minutes to find one SOP"
+    "text": "Days to assemble one audit record"
   },
   "problem.card1.quote": {
     "element": "01 The problem · card 1 · quote",
-    "text": "The auditor asked for one SOP. It took us forty minutes."
+    "text": "When auditors ask for the full record we spend days pulling it together."
   },
   "problem.card1.detail": {
     "element": "01 The problem · card 1 · detail",
-    "text": "Retrieval under audit pressure is slow because documents live in five places at once."
+    "text": "Evidence is stitched from exports, screenshots, and email forwards. The audit passes; passing costs days of senior time each cycle."
   },
   "problem.card2.title": {
     "element": "01 The problem · card 2 · title",
-    "text": "Nobody knows which version is live"
+    "text": "Three versions of one SOP"
   },
   "problem.card2.quote": {
     "element": "01 The problem · card 2 · quote",
-    "text": "Nobody can tell me which version is running on the floor right now."
+    "text": "SOPs are written once and never updated even when the process changes."
   },
   "problem.card2.detail": {
     "element": "01 The problem · card 2 · detail",
-    "text": "Multiple revisions coexist. Operators keep working from the copy they printed last quarter."
+    "text": "The controlled system says v3.2, a file share holds a local v3.1, and the workstation runs a laminated v2.8. The current version is a function of where you look."
   },
   "problem.card3.title": {
     "element": "01 The problem · card 3 · title",
-    "text": "Paper drifts from the process"
+    "text": "The floor hears about the change last"
   },
   "problem.card3.quote": {
     "element": "01 The problem · card 3 · quote",
-    "text": "The SOP was written in 2021. The process changed twice since."
+    "text": "A change was approved months ago but has not been fully implemented anywhere."
   },
   "problem.card3.detail": {
     "element": "01 The problem · card 3 · detail",
-    "text": "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit."
+    "text": "The line builds to the old version because the notification, the training, or the parts on hand lag the effective date. The first sign is a rejected part."
   },
   "problem.card4.title": {
     "element": "01 The problem · card 4 · title",
-    "text": "Days to assemble one record"
+    "text": "Retraining lands weeks after the change"
   },
   "problem.card4.quote": {
     "element": "01 The problem · card 4 · quote",
-    "text": "When auditors want the full record, we spend days pulling it together."
+    "text": "Retraining after a change is always late because nobody tracks who needs it."
   },
   "problem.card4.detail": {
     "element": "01 The problem · card 4 · detail",
-    "text": "Evidence is scattered, so audit prep becomes a fire drill instead of a filter."
+    "text": "People work to the new version without verified training, and the trace between the change and the training is partial when the auditor asks."
   },
   "modules.card1.promise": {
     "element": "02 Modules · Document Control · promise",
@@ -338,6 +338,14 @@
   "lifecycle.state6.detail": {
     "element": "04 Lifecycle · Obsolete · detail",
     "text": "Distributed copies are retrieved and the record is archived per your retention policy. The watermark flips to OBSOLETE on every render."
+  },
+  "flows.heading": {
+    "element": "04 Lifecycle · flow explorer · heading",
+    "text": "Follow the work through the lifecycle."
+  },
+  "flows.lede": {
+    "element": "04 Lifecycle · flow explorer · lede",
+    "text": "See each role’s path from first action to final handoff."
   },
   "integrations.diagram.heading": {
     "element": "Integrations · diagram heading",

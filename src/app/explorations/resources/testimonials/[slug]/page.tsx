@@ -1,14 +1,15 @@
 /* ============================================================================
- * /explorations/resources/testimonials/[slug] - a single customer film. Compact
- * masthead, the cinematic player as anchor, a chapter tracklist + pull quote
- * beside an exhibit spec, and a related-films grid.
+ * /explorations/resources/testimonials/[slug] - a single customer video,
+ * structured like the live video item: a compact light masthead, the player
+ * as anchor, chapters + quote beside the fact card, then related videos.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ResourceShell } from "../../_shared/resource-shell";
-import { ResourceMast, ResourceCTA, ResourceFooter, TagRow, pad2 } from "../../_shared/resource-chrome";
-import { VideoPlayer, VideoPoster } from "../../_shared/resources-interactive";
+import { ResourceMast, ResourceCTA, ResourceFooter, TagRow } from "../../_shared/resource-chrome";
+import { VideoPlayer } from "../../_shared/resources-interactive";
+import { VideoCard } from "../../_shared/resource-cards";
 import { TESTIMONIALS, getTestimonial } from "../../_shared/resources-data";
 
 export function generateStaticParams() {
@@ -34,17 +35,16 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
   return (
     <ResourceShell>
       <ResourceMast
-        trail={[{ label: "Customer stories", href: "/explorations/resources/testimonials" }, { label: t.company }]}
-        kicker={`Film · ${t.company}`}
-        title={<>&ldquo;{t.headline}&rdquo;</>}
-        desc={`${t.person}, ${t.role} at ${t.company} — a ${t.companyKind.toLowerCase()}.`}
+        trail={[{ label: "Videos", href: "/explorations/resources/testimonials" }, { label: t.company }]}
+        title={t.headline}
+        desc={`${t.person}, ${t.role} at ${t.company} · ${t.companyKind}`}
         compact
       >
         <TagRow modules={t.modules} industry={t.industry} />
       </ResourceMast>
 
       {/* player */}
-      <section className="dms-section rs-block">
+      <section className="dms-section rs-block" style={{ paddingTop: 0 }}>
         <div className="dms-wrap">
           <div data-reveal><VideoPlayer t={t} /></div>
         </div>
@@ -54,18 +54,17 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
       <section className="dms-section rs-block dms-section--alt">
         <div className="dms-wrap rs-item-grid">
           <div data-reveal>
-            <h2 className="rs-h3--mono">In this film</h2>
+            <h2 className="rs-lab">In this video</h2>
             <ol className="rs-chapters">
               {t.chapters.map((c) => (
                 <li className="rs-chapter" key={c.t}>
-                  <span className="rs-chapter__t dms-data">{c.t}</span>
+                  <span className="rs-chapter__t">{c.t}</span>
                   <span className="rs-chapter__label">{c.label}</span>
                 </li>
               ))}
             </ol>
             <figure className="rs-pull">
-              <span className="rs-pull__mark" aria-hidden="true">&ldquo;</span>
-              <blockquote className="rs-pull__q">{t.quote}</blockquote>
+              <blockquote className="rs-pull__q">&ldquo;{t.quote}&rdquo;</blockquote>
               <figcaption className="rs-pull__cite">
                 {t.poster ? <img className="rs-pull__ava" src={t.poster} alt="" /> : null}
                 <span className="rs-pull__who">
@@ -78,7 +77,7 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
 
           <aside data-reveal>
             <div className="rs-spec">
-              <div className="rs-spec__row"><span className="rs-spec__lab">Company</span><span className="rs-spec__val">{t.company} — {t.companyKind}</span></div>
+              <div className="rs-spec__row"><span className="rs-spec__lab">Company</span><span className="rs-spec__val">{t.company} · {t.companyKind}</span></div>
               <div className="rs-spec__row"><span className="rs-spec__lab">Industry</span><span className="rs-spec__val">{t.industry}</span></div>
               <div className="rs-spec__row"><span className="rs-spec__lab">Modules in play</span><span className="rs-spec__val">{t.modules.join(", ")}</span></div>
               {t.metrics.map((m) => (
@@ -93,14 +92,18 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
       {/* related */}
       <section className="dms-section rs-block">
         <div className="dms-wrap">
-          <div className="rs-blocklabel"><span className="rs-blocklabel__t">More films</span></div>
-          <div className="rs-vgrid" data-reveal>
-            {relatedAll.map((o, i) => <VideoPoster key={o.slug} t={o} no={i + 1} />)}
+          <h2 className="rs-relhead">More videos</h2>
+          <div className="rs-grid rs-grid--3" data-reveal>
+            {relatedAll.map((o) => <VideoCard key={o.slug} t={o} />)}
           </div>
         </div>
       </section>
 
-      <ResourceCTA heading="Your team has a story like this waiting to happen." ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }} />
+      <ResourceCTA
+        heading="Your team has a story like this waiting to happen."
+        sub="Book a demo and see connected collaboration on your own processes."
+        ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }}
+      />
       <ResourceFooter />
     </ResourceShell>
   );

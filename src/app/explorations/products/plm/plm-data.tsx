@@ -9,6 +9,8 @@
  * ========================================================================== */
 import type { ProductPageData } from "../_shared/ProductPage";
 import type { DmsCoordinationProblem } from "../dms/dms-data";
+import { buildProductFlows } from "../_shared/product-flows";
+import { PLM_DRAFT_FLOWS } from "./plm-arcade";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 
 const HERO_STANDARDS = ["ISO 13485", "21 CFR 820", "ISO 14971", "IATF 16949", "AS 9100", "IEC 62304"];
@@ -59,7 +61,10 @@ export const PLM_MODULES = [
 ];
 
 /* The same four PLM failure modes drive both the problem spotlight and the
- * coordination comparison, keeping the page's diagnosis and remedy aligned. */
+ * coordination comparison, keeping the page's diagnosis and remedy aligned.
+ * Cards 2 and 4 trace to Pain Points DB rows (PP id) with verbatim Symptom
+ * quotes; cards 1 and 3 are authored, because the Pain Points DB carries only
+ * two rows for the PLM modules today. Flagged to Ben as a data gap. */
 export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
   {
     visual: "retrieval",
@@ -74,16 +79,17 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     outcome: "Input linked to result",
   },
   {
+    /* PP-24 · Critical · Product Specifications */
     visual: "versions",
-    category: "Engineering change",
-    title: "A change with an unknown blast radius",
-    quote: "A change waits for the next design review to learn what it might break.",
-    detail: "Nothing links a specification to the FMEAs and control plans it feeds, so approval happens blind and something breaks downstream.",
-    metric: "Blind",
-    metricLabel: "Impact unknown at approval",
-    work: "Approve the ECO",
-    tax: ["Hunt the affected documents", "Wait for the design review"],
-    outcome: "Impact on the record",
+    category: "Specification management",
+    title: "Specs lock before the supplier can make them",
+    quote: "We do not know whether a supplier can actually deliver to spec until parts arrive.",
+    detail: "Specifications lock at the phase gate before supplier capability is verified, so parts arrive at incoming inspection failing a spec the supplier was never qualified for.",
+    metric: "Locked",
+    metricLabel: "Before capability is verified",
+    work: "Lock the spec",
+    tax: ["Verify capability after the fact", "Negotiate the deviation"],
+    outcome: "Capability checked before lock",
   },
   {
     visual: "drift",
@@ -98,17 +104,38 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     outcome: "Result linked, requirement closed",
   },
   {
+    /* PP-20 · Medium · Product Risk Management */
     visual: "audit",
     category: "FMEA & control plan",
-    title: "The FMEA lives in a spreadsheet",
-    quote: "The FMEA was scored in a workshop. The control plan never heard about it.",
-    detail: "RPN never reaches the control plan, so the highest-risk failure mode is not the most controlled characteristic.",
-    metric: "Detached",
-    metricLabel: "RPN never reaches the control plan",
-    work: "Control the risk",
-    tax: ["Reconcile FMEA versions", "Re-key the control plan"],
-    outcome: "RPN drives the control plan",
+    title: "Every programme rebuilds its FMEA",
+    quote: "We solve the same cross-site problem independently at each location.",
+    detail: "Each programme scores its own DFMEA and PFMEA. Catalogued failure modes and controls do not flow to the next programme, so known risks are rediscovered.",
+    metric: "Again",
+    metricLabel: "Known failure modes rediscovered",
+    work: "Score the FMEA",
+    tax: ["Recover the last programme's lessons", "Rebuild the controls list"],
+    outcome: "Failure modes carried forward",
   },
+];
+
+/* ---- Product Flows: persona journeys for the PLM modules -----------------
+ * No flow in the Product Flows DB touches the PLM modules yet; the Notion
+ * wiring below activates when Ben's team authors design control flows.
+ * Until then the page carries the page-owned DRAFT journey from
+ * plm-arcade.tsx, labeled as such, whose step rows are proposed for the DB. */
+export const PLM_FLOWS = [
+  ...buildProductFlows({
+    page: "plm",
+    moduleIds: [
+      "360860e6-b45e-8111-a174-d087651a29c3" /* Product Specifications */,
+      "360860e6-b45e-8166-8c6a-c3a5b4853822" /* Product Risk Management */,
+      "360860e6-b45e-8181-acbf-f9420f5ac529" /* Design Controls & Traceability */,
+      "360860e6-b45e-8145-9547-e6da0daaf1f2" /* Inspection & Process Parameters */,
+      "360860e6-b45e-8191-83af-f8702aaccf13" /* FMEA & Control Plan Definition */,
+    ],
+    presentation: {},
+  }),
+  ...PLM_DRAFT_FLOWS,
 ];
 
 /* the PLM external standards (Notion External Standards relation) */

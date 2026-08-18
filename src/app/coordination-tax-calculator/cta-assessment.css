@@ -1,0 +1,1056 @@
+/* ============================================================================
+ * Coordination Tax Assessment - /coordination-tax-calculator (+ /report).
+ * Ben's Aug 2026 prototypes in the DMS shell, at its most minimal:
+ * every assessment section is one rail-and-content grid (sticky eyebrow +
+ * dms-h2 + lede left, data right), hairline-ruled lists instead of boxes,
+ * a single accent, provenance and status as quiet dot-labels, footnote
+ * rules instead of tinted alert boxes. The full report keeps its compact
+ * white document form with the same quiet component language.
+ * ========================================================================== */
+
+.ctax {
+  /* surfaces (mirrors the dms-redesign light set) */
+  --ctax-surface: #ffffff;
+  --ctax-surface-alt: #f5f6f8;
+  --ctax-surface-quiet: #fafbfc;
+  --ctax-surface-sunk: #eceef2;
+  --ctax-ink: #17191f;
+  --ctax-ink-2: #3f4550;
+  --ctax-muted: #606773;
+  --ctax-faint: #69717d;
+  --ctax-hairline: #dfe2e7;
+  --ctax-line-strong: #cfd4dc;
+  /* dark surfaces (hero, proof, close, report mast) */
+  --ctax-d-bg: #17191f;
+  --ctax-d-bg-2: #1c1f26;
+  --ctax-d-bg-3: #242832;
+  --ctax-d-border: #30343d;
+  --ctax-d-border-2: #3a3f49;
+  --ctax-d-ink: #f7f8fa;
+  --ctax-d-ink-2: #b9bec8;
+  --ctax-d-ink-3: #8b929f;
+  /* accent */
+  --ctax-accent: var(--u-primary);
+  --ctax-accent-hover: var(--u-primary-hover);
+  --ctax-accent-tint: #edf1ff;
+  --ctax-accent-ink: #1c47b8;
+  /* status */
+  --ctax-ok: #2c9257;
+  --ctax-ok-ink: #185f35;
+  --ctax-ok-tint: #ddf0e4;
+  --ctax-warn: #c98a2b;
+  --ctax-warn-ink: #8a5a15;
+  --ctax-warn-tint: #fdf0dc;
+  --ctax-err: #c25445;
+  --ctax-err-ink: #a03d2e;
+  --ctax-err-tint: #fbe9e5;
+  --ctax-viol: #6a5fc9;
+  --ctax-viol-ink: #4b3fae;
+  --ctax-viol-tint: #ece9f9;
+  /* data-viz series */
+  --ctax-viz-1: var(--u-primary);
+  --ctax-viz-2: #6f8cff;
+  --ctax-viz-3: #8a82dd;
+  --ctax-neutral: #8b93a0;
+}
+
+.ctax * { box-sizing: border-box; }
+.ctax :where(p, li, td, th, figcaption, label, .ctax-note) a:not(.dms-btn) {
+  color: var(--ctax-accent);
+  text-decoration: none;
+}
+.ctax :where(p, li, td, th, figcaption, label, .ctax-note) a:not(.dms-btn):hover {
+  text-decoration: underline;
+}
+
+.ctax-mono {
+  font-family: var(--u-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.ctax-dim { color: var(--ctax-muted); }
+.ctax-ink { color: var(--ctax-ink); }
+.ctax-center { text-align: center; }
+
+/* ------------------------------------------------------------------ buttons */
+.ctax .dms-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.ctax .ctax-btn-full { width: 100%; }
+.ctax .ctax-btn-sm { min-height: 34px; padding: 8px 15px; font-size: 0.8rem; }
+.ctax .ctax-btn-ghostdark {
+  background: transparent;
+  border-color: var(--ctax-d-border-2);
+  color: var(--ctax-d-ink);
+}
+.ctax .ctax-btn-ghostdark:hover { background: var(--ctax-d-bg-3); }
+.ctax-ctarow { display: flex; gap: 10px; flex-wrap: wrap; }
+.ctax-ctarow--center { justify-content: center; margin-top: 4px; }
+
+/* ------------------------------------------------------------- section grid
+ * The page's one section anatomy: rail (eyebrow + headline + lede, sticky)
+ * and content. Everything aligns to these two columns. */
+.ctax-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 400px) minmax(0, 1fr);
+  gap: clamp(44px, 7vw, 120px);
+  align-items: start;
+}
+.ctax-rail {
+  position: sticky;
+  top: 104px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+.ctax-rail .dms-h2 { font-size: clamp(30px, 2.8vw, 42px); }
+.ctax-content { min-width: 0; }
+@media (max-width: 920px) {
+  .ctax-grid { grid-template-columns: 1fr; gap: 36px; }
+  .ctax-rail { position: static; }
+}
+
+/* content blocks separate with hairlines, not boxes */
+.ctax-block + .ctax-block {
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--ctax-hairline);
+}
+.dms-section--dark .ctax-block + .ctax-block { border-color: var(--ctax-d-border); }
+
+/* footnote: the quiet replacement for tinted alert boxes */
+.ctax-foot {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ctax-line-strong);
+}
+.ctax-foot p {
+  margin: 0 0 10px;
+  max-width: 78ch;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ctax-muted);
+}
+.ctax-foot p:last-child { margin-bottom: 0; }
+.ctax-foot b { color: var(--ctax-ink); font-weight: 650; }
+
+/* ------------------------------------------------------------------ hero */
+.ctax-hero__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+.ctax-hero .dms-hero__title { font-size: clamp(2.7rem, 4.6vw, 4.6rem); }
+.ctax-hero .dms-hero__sub { margin-top: 4px; }
+.ctax-recogline {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0 0;
+  color: var(--ctax-d-ink-3);
+  font-size: 13px;
+}
+.ctax-recogline b { color: var(--ctax-d-ink-2); font-weight: 650; }
+.ctax-recogline a { color: var(--ctax-d-ink-3); text-decoration: underline; text-underline-offset: 3px; }
+.ctax-recogline a:hover { color: var(--ctax-d-ink); }
+.ctax-recog__dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--ctax-ok);
+  box-shadow: 0 0 0 4px rgba(44, 146, 87, 0.18);
+}
+
+/* ------------------------------------------------------------------ type
+ * Compact type inside the report document (page sections use dms-h2). */
+.ctax-h1 {
+  margin: 12px 0 10px;
+  font-family: var(--u-display);
+  font-weight: 520;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.ctax-h1--intake { font-size: 24px; margin: 8px 0 6px; }
+.ctax-h1--mast { color: var(--ctax-d-ink); font-size: clamp(26px, 3vw, 34px); margin: 10px 0 4px; }
+
+.ctax-h2 {
+  margin: 10px 0 8px;
+  font-family: var(--u-display);
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 520;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.ctax-h3 {
+  margin: 26px 0 4px;
+  font-family: var(--u-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+.ctax h3 { font-family: var(--u-display); font-weight: 600; }
+
+.ctax-sub {
+  max-width: 72ch;
+  color: var(--ctax-muted);
+  font-size: 15px;
+  line-height: 1.62;
+  text-wrap: pretty;
+  margin: 0;
+}
+.ctax-lead { font-size: 15px; color: var(--ctax-ink-2); max-width: 78ch; }
+.ctax-note {
+  font-size: 12.5px;
+  color: var(--ctax-muted);
+  max-width: 88ch;
+}
+.ctax-confirm { margin-top: 12px; }
+.ctax-confirm.is-ok { color: var(--ctax-ok-ink); }
+.ctax-confirm.is-muted { color: var(--ctax-muted); }
+
+/* the report document's own eyebrow */
+.ctax-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  color: var(--ctax-muted);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+.ctax-eyebrow--dark { color: #8aa6ff; }
+.ctax-eyebrow--ok { color: var(--ctax-ok-ink); }
+
+/* ------------------------------------------------------- provenance labels
+ * Quiet dot + word, no chip background. */
+.ctax-prov {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+.ctax-prov i { width: 5px; height: 5px; flex: none; background: currentColor; }
+.ctax-prov.is-assumed { color: var(--ctax-warn-ink); }
+.ctax-prov.is-inferred { color: var(--ctax-accent-ink); }
+.ctax-prov.is-confirmed { color: var(--ctax-ok-ink); }
+.ctax-prov.is-modelled { color: var(--ctax-viol-ink); }
+.ctax-prov.is-public { color: var(--ctax-faint); }
+
+/* legend as a quiet definition list in the rail */
+.ctax-legend {
+  display: grid;
+  gap: 9px;
+  margin: 4px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--ctax-hairline);
+}
+.ctax-legend > div { display: flex; align-items: baseline; gap: 10px; }
+.ctax-legend dt { min-width: 76px; }
+.ctax-legend dd { margin: 0; font-size: 12px; color: var(--ctax-muted); }
+
+/* ------------------------------------------------------------------ fields */
+.ctax-fld { min-width: 220px; }
+.ctax-fld label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ctax-muted);
+}
+.ctax input,
+.ctax select {
+  width: 100%;
+  border: 1px solid var(--ctax-line-strong);
+  background: var(--ctax-surface);
+  color: var(--ctax-ink);
+  padding: 10px 12px;
+  font: inherit;
+  font-size: 14px;
+  border-radius: 0;
+}
+.ctax input:focus,
+.ctax select:focus {
+  outline: 2px solid var(--ctax-accent-tint);
+  border-color: var(--ctax-accent);
+}
+.ctax-enrich {
+  display: flex;
+  gap: 16px 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin: 16px 0 14px;
+}
+.ctax-lookup { margin-top: 18px; }
+.ctax-lookup__row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 6px 0 8px;
+}
+.ctax-lookup__row input { flex: 1; min-width: 220px; width: auto; }
+
+/* ------------------------------------------------------------------ lens */
+.ctax-lens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.ctax-pbtn {
+  cursor: pointer;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--ctax-muted);
+  transition: color 140ms ease-out, border-color 140ms ease-out, background-color 140ms ease-out;
+}
+.ctax-pbtn:hover { color: var(--ctax-ink); border-color: var(--ctax-line-strong); }
+.ctax-pbtn.is-on {
+  background: var(--ctax-ink);
+  border-color: var(--ctax-ink);
+  color: #fff;
+}
+.ctax-personaline {
+  margin: 14px 0 0;
+  max-width: 70ch;
+  color: var(--ctax-ink-2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ------------------------------------------------------------------ scorecard
+ * A ruled table, not a box: micro column heads, hairline rows, thin meters. */
+.ctax-sc { margin-top: 26px; }
+.ctax-sc__hd,
+.ctax-sc__row {
+  display: grid;
+  grid-template-columns: 1.15fr 1.05fr 0.75fr 1.6fr;
+  gap: 20px;
+  align-items: start;
+}
+.ctax-sc__hd {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ctax-line-strong);
+  color: var(--ctax-faint);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ctax-sc__row {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--ctax-hairline);
+  font-size: 13px;
+}
+.ctax-sc__area { font-weight: 650; font-size: 13.5px; }
+.ctax-sc__reading { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; }
+.ctax-sc__reading > span:first-child { font-weight: 500; color: var(--ctax-ink-2); }
+.ctax-sc__why { font-size: 12.5px; line-height: 1.55; color: var(--ctax-muted); }
+
+.ctax-sev {
+  display: block;
+  height: 6px;
+  max-width: 120px;
+  background: var(--ctax-surface-sunk);
+  overflow: hidden;
+  margin: 4px 0 7px;
+}
+.ctax-sev > span { display: block; height: 100%; }
+.ctax-sevchip { font-size: 11px; font-weight: 650; white-space: nowrap; }
+.ctax-sc__sev.is-high .ctax-sev > span { background: var(--ctax-err); }
+.ctax-sc__sev.is-high .ctax-sevchip { color: var(--ctax-err-ink); }
+.ctax-sc__sev.is-elevated .ctax-sev > span { background: var(--ctax-warn); }
+.ctax-sc__sev.is-elevated .ctax-sevchip { color: var(--ctax-warn-ink); }
+.ctax-sc__sev.is-moderate .ctax-sev > span { background: var(--ctax-ok); }
+.ctax-sc__sev.is-moderate .ctax-sevchip { color: var(--ctax-ok-ink); }
+
+@media (max-width: 760px) {
+  .ctax-sc__hd { display: none; }
+  .ctax-sc__row { grid-template-columns: 1fr; gap: 7px; padding: 16px 0; }
+}
+
+/* ------------------------------------------------------------------ bars */
+.ctax-bars { display: grid; gap: 10px; }
+.ctax-theme { display: grid; gap: 8px; }
+.ctax-theme:not(:first-child) {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--ctax-hairline);
+}
+.ctax-br {
+  display: grid;
+  grid-template-columns: 250px 1fr 110px;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+}
+.ctax-br--head > span:first-child { font-weight: 650; }
+.ctax-br--head .ctax-br__val { font-weight: 650; color: var(--ctax-ink); }
+.ctax-br--sub { padding-left: 0; }
+.ctax-br--sub > span:first-child { color: var(--ctax-muted); font-size: 12.5px; }
+.ctax-br--sub .ctax-br__bar { opacity: 0.35; }
+.ctax-br__lab.is-strong { font-weight: 650; }
+.ctax-br__rail { display: block; min-width: 0; }
+.ctax-br__bar {
+  display: block;
+  height: 9px;
+  background: var(--ctax-viz-1);
+}
+.ctax-br__val {
+  text-align: right;
+  color: var(--ctax-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+@media (max-width: 620px) {
+  .ctax-br { grid-template-columns: 130px 1fr 86px; gap: 10px; }
+}
+
+/* ------------------------------------------------------------------ benchmark */
+.ctax-track {
+  position: relative;
+  height: 14px;
+  margin-top: 24px;
+  background: linear-gradient(90deg, var(--ctax-accent-tint), #c9d8ff);
+}
+.ctax-track__band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: var(--ctax-accent);
+  opacity: 0.2;
+}
+.ctax-track__mk {
+  position: absolute;
+  top: -6px;
+  width: 3px;
+  height: 26px;
+  background: var(--ctax-neutral);
+}
+.ctax-track__mk small {
+  position: absolute;
+  top: -17px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--ctax-faint);
+}
+.ctax-track__mk.is-ink { background: var(--ctax-ink); }
+.ctax-track__mk.is-ink small { color: var(--ctax-ink); }
+.ctax-track__mk.is-ok { background: var(--ctax-ok); }
+.ctax-track__mk.is-ok small { color: var(--ctax-ok-ink); }
+.ctax-track__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 11px;
+  color: var(--ctax-neutral);
+}
+.ctax-range-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 34px;
+}
+.ctax-range {
+  margin: 0 0 6px;
+  font-size: clamp(34px, 3.4vw, 44px);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--ctax-ink);
+}
+.ctax-range span { color: var(--ctax-muted); font-weight: 500; font-size: 0.45em; }
+
+/* ------------------------------------------------------------- proof (dark) */
+.ctax-dquote blockquote {
+  margin: 0 0 14px;
+  font-family: var(--u-display);
+  font-size: clamp(24px, 2.6vw, 34px);
+  font-weight: 520;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--ctax-d-ink);
+  max-width: 24ch;
+  text-wrap: balance;
+}
+.ctax-dquote figcaption { font-size: 13px; color: var(--ctax-d-ink-2); }
+.ctax-dquote__stats {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--ctax-d-ink-3);
+}
+.ctax-dref {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--ctax-d-border);
+}
+.ctax-dref__k {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: #8aa6ff;
+}
+.ctax-dref p { margin: 0; max-width: 64ch; font-size: 14px; line-height: 1.6; color: var(--ctax-d-ink-2); }
+.ctax-dref b { color: var(--ctax-d-ink); font-weight: 650; }
+
+/* ---------------------------------------------------------- report ledger */
+.ctax-ledger {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+}
+.ctax-ledger li {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  padding: 18px 0;
+  border-top: 1px solid var(--ctax-hairline);
+}
+.ctax-ledger li:last-child { border-bottom: 1px solid var(--ctax-hairline); }
+.ctax-ledger__n { font-size: 12px; color: var(--ctax-accent); padding-top: 2px; }
+.ctax-ledger b { display: block; font-size: 15px; font-weight: 650; margin-bottom: 3px; }
+.ctax-ledger div > span { font-size: 13px; color: var(--ctax-muted); }
+
+/* ------------------------------------------------------------------ close */
+.ctax-close { text-align: center; }
+.ctax-close__lead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.ctax-close__h {
+  margin: 0;
+  max-width: 1120px;
+  color: var(--ctax-d-ink);
+  font-family: var(--u-display);
+  font-size: clamp(2.5rem, 4.4vw, 4.4rem);
+  font-weight: 520;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.ctax-close .dms-lede { max-width: 62ch; text-align: center; }
+
+/* ============================================================ REPORT PAGE */
+
+.ctax-reportsec { padding-block: clamp(48px, 5vw, 80px); }
+
+/* intake */
+.ctax-intake { max-width: 680px; margin: 0 auto; }
+.ctax-intake__card {
+  background: var(--ctax-surface);
+  border: 1px solid var(--ctax-hairline);
+  padding: 32px;
+}
+.ctax-prog {
+  height: 4px;
+  margin-top: 12px;
+  background: var(--ctax-surface-sunk);
+  overflow: hidden;
+}
+.ctax-prog > span { display: block; height: 100%; background: var(--ctax-accent); }
+.ctax-qgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 20px 0;
+}
+@media (max-width: 560px) {
+  .ctax-qgrid { grid-template-columns: 1fr; }
+}
+.ctax-qgrid .ctax-fld { min-width: 0; }
+.ctax-fld--full { grid-column: 1 / -1; }
+.ctax-qgrid + .ctax-qgrid { margin-top: 0; }
+.ctax-intake .dms-btn { margin-top: 8px; }
+
+/* recognition strip inside the intake card */
+.ctax-recog--card {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--ctax-hairline);
+  font-size: 13px;
+  color: var(--ctax-muted);
+}
+.ctax-recog--card .ctax-recog__dot { align-self: center; }
+.ctax-recog--card b { color: var(--ctax-ink); }
+.ctax-recog__src {
+  margin-left: auto;
+  flex: none;
+  font-size: 11px;
+  color: var(--ctax-faint);
+}
+
+/* the report document */
+.ctax-pagewrap { max-width: 940px; margin: 0 auto; }
+.ctax-page {
+  background: var(--ctax-surface);
+  border: 1px solid var(--ctax-hairline);
+  overflow: hidden;
+}
+.ctax-pad {
+  padding: 34px 44px;
+  border-top: 1px solid var(--ctax-hairline);
+}
+@media (max-width: 640px) {
+  .ctax-pad { padding: 24px 18px; }
+}
+.ctax-pad > .ctax-eyebrow { margin-bottom: 2px; }
+.ctax-pad p { font-size: 14px; color: var(--ctax-ink-2); margin: 0 0 12px; }
+.ctax-pad p:last-child { margin-bottom: 0; }
+.ctax-pad p.ctax-note { font-size: 12.5px; color: var(--ctax-muted); }
+.ctax-pad p.ctax-lead { font-size: 15px; }
+
+/* mast */
+.ctax-mast {
+  background: var(--ctax-d-bg);
+  color: var(--ctax-d-ink);
+  padding: 28px 44px;
+}
+@media (max-width: 640px) {
+  .ctax-mast { padding: 22px 18px; }
+}
+.ctax-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.ctax-logo__u {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  background: var(--ctax-accent);
+  color: #fff;
+  font-size: 15px;
+}
+.ctax-logo__name { font-family: var(--u-display); }
+.ctax-logo--dark { color: var(--ctax-d-ink); }
+.ctax-mast__toprow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+.ctax-mast__stage {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ctax-d-ink-2);
+  display: grid;
+  gap: 9px;
+  justify-items: end;
+}
+.ctax-mast__meta { color: var(--ctax-d-ink-2); font-size: 13px; margin-top: 5px; }
+.ctax-contents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 18px;
+}
+.ctax-contents a {
+  font-size: 11.5px;
+  color: var(--ctax-d-ink-2);
+  border: 1px solid var(--ctax-d-border-2);
+  border-radius: 999px;
+  padding: 4px 11px;
+  text-decoration: none;
+}
+.ctax-contents a:hover {
+  background: var(--ctax-d-bg-3);
+  color: var(--ctax-d-ink);
+}
+
+/* CFO one-pager: the document's one framed object */
+.ctax-cfo {
+  margin: 26px 44px;
+  border: 1px solid var(--ctax-ink);
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .ctax-cfo { margin: 18px 16px; }
+}
+.ctax-cfo__h {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--ctax-ink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ctax-cfo__b { padding: 22px 24px; }
+.ctax-cfo__big {
+  font-size: 34px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.ctax-cfo__big span { font-size: 17px; color: var(--ctax-muted); font-weight: 500; }
+.ctax-cfo__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+@media (max-width: 640px) {
+  .ctax-cfo__row { grid-template-columns: 1fr; }
+}
+.ctax-kpi {
+  border-top: 1px solid var(--ctax-hairline);
+  padding-top: 10px;
+}
+.ctax-kpi b { display: block; font-size: 18px; letter-spacing: -0.01em; }
+.ctax-kpi span { font-size: 11.5px; color: var(--ctax-muted); }
+
+/* gap diagram */
+.ctax-gap {
+  display: grid;
+  grid-template-columns: 1fr 64px 1fr;
+  gap: 12px;
+  align-items: center;
+  margin: 16px 0 14px;
+}
+@media (max-width: 560px) {
+  .ctax-gap { grid-template-columns: 1fr; }
+}
+.ctax-gap__box {
+  border: 1px solid var(--ctax-hairline);
+  padding: 16px;
+}
+.ctax-gap__box h3 { margin: 0 0 4px; font-size: 14px; }
+.ctax-gap__box p { font-size: 13px; color: var(--ctax-muted); margin: 0; }
+.ctax-gap__box--tax { background: var(--ctax-warn-tint); border-color: transparent; }
+.ctax-gap__box--tax p { color: var(--ctax-warn-ink); }
+.ctax-gap__vs {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ctax-muted);
+}
+
+/* tables */
+.ctax-table {
+  width: 100%;
+  margin-top: 14px;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.ctax-table th {
+  text-align: left;
+  padding: 0 10px 9px 0;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ctax-faint);
+  border-bottom: 1px solid var(--ctax-line-strong);
+}
+.ctax-table td {
+  padding: 10px 10px 10px 0;
+  border-top: 1px solid var(--ctax-hairline);
+  vertical-align: top;
+}
+.ctax-table tbody tr:first-child td { border-top: 0; }
+.ctax-table .is-num { text-align: right; }
+.ctax-table .is-good { color: var(--ctax-ok-ink); }
+.ctax-you { font-weight: 650; }
+
+/* the document's quiet callouts (shared .ctax-foot rules apply too) */
+.ctax-callout,
+.ctax-disclaimer {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ctax-line-strong);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ctax-muted);
+}
+.ctax-callout b,
+.ctax-disclaimer b { color: var(--ctax-ink); font-weight: 650; }
+
+/* stacked layer bar */
+.ctax-stack {
+  display: flex;
+  height: 40px;
+  overflow: hidden;
+  margin-top: 12px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #fff;
+}
+.ctax-stack > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px;
+}
+.ctax-vizlegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--ctax-muted);
+}
+.ctax-vizlegend i,
+.ctax-dlegend i {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  vertical-align: middle;
+  flex: none;
+}
+
+/* donut */
+.ctax-donutwrap {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.ctax-donut { width: 150px; height: 150px; border-radius: 50%; flex: none; }
+.ctax-dlegend { font-size: 12.5px; display: grid; gap: 6px; min-width: 280px; }
+.ctax-dlegend div { display: flex; gap: 8px; align-items: center; }
+.ctax-dlegend b { margin-left: auto; }
+
+/* load / floor / tax */
+.ctax-lft { display: grid; gap: 6px; margin-top: 14px; }
+.ctax-lft__seg {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+@media (max-width: 560px) {
+  .ctax-lft__seg { grid-template-columns: 110px 1fr; }
+}
+.ctax-lft__bar {
+  display: flex;
+  align-items: center;
+  height: 24px;
+  padding-left: 10px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* sharpen: ruled rows */
+.ctax-sharp { display: grid; margin: 14px 0 4px; }
+.ctax-sharp__row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 0;
+  border-top: 1px solid var(--ctax-hairline);
+  font-size: 13.5px;
+}
+.ctax-sharp__row:last-child { border-bottom: 1px solid var(--ctax-hairline); }
+.ctax-sharp__lift {
+  font-size: 11.5px;
+  font-weight: 650;
+  color: var(--ctax-ok-ink);
+  text-align: right;
+}
+
+/* solution levels: ruled columns */
+.ctax-levels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 18px;
+}
+@media (max-width: 640px) {
+  .ctax-levels { grid-template-columns: 1fr; }
+}
+.ctax-lvl {
+  border-top: 1px solid var(--ctax-line-strong);
+  padding-top: 14px;
+}
+.ctax-lvl__n {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--ctax-accent);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.ctax-lvl h3 { margin: 0 0 5px; font-size: 14.5px; }
+.ctax-lvl p { margin: 0; }
+
+/* journey steps: ruled rows, numbers in accent */
+.ctax-steps { display: grid; margin-top: 16px; }
+.ctax-step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  padding: 13px 0;
+  border-top: 1px solid var(--ctax-hairline);
+  font-size: 13.5px;
+}
+.ctax-step:last-child { border-bottom: 1px solid var(--ctax-hairline); }
+.ctax-step__n {
+  font-family: var(--u-mono);
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--ctax-accent);
+}
+.ctax-step.is-done .ctax-step__n { color: var(--ctax-ok); }
+.ctax-step.is-done b { color: var(--ctax-ok-ink); }
+
+/* before / after */
+.ctax-ba { display: grid; gap: 8px; margin-top: 12px; }
+.ctax-ba__row {
+  display: grid;
+  grid-template-columns: 120px 1fr 150px;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+@media (max-width: 560px) {
+  .ctax-ba__row { grid-template-columns: 100px 1fr 120px; }
+}
+.ctax-ba__row > .ctax-mono { text-align: right; font-size: 12.5px; }
+.ctax-ba__rail { display: block; }
+.ctax-ba__bar { display: block; height: 14px; }
+.ctax-ba__bar.is-before { background: var(--ctax-neutral); }
+.ctax-ba__bar.is-after { background: var(--ctax-ok); }
+
+/* stat rows (aggregates, proof stats) */
+.ctax-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 16px 0;
+}
+@media (max-width: 560px) {
+  .ctax-cards { grid-template-columns: 1fr; }
+}
+.ctax-ca {
+  border-top: 1px solid var(--ctax-line-strong);
+  padding-top: 12px;
+}
+.ctax-ca__num { font-size: 22px; font-weight: 650; letter-spacing: -0.01em; }
+.ctax-ca__k { font-weight: 650; font-size: 13px; margin-bottom: 4px; }
+
+/* tiers */
+.ctax-tiers { display: grid; gap: 8px; margin: 14px 0 4px; }
+.ctax-tier {
+  display: grid;
+  grid-template-columns: 170px 1fr 130px;
+  gap: 12px;
+  align-items: center;
+  font-size: 13px;
+}
+@media (max-width: 560px) {
+  .ctax-tier { grid-template-columns: 120px 1fr 110px; }
+}
+.ctax-tier > .ctax-mono { text-align: right; font-size: 12.5px; color: var(--ctax-muted); }
+.ctax-tier__rail { display: block; }
+.ctax-tier__bar { display: block; height: 14px; background: var(--ctax-ok); opacity: 0.85; }
+
+/* dom tabs + lists */
+.ctax-domtabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+.ctax-domtabs .ctax-pbtn { border-color: var(--ctax-line-strong); }
+.ctax-list { margin: 8px 0 0 18px; padding: 0; }
+.ctax-list li { margin-bottom: 6px; font-size: 13.5px; color: var(--ctax-ink-2); }
+
+/* quote + reference (report document) */
+.ctax-quote {
+  margin: 22px 0 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ctax-line-strong);
+}
+.ctax-quote blockquote {
+  margin: 0 0 10px;
+  font-family: var(--u-display);
+  font-size: 19px;
+  font-weight: 520;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--ctax-ink);
+  max-width: 52ch;
+}
+.ctax-quote__link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ctax-accent);
+  text-decoration: none;
+}
+.ctax-quote__link:hover { text-decoration: underline; }
+.ctax-refcard {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ctax-hairline);
+}
+.ctax-refcard h3 { margin: 6px 0 4px; font-size: 15px; }
+
+/* next steps */
+.ctax-nextsteps { margin: 12px 0 0 18px; padding: 0; }
+.ctax-nextsteps li { margin-bottom: 7px; font-size: 13.5px; }
+.ctax-next__ctas { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
+.ctax-page__footer {
+  padding: 22px 44px;
+  border-top: 1px solid var(--ctax-hairline);
+  color: var(--ctax-faint);
+  font-size: 11.5px;
+}
+@media (max-width: 640px) {
+  .ctax-page__footer { padding: 18px; }
+}
+.ctax-backlink { margin: 18px 4px 0; font-size: 13px; }
+.ctax-backlink a { color: var(--ctax-accent); text-decoration: none; }
+.ctax-backlink a:hover { text-decoration: underline; }
+
+/* print: the report is a document */
+@media print {
+  .dms-header,
+  .sft,
+  .ctax-backlink { display: none; }
+  .ctax-reportsec { padding: 0; background: #fff; }
+  .ctax-page { border: 0; }
+}

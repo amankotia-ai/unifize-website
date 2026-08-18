@@ -1,0 +1,8 @@
+/* problems-six - page-scoped overrides for the six-card spotlight.
+ * The base rail is a hard four columns; at six items it drifts to two
+ * balanced rows of three on desktop. Mobile keeps the base two-up grid. */
+@media (min-width: 901px) {
+  .dms--redesign.dms-probx6 .dms-spot__list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

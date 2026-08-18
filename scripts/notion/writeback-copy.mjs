@@ -49,6 +49,21 @@ const products = readJson("src/content/notion/products.json");
 const industries = readJson("src/content/notion/industries.json");
 const personas = readJson("src/content/notion/personas.json");
 const standards = readJson("src/content/notion/standards.json");
+const flows = readJson("src/content/notion/flows.json");
+const flowSteps = readJson("src/content/notion/flow-steps.json");
+
+/* Modules Bundled is not yet populated on the product rows; until it is, the
+ * page adapters fall back to these known module page ids (see dms-data.ts). */
+const MODULE_FALLBACK = {
+  dms: [
+    "360860e6-b45e-819a-b47d-d65659287f7a" /* Document Control */,
+    "360860e6-b45e-81f9-b902-df2000f4441e" /* Change Control */,
+    "360860e6-b45e-81ec-8a8f-c7fb0880a781" /* Training Management */,
+  ],
+};
+
+const journeysWithSteps = new Set();
+for (const step of flowSteps) for (const j of step.journey ?? []) journeysWithSteps.add(j);
 
 const renders = new Map();
 for (const [prefix, productId] of Object.entries(WRITEBACK_PRODUCTS)) {
@@ -71,6 +86,15 @@ for (const [prefix, productId] of Object.entries(WRITEBACK_PRODUCTS)) {
   renders.set(`${prefix}:Validated-across chips`, industryNames.join(" · "));
   renders.set(`${prefix}:Persona cards`, personaNames.join(" · "));
   renders.set(`${prefix}:Standards cards`, standardNames.join(" · "));
+  /* same filter as the flow adapter in dms-data.ts */
+  const moduleIds = (product.modules ?? []).length > 0 ? product.modules : (MODULE_FALLBACK[prefix] ?? []);
+  const flowNames = flows
+    .filter((flow) =>
+      flow.status !== "Deprecated" &&
+      journeysWithSteps.has(flow.pageId) &&
+      (flow.modules ?? []).some((m) => moduleIds.includes(m)))
+    .map((flow) => flow.name);
+  renders.set(`${prefix}:Flow cards`, flowNames.join(" · "));
 }
 
 /* ---- current Notion state ----------------------------------------------- */

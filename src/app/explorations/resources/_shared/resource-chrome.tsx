@@ -1,73 +1,94 @@
 /* ============================================================================
- * resource-chrome.tsx - shared server furniture for the Resources catalog
- * ("The Record"): an editorial masthead (kicker + oversized title + standfirst
- * + a big catalog-count numeral + a facet rule), a dark full-stop CTA, the
- * footer, and small tag / mono / play helpers. Pure server components in the
- * locked Unifize system. Rendered inside `<main className="dms">`.
+ * resource-chrome.tsx - shared server furniture for the Resources area,
+ * following the structure of unifize.com's resource pages restated in the
+ * DMS design language: a light centered masthead on a soft accent wash
+ * (crumb, kicker, title, standfirst), an icon badge for the split hero,
+ * a section head, a light closing CTA band, and the footer.
+ * Pure server components rendered inside `<main className="dms dms--redesign rs">`.
  * ========================================================================== */
 import Link from "next/link";
 import { RESOURCE_FOOTER, type ModuleTag } from "./resources-data";
 import { SiteFooter } from "../../_shared/site-footer";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
-/* -------------------------------------------------------------- masthead */
+/* ------------------------------------------------------------- masthead
+ * The live site's collection opener: a centered title over a light wash,
+ * a short standfirst, nothing else. Crumbs stay for the exploration area. */
 export function ResourceMast({
   trail,
-  kicker,
   title,
   desc,
-  bignum,
-  facets,
   compact,
   children,
 }: {
   trail: { label: string; href?: string }[];
-  kicker?: string;
   title: React.ReactNode;
   desc?: React.ReactNode;
-  bignum?: { value: string; label: string };
-  facets?: { n: string; label: string }[];
   compact?: boolean;
   children?: React.ReactNode;
 }) {
   return (
     <section className={"dms-section rs-mast" + (compact ? " rs-mast--compact" : "")}>
-      <div className="dms-wrap">
-        <nav className="rs-mast__crumb" aria-label="Breadcrumb">
+      <div className="dms-wrap rs-mast__inner">
+        <nav className="rs-crumb" aria-label="Breadcrumb">
           <Link href="/explorations/resources">Resources</Link>
           {trail.map((t) => (
-            <span key={t.label} className="rs-mast__crumb-seg">
+            <span key={t.label} className="rs-crumb__seg">
               <span aria-hidden="true">/</span>
               {t.href ? <Link href={t.href}>{t.label}</Link> : <span>{t.label}</span>}
             </span>
           ))}
         </nav>
-        <div className="rs-mast__grid">
-          <div className="rs-mast__lead">
-            {kicker ? <span className="rs-mast__kicker">{kicker}</span> : null}
-            <h1 className="rs-mast__title">{title}</h1>
-            {desc ? <p className="rs-mast__standfirst">{desc}</p> : null}
-            {children}
-          </div>
-          {bignum && !compact ? (
-            <div className="rs-mast__aside" aria-hidden="true">
-              <span className="rs-mast__bignum">{bignum.value}</span>
-              <span className="rs-mast__bignum-l">{bignum.label}</span>
-            </div>
-          ) : null}
-        </div>
-        {facets && facets.length ? (
-          <div className="rs-mast__facets">
-            {facets.map((f) => (
-              <span className="rs-mast__facet" key={f.label}><b>{f.n}</b> {f.label}</span>
-            ))}
-          </div>
-        ) : null}
+        <h1 className="rs-mast__title">{title}</h1>
+        {desc ? <p className="rs-mast__standfirst">{desc}</p> : null}
+        {children}
       </div>
     </section>
   );
 }
 
-/* mono tag chips (modules, industry) */
+/* icon badge - the square tint tile that opens the video library hero */
+export function IconBadge({ kind }: { kind: "video" | "pen" | "chart" | "stack" }) {
+  return (
+    <span className="rs-badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+        {kind === "video" ? (
+          <>
+            <rect x="2.5" y="6" width="13" height="12" rx="0" />
+            <path d="M15.5 10.5 21.5 7v10l-6-3.5" />
+          </>
+        ) : kind === "pen" ? (
+          <>
+            <path d="M4 20h16" />
+            <path d="m6 16 9.5-9.5a2.1 2.1 0 0 1 3 3L9 19l-4 1 1-4Z" />
+          </>
+        ) : kind === "chart" ? (
+          <>
+            <path d="M4 4v16h16" />
+            <path d="M8 15v-4M12 15V7m4 8v-6" />
+          </>
+        ) : (
+          <>
+            <path d="m12 3 9 5-9 5-9-5 9-5Z" />
+            <path d="m3 13 9 5 9-5" />
+          </>
+        )}
+      </svg>
+    </span>
+  );
+}
+
+/* section head - "All videos" style heading + short intro over a grid */
+export function SectionHead({ title, desc, id }: { title: string; desc?: string; id?: string }) {
+  return (
+    <div className="rs-sechead" id={id}>
+      <h2 className="rs-sechead__title">{title}</h2>
+      {desc ? <p className="rs-sechead__desc">{desc}</p> : null}
+    </div>
+  );
+}
+
+/* tag chips (modules, industry) */
 export function TagRow({ modules, industry, className }: { modules?: ModuleTag[]; industry?: string; className?: string }) {
   return (
     <ul className={"rs-tags" + (className ? " " + className : "")}>
@@ -79,23 +100,26 @@ export function TagRow({ modules, industry, className }: { modules?: ModuleTag[]
   );
 }
 
-/* dark full-stop CTA (one calm band, not a marketing close) */
+/* light closing CTA band - the live site's "Ready to see it in action?" close */
 export function ResourceCTA({
   heading,
+  sub,
   ctaPrimary = "Book a demo",
   ctaSecondary,
 }: {
   heading: string;
+  sub?: string;
   ctaPrimary?: string;
   ctaSecondary?: { label: string; href: string };
 }) {
   return (
-    <section className="dms-section rs-cta dms-section--dark">
+    <section className="dms-section dms-section--alt rs-cta">
       <div className="dms-wrap rs-cta__inner">
-        <p className="rs-cta__h">{heading}</p>
+        <h2 className="rs-cta__h">{heading}</h2>
+        {sub ? <p className="rs-cta__sub">{sub}</p> : null}
         <div className="rs-cta__actions">
+          <BookDemoButton className="dms-btn" source="close">{ctaPrimary}</BookDemoButton>
           {ctaSecondary ? <a href={ctaSecondary.href} className="dms-btn dms-btn-ghost">{ctaSecondary.label}</a> : null}
-          <button type="button" className="dms-btn">{ctaPrimary}</button>
         </div>
       </div>
     </section>
@@ -107,17 +131,4 @@ export function ResourceFooter() {
   return <SiteFooter tagline={RESOURCE_FOOTER.tagline} note={RESOURCE_FOOTER.baseRight} />;
 }
 
-export function initials(name: string) {
-  return name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-}
-
 export const pad2 = (n: number) => String(n).padStart(2, "0");
-
-/* play glyph for server-rendered plates (client tiles use their own copy) */
-export function PlayGlyph({ className }: { className?: string }) {
-  return (
-    <span className={"rs-play" + (className ? " " + className : "")} aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M9 7.5v9l7-4.5-7-4.5Z" fill="currentColor" /></svg>
-    </span>
-  );
-}

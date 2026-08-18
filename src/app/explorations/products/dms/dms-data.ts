@@ -7,11 +7,18 @@
  * Copy is kept deliberately short: every string earns its place on screen.
  * ========================================================================== */
 import type { IntegrationData } from "./dms-integrations";
+import type { DmsProblemIllustrationKind } from "./dms-problem-visuals";
 import productsMirror from "@/content/notion/products.json";
 import personasMirror from "@/content/notion/personas.json";
 import industriesMirror from "@/content/notion/industries.json";
 import standardsMirror from "@/content/notion/standards.json";
 import { dmsCopy } from "./dms-copy";
+import {
+  buildProductFlows,
+  type FlowPresentation,
+  type ProductFlow,
+  type ProductFlowStep,
+} from "../_shared/product-flows";
 
 export const PRODUCT = {
   id: "UPD-2",
@@ -25,7 +32,7 @@ export const PRODUCT = {
 };
 
 export type DmsCoordinationProblem = {
-  visual: "retrieval" | "versions" | "drift" | "audit";
+  visual: DmsProblemIllustrationKind;
   category: string;
   /* rail one-liner in the problem spotlight */
   title: string;
@@ -40,56 +47,61 @@ export type DmsCoordinationProblem = {
 };
 
 /* One source for the Problem spotlight and Coordination Tax timeline. Each
- * symptom becomes an accountable block in one sequence and keeps the real
- * metric and unit used in the section above. */
+ * card traces to a Pain Points DB row (PP id) and quotes its attached
+ * Symptom row verbatim; one card per module story so section 02 answers
+ * every wound this section opens. */
 export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
   {
-    visual: "retrieval",
-    category: "Audit retrieval",
-    title: dmsCopy("problem.card1.title", "Forty minutes to find one SOP"),
-    quote: dmsCopy("problem.card1.quote", "The auditor asked for one SOP. It took us forty minutes."),
-    detail: dmsCopy("problem.card1.detail", "Retrieval under audit pressure is slow because documents live in five places at once."),
-    metric: "40 min",
-    metricLabel: "Average retrieval under audit",
-    work: "Answer the request",
-    tax: ["Search every location", "Verify the latest copy"],
-    outcome: "One governed record",
+    /* PP-5 · Critical · Document Control */
+    visual: "audit",
+    category: "Evidence assembly",
+    title: dmsCopy("problem.card1.title", "Days to assemble one audit record"),
+    quote: dmsCopy("problem.card1.quote", "When auditors ask for the full record we spend days pulling it together."),
+    detail: dmsCopy("problem.card1.detail", "Evidence is stitched from exports, screenshots, and email forwards. The audit passes; passing costs days of senior time each cycle."),
+    metric: "Days",
+    metricLabel: "Senior time per audit cycle",
+    work: "Answer the audit",
+    tax: ["Collect scattered exports", "Reconcile the signatures"],
+    outcome: "Evidence already bound",
   },
   {
+    /* PP-37 · Critical · Document Control */
     visual: "versions",
     category: "Version control",
-    title: dmsCopy("problem.card2.title", "Nobody knows which version is live"),
-    quote: dmsCopy("problem.card2.quote", "Nobody can tell me which version is running on the floor right now."),
-    detail: dmsCopy("problem.card2.detail", "Multiple revisions coexist. Operators keep working from the copy they printed last quarter."),
-    metric: "3+",
-    metricLabel: "Versions live at any time",
+    title: dmsCopy("problem.card2.title", "Three versions of one SOP"),
+    quote: dmsCopy("problem.card2.quote", "SOPs are written once and never updated even when the process changes."),
+    detail: dmsCopy("problem.card2.detail", "The controlled system says v3.2, a file share holds a local v3.1, and the workstation runs a laminated v2.8. The current version is a function of where you look."),
+    metric: "3",
+    metricLabel: "Copies claiming to be current",
     work: "Use the procedure",
     tax: ["Compare competing copies", "Confirm the effective date"],
     outcome: "One effective version",
   },
   {
-    visual: "drift",
-    category: "Periodic review",
-    title: dmsCopy("problem.card3.title", "Paper drifts from the process"),
-    quote: dmsCopy("problem.card3.quote", "The SOP was written in 2021. The process changed twice since."),
-    detail: dmsCopy("problem.card3.detail", "Review cycles slip, procedures drift from practice, and the gap only shows up in an audit."),
-    metric: "1 in 4",
-    metricLabel: "SOPs past review date",
-    work: "Review the procedure",
-    tax: ["Find the accountable owner", "Chase the overdue review"],
-    outcome: "Named owner and review date",
+    /* PP-33 · Critical · Change Control + Document Control */
+    visual: "change",
+    category: "Change effectivity",
+    title: dmsCopy("problem.card3.title", "The floor hears about the change last"),
+    quote: dmsCopy("problem.card3.quote", "A change was approved months ago but has not been fully implemented anywhere."),
+    detail: dmsCopy("problem.card3.detail", "The line builds to the old version because the notification, the training, or the parts on hand lag the effective date. The first sign is a rejected part."),
+    metric: "Months",
+    metricLabel: "From approval to the floor",
+    work: "Release the change",
+    tax: ["Notify every endpoint", "Chase the effective date"],
+    outcome: "Effectivity reaches the line",
   },
   {
-    visual: "audit",
-    category: "Evidence assembly",
-    title: dmsCopy("problem.card4.title", "Days to assemble one record"),
-    quote: dmsCopy("problem.card4.quote", "When auditors want the full record, we spend days pulling it together."),
-    detail: dmsCopy("problem.card4.detail", "Evidence is scattered, so audit prep becomes a fire drill instead of a filter."),
-    metric: "2–3 days",
-    metricLabel: "Time to assemble one audit record",
-    work: "Answer the audit",
-    tax: ["Collect scattered records", "Reconcile signatures"],
-    outcome: "Evidence already bound",
+    /* PP-36 · High · Change Control + Training Management */
+    visual: "training",
+    category: "Training cascade",
+    title: dmsCopy("problem.card4.title", "Retraining lands weeks after the change"),
+    quote: dmsCopy("problem.card4.quote", "Retraining after a change is always late because nobody tracks who needs it."),
+    detail: dmsCopy("problem.card4.detail", "People work to the new version without verified training, and the trace between the change and the training is partial when the auditor asks."),
+    metric: "Weeks",
+    metricLabel: "Untrained on the effective version",
+    work: "Train the people",
+    tax: ["Track who needs retraining", "Chase the completions"],
+    outcome: "Training assigned on release",
   },
 ];
 
@@ -192,6 +204,67 @@ export const LIFECYCLE: { state: string; gate: string; detail: string; visual: s
     visual: "Obsolete record with retrieval log",
   },
 ];
+
+/* ---- Product Flows: persona journeys across the lifecycle ---------------
+ * Built by the shared adapter in ../_shared/product-flows.ts from Ben's
+ * Product Flows + Flow Steps mirrors. Presentation below is page-owned. */
+export type DmsFlowStep = ProductFlowStep;
+export type DmsFlow = ProductFlow;
+
+/* Modules Bundled on the UPD-2 row is not yet populated in the Products
+ * mirror; fall back to the three known DMS module page ids until it is. */
+const DMS_MODULE_IDS: string[] = (() => {
+  const fromProduct = (productsMirror.find((p) => p.id === PRODUCT.id)?.modules ?? []) as string[];
+  return fromProduct.length > 0 ? fromProduct : [
+    "360860e6-b45e-819a-b47d-d65659287f7a" /* Document Control */,
+    "360860e6-b45e-81f9-b902-df2000f4441e" /* Change Control */,
+    "360860e6-b45e-81ec-8a8f-c7fb0880a781" /* Training Management */,
+  ];
+})();
+
+const FLOW_PRESENTATION: FlowPresentation = {
+  "29": {
+    order: 0,
+    title: "Find the current version",
+    actor: "Shop Floor Operator",
+    description: "Open the current SOP in under two minutes and get back to work.",
+    stations: [3],
+  },
+  "4": {
+    order: 1,
+    title: "Approve a revision",
+    actor: "Document Approver",
+    description: "Review the revision, sign it, or return it with clear changes.",
+    stations: [1, 2, 3],
+  },
+  "30": {
+    order: 2,
+    title: "Run the periodic review",
+    actor: "Quality Manager",
+    description: "Check the document against current practice and set the next review.",
+    stations: [3, 0],
+  },
+  "18": {
+    order: 3,
+    title: "Revise through change control",
+    actor: "Document Controller",
+    description: "Create the next controlled version and route it through approval.",
+    stations: [0, 1, 2, 3, 4],
+  },
+  "28": {
+    order: 4,
+    title: "Run a controlled change",
+    actor: "Change Sponsor",
+    description: "Open, coordinate, verify, and close a controlled change.",
+    stations: [0, 3],
+  },
+};
+
+export const DMS_FLOWS: DmsFlow[] = buildProductFlows({
+  page: "dms",
+  moduleIds: DMS_MODULE_IDS,
+  presentation: FLOW_PRESENTATION,
+});
 
 /* integrations - the connector section after the lifecycle. Unifize as the
  * coordination layer over the systems of record a document library lives

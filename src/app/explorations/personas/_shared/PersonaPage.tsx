@@ -25,6 +25,7 @@ import { FlowExplorer, FaqAccordion, type FlowStep } from "../../products/_share
 import "../../products/dms/dms.css";
 import "../../products/_shared/product-kit.css";
 import "./persona-kit.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 const SEV_CLASS: Record<string, string> = { Critical: "is-critical", High: "is-high", Medium: "is-medium" };
 
@@ -148,7 +149,7 @@ export function PersonaPage({ data }: { data: PersonaPageData }) {
               <h1 className="dms-hero__title pn-hero__title">{data.hero.headline}</h1>
               <p className="dms-lede dms-hero__sub pn-hero__lede">{data.hero.lede}</p>
               <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">{data.hero.ctaPrimary} &rarr;</button>
+                <BookDemoButton className="dms-btn" source="hero">{data.hero.ctaPrimary} &rarr;</BookDemoButton>
                 <a href={data.hero.ctaSecondary.href} className="dms-btn dms-btn-ghost">{data.hero.ctaSecondary.label}</a>
               </div>
             </div>
@@ -374,7 +375,7 @@ export function PersonaPage({ data }: { data: PersonaPageData }) {
             <div className="dms-close__side">
               <p className="dms-lede">{data.close.lede}</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">{data.close.ctaPrimary}</button>
+                <BookDemoButton className="dms-btn" source="close">{data.close.ctaPrimary}</BookDemoButton>
                 <a href={data.close.ctaSecondary.href} className="dms-btn dms-btn-ghost">{data.close.ctaSecondary.label}</a>
               </div>
             </div>

@@ -1,0 +1,2785 @@
+/* ============================================================================
+ * stylized.css - the stylized product scenes for /products/dms/stylized.
+ * Poster-grade staging of single product components (Asana idiom): a layered
+ * brand field with an oversized ghost word, ONE primary component cropped
+ * off the field edge, ONE overlapping mini-card, and finished micro-detail
+ * everywhere - type tiles, status dots, progress rails, score meters,
+ * redlines, script signatures. System rules: square corners, layered depth,
+ * warm greys, Unifize blue, status via chip color (never a one-sided
+ * colored border). Components are arcade-grounded
+ * (docs/dms-product-visuals/).
+ * ========================================================================== */
+
+/* ------------------------------------------------------------- the fields */
+.dms--stylized .dms-modx__stage {
+  background:
+    radial-gradient(120% 130% at 8% -10%, oklch(1 0 0 / 0.14), transparent 46%),
+    linear-gradient(148deg, color-mix(in oklab, var(--dms-accent), #fff 7%), var(--dms-accent) 44%, color-mix(in oklab, var(--dms-accent), #0a1030 22%));
+  box-shadow: none;
+}
+.dms--stylized .dms-lifex--story .dms-lifex__live {
+  background:
+    radial-gradient(110% 90% at 20% 0%, #f7f5f0, #f0ede6 55%, #e8e4da);
+  border: 0;
+}
+
+/* ------------------------------------------------------------ scene canvas */
+.dms--stylized .sty-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* the primary component and ghost crop at the field edge */
+  font-family: var(--u-font);
+}
+.dms--stylized .sty-scene__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: clamp(30px, 3.6vw, 60px) clamp(20px, 2.6vw, 48px);
+}
+
+/* the oversized ghost word: the field's poster anchor */
+.dms--stylized .stx-ghost {
+  position: absolute;
+  right: clamp(-10px, 0.5vw, 18px);
+  top: clamp(2px, 1.2vw, 18px);
+  font-family: var(--u-display);
+  font-size: clamp(84px, 9.6vw, 148px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+  white-space: nowrap;
+  color: oklch(1 0 0 / 0.09);
+  pointer-events: none;
+  user-select: none;
+}
+.dms--stylized .sty-scene--life .stx-ghost {
+  color: rgba(23, 25, 31, 0.055);
+  top: auto;
+  bottom: clamp(-6px, 0.5vw, 14px);
+}
+
+/* the composition box */
+.dms--stylized .stx-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.dms--stylized .sty-scene--life .stx-stage {
+  justify-content: center;
+  min-height: clamp(420px, calc(100vh - var(--dms-header-h) - 210px), 520px);
+}
+
+/* re-mount entrance: rise + fade, finished state is the default */
+@media (prefers-reduced-motion: no-preference) {
+  .dms--stylized .dms-lifex__stagemock .stx-stage > *,
+  .dms--stylized .dms-modx__card.is-active .stx-stage > * {
+    animation: stx-rise 0.55s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  }
+  .dms--stylized .dms-lifex__stagemock .stx-stage > .stx-pop,
+  .dms--stylized .dms-modx__card.is-active .stx-stage > .stx-pop {
+    animation-delay: 0.16s;
+  }
+}
+@keyframes stx-rise {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+/* shared card surface */
+.dms--stylized .stx-panel,
+.dms--stylized .stx-doccard,
+.dms--stylized .stx-comment,
+.dms--stylized .stx-signcard,
+.dms--stylized .stx-timeline {
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  box-shadow:
+    0 1px 2px rgba(8, 12, 24, 0.08),
+    0 18px 36px rgba(8, 12, 24, 0.16),
+    0 56px 110px rgba(8, 12, 24, 0.26);
+}
+
+/* ============================================================ the primary
+ * panel: register / tasks / training rows at explainer scale */
+.dms--stylized .stx-panel {
+  width: clamp(600px, 58vw, 860px);
+}
+.dms--stylized .stx-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 30px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+.dms--stylized .stx-panel__glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  background: var(--dms-accent);
+  color: #fff;
+}
+.dms--stylized .stx-panel__glyph svg { width: 18px; height: 18px; }
+.dms--stylized .stx-panel__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-right: auto; }
+.dms--stylized .stx-panel__id b {
+  font-family: var(--u-display);
+  font-size: 20px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.dms--stylized .stx-panel__id small { font-size: 13px; color: var(--dms-muted); }
+
+/* record-type tiles: the product's colored type tags */
+.dms--stylized .stx-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+}
+.dms--stylized .stx-tile svg { width: 15px; height: 15px; }
+.dms--stylized .stx-tile.is-sop { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.dms--stylized .stx-tile.is-wi { background: #e0f0e6; color: #1c6b3c; }
+.dms--stylized .stx-tile.is-frm { background: #fdf0dc; color: #93611a; }
+
+/* skeletonized copy */
+.dms--stylized .stx-skel {
+  display: inline-block;
+  height: 10px;
+  background: linear-gradient(90deg, var(--dms-surface-sunk), color-mix(in oklab, var(--dms-surface-sunk), #fff 40%));
+  vertical-align: middle;
+}
+.dms--stylized small .stx-skel { height: 8px; }
+
+/* state chips: dot + label, color on the chip, never a border edge */
+.dms--stylized .stx-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  font-size: 11.5px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-ink-2);
+}
+.dms--stylized .stx-state i { width: 6px; height: 6px; background: var(--dms-faint); }
+.dms--stylized .stx-state.is-effective,
+.dms--stylized .stx-state.is-completed { background: #ddf0e4; color: #185f35; }
+.dms--stylized .stx-state.is-effective i,
+.dms--stylized .stx-state.is-completed i { background: #2c9257; }
+.dms--stylized .stx-state.is-implementation,
+.dms--stylized .stx-state.is-in-approval { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.dms--stylized .stx-state.is-implementation i,
+.dms--stylized .stx-state.is-in-approval i { background: var(--dms-accent); }
+.dms--stylized .stx-state.is-review-due,
+.dms--stylized .stx-state.is-in-review,
+.dms--stylized .stx-state.is-needs-approval,
+.dms--stylized .stx-state.is-change-needed,
+.dms--stylized .stx-state.is-open { background: #fdf0dc; color: #8a5a15; }
+.dms--stylized .stx-state.is-review-due i,
+.dms--stylized .stx-state.is-in-review i,
+.dms--stylized .stx-state.is-needs-approval i,
+.dms--stylized .stx-state.is-change-needed i,
+.dms--stylized .stx-state.is-open i { background: #c98a2b; }
+.dms--stylized .stx-state.is-overdue { background: #fbe9e5; color: #a03d2e; }
+.dms--stylized .stx-state.is-overdue i { background: #c25445; }
+.dms--stylized .stx-state.is-obsolete { color: var(--dms-faint); }
+
+/* ============================================================ the mini-card */
+.dms--stylized .stx-pop {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(340px, 80%);
+  padding: 16px 20px 17px;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  border: 1px solid var(--dms-hairline);
+  box-shadow:
+    0 2px 5px rgba(8, 12, 24, 0.12),
+    0 24px 52px rgba(8, 12, 24, 0.3);
+}
+.dms--stylized .stx-pop--life {
+  right: clamp(0px, 5%, 62px);
+  top: clamp(6px, 5vh, 42px);
+}
+
+.dms--stylized .stx-pop__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 2px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+}
+.dms--stylized .stx-aimark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: none;
+  background: var(--dms-accent);
+  color: #fff;
+}
+.dms--stylized .stx-aimark svg { width: 11px; height: 11px; }
+.dms--stylized .stx-pop__who {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-size: 13.5px;
+}
+.dms--stylized .stx-pop__who b { font-weight: 700; color: #6d4fc4; }
+.dms--stylized .stx-automark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  background: #ece4fb;
+  color: #6d4fc4;
+  font-size: 11.5px;
+  font-weight: 800;
+}
+.dms--stylized .stx-pop__line { margin: 0; font-size: 13.5px; line-height: 1.5; }
+.dms--stylized .stx-pop__line b { font-weight: 700; }
+
+/* label / value rows inside mini-cards */
+.dms--stylized .stx-vrow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--dms-surface-alt);
+  font-size: 13px;
+}
+.dms--stylized .stx-vrow:last-child { border-bottom: 0; padding-bottom: 0; }
+.dms--stylized .stx-vrow b { font-weight: 650; }
+.dms--stylized .stx-vrow > span:not(.stx-mono) { flex: 1; min-width: 0; }
+.dms--stylized .stx-vrow small { color: var(--dms-muted); font-size: 12px; white-space: nowrap; }
+.dms--stylized .stx-vrow em {
+  font-style: normal;
+  padding: 2px 8px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.dms--stylized .stx-vrow.is-key b { color: var(--dms-accent); }
+
+/* ============================================================ life cards */
+
+/* the render preview: a believable controlled-doc page */
+.dms--stylized .stx-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: none;
+  width: clamp(104px, 9vw, 124px);
+  aspect-ratio: 3 / 4;
+  padding: 14px 13px;
+  background: #fff;
+  border: 1px solid var(--dms-hairline);
+  box-shadow: 0 10px 24px rgba(8, 12, 24, 0.10);
+  overflow: hidden;
+}
+.dms--stylized .stx-sheet > i { display: block; height: 5px; background: var(--dms-surface-sunk); }
+.dms--stylized .stx-sheet__title { width: 62%; height: 8px !important; background: var(--dms-line-strong) !important; }
+.dms--stylized .stx-sheet > i:nth-child(3) { width: 86%; }
+.dms--stylized .stx-sheet > i:nth-child(4) { width: 70%; }
+.dms--stylized .stx-sheet__table {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: auto;
+  padding-top: 6px;
+  border-top: 1px solid var(--dms-hairline);
+}
+.dms--stylized .stx-sheet__table i { display: block; height: 4px; background: var(--dms-surface-sunk); }
+.dms--stylized .stx-sheet__table i:nth-child(2) { width: 78%; }
+.dms--stylized .stx-sheet__table i:nth-child(3) { width: 64%; }
+.dms--stylized .stx-sheet b {
+  position: absolute;
+  inset: 46% auto auto 50%;
+  transform: translate(-50%, -50%) rotate(-21deg);
+  padding: 4px 9px;
+  border: 1.5px solid currentColor;
+  background: rgba(255, 255, 255, 0.82);
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  color: rgba(96, 103, 115, 0.65);
+  white-space: nowrap;
+}
+.dms--stylized .stx-sheet b.is-effective { color: rgba(24, 95, 53, 0.72); }
+.dms--stylized .stx-sheet b.is-obsolete { color: rgba(105, 113, 125, 0.58); }
+
+.dms--stylized .stx-doccard {
+  display: flex;
+  gap: clamp(20px, 2.2vw, 30px);
+  width: min(620px, 90%);
+  margin-right: clamp(80px, 15%, 160px); /* leaves the corner for the mini-card */
+  padding: clamp(24px, 2.6vw, 34px);
+}
+.dms--stylized .stx-doccard__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  flex: 1;
+}
+.dms--stylized .stx-doccard__id {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+}
+.dms--stylized .stx-doccard__id .stx-mono { font-size: 18px; font-weight: 700; }
+.dms--stylized .stx-doccard__title {
+  font-family: var(--u-display);
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.dms--stylized .stx-doccard__fields > small { font-size: 13px; color: var(--dms-muted); line-height: 1.55; }
+.dms--stylized .stx-doccard__facts {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--dms-surface-alt);
+}
+.dms--stylized .stx-doccard__facts > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 10px;
+  background: var(--dms-surface-quiet);
+  font-size: 12px;
+  font-weight: 600;
+}
+.dms--stylized .stx-doccard__facts .stx-av { width: 20px; height: 20px; font-size: 8.5px; }
+
+/* the review comment card, with a real redline */
+.dms--stylized .stx-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(560px, 88%);
+  margin-right: clamp(80px, 15%, 160px);
+  padding: clamp(22px, 2.4vw, 30px);
+}
+.dms--stylized .stx-comment__who {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  font-size: 13.5px;
+}
+.dms--stylized .stx-comment__who b { font-weight: 700; }
+.dms--stylized .stx-comment__who small { color: var(--dms-muted); font-size: 12px; }
+.dms--stylized .stx-comment__text { margin: 0; font-size: 15px; line-height: 1.6; }
+.dms--stylized .stx-redline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 13px 15px;
+  background: var(--dms-surface-quiet);
+}
+.dms--stylized .stx-redline__tag {
+  align-self: flex-start;
+  padding: 2px 8px;
+  background: #fdf0dc;
+  color: #8a5a15;
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+.dms--stylized .stx-redline__old { position: relative; display: block; }
+.dms--stylized .stx-redline__old::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 26%;
+  top: 50%;
+  height: 1.5px;
+  background: #c25445;
+}
+.dms--stylized .stx-redline__new {
+  align-self: flex-start;
+  padding: 4px 9px;
+  background: #ddf0e4;
+  color: #185f35;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* the Apply-your-signature dialog, staged alone */
+.dms--stylized .stx-signcard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(450px, 94%);
+  margin: auto;
+  padding: 26px 30px;
+}
+.dms--stylized .stx-signcard__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dms--stylized .stx-signcard__top b {
+  font-family: var(--u-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.dms--stylized .stx-signcard__radios { display: flex; gap: 18px; }
+.dms--stylized .stx-signcard__radios > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dms-muted);
+}
+.dms--stylized .stx-signcard__radios i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--dms-hairline);
+  background: var(--dms-surface);
+  font-size: 9px;
+  font-style: normal;
+  color: #fff;
+}
+.dms--stylized .stx-signcard__radios > span.is-on { color: var(--dms-ink); }
+.dms--stylized .stx-signcard__radios > span.is-on i { background: var(--dms-accent); border-color: var(--dms-accent); }
+.dms--stylized .stx-signcard__field {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.dms--stylized .stx-signcard__field > span:first-child,
+.dms--stylized .stx-signcard__script > span {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+}
+.dms--stylized .stx-signcard__field .stx-mono {
+  padding: 9px 12px;
+  background: var(--dms-surface-sunk);
+  font-size: 12.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dms--stylized .stx-signcard__script {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+.dms--stylized .stx-signcard__script b {
+  font-family: "Snell Roundhand", "Savoye LET", "Apple Chancery", "Segoe Script", cursive;
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 1.15;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--dms-hairline);
+  transform: rotate(-2deg);
+  transform-origin: left bottom;
+}
+.dms--stylized .stx-signcard__actions {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 3px;
+}
+.dms--stylized .stx-signcard__actions small {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--dms-muted);
+}
+.dms--stylized .stx-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 17px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  box-shadow: 0 8px 20px color-mix(in oklab, var(--dms-accent), transparent 55%);
+}
+
+/* the revision timeline */
+.dms--stylized .stx-timeline {
+  display: flex;
+  flex-direction: column;
+  width: min(560px, 88%);
+  margin-right: clamp(80px, 15%, 160px);
+  padding: clamp(22px, 2.4vw, 28px) clamp(24px, 2.6vw, 30px);
+  gap: 4px;
+}
+.dms--stylized .stx-timeline__head {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0 0 12px;
+}
+.dms--stylized .stx-timeline__head b {
+  font-family: var(--u-display);
+  font-size: 18px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.dms--stylized .stx-timeline__head small { font-size: 12.5px; color: var(--dms-muted); }
+.dms--stylized .stx-trow {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 0 11px 32px;
+}
+.dms--stylized .stx-trow__dot {
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 11px;
+  height: 11px;
+  background: var(--dms-surface-sunk);
+  box-shadow: 0 0 0 3px var(--dms-surface);
+  z-index: 1;
+}
+.dms--stylized .stx-trow.is-key .stx-trow__dot { background: var(--dms-accent); }
+.dms--stylized .stx-trow:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: calc(50% + 8px);
+  height: calc(100% - 8px);
+  width: 1.5px;
+  background: var(--dms-surface-sunk);
+}
+.dms--stylized .stx-trow__main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 650;
+  font-family: var(--u-mono);
+}
+.dms--stylized .stx-trow__main small {
+  font-family: var(--u-font);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: var(--dms-muted);
+}
+.dms--stylized .stx-trow.is-key .stx-trow__main { color: var(--dms-accent); }
+
+/* ------------------------------------------------------------ shared bits */
+.dms--stylized .stx-mono { font-family: var(--u-mono); font-size: 0.95em; }
+
+.dms--stylized .stx-av {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.dms--stylized .stx-av.is-green { background: #e0f0e6; color: #1c6b3c; }
+.dms--stylized .stx-av.is-amber { background: #fdf0dc; color: #93611a; }
+.dms--stylized .stx-av.is-violet { background: #ece4fb; color: #6d4fc4; }
+
+.dms--stylized .stx-part11 {
+  padding: 4px 10px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-family: var(--u-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ================================================= Arcade flow-step shell
+ * A compact restaging of the real product anatomy captured in the six DMS
+ * Arcades: inbox, conversation/automation actor, checklist and one enlarged
+ * task-specific product moment. */
+.dms--stylized .sty-scene.is-arcade .sty-scene__inner {
+  padding: clamp(20px, 2.4vw, 38px) clamp(14px, 1.8vw, 28px);
+}
+
+.dms--stylized .sty-scene.is-arcade .stx-stage {
+  min-height: clamp(430px, calc(100vh - var(--dms-header-h) - 210px), 520px);
+}
+
+/* The arcade field: structural blue derived from the accent (so a palette
+ * swap re-tunes it), with quiet geometry instead of a ghost word. Shapes are
+ * full rings or solid marks, cropping off the field edge. */
+.dms--stylized .sty-scene.is-arcade {
+  background: color-mix(in oklab, var(--dms-accent), #051233 24%);
+}
+
+.dms--stylized .sty-scene.is-arcade .stx-arc-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.dms--stylized .stx-arc-field i { position: absolute; display: block; }
+.dms--stylized .stx-arc-field i:nth-child(1) {
+  top: -72px;
+  left: -52px;
+  width: 280px;
+  height: 280px;
+  box-shadow: inset 0 0 0 2px oklch(1 0 0 / 0.14);
+}
+.dms--stylized .stx-arc-field i:nth-child(2) {
+  right: -130px;
+  bottom: -150px;
+  width: 430px;
+  height: 430px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px oklch(1 0 0 / 0.12);
+}
+.dms--stylized .stx-arc-field i:nth-child(3) {
+  top: 44px;
+  right: 88px;
+  width: 56px;
+  height: 56px;
+  background: oklch(1 0 0 / 0.1);
+}
+.dms--stylized .stx-arc-field i:nth-child(4) {
+  bottom: 40px;
+  left: 58px;
+  width: 150px;
+  height: 10px;
+  background: oklch(1 0 0 / 0.1);
+}
+
+.dms--stylized .stx-arc {
+  position: relative;
+  width: min(980px, 100%);
+  height: clamp(420px, 35vw, 500px);
+  overflow: hidden;
+  background: #f7f9fb;
+  color: var(--dms-ink);
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.04),
+    0 2px 4px -2px oklch(0 0 0 / 0.16),
+    0 24px 64px -24px oklch(0 0 0 / 0.34);
+}
+
+.dms--stylized .stx-arc__bar {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+
+.dms--stylized .stx-arc__bar > b {
+  min-width: 0;
+  overflow: hidden;
+  font-family: var(--u-display);
+  font-size: 14px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  text-wrap: balance;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-arc__bar .stx-state {
+  font-size: 9px;
+}
+
+.dms--stylized .stx-arc__inbox,
+.dms--stylized .stx-arc__thread,
+.dms--stylized .stx-arc__checklist {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.dms--stylized .stx-arc__inbox {
+  padding: 12px 10px;
+  background: #fff;
+  border-right: 1px solid var(--dms-hairline);
+}
+
+.dms--stylized .stx-arc__inbox > p {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 62px;
+  margin: 0;
+  padding: 9px;
+  border-bottom: 1px solid var(--dms-surface-alt);
+}
+
+.dms--stylized .stx-arc__inbox > p.is-active {
+  background: var(--dms-accent-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 72%);
+}
+
+.dms--stylized .stx-arc__inbox p > b {
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-arc__inbox p > small {
+  overflow: hidden;
+  color: var(--dms-muted);
+  font-size: 9.5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-arc__inbox .stx-state {
+  align-self: flex-start;
+  margin-top: 3px;
+  padding: 2px 7px;
+  font-size: 8px;
+}
+
+.dms--stylized .stx-arc__thread {
+  position: relative;
+  padding: 24px 14px 74px;
+  background: #edf3f7;
+}
+
+.dms--stylized .stx-arc__today {
+  position: absolute;
+  top: 9px;
+  left: 50%;
+  padding: 3px 9px;
+  background: #aab2ba;
+  color: #fff;
+  font-size: 9px;
+  transform: translateX(-50%);
+}
+
+.dms--stylized .stx-arc__thread article {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.dms--stylized .stx-arc__actor {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  background: #294966;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.dms--stylized .stx-arc__actor.is-automator {
+  background: #294966;
+}
+
+.dms--stylized .stx-arc__actor.is-you {
+  background: var(--dms-accent);
+}
+
+.dms--stylized .stx-arc__thread article > p {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 13px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.04),
+    0 2px 4px -2px oklch(0 0 0 / 0.16);
+}
+
+.dms--stylized .stx-arc__thread article > p b {
+  color: #7c2fa6;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.dms--stylized .stx-arc__thread article > p > span {
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.dms--stylized .stx-arc__thread article > p small {
+  color: var(--dms-muted);
+  font-size: 9.5px;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.dms--stylized .stx-arc__checklist {
+  padding: 12px;
+  background: #fff;
+  border-left: 1px solid var(--dms-hairline);
+}
+
+.dms--stylized .stx-arc__checklist > header {
+  margin-bottom: 8px;
+  padding: 7px 9px;
+  background: #efe8fa;
+  color: #50228b;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.dms--stylized .stx-arc__checklist > p {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 38px;
+  margin: 0;
+  padding: 8px 9px;
+  border-bottom: 1px solid var(--dms-surface-alt);
+  color: var(--dms-ink-2);
+  font-size: 10px;
+}
+
+.dms--stylized .stx-arc__checklist > p.is-open {
+  background: #faf8fd;
+  color: #50228b;
+  font-weight: 650;
+}
+
+.dms--stylized .stx-arc__checklist > p i {
+  color: var(--dms-muted);
+  font-size: 13px;
+  font-style: normal;
+}
+
+/* ================================================= PF-29 hybrid proof
+ * The first lifecycle journey keeps a cropped slice of the real Unifize
+ * anatomy (inbox + record conversation + checklist), then enlarges only the
+ * product action that advances the current story step. This deliberately
+ * sits between a full application screenshot and the editorial fragments. */
+.dms--stylized .sty-scene.is-arcade .sty-scene__inner {
+  padding: clamp(14px, 1.8vw, 26px);
+}
+
+.dms--stylized .stx-arc__bar {
+  min-height: 50px;
+  padding-inline: 14px;
+}
+
+.dms--stylized .stx-arc__ownership {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 5px 14px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--dms-hairline);
+  background: #fff;
+  color: var(--dms-ink-2);
+  font-size: 9px;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-arc__meta-label {
+  color: var(--dms-faint);
+  font-family: var(--u-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+}
+
+.dms--stylized .stx-arc__ownership > b {
+  margin-right: 7px;
+  color: var(--dms-ink);
+  font-size: 9px;
+  font-weight: 650;
+}
+
+.dms--stylized .stx-arc__ownership .stx-av {
+  width: 20px;
+  height: 20px;
+  font-size: 7px;
+}
+
+.dms--stylized .stx-arc__participants {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 4px;
+}
+
+.dms--stylized .stx-arc__participants i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-left: -4px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-muted);
+  font-family: var(--u-mono);
+  font-size: 6.5px;
+  font-style: normal;
+  font-weight: 650;
+}
+
+.dms--stylized .stx-arc__ownership-note {
+  margin-left: auto;
+  overflow: hidden;
+  color: var(--dms-muted);
+  font-family: var(--u-mono);
+  font-size: 8px;
+  text-overflow: ellipsis;
+}
+
+.dms--stylized .stx-arc__inbox {
+  padding: 10px 8px;
+  opacity: var(--stx-inbox-opacity);
+}
+
+.dms--stylized .stx-arc__inbox > p.is-active {
+  border-radius: 3px;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 78%),
+    0 1px 2px oklch(0 0 0 / 0.04);
+}
+
+.dms--stylized .stx-arc__thread {
+  padding: 24px 12px 78px;
+  background: #fbfbfc;
+  opacity: var(--stx-thread-opacity);
+}
+
+.dms--stylized .stx-arc__today {
+  border-radius: 3px;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-muted);
+  font-family: var(--u-mono);
+}
+
+.dms--stylized .stx-arc__thread article {
+  margin-top: 10px;
+}
+
+.dms--stylized .stx-arc__thread article + article {
+  margin-top: 9px;
+}
+
+.dms--stylized .stx-arc__thread article > p {
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 2px 4px oklch(0 0 0 / 0.04);
+}
+
+.dms--stylized .stx-arc__thread article > p b {
+  color: var(--dms-accent);
+}
+
+.dms--stylized .stx-arc__thread-context {
+  opacity: 0.68;
+}
+
+.dms--stylized .stx-arc__actor {
+  border-radius: 50%;
+  background: var(--dms-ink-2);
+}
+
+.dms--stylized .stx-arc__checklist {
+  padding: 10px;
+  opacity: var(--stx-checklist-opacity);
+}
+
+.dms--stylized .stx-arc__checklist > header {
+  border-radius: 3px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+}
+
+.dms--stylized .stx-arc__checklist > p.is-open {
+  border-radius: 3px;
+  background: color-mix(in oklab, var(--dms-accent-tint), #fff 52%);
+  color: var(--dms-accent-text);
+}
+
+/* PF-29 product camera ------------------------------------------------------
+ * The viewport is fixed; a faithful, simplified conversation workspace is
+ * larger than it and moves behind the crop. Each step is staged in the native
+ * product region where the work happens—never in a floating explanation card. */
+.dms--stylized .sty-scene.is-arcade .sty-scene__inner {
+  padding: 0;
+}
+
+.dms--stylized .sty-scene.is-arcade .stx-stage {
+  height: 100%;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.dms--stylized .stx-arc {
+  --stx-camera-x: 0px;
+  --stx-camera-y: 0px;
+  --stx-camera-scale: 0.72;
+  --stx-inbox-opacity: 0.76;
+  --stx-thread-opacity: 0.84;
+  --stx-checklist-opacity: 0.76;
+  width: 100%;
+  height: clamp(450px, 37vw, 520px);
+  overflow: hidden;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dms--stylized .stx-arc__camera {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: 54px 270px 540px 286px;
+  width: 1150px;
+  height: 560px;
+  overflow: hidden;
+  background: #f7f8fa;
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
+  box-shadow: 0 20px 54px -24px oklch(0 0 0 / 0.5);
+  transform: translate3d(calc(-50% + var(--stx-camera-x)), calc(-50% + var(--stx-camera-y)), 0) scale(var(--stx-camera-scale));
+  transform-origin: 50% 50%;
+}
+
+.dms--stylized .stx-arc__rail {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 7px;
+  background: #111721;
+  color: #9da7b5;
+}
+
+.dms--stylized .stx-arc__rail > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 3px;
+  font-size: 16px;
+  font-style: normal;
+}
+
+.dms--stylized .stx-arc__rail > span.is-active {
+  background: color-mix(in oklab, var(--dms-accent), transparent 78%);
+  color: #fff;
+}
+
+.dms--stylized .stx-arc__rail > i { flex: 1; }
+.dms--stylized .stx-arc__rail .stx-arc__rail-logo {
+  margin-bottom: 7px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-family: var(--u-display);
+  font-size: 17px;
+  font-weight: 750;
+}
+.dms--stylized .stx-arc__rail .stx-arc__rail-avatar {
+  border-radius: 50%;
+  background: #303947;
+  color: #fff;
+  font-family: var(--u-mono);
+  font-size: 9px;
+}
+
+.dms--stylized .stx-arc__inbox {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--dms-hairline);
+  background: #fff;
+  opacity: var(--stx-inbox-opacity);
+}
+
+.dms--stylized .stx-arc__inbox-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 70px;
+  padding: 14px 14px 10px;
+}
+.dms--stylized .stx-arc__inbox-head small { color: var(--dms-muted); font-size: 9px; }
+.dms--stylized .stx-arc__inbox-head b { font-size: 15px; text-wrap: balance; }
+.dms--stylized .stx-arc__inbox-head b i {
+  display: inline-flex;
+  padding: 2px 5px;
+  border-radius: 8px;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-muted);
+  font-family: var(--u-mono);
+  font-size: 8px;
+  font-style: normal;
+  vertical-align: 2px;
+}
+
+.dms--stylized .stx-arc__inbox-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  margin: 0 12px 10px;
+  padding: 0 10px;
+  border-radius: 3px;
+  background: #f4f6f8;
+  box-shadow: inset 0 0 0 1px var(--dms-hairline);
+  color: var(--dms-muted);
+}
+.dms--stylized .stx-arc__inbox-search > span { font-size: 17px; }
+.dms--stylized .stx-arc__inbox-search > b { overflow: hidden; font-size: 10px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.dms--stylized .stx-arc__inbox-search kbd { color: var(--dms-faint); font-family: var(--u-mono); font-size: 8px; }
+
+.dms--stylized .stx-arc__inbox-filters {
+  display: flex;
+  gap: 5px;
+  padding: 0 12px 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+.dms--stylized .stx-arc__inbox-filters > * {
+  padding: 4px 7px;
+  border-radius: 10px;
+  background: var(--dms-surface-quiet);
+  color: var(--dms-muted);
+  font-size: 8px;
+  font-weight: 550;
+}
+.dms--stylized .stx-arc__inbox-filters > b { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.dms--stylized .stx-arc__inbox-filters i { font-style: normal; }
+
+.dms--stylized .stx-arc__inbox-list { overflow: hidden; }
+.dms--stylized .stx-arc__inbox-list article {
+  min-height: 88px;
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+.dms--stylized .stx-arc__inbox-list article.is-active { background: var(--dms-accent-tint); }
+.dms--stylized .stx-arc__inbox-list article > header,
+.dms--stylized .stx-arc__inbox-list article > footer { display: flex; align-items: center; gap: 7px; }
+.dms--stylized .stx-arc__inbox-list article > header b { overflow: hidden; flex: 1; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.dms--stylized .stx-arc__inbox-list time { color: var(--dms-faint); font-family: var(--u-mono); font-size: 8px; }
+.dms--stylized .stx-arc__inbox-list article > p { overflow: hidden; margin: 6px 0 9px; color: var(--dms-muted); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.dms--stylized .stx-arc__inbox-list article > footer span { color: var(--dms-faint); font-size: 8px; }
+.dms--stylized .stx-arc__inbox-list .stx-state { margin-left: auto; font-size: 7px; }
+
+.dms--stylized .stx-arc__conversation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: #f7f9fb;
+  opacity: var(--stx-thread-opacity);
+}
+
+.dms--stylized .stx-arc__conversation > .stx-arc__bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-height: 70px;
+  padding: 12px 16px 10px;
+}
+.dms--stylized .stx-arc__conversation > .stx-arc__bar > span { display: flex; align-items: center; gap: 8px; }
+.dms--stylized .stx-arc__conversation > .stx-arc__bar > span i { color: var(--dms-muted); font-family: var(--u-mono); font-size: 9px; font-style: normal; }
+.dms--stylized .stx-arc__conversation > .stx-arc__bar > b { font-size: 16px; }
+.dms--stylized .stx-arc__conversation > .stx-arc__bar > em { position: absolute; top: 18px; right: 16px; color: var(--dms-faint); font-style: normal; }
+
+.dms--stylized .stx-arc__conversation > .stx-arc__ownership {
+  min-height: 46px;
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--dms-hairline);
+  font-size: 9px;
+}
+
+.dms--stylized .stx-arc__conversation > .stx-arc__thread {
+  /* pinned to the newest message like a real conversation: content anchors
+   * to the bottom, so a tall focus card is always fully in frame and older
+   * messages clip off the TOP instead of the step's card clipping below */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 1;
+  min-height: 0;
+  padding: 28px 18px 20px;
+  overflow: hidden;
+  background: #f7f9fb;
+  opacity: 1;
+}
+.dms--stylized .stx-arc__conversation .stx-arc__thread article { gap: 10px; margin-top: 12px; }
+.dms--stylized .stx-arc__conversation .stx-arc__thread article.is-target { position: relative; }
+.dms--stylized .stx-arc__message {
+  flex: 1;
+  min-width: 0;
+  padding: 11px 12px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 2px 4px oklch(0 0 0 / 0.04);
+}
+.dms--stylized .stx-arc__message > header { display: flex; align-items: center; margin-bottom: 5px; }
+.dms--stylized .stx-arc__message > header b { color: var(--dms-accent); font-size: 10px; }
+.dms--stylized .stx-arc__message > header time { margin-left: auto; color: var(--dms-faint); font-family: var(--u-mono); font-size: 8px; }
+.dms--stylized .stx-arc__message > p { margin: 0; color: var(--dms-ink); font-size: 11px; font-weight: 650; line-height: 1.4; text-wrap: pretty; }
+.dms--stylized .stx-arc__message > small { display: block; margin-top: 4px; color: var(--dms-muted); font-size: 8.5px; line-height: 1.4; text-wrap: pretty; }
+
+.dms--stylized .stx-arc__status-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 3px;
+  background: #f7faf8;
+  box-shadow: inset 0 0 0 1px oklch(0.69 0.08 148 / 0.25);
+}
+.dms--stylized .stx-arc__status-row .stx-ed-docglyph { width: 28px; height: 34px; }
+.dms--stylized .stx-arc__status-row > span { display: flex; flex-direction: column; gap: 2px; }
+.dms--stylized .stx-arc__status-row small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__status-row b { font-size: 10px; }
+.dms--stylized .stx-arc__status-row em { color: var(--dms-muted); font-size: 8px; font-style: normal; }
+
+.dms--stylized .stx-arc__document-card {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__document-card > header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__document-card > header .stx-ed-docglyph { width: 25px; height: 30px; }
+.dms--stylized .stx-arc__document-card > header p { display: flex; flex-direction: column; gap: 2px; margin: 0; }
+.dms--stylized .stx-arc__document-card > header b { font-size: 10px; }
+.dms--stylized .stx-arc__document-card > header small { color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__document-preview { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 10px; min-height: 156px; padding: 10px; background: #eef1f4; }
+.dms--stylized .stx-arc__document-preview .stx-sheet { width: 110px; min-height: 136px; padding: 12px; }
+.dms--stylized .stx-arc__document-preview > span { display: flex; flex-direction: column; gap: 7px; padding: 12px; background: #fff; }
+.dms--stylized .stx-arc__document-preview > span b { font-size: 10px; }
+.dms--stylized .stx-arc__document-preview > span small { margin-top: auto; color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__document-preview > span i { width: 86%; height: 5px; background: var(--dms-surface-sunk); }
+.dms--stylized .stx-arc__document-preview > span i:nth-of-type(2) { width: 62%; }
+.dms--stylized .stx-arc__document-card > footer { display: flex; align-items: center; padding: 8px 10px; color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__document-card > footer b { margin-left: auto; color: var(--dms-accent); }
+
+.dms--stylized .stx-arc__message-link { display: inline-flex; margin-top: 9px; padding: 5px 7px; border-radius: 3px; background: var(--dms-accent-tint); color: var(--dms-accent); font-size: 8px; font-weight: 650; }
+
+/* The sealed-approval chat item (A2 s7): green signature block with approval
+ * ID, script signature, and meaning. */
+.dms--stylized .stx-arc__signedblock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding: 9px 10px;
+  border-radius: 3px;
+  background: #f0f8f2;
+  box-shadow: inset 0 0 0 1px oklch(0.69 0.08 148 / 0.3);
+}
+.dms--stylized .stx-arc__signedblock small { color: #4b7a5c; font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__signedblock b { font-family: "Snell Roundhand", "Segoe Script", cursive; font-size: 15px; font-weight: 500; color: var(--dms-ink); }
+.dms--stylized .stx-arc__signedblock span { display: flex; align-items: center; color: #185f35; font-size: 8px; font-weight: 650; }
+.dms--stylized .stx-arc__signedblock span em { margin-left: auto; color: #2c9257; font-size: 9px; font-style: normal; }
+
+/* PF-28 thread attachments: the review-board decision, the live task run,
+ * and the sealed trace card. Same idiom as the status row / document card. */
+.dms--stylized .stx-arc__decision {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__decision > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__decision > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; text-transform: uppercase; }
+.dms--stylized .stx-arc__decision > div { padding: 0 10px; }
+.dms--stylized .stx-arc__decision > div p { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px; margin: 0; padding: 7px 0; border-top: 1px solid var(--dms-surface-alt); font-size: 9px; }
+.dms--stylized .stx-arc__decision > div p:first-child { border-top: 0; }
+.dms--stylized .stx-arc__decision > div p span { color: var(--dms-muted); }
+.dms--stylized .stx-arc__decision > footer { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); font-size: 8px; }
+.dms--stylized .stx-arc__decision > footer b { padding: 6px 9px; border-radius: 3px; background: var(--dms-accent); color: #fff; }
+.dms--stylized .stx-arc__decision > footer span { color: var(--dms-muted); }
+
+.dms--stylized .stx-arc__taskrun {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__taskrun > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__taskrun > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; text-transform: uppercase; }
+.dms--stylized .stx-arc__taskrun > header b { color: var(--dms-accent); font-size: 9px; }
+.dms--stylized .stx-arc__taskrun > p { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; margin: 0; padding: 8px 10px; border-top: 1px solid var(--dms-surface-alt); }
+.dms--stylized .stx-arc__taskrun > p:first-of-type { border-top: 0; }
+.dms--stylized .stx-arc__taskrun > p > i { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 2px; background: #4b9a65; color: #fff; font-size: 8px; font-style: normal; }
+.dms--stylized .stx-arc__taskrun > p.is-progress > i { background: var(--dms-accent); }
+.dms--stylized .stx-arc__taskrun > p > span { display: flex; flex-direction: column; gap: 2px; }
+.dms--stylized .stx-arc__taskrun > p small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__taskrun > p b { font-size: 9px; }
+.dms--stylized .stx-arc__taskrun > p em { color: var(--dms-muted); font-size: 8px; font-style: normal; }
+.dms--stylized .stx-arc__taskrun > p.is-progress em { color: var(--dms-accent); }
+
+.dms--stylized .stx-arc__trace {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #f7faf8;
+  box-shadow: inset 0 0 0 1px oklch(0.69 0.08 148 / 0.25);
+}
+.dms--stylized .stx-arc__trace > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; }
+.dms--stylized .stx-arc__trace > header b { font-size: 10px; }
+.dms--stylized .stx-arc__trace > div { padding: 0 10px; }
+.dms--stylized .stx-arc__trace > div p { display: flex; align-items: center; gap: 8px; margin: 0; padding: 7px 0; border-top: 1px solid oklch(0.69 0.08 148 / 0.16); font-size: 9px; }
+.dms--stylized .stx-arc__trace > div p i { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 2px; background: #4b9a65; color: #fff; font-size: 8px; font-style: normal; }
+.dms--stylized .stx-arc__trace > footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-top: 1px solid oklch(0.69 0.08 148 / 0.16); color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__trace > footer b { color: #185f35; }
+
+/* PF-4/30/18 thread attachments: revision diff, revision history, training
+ * cascade, approval route. Same card idiom as the PF-28 set. */
+.dms--stylized .stx-arc__diffcard {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__diffcard > header { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__diffcard > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__diffcard > header b { font-size: 9px; }
+.dms--stylized .stx-arc__diffcard > header .stx-state { margin-left: auto; }
+.dms--stylized .stx-arc__diffcard > p { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 9px; margin: 0; padding: 8px 10px; font-family: var(--u-mono); font-size: 8.5px; }
+.dms--stylized .stx-arc__diffcard > p.is-old { background: #fbe9e5; color: #7c3629; text-decoration: line-through; }
+.dms--stylized .stx-arc__diffcard > p.is-new { background: #ddf0e4; color: #185f35; }
+.dms--stylized .stx-arc__diffcard > p > i { font-style: normal; font-weight: 700; }
+.dms--stylized .stx-arc__diffcard > footer { padding: 8px 10px; border-top: 1px solid var(--dms-hairline); color: var(--dms-muted); font-size: 8px; }
+
+.dms--stylized .stx-arc__historycard {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__historycard > header { display: flex; flex-direction: column; gap: 3px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__historycard > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__historycard > header b { font-size: 9px; }
+.dms--stylized .stx-arc__historycard > div { padding: 4px 10px 8px; }
+.dms--stylized .stx-arc__historycard > div p { position: relative; display: flex; align-items: center; gap: 9px; margin: 0; padding: 7px 0 7px 2px; font-size: 9px; color: var(--dms-muted); }
+.dms--stylized .stx-arc__historycard > div p > i { position: relative; z-index: 1; width: 8px; height: 8px; border-radius: 50%; background: var(--dms-faint); box-shadow: 0 0 0 2px #fff; }
+.dms--stylized .stx-arc__historycard > div p.is-current { color: var(--dms-ink); font-weight: 650; }
+.dms--stylized .stx-arc__historycard > div p.is-current > i { background: var(--dms-accent); }
+.dms--stylized .stx-arc__historycard > div p + p::before { content: ""; position: absolute; top: -14px; left: 5px; width: 1.5px; height: 20px; background: var(--dms-hairline); }
+
+.dms--stylized .stx-arc__traincard,
+.dms--stylized .stx-arc__routecard {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.dms--stylized .stx-arc__traincard > header,
+.dms--stylized .stx-arc__routecard > header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__traincard > header small,
+.dms--stylized .stx-arc__routecard > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__traincard > header b,
+.dms--stylized .stx-arc__routecard > header b { font-size: 9px; color: var(--dms-accent); }
+.dms--stylized .stx-arc__traincard > p,
+.dms--stylized .stx-arc__routecard > p { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; margin: 0; padding: 7px 10px; border-top: 1px solid var(--dms-surface-alt); }
+.dms--stylized .stx-arc__traincard > p:first-of-type,
+.dms--stylized .stx-arc__routecard > p:first-of-type { border-top: 0; }
+.dms--stylized .stx-arc__traincard > p > i,
+.dms--stylized .stx-arc__routecard > p > i { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--dms-surface-sunk); color: var(--dms-muted); font-family: var(--u-mono); font-size: 6.5px; font-style: normal; font-weight: 650; }
+.dms--stylized .stx-arc__traincard > p > span,
+.dms--stylized .stx-arc__routecard > p > span { display: flex; flex-direction: column; gap: 2px; }
+.dms--stylized .stx-arc__traincard > p b,
+.dms--stylized .stx-arc__routecard > p b { font-size: 9px; }
+.dms--stylized .stx-arc__traincard > p small,
+.dms--stylized .stx-arc__routecard > p small { color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__traincard > p em { padding: 3px 6px; border-radius: 8px; background: var(--dms-accent-tint); color: var(--dms-accent); font-size: 7px; font-style: normal; font-weight: 650; }
+.dms--stylized .stx-arc__traincard > footer { padding: 8px 10px; border-top: 1px solid var(--dms-hairline); color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__routecard > footer { display: flex; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__routecard > footer b { margin-left: auto; padding: 6px 9px; border-radius: 3px; background: var(--dms-accent); color: #fff; font-size: 8px; }
+
+/* ------------------------------- home page (app.unifize.com/home, A2 s1)
+ * One window at a time: home is a full PAGE overlaying the content area (the
+ * rail stays as persistent chrome, exactly like the app). It crossfades in on
+ * queue steps; navigating home <-> conversation is a page change, cued by a
+ * click ring on the row being opened. */
+.dms--stylized .stx-arc__home {
+  position: absolute;
+  inset: 0 0 0 54px;
+  z-index: 5;
+  overflow: hidden;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+.dms--stylized .stx-arc__camera.is-page-home .stx-arc__home { opacity: 1; }
+.dms--stylized .stx-arc__home-body { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 24px 28px; overflow: hidden; }
+.dms--stylized .stx-arc__home-body > header { display: flex; flex-direction: column; gap: 5px; }
+.dms--stylized .stx-arc__home-body > header small { color: var(--dms-muted); font-size: 10px; }
+.dms--stylized .stx-arc__home-body > header b { font-size: 21px; }
+.dms--stylized .stx-arc__home-body > header span { color: var(--dms-muted); font-size: 11px; }
+.dms--stylized .stx-arc__home-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 18px; flex: 1; min-height: 0; }
+.dms--stylized .stx-arc__home-main { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.dms--stylized .stx-arc__home-main > section {
+  padding: 13px 14px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--dms-accent), #fff 94%);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.05);
+}
+.dms--stylized .stx-arc__home-main > section > header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.dms--stylized .stx-arc__home-main > section > header b { color: var(--dms-accent); font-size: 12px; }
+.dms--stylized .stx-arc__home-main > section > header small { color: var(--dms-muted); font-family: var(--u-mono); font-size: 8px; }
+.dms--stylized .stx-arc__home-skeleton { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+.dms--stylized .stx-arc__home-skeleton i { width: 64%; height: 5px; background: oklch(0 0 0 / 0.07); }
+.dms--stylized .stx-arc__home-skeleton i + i { width: 44%; }
+.dms--stylized .stx-arc__home-rows { display: flex; flex-direction: column; margin-top: 6px; }
+.dms--stylized .stx-arc__home-rows p { position: relative; display: flex; align-items: center; gap: 8px; margin: 0; padding: 8px 0; border-top: 1px solid oklch(0 0 0 / 0.05); font-size: 10px; }
+.dms--stylized .stx-arc__home-rows p:first-child { border-top: 0; }
+.dms--stylized .stx-arc__home-rows p > i { width: 4px; height: 4px; border-radius: 50%; background: var(--dms-accent); }
+.dms--stylized .stx-arc__home-main > section > footer { margin-top: 9px; }
+.dms--stylized .stx-arc__home-main > section > footer b { display: inline-flex; padding: 7px 11px; border-radius: 3px; box-shadow: inset 0 0 0 1.5px var(--dms-accent); color: var(--dms-accent); font-size: 9px; }
+.dms--stylized .stx-arc__home-side { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.dms--stylized .stx-arc__home-side > small { color: var(--dms-ink); font-size: 12px; font-weight: 700; }
+.dms--stylized .stx-arc__home-side > section { display: flex; flex-direction: column; gap: 10px; padding: 13px 14px; border-radius: 4px; }
+.dms--stylized .stx-arc__home-side > section b { font-size: 11px; }
+.dms--stylized .stx-arc__home-side > section.is-chart { background: #e8f4ec; color: #185f35; }
+.dms--stylized .stx-arc__home-bars { display: flex; align-items: flex-end; gap: 9px; height: 84px; }
+.dms--stylized .stx-arc__home-bars i { flex: 1; border-radius: 2px 2px 0 0; background: #8cc3a2; }
+.dms--stylized .stx-arc__home-bars i:nth-child(1) { height: 46%; }
+.dms--stylized .stx-arc__home-bars i:nth-child(2) { height: 88%; }
+.dms--stylized .stx-arc__home-bars i:nth-child(3) { height: 30%; }
+.dms--stylized .stx-arc__home-bars i:nth-child(4) { height: 64%; }
+.dms--stylized .stx-arc__home-bars i:nth-child(5) { height: 100%; }
+.dms--stylized .stx-arc__home-bars i:nth-child(6) { height: 52%; }
+.dms--stylized .stx-arc__home-side > section.is-updates { background: #fbe9e5; color: #7c3629; }
+.dms--stylized .stx-arc__home-lines { display: flex; flex-direction: column; gap: 8px; }
+.dms--stylized .stx-arc__home-lines i { width: 78%; height: 5px; border-radius: 2px; background: oklch(0.45 0.1 30 / 0.22); }
+.dms--stylized .stx-arc__home-lines i:nth-child(2) { width: 58%; }
+.dms--stylized .stx-arc__home-lines i:nth-child(3) { width: 66%; }
+.dms--stylized .stx-arc__home-side > section.is-updates em { display: inline-flex; align-self: flex-start; padding: 6px 10px; border-radius: 3px; box-shadow: inset 0 0 0 1.5px #c25445; color: #a03d2e; font-size: 9px; font-style: normal; font-weight: 650; }
+
+/* Arcade-style click ring on the row about to be opened: the cue that the
+ * next step's page change is the result of this click. */
+.dms--stylized .stx-arc__click {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--dms-accent), transparent 82%);
+  box-shadow: 0 0 0 2px var(--dms-accent);
+}
+.dms--stylized .stx-arc__click::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--dms-accent);
+}
+
+/* --------------------------------------- Part 11 sign dialog (A2 s5-6) */
+.dms--stylized .stx-arc__signwrap {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: oklch(0.2 0.02 260 / 0.34);
+}
+.dms--stylized .stx-arc__signdialog {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 340px;
+  padding: 14px;
+  border-radius: 4px;
+  background: #fff;
+}
+.dms--stylized .stx-arc__signdialog > header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.dms--stylized .stx-arc__signdialog > header span { display: flex; flex-direction: column; gap: 3px; }
+.dms--stylized .stx-arc__signdialog > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
+.dms--stylized .stx-arc__signdialog > header b { font-size: 13px; }
+.dms--stylized .stx-arc__signdialog > header > i { color: var(--dms-faint); font-style: normal; }
+.dms--stylized .stx-arc__sign-type { display: flex; align-items: center; gap: 12px; font-size: 9px; color: var(--dms-muted); }
+.dms--stylized .stx-arc__sign-type b { display: inline-flex; align-items: center; gap: 5px; color: var(--dms-ink); font-weight: 650; }
+.dms--stylized .stx-arc__sign-type b i { width: 10px; height: 10px; border-radius: 50%; background: #fff; box-shadow: inset 0 0 0 3px var(--dms-accent); }
+.dms--stylized .stx-arc__sign-type em { display: inline-flex; align-items: center; gap: 5px; font-style: normal; }
+.dms--stylized .stx-arc__sign-type em::before { content: ""; width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--dms-hairline); }
+.dms--stylized .stx-arc__sign-field { display: flex; flex-direction: column; gap: 4px; }
+.dms--stylized .stx-arc__sign-field span { color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__sign-field i { padding: 8px 9px; border-radius: 3px; background: #f4f6f8; box-shadow: inset 0 0 0 1px var(--dms-hairline); color: var(--dms-muted); font-size: 9px; font-style: normal; }
+.dms--stylized .stx-arc__sign-signature { display: flex; flex-direction: column; gap: 3px; padding: 9px 10px; border-radius: 3px; background: #f7faf8; box-shadow: inset 0 0 0 1px oklch(0.69 0.08 148 / 0.25); }
+.dms--stylized .stx-arc__sign-signature span { color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__sign-signature b { font-family: "Snell Roundhand", "Segoe Script", cursive; font-size: 15px; font-weight: 500; }
+.dms--stylized .stx-arc__signdialog > footer { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 2px; }
+.dms--stylized .stx-arc__signdialog > footer b { padding: 7px 11px; border-radius: 3px; background: var(--dms-accent); color: #fff; font-size: 9px; }
+.dms--stylized .stx-arc__signdialog > footer span { color: var(--dms-muted); font-size: 9px; }
+.dms--stylized .stx-arc__composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  margin: 0 14px 12px;
+  padding: 7px 8px 7px 12px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.1);
+  color: var(--dms-faint);
+  font-size: 9px;
+}
+.dms--stylized .stx-arc__composer i { color: var(--dms-muted); font-size: 14px; font-style: normal; }
+.dms--stylized .stx-arc__composer b { padding: 7px 10px; border-radius: 3px; background: var(--dms-accent); color: #fff; font-size: 8px; }
+
+.dms--stylized .stx-arc__checklist {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--dms-hairline);
+  background: #fff;
+  opacity: var(--stx-checklist-opacity);
+}
+.dms--stylized .stx-arc__checklist > header { display: flex; align-items: center; min-height: 70px; margin: 0; padding: 12px 14px; border-bottom: 1px solid var(--dms-hairline); background: #fff; color: var(--dms-ink); }
+.dms--stylized .stx-arc__checklist > header > span { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.dms--stylized .stx-arc__checklist > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 8px; }
+.dms--stylized .stx-arc__checklist > header b { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.dms--stylized .stx-arc__checklist > header > i { margin-left: auto; color: var(--dms-faint); font-style: normal; }
+.dms--stylized .stx-arc__check-progress { display: grid; grid-template-columns: 1fr auto; gap: 6px; padding: 11px 14px; border-bottom: 1px solid var(--dms-hairline); color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__check-progress > i { grid-column: 1 / -1; height: 3px; overflow: hidden; border-radius: 2px; background: var(--dms-surface-sunk); }
+.dms--stylized .stx-arc__check-progress > i em { display: block; height: 100%; background: var(--dms-accent); }
+.dms--stylized .stx-arc__checklist > section { border-bottom: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__checklist > section > header { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 8px; min-height: 46px; padding: 9px 12px; }
+.dms--stylized .stx-arc__checklist > section > header > span { width: 8px; height: 8px; border-radius: 50%; background: var(--dms-faint); }
+.dms--stylized .stx-arc__checklist > section > header > span.is-done { background: #4b9a65; }
+.dms--stylized .stx-arc__checklist > section > header > span.is-progress { background: var(--dms-accent); }
+.dms--stylized .stx-arc__checklist > section > header b { font-size: 9px; }
+.dms--stylized .stx-arc__checklist > section > header em { color: var(--dms-muted); font-family: var(--u-mono); font-size: 8px; font-style: normal; }
+.dms--stylized .stx-arc__checklist > section > header i { color: var(--dms-faint); font-style: normal; }
+/* Sections stay mounted for the whole journey; open/collapse animates via
+ * grid-template-rows so a step change unfolds the relevant section in place
+ * instead of swapping the panel's contents. */
+.dms--stylized .stx-arc__checklist > section > .stx-arc__check-items {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0;
+}
+.dms--stylized .stx-arc__checklist > section.is-open > .stx-arc__check-items { grid-template-rows: 1fr; }
+.dms--stylized .stx-arc__check-items > div { min-height: 0; overflow: hidden; padding: 0 12px 0 28px; }
+.dms--stylized .stx-arc__check-items p { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px; min-height: 48px; margin: 0; padding: 8px 0; border-top: 1px solid var(--dms-surface-alt); }
+.dms--stylized .stx-arc__check-items p > i { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 2px; background: var(--dms-accent); color: #fff; font-size: 8px; font-style: normal; }
+.dms--stylized .stx-arc__check-items p > i:empty { background: #fff; box-shadow: inset 0 0 0 1.5px var(--dms-hairline); }
+.dms--stylized .stx-arc__check-items p > span { display: flex; flex-direction: column; gap: 3px; }
+.dms--stylized .stx-arc__check-items p b { font-size: 9px; }
+.dms--stylized .stx-arc__check-items p small { color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__checklist > footer { margin-top: auto; padding: 12px; border-top: 1px solid var(--dms-hairline); }
+.dms--stylized .stx-arc__checklist > footer span { display: block; margin-bottom: 8px; color: var(--dms-muted); font-size: 8px; }
+.dms--stylized .stx-arc__checklist > footer b { display: block; padding: 9px 10px; border-radius: 3px; background: var(--dms-accent); color: #fff; font-size: 9px; text-align: center; }
+
+/* Highlight: a solid accent ring thick enough to survive the camera's
+ * down-scale, a wide soft halo, and a colored lift shadow. Box-shadow only,
+ * so layout never shifts when the highlight moves between elements. Full ring
+ * on all four edges; full-bleed elements (inbox rows, checklist sections)
+ * flip to an inset ring + tint so the region's overflow crop can't eat it. */
+.dms--stylized .stx-arc .is-target {
+  box-shadow:
+    0 0 0 2.5px var(--dms-accent),
+    0 0 0 8px color-mix(in oklab, var(--dms-accent), transparent 86%),
+    0 16px 36px -14px color-mix(in oklab, var(--dms-accent), transparent 40%);
+}
+
+.dms--stylized .stx-arc__inbox-list article.is-target,
+.dms--stylized .stx-arc__checklist > section.is-target {
+  background: color-mix(in oklab, var(--dms-accent), transparent 94%);
+  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+}
+
+.dms--stylized .stx-arc__camera.is-focus-search {
+  --stx-camera-x: 300px;
+  --stx-camera-y: 56px;
+  --stx-camera-scale: 0.9;
+  --stx-inbox-opacity: 1;
+  --stx-thread-opacity: 0.7;
+  --stx-checklist-opacity: 0.62;
+}
+.dms--stylized .stx-arc__camera.is-focus-record {
+  --stx-camera-x: 2px;
+  --stx-camera-y: 30px;
+  --stx-camera-scale: 0.89;
+  --stx-inbox-opacity: 0.66;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.9;
+}
+.dms--stylized .stx-arc__camera.is-focus-viewer {
+  --stx-camera-x: -10px;
+  --stx-camera-y: -20px;
+  --stx-camera-scale: 0.98;
+  --stx-inbox-opacity: 0.52;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.66;
+}
+.dms--stylized .stx-arc.is-focus-viewer .stx-arc__thread-context { display: none; }
+.dms--stylized .stx-arc__camera.is-focus-print {
+  --stx-camera-x: -310px;
+  --stx-camera-y: 0px;
+  --stx-camera-scale: 0.88;
+  --stx-inbox-opacity: 0.48;
+  --stx-thread-opacity: 0.7;
+  --stx-checklist-opacity: 1;
+}
+.dms--stylized .stx-arc__camera.is-focus-issue {
+  --stx-camera-x: -18px;
+  --stx-camera-y: -76px;
+  --stx-camera-scale: 0.91;
+  --stx-inbox-opacity: 0.54;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.82;
+}
+
+/* PF-28 poses. The two consecutive tasks steps stay distinct via poseVariant:
+ * the plan pushes to the checklist, the run drops back into the thread, and
+ * trace pulls the camera out for the closing shot of the sealed record. */
+.dms--stylized .stx-arc__camera.is-focus-review {
+  --stx-camera-x: -16px;
+  --stx-camera-y: -64px;
+  --stx-camera-scale: 0.92;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.85;
+}
+.dms--stylized .stx-arc__camera.is-focus-tasks {
+  --stx-camera-x: -14px;
+  --stx-camera-y: -70px;
+  --stx-camera-scale: 0.92;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.8;
+}
+.dms--stylized .stx-arc__camera.is-focus-tasks.is-pose-plan {
+  --stx-camera-x: -300px;
+  --stx-camera-y: -16px;
+  --stx-camera-scale: 0.9;
+  --stx-inbox-opacity: 0.45;
+  --stx-thread-opacity: 0.68;
+  --stx-checklist-opacity: 1;
+}
+.dms--stylized .stx-arc__camera.is-focus-trace {
+  --stx-camera-x: -6px;
+  --stx-camera-y: -6px;
+  --stx-camera-scale: 0.8;
+  --stx-inbox-opacity: 0.68;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.92;
+}
+
+/* PF-4/30/18 poses. queue pans the camera all the way left onto the home
+ * sheet (the route variant restages it in-thread); signature zooms in on the
+ * dialog; the thread-card poses stay mutually distinct so consecutive steps
+ * always read as camera movement. */
+.dms--stylized .stx-arc__camera.is-focus-queue {
+  /* the full home page in frame; the workspace behind keeps resting opacity
+   * so the crossfade out of home lands on a normal-looking record */
+  --stx-camera-x: 0px;
+  --stx-camera-y: 0px;
+  --stx-camera-scale: 0.72;
+  --stx-inbox-opacity: 0.76;
+  --stx-thread-opacity: 0.84;
+  --stx-checklist-opacity: 0.76;
+}
+.dms--stylized .stx-arc__camera.is-focus-queue.is-pose-route {
+  --stx-camera-x: -8px;
+  --stx-camera-y: -52px;
+  --stx-camera-scale: 0.96;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.85;
+}
+.dms--stylized .stx-arc__camera.is-focus-signature {
+  --stx-camera-x: -16px;
+  --stx-camera-y: 6px;
+  --stx-camera-scale: 1;
+  --stx-inbox-opacity: 0.6;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.6;
+}
+.dms--stylized .stx-arc__camera.is-focus-diff {
+  --stx-camera-x: -20px;
+  --stx-camera-y: -76px;
+  --stx-camera-scale: 0.9;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.8;
+}
+.dms--stylized .stx-arc__camera.is-focus-comment {
+  --stx-camera-x: -10px;
+  --stx-camera-y: -58px;
+  --stx-camera-scale: 0.95;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.72;
+}
+.dms--stylized .stx-arc__camera.is-focus-history {
+  --stx-camera-x: -8px;
+  --stx-camera-y: -44px;
+  --stx-camera-scale: 0.96;
+  --stx-inbox-opacity: 0.52;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.85;
+}
+.dms--stylized .stx-arc__camera.is-focus-training {
+  --stx-camera-x: -16px;
+  --stx-camera-y: -68px;
+  --stx-camera-scale: 0.92;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--stylized .sty-scene.is-arcade .stx-arc__camera {
+    animation: none;
+    transition: transform 200ms ease-in-out;
+  }
+
+  .dms--stylized .stx-arc__inbox,
+  .dms--stylized .stx-arc__conversation,
+  .dms--stylized .stx-arc__checklist {
+    transition: opacity 160ms ease-in-out;
+  }
+
+  /* the highlight glides between product moments instead of popping */
+  .dms--stylized .stx-arc__inbox-search,
+  .dms--stylized .stx-arc__inbox-list article,
+  .dms--stylized .stx-arc__message,
+  .dms--stylized .stx-arc__status-row,
+  .dms--stylized .stx-arc__document-card,
+  .dms--stylized .stx-arc__decision,
+  .dms--stylized .stx-arc__taskrun,
+  .dms--stylized .stx-arc__trace,
+  .dms--stylized .stx-arc__diffcard,
+  .dms--stylized .stx-arc__historycard,
+  .dms--stylized .stx-arc__traincard,
+  .dms--stylized .stx-arc__routecard,
+  .dms--stylized .stx-arc__home section,
+  .dms--stylized .stx-arc__checklist > section {
+    transition: box-shadow 180ms ease-in-out, background-color 180ms ease-in-out;
+  }
+
+  .dms--stylized .stx-arc__checklist > section > .stx-arc__check-items {
+    transition: grid-template-rows 220ms ease-in-out;
+  }
+
+  /* the home <-> conversation page change */
+  .dms--stylized .stx-arc__home {
+    transition: opacity 240ms ease-in-out;
+  }
+
+  .dms--stylized .stx-arc__click {
+    animation: stx-arc-click 2s ease-in-out infinite;
+  }
+}
+
+@keyframes stx-arc-click {
+  0%, 100% { box-shadow: 0 0 0 2px var(--dms-accent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in oklab, var(--dms-accent), transparent 55%); }
+}
+
+@media (max-width: 600px) {
+  .dms--stylized .stx-arc { height: 430px; }
+  .dms--stylized .stx-arc__camera.is-focus-search { --stx-camera-x: 400px; --stx-camera-y: 34px; --stx-camera-scale: 0.98; }
+  .dms--stylized .stx-arc__camera.is-focus-record { --stx-camera-x: 0px; --stx-camera-y: 18px; --stx-camera-scale: 0.64; }
+  .dms--stylized .stx-arc__camera.is-focus-viewer { --stx-camera-x: -4px; --stx-camera-y: -26px; --stx-camera-scale: 0.68; }
+  .dms--stylized .stx-arc__camera.is-focus-print { --stx-camera-x: -410px; --stx-camera-y: -18px; --stx-camera-scale: 0.98; }
+  .dms--stylized .stx-arc__camera.is-focus-issue { --stx-camera-x: -6px; --stx-camera-y: -58px; --stx-camera-scale: 0.66; }
+  .dms--stylized .stx-arc__camera.is-focus-review { --stx-camera-x: -6px; --stx-camera-y: -52px; --stx-camera-scale: 0.66; }
+  .dms--stylized .stx-arc__camera.is-focus-tasks { --stx-camera-x: -6px; --stx-camera-y: -56px; --stx-camera-scale: 0.66; }
+  .dms--stylized .stx-arc__camera.is-focus-tasks.is-pose-plan { --stx-camera-x: -410px; --stx-camera-y: -8px; --stx-camera-scale: 0.98; }
+  .dms--stylized .stx-arc__camera.is-focus-trace { --stx-camera-x: 0px; --stx-camera-y: 2px; --stx-camera-scale: 0.58; }
+  .dms--stylized .stx-arc__camera.is-focus-queue { --stx-camera-x: 120px; --stx-camera-y: 30px; --stx-camera-scale: 0.62; }
+  .dms--stylized .stx-arc__camera.is-focus-queue.is-pose-route { --stx-camera-x: -4px; --stx-camera-y: -44px; --stx-camera-scale: 0.7; }
+  .dms--stylized .stx-arc__camera.is-focus-signature { --stx-camera-x: -8px; --stx-camera-y: 4px; --stx-camera-scale: 0.8; }
+  .dms--stylized .stx-arc__camera.is-focus-diff { --stx-camera-x: -8px; --stx-camera-y: -60px; --stx-camera-scale: 0.68; }
+  .dms--stylized .stx-arc__camera.is-focus-comment { --stx-camera-x: -4px; --stx-camera-y: -48px; --stx-camera-scale: 0.7; }
+  .dms--stylized .stx-arc__camera.is-focus-history { --stx-camera-x: -2px; --stx-camera-y: -36px; --stx-camera-scale: 0.7; }
+  .dms--stylized .stx-arc__camera.is-focus-training { --stx-camera-x: -8px; --stx-camera-y: -56px; --stx-camera-scale: 0.68; }
+}
+
+/* ================================================= Editorial flow scenes
+ * Native restagings of the approved product-snippet direction: one structural
+ * blue slab, layered white product fragments, and no application chrome. */
+.dms--stylized .sty-scene.is-editorial .sty-scene__inner {
+  padding: 0;
+}
+
+.dms--stylized .sty-scene.is-editorial .stx-stage {
+  min-height: 0;
+  height: 100%;
+}
+
+.dms--stylized .stx-ed-docglyph {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(42px, 5vw, 62px);
+  height: clamp(50px, 6vw, 72px);
+  flex: none;
+  color: var(--stx-ed-blue);
+}
+
+.dms--stylized .stx-ed-docglyph svg {
+  width: 100%;
+  height: 100%;
+}
+
+.dms--stylized .stx-ed-docglyph.is-complete {
+  color: #179653;
+}
+
+.dms--stylized .stx-ed-docglyph > i {
+  position: absolute;
+  right: -5px;
+  bottom: -3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: #179653;
+  color: #fff;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 750;
+}
+
+/* Reusable Arcade-grounded lifecycle snippets --------------------------- */
+.dms--stylized .sty-scene.is-editorial-step,
+.dms--stylized .sty-scene.is-editorial-step .stx-stage {
+  min-height: 0;
+}
+
+.dms--stylized .stx-state.is-approved,
+.dms--stylized .stx-state.is-verified-approved,
+.dms--stylized .stx-state.is-change-approved,
+.dms--stylized .stx-state.is-quiz-passed {
+  background: #ddf0e4;
+  color: #185f35;
+}
+
+.dms--stylized .stx-state.is-approved i,
+.dms--stylized .stx-state.is-verified-approved i,
+.dms--stylized .stx-state.is-change-approved i,
+.dms--stylized .stx-state.is-quiz-passed i {
+  background: #2c9257;
+}
+
+.dms--stylized .stx-state.is-needs-approval,
+.dms--stylized .stx-state.is-in-review {
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+}
+
+.dms--stylized .stx-state.is-needs-approval i,
+.dms--stylized .stx-state.is-in-review i {
+  background: var(--dms-accent);
+}
+
+.dms--stylized .stx-state.is-overdue,
+.dms--stylized .stx-state.is-change-needed {
+  background: #f9e7e4;
+  color: #8a352b;
+}
+
+.dms--stylized .stx-state.is-overdue i,
+.dms--stylized .stx-state.is-change-needed i {
+  background: #c25445;
+}
+
+/* Flow-step changes are direct state swaps, not decorative motion. */
+.dms--stylized .dms-lifex__stagemock .sty-scene.is-arcade .stx-stage > * {
+  animation: none;
+}
+
+/* ============================================== field + explorer overrides */
+.dms--stylized .dms-modx__card { display: flex; }
+/* the standards footnote row sits on blue now */
+.dms--stylized .dms-modx__standards { color: oklch(1 0 0 / 0.8); }
+.dms--stylized .dms-lifex__stagemock,
+.dms--stylized .dms-lifex__stagemock .sty-scene { height: 100%; }
+
+/* ------------------------------------------------------------- responsive */
+@media (max-width: 900px) {
+  .dms--stylized .stx-ghost { font-size: clamp(56px, 13vw, 84px); }
+  .dms--stylized .sty-scene__inner { padding: 46px 14px 18px; }
+  .dms--stylized .stx-stage { flex-direction: column; align-items: stretch; gap: 14px; }
+  .dms--stylized .sty-scene--life .stx-stage { min-height: 0; justify-content: flex-start; }
+  .dms--stylized .stx-panel { width: 100%; }
+  .dms--stylized .stx-pop { position: static; width: 100%; align-self: stretch; }
+  .dms--stylized .stx-doccard,
+  .dms--stylized .stx-comment,
+  .dms--stylized .stx-timeline { width: 100%; margin-right: 0; }
+  .dms--stylized .stx-signcard { margin: 0; width: 100%; }
+  .dms--stylized .stx-panel__head { padding: 15px 16px 13px; }
+  .dms--stylized .sty-scene.is-arcade .sty-scene__inner { padding: 0; }
+  .dms--stylized .sty-scene.is-arcade .stx-stage { min-height: 430px; }
+  .dms--stylized .stx-arc { height: 430px; }
+  .dms--stylized .stx-arc__checklist { display: none; }
+  .dms--stylized .stx-arc__camera > .stx-arc__checklist { display: flex; }
+}
+
+@media (max-width: 600px) {
+  .dms--stylized .stx-arc__bar {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .dms--stylized .stx-arc__inbox { display: none; }
+  .dms--stylized .stx-arc__camera > .stx-arc__inbox { display: flex; }
+  .dms--stylized .stx-arc__thread { padding-inline: 12px; }
+}
+
+/* ============================================================================
+ * Bundled modules · product visual only
+ * The section composition and module navigator stay untouched. This layer
+ * uses the approved editorial paradigm: one bounded composition per module,
+ * a simple blue geometry field, and a few oversized product moments.
+ * ========================================================================== */
+/* the arcade record scene (modules-as-camera-work, promoted from the lab)
+ * fills the module stage edge to edge. The percentage chain breaks against
+ * the stage's min-height, so the chain flexes instead: stage → inner →
+ * screens → card → scene, with the standards row keeping natural height. */
+.dms--stylized .dms-modx__stage { display: flex; flex-direction: column; }
+.dms--stylized .dms-modx__stage > .dms-stage__inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.dms--stylized .dms-modx__stage .dms-modx__screens { flex: 1; min-height: 0; }
+.dms--stylized .dms-modx__card .sty-scene.is-arcade {
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.dms--stylized .dms-modx__card .sty-scene.is-arcade .stx-stage {
+  flex: 1;
+  height: 100%;
+}
+
+.dms--stylized .dms-modx__stage {
+  position: relative;
+  min-height: 660px;
+  overflow: hidden;
+  border-radius: 0;
+  background: #10141c;
+  background-image: none;
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.08),
+    0 1px 2px -1px oklch(0 0 0 / 0.44),
+    0 20px 52px -30px oklch(0 0 0 / 0.8);
+}
+
+.dms--stylized .dms-modx__stage .dms-stage__inner {
+  padding: 14px 14px 64px;
+}
+
+.dms--stylized .dms-modx__screens {
+  width: 100%;
+  max-width: none;
+}
+
+.dms--stylized .dms-modx__card {
+  display: flex;
+  overflow: hidden;
+  border-radius: 0;
+  background: #f5f2ec;
+  outline: 1px solid oklch(1 0 0 / 0.1);
+  outline-offset: -1px;
+}
+
+.dms--stylized .stx-modvis {
+  container: module-visual / inline-size;
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 570px;
+  overflow: hidden;
+  background: #f5f2ec;
+  color: #111722;
+  font-family: var(--u-font);
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--stylized .stx-modvis.is-change { background: #08111d; }
+
+.dms--stylized .stx-modvis__geometry {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dms--stylized .stx-modvis.is-document .stx-modvis__geometry {
+  background: #0758ed;
+  clip-path: polygon(49% 100%, 49% 71%, 100% 10%, 100% 100%);
+}
+
+.dms--stylized .stx-modvis.is-training .stx-modvis__geometry {
+  background: #0758ed;
+  clip-path: polygon(39% 100%, 39% 68%, 72% 8%, 100% 8%, 100% 100%);
+}
+
+.dms--stylized .stx-modvis.is-change .stx-modvis__geometry {
+  background: linear-gradient(180deg, #064dbf, #0b5cf0);
+  clip-path: polygon(0 0, 33% 0, 33% 100%, 0 100%);
+}
+
+.dms--stylized .stx-modvis__composition {
+  position: absolute;
+  inset: 0;
+}
+
+.dms--stylized .stx-modvis__doccard,
+.dms--stylized .stx-modvis__history,
+.dms--stylized .stx-modvis__change-card,
+.dms--stylized .stx-modvis__affected,
+.dms--stylized .stx-modvis__release-card,
+.dms--stylized .stx-modvis__training-card {
+  position: absolute;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: clamp(12px, 1.8cqi, 24px);
+  background: #fff;
+  outline: 1px solid oklch(0 0 0 / 0.1);
+  outline-offset: -1px;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.04),
+    0 2px 4px -2px oklch(0 0 0 / 0.14),
+    0 24px 54px -22px oklch(0 0 0 / 0.32);
+}
+
+.dms--stylized .stx-modvis h3,
+.dms--stylized .stx-modvis p { margin: 0; }
+
+.dms--stylized .stx-modvis h3 {
+  font-family: var(--u-display);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.dms--stylized .stx-modvis small {
+  color: #737b88;
+  font-size: clamp(9px, 1.22cqi, 14px);
+  line-height: 1.35;
+}
+
+.dms--stylized .stx-modvis__rule {
+  height: 1px;
+  background: #d9dde2;
+}
+
+.dms--stylized .stx-modvis__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.48em 0.9em 0.42em;
+  border-radius: 0.38em;
+  font-size: clamp(9px, 1.3cqi, 15px);
+  font-weight: 700;
+  letter-spacing: 0.035em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__status.is-effective {
+  background: #dff4e7;
+  color: #168348;
+}
+
+.dms--stylized .stx-modvis__status.is-implementation {
+  background: linear-gradient(180deg, #0c5ce9, #0346bd);
+  color: #fff;
+}
+
+.dms--stylized .stx-modvis__docicon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 5.4cqi, 70px);
+  height: clamp(44px, 6.3cqi, 80px);
+  flex: none;
+  color: #0758ed;
+}
+
+.dms--stylized .stx-modvis__docicon.is-green { color: #109955; }
+.dms--stylized .stx-modvis__docicon svg { width: 100%; height: 100%; }
+.dms--stylized .stx-modvis__docicon i {
+  position: absolute;
+  right: -0.08em;
+  bottom: -0.02em;
+  display: grid;
+  place-items: center;
+  width: 1.35em;
+  height: 1.35em;
+  border: 0.14em solid #fff;
+  border-radius: 50%;
+  background: currentColor;
+  color: #fff;
+  font-size: clamp(12px, 1.6cqi, 18px);
+  font-style: normal;
+  line-height: 1;
+}
+
+.dms--stylized .stx-modvis__calendar {
+  width: 1.25em;
+  height: 1.25em;
+  flex: none;
+}
+
+.dms--stylized .stx-modvis__qr {
+  width: clamp(34px, 5cqi, 64px);
+  height: clamp(34px, 5cqi, 64px);
+  flex: none;
+}
+
+.dms--stylized .stx-modvis__connector {
+  position: absolute;
+  z-index: 1;
+  overflow: visible;
+  color: #0758ed;
+}
+
+/* Document Control: current controlled version connected to its immutable history. */
+.dms--stylized .stx-modvis__doccard {
+  top: 11%;
+  left: 5%;
+  width: 53%;
+  padding: clamp(18px, 2.5cqi, 32px);
+}
+
+.dms--stylized .stx-modvis__doccard > header {
+  display: flex;
+  align-items: center;
+  gap: clamp(13px, 2cqi, 24px);
+}
+
+.dms--stylized .stx-modvis__doccard > header > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(5px, 0.7cqi, 9px);
+}
+
+.dms--stylized .stx-modvis__doccard h3 {
+  font-size: clamp(22px, 3.45cqi, 44px);
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__doccard .stx-modvis__rule { margin-block: clamp(16px, 2.2cqi, 28px); }
+
+.dms--stylized .stx-modvis__document-title {
+  max-width: 31ch;
+  min-height: 2.8em;
+  font-size: clamp(12px, 1.65cqi, 19px);
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.dms--stylized .stx-modvis__doccard > footer,
+.dms--stylized .stx-modvis__release-card > footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: clamp(14px, 2cqi, 24px);
+}
+
+.dms--stylized .stx-modvis__doccard > footer > span,
+.dms--stylized .stx-modvis__release-card > footer > span {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  color: #222a36;
+  font-size: clamp(10px, 1.45cqi, 17px);
+  line-height: 1.25;
+}
+
+.dms--stylized .stx-modvis__connector.is-document {
+  top: 42%;
+  left: 45%;
+  width: 38%;
+  height: 25%;
+}
+
+.dms--stylized .stx-modvis__history {
+  right: 5%;
+  bottom: 8%;
+  width: 47%;
+  padding: clamp(17px, 2.3cqi, 28px);
+}
+
+.dms--stylized .stx-modvis__history > header { margin-bottom: clamp(10px, 1.5cqi, 18px); }
+.dms--stylized .stx-modvis__history h3 { margin-top: 0.22em; font-size: clamp(18px, 2.55cqi, 31px); }
+
+.dms--stylized .stx-modvis__history-row {
+  display: grid;
+  grid-template-columns: 0.75fr 1.35fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: clamp(40px, 5.2cqi, 60px);
+  border-top: 1px solid #e2e5e9;
+  color: #68707d;
+  font-size: clamp(10px, 1.35cqi, 16px);
+  font-variant-numeric: tabular-nums;
+}
+
+.dms--stylized .stx-modvis__history-row b { color: #29303b; }
+.dms--stylized .stx-modvis__history-row.is-current b { color: #0758ed; }
+.dms--stylized .stx-modvis__history-row em {
+  padding: 0.4em 0.7em;
+  border-radius: 999px;
+  background: #0758ed;
+  color: #fff;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* Change Control: the approved decision becomes visible implementation work. */
+.dms--stylized .stx-modvis__change-card {
+  top: 8%;
+  left: 8%;
+  width: 78%;
+  padding: clamp(18px, 2.5cqi, 32px) clamp(20px, 3cqi, 38px);
+}
+
+.dms--stylized .stx-modvis__change-card > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: clamp(14px, 1.8cqi, 24px);
+  border-bottom: 1px solid #d8dde3;
+}
+
+.dms--stylized .stx-modvis__change-card h3 { font-size: clamp(26px, 4.4cqi, 56px); }
+
+.dms--stylized .stx-modvis__change-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: clamp(26px, 3.4cqi, 44px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(10px, 1.7cqi, 22px);
+  min-height: clamp(60px, 8.2cqi, 102px);
+  margin-inline-start: 0;
+  border-bottom: 1px solid #e0e3e7;
+}
+
+.dms--stylized .stx-modvis__change-row:last-child { border-bottom: 0; }
+.dms--stylized .stx-modvis__change-row > i {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(25px, 3.25cqi, 42px);
+  height: clamp(25px, 3.25cqi, 42px);
+  border-radius: 50%;
+  background: #fff;
+  color: #fff;
+  box-shadow: inset 0 0 0 2px #c2c8d0;
+  font-size: clamp(13px, 1.7cqi, 21px);
+  font-style: normal;
+  line-height: 1;
+}
+
+.dms--stylized .stx-modvis__change-row:not(:last-child) > i::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: -1;
+  width: 2px;
+  height: clamp(24px, 5.2cqi, 64px);
+  background: #1b9552;
+  transform: translateX(-50%);
+}
+
+.dms--stylized .stx-modvis__change-row.is-done > i {
+  background: #1b9552;
+  box-shadow: none;
+}
+
+.dms--stylized .stx-modvis__change-row.is-progress > i {
+  border: clamp(3px, 0.45cqi, 6px) solid #f3a500;
+  border-left-color: transparent;
+  box-shadow: none;
+}
+
+.dms--stylized .stx-modvis__change-row b {
+  overflow: hidden;
+  font-size: clamp(12px, 1.8cqi, 22px);
+  font-weight: 550;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__change-row > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.55em 0.85em;
+  border-radius: 0.48em;
+  background: #e6f4eb;
+  color: #187940;
+  font-size: clamp(9px, 1.25cqi, 15px);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__change-row.is-progress > span {
+  background: #fff1cc;
+  color: #c57800;
+}
+
+.dms--stylized .stx-modvis__affected {
+  right: 4%;
+  bottom: 7%;
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.8cqi, 22px);
+  width: 48%;
+  padding: clamp(15px, 2.1cqi, 26px);
+}
+
+.dms--stylized .stx-modvis__affected > .stx-modvis__docicon {
+  padding: 0.5em;
+  border-radius: 0.7em;
+  background: #eaf1ff;
+}
+
+.dms--stylized .stx-modvis__affected > div { display: flex; min-width: 0; flex-direction: column; gap: 0.3em; }
+.dms--stylized .stx-modvis__affected small { color: #202733; white-space: nowrap; }
+.dms--stylized .stx-modvis__affected b {
+  color: #0758ed;
+  font-size: clamp(17px, 2.6cqi, 32px);
+  letter-spacing: -0.02em;
+}
+
+.dms--stylized .stx-modvis__linkdot {
+  position: absolute;
+  right: 49%;
+  bottom: 24%;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: clamp(28px, 3.7cqi, 46px);
+  height: clamp(28px, 3.7cqi, 46px);
+  border: clamp(3px, 0.35cqi, 5px) solid #dbe6fa;
+  border-radius: 50%;
+  background: #0758ed;
+  color: #fff;
+  font-size: clamp(14px, 1.8cqi, 22px);
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(8, 17, 29, 0.26);
+}
+
+.dms--stylized .stx-modvis__automator-strip {
+  position: absolute;
+  bottom: 8%;
+  left: 8%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.2cqi, 14px);
+  max-width: 40%;
+  padding: clamp(10px, 1.35cqi, 16px) clamp(13px, 1.7cqi, 22px);
+  border-radius: clamp(8px, 1.2cqi, 14px);
+  background: rgba(7, 15, 26, 0.94);
+  color: #e8edf5;
+  outline: 1px solid rgba(255, 255, 255, 0.7);
+  outline-offset: -1px;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.26);
+  font-size: clamp(9px, 1.16cqi, 14px);
+  line-height: 1.2;
+}
+
+.dms--stylized .stx-modvis__automator-strip b { color: #1f72ff; font-size: 1.12em; }
+.dms--stylized .stx-modvis__automator-strip i { width: 1px; height: 1.5em; flex: none; background: #87909d; }
+.dms--stylized .stx-modvis__spark { color: #1f72ff; font-size: 1.5em; }
+
+/* Training Management: the released revision fans out into individual evidence. */
+.dms--stylized .stx-modvis__release-card {
+  top: 11%;
+  left: 5%;
+  width: 48%;
+  padding: clamp(18px, 2.45cqi, 31px);
+}
+
+.dms--stylized .stx-modvis__release-card > header {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2cqi, 24px);
+}
+
+.dms--stylized .stx-modvis__release-card > header > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(7px, 0.9cqi, 11px);
+}
+
+.dms--stylized .stx-modvis__release-card h3 {
+  font-size: clamp(20px, 3.05cqi, 38px);
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__release-card .stx-modvis__rule { margin-top: clamp(16px, 2.2cqi, 28px); }
+.dms--stylized .stx-modvis__release-card > footer { margin-top: clamp(16px, 2.2cqi, 28px); }
+
+.dms--stylized .stx-modvis__connector.is-training {
+  top: 33%;
+  left: 43%;
+  width: 27%;
+  height: 26%;
+}
+
+.dms--stylized .stx-modvis__training-card {
+  right: 4%;
+  bottom: 9%;
+  width: 53%;
+  padding: clamp(18px, 2.5cqi, 32px);
+}
+
+.dms--stylized .stx-modvis__training-card > header {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  color: #0758ed;
+  font-size: clamp(15px, 2.2cqi, 27px);
+}
+
+.dms--stylized .stx-modvis__automark {
+  display: grid;
+  place-items: center;
+  width: 1.85em;
+  height: 1.85em;
+  border-radius: 50%;
+  background: #0758ed;
+  color: #fff;
+}
+
+.dms--stylized .stx-modvis__automark svg { width: 1.3em; height: 1.3em; }
+
+.dms--stylized .stx-modvis__training-card > h3 {
+  margin-block: clamp(11px, 1.5cqi, 18px) clamp(14px, 2cqi, 25px);
+  font-size: clamp(20px, 3.4cqi, 42px);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__training-card > h3 strong {
+  margin-inline-end: 0.18em;
+  font-size: 1.24em;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.dms--stylized .stx-modvis__training-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(9px, 1.3cqi, 16px);
+  min-height: clamp(48px, 6.2cqi, 76px);
+  border-top: 1px solid #dfe3e8;
+  font-size: clamp(10px, 1.38cqi, 16px);
+}
+
+.dms--stylized .stx-modvis__training-row > b {
+  overflow: hidden;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__training-row > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  color: #d57a00;
+  white-space: nowrap;
+}
+
+.dms--stylized .stx-modvis__people {
+  display: grid;
+  place-items: center;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  background: #eaf1ff;
+  color: #0758ed;
+  font-size: 1.2em;
+  font-family: var(--u-display);
+}
+
+.dms--stylized .dms-modx__standards {
+  right: 24px;
+  bottom: 20px;
+  gap: 6px;
+}
+
+.dms--stylized .dms-modx__standards span {
+  padding: 5px 10px;
+  background: #1b202a;
+  color: #b5bbc5;
+  font-size: 0.7rem;
+  box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.08);
+}
+
+@media (max-width: 900px) {
+  .dms--stylized .dms-modx__stage {
+    min-height: 680px;
+  }
+}
+
+@media (max-width: 600px) {
+  .dms--stylized .dms-modx__stage {
+    min-height: 620px;
+    border-radius: 0;
+  }
+
+  .dms--stylized .dms-modx__stage .dms-stage__inner {
+    padding: 10px 10px 58px;
+  }
+
+  .dms--stylized .dms-modx__card {
+    border-radius: 0;
+  }
+
+  .dms--stylized .stx-modvis { min-height: 552px; }
+  .dms--stylized .stx-modvis__doccard { top: 7%; width: 62%; }
+  .dms--stylized .stx-modvis__history { right: 4%; bottom: 7%; width: 62%; }
+  .dms--stylized .stx-modvis__connector.is-document { top: 40%; left: 44%; width: 45%; }
+  .dms--stylized .stx-modvis__document-title { display: none; }
+
+  .dms--stylized .stx-modvis__change-card { top: 6%; left: 4%; width: 92%; }
+  .dms--stylized .stx-modvis__affected { right: 4%; bottom: 8%; width: 61%; }
+  .dms--stylized .stx-modvis__automator-strip { bottom: 7%; left: 4%; max-width: 38%; }
+  .dms--stylized .stx-modvis__automator-strip > span:last-child,
+  .dms--stylized .stx-modvis__automator-strip i { display: none; }
+  .dms--stylized .stx-modvis__linkdot { right: 59%; bottom: 21%; }
+
+  .dms--stylized .stx-modvis__release-card { top: 7%; width: 58%; }
+  .dms--stylized .stx-modvis__training-card { right: 4%; bottom: 8%; width: 68%; }
+  .dms--stylized .stx-modvis__connector.is-training { top: 31%; left: 42%; width: 42%; }
+  .dms--stylized .stx-modvis__release-card h3 { font-size: 15px; }
+  .dms--stylized .stx-modvis__training-card > h3 {
+    max-width: 13ch;
+    font-size: 16px;
+    line-height: 1.1;
+    white-space: normal;
+    text-wrap: balance;
+  }
+  .dms--stylized .stx-modvis__training-card > h3 strong { font-size: 1.35em; }
+
+  .dms--stylized .dms-modx__standards {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .dms--stylized .dms-modx__standards span:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+/* ========================================================== HERO ARCADE
+ * The hero product shot is the shared arcade engine walking five moments of
+ * SOP-118 (stylized-hero-arcade.tsx). The scene brings its own accent field,
+ * so the old blue plate and its framed screenshot drop away; what stays is
+ * the app window on the field, a numbered step rail under it, and the
+ * caption that says what the frame proves. Dark-hero tokens throughout. */
+.dms--stylized .dms-hero__product-demo--arcade .dms-heroarc__stage {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+.dms--stylized .dms-heroarc__stage .stx-root { display: block; height: 100%; }
+/* the field is the hero's own dark ground plus the accent wash the engine
+ * paints; the free-floating geometry stays, cropped by the stage */
+.dms--stylized .dms-heroarc__stage .sty-scene.is-arcade {
+  overflow: hidden;
+  background: linear-gradient(
+    152deg,
+    color-mix(in oklab, var(--dms-accent), #fff 6%),
+    var(--dms-accent) 46%,
+    color-mix(in oklab, var(--dms-accent), #08102c 30%)
+  );
+}
+.dms--stylized .dms-heroarc__stage .stx-arc__camera {
+  outline-color: oklch(1 0 0 / 0.16);
+  box-shadow:
+    0 24px 48px -18px oklch(0 0 0 / 0.5),
+    0 64px 120px -34px oklch(0 0 0 / 0.55);
+}
+
+/* ------------------------------------------------------------- step rail */
+.dms--stylized .dms-heroarc__rail {
+  display: grid;
+  margin-top: 20px;
+}
+.dms--stylized .dms-heroarc__steps {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--dms-d-border);
+  list-style: none;
+}
+.dms--stylized .dms-heroarc__btn {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 12px 14px 0;
+  border: 0;
+  background: none;
+  color: var(--dms-d-ink-3);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: color 160ms ease-out;
+}
+.dms--stylized .dms-heroarc__n {
+  font-family: var(--dms-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+.dms--stylized .dms-heroarc__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.dms--stylized .dms-heroarc__btn:hover,
+.dms--stylized .dms-heroarc__btn:focus-visible { color: var(--dms-d-ink); }
+.dms--stylized .dms-heroarc__step.is-past .dms-heroarc__btn { color: var(--dms-d-ink-2); }
+.dms--stylized .dms-heroarc__step.is-active .dms-heroarc__btn { color: var(--dms-d-ink); }
+/* the active step owns the rule above it; while the timer runs, the rule
+ * fills left to right so the dwell is legible instead of surprising */
+.dms--stylized .dms-heroarc__step.is-active .dms-heroarc__btn::before {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  content: "";
+  background: color-mix(in oklab, var(--dms-accent), transparent 62%);
+}
+.dms--stylized .dms-heroarc__tick {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--dms-accent);
+  transform-origin: 0 50%;
+  animation: dms-heroarc-tick linear both;
+}
+@keyframes dms-heroarc-tick {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (max-width: 860px) {
+  .dms--stylized .dms-heroarc__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .dms--stylized .dms-heroarc__step { border-bottom: 1px solid var(--dms-d-border); }
+}

@@ -12,11 +12,13 @@
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useRef, useState } from "react";
+import { Tabs } from "@base-ui/react/tabs";
 import { ChatShell } from "@/components/organisms";
 import { cn } from "@/lib/cn";
-import { MODULES, LIFECYCLE, FAQS } from "./dms-data";
+import { MODULES, LIFECYCLE, FAQS, type DmsFlow } from "./dms-data";
 import { Eyebrow, ShellFrame, StagePanel } from "./dms-primitives";
 import { MockChangeWorkspace, MockDocumentWorkspace, MockTrainingWorkspace } from "./dms-mocks";
+import { ArcadeStepScene, type ArcadeStepConfig } from "../_shared/arcade/arcade";
 
 /* ============================================================ shared bits */
 
@@ -124,6 +126,13 @@ type ModuleExplorerProps = {
   ariaLabel?: string;
   urlBase?: string;
   pointIcons?: Record<string, string[]>;
+  /** false drops the browser ShellFrame so mocks stage as bare stylized
+   * fragments on the brand field (the dms/stylized exploration). */
+  frame?: boolean;
+  /** one persistent arcade record scene keyed by module: the active module
+   * swaps the config on the SAME scene instance, so tab changes PAN the
+   * camera instead of crossfading between stacked cards. Overrides mocks. */
+  arcadeConfigsByModule?: Record<string, ArcadeStepConfig>;
 };
 
 export function ModuleExplorer({
@@ -134,10 +143,15 @@ export function ModuleExplorer({
   ariaLabel = "DMS modules",
   urlBase = "",
   pointIcons = MODULE_POINT_ICONS,
+  frame = true,
+  arcadeConfigsByModule,
 }: ModuleExplorerProps = {}) {
   const [active, setActive] = useState(0);
 
   const m = modules[active];
+  const activeArcadeConfig = arcadeConfigsByModule
+    ? arcadeConfigsByModule[m.key] ?? Object.values(arcadeConfigsByModule)[0]
+    : undefined;
 
   return (
     <div className="dms-wrap dms-modx">
@@ -199,19 +213,31 @@ export function ModuleExplorer({
           </div>
         </div>
         <div className="dms-modx__panel" id="dms-module-panel" aria-live="polite">
-          <StagePanel className="dms-stage--brand dms-modx__stage">
+          <StagePanel className={cn("dms-stage--brand dms-modx__stage", activeArcadeConfig && "dms-modx__stage--arcade")}>
             <div className="dms-modx__screens">
-              {modules.map((module, moduleIndex) => (
-                <div
-                  className={`dms-modx__card${moduleIndex === active ? " is-active" : ""}`}
-                  key={module.key}
-                  aria-hidden={moduleIndex !== active}
-                >
-                  <ShellFrame panel url={`app.unifize.com / ${urlBase ? `${urlBase} / ` : ""}${module.key.replace(/-/g, " ")}`}>
-                    {mocks[module.key]}
-                  </ShellFrame>
+              {activeArcadeConfig ? (
+                /* ONE scene, config swapped in place: the camera pans between
+                 * module poses instead of crossfading stacked cards */
+                <div className="dms-modx__card is-active">
+                  <ArcadeStepScene config={activeArcadeConfig} />
                 </div>
-              ))}
+              ) : (
+                modules.map((module, moduleIndex) => (
+                  <div
+                    className={`dms-modx__card${moduleIndex === active ? " is-active" : ""}`}
+                    key={module.key}
+                    aria-hidden={moduleIndex !== active}
+                  >
+                    {frame ? (
+                      <ShellFrame panel url={`app.unifize.com / ${urlBase ? `${urlBase} / ` : ""}${module.key.replace(/-/g, " ")}`}>
+                        {mocks[module.key]}
+                      </ShellFrame>
+                    ) : (
+                      mocks[module.key]
+                    )}
+                  </div>
+                ))
+              )}
             </div>
             {m.standards?.length ? (
               <div className="dms-modx__standards" aria-label="Standards supported by this module">
@@ -246,10 +272,40 @@ type LifecycleExplorerProps = {
    * the ChatShell (for products whose lifecycle has no chat script). */
   stageMocks?: React.ReactNode[];
   stageUrl?: string;
+  /** false stages the mocks bare (no browser ShellFrame) for stylized
+   * fragment scenes. */
+  stageFrame?: boolean;
+  /** index stageMocks by lifecycle station instead of story step, so one
+   * mock per lifecycle state also serves flow mode (steps map to stations). */
+  stageByStation?: boolean;
+  /** Plain step data for flows whose product scene must persist while its
+   * camera pans between poses instead of replacing a pre-rendered node. */
+  arcadeConfigsByFlow?: Record<string, ArcadeStepConfig[]>;
   mobileLabel?: string;
   mobileId?: string;
   idPrefix?: string;
   layout?: "selector" | "sticky-visual";
+  /** persona journeys blended into the lifecycle: a chip per flow swaps the
+   * story rail to the flow's steps while the live mock scrubs along and the
+   * station bar highlights the traversed states (sticky-visual only). */
+  flows?: DmsFlow[];
+  flowsLabel?: string;
+  flowsLede?: string;
+  /** false drops the built-in "The lifecycle" map chip (page-owned copy, not
+   * a Notion-backed flow) so only flows render; the first flow becomes the
+   * default journey. */
+  mapChip?: boolean;
+};
+
+/* one rendered story row: a lifecycle state in map mode, a journey step in
+ * flow mode */
+type StoryItem = {
+  key: string;
+  label: string;
+  heading: string;
+  body: string;
+  note?: string;
+  outcome?: string;
 };
 
 export function LifecycleExplorer({
@@ -262,21 +318,67 @@ export function LifecycleExplorer({
   progressPoints = LIFE_PROGRESS,
   stageMocks,
   stageUrl = "app.unifize.com",
+  stageFrame = true,
+  stageByStation = false,
+  arcadeConfigsByFlow,
   mobileLabel = "Change-control thread",
   mobileId = "CC-2148 · raise → review → Part 11 approval → effective → seal",
   idPrefix = "dms-life",
   layout = "selector",
+  flows,
+  flowsLabel = "Follow the work through the lifecycle",
+  flowsLede = "",
+  mapChip = true,
 }: LifecycleExplorerProps = {}) {
   const [active, setActive] = useState(0);
+  const [activeFlowId, setActiveFlowId] = useState<string | null>(
+    mapChip ? null : flows?.[0]?.id ?? null,
+  );
   const stepRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const ratios = useRef<number[]>([]);
   const manualUntil = useRef(0);
-  const progress = progressPoints[active] ?? progressPoints[progressPoints.length - 1] ?? 1;
+
+  const activeFlow = flows?.find((flow) => flow.id === activeFlowId) ?? null;
+  const storyItems: StoryItem[] = activeFlow
+    ? activeFlow.steps.map((step, index) => ({
+        key: `${activeFlow.id}-${index}`,
+        label: step.role || activeFlow.actor,
+        heading: step.name,
+        body: step.what,
+        note: step.decision || undefined,
+        outcome: step.primitives.length > 0 ? `Tax removed: ${step.primitives.join(" · ")}` : undefined,
+      }))
+    : steps.map((step) => ({
+        key: step.state,
+        label: step.state,
+        heading: step.gate,
+        body: step.detail,
+        outcome: step.visual,
+      }));
+
+  /* which lifecycle station the current story row sits at: the row itself in
+   * map mode; in flow mode the flow's station span, walked proportionally */
+  const flowStations = activeFlow?.stations ?? [];
+  const stationForStep = (index: number) =>
+    flowStations.length === 0
+      ? -1
+      : flowStations[Math.min(Math.floor((index / storyItems.length) * flowStations.length), flowStations.length - 1)];
+  const activeStation = activeFlow ? stationForStep(active) : active;
+
+  const progress = activeFlow
+    ? (active + 1) / storyItems.length
+    : progressPoints[active] ?? progressPoints[progressPoints.length - 1] ?? 1;
+
+  const switchFlow = (flowId: string | null) => {
+    manualUntil.current = Date.now() + 800;
+    setActiveFlowId(flowId);
+    setActive(0);
+  };
 
   useEffect(() => {
     if (layout !== "sticky-visual") return;
 
-    ratios.current = Array.from({ length: steps.length }, () => 0);
+    ratios.current = Array.from({ length: storyItems.length }, () => 0);
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const index = stepRefs.current.indexOf(entry.target as HTMLButtonElement);
@@ -296,26 +398,115 @@ export function LifecycleExplorer({
       if (node) observer.observe(node);
     });
     return () => observer.disconnect();
-  }, [layout, steps.length]);
+  }, [layout, storyItems.length, activeFlowId]);
 
   const select = (index: number) => {
     manualUntil.current = Date.now() + 1000;
     setActive(index);
   };
 
+  /* the flow chip row + context line, shared by both layouts */
+  const flowsHead = flows && flows.length > 0 ? (
+    <Tabs.Root
+      className="dms-lifex__flows"
+      data-track="lifecycle-flows"
+      onValueChange={(value) => {
+        if (typeof value === "string") switchFlow(value === "map" ? null : value);
+      }}
+      orientation="horizontal"
+      value={activeFlow?.id ?? "map"}
+    >
+      <span className="dms-lifex__flows-label">{flowsLabel}</span>
+      <Tabs.List activateOnFocus className="dms-lifex__flowchips" aria-label={flowsLabel}>
+        {mapChip ? (
+          <Tabs.Tab
+            className={cn("dms-lifex__flowchip", !activeFlow && "is-active")}
+            data-track="lifecycle-flow-chip"
+            data-flow-id="map"
+            value="map"
+          >
+            <span className="dms-lifex__flowchip-actor">The record</span>
+            <span className="dms-lifex__flowchip-title">The lifecycle</span>
+          </Tabs.Tab>
+        ) : null}
+        {flows.map((flow) => (
+          <Tabs.Tab
+            className={cn("dms-lifex__flowchip", activeFlow?.id === flow.id && "is-active")}
+            data-track="lifecycle-flow-chip"
+            data-flow-id={flow.id}
+            key={flow.id}
+            value={flow.id}
+          >
+            <span className="dms-lifex__flowchip-actor">{flow.actor}</span>
+            <span className="dms-lifex__flowchip-title">{flow.title}</span>
+          </Tabs.Tab>
+        ))}
+      </Tabs.List>
+      {flowsLede ? (
+        <div className="dms-lifex__flowpanels">
+          {mapChip ? (
+            <Tabs.Panel className="dms-lifex__flows-lede" value="map">
+              {flowsLede}
+            </Tabs.Panel>
+          ) : null}
+          {flows.map((flow) => (
+            <Tabs.Panel className="dms-lifex__flows-lede" key={flow.id} value={flow.id}>
+              {flow.description}
+            </Tabs.Panel>
+          ))}
+        </div>
+      ) : null}
+    </Tabs.Root>
+  ) : null;
+
+  /* the flow's closing value statement: the Platform Outcomes it moves.
+   * These are measured quantities (all Goal Zero Pending), so the label says
+   * "moves", never a claimed result. */
+  const flowOutcomes = activeFlow && activeFlow.outcomes.length > 0 ? (
+    <div className="dms-lifex__outmoves">
+      <span className="dms-lifex__outmoves-label">Outcomes this flow moves</span>
+      <ul className="dms-lifex__outmoves-list">
+        {activeFlow.outcomes.map((outcome) => (
+          <li key={outcome.name}>
+            <i>{outcome.type}</i>
+            {outcome.name}
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : null;
+
   const livePanel = (
     <div
       className="dms-lifex__live"
       id={`${idPrefix}-live`}
-      aria-label={`${liveLabel}. Current state: ${steps[active]?.state ?? ""}`}
+      aria-label={`${liveLabel}. Current state: ${steps[activeStation]?.state ?? ""}`}
     >
-      {stageMocks ? (
-        <div className="dms-lifex__stagemock" key={active}>
-          <ShellFrame panel url={stageUrl}>
-            {stageMocks[Math.min(active, stageMocks.length - 1)]}
-          </ShellFrame>
-        </div>
-      ) : (
+      {stageMocks || (activeFlow && arcadeConfigsByFlow?.[activeFlow.id]) ? (() => {
+        const activeArcadeConfigs = activeFlow ? arcadeConfigsByFlow?.[activeFlow.id] : undefined;
+        if (activeFlow && activeArcadeConfigs) {
+          const stageIndex = Math.min(active, activeArcadeConfigs.length - 1);
+          return (
+            <div className="dms-lifex__stagemock" key={activeFlow.id}>
+              <ArcadeStepScene config={activeArcadeConfigs[stageIndex]} />
+            </div>
+          );
+        }
+        const resolvedStageMocks = stageMocks ?? [];
+        const stageIndex = Math.min(
+          stageByStation ? Math.max(activeStation, 0) : active,
+          resolvedStageMocks.length - 1,
+        );
+        return (
+          <div className="dms-lifex__stagemock" key={activeFlow?.id ?? "map"}>
+            {stageFrame ? (
+              <ShellFrame panel url={stageUrl}>{resolvedStageMocks[stageIndex]}</ShellFrame>
+            ) : (
+              resolvedStageMocks[stageIndex]
+            )}
+          </div>
+        );
+      })() : (
         <ChatShell variant={chatVariant} progress={progress} />
       )}
     </div>
@@ -329,34 +520,21 @@ export function LifecycleExplorer({
             <div className="dms-lifex__head">
               <Eyebrow n={4}>The lifecycle</Eyebrow>
               <h2 className="dms-h2">{heading}</h2>
+              {flowsHead}
             </div>
 
-            <div className="dms-lifex dms-lifex--story">
+            <div className={cn("dms-lifex dms-lifex--story", activeFlow && "dms-lifex--flowmode")}>
               <div className="dms-lifex__visual">
-                <div
-                  className="dms-lifex__progress"
-                  style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}
-                  aria-label={`Lifecycle state ${active + 1} of ${steps.length}`}
-                >
-                  {steps.map((step, index) => (
-                    <button
-                      key={step.state}
-                      type="button"
-                      className={cn(index === active && "is-active")}
-                      aria-label={`Show lifecycle state ${index + 1}: ${step.state}`}
-                      aria-controls={`${idPrefix}-live`}
-                      onClick={() => select(index)}
-                    >
-                      <span>{pad(index + 1)}</span>
-                    </button>
-                  ))}
-                </div>
                 {livePanel}
               </div>
 
-              <ol className="dms-lifex__story-steps" aria-label={ariaLabel}>
-                {steps.map((step, index) => (
-                  <li className="dms-lifex__story-item" key={step.state}>
+              <ol
+                className="dms-lifex__story-steps"
+                aria-label={activeFlow ? activeFlow.fullName : ariaLabel}
+                key={activeFlow?.id ?? "map"}
+              >
+                {storyItems.map((item, index) => (
+                  <li className="dms-lifex__story-item" data-step-index={index + 1} key={item.key}>
                     <button
                       ref={(node) => { stepRefs.current[index] = node; }}
                       type="button"
@@ -367,19 +545,26 @@ export function LifecycleExplorer({
                     >
                       <span className="dms-lifex__story-index dms-data">{pad(index + 1)}</span>
                       <span className="dms-lifex__story-copy">
-                        <span className="dms-lifex__story-label">{step.state}</span>
-                        <strong>{step.gate}</strong>
-                        <span className="dms-lifex__story-body">{step.detail}</span>
-                        {step.visual ? (
+                        <span className="dms-lifex__story-label">{item.label}</span>
+                        <strong>{item.heading}</strong>
+                        <span className="dms-lifex__story-body">{item.body}</span>
+                        {item.note ? (
+                          <span className="dms-lifex__story-note">
+                            <b>The call</b>
+                            {item.note}
+                          </span>
+                        ) : null}
+                        {item.outcome ? (
                           <span className="dms-lifex__story-outcome">
                             <i aria-hidden="true">✓</i>
-                            {step.visual}
+                            {item.outcome}
                           </span>
                         ) : null}
                       </span>
                     </button>
                   </li>
                 ))}
+                {flowOutcomes ? <li className="dms-lifex__story-item dms-lifex__story-item--outmoves">{flowOutcomes}</li> : null}
               </ol>
             </div>
           </div>
@@ -395,18 +580,20 @@ export function LifecycleExplorer({
           <div className="dms-lifex__head">
             <Eyebrow n={4}>The lifecycle</Eyebrow>
             <h2 className="dms-h2">{heading}</h2>
+            {flowsHead}
           </div>
-          <div className="dms-lifex">
+          <div className={cn("dms-lifex", activeFlow && "dms-lifex--flowmode")}>
             <aside className="dms-lifex__trail">
-              <span className="dms-lifex__lab">{trailLabel}</span>
+              <span className="dms-lifex__lab">{activeFlow ? `${activeFlow.actor}'s journey` : trailLabel}</span>
               <ol
                 className="dms-lifex__steps"
-                aria-label={ariaLabel}
+                aria-label={activeFlow ? activeFlow.fullName : ariaLabel}
+                key={activeFlow?.id ?? "map"}
               >
-                {steps.map((st, i) => (
+                {storyItems.map((item, i) => (
                   <li
                     className={cn("dms-lifex__step", i === active && "is-active", i < active && "is-past")}
-                    key={st.state}
+                    key={item.key}
                   >
                     <button
                       type="button"
@@ -417,15 +604,29 @@ export function LifecycleExplorer({
                       onClick={() => select(i)}
                     >
                       <span className="dms-lifex__node" aria-hidden="true" />
-                      <span className="dms-lifex__t">{st.state}</span>
-                      <span className="dms-lifex__meta">{st.gate}</span>
+                      <span className="dms-lifex__t">{activeFlow ? item.heading : item.label}</span>
+                      <span className="dms-lifex__meta">{activeFlow ? item.label : item.heading}</span>
                     </button>
                     <div className="dms-lifex__detail" id={`${idPrefix}-detail-${i}`} role="region" aria-labelledby={`${idPrefix}-tab-${i}`} aria-hidden={i !== active}>
-                      <div className="dms-lifex__detail-inner"><p>{st.detail}</p></div>
+                      <div className="dms-lifex__detail-inner">
+                        <p>{item.body}</p>
+                        {item.note ? (
+                          <p className="dms-lifex__detail-note">
+                            <b>The call</b>
+                            {item.note}
+                          </p>
+                        ) : null}
+                        {item.outcome ? (
+                          <p className="dms-lifex__detail-note dms-lifex__detail-note--tax">
+                            {item.outcome}
+                          </p>
+                        ) : null}
+                      </div>
                     </div>
                   </li>
                 ))}
               </ol>
+              {flowOutcomes}
             </aside>
 
             {livePanel}

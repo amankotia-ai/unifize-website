@@ -32,3 +32,6 @@ next-env.d.ts
 # Design source (extracted handoff bundle — kept locally, not committed)
 .design-src/
 .vercel
+
+# Scratch
+tmp/

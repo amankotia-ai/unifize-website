@@ -1,0 +1,242 @@
+/* ============================================================================
+ * modules-lab.css - layout + tabs for the modules record-camera lab, and the
+ * section's dark skin. The dark skin is a class (`.stx-mlab.is-dark`) that
+ * re-points the page's --dms-* variables and re-surfaces the few hardcoded
+ * sheet colors; the scene components themselves are untouched.
+ * ========================================================================== */
+
+.dms--stylized.stx-mlab-page { min-height: 100vh; }
+
+.stx-mlab {
+  min-height: 100vh;
+  padding: clamp(28px, 5vw, 64px) 0 clamp(40px, 6vw, 80px);
+  background: #f7f4ee;
+  color: var(--dms-ink);
+  transition: background-color 240ms ease-in-out, color 240ms ease-in-out;
+}
+
+.stx-mlab__wrap {
+  width: min(1180px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.stx-mlab__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+
+.stx-mlab__eyebrow {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--dms-muted);
+  font-family: var(--u-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stx-mlab__title {
+  margin: 0 0 10px;
+  font-family: var(--u-display);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+}
+
+.stx-mlab__lede {
+  max-width: 560px;
+  margin: 0;
+  color: var(--dms-muted);
+  font-size: 14px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+/* ------------------------------------------------------------ theme toggle */
+.stx-mlab__theme {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 3px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--dms-ink), transparent 92%);
+}
+
+.stx-mlab__theme button {
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--dms-muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.stx-mlab__theme button.is-active {
+  background: var(--dms-ink);
+  color: #f7f4ee;
+}
+
+/* ------------------------------------------------------------------- tabs */
+.stx-mlab__tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.stx-mlab__tab {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 15px;
+  border: 0;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+  color: var(--dms-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 180ms ease-in-out, background-color 180ms ease-in-out;
+}
+
+.stx-mlab__tab b { font-size: 13px; font-weight: 700; }
+.stx-mlab__tab span { color: var(--dms-muted); font-size: 11px; }
+
+.stx-mlab__tab.is-active {
+  box-shadow:
+    0 0 0 2px var(--dms-accent),
+    0 10px 26px -14px color-mix(in oklab, var(--dms-accent), transparent 45%);
+}
+
+.stx-mlab__tab.is-active span { color: var(--dms-accent); }
+
+/* ------------------------------------------------------------------ stage */
+.stx-mlab__stage { position: relative; }
+.stx-mlab__stage .sty-scene { border-radius: 6px; }
+
+.stx-mlab__blurb {
+  max-width: 640px;
+  margin: 16px 0 0;
+  color: var(--dms-muted);
+  font-size: 13px;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+@media (max-width: 760px) {
+  .stx-mlab__head { flex-direction: column; }
+  .stx-mlab__tabs { grid-template-columns: 1fr; }
+}
+
+/* ================================================================ dark skin
+ * Variables first (everything that already reads --dms-* follows for free),
+ * then the hardcoded sheet surfaces used by the record scene. */
+.stx-mlab.is-dark {
+  --dms-ink: #e9edf3;
+  --dms-ink-2: #c5ccd6;
+  --dms-muted: #9aa4b2;
+  --dms-faint: #6f7a89;
+  --dms-hairline: #2a3140;
+  --dms-line-strong: #333b4c;
+  --dms-surface-alt: #232a37;
+  --dms-surface-quiet: #1d232e;
+  --dms-surface-sunk: #262e3c;
+  --dms-accent-tint: color-mix(in oklab, var(--dms-accent), transparent 80%);
+
+  background: #0e1219;
+  color: var(--dms-ink);
+}
+
+.stx-mlab.is-dark .stx-mlab__theme button.is-active { background: #e9edf3; color: #0e1219; }
+.stx-mlab.is-dark .stx-mlab__tab { background: #171d27; box-shadow: 0 0 0 1px oklch(1 0 0 / 0.09); }
+
+/* the scene field + workspace sheet: the blue field deepens toward navy in
+ * dark mode, still derived from the accent */
+.stx-mlab.is-dark .sty-scene,
+.stx-mlab.is-dark .sty-scene--life { background: #0b0f15; }
+.stx-mlab.is-dark .sty-scene.is-arcade { background: color-mix(in oklab, var(--dms-accent), #04060e 58%); }
+.stx-mlab.is-dark .stx-arc-field i:nth-child(1),
+.stx-mlab.is-dark .stx-arc-field i:nth-child(2) { box-shadow: inset 0 0 0 2px oklch(1 0 0 / 0.09); }
+.stx-mlab.is-dark .stx-arc-field i:nth-child(3),
+.stx-mlab.is-dark .stx-arc-field i:nth-child(4) { background: oklch(1 0 0 / 0.07); }
+.stx-mlab.is-dark .stx-arc { background: transparent; }
+.stx-mlab.is-dark .stx-arc__camera {
+  background: #141922;
+  outline-color: oklch(1 0 0 / 0.09);
+  box-shadow: 0 18px 50px -24px oklch(0 0 0 / 0.85);
+}
+
+/* regions */
+.stx-mlab.is-dark .stx-arc__inbox,
+.stx-mlab.is-dark .stx-arc__ownership,
+.stx-mlab.is-dark .stx-arc__checklist,
+.stx-mlab.is-dark .stx-arc__checklist > header { background: #171d27; }
+.stx-mlab.is-dark .stx-arc__conversation,
+.stx-mlab.is-dark .stx-arc__conversation > .stx-arc__thread { background: #131822; }
+.stx-mlab.is-dark .stx-arc__inbox-search { background: #232a37; box-shadow: inset 0 0 0 1px var(--dms-hairline); }
+
+/* cards + composer on the sheet */
+.stx-mlab.is-dark .stx-arc__message,
+.stx-mlab.is-dark .stx-arc__composer,
+.stx-mlab.is-dark .stx-arc__decision,
+.stx-mlab.is-dark .stx-arc__taskrun,
+.stx-mlab.is-dark .stx-arc__diffcard,
+.stx-mlab.is-dark .stx-arc__historycard,
+.stx-mlab.is-dark .stx-arc__traincard,
+.stx-mlab.is-dark .stx-arc__routecard,
+.stx-mlab.is-dark .stx-arc__document-card,
+.stx-mlab.is-dark .stx-arc__signdialog {
+  background: #1c232f;
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 0.08);
+}
+
+.stx-mlab.is-dark .stx-arc__composer b { background: var(--dms-accent); }
+.stx-mlab.is-dark .stx-arc__historycard > div p > i { box-shadow: 0 0 0 2px #1c232f; }
+.stx-mlab.is-dark .stx-arc__check-items p > i:empty { background: transparent; box-shadow: inset 0 0 0 1.5px var(--dms-hairline); }
+
+/* green (signed / sealed) tints */
+.stx-mlab.is-dark .stx-arc__status-row,
+.stx-mlab.is-dark .stx-arc__trace,
+.stx-mlab.is-dark .stx-arc__sign-signature,
+.stx-mlab.is-dark .stx-arc__signedblock {
+  background: oklch(0.35 0.05 152 / 0.28);
+  box-shadow: inset 0 0 0 1px oklch(0.69 0.1 148 / 0.35);
+}
+.stx-mlab.is-dark .stx-arc__signedblock small { color: #8fc4a4; }
+.stx-mlab.is-dark .stx-arc__signedblock span { color: #a4d6b8; }
+.stx-mlab.is-dark .stx-arc__trace > div p { border-top-color: oklch(0.69 0.1 148 / 0.2); }
+.stx-mlab.is-dark .stx-arc__trace > footer { border-top-color: oklch(0.69 0.1 148 / 0.2); color: var(--dms-muted); }
+.stx-mlab.is-dark .stx-arc__trace > footer b { color: #8fc4a4; }
+.stx-mlab.is-dark .stx-arc__taskrun > p > i,
+.stx-mlab.is-dark .stx-arc__trace > div p i { background: #2f7a4c; }
+
+/* state chips: darkened tints, same hue system */
+.stx-mlab.is-dark .stx-state { background: #232a37; color: var(--dms-muted); }
+.stx-mlab.is-dark .stx-state.is-effective,
+.stx-mlab.is-dark .stx-state.is-completed,
+.stx-mlab.is-dark .stx-state.is-approved,
+.stx-mlab.is-dark .stx-state.is-verified-approved,
+.stx-mlab.is-dark .stx-state.is-change-approved { background: oklch(0.4 0.06 152 / 0.35); color: #a4d6b8; }
+.stx-mlab.is-dark .stx-state.is-review-due,
+.stx-mlab.is-dark .stx-state.is-in-review,
+.stx-mlab.is-dark .stx-state.is-needs-approval,
+.stx-mlab.is-dark .stx-state.is-change-needed,
+.stx-mlab.is-dark .stx-state.is-open { background: oklch(0.42 0.07 75 / 0.35); color: #e3b878; }
+.stx-mlab.is-dark .stx-state.is-overdue { background: oklch(0.4 0.08 30 / 0.35); color: #e39a86; }
+.stx-mlab.is-dark .stx-state.is-implementation,
+.stx-mlab.is-dark .stx-state.is-in-approval { background: var(--dms-accent-tint); color: #9db4ff; }
+
+/* participants ring against the dark ownership row */
+.stx-mlab.is-dark .stx-arc__participants i { border-color: #171d27; }
+
+/* home + sign surfaces (not staged here today, kept consistent if reused) */
+.stx-mlab.is-dark .stx-arc__home { background: #141922; }
+.stx-mlab.is-dark .stx-arc__home-main > section { background: color-mix(in oklab, var(--dms-accent), #141922 90%); }
+.stx-mlab.is-dark .stx-arc__home-side > section.is-chart { background: oklch(0.35 0.05 152 / 0.3); color: #a4d6b8; }
+.stx-mlab.is-dark .stx-arc__home-side > section.is-updates { background: oklch(0.4 0.08 30 / 0.3); color: #e3b878; }

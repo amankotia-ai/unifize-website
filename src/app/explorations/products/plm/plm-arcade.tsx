@@ -1,0 +1,388 @@
+/* ----------------------------------------------------------------------------
+ * plm-arcade.tsx - DRAFT arcade journey for the PLM page. The Product Flows
+ * DB in Notion has no PLM-module flows yet, so this flow is page-owned and
+ * labeled draft: the step rows below are written in the DB's own idiom
+ * (name / what happens / decision / role / primitives) so they can be
+ * ratified into Notion nearly verbatim, at which point the page switches to
+ * the Notion-backed copy and this file keeps only the scene configs.
+ * Fictional dataset: Engineering Industries, specification SPC-310 (seal
+ * housing tolerance) revised after complaint CMP-341 - the same complaint
+ * that drives CAPA-612 on the QMS page, so the pages tell one story.
+ * Server module, no state.
+ * -------------------------------------------------------------------------- */
+
+import {
+  type ArcadeFlowWorld,
+  type ArcadeStepConfig,
+} from "../_shared/arcade/arcade";
+import { type ProductFlow } from "../_shared/product-flows";
+
+const DRAFT_NOTE =
+  "Draft journey staged for review. The matching Product Flow rows are proposed for the Notion DB; this flow goes Notion-backed the moment they land.";
+
+/* ============================================================ world */
+const SPEC_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "Specification",
+  owner: "E. Marsh",
+  ownerInitials: "EM",
+  participants: ["EM", "AC", "+3"],
+  participantsLabel: "E. Marsh, A. Chen, and three others",
+  recordKicker: "PRODUCT SPECIFICATION",
+  context: {
+    initials: "AC",
+    name: "A. Chen",
+    time: "09:03",
+    message: "Change sponsor here; the complaint points at the seal fit.",
+    detail: "CMP-341 linked · tolerance review requested",
+  },
+  inboxNeighbors: [
+    { title: "FMEA review", time: "10:20", detail: "FMEA-88 · seal interface", kind: "Risk" },
+    { title: "Design review", time: "09:40", detail: "DR-77 · scheduled window", kind: "Review" },
+    { title: "Verification protocol", time: "Yesterday", detail: "VER-112 · seal fit test", kind: "Document" },
+  ],
+  checklistTitle: "Design Control",
+  checklistSections: [
+    {
+      title: "REQUIREMENT TRACE",
+      items: [
+        { label: "Requirements linked", note: "REQ-041 · REQ-063" },
+        { label: "Verification coverage", note: "VER-112 · VER-131" },
+        { label: "Trace gaps", note: "None" },
+      ],
+    },
+    {
+      title: "RISK · FMEA",
+      items: [
+        { label: "Severity 6 · Occurrence 3", note: "Detection 4" },
+        { label: "Current controls", note: "Linked from FMEA-88" },
+        {
+          label: "Residual risk",
+          kind: "field",
+          value: "Acceptable with mitigation · seal fit test added",
+          note: "Entered on the assessment",
+        },
+      ],
+    },
+    {
+      title: "CHANGE & RELEASE",
+      items: [
+        {
+          label: "Tolerance revision",
+          kind: "revision",
+          from: "±0.10 mm · Rev B",
+          to: "±0.05 mm · Rev C",
+          note: "Rationale attached",
+        },
+        { label: "Design review", kind: "approval", signer: "S. Okafor", state: "3 of 3 signed", note: "Engineering · Quality · Regulatory" },
+        { label: "Design history file", note: "Entry writes from the record" },
+      ],
+    },
+  ],
+};
+
+/* ============================================================ draft flow
+ * Step rows in the Product Flows DB idiom, ready to ratify into Notion. */
+export const PLM_DRAFT_FLOWS: ProductFlow[] = [
+  {
+    id: "plm-d1",
+    actor: "Design Engineer",
+    title: "Carry a spec change through design controls (draft)",
+    fullName:
+      "Design Engineer carries a specification change through design controls to release",
+    description: DRAFT_NOTE,
+    stations: [],
+    outcomes: [],
+    steps: [
+      {
+        index: 1,
+        name: "Open the specification with the requirement trace in view",
+        what: "Opens the product specification record. The requirements it satisfies and the verifications that cover it are linked on the record, so the change starts from the live trace rather than a spreadsheet matrix.",
+        decision: "Which requirements the proposed change touches.",
+        role: "Engineer",
+        primitives: ["Reconciliation"],
+      },
+      {
+        index: 2,
+        name: "Assess the risk with the FMEA linked",
+        what: "Runs the risk assessment on the record with the FMEA line items linked. Severity, occurrence, and detection are judged against the current controls rather than a copy on someone's drive.",
+        decision: "Does the residual risk stay acceptable, or does the change need a new mitigation.",
+        role: "Assessor",
+        primitives: ["Decision-rebuilding", "Errors"],
+      },
+      {
+        index: 3,
+        name: "Revise the specification as a controlled change",
+        what: "Makes the tolerance change as a controlled revision: the old and new values sit side by side with the rationale, and the affected documents surface automatically.",
+        decision: "Is the rationale strong enough to carry the design review.",
+        role: "Author",
+        primitives: ["Translation"],
+      },
+      {
+        index: 4,
+        name: "Route the design review across functions",
+        what: "Routes the design review to engineering, quality, and regulatory in one structured step. Each reviewer receives the change, the risk assessment, and the trace in a single package on the record.",
+        decision: "Who must sign, given the classification of the change.",
+        role: "Coordinator",
+        primitives: ["Status-chasing", "Meetings"],
+      },
+      {
+        index: 5,
+        name: "Verify the trace and update the design history file",
+        what: "On approval, the requirement-to-verification trace updates and the design history file entry writes itself from the record. Verification evidence links where an auditor will look for it.",
+        decision: "Is the trace complete, with no orphaned requirement or uncovered change.",
+        role: "Verifier",
+        primitives: ["Reconciliation", "Status-chasing"],
+      },
+    ],
+  },
+];
+
+/* ============================================================ modules
+ * The modules section as camera work: five module tabs, five poses on the
+ * SAME specification record SPC-310 - the spec, its risk, its trace, its
+ * parameters, and its control plan are one design record. One scene
+ * instance; tab changes pan the camera. */
+export const PLM_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = {
+  "product-specifications": {
+    source: "PLM modules · the live trace",
+    ghost: "Specify",
+    type: "Specification",
+    id: "#310",
+    title: "Seal housing tolerance",
+    status: "In Review",
+    actor: "You",
+    event: "Opened the specification with its trace linked",
+    eventDetail: "Requirements and covering verifications on the record · no spreadsheet matrix",
+    checklist: "REQUIREMENT TRACE",
+    checklistItems: ["Requirements linked", "Verification coverage"],
+    focus: "record",
+    focusTitle: "The spec carries its trace",
+    focusRows: ["Requirements · REQ-041, REQ-063", "Coverage · VER-112, VER-131 in view"],
+    focusAction: "Scope the change",
+    ownershipNote: "The change starts from the live trace",
+    world: SPEC_WORLD,
+    checklistOpen: "REQUIREMENT TRACE",
+  },
+  "product-risk-management": {
+    source: "PLM modules · risk against controls",
+    ghost: "Assess",
+    type: "Specification",
+    id: "#310",
+    title: "Seal housing tolerance",
+    status: "In Review",
+    actor: "You",
+    event: "Ran the risk assessment with FMEA-88 linked",
+    eventDetail: "Judged against the current controls, not a copy on someone's drive",
+    checklist: "RISK · FMEA",
+    checklistItems: ["Severity · Occurrence", "Current controls"],
+    focus: "review",
+    focusTitle: "Risk evaluation · FMEA-88",
+    focusRows: [
+      "Severity 6 · Occurrence 3 · Detection 4",
+      "Current controls · linked and in view",
+      "Residual risk · acceptable with mitigation",
+    ],
+    focusAction: "Accept mitigation",
+    focusAlts: ["Escalate risk"],
+    ownershipNote: "ISO 14971 lives on the record",
+    world: SPEC_WORLD,
+    checklistOpen: "RISK · FMEA",
+  },
+  "design-controls-traceability": {
+    source: "PLM modules · the trace closes itself",
+    ghost: "Trace",
+    type: "Specification",
+    id: "#310",
+    title: "Seal housing tolerance",
+    status: "Approved",
+    actor: "automator",
+    event: "Verified the requirement-to-verification trace",
+    eventDetail: "The design history file entry writes itself from the record",
+    checklist: "REQUIREMENT TRACE",
+    checklistItems: ["REQ-041 → SPC-310 Rev C → VER-112", "No orphaned requirement", "Design history file entry written"],
+    focus: "trace",
+    focusTitle: "Trace verified",
+    focusRows: ["Where the auditor will look", "Release revision C"],
+    focusAction: "Release revision C",
+    ownershipNote: "No uncovered change ships",
+    world: SPEC_WORLD,
+    checklistOpen: "REQUIREMENT TRACE",
+  },
+  "inspection-process-parameters": {
+    source: "PLM modules · parameters as structure",
+    ghost: "Parameter",
+    type: "Specification",
+    id: "#310",
+    title: "Seal housing tolerance",
+    status: "In Review",
+    actor: "You",
+    event: "Defined the inspection and process parameters",
+    eventDetail: "Structured fields with acceptance criteria · they flow to the traveller downstream",
+    checklist: "REQUIREMENT TRACE",
+    checklistItems: ["Parameters defined"],
+    focus: "tasks",
+    focusTitle: "Parameters, owned and bounded",
+    focusRows: [
+      "Coating thickness · 45-55 µm",
+      "Seal fit force · 12-18 N",
+      "Sampling · 3 per lot · fixture 2",
+    ],
+    focusAction: "Define parameters",
+    ownershipNote: "What production measures is set here",
+    world: SPEC_WORLD,
+    checklistOpen: "REQUIREMENT TRACE",
+  },
+  "fmea-control-plan": {
+    source: "PLM modules · plan from the FMEA",
+    ghost: "Control",
+    type: "Specification",
+    id: "#310",
+    title: "Seal housing tolerance",
+    status: "In Review",
+    actor: "You",
+    event: "Tightened the control plan from the FMEA line items",
+    eventDetail: "Detection moved upstream · the plan carries its rationale",
+    checklist: "RISK · FMEA",
+    checklistItems: ["Current controls"],
+    focus: "diff",
+    focusKicker: "CONTROL PLAN",
+    focusTitle: "Detection, moved upstream",
+    focusRows: [
+      "Visual check · per shift",
+      "Dimensional check · per lot · fixture 2",
+      "Defined from FMEA-88 line items",
+    ],
+    focusAction: "Update control plan",
+    ownershipNote: "The FMEA and the plan stay one record",
+    world: SPEC_WORLD,
+    checklistOpen: "RISK · FMEA",
+  },
+};
+
+/* ============================================================ scenes */
+export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
+  "plm-d1": [
+    {
+      source: "PLM draft s1 · the live trace",
+      ghost: "Trace",
+      type: "Specification",
+      id: "#310",
+      title: "Seal housing tolerance",
+      status: "In Review",
+      actor: "You",
+      event: "Opened the specification with its trace linked",
+      eventDetail: "Requirements and covering verifications on the record · no spreadsheet matrix",
+      checklist: "REQUIREMENT TRACE",
+      checklistItems: ["Requirements linked", "Verification coverage"],
+      focus: "record",
+      focusTitle: "The change starts from the trace",
+      focusRows: ["Requirements · REQ-041, REQ-063", "Coverage · VER-112, VER-131 in view"],
+      focusAction: "Scope the change",
+      ownershipNote: "Which requirements the change touches",
+      world: SPEC_WORLD,
+      checklistOpen: "REQUIREMENT TRACE",
+      checklistProgress: { "REQUIREMENT TRACE": 2, "RISK · FMEA": 0, "CHANGE & RELEASE": 0 },
+    },
+    {
+      source: "PLM draft s2 · risk against current controls",
+      ghost: "Assess",
+      type: "Specification",
+      id: "#310",
+      title: "Seal housing tolerance",
+      status: "In Review",
+      actor: "You",
+      event: "Ran the risk assessment with FMEA-88 linked",
+      eventDetail: "Judged against the current controls, not a copy on someone's drive",
+      checklist: "RISK · FMEA",
+      checklistItems: ["Severity · Occurrence", "Current controls"],
+      focus: "review",
+      focusTitle: "Risk evaluation · FMEA-88",
+      focusRows: [
+        "Severity 6 · Occurrence 3 · Detection 4",
+        "Current controls · linked and in view",
+        "Residual risk · acceptable with mitigation",
+      ],
+      focusAction: "Accept mitigation",
+      focusAlts: ["Escalate risk"],
+      ownershipNote: "A new mitigation would route back to FMEA",
+      world: SPEC_WORLD,
+      checklistOpen: "RISK · FMEA",
+      checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 2, "CHANGE & RELEASE": 0 },
+    },
+    {
+      source: "PLM draft s3 · controlled revision",
+      ghost: "Revise",
+      type: "Specification",
+      id: "#310",
+      title: "Seal housing tolerance",
+      status: "In Review",
+      actor: "You",
+      event: "Revised the tolerance as a controlled change",
+      eventDetail: "Old and new side by side with the rationale · affected documents surfaced",
+      checklist: "CHANGE & RELEASE",
+      checklistItems: ["Tolerance revision"],
+      focus: "diff",
+      focusKicker: "SPECIFICATION CHANGE",
+      focusTitle: "Revision C",
+      focusRows: [
+        "Tolerance ±0.10 mm · Rev B",
+        "Tolerance ±0.05 mm · Rev C · rationale attached",
+        "Affected documents surfaced automatically",
+      ],
+      focusAction: "Rev B → Rev C",
+      ownershipNote: "The rationale carries the design review",
+      world: SPEC_WORLD,
+      checklistOpen: "CHANGE & RELEASE",
+      checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 3, "CHANGE & RELEASE": 1 },
+    },
+    {
+      source: "PLM draft s4 · one structured review",
+      ghost: "Route",
+      type: "Specification",
+      id: "#310",
+      title: "Seal housing tolerance",
+      status: "Needs Approval",
+      actor: "You",
+      event: "Routed the design review across functions",
+      eventDetail: "Change, risk assessment, and trace in one package · no packet re-assembly per reviewer",
+      checklist: "CHANGE & RELEASE",
+      checklistItems: ["Design review"],
+      focus: "queue",
+      poseVariant: "route",
+      focusKicker: "DESIGN REVIEW",
+      focusTitle: "Signatures by classification",
+      focusRows: [
+        "S. Okafor · Engineering · required",
+        "D. Fontaine · Quality · required",
+        "N. Varga · Regulatory · classification-based",
+      ],
+      focusAction: "Route design review",
+      ownershipNote: "Who signs is set by the change class",
+      world: SPEC_WORLD,
+      checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 3, "CHANGE & RELEASE": 2 },
+    },
+    {
+      source: "PLM draft s5 · the trace closes itself",
+      ghost: "Verify",
+      type: "Specification",
+      id: "#310",
+      title: "Seal housing tolerance",
+      status: "Approved",
+      actor: "automator",
+      event: "Updated the trace and the design history file",
+      eventDetail: "Verification evidence links where an auditor will look for it",
+      checklist: "REQUIREMENT TRACE",
+      checklistItems: ["REQ-041 → SPC-310 Rev C → VER-112", "No orphaned requirement", "Design history file entry written"],
+      focus: "trace",
+      focusTitle: "Trace verified",
+      focusRows: ["Where the auditor will look", "Release revision C"],
+      focusAction: "Release revision C",
+      ownershipNote: "No uncovered change ships",
+      world: SPEC_WORLD,
+      checklistOpen: "REQUIREMENT TRACE",
+      checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 3, "CHANGE & RELEASE": 3 },
+      related: 3,
+    },
+  ],
+};

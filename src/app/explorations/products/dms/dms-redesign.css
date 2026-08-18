@@ -1272,9 +1272,10 @@
 .dms--redesign .dms-modx__head .dms-h2 { max-width: 15ch; }
 .dms--redesign .dms-modx__layout {
   display: grid;
-  grid-template-columns: minmax(250px, 0.55fr) minmax(0, 1.45fr);
+  grid-template-columns: minmax(240px, 0.5fr) minmax(0, 1.5fr);
   align-items: stretch;
-  gap: clamp(40px, 5vw, 84px);
+  /* column gap stays below the page gutter at every width */
+  gap: clamp(32px, 5vw, 64px) calc(var(--dms-gutter) * 0.8);
   margin-top: clamp(52px, 6vw, 84px);
   padding-top: 0;
   border-top: 0;
@@ -1426,6 +1427,21 @@
   align-items: stretch;
   padding: clamp(28px, 3vw, 44px) clamp(18px, 2.4vw, 40px) 76px;
 }
+
+/* modules as camera work: when the explorer carries arcadeConfigsByModule,
+ * ONE persistent arcade record scene fills the stage. Percentage heights die
+ * at the stage's min-height, so the chain flexes instead: stage → inner →
+ * screens → card → scene; standards keep natural height below. */
+.dms--redesign .dms-modx__stage--arcade { display: flex; flex-direction: column; }
+.dms--redesign .dms-modx__stage--arcade > .dms-stage__inner {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.dms--redesign .dms-modx__stage--arcade .dms-modx__screens { flex: 1; min-height: 0; height: auto; }
+.dms--redesign .dms-modx__stage--arcade .dms-modx__card .sty-scene.is-arcade { width: 100%; height: 100%; }
+.dms--redesign .dms-modx__stage--arcade .dms-modx__card .sty-scene.is-arcade .stx-stage { flex: 1; height: 100%; }
 .dms--redesign .dms-modx__screens {
   display: grid;
   width: min(96%, 1680px);
@@ -2169,41 +2185,6 @@
   top: calc(var(--dms-header-h) + 16px);
   min-width: 0;
 }
-.dms--redesign .dms-lifex__progress {
-  display: grid;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.dms--redesign .dms-lifex__progress button {
-  position: relative;
-  min-height: 44px;
-  padding: 8px 0;
-  border: 0;
-  border-top: 1px solid var(--dms-d-border-2);
-  background: transparent;
-  color: var(--dms-d-ink-3);
-  cursor: pointer;
-  text-align: left;
-}
-.dms--redesign .dms-lifex__progress button::after {
-  position: absolute;
-  top: -1px;
-  right: 100%;
-  left: 0;
-  height: 2px;
-  background: var(--dms-accent);
-  content: "";
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 180ms ease-out;
-}
-.dms--redesign .dms-lifex__progress button.is-active { color: var(--dms-d-ink); }
-.dms--redesign .dms-lifex__progress button.is-active::after { transform: scaleX(1); }
-.dms--redesign .dms-lifex__progress span {
-  font-size: 0.7rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 650;
-}
 .dms--redesign .dms-lifex--story .dms-lifex__live {
   display: block;
   width: 100%;
@@ -2305,6 +2286,178 @@
   color: #fff;
 }
 
+/* ---- lifecycle flow layer: persona journeys blended into the map ------- */
+.dms--redesign .dms-lifex__flows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: clamp(20px, 3vh, 32px);
+}
+.dms--redesign .dms-lifex__flows-label {
+  color: var(--dms-d-ink-3);
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-lifex__flowchips {
+  display: flex;
+  gap: 1px;
+  padding: 1px;
+  overflow-x: auto;
+  background: var(--dms-d-border-2);
+  box-shadow: 0 10px 30px rgba(6, 8, 12, 0.14);
+  scrollbar-width: thin;
+  scrollbar-color: var(--dms-d-border-2) transparent;
+  scroll-snap-type: x proximity;
+}
+.dms--redesign .dms-lifex__flowchip {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 1 0 164px;
+  justify-content: center;
+  gap: 7px;
+  min-height: 82px;
+  padding: 14px 16px;
+  border: 0;
+  background: var(--dms-d-bg-2);
+  color: var(--dms-d-ink-3);
+  cursor: pointer;
+  scroll-snap-align: start;
+  text-align: left;
+}
+.dms--redesign .dms-lifex__flowchip:hover {
+  background: var(--dms-d-bg-3);
+  color: var(--dms-d-ink-2);
+}
+.dms--redesign .dms-lifex__flowchip:focus-visible {
+  z-index: 1;
+  outline: 2px solid #7f96eb;
+  outline-offset: -3px;
+}
+.dms--redesign .dms-lifex__flowchip-actor {
+  font-size: 0.68rem;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-lifex__flowchip-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+.dms--redesign .dms-lifex__flowchip.is-active {
+  background: var(--dms-d-bg-3);
+  color: var(--dms-d-ink);
+  box-shadow: inset 0 2px 0 var(--dms-accent);
+}
+.dms--redesign .dms-lifex__flowchip.is-active .dms-lifex__flowchip-actor { color: #7f96eb; }
+.dms--redesign .dms-lifex__flowpanels {
+  min-height: 1.5em;
+}
+.dms--redesign .dms-lifex__flows-lede {
+  max-width: 62ch;
+  padding-inline-start: 14px;
+  color: var(--dms-d-ink-2);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  box-shadow: inset 2px 0 0 rgba(47, 99, 255, 0.72);
+  text-wrap: pretty;
+}
+/* journey steps are denser than lifecycle states: many short beats, not six
+ * long dwells */
+.dms--redesign .dms-lifex--flowmode .dms-lifex__story-item {
+  min-height: 0;
+}
+.dms--redesign .dms-lifex--flowmode .dms-lifex__story-step {
+  min-height: 0;
+  padding: clamp(30px, 5vh, 52px) 0;
+}
+.dms--redesign .dms-lifex--flowmode .dms-lifex__story-step strong {
+  font-size: clamp(1.25rem, 1rem + 0.8vw, 1.7rem);
+}
+.dms--redesign .dms-lifex__story-note {
+  max-width: 38ch;
+  color: var(--dms-d-ink-3);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.dms--redesign .dms-lifex__story-note b {
+  margin-right: 9px;
+  color: var(--dms-d-ink-3);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-lifex__story-step.is-active .dms-lifex__story-note { color: var(--dms-d-ink-2); }
+.dms--redesign .dms-lifex__story-step.is-active .dms-lifex__story-note b { color: #7f96eb; }
+/* the selector layout's expanded detail: the call + tax lines under the body */
+.dms--redesign .dms-lifex__detail-note {
+  margin-top: 10px;
+  color: var(--dms-d-ink-3);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.dms--redesign .dms-lifex__detail-note b {
+  margin-right: 9px;
+  color: var(--dms-d-ink-3);
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-lifex--flowmode .dms-lifex__detail-note--tax { color: #7f96eb; }
+/* the flow's closing block: the Platform Outcomes it moves */
+.dms--redesign .dms-lifex__outmoves {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-block: clamp(26px, 4vh, 40px);
+  border-top: 1px solid var(--dms-d-border-2);
+}
+.dms--redesign .dms-lifex__story-item--outmoves { min-height: 0; }
+.dms--redesign .dms-lifex__outmoves-label {
+  color: var(--dms-d-ink-3);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-lifex__outmoves-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dms--redesign .dms-lifex__outmoves-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--dms-d-border-2);
+  color: var(--dms-d-ink-2);
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.dms--redesign .dms-lifex__outmoves-list li i {
+  color: #7f96eb;
+  font-size: 0.62rem;
+  font-weight: 650;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 @media (max-width: 1100px) {
   .dms--redesign .dms-lifex--story {
     grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
@@ -2336,8 +2489,6 @@
 }
 
 @media (max-width: 560px) {
-  .dms--redesign .dms-lifex__progress { gap: 4px; margin-bottom: 8px; }
-  .dms--redesign .dms-lifex__progress button { min-height: 44px; }
   .dms--redesign .dms-lifex--story .dms-lifex__live { max-height: 48vh; }
   .dms--redesign .dms-lifex__story-step { grid-template-columns: 26px minmax(0, 1fr); gap: 10px; }
   .dms--redesign .dms-lifex__story-body { font-size: 0.92rem; }

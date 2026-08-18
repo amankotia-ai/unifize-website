@@ -115,10 +115,14 @@ export function PainSeverityIcon({ severity }: { severity: PainSeverity }) {
 }
 
 /* ---------------------------------------------------------- LeakRegister */
-const SEVERITIES: PainSeverity[] = ["Critical", "High", "Medium"];
+/* Canonical severity order. The chips render only the severities actually
+ * present in the domain's pains: Secondary-tier domains often carry no Critical
+ * row, and a chip that filters to nothing reads as a broken grid. */
+const SEVERITY_ORDER: PainSeverity[] = ["Critical", "High", "Medium"];
 
 export function LeakRegister({ pains, note }: { pains: PainRow[]; note: string }) {
   const [sev, setSev] = useState<PainSeverity | null>(null);
+  const severities = SEVERITY_ORDER.filter((s) => pains.some((p) => p.severity === s));
   const shown = sev ? pains.filter((p) => p.severity === sev) : pains;
 
   return (
@@ -134,7 +138,7 @@ export function LeakRegister({ pains, note }: { pains: PainRow[]; note: string }
           >
             All severities
           </button>
-          {SEVERITIES.map((s) => (
+          {severities.map((s) => (
             <button
               key={s}
               type="button"

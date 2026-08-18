@@ -52,7 +52,7 @@ export function IngressNav() {
       <div className="itm-wrap itm-wrap--wide itm-subnav__inner">
         <span className="itm-subnav__lab">Three ways in</span>
         <nav className="itm-subnav__tabs" aria-label="Explore Unifize for medical devices">
-          {TABS.map((t) => (
+          {TABS.map((t, i) => (
             <a
               key={t.id}
               href={`#${t.id}`}
@@ -60,6 +60,7 @@ export function IngressNav() {
               className={"itm-subnav__tab" + (active === t.id ? " is-active" : "")}
               aria-current={active === t.id ? "true" : undefined}
             >
+              <span className="itm-subnav__tab-idx itm-data" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
               <span className="itm-subnav__tab-l">{t.label}</span>
             </a>
           ))}

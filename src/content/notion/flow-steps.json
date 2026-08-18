@@ -1,0 +1,1471 @@
+[
+  {
+    "pageId": "361860e6-b45e-81e9-b84c-f6b208d95c26",
+    "id": "10",
+    "name": "Receive audit schedule notification two weeks before the due date",
+    "index": 1,
+    "what": "The Quality Manager receives a notification that the annual ISO 13485 audit is scheduled in two weeks. The notification links directly to the audit record so she can open it from the message rather than navigate.",
+    "decision": "Acknowledge and begin preparation now, or defer if there is a scheduling conflict with another commitment.",
+    "role": "Recipient",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8143-9249-cbc9d881cdf9",
+    "id": "11",
+    "name": "Open the audit record and review scope",
+    "index": 2,
+    "what": "Opens the audit record. Reviews scope (ISO 13485 full QMS), assigned auditors, and prior-year findings. Sees the audit checklist auto-populated from the standard and from internal procedure references.",
+    "decision": "Confirm scope as drafted or adjust before notifying stakeholders.",
+    "role": "Audit owner",
+    "primitives": [
+      "Reconciliation"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-819f-95ec-db9696063d67",
+    "id": "12",
+    "name": "Notify audit lead and stakeholders",
+    "index": 3,
+    "what": "Sends pre-audit notification to the audit lead, department heads, and document owners. Each recipient's notification includes the audit checklist sections they need to be ready for.",
+    "decision": "Confirm the recipient list and any additional stakeholders to copy.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-810b-9207-f5445601016e",
+    "id": "13",
+    "name": "Conduct the audit on site",
+    "index": 4,
+    "what": "Walks the floor, interviews staff, and reviews documents on mobile. Captures observations against the checklist. Takes photos as evidence and attaches them to the audit record in real time.",
+    "decision": "For each observation, record it as a finding or as a note without a finding.",
+    "role": "Auditor",
+    "primitives": [
+      "Reconciliation",
+      "Errors"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-812a-a16d-e9e2a94eb9c0",
+    "id": "14",
+    "name": "Record findings with severity and clause linkage",
+    "index": 5,
+    "what": "Records each finding with severity (major, minor, observation), evidence reference, and recommended action. Findings are linked to the relevant ISO 13485 clause so the audit report writes itself.",
+    "decision": "What severity to assign to each finding.",
+    "role": "Auditor",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-817d-9e84-fb3863b4bb26",
+    "id": "15",
+    "name": "Route major findings to Corrective Actions",
+    "index": 6,
+    "what": "Selects major findings and routes them into Corrective Actions with the audit context preserved. The CAPA record carries the audit reference, the finding text, and the linked clause so the investigator does not have to reconstruct context.",
+    "decision": "Which findings warrant a full CAPA versus a simple action item.",
+    "role": "Auditor",
+    "primitives": [
+      "Status-chasing",
+      "Translation"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8131-a17e-ea6472e27850",
+    "id": "16",
+    "name": "Track responses through closure",
+    "index": 7,
+    "what": "Watches the linked Corrective Actions and lighter action items move toward closure over the weeks that follow. Notifications fire when responses are due or overdue.",
+    "decision": "Escalate overdue items, or extend the deadline with rationale.",
+    "role": "Audit owner",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81b7-a6f1-c4fcc8b0fc3c",
+    "id": "17",
+    "name": "Sign off and lock the audit record",
+    "index": 8,
+    "what": "Once all findings are addressed and effectiveness is verified, signs off the audit with regulated electronic signature satisfying 21 CFR Part 11 expectations. The audit record locks for the year and becomes part of the audit history file.",
+    "decision": "Sign off now, or hold for an outstanding effectiveness review.",
+    "role": "Approver",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-81bf-83b4-d62f0aa13d73"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8189-8914-f0317a5c9d55",
+    "id": "18",
+    "name": "Receive CAPA assignment notification",
+    "index": 1,
+    "what": "Receives a notification that a CAPA has been assigned. The notification carries the originating complaint or non-conformance reference and the proposed scope, so the Investigator can decide whether to accept without opening the record.",
+    "decision": "Accept the assignment or request reassignment if the scope is wrong for them.",
+    "role": "Recipient",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8158-ba54-e6d1a75b64d2",
+    "id": "19",
+    "name": "Open CAPA and review the originating non-conformance or complaint",
+    "index": 2,
+    "what": "Opens the CAPA record. Reviews the linked non-conformance or complaint, including evidence, history, and prior related events. Sees the full context without bouncing across systems.",
+    "decision": "Accept the scope as defined, or push back to the originator before starting investigation.",
+    "role": "Investigator",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81c8-8e77-c9be94417fae",
+    "id": "20",
+    "name": "Conduct root cause analysis",
+    "index": 3,
+    "what": "Conducts a root cause analysis (5-Whys, fishbone, or similar). May interview people via voice or asynchronous comment. Records intermediate findings and the final root cause statement directly on the CAPA.",
+    "decision": "When to stop digging and call the root cause identified.",
+    "role": "Analyst",
+    "primitives": [
+      "Decision-rebuilding",
+      "Errors"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81e5-8a34-fc659eb207c2",
+    "id": "21",
+    "name": "Define the corrective action plan",
+    "index": 4,
+    "what": "Drafts the action plan: containment, corrective action, preventive action. Each step has a named owner, a target completion date, and a definition of done.",
+    "decision": "Which actions to include and which to defer or drop.",
+    "role": "Planner",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8140-8826-c8e9ed0cf6b5",
+    "id": "22",
+    "name": "Route plan for approval",
+    "index": 5,
+    "what": "Routes the plan to the Quality Manager for approval. The Manager receives a notification and opens the record directly to approve, reject, or request changes.",
+    "decision": "Who needs to approve given the risk level.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-819c-b6df-ec6f25d7df6d",
+    "id": "23",
+    "name": "Implement actions with evidence capture",
+    "index": 6,
+    "what": "Coordinates with action owners (often cross-functional, often across sites). Captures evidence as each action completes: training records, updated SOPs, validated process changes, supplier qualification updates.",
+    "decision": "Whether the evidence each owner provides is sufficient.",
+    "role": "Coordinator",
+    "primitives": [
+      "Reconciliation",
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-811c-8ff9-c46cf470ac1f",
+    "id": "24",
+    "name": "Schedule effectiveness review",
+    "index": 7,
+    "what": "Sets the effectiveness review date (typically 30 to 90 days after action completion). The system schedules a notification and an obligation on the Investigator's queue for that date.",
+    "decision": "How far out to set the effectiveness review window.",
+    "role": "Owner",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8165-9715-ef1cf66d16b0",
+    "id": "25",
+    "name": "Verify effectiveness and close",
+    "index": 8,
+    "what": "At the effectiveness review date, reviews evidence that the corrective action actually worked (no recurrence, metrics improved). Signs off effectiveness with regulated electronic signature. The CAPA closes and links to the originating complaint update.",
+    "decision": "Effective, partially effective (extend monitoring), or not effective (reopen with new plan).",
+    "role": "Approver",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "361860e6-b45e-818f-8e92-cedcb65afcda"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81f2-b068-e64c6def0531",
+    "id": "26",
+    "name": "Receive approval request notification",
+    "index": 1,
+    "what": "Receives a notification that a controlled document needs approval. Notification includes document title, revision number, originator, and a one-line summary of the change so triage is possible without opening.",
+    "decision": "Open now or batch with other approvals later.",
+    "role": "Recipient",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81be-898c-f12807f304d2",
+    "id": "27",
+    "name": "Open document and review the revision",
+    "index": 2,
+    "what": "Opens the document. Reviews content in full, including any inline comments from authors and prior reviewers. Sees who else has approved and who is still pending.",
+    "decision": "How thorough a review the document needs given its risk class and change scope.",
+    "role": "Reviewer",
+    "primitives": [
+      "Reconciliation"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8166-825d-da8da6dee86b",
+    "id": "28",
+    "name": "View diff against the prior approved version",
+    "index": 3,
+    "what": "Toggles the diff view to see exactly what changed since the prior approved revision. Reads the change rationale that the originator was required to provide.",
+    "decision": "Is the change justified by the rationale, and is the wording precise enough.",
+    "role": "Reviewer",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81cc-bfb8-c329f0ff43ab",
+    "id": "29",
+    "name": "Add comments or request changes",
+    "index": 4,
+    "what": "If revisions are needed, adds inline comments and routes the document back to the author. The document stays in pending approval status with the comments visible to the author and prior reviewers.",
+    "decision": "Comment in line for the author to address, or reject the revision wholesale.",
+    "role": "Reviewer",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81c7-b87a-df01e87a9a46",
+    "id": "30",
+    "name": "Apply regulated electronic signature",
+    "index": 5,
+    "what": "When ready to approve, re-authenticates and applies a 21 CFR Part 11 compliant signature. The signature carries identity, timestamp, and the meaning 'approved for publication', permanently linked to this revision.",
+    "decision": "Final go or no-go on this revision.",
+    "role": "Approver",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8182-819a-d5f28cfe0997",
+    "id": "31",
+    "name": "Document publishes and propagates to training",
+    "index": 6,
+    "what": "On signature, the system publishes the document, supersedes the prior revision, identifies users who had training on the prior version, and creates retraining obligations linked to the new revision. The Approver sees a confirmation of the cascade.",
+    "decision": "None at this step; automated cascade. Approver may scan the cascade summary for sanity.",
+    "role": "Observer",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "361860e6-b45e-8195-b32e-c3b9b616a966"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81ea-92d1-e5393e1c6032",
+    "id": "32",
+    "name": "Capture the non-conformance at the point of detection",
+    "index": 1,
+    "what": "From the floor, photographs the part, records measurements, and creates the non-conformance record in one motion on mobile. The record is live before leaving the line, with evidence attached at the source.",
+    "decision": "Is the evidence captured sufficient, or does the line need to hold while more is collected.",
+    "role": "Reporter",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81d2-a7ae-d456133990cd",
+    "id": "33",
+    "name": "Confirm part and order context pulled from the ERP integration",
+    "index": 3,
+    "what": "Part number, work order, and bill of materials context attach to the record automatically from the enterprise resource planning integration. Reviews and confirms instead of looking values up and re-keying them.",
+    "decision": "Is the auto-attached context the right part, order, and revision.",
+    "role": "Verifier",
+    "primitives": [
+      "Reconciliation",
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8131-895c-fb647a423fd7",
+    "id": "34",
+    "name": "Write the problem description with evidence attached",
+    "index": 4,
+    "what": "Writes the problem description on the record with the photographs and measurements already attached beside it, so the description references evidence rather than reconstructing it.",
+    "decision": "How much detail the description needs for investigators who were not on the floor.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81a3-9ddd-c317b3f10996",
+    "id": "35",
+    "name": "Record containment actions and task production",
+    "index": 5,
+    "what": "Determines the containment actions needed (quarantine, sort, hold), records them on the record, and assigns them as structured tasks. Production owners are notified with the record context attached instead of being chased by email and phone.",
+    "decision": "Which containment actions the severity warrants, and who owns each.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing",
+      "Meetings"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8172-8b49-ffd80216b501",
+    "id": "36",
+    "name": "Assess severity and recurrence with linked history",
+    "index": 6,
+    "what": "Prior non-conformances for the same part and process surface on the record automatically. Assesses severity and judges whether this is an isolated event or a systemic issue with the history in view rather than dug out of spreadsheets.",
+    "decision": "What severity to assign, and whether the pattern indicates a systemic issue.",
+    "role": "Assessor",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-818e-aa7b-e090b6768774",
+    "id": "37",
+    "name": "Define the formal problem statement",
+    "index": 7,
+    "what": "Writes the formal problem statement on the record, anchored to the evidence, context, and severity assessment already in place.",
+    "decision": "Is the problem statement precise enough to scope the investigation.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8171-97fd-db3b4e8355e1",
+    "id": "38",
+    "name": "Pull the investigation team in through structured notification",
+    "index": 8,
+    "what": "Identifies which teams the investigation needs and pulls them onto the record. Each notification carries the record link, the problem statement, and the evidence, so nobody arrives needing a briefing.",
+    "decision": "Who needs to be involved in the investigation.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81d7-a3f5-cea3d173f1d0",
+    "id": "39",
+    "name": "Pull participants into the record thread",
+    "index": 1,
+    "what": "Pulls the cross-functional participants into the record's thread. No calendar negotiation, no meeting invite; each participant gets a notification with the full record context and contributes when they can.",
+    "decision": "Who is required for the root cause analysis and who is optional.",
+    "role": "Convener",
+    "primitives": [
+      "Meetings",
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-819e-8512-dc1296594511"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8126-bf11-efc8b0fcc964",
+    "id": "40",
+    "name": "Review the assembled context with participants",
+    "index": 2,
+    "what": "Participants review the evidence, history, and problem statement already assembled on the record, asynchronously and in their own time. Nobody rebuilds context in a meeting room from printed packets.",
+    "decision": "Whether the assembled context is complete enough to start the analysis.",
+    "role": "Facilitator",
+    "primitives": [
+      "Decision-rebuilding",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37b860e6-b45e-819e-8512-dc1296594511"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81e2-9515-fdf72caa5bd7",
+    "id": "41",
+    "name": "Conduct the structured root cause analysis in the thread",
+    "index": 3,
+    "what": "Runs the root cause analysis (5-Why, fishbone, or 8D) in the record thread. Contributions land asynchronously against the evidence; a focused synchronous session happens only if the analysis stalls.",
+    "decision": "When to stop digging and call the root cause identified.",
+    "role": "Analyst",
+    "primitives": [
+      "Decision-rebuilding",
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-819e-8512-dc1296594511"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81fb-b4db-c6244289e8b6",
+    "id": "42",
+    "name": "Agree the root cause with participants",
+    "index": 4,
+    "what": "Participants confirm or challenge the root cause in the thread, against the evidence. A dispute is resolved in context rather than through a second scheduled meeting.",
+    "decision": "Is there consensus on the root cause, or does the disagreement need escalation.",
+    "role": "Facilitator",
+    "primitives": [
+      "Meetings"
+    ],
+    "journey": [
+      "37b860e6-b45e-819e-8512-dc1296594511"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8177-a588-e6e5c7c041b3",
+    "id": "43",
+    "name": "Document the agreed root cause statement on the record",
+    "index": 5,
+    "what": "Records the agreed root cause statement on the record. The analysis trail stays attached, so the statement carries its own justification; no minutes to write or distribute.",
+    "decision": "Is the statement specific enough to drive corrective action definition.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37b860e6-b45e-819e-8512-dc1296594511"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81bf-8f34-d367b6b001e2",
+    "id": "44",
+    "name": "Determine disposition options from root cause and severity",
+    "index": 1,
+    "what": "Reviews the agreed root cause and severity on the record and determines the disposition options: rework, use-as-is, scrap, return to supplier.",
+    "decision": "Which disposition options are viable for this nonconformance.",
+    "role": "Decider",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81af-8c29-ccf73147bf7e",
+    "id": "45",
+    "name": "Request engineering concession inside the record",
+    "index": 2,
+    "what": "For rework or use-as-is, routes a concession request to engineering inside the record. Engineering reviews with the full evidence in context and answers on the record, not in a detached email chain.",
+    "decision": "What specifically engineering needs to rule on.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8115-a513-ca3ad0734a5d",
+    "id": "46",
+    "name": "Prepare the disposition recommendation",
+    "index": 3,
+    "what": "Prepares the disposition recommendation on the record, with the root cause, severity, and engineering concession already attached as its justification.",
+    "decision": "Which disposition to recommend.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-811f-85e6-e49497c29f16",
+    "id": "47",
+    "name": "Submit the disposition for approval",
+    "index": 4,
+    "what": "Submits the disposition for approval. The Quality Manager is notified with the recommendation and its evidence in one place; no status-chasing on where the approval stands, the record shows it.",
+    "decision": "Is the recommendation package complete enough for first-time approval.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8194-947f-def9507e5b4f",
+    "id": "48",
+    "name": "Approved disposition flows to production",
+    "index": 5,
+    "what": "On approval, production receives the disposition instruction with the record link attached. The Quality Engineer watches the handoff confirm rather than relaying the decision by email and phone.",
+    "decision": "None in the normal path; intervene only if production queries the instruction.",
+    "role": "Observer",
+    "primitives": [
+      "Status-chasing",
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-8102-acb1-eea544782606",
+    "id": "49",
+    "name": "Verify execution and record completion",
+    "index": 6,
+    "what": "Verifies the disposition was executed correctly, on the floor or from evidence attached by production, and records completion on the record in the same act.",
+    "decision": "Was the disposition executed as approved.",
+    "role": "Verifier",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-819f-9a7f-f8a39ef79ad0"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-815a-af2e-d91e945caaec",
+    "id": "50",
+    "name": "Receive approval request notification",
+    "index": 1,
+    "what": "Receives a notification that a disposition, corrective action plan, or closure needs approval. The notification carries the record reference, a summary, and the severity, so triage is possible without opening.",
+    "decision": "Act now or batch with other pending approvals.",
+    "role": "Recipient",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-81f9-8b10-d546aad63c3d"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81a9-a397-f21420adc06f",
+    "id": "51",
+    "name": "Open the record and review evidence in context",
+    "index": 2,
+    "what": "Opens the record and reviews the recommendation with its full justification in one place: evidence, root cause, history, and the engineering concession where there is one. No assembling context from email and spreadsheets.",
+    "decision": "Is the evidence sufficient to decide on first pass.",
+    "role": "Reviewer",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37b860e6-b45e-81f9-8b10-d546aad63c3d"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-81f4-8c1f-d1f3a4be4036",
+    "id": "52",
+    "name": "Approve with regulated electronic signature, or route back with comments",
+    "index": 3,
+    "what": "Approves with a 21 CFR Part 11 compliant electronic signature carrying identity, timestamp, and meaning, or routes back with comments attached to the record. The same act serves the disposition approval, the corrective action plan approval, and the closure approval.",
+    "decision": "Go or no-go on the pending item.",
+    "role": "Approver",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "37b860e6-b45e-81f9-8b10-d546aad63c3d"
+    ]
+  },
+  {
+    "pageId": "37b860e6-b45e-812c-913b-c3d97011ff08",
+    "id": "53",
+    "name": "Cascade confirmation: record advances and stakeholders are notified",
+    "index": 4,
+    "what": "On signature, the record advances state and the requester and downstream owners are notified automatically. The Approver sees a confirmation of the cascade and returns to interrupted work.",
+    "decision": "None at this step; automated cascade. Scan the confirmation for sanity.",
+    "role": "Observer",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-81f9-8b10-d546aad63c3d"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8148-ab65-c5e286cedf81",
+    "id": "54",
+    "name": "Triage the capture from the notification",
+    "index": 2,
+    "what": "The capture notification reaches the supervisor and the quality engineer with photos, measurements, and context attached. Each reads the record and decides whether a floor visit is needed; many cases resolve from the record alone.",
+    "decision": "Is a floor visit needed, or does the record carry enough to proceed.",
+    "role": "Triager",
+    "primitives": [
+      "Decision-rebuilding",
+      "Status-chasing"
+    ],
+    "journey": [
+      "37b860e6-b45e-8102-9219-e07d87102b35"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8108-ae17-ca6fc24a8e42",
+    "id": "55",
+    "name": "Capture the non-conformance at the point of detection",
+    "index": 1,
+    "what": "From the dock floor, opens the mobile app, photographs the defect, and records measurements. The non-conformance record is live before leaving the inspection station, with evidence attached at the source.",
+    "decision": "Is the evidence captured sufficient, or does the line need to hold while more is collected.",
+    "role": "Reporter",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-81aa-b5d8-e51401022941"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8101-a9c5-f8609c73e67c",
+    "id": "56",
+    "name": "Write the problem description with evidence in view",
+    "index": 2,
+    "what": "Writes the problem description on the record with photographs and measurements already attached beside it, so the description references evidence rather than reconstructing it from memory.",
+    "decision": "How much detail the description needs for investigators who were not on the floor.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81aa-b5d8-e51401022941"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-819c-add9-f7a6bf6c6bd8",
+    "id": "57",
+    "name": "Review impact scope with auto-surfaced lot and batch data",
+    "index": 1,
+    "what": "Lot and batch data from the Enterprise Resource Planning and Warehouse Management System integrations surface on the record automatically. Reviews affected inventory, determines how many purchase orders and assemblies are impacted, and scopes the containment boundary.",
+    "decision": "How wide the containment net needs to be based on the affected lot spread.",
+    "role": "Assessor",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-81fe-812e-e7e18ad98c66"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-811d-b845-dc1b167350b5",
+    "id": "58",
+    "name": "Assign containment actions as structured tasks",
+    "index": 2,
+    "what": "Determines the containment actions needed (quarantine, sort, hold), records them on the record, and assigns them as structured tasks to production and warehouse. Each notification carries the record context so nobody arrives needing a briefing.",
+    "decision": "Which containment actions the severity warrants, and who owns each.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing",
+      "Meetings"
+    ],
+    "journey": [
+      "37c860e6-b45e-81fe-812e-e7e18ad98c66"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-811c-99e9-d84357a1be9b",
+    "id": "59",
+    "name": "Notify customer quality of potential downstream impact",
+    "index": 3,
+    "what": "If customer product is affected, sends a structured notification to customer quality with the record context, containment status, and evidence package attached. The notification crosses the company boundary with full context.",
+    "decision": "Whether the affected material has reached customer product and requires customer notification.",
+    "role": "Coordinator",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-81fe-812e-e7e18ad98c66"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81ba-ad14-f57f5a44e943",
+    "id": "60",
+    "name": "Review evidence and approve or reject the disposition",
+    "index": 1,
+    "what": "Opens the approval request from the notification. The disposition recommendation, investigation findings, engineering concession (if any), and all evidence are already assembled on the record. Reviews and either approves with a regulated signature, or routes back with comments requesting additional information.",
+    "decision": "Whether the evidence and recommendation are sufficient to approve, or whether additional information is needed.",
+    "role": "Approver",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8174-9d4d-eeeeac0eaf11"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81f5-bba7-f5828ebfcfc4",
+    "id": "61",
+    "name": "Review record and approve closure",
+    "index": 2,
+    "what": "Opens the closure request. The complete record history, corrective action verification, and disposition execution confirmation are assembled. Reviews completeness and approves closure with a regulated signature.",
+    "decision": "Whether the record is complete enough to close, or whether outstanding items remain.",
+    "role": "Approver",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8174-9d4d-eeeeac0eaf11"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81b5-b14f-f9cd3d7f77ff",
+    "id": "62",
+    "name": "Send the supplier notification with the evidence package",
+    "index": 1,
+    "what": "Composes the supplier notification inside the record. The evidence package, part context, and containment status attach automatically so the supplier receives a single structured communication instead of a chain of emails with missing attachments.",
+    "decision": "Whether the evidence package is complete enough to send, or whether additional documentation is needed first.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation",
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8190-9aba-f16f8f5045df",
+    "id": "63",
+    "name": "Exchange clarification with the supplier in the record thread",
+    "index": 2,
+    "what": "The supplier posts clarification questions directly in the record thread. Responds in the same thread so the full exchange is captured against the record rather than scattered across email inboxes.",
+    "decision": "Whether the clarification changes the scope of the non-conformance or requires re-investigation.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81ad-95fe-d98b77fab217",
+    "id": "64",
+    "name": "Set investigation expectations and timeline for the supplier",
+    "index": 3,
+    "what": "Defines the investigation scope, expected deliverables, and timeline on the record. The supplier receives a structured brief with deadlines rather than verbal instructions from a phone call that go unrecorded.",
+    "decision": "What investigation methodology to require and how much time to allow.",
+    "role": "Coordinator",
+    "primitives": [
+      "Meetings",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81ad-96e3-dbdcc4b3c672",
+    "id": "65",
+    "name": "Evaluate the supplier investigation report",
+    "index": 4,
+    "what": "The supplier submits their investigation report into the record. Reviews the root cause analysis, supporting data, and proposed corrective actions against the original investigation brief to determine adequacy.",
+    "decision": "Whether the investigation is adequate, or whether gaps need to be addressed before proceeding.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding",
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81d2-b1d5-f03f76902a76",
+    "id": "66",
+    "name": "Request additional investigation detail from the supplier",
+    "index": 5,
+    "what": "Posts specific gaps and questions back to the supplier in the record thread, requesting additional data or a deeper root cause analysis. The original report stays attached so the supplier can see exactly what was deemed insufficient.",
+    "decision": "Which specific gaps to flag and how much additional detail to require.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81af-a633-f5a74ae45231",
+    "id": "67",
+    "name": "Convene internal review and document meeting outcomes",
+    "index": 6,
+    "what": "Schedules an internal Material Review Board or cross-functional review. After the meeting, documents decisions, action items, and any scope changes directly on the record so the investigation history is complete.",
+    "decision": "Who needs to attend the review and whether the investigation findings change the disposition path.",
+    "role": "Coordinator",
+    "primitives": [
+      "Meetings",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81a7-986c-f8e84912f3d8",
+    "id": "68",
+    "name": "Communicate investigation outcome to the supplier",
+    "index": 7,
+    "what": "Sends the investigation outcome and any required next steps to the supplier through the record. The supplier sees the full decision trail, not just the conclusion.",
+    "decision": "How much of the internal review detail to share with the supplier.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8182-bfd1-c702cda7ff78",
+    "id": "69",
+    "name": "Determine if a SCAR is warranted and define requirements",
+    "index": 8,
+    "what": "Reviews the investigation outcome and supplier history to determine whether a Supplier Corrective Action Request is warranted. If yes, defines the corrective action requirements, expected evidence of effectiveness, and the verification timeline on the record.",
+    "decision": "Whether the severity and recurrence risk justify a formal SCAR, and what scope of corrective action to require.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81ca-8bc6-e5e733da2e79",
+    "id": "70",
+    "name": "Send the SCAR to the supplier with requirements",
+    "index": 9,
+    "what": "Sends the Supplier Corrective Action Request through the record. The requirements, evidence expectations, and timeline are structured fields rather than free-text paragraphs so nothing is ambiguous.",
+    "decision": "Whether to send now or hold for additional internal alignment.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-810e-9856-ffc0097c14e1",
+    "id": "71",
+    "name": "Evaluate the supplier corrective action plan",
+    "index": 10,
+    "what": "The supplier submits their corrective action plan into the record. Reviews it against the SCAR requirements to determine whether the proposed actions address the root cause and whether the evidence of effectiveness plan is credible.",
+    "decision": "Whether the corrective action plan is adequate, or whether it needs revision before acceptance.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding",
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8185-8742-ff9f9236eafe",
+    "id": "72",
+    "name": "Reject the corrective action plan and request revision",
+    "index": 11,
+    "what": "Documents the specific deficiencies in the corrective action plan and returns it to the supplier with structured feedback. The rejection rationale is on the record so the supplier knows exactly what to fix.",
+    "decision": "Which specific deficiencies to flag and whether to extend the timeline.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8175-9897-fc5838581f53",
+    "id": "73",
+    "name": "Verify corrective action effectiveness on the next incoming lot",
+    "index": 12,
+    "what": "When the next lot arrives from the supplier, inspects against the corrective action criteria. Records the verification result on the record with evidence so the SCAR can close with documented proof of effectiveness rather than a verbal confirmation.",
+    "decision": "Whether the evidence of effectiveness is sufficient to close the SCAR, or whether additional lots need monitoring.",
+    "role": "Verifier",
+    "primitives": [
+      "Errors",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-81d7-94c4-dcc25d862b01"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81e5-b6c2-c5e896812cd2",
+    "id": "74",
+    "name": "Evaluate disposition options against investigation findings",
+    "index": 1,
+    "what": "Reviews the investigation findings and determines the available disposition options (use-as-is, rework, return to supplier, scrap). The investigation evidence and supplier history are on the same record, so the evaluation draws from a single source.",
+    "decision": "Which disposition path fits the risk profile and whether engineering concession is needed.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-816c-86c4-f0484a3c8f7c",
+    "id": "75",
+    "name": "Request engineering concession inside the record",
+    "index": 2,
+    "what": "If the disposition requires engineering acceptance, sends a structured concession request to the engineering team inside the record. Engineering reviews the non-conformance details in context and provides a concession decision with conditions.",
+    "decision": "Whether engineering concession is required and what conditions to propose.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation",
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8100-80a0-c72905c40719",
+    "id": "76",
+    "name": "Prepare and submit disposition recommendation for approval",
+    "index": 3,
+    "what": "Assembles the disposition recommendation with the investigation findings, engineering concession (if any), cost impact, and supporting evidence. Submits the package for Quality Manager approval through a structured approval workflow.",
+    "decision": "Whether all supporting evidence is assembled and the recommendation is ready for approval.",
+    "role": "Author",
+    "primitives": [
+      "Errors",
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81aa-bbca-f50154070cfb",
+    "id": "77",
+    "name": "Respond to approval feedback and resubmit",
+    "index": 4,
+    "what": "If the Quality Manager returns the recommendation with questions or requests for additional information, addresses the feedback on the record and resubmits. The approval history shows each round so no context is lost between iterations.",
+    "decision": "How to address each piece of feedback and whether additional investigation is needed.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-811a-a558-e713bdd9a9f3",
+    "id": "78",
+    "name": "Communicate approved disposition to the supplier",
+    "index": 5,
+    "what": "Sends the approved disposition decision to the supplier through the record with the execution instructions and any conditions from the engineering concession. The supplier receives a single structured communication.",
+    "decision": "How much detail of the internal approval rationale to share with the supplier.",
+    "role": "Coordinator",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8129-b668-c9823aba832c",
+    "id": "79",
+    "name": "Review record for completeness and request closure",
+    "index": 6,
+    "what": "Reviews the full record for completeness: investigation closed, disposition executed, SCAR verified (if applicable), all documentation attached. Submits the closure request to the Quality Manager through the approval workflow.",
+    "decision": "Whether all required activities are complete and the record is ready for closure.",
+    "role": "Coordinator",
+    "primitives": [
+      "Reconciliation",
+      "Errors"
+    ],
+    "journey": [
+      "37c860e6-b45e-8192-869b-de39fbe430ee"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-811a-8487-c5404b5d9b04",
+    "id": "98",
+    "name": "Change Sponsor initiates the change request",
+    "index": 1,
+    "what": "The Change Sponsor opens the Change Requests database, drafts the title and reason, sets path, risk, reversibility, change category, and links the affected controlled document or workspace artifact. They populate the You-are-here callout and the required body sections per the change-control procedure.",
+    "decision": "Whether the change is in scope for change control or belongs in another pipeline (bug, compliance task, to-do), and what category, path, risk level, and reversibility apply.",
+    "role": "Initiator",
+    "primitives": [],
+    "journey": [
+      "37c860e6-b45e-81aa-a42e-d322a123ca6d"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81b0-9929-eaa3c3659475",
+    "id": "99",
+    "name": "Review board assesses impact and routes",
+    "index": 2,
+    "what": "The review board reads the change request, weighs scope and risk against the impact assessment, and either routes it to planning, returns it for revision, or rejects it. Stage 1 approver signs off when the path requires it.",
+    "decision": "Approve and route to planning, return with comments, or reject; for board-tier changes, vote.",
+    "role": "Reviewer",
+    "primitives": [],
+    "journey": [
+      "37c860e6-b45e-81aa-a42e-d322a123ca6d"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8194-b863-ed5099b48943",
+    "id": "100",
+    "name": "Owner plans the change and secures approvals",
+    "index": 3,
+    "what": "The owner builds the implementation plan, identifies the people who must be involved, attaches the pre-mortem if the path requires one, and routes the request through the remaining stages of the approval matrix.",
+    "decision": "What the implementation sequence is, who needs to be a participant, and whether the plan meets the governing document's compliance test before approval is requested.",
+    "role": "Planner",
+    "primitives": [],
+    "journey": [
+      "37c860e6-b45e-81aa-a42e-d322a123ca6d"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8112-9df2-c1c9cd1ac172",
+    "id": "101",
+    "name": "Owner implements and tracks completion of the change",
+    "index": 4,
+    "what": "The owner executes the implementation, edits the controlled document or workspace artifact, links the resulting outputs, and records progress against the plan. The pending change control callout sits on the affected document until closure.",
+    "decision": "Whether each implementation step is complete and evidence is attached; whether the change still matches the approved plan or needs an amendment.",
+    "role": "Implementer",
+    "primitives": [],
+    "journey": [
+      "37c860e6-b45e-81aa-a42e-d322a123ca6d"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8125-9728-e0502a945680",
+    "id": "102",
+    "name": "Owner verifies the change and closes the record",
+    "index": 5,
+    "what": "The owner confirms the implementation matches the approved plan, removes the pending change control callout from the affected document, writes the resolution notes, and sets status to Done or Active. For Path D, schedules the thirty-day post-implementation review.",
+    "decision": "Close at Done versus Active, what the resolution notes capture, and whether a thirty-day review is required.",
+    "role": "Verifier",
+    "primitives": [],
+    "journey": [
+      "37c860e6-b45e-81aa-a42e-d322a123ca6d"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8118-a4b6-c3fcba560a49",
+    "id": "103",
+    "name": "Open the approved change request and its linked document",
+    "index": 1,
+    "what": "A change request reaches approved status with scope covering a controlled document. The Document Controller opens it from the queue and sees the document, the change rationale, and the impact assessment already linked; nothing needs to be looked up or re-keyed.",
+    "decision": "Start this revision now or sequence it against other approved changes.",
+    "role": "Queue worker",
+    "primitives": [
+      "Status-chasing",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-816f-a0ec-ddd0974b64af",
+    "id": "104",
+    "name": "Generate the new document version from the released revision",
+    "index": 2,
+    "what": "One action creates a draft version branched from the released revision, linked to the change request for traceability. The editable source is the record itself, so the hunt for the source file, or its recreation when lost, does not exist.",
+    "decision": "None structural; confirm the branch point is the current effective revision (it can only be).",
+    "role": "Version creator",
+    "primitives": [
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-812a-ae99-dac9e76112fc",
+    "id": "105",
+    "name": "Verify the affected-document scope from where-used relations",
+    "index": 3,
+    "what": "The where-used view lists every document, training item, and process that references the one being revised. The controller confirms the change request scope against it, adding affected documents to the change rather than discovering them after release.",
+    "decision": "Is the change scope complete, or do sibling documents need to join this change.",
+    "role": "Scope checker",
+    "primitives": [
+      "Decision-rebuilding",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81b3-ac5e-c5fd91b9b099",
+    "id": "106",
+    "name": "Author the revised content in the draft version",
+    "index": 4,
+    "what": "The controller or the SME author edits the draft version in place. All comments and edits accumulate on the single draft; there are no parallel marked-up files to reconcile later.",
+    "decision": "Content decisions; the platform contributes control, not prose.",
+    "role": "Author (or author's editor)",
+    "primitives": [
+      "Errors",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81e8-950d-e1a505f55a2d",
+    "id": "107",
+    "name": "Review the assembled diff and write the change rationale",
+    "index": 5,
+    "what": "The diff against the released revision is assembled by the platform. The controller checks it against the approved change scope and writes the why; the what-changed list is generated, not reconstructed.",
+    "decision": "Does the diff match the approved scope; is the rationale complete for a future auditor.",
+    "role": "Change summarizer",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81d7-bce1-dc107f7b1da1",
+    "id": "108",
+    "name": "Route the revision for review and approval",
+    "index": 6,
+    "what": "Routing applies the approval matrix for the document type: reviewers and approvers assigned with due dates, notified automatically. This is the handoff into the Document Approver flow (approves a controlled SOP revision).",
+    "decision": "Accept the approval matrix defaults or add reviewers for this specific change.",
+    "role": "Router",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81f3-855c-db252116dffe",
+    "id": "109",
+    "name": "Monitor approval progress and act only on exceptions",
+    "index": 7,
+    "what": "The approval queue shows live state per approver. Reminders fire automatically; the controller intervenes only when an approval stalls past its due date or a change is requested, in which case the draft routes back to the author with comments in place.",
+    "decision": "Escalate a stalled approver or wait; rework scope if an approver requests changes.",
+    "role": "Exception handler",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81b5-aa83-e2266f1698b4",
+    "id": "110",
+    "name": "Release: signatures complete, effective date set, supersession automatic",
+    "index": 8,
+    "what": "On the final signature the revision releases: effective date set, register state and revision history written by construction, the prior revision superseded everywhere at once. There are no files to replace in folders and no stale digital copies to sweep.",
+    "decision": "Effective immediately or on a set effectivity date.",
+    "role": "Releaser",
+    "primitives": [
+      "Errors",
+      "Status-chasing"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81f8-a494-ecfa9c437319",
+    "id": "111",
+    "name": "Confirm the retraining cascade fired and hand off to the retraining loop",
+    "index": 9,
+    "what": "Release generates notification and retraining obligations from the training matrix relation. The controller scans the cascade summary for sanity and hands off to the document change and retraining loop flow, which owns completion.",
+    "decision": "Does the generated affected-people list match reality; add exceptions.",
+    "role": "Cascade checker",
+    "primitives": [
+      "Status-chasing",
+      "Reconciliation"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81a9-8840-dc0caf3d4c03",
+    "id": "112",
+    "name": "Spot-check that the revision trace is queryable",
+    "index": 10,
+    "what": "The controller opens the released document and confirms the trace reads end to end: change request, versions, diff, rationale, signatures, timestamps, retraining links. What an auditor will ask for in months exists now, by construction. This step anchors the manual-revision-change risk scenario (the Nectero case).",
+    "decision": "None routine; this is the prove-it-later guarantee being sampled.",
+    "role": "Trust verifier",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "37c860e6-b45e-8135-a4f7-d701aaabb959"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-818a-b013-ccb58e6c8b16",
+    "id": "113",
+    "name": "Search or scan for the document from anywhere",
+    "index": 1,
+    "what": "Mid-task, the operator opens search on mobile or a shared terminal and types what they know (document name, number, product, process), or scans a workstation code that jumps straight to the right document. No folder navigation, no guessing which drive.",
+    "decision": "Search by name, number, or process; or scan the posted code at the workstation.",
+    "role": "Seeker",
+    "primitives": [
+      "Status-chasing",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8136-a709-fb6b8684d994"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-819e-9c81-fd5784c03ac5",
+    "id": "114",
+    "name": "Open the document and see it is current by construction",
+    "index": 2,
+    "what": "The document opens showing its effective revision, effective date, and approval state. There is no second copy to compare against and no register to cross-check; the retrieved document is the master. The verification habit dies here.",
+    "decision": "None; this step exists to remove a decision the old world forced.",
+    "role": "Trust checker (with nothing to check)",
+    "primitives": [
+      "Reconciliation",
+      "Errors"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8136-a709-fb6b8684d994"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8133-b9c8-f851de8a93fb",
+    "id": "115",
+    "name": "Execute against the document at point of use",
+    "index": 3,
+    "what": "The operator works from the live document on the screen at the workstation. Reading and executing is the irreducible value work; the platform's contribution is that the screen shows the master, not a copy.",
+    "decision": "The work decisions the procedure supports; none about the document itself.",
+    "role": "Doer",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8136-a709-fb6b8684d994"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81e7-ae5c-f60aaff97da1",
+    "id": "116",
+    "name": "Request a controlled print where a screen cannot go",
+    "index": 4,
+    "what": "Where the environment rules out a screen (cleanroom gowning, wet areas), the operator requests a controlled print: logged against the revision, stamped with expiry, and recalled by the log when the revision supersedes. Uncontrolled printing is not a path.",
+    "decision": "Is a physical copy genuinely required here, or is this the old printing habit.",
+    "role": "Exception requester",
+    "primitives": [
+      "Errors",
+      "Status-chasing"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8136-a709-fb6b8684d994"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-816a-84e0-c3b2ea63a6ca",
+    "id": "117",
+    "name": "Flag a problem with the document without leaving it",
+    "index": 5,
+    "what": "If the document does not match reality (a step that cannot be performed as written, a spec that contradicts the drawing), the operator raises it from the document itself. The flag lands with the document owner carrying full context and can spawn the revision flow. The floor stops being a silent consumer of documents.",
+    "decision": "Is what I am seeing wrong enough to raise, and can I say why in one line.",
+    "role": "Reporter",
+    "primitives": [
+      "Translation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8136-a709-fb6b8684d994"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8184-996c-fd435748701c",
+    "id": "118",
+    "name": "Receive the review-due task with context attached",
+    "index": 1,
+    "what": "At the document's review interval a task generates and lands in the owner's queue with due date. No report had to be run and no notification email composed; the queue is the report.",
+    "decision": "Do it now or schedule it inside the due window; deferral past due escalates visibly.",
+    "role": "Queue owner",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-81fc-9727-c5baaf317281",
+    "id": "119",
+    "name": "Open the document with everything that happened since last review",
+    "index": 2,
+    "what": "The review opens on the document with its recent history assembled: revisions since the last review, linked change requests, non-conformances and complaints touching this process, and training state. The context that makes a review honest is presented instead of reconstructed.",
+    "decision": "How deep this review needs to go, given what has changed around the document.",
+    "role": "Context gatherer (served, not hunting)",
+    "primitives": [
+      "Decision-rebuilding",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-818e-89f4-f1a0e481db62",
+    "id": "120",
+    "name": "Re-read the document against current practice",
+    "index": 3,
+    "what": "The irreducible heart of the flow: the owner reads the document against the process as it runs today. No platform mechanism substitutes for this judgment; the platform's job was to make everything around it cheap enough that the judgment actually happens on time.",
+    "decision": "Does this document still describe what we actually do.",
+    "role": "Judge",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-818f-a080-dfaac81b5777",
+    "id": "121",
+    "name": "Record the outcome: confirmed, next date sets by rule",
+    "index": 4,
+    "what": "On a no-change outcome the owner records the confirmation; the review record attaches to the revision reviewed, the next review date sets by rule, and nothing needs updating in any register. The rubber-stamp path is visible because the justification and time-in-review are on the record.",
+    "decision": "Confirm as current, with a one-line justification a future auditor can read.",
+    "role": "Closer",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-818e-a5a2-ec7a9c7e09cb",
+    "id": "122",
+    "name": "Or spawn the revision with the review as its trigger",
+    "index": 5,
+    "what": "On a change-needed outcome, a revision spawns directly from the review carrying the owner's findings, and hands off to the revision flow (Document Controller revises a controlled document through change control). The review closes as complete; the trace from review to revision to release is one chain.",
+    "decision": "What specifically no longer matches practice, captured while it is fresh.",
+    "role": "Initiator",
+    "primitives": [
+      "Translation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  },
+  {
+    "pageId": "3a4860e6-b45e-8179-9f6d-d67fe5166f7a",
+    "id": "123",
+    "name": "Overdue reviews escalate themselves to the Document Controller",
+    "index": 6,
+    "what": "Reviews past due escalate automatically: reminders to the owner, then visibility to the Document Controller's overdue queue. The pre-audit scramble disappears because the backlog is never allowed to become invisible. Repeated date-bumping on one document is a pattern the queue surfaces.",
+    "decision": "Intervene on chronic deferrers; the routine chase needs no decision.",
+    "role": "Escalation monitor",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "3a4860e6-b45e-8121-b027-ed7a344f97f9"
+    ]
+  }
+]

@@ -1,13 +1,14 @@
 /* ============================================================================
- * /explorations/resources/blog/[slug] - a single article. Compact masthead
- * (category, title, dek, byline), a constrained prose column with a drop-cap
- * lead and ruled section heads, a filed-under line, an author card, and related.
+ * /explorations/resources/blog/[slug] - a single article, structured like the
+ * live blog item: a full-width banner plate with the title, a date/read-time
+ * meta row, the article beside a sticky author card, then related posts.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ResourceShell } from "../../_shared/resource-shell";
-import { ResourceMast, ResourceCTA, ResourceFooter, pad2 } from "../../_shared/resource-chrome";
+import { ResourceCTA, ResourceFooter } from "../../_shared/resource-chrome";
+import { PostCard, initialsOf } from "../../_shared/resource-cards";
 import { POSTS, getPost, type Block, type Author } from "../../_shared/resources-data";
 
 export function generateStaticParams() {
@@ -21,10 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: `${p.title} — Unifize`, description: p.dek };
 }
 
-const initials = (name: string) => name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-
 function Avatar({ author, cls }: { author: Author; cls: string }) {
-  return author.img ? <img className={cls} src={author.img} alt="" /> : <span className={cls + " " + cls + "--mono"} aria-hidden="true">{initials(author.name)}</span>;
+  return author.img ? <img className={cls} src={author.img} alt="" /> : <span className={cls + " " + cls + "--mono"} aria-hidden="true">{initialsOf(author.name)}</span>;
 }
 
 function Blocks({ body }: { body: Block[] }) {
@@ -54,64 +53,71 @@ export default async function BlogItemPage({ params }: { params: Promise<{ slug:
 
   return (
     <ResourceShell>
-      <ResourceMast
-        trail={[{ label: "Blog", href: "/explorations/resources/blog" }, { label: p.category }]}
-        kicker={p.category}
-        title={p.title}
-        desc={p.dek}
-        compact
-      >
-        <div className="rs-byline">
-          <Avatar author={p.author} cls="rs-byline__ava" />
-          <span className="rs-byline__who">
-            <span className="rs-byline__name">{p.author.name}</span>
-            <span className="rs-byline__role">{p.author.role}</span>
-          </span>
-          <span className="rs-byline__sep" aria-hidden="true" />
-          <span className="rs-byline__meta">{p.dateLabel} · {p.readMins} min read</span>
+      {/* banner */}
+      <section className="dms-section rs-bannerwrap">
+        <div className="dms-wrap">
+          <div className="rs-banner">
+            <nav className="rs-crumb" aria-label="Breadcrumb">
+              <Link href="/explorations/resources">Resources</Link>
+              <span className="rs-crumb__seg"><span aria-hidden="true">/</span><Link href="/explorations/resources/blog">Blog</Link></span>
+            </nav>
+            <h1 className="rs-banner__title">{p.title}</h1>
+            <p className="rs-banner__desc">{p.dek}</p>
+          </div>
+          <div className="rs-metarow">
+            <span className="rs-metarow__it">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden="true"><rect x="3" y="4.5" width="14" height="12" /><path d="M3 8.5h14M7 2.5v4m6-4v4" /></svg>
+              {p.dateLabel}
+            </span>
+            <span className="rs-metarow__it">
+              <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden="true"><circle cx="10" cy="10" r="7" /><path strokeLinecap="round" d="M10 6v4.5l3 1.5" /></svg>
+              {p.readMins} min read
+            </span>
+            <ul className="rs-tags"><li className="rs-tag rs-tag--mod">{p.category}</li></ul>
+          </div>
         </div>
-      </ResourceMast>
+      </section>
 
-      {/* article */}
+      {/* article + author sidebar */}
       <section className="dms-section rs-block">
         <div className="dms-wrap rs-article">
-          <div data-reveal>
+          <div className="rs-article__main" data-reveal>
             <Blocks body={p.body} />
-            <div className="rs-filed">
-              <span className="rs-filed__lab">Filed under</span>
-              <span className="rs-tag rs-tag--mod">{p.category}</span>
-            </div>
-            <div className="rs-author">
-              <Avatar author={p.author} cls="rs-author__ava" />
-              <div>
-                <div className="rs-author__name">{p.author.name}</div>
-                <div className="rs-author__role">{p.author.role} at Unifize</div>
-              </div>
-            </div>
           </div>
+          <aside className="rs-article__aside" data-reveal>
+            <div className="rs-author">
+              <span className="rs-author__lab">Author</span>
+              <div className="rs-author__head">
+                <Avatar author={p.author} cls="rs-author__ava" />
+                <div>
+                  <div className="rs-author__name">{p.author.name}</div>
+                  <div className="rs-author__role">{p.author.role}, Unifize</div>
+                </div>
+              </div>
+              <p className="rs-author__bio">
+                {p.author.name} writes about the practice of quality in regulated
+                manufacturing and helps build Unifize.
+              </p>
+            </div>
+          </aside>
         </div>
       </section>
 
       {/* related */}
       <section className="dms-section rs-block dms-section--alt">
         <div className="dms-wrap">
-          <div className="rs-blocklabel"><span className="rs-blocklabel__t">More field notes</span></div>
-          <ol className="rs-related" data-reveal>
-            {relatedAll.map((o, i) => (
-              <li className="rs-related__row" key={o.slug}>
-                <Link href={`/explorations/resources/blog/${o.slug}`} className="rs-related__link">
-                  <span className="rs-related__idx dms-data">{pad2(i + 1)}</span>
-                  <h3 className="rs-related__title">{o.title}</h3>
-                  <span className="rs-related__meta">{o.category} · {o.readMins} min</span>
-                  <svg className="rs-related__arrow" width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true"><path strokeLinecap="square" d="m8 4 6 6-6 6" /></svg>
-                </Link>
-              </li>
-            ))}
-          </ol>
+          <h2 className="rs-relhead">More from the blog</h2>
+          <div className="rs-grid rs-grid--3" data-reveal>
+            {relatedAll.map((o) => <PostCard key={o.slug} p={o} />)}
+          </div>
         </div>
       </section>
 
-      <ResourceCTA heading="Reading about it is one thing. Watch it work." ctaSecondary={{ label: "Watch customer stories", href: "/explorations/resources/testimonials" }} />
+      <ResourceCTA
+        heading="Reading about it is one thing. Watch it work."
+        sub="Book a demo and see connected collaboration on your own processes."
+        ctaSecondary={{ label: "Watch customer videos", href: "/explorations/resources/testimonials" }}
+      />
       <ResourceFooter />
     </ResourceShell>
   );

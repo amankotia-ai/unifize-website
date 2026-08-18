@@ -22,6 +22,9 @@ export { ChatShell } from "./chat-shell";
 export type { ChatShellProps } from "./chat-shell";
 export { DashboardShell } from "./dashboard-shell";
 
+export { BookDemoButton, BookDemoModal } from "./book-demo";
+export type { BookDemoButtonProps, BookDemoModalProps } from "./book-demo";
+
 export { IngressDrift } from "./ingress-drift";
 export type {
   IngressDriftProps,

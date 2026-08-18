@@ -1211,6 +1211,10 @@ const SCENES: Record<DmsProblemIllustrationKind, (props: SceneProps) => ReactNod
   versions: VersionsScene,
   drift: DriftScene,
   audit: AuditScene,
+  /* nearest-fit stand-ins until bespoke scenes exist for the new cards:
+   * change reuses the diverging-lines story, training the orbiting evidence */
+  change: DriftScene,
+  training: AuditScene,
 };
 
 export function ProblemStage3D({

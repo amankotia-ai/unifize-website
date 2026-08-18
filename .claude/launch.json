@@ -7,6 +7,26 @@
       "runtimeArgs": ["run", "dev", "--", "-p", "3001"],
       "port": 3001,
       "autoPort": false
+    },
+    {
+      "name": "next-dev-3002",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--", "-p", "3002"],
+      "port": 3002,
+      "autoPort": false
+    },
+    {
+      "name": "website-storybook",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "storybook",
+        "--prefix",
+        "/Users/abhishekmankotia/Downloads/Unifize Webflow Website Codebase/unifize-website",
+        "--",
+        "--no-open"
+      ],
+      "port": 6006
     }
   ]
 }

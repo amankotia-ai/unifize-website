@@ -17,7 +17,8 @@ import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import { CapGlyph } from "../dms/dms-linework";
 import { Eyebrow, ShellFrame } from "../dms/dms-primitives";
 import { FaqAccordion, LifecycleExplorer, ModuleExplorer } from "../dms/dms-interactive";
-import { PLM_DATA, PLM_MODULES, PLM_PROBLEMS } from "./plm-data";
+import { PLM_DATA, PLM_MODULES, PLM_PROBLEMS, PLM_FLOWS } from "./plm-data";
+import { PLM_ARCADE_FLOW_CONFIGS, PLM_MODULE_ARCADE_CONFIGS } from "./plm-arcade";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 import { PlmProblemSpotlight } from "./plm-problem-visuals";
 import { PlmProofStories } from "./plm-proof";
@@ -26,6 +27,7 @@ import "../dms/dms.css";
 import "../dms/dms-redesign.css";
 import "../_shared/product-kit.css";
 import "./plm.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: PLM_DATA.metaTitle,
@@ -77,7 +79,7 @@ export default function PlmProductPage() {
             <div className="dms-hero__right">
               <p className="dms-lede dms-hero__sub">{PLM_DATA.hero.lede}</p>
               <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">{PLM_DATA.hero.ctaPrimary} &rarr;</button>
+                <BookDemoButton className="dms-btn" source="hero">{PLM_DATA.hero.ctaPrimary} &rarr;</BookDemoButton>
                 <Link href={PLM_DATA.hero.ctaSecondary.href} className="dms-btn dms-btn-ghost">
                   {PLM_DATA.hero.ctaSecondary.label}
                 </Link>
@@ -137,6 +139,7 @@ export default function PlmProductPage() {
       {/* ============================ 02 · MODULES BUNDLED =============== */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer
+          arcadeConfigsByModule={PLM_MODULE_ARCADE_CONFIGS}
           modules={PLM_MODULES}
           mocks={PLM_MODULE_MOCKS}
           heading={PLM_DATA.modules.heading}
@@ -171,7 +174,12 @@ export default function PlmProductPage() {
        * the active step (spec record, trace matrix, FMEA) instead of a chat
        * script, since a design release is record-led, not thread-led. */}
       <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
+        {/* Same treatment as the DMS page: sticky story layout, no map chip;
+          * the flow chips are arcade journeys on the persistent camera. */}
         <LifecycleExplorer
+          layout="sticky-visual"
+          mapChip={false}
+          stageByStation
           steps={PLM_DATA.flow.steps}
           heading={PLM_DATA.flow.heading}
           trailLabel={PLM_DATA.flow.trailLabel}
@@ -182,6 +190,10 @@ export default function PlmProductPage() {
           mobileLabel={PLM_DATA.flow.mobileNote?.label}
           mobileId={PLM_DATA.flow.mobileNote?.id}
           idPrefix="plm-life"
+          flows={PLM_FLOWS}
+          arcadeConfigsByFlow={PLM_ARCADE_FLOW_CONFIGS}
+          flowsLabel="Follow the work through the lifecycle."
+          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
         />
       </section>
 
@@ -337,7 +349,7 @@ export default function PlmProductPage() {
               <h2 className="dms-close__h" id="plm-close-h">{PLM_DATA.close.heading}</h2>
               <p className="dms-lede">{PLM_DATA.close.lede}</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">{PLM_DATA.close.ctaPrimary}</button>
+                <BookDemoButton className="dms-btn" source="close">{PLM_DATA.close.ctaPrimary}</BookDemoButton>
               </div>
             </div>
           </div>

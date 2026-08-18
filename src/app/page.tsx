@@ -30,6 +30,10 @@ import {
   SurfaceTabs,
   TestimonialCarousel,
 } from "@/components/organisms";
+import { Eyebrow as ProductEyebrow } from "./explorations/products/dms/dms-primitives";
+import { DmsHeader } from "./explorations/products/dms/dms-header";
+import "./explorations/products/dms/dms.css";
+import "./explorations/products/dms/dms-redesign.css";
 import {
   BeforeAfter,
   BlockButton,
@@ -173,43 +177,375 @@ const warmSurface = [
   { color: "#E5E2D9", name: "n-beige-3", hex: "#E5E2D9", use: "Border" },
 ];
 
+/* Product language (P.01–P.05) — tokens lifted from the DMS redesign,
+ * src/app/explorations/products/dms/dms-redesign.css. */
+const productSurfaces = [
+  { color: "#FFFFFF", name: "dms-surface", hex: "#FFFFFF", use: "Page / card", hairline: true },
+  { color: "#FAFBFC", name: "dms-surface-quiet", hex: "#FAFBFC", use: "Quiet panel" },
+  { color: "#F5F6F8", name: "dms-surface-alt", hex: "#F5F6F8", use: "Alt section" },
+  { color: "#ECEEF2", name: "dms-surface-sunk", hex: "#ECEEF2", use: "Sunk well" },
+  { color: "#DFE2E7", name: "dms-hairline", hex: "#DFE2E7", use: "Hairline" },
+  { color: "#CFD4DC", name: "dms-line-strong", hex: "#CFD4DC", use: "Strong line" },
+];
+
+const productInk = [
+  { color: "#17191F", name: "dms-ink", hex: "#17191F", use: "Headline" },
+  { color: "#3F4550", name: "dms-ink-2", hex: "#3F4550", use: "Body strong" },
+  { color: "#606773", name: "dms-muted", hex: "#606773", use: "Muted / lede" },
+  { color: "#69717D", name: "dms-faint", hex: "#69717D", use: "Faint" },
+  { color: "#EDF1FF", name: "dms-accent-tint", hex: "#EDF1FF", use: "Accent tint" },
+  { color: "#6F8CFF", name: "focus-ring", hex: "#6F8CFF", use: "Focus outline" },
+];
+
+const productInkBlock = [
+  { color: "#17191F", name: "dms-d-bg", hex: "#17191F", use: "Ink block" },
+  { color: "#1C1F26", name: "dms-d-bg-2", hex: "#1C1F26", use: "Card on ink" },
+  { color: "#242832", name: "dms-d-bg-3", hex: "#242832", use: "Hover on ink" },
+  { color: "#30343D", name: "dms-d-border", hex: "#30343D", use: "Border" },
+  { color: "#3A3F49", name: "dms-d-border-2", hex: "#3A3F49", use: "Border 2" },
+  { color: "#8B929F", name: "dms-d-ink-3", hex: "#8B929F", use: "Faint on ink" },
+  { color: "#B9BEC8", name: "dms-d-ink-2", hex: "#B9BEC8", use: "Muted on ink" },
+  { color: "#F7F8FA", name: "dms-d-ink", hex: "#F7F8FA", use: "Text on ink" },
+];
+
 export default function Home() {
   return (
     <main>
-      {/* Masthead — dark hero, sets the tone */}
-      <header className="mast surface dark">
-        <div className="mast-inner">
-          <Eyebrow dot>Unifize · Primitives v0.1</Eyebrow>
-          <h1>
-            Primitives for <em>regulated</em> coordination.
-          </h1>
-          <p className="sub">
-            Twelve atoms — buttons, inputs, chips, pills, links, dividers,
-            avatars, toggles, lists, glyphs. Each does one thing. Each works
-            on dark and light. Molecules and organisms come next.
-          </p>
-          <div className="meta">
+      {/* DMS site navbar — display:contents keeps the sticky scope on <main>
+          while the .dms/.dms--redesign classes carry the header's styling. */}
+      <div className="dms dms--redesign" style={{ display: "contents" }}>
+        <DmsHeader />
+      </div>
+
+      {/* Masthead — dark hero on the DMS ink tokens. The dms-section classes
+          are probe markers for the header's surface detection only; the inline
+          display/minHeight/padding neutralize .dms-section's product layout. */}
+      <header
+        className="mast surface dark dms-section dms-section--dark"
+        style={{
+          background: "#17191F",
+          color: "#F7F8FA",
+          borderBottomColor: "#30343D",
+          display: "block",
+          minHeight: 0,
+          paddingBlock: 0,
+          marginTop: -72,
+        }}
+      >
+        <div
+          className="mast-inner"
+          style={{
+            maxWidth: 1560,
+            paddingInline: "clamp(20px, 3.3vw, 56px)",
+            paddingTop: 168,
+          }}
+        >
+          <Eyebrow dot>Unifize · Design system</Eyebrow>
+          <h1>Design system</h1>
+          <div className="meta" style={{ borderTopColor: "#30343D" }}>
             <div>
               <span className="k">Accent</span>
               <span className="v">#0052FF</span>
             </div>
             <div>
               <span className="k">Display</span>
-              <span className="v">Geist 500</span>
+              <span className="v">Geist 500 · 520</span>
             </div>
             <div>
               <span className="k">Body</span>
               <span className="v">Inter 400/500</span>
             </div>
             <div>
-              <span className="k">Mono</span>
-              <span className="v">JetBrains Mono</span>
+              <span className="k">Radius</span>
+              <span className="v">0 · pill 999</span>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="page">
+      <div
+        className="page dms-section"
+        style={{ display: "block", minHeight: 0, paddingBlock: 96 }}
+      >
+        {/* P.01 Product palette — DMS-derived */}
+        <section className="atom-section">
+          <div className="atom-head">
+            <span className="num">P.01</span>
+            <h2>Product palette</h2>
+            <p>
+              The product-page palette, distilled from the DMS redesign and now
+              shared by the DMS / QMS / PLM / MES pages. Cool near-neutrals on
+              white, a single ink block for dark sections, brand blue reserved
+              for action.
+            </p>
+          </div>
+
+          <div className="color-group">
+            <div className="color-group-head">
+              <h3>Light surfaces &amp; lines</h3>
+              <span className="tag">Page · alt section · hairlines</span>
+            </div>
+            <div className="swatch-grid">
+              {productSurfaces.map((s) => (
+                <Swatch key={s.name} {...s} />
+              ))}
+            </div>
+          </div>
+
+          <div className="color-group">
+            <div className="color-group-head">
+              <h3>Ink &amp; accent support</h3>
+              <span className="tag">Text · tint · focus</span>
+            </div>
+            <div className="swatch-grid">
+              {productInk.map((s) => (
+                <Swatch key={s.name} {...s} />
+              ))}
+            </div>
+          </div>
+
+          <div className="color-group">
+            <div className="color-group-head">
+              <h3>Ink block</h3>
+              <span className="tag">Hero · modules · close</span>
+            </div>
+            <div className="swatch-grid">
+              {productInkBlock.map((s) => (
+                <Swatch key={s.name} {...s} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* P.02 Product type */}
+        <section className="atom-section">
+          <div className="atom-head">
+            <span className="num">P.02</span>
+            <h2>Product type</h2>
+            <p>
+              Product pages tighten the display scale: hero at −0.065em, weight
+              520, line-height 1. Body tracking is normal — no mono uppercase
+              furniture; eyebrows move to Inter 650 sentence case (P.03).
+            </p>
+          </div>
+
+          <div className="atom-canvas flush">
+            <div className="dms dms--redesign">
+              <div className="dms-section--dark" style={{ padding: "56px 40px" }}>
+                <div className="dms-hero__title">
+                  <span className="dms-hero__line">One current version.</span>
+                  <span className="dms-hero__line dms-hero__turn">
+                    Everywhere you look.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="atom-canvas surface block">
+            <div className="type-list">
+              <div className="type-row">
+                <span className="meta">Hero · 48–86</span>
+                <p
+                  className="specimen display"
+                  style={{
+                    fontSize: 56,
+                    lineHeight: 1,
+                    letterSpacing: "-0.065em",
+                    fontWeight: 520,
+                  }}
+                >
+                  One current version.
+                </p>
+                <span className="tag">Geist 520 · −0.065em</span>
+              </div>
+              <div className="type-row">
+                <span className="meta">H2 · 46/1.1</span>
+                <p
+                  className="specimen display"
+                  style={{
+                    fontSize: 46,
+                    lineHeight: 1.1,
+                    letterSpacing: "-0.04em",
+                    fontWeight: 520,
+                  }}
+                >
+                  Three modules. One continuous record.
+                </p>
+                <span className="tag">Geist 520 · −0.04em</span>
+              </div>
+              <div className="type-row">
+                <span className="meta">H3 · 20/1.2</span>
+                <p
+                  className="specimen display"
+                  style={{
+                    fontSize: 20,
+                    lineHeight: 1.2,
+                    letterSpacing: "-0.025em",
+                    fontWeight: 520,
+                  }}
+                >
+                  Version control without the version chaos.
+                </p>
+                <span className="tag">Geist 520 · −0.025em</span>
+              </div>
+              <div className="type-row">
+                <span className="meta">Lede · 15/1.65</span>
+                <p
+                  className="specimen body"
+                  style={{
+                    fontSize: 15,
+                    lineHeight: 1.65,
+                    color: "#606773",
+                    maxWidth: "62ch",
+                  }}
+                >
+                  Quality teams spend up to a third of their week hunting for
+                  controlled documents across shared drives, QMS folders, and
+                  email threads.
+                </p>
+                <span className="tag">Inter 400 · dms-muted</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* P.03 Eyebrow & section head */}
+        <section className="atom-section">
+          <div className="atom-head">
+            <span className="num">P.03</span>
+            <h2>Eyebrow &amp; section head</h2>
+            <p>
+              The numbered product eyebrow: accent index, hairline divider,
+              Inter 650 in sentence case — no border, no uppercase. Composed
+              with the H2 and lede it forms the canonical product section head.
+            </p>
+          </div>
+
+          <div className="atom-canvas flush">
+            <div className="dms dms--redesign" style={{ padding: 40 }}>
+              <div className="dms-head">
+                <ProductEyebrow n={1}>The problem</ProductEyebrow>
+                <h2 className="dms-h2" style={{ fontSize: 40 }}>
+                  You have the document. Nobody can find it when it matters.
+                </h2>
+                <p className="dms-lede">
+                  Quality teams spend up to a third of their week hunting for
+                  controlled documents across shared drives, QMS folders, and
+                  email threads.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="atom-canvas flush">
+            <div className="dms dms--redesign">
+              <div className="dms-section--dark" style={{ padding: 40 }}>
+                <div className="dms-head">
+                  <ProductEyebrow n={3}>Capabilities</ProductEyebrow>
+                  <h2 className="dms-h2" style={{ fontSize: 40 }}>
+                    The controls a regulated library runs on.
+                  </h2>
+                  <p className="dms-lede">
+                    The change, the controlled revision, and the training
+                    obligation stay connected from decision to signature.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* P.04 Product buttons */}
+        <section className="atom-section">
+          <div className="atom-head">
+            <span className="num">P.04</span>
+            <h2>Product buttons</h2>
+            <p>
+              Pill actions: 999px radius, 44px min-height (38px small), Inter
+              600. Ghost carries a hairline border. No shadows, no hover
+              translate — colour shift only.
+            </p>
+          </div>
+
+          <div className="atom-canvas flush">
+            <div
+              className="dms dms--redesign"
+              style={{
+                padding: 32,
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: 10,
+              }}
+            >
+              <button type="button" className="dms-btn">
+                Book a demo &rarr;
+              </button>
+              <button type="button" className="dms-btn dms-btn-ghost">
+                Take the assessment
+              </button>
+              <button type="button" className="dms-btn dms-btn-sm">
+                Book a demo
+              </button>
+              <button type="button" className="dms-btn dms-btn-ghost dms-btn-sm">
+                Read brief
+              </button>
+            </div>
+          </div>
+
+          <div className="atom-canvas flush">
+            <div className="dms dms--redesign">
+              <div
+                className="dms-section--dark"
+                style={{
+                  padding: 32,
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: 10,
+                }}
+              >
+                <button type="button" className="dms-btn">
+                  Book a demo &rarr;
+                </button>
+                <button type="button" className="dms-btn dms-btn-ghost">
+                  Take the assessment
+                </button>
+                <button type="button" className="dms-btn dms-btn-ghost dms-btn-sm">
+                  Read brief
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* P.05 Product layout & radius */}
+        <section className="atom-section">
+          <div className="atom-head">
+            <span className="num">P.05</span>
+            <h2>Product layout &amp; radius</h2>
+            <p>
+              Product pages run wider than marketing pages: 1560px frame with
+              fluid gutters and section rhythm. Surfaces, cards, and popovers
+              are square; only actions and dots take the pill.
+            </p>
+          </div>
+          <div className="atom-canvas surface block">
+            <TokenTable
+              rows={[
+                { k: "--dms-maxw", v: "1560px" },
+                { k: "--dms-gutter", v: "clamp(20px, 3.3vw, 56px)" },
+                { k: "--dms-section-y", v: "clamp(88px, 7.5vw, 128px)" },
+                { k: "--dms-header-h", v: "72px" },
+                { k: "radius · surfaces", v: "0 — sharp cards, frames, popovers" },
+                { k: "radius · actions", v: "999px pill (buttons, dots)" },
+                { k: "focus ring", v: "2px #6F8CFF · offset 3px" },
+              ]}
+            />
+          </div>
+        </section>
+
         {/* F.01 Color */}
         <section className="atom-section">
           <div className="atom-head">

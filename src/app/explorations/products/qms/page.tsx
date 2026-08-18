@@ -13,7 +13,8 @@ import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import { CapGlyph } from "../dms/dms-linework";
 import { Eyebrow, ShellFrame } from "../dms/dms-primitives";
 import { FaqAccordion, LifecycleExplorer, ModuleExplorer } from "../dms/dms-interactive";
-import { QMS_DATA, QMS_MODULES, QMS_PROBLEMS } from "./qms-data";
+import { QMS_DATA, QMS_MODULES, QMS_PROBLEMS, QMS_FLOWS } from "./qms-data";
+import { QMS_ARCADE_FLOW_CONFIGS, QMS_MODULE_ARCADE_CONFIGS } from "./qms-arcade";
 import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
 import { QmsProblemSpotlight } from "./qms-problem-visuals";
 import { QmsProofStories } from "./qms-proof";
@@ -22,6 +23,7 @@ import "../dms/dms.css";
 import "../dms/dms-redesign.css";
 import "../_shared/product-kit.css";
 import "./qms.css";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: QMS_DATA.metaTitle,
@@ -82,7 +84,7 @@ export default function QmsProductPage() {
             <div className="dms-hero__right">
               <p className="dms-lede dms-hero__sub">{QMS_DATA.hero.lede}</p>
               <div className="dms-hero__ctas">
-                <button type="button" className="dms-btn">{QMS_DATA.hero.ctaPrimary} &rarr;</button>
+                <BookDemoButton className="dms-btn" source="hero">{QMS_DATA.hero.ctaPrimary} &rarr;</BookDemoButton>
                 <Link href={QMS_DATA.hero.ctaSecondary.href} className="dms-btn dms-btn-ghost">
                   {QMS_DATA.hero.ctaSecondary.label}
                 </Link>
@@ -136,6 +138,7 @@ export default function QmsProductPage() {
 
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer
+          arcadeConfigsByModule={QMS_MODULE_ARCADE_CONFIGS}
           modules={QMS_MODULES}
           mocks={QMS_MODULE_MOCKS}
           heading={QMS_DATA.modules.heading}
@@ -164,8 +167,12 @@ export default function QmsProductPage() {
         </div>
       </section>
 
+      {/* Same treatment as the DMS page: sticky story layout, no map chip;
+        * every flow chip is an arcade journey on the persistent camera. */}
       <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
         <LifecycleExplorer
+          layout="sticky-visual"
+          mapChip={false}
           steps={QMS_DATA.flow.steps}
           heading={QMS_DATA.flow.heading}
           trailLabel={QMS_DATA.flow.trailLabel}
@@ -176,6 +183,10 @@ export default function QmsProductPage() {
           mobileLabel={QMS_DATA.flow.mobileNote?.label}
           mobileId={QMS_DATA.flow.mobileNote?.id}
           idPrefix="qms-life"
+          flows={QMS_FLOWS}
+          arcadeConfigsByFlow={QMS_ARCADE_FLOW_CONFIGS}
+          flowsLabel="Follow the work through the lifecycle."
+          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
         />
       </section>
 
@@ -308,7 +319,7 @@ export default function QmsProductPage() {
               <h2 className="dms-close__h" id="qms-close-h">{QMS_DATA.close.heading}</h2>
               <p className="dms-lede">{QMS_DATA.close.lede}</p>
               <div className="dms-close__cta">
-                <button type="button" className="dms-btn">{QMS_DATA.close.ctaPrimary}</button>
+                <BookDemoButton className="dms-btn" source="close">{QMS_DATA.close.ctaPrimary}</BookDemoButton>
               </div>
             </div>
           </div>

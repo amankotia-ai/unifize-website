@@ -1,278 +1,238 @@
 "use client";
 
 /* ----------------------------------------------------------------------------
- * platform-interactive.tsx - the platform page's two interactive scenes.
+ * platform-interactive.tsx - the Platform page's two interactive scenes.
  *
- *   GapExplorer - pick one of your systems and see the same event twice: the
- *     record it keeps (filled rows) and the work it never saw (blank form
- *     lines). The blank lines ARE the argument; nothing is explained that
- *     the panels don't show. Tab pattern mirrors FlowExplorer's a11y.
+ *   PlatformJourney - one change control followed end to end on the arcade's
+ *     persistent camera. The scene stays mounted; picking a step swaps the
+ *     config so the camera PANS between poses. Auto-advances while in view
+ *     (Apple product-page idiom) until the visitor takes over; respects
+ *     prefers-reduced-motion.
  *
- *   StackExplorer - the platform as three touchable layers (outcomes,
- *     products, building blocks). Click a layer, read its detail. Replaces
- *     a static three-row ledger; same content, now one layer at a time.
+ *   PlatformStack - the canonical four-band platform stack (PLT-2) as a
+ *     touchable object: pick a band, the stack explodes around it and the
+ *     detail panel reads it out.
  *
  * Both are self-contained client components, keyboard-operable, styled by
- * platform-kit.css (pf-gapx / pf-stackx namespaces).
+ * platform-kit.css (pf-journey / pf-stack namespaces).
  * -------------------------------------------------------------------------- */
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { cn } from "@/lib/cn";
+import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arcade/arcade";
 
-/* ============================================================ GAP EXPLORER */
+const pad = (n: number) => String(n).padStart(2, "0");
 
-type GapSystem = {
-  key: string;
-  label: string;
-  record: { ref: string; title: string; rows: [string, string][] };
-  missing: string[];
+/* ========================================================== PLATFORM JOURNEY */
+
+export type PlatformJourneyStep = {
+  title: string;
+  body: string;
 };
 
-const GAP_SYSTEMS: GapSystem[] = [
-  {
-    key: "qms",
-    label: "Your QMS",
-    record: {
-      ref: "CAPA-2210",
-      title: "Recurring torque non-conformance",
-      rows: [
-        ["State", "Closed · effectiveness verified"],
-        ["Root cause", "Approved by QA manager"],
-        ["Sign-off", "Complete · Part 11"],
-      ],
-    },
-    missing: [
-      "The sixty emails that found the root cause",
-      "Why containment took three weeks",
-      "Who was waiting on whom, and for how long",
-    ],
-  },
-  {
-    key: "erp",
-    label: "Your ERP",
-    record: {
-      ref: "PO-8841",
-      title: "Machined housings, expedite",
-      rows: [
-        ["State", "Received · complete"],
-        ["Freight", "Premium · approved"],
-        ["Quantity", "4,000 units"],
-      ],
-    },
-    missing: [
-      "The shortage call that forced the expedite",
-      "Which orders were traded off, and why",
-      "Who approved the premium, on what grounds",
-    ],
-  },
-  {
-    key: "plm",
-    label: "Your PLM",
-    record: {
-      ref: "BOM · Rev D",
-      title: "Drive assembly",
-      rows: [
-        ["State", "Released"],
-        ["Change order", "Closed"],
-        ["Effectivity", "2026-07-01"],
-      ],
-    },
-    missing: [
-      "The design review that forced Rev D",
-      "The objection raised, and how it was resolved",
-      "Which suppliers were still building to Rev C",
-    ],
-  },
-  {
-    key: "lims",
-    label: "Your LIMS",
-    record: {
-      ref: "SMP-4471",
-      title: "Assay, lot 220-B",
-      rows: [
-        ["Result", "Out of spec · confirmed"],
-        ["Retest", "Authorized"],
-        ["Analyst", "Sign-off complete"],
-      ],
-    },
-    missing: [
-      "The disposition debate the result triggered",
-      "Who authorized the retest, and why",
-      "When production actually found out",
-    ],
-  },
-];
+const AUTO_ADVANCE_MS = 5600;
 
-export function GapExplorer() {
+export function PlatformJourney({
+  steps,
+  configs,
+}: {
+  steps: PlatformJourneyStep[];
+  configs: ArcadeStepConfig[];
+}) {
   const [active, setActive] = useState(0);
-  const sys = GAP_SYSTEMS[active];
+  /* auto-play stops for good the moment the visitor takes over */
+  const [auto, setAuto] = useState(true);
+  const hostRef = useRef<HTMLDivElement | null>(null);
+  const inView = useRef(false);
+  const activeRef = useRef(0);
+  activeRef.current = active;
+
+  useEffect(() => {
+    if (!auto) return;
+    if (typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAuto(false);
+      return;
+    }
+    const host = hostRef.current;
+    if (!host) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => { inView.current = entry.isIntersecting; },
+      { threshold: 0.35 },
+    );
+    observer.observe(host);
+
+    const timer = window.setInterval(() => {
+      if (inView.current && !document.hidden) {
+        setActive((activeRef.current + 1) % steps.length);
+      }
+    }, AUTO_ADVANCE_MS);
+
+    return () => { observer.disconnect(); window.clearInterval(timer); };
+  }, [auto, steps.length]);
+
+  const select = (index: number) => {
+    setAuto(false);
+    setActive(index);
+  };
 
   return (
-    <div className="pf-gapx">
-      {/* the system picker */}
-      <div className="pf-gapx__rail" role="tablist" aria-label="Pick one of your systems">
-        <span className="pf-gapx__rail-lab">Pick a system you run today</span>
-        {GAP_SYSTEMS.map((s, i) => (
-          <button
-            key={s.key}
-            type="button"
-            role="tab"
-            id={`pf-gaptab-${s.key}`}
-            aria-selected={i === active}
-            aria-controls="pf-gap-panels"
-            className={"pf-gapx__tab" + (i === active ? " is-active" : "")}
-            onClick={() => setActive(i)}
-          >
-            {s.label}
-          </button>
-        ))}
+    <div className="pf-journey" ref={hostRef}>
+      {/* ONE scene, config swapped in place: the camera pans between poses */}
+      <div className="pf-journey__stage" id="pf-journey-stage" role="tabpanel" aria-live="polite">
+        <ArcadeStepScene config={configs[Math.min(active, configs.length - 1)]} />
       </div>
 
-      {/* the same event, twice */}
-      <div className="pf-gapx__panels" id="pf-gap-panels" role="tabpanel" aria-labelledby={`pf-gaptab-${sys.key}`}>
-        <article className="pf-gapx__card" key={sys.key + "-has"}>
-          <span className="pf-gapx__card-lab">What it shows</span>
-          <div className="pf-gapx__doc">
-            <div className="pf-gapx__doc-head">
-              <span className="pf-gapx__ref dms-data">{sys.record.ref}</span>
-              <span className="pf-gapx__title">{sys.record.title}</span>
-            </div>
-            <dl className="pf-gapx__rows">
-              {sys.record.rows.map(([k, v]) => (
-                <div className="pf-gapx__row" key={k}>
-                  <dt>{k}</dt>
-                  <dd>{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <p className="pf-gapx__verdict pf-gapx__verdict--ok">The outcome, filed. This part works.</p>
-        </article>
-
-        <article className="pf-gapx__card pf-gapx__card--gap" key={sys.key + "-missing"}>
-          <span className="pf-gapx__card-lab">What it cannot show</span>
-          <div className="pf-gapx__doc">
-            <div className="pf-gapx__doc-head">
-              <span className="pf-gapx__ref dms-data">{sys.record.ref}</span>
-              <span className="pf-gapx__title">The work that produced it</span>
-            </div>
-            <dl className="pf-gapx__rows">
-              {sys.missing.map((m) => (
-                <div className="pf-gapx__row pf-gapx__row--blank" key={m}>
-                  <dt>{m}</dt>
-                  <dd aria-label="No record exists"><span className="pf-gapx__blank" /></dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <p className="pf-gapx__verdict">No record exists. It happened in inboxes and meetings.</p>
-        </article>
+      <div className="pf-journey__rail" role="tablist" aria-label="One change, followed end to end">
+        {steps.map((step, index) => (
+          <button
+            key={step.title}
+            type="button"
+            role="tab"
+            aria-selected={index === active}
+            aria-controls="pf-journey-stage"
+            className={cn("pf-journey__step", index === active && "is-active")}
+            onClick={() => select(index)}
+          >
+            <span className="pf-journey__idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
+            <span className="pf-journey__name">{step.title}</span>
+            <span className="pf-journey__body">{step.body}</span>
+            {auto && index === active ? (
+              <span className="pf-journey__timer" aria-hidden="true">
+                <i style={{ animationDuration: `${AUTO_ADVANCE_MS}ms` }} />
+              </span>
+            ) : null}
+          </button>
+        ))}
       </div>
     </div>
   );
 }
 
-/* =========================================================== STACK EXPLORER */
+/* ============================================================ PLATFORM STACK
+ * The four bands, verbatim from the concept map: Outcomes + AI Assist on
+ * top, Core Platform underneath everything. */
 
-type StackLayer = {
+type StackBand = {
   key: string;
-  label: string;
+  name: string;
   tag: string;
   body: string;
   chips?: string[];
+  chipsLabel?: string;
   products?: { code: string; name: string; href: string }[];
   note?: string;
 };
 
-const LAYERS: StackLayer[] = [
+const BANDS: StackBand[] = [
   {
     key: "outcomes",
-    label: "The outcomes",
+    name: "Outcomes + AI Assist",
     tag: "What you feel",
     body:
-      "Work closes faster and arrives provable: less time waiting, fewer things reopened, evidence complete at sign-off. AI drafts, chases, and summarizes inside the work; your people approve and stay accountable.",
-    chips: ["Faster closure", "Less waiting", "Fewer reopens", "Evidence complete"],
+      "Work closes faster and arrives provable: less waiting, fewer reopens, evidence complete at sign-off. AI drafts, chases, and summarizes inside the work; your people approve and stay accountable.",
+    chipsLabel: "AI assists with",
+    chips: ["Assisted capture", "Execution assist", "Measurement assist"],
   },
   {
     key: "products",
-    label: "The products",
+    name: "Product Suite",
     tag: "What you buy",
     body:
-      "Products your team and your auditors already understand, ready for your industry on day one.",
+      "Products your team and your auditors already understand, ready for your industry on day one. Start with one; add the next on the same foundation when you are ready.",
     products: [
       { code: "QMS", name: "Quality management", href: "/explorations/products/qms" },
       { code: "DMS", name: "Document management", href: "/explorations/products/dms" },
       { code: "PLM", name: "Product lifecycle", href: "/explorations/products/plm" },
       { code: "MES", name: "Manufacturing execution", href: "/explorations/products/mes" },
     ],
-    note: "Start with one. Add the next on the same foundation when you are ready.",
   },
   {
     key: "components",
-    label: "The building blocks",
+    name: "Workflow Components",
     tag: "What it runs on",
     body:
       "Every product above is assembled from the same no-code blocks, so the platform shapes itself to your process, not the other way around.",
+    chipsLabel: "The blocks",
     chips: ["Stages", "Gates", "Roles", "Approvals", "Evidence requirements", "Forms", "Automations", "Templates"],
+  },
+  {
+    key: "core",
+    name: "Core Platform",
+    tag: "What holds it",
+    body:
+      "One governed layer under everything: accountable threads, structured data, and an audit trail that writes itself as the work happens. Your systems of record stay authoritative.",
+    chipsLabel: "Always on",
+    chips: ["Accountable threads", "Structured data", "Audit trail", "Part 11 e-signatures", "Permissions", "API & connectors"],
   },
 ];
 
-export function StackExplorer() {
-  const [active, setActive] = useState(1); /* land on the products layer */
-  const layer = LAYERS[active];
+export function PlatformStack() {
+  const [active, setActive] = useState(1); /* land on the products band */
+  const band = BANDS[active];
 
   return (
-    <div className="pf-stackx">
-      {/* the stack itself - three touchable layers */}
-      <div className="pf-stackx__stack" role="tablist" aria-label="The three layers of the platform" aria-orientation="vertical">
-        {LAYERS.map((l, i) => (
+    <div className="pf-stack">
+      {/* the object: four touchable bands that explode around the pick */}
+      <div className="pf-stack__object" role="tablist" aria-label="The four bands of the platform">
+        {BANDS.map((item, index) => (
           <button
-            key={l.key}
+            key={item.key}
             type="button"
             role="tab"
-            id={`pf-stacktab-${l.key}`}
-            aria-selected={i === active}
-            aria-controls="pf-stackx-detail"
-            className={"pf-stackx__layer" + (i === active ? " is-active" : "")}
-            onClick={() => setActive(i)}
+            aria-selected={index === active}
+            aria-controls="pf-stack-detail"
+            className={cn(
+              "pf-stack__band",
+              index === active && "is-active",
+              index < active && "is-above",
+              index > active && "is-below",
+            )}
+            onClick={() => setActive(index)}
           >
-            <span className="pf-stackx__layer-tag">{l.tag}</span>
-            <span className="pf-stackx__layer-name">{l.label}</span>
-            <svg className="pf-stackx__layer-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="square" aria-hidden="true">
-              <path d="M4 10h11M11 5.5l4.5 4.5-4.5 4.5" />
-            </svg>
+            <span className="pf-stack__band-idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
+            <span className="pf-stack__band-name">{item.name}</span>
+            <span className="pf-stack__band-tag">{item.tag}</span>
           </button>
         ))}
+        <span className="pf-stack__ground" aria-hidden="true">Your systems of record · your tools · unchanged</span>
       </div>
 
-      {/* the active layer, in detail */}
-      <div className="pf-stackx__detail" id="pf-stackx-detail" role="tabpanel" aria-labelledby={`pf-stacktab-${layer.key}`}>
-        <span className="pf-stackx__detail-tag">{layer.tag}</span>
-        <h3 className="pf-stackx__detail-name">{layer.label}</h3>
-        <p className="pf-stackx__detail-body">{layer.body}</p>
+      {/* the active band, read out */}
+      <div className="pf-stack__detail" id="pf-stack-detail" role="tabpanel" aria-label={band.name}>
+        <div className="pf-stack__detail-inner" key={band.key}>
+          <span className="pf-stack__detail-tag">{band.tag}</span>
+          <h3 className="pf-stack__detail-name">{band.name}</h3>
+          <p className="pf-stack__detail-body">{band.body}</p>
 
-        {layer.products ? (
-          <ul className="pf-band__products">
-            {layer.products.map((p) => (
-              <li key={p.code}>
-                <Link className="pf-band__product" href={p.href}>
-                  <span className="pf-band__product-code">{p.code}</span>
-                  <span className="pf-band__product-name">{p.name}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : null}
+          {band.products ? (
+            <ul className="pf-stack__products">
+              {band.products.map((product) => (
+                <li key={product.code}>
+                  <Link className="pf-stack__product" href={product.href}>
+                    <span className="pf-stack__product-code">{product.code}</span>
+                    <span className="pf-stack__product-name">{product.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
 
-        {layer.chips ? (
-          <ul className="pf-band__chips">
-            {layer.chips.map((c) => (
-              <li key={c} className="pf-band__chip">{c}</li>
-            ))}
-          </ul>
-        ) : null}
+          {band.chips ? (
+            <div className="pf-stack__chips-row">
+              {band.chipsLabel ? <span className="pf-stack__chips-lab">{band.chipsLabel}</span> : null}
+              <ul className="pf-stack__chips">
+                {band.chips.map((chip) => (
+                  <li key={chip} className="pf-stack__chip">{chip}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
-        {layer.note ? <p className="pf-stackx__detail-note">{layer.note}</p> : null}
+          {band.note ? <p className="pf-stack__detail-note">{band.note}</p> : null}
+        </div>
       </div>
     </div>
   );

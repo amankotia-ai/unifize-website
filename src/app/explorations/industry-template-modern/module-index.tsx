@@ -12,7 +12,6 @@
  * ========================================================================== */
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { MD_DOMAIN_MAP } from "@/lib/platform-data/md-module-map";
 import { STANDARD_FILTERS } from "./industry-data";
 
@@ -31,6 +30,34 @@ export function ModuleIndex() {
     [standard],
   );
 
+  /* filtering should show its result: if the open row survives the filter it
+   * stays; otherwise the first domain with a match opens */
+  const applyStandard = (next: string | null) => {
+    setStandard(next);
+    const matches = (d: (typeof MD_DOMAIN_MAP)[number]) =>
+      next ? d.modules.some((m) => (m.standards ?? []).includes(next)) : true;
+    if (!MD_DOMAIN_MAP.some((d) => d.slug === open && matches(d))) {
+      setOpen(MD_DOMAIN_MAP.find(matches)?.slug ?? "");
+    }
+  };
+
+  /* per-standard module tallies: the filter bar tells you what each standard
+   * is worth before you commit to it */
+  const tally = useMemo(() => {
+    const perStandard = new Map<string, number>();
+    let total = 0;
+    for (const d of MD_DOMAIN_MAP) {
+      for (const m of d.modules) {
+        total += 1;
+        for (const s of m.standards ?? []) perStandard.set(s, (perStandard.get(s) ?? 0) + 1);
+      }
+    }
+    return { perStandard, total };
+  }, []);
+
+  const shownModules = domains.reduce((n, d) => n + d.filtered.length, 0);
+  const shownDomains = domains.filter((d) => d.filtered.length > 0).length;
+
   return (
     <div className="itm-cov">
       <span id="itm-cov-empty" className="itm-sr-only">
@@ -44,9 +71,10 @@ export function ModuleIndex() {
             type="button"
             aria-pressed={standard === null}
             className={"itm-cov__chip" + (standard === null ? " is-active" : "")}
-            onClick={() => setStandard(null)}
+            onClick={() => applyStandard(null)}
           >
             All standards
+            <span className="itm-cov__chip-n itm-data">{tally.total}</span>
           </button>
           {STANDARD_FILTERS.map((s) => (
             <button
@@ -54,12 +82,17 @@ export function ModuleIndex() {
               type="button"
               aria-pressed={standard === s}
               className={"itm-cov__chip" + (standard === s ? " is-active" : "")}
-              onClick={() => setStandard((cur) => (cur === s ? null : s))}
+              onClick={() => applyStandard(standard === s ? null : s)}
             >
               {s}
+              <span className="itm-cov__chip-n itm-data">{tally.perStandard.get(s) ?? 0}</span>
             </button>
           ))}
         </div>
+        <span className="itm-cov__readout" aria-live="polite">
+          <b className="itm-data">{shownModules}</b> {shownModules === 1 ? "module" : "modules"} ·{" "}
+          <b className="itm-data">{shownDomains}</b> {shownDomains === 1 ? "domain" : "domains"}
+        </span>
       </div>
 
       <ol className="itm-cov__ledger">
@@ -77,8 +110,10 @@ export function ModuleIndex() {
                 onClick={() => { if (!empty) setOpen((cur) => (cur === d.slug ? "" : d.slug)); }}
               >
                 <span className="itm-cov__idx itm-data" aria-hidden="true">{pad(i + 1)}</span>
-                <span className="itm-cov__name">{d.name}</span>
-                <span className="itm-cov__promise">{d.promise}</span>
+                <span className="itm-cov__id">
+                  <span className="itm-cov__name">{d.name}</span>
+                  <span className="itm-cov__promise">{d.promise}</span>
+                </span>
                 <span className="itm-cov__count">
                   <span className="itm-data">{d.filtered.length}</span>
                   <span className="itm-cov__count-lab">{d.filtered.length === 1 ? "module" : "modules"}</span>
@@ -93,16 +128,10 @@ export function ModuleIndex() {
                   <div className="itm-cov__mods">
                     {d.filtered.map((m) => {
                       const live = Boolean(m.href);
-                      const inner = (
-                        <>
+                      return (
+                        <div key={m.name} className={"itm-cov__mod " + (live ? "is-live" : "is-soon")}>
                           <div className="itm-cov__mod-top">
                             <span className="itm-cov__mod-name">{m.name}</span>
-                            {live ? (
-                              <span className="itm-cov__mod-badge">
-                                <span className="itm-dot" aria-hidden="true" />
-                                Live
-                              </span>
-                            ) : null}
                           </div>
                           <p className="itm-cov__mod-blurb">{m.blurb}</p>
                           {m.standards && m.standards.length > 0 ? (
@@ -112,13 +141,7 @@ export function ModuleIndex() {
                               ))}
                             </div>
                           ) : null}
-                          {live ? <span className="itm-cov__mod-go">Open module →</span> : null}
-                        </>
-                      );
-                      return live ? (
-                        <Link key={m.name} href={m.href!} className="itm-cov__mod is-live">{inner}</Link>
-                      ) : (
-                        <div key={m.name} className="itm-cov__mod is-soon">{inner}</div>
+                        </div>
                       );
                     })}
                   </div>
