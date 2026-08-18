@@ -23,6 +23,7 @@ import { dmsCopy } from "../dms-copy";
 import { DmsHeader } from "../dms-header";
 import { SiteFooter } from "../../../_shared/site-footer";
 import { IntegrationLayer } from "../dms-integrations";
+import { PRODUCT_INTEGRATION_LOGOS } from "../../_shared/integrations-catalog";
 import { Eyebrow } from "../dms-primitives";
 import { CapGlyph } from "../dms-linework";
 import { DmsProblemSpotlight } from "../dms-problem-visuals";
@@ -39,7 +40,7 @@ import {
   STYLIZED_LIFECYCLE_MOCKS,
   STYLIZED_MODULE_ARCADE_CONFIGS,
 } from "./stylized-mocks";
-import { StylizedHeroArcade } from "./stylized-hero-arcade";
+import { HeroArcade } from "../../_shared/arcade/hero-arcade";
 import { StylizedCoordinationTax } from "./stylized-ctax";
 import "../../../industry-template-modern/itm.css";
 import "../dms.css";
@@ -92,7 +93,7 @@ export default function DmsStylizedPage() {
           {/* The establishing shot is the arcade itself: one app window walking
             * five moments of SOP-118, with a numbered step rail under it. */}
           <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-            <StylizedHeroArcade steps={STYLIZED_HERO_STEPS} />
+            <HeroArcade steps={STYLIZED_HERO_STEPS} />
           </div>
 
         </div>
@@ -192,6 +193,7 @@ export default function DmsStylizedPage() {
           stageFrame={false}
           stageByStation
           mapChip={false}
+          showFlowOutcomes={false}
         />
       </section>
 
@@ -202,6 +204,7 @@ export default function DmsStylizedPage() {
         minimalEyebrow="Integrations"
         minimalHeading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
         minimalLede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
+        logos={PRODUCT_INTEGRATION_LOGOS.dms}
         ctaHeading={dmsCopy("integrations.cta.heading", "Don’t see your system?")}
         ctaBody={dmsCopy("integrations.cta.body", "We are always adding connectors. Bring us the stack you need to keep in step.")}
         ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}

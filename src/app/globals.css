@@ -8,16 +8,51 @@
    ============================================================ */
 
 :root {
-  /* Brand · OKLCH primitives (sRGB-safe, gamut-checked) */
-  --u-primary: oklch(0.528 0.263 262.9);
-  --u-primary-hover: oklch(0.443 0.224 263.0);
-  --u-primary-tint: oklch(0.967 0.015 270.0);
-  --u-primary-border: oklch(0.909 0.044 271.3);
+  /* Brand · Alloy 2026 global tokens — colors/blue ramp (brand = blue/700) */
+  --u-blue-25: #fafcff;
+  --u-blue-50: #f0f6ff;
+  --u-blue-100: #deecff;
+  --u-blue-200: #c5deff;
+  --u-blue-300: #a3caff;
+  --u-blue-400: #70aeff;
+  --u-blue-500: #4690f0;
+  --u-blue-600: #1c72d6;
+  --u-blue-700: #005bb7;
+  --u-blue-800: #004793;
+  --u-blue-900: #003774;
+  --u-blue-950: #002553;
 
-  /* Fonts (wired through next/font in layout.tsx) */
+  --u-primary: var(--u-blue-700);
+  --u-primary-hover: var(--u-blue-800);
+  --u-primary-tint: var(--u-blue-50);
+  --u-primary-border: var(--u-blue-200);
+
+  /* Fonts (wired through next/font in layout.tsx) · Alloy 2026 font/family */
   --u-font: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --u-display: var(--font-geist), var(--font-inter), system-ui, sans-serif;
+  --u-display: var(--font-ibm-plex-sans), var(--font-inter), system-ui,
+    sans-serif;
   --u-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  /* Type scale · Alloy 2026 font/size (px ÷ 16) + font/weight */
+  --u-fs-12: 0.75rem;
+  --u-fs-14: 0.875rem;
+  --u-fs-16: 1rem;
+  --u-fs-18: 1.125rem;
+  --u-fs-20: 1.25rem;
+  --u-fs-22: 1.375rem;
+  --u-fs-24: 1.5rem;
+  --u-fs-28: 1.75rem;
+  --u-fs-32: 2rem;
+  --u-fs-36: 2.25rem;
+  --u-fs-48: 3rem;
+  --u-fs-72: 4.5rem;
+  --u-fw-thin: 100;
+  --u-fw-extralight: 200;
+  --u-fw-light: 300;
+  --u-fw-regular: 400;
+  --u-fw-medium: 500;
+  --u-fw-semibold: 600;
+  --u-fw-bold: 700;
 
   /* Radius */
   --r-1: 2px;

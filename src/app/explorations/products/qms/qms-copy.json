@@ -1,0 +1,62 @@
+{
+  "ctax.eyebrow": {
+    "element": "Coordination tax · eyebrow",
+    "text": "The cost of fragmentation"
+  },
+  "ctax.heading": {
+    "element": "Coordination tax · heading",
+    "text": "The coordination tax sits between the finding and the fix."
+  },
+  "ctax.lede": {
+    "element": "Coordination tax · lede",
+    "text": "Events close faster, ownership stays visible, and the closure evidence is already audit-ready."
+  },
+  "ctax.sr": {
+    "element": "Coordination tax · screen-reader summary",
+    "text": "Four loops of quality work, each compared side by side. Today each loop is separated from closure by coordination work: audit findings stall unowned, CAPAs close before effectiveness is proven, supplier corrective actions close on paperwork while the same failure returns, and passing an audit costs days of evidence rebuild. On one governed record the same four loops stay connected: every finding converts to an owned action on a clock, the effectiveness window gates closure, supplier closure waits for verified change, and the closure evidence is already bound. The metrics keep their original units and are not plotted on a shared scale."
+  },
+  "ctax.stagecol": {
+    "element": "Coordination tax · stage column caption",
+    "text": "The same four loops, paid for twice"
+  },
+  "ctax.before.note": {
+    "element": "Coordination tax · before world note",
+    "text": "Useful quality work is fragmented by the chasing needed to own, verify, and close it."
+  },
+  "ctax.after.note": {
+    "element": "Coordination tax · after world note",
+    "text": "Every event, owner, decision, and piece of evidence stays attached to the same record."
+  },
+  "ctax.coda.strong": {
+    "element": "Coordination tax · coda lead",
+    "text": "The quality work stays."
+  },
+  "ctax.coda.rest": {
+    "element": "Coordination tax · coda rest",
+    "text": "The chasing does not."
+  },
+  "ctax.record.left": {
+    "element": "Coordination tax · record bar left",
+    "text": "One governed record"
+  },
+  "ctax.record.right": {
+    "element": "Coordination tax · record bar right",
+    "text": "Every closure carries its proof"
+  },
+  "ctax.stage1.note": {
+    "element": "Coordination tax · stage 1 after-note (finding ownership)",
+    "text": "Every finding converts to an owned action on a clock."
+  },
+  "ctax.stage2.note": {
+    "element": "Coordination tax · stage 2 after-note (CAPA effectiveness)",
+    "text": "Verified in a set window. Reopens if ineffective."
+  },
+  "ctax.stage3.note": {
+    "element": "Coordination tax · stage 3 after-note (supplier quality)",
+    "text": "The SCAR stays open until the change is verified."
+  },
+  "ctax.stage4.note": {
+    "element": "Coordination tax · stage 4 after-note (audit evidence)",
+    "text": "Disposition evidence bound as the work happens."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "ctax.eyebrow": {
+    "element": "Coordination tax · eyebrow",
+    "text": "The cost of fragmentation"
+  },
+  "ctax.heading": {
+    "element": "Coordination tax · heading",
+    "text": "The coordination tax sits between the floor and the record."
+  },
+  "ctax.lede": {
+    "element": "Coordination tax · lede",
+    "text": "Lots move faster, deviations surface during the run, and the batch record is already audit-ready."
+  },
+  "ctax.sr": {
+    "element": "Coordination tax · screen-reader summary",
+    "text": "Four handoffs of production work, each compared side by side. Today each handoff is separated from the record by coordination work: one batch lives in four parallel records, matching the right checklist revision to the work order is operator memory, recall genealogy is assembled by hand in spreadsheets, and decision rationale leaves with the shift. On one governed record the same four handoffs stay connected: the record builds itself at the operation, the checklist arrives bound to the order at the right revision, genealogy is already linked as the lot moves, and the rationale is signed onto the batch. The metrics keep their original units and are not plotted on a shared scale."
+  },
+  "ctax.stagecol": {
+    "element": "Coordination tax · stage column caption",
+    "text": "The same four handoffs, paid for twice"
+  },
+  "ctax.before.note": {
+    "element": "Coordination tax · before world note",
+    "text": "Production work is fragmented by the reconciling needed to match paper, systems, and memory."
+  },
+  "ctax.after.note": {
+    "element": "Coordination tax · after world note",
+    "text": "Every operation, decision, and deviation stays attached to the same record."
+  },
+  "ctax.coda.strong": {
+    "element": "Coordination tax · coda lead",
+    "text": "The production work stays."
+  },
+  "ctax.coda.rest": {
+    "element": "Coordination tax · coda rest",
+    "text": "The reconciling does not."
+  },
+  "ctax.record.left": {
+    "element": "Coordination tax · record bar left",
+    "text": "One governed record"
+  },
+  "ctax.record.right": {
+    "element": "Coordination tax · record bar right",
+    "text": "Every lot carries its history"
+  },
+  "ctax.stage1.note": {
+    "element": "Coordination tax · stage 1 after-note (batch record assembly)",
+    "text": "Steps, consumption, and checks land as they happen."
+  },
+  "ctax.stage2.note": {
+    "element": "Coordination tax · stage 2 after-note (inspection binding)",
+    "text": "The right revision arrives with the order. No memory required."
+  },
+  "ctax.stage3.note": {
+    "element": "Coordination tax · stage 3 after-note (lot traceability)",
+    "text": "Inputs, parameters, and dispositions linked as the lot moves."
+  },
+  "ctax.stage4.note": {
+    "element": "Coordination tax · stage 4 after-note (shift handoff)",
+    "text": "Who decided what, and why, signed onto the batch."
+  }
+}

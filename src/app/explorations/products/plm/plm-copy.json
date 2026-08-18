@@ -1,0 +1,62 @@
+{
+  "ctax.eyebrow": {
+    "element": "Coordination tax · eyebrow",
+    "text": "The cost of fragmentation"
+  },
+  "ctax.heading": {
+    "element": "Coordination tax · heading",
+    "text": "The coordination tax sits between the design and its proof."
+  },
+  "ctax.lede": {
+    "element": "Coordination tax · lede",
+    "text": "Gates close on evidence, traceability holds, and the design history is already audit-ready."
+  },
+  "ctax.sr": {
+    "element": "Coordination tax · screen-reader summary",
+    "text": "Four gates of design work, each compared side by side. Today each gate is separated from its proof by coordination work: the requirement-to-result trace breaks between tools, specifications lock before supplier capability is verified, requirements pass review with no linked result, and every programme rebuilds its FMEA from scratch. On one governed record the same four gates stay connected: every input links to its result, capability is checked before the spec locks, a requirement cannot close without its verification, and catalogued failure modes carry into the next programme. The metrics keep their original units and are not plotted on a shared scale."
+  },
+  "ctax.stagecol": {
+    "element": "Coordination tax · stage column caption",
+    "text": "The same four gates, paid for twice"
+  },
+  "ctax.before.note": {
+    "element": "Coordination tax · before world note",
+    "text": "Design work is fragmented by the rebuilding needed to trace, verify, and prove it."
+  },
+  "ctax.after.note": {
+    "element": "Coordination tax · after world note",
+    "text": "Every requirement, decision, and result stays attached to the same record."
+  },
+  "ctax.coda.strong": {
+    "element": "Coordination tax · coda lead",
+    "text": "The design work stays."
+  },
+  "ctax.coda.rest": {
+    "element": "Coordination tax · coda rest",
+    "text": "The rebuilding does not."
+  },
+  "ctax.record.left": {
+    "element": "Coordination tax · record bar left",
+    "text": "One governed record"
+  },
+  "ctax.record.right": {
+    "element": "Coordination tax · record bar right",
+    "text": "Every requirement carries its result"
+  },
+  "ctax.stage1.note": {
+    "element": "Coordination tax · stage 1 after-note (design traceability)",
+    "text": "Requirements, results, and verification stay one chain."
+  },
+  "ctax.stage2.note": {
+    "element": "Coordination tax · stage 2 after-note (specification management)",
+    "text": "Supplier capability verified before the gate, on the record."
+  },
+  "ctax.stage3.note": {
+    "element": "Coordination tax · stage 3 after-note (verification and validation)",
+    "text": "A requirement cannot close without its linked result."
+  },
+  "ctax.stage4.note": {
+    "element": "Coordination tax · stage 4 after-note (FMEA and control plan)",
+    "text": "Catalogued modes and controls flow to the next programme."
+  }
+}

@@ -295,6 +295,9 @@ type LifecycleExplorerProps = {
    * a Notion-backed flow) so only flows render; the first flow becomes the
    * default journey. */
   mapChip?: boolean;
+  /** false drops the "Outcomes this flow moves" closer under the story rail
+   * (QMS/PLM/MES keep the journeys tight; the DMS pages keep the closer). */
+  showFlowOutcomes?: boolean;
 };
 
 /* one rendered story row: a lifecycle state in map mode, a journey step in
@@ -329,6 +332,7 @@ export function LifecycleExplorer({
   flowsLabel = "Follow the work through the lifecycle",
   flowsLede = "",
   mapChip = true,
+  showFlowOutcomes = true,
 }: LifecycleExplorerProps = {}) {
   const [active, setActive] = useState(0);
   const [activeFlowId, setActiveFlowId] = useState<string | null>(
@@ -462,7 +466,7 @@ export function LifecycleExplorer({
   /* the flow's closing value statement: the Platform Outcomes it moves.
    * These are measured quantities (all Goal Zero Pending), so the label says
    * "moves", never a claimed result. */
-  const flowOutcomes = activeFlow && activeFlow.outcomes.length > 0 ? (
+  const flowOutcomes = showFlowOutcomes && activeFlow && activeFlow.outcomes.length > 0 ? (
     <div className="dms-lifex__outmoves">
       <span className="dms-lifex__outmoves-label">Outcomes this flow moves</span>
       <ul className="dms-lifex__outmoves-list">

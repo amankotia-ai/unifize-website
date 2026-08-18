@@ -7,17 +7,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "../../_shared/site-footer";
 import { DmsHeader } from "../dms/dms-header";
-import { CoordinationTax } from "../dms/dms-coordination";
+import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
+import { QMS_CTAX_SCENES, QMS_CTAX_AFTER_NOTES, QMS_CTAX_COPY } from "./qms-ctax";
 import { IntegrationLayer } from "../dms/dms-integrations";
+import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import { CapGlyph } from "../dms/dms-linework";
-import { Eyebrow, ShellFrame } from "../dms/dms-primitives";
+import { Eyebrow } from "../dms/dms-primitives";
 import { FaqAccordion, LifecycleExplorer, ModuleExplorer } from "../dms/dms-interactive";
-import { QMS_DATA, QMS_MODULES, QMS_PROBLEMS, QMS_FLOWS } from "./qms-data";
-import { QMS_ARCADE_FLOW_CONFIGS, QMS_MODULE_ARCADE_CONFIGS } from "./qms-arcade";
-import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
+import { HeroArcade } from "../_shared/arcade/hero-arcade";
+import { QMS_AUDIENCE, QMS_DATA, QMS_MODULES, QMS_PROBLEMS, QMS_FLOWS } from "./qms-data";
+import { qmsCopy } from "./qms-copy";
+import { QMS_ARCADE_FLOW_CONFIGS, QMS_HERO_STEPS, QMS_MODULE_ARCADE_CONFIGS } from "./qms-arcade";
+import { QMS_MODULE_MOCKS } from "./qms-mocks";
 import { QmsProblemSpotlight } from "./qms-problem-visuals";
-import { QmsProofStories } from "./qms-proof";
+import { QmsProofFilms } from "./qms-proof";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
 import "../dms/dms-redesign.css";
@@ -37,25 +41,6 @@ const QMS_MODULE_POINT_ICONS: Record<string, string[]> = {
   "audit-management": ["review", "roles", "route", "assessment"],
   "supplier-quality": ["change", "assessment", "evidence", "report"],
   "quality-risk-management": ["report", "evidence", "assessment", "review"],
-};
-
-const QMS_OWNER_FRAMES: Record<string, { owns: string; question: string }> = {
-  "Quality Inspector": {
-    owns: "Intake → Disposition",
-    question: "Does this batch, lot, or shipment meet specification?",
-  },
-  "Continuous Improvement Lead": {
-    owns: "Root cause → Effectiveness",
-    question: "Did the corrective action actually make the process better?",
-  },
-  "Engineering Manager": {
-    owns: "CAPA → Design",
-    question: "Does this finding cross the design line?",
-  },
-  "Production Supervisor": {
-    owns: "Signal → Containment",
-    question: "Can today’s shift keep making good product?",
-  },
 };
 
 export default function QmsProductPage() {
@@ -92,12 +77,11 @@ export default function QmsProductPage() {
             </div>
           </div>
 
-          <div className="dms-hero__frame dms-hero__product-demo">
-            <div className="dms-hero__stage">
-              <ShellFrame url="app.unifize.com / qms / CAPA-2210">
-                <QmsCapaTrace />
-              </ShellFrame>
-            </div>
+          {/* The establishing shot is the arcade itself: one app window
+            * walking a finding from capture to proven fix, with a numbered
+            * step rail under it. Same treatment as every product page hero. */}
+          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
+            <HeroArcade steps={QMS_HERO_STEPS} />
           </div>
         </div>
       </section>
@@ -134,7 +118,12 @@ export default function QmsProductPage() {
         </div>
       </section>
 
-      <CoordinationTax variant="revision" problems={QMS_PROBLEMS} />
+      <StylizedCoordinationTax
+        problems={QMS_PROBLEMS}
+        scenes={QMS_CTAX_SCENES}
+        afterNotes={QMS_CTAX_AFTER_NOTES}
+        copy={QMS_CTAX_COPY}
+      />
 
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer
@@ -186,44 +175,69 @@ export default function QmsProductPage() {
           flows={QMS_FLOWS}
           arcadeConfigsByFlow={QMS_ARCADE_FLOW_CONFIGS}
           flowsLabel="Follow the work through the lifecycle."
-          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
+          showFlowOutcomes={false}
         />
       </section>
 
-      <IntegrationLayer data={QMS_DATA.integrations} variant="minimal" />
+      <IntegrationLayer
+        data={QMS_DATA.integrations}
+        variant="minimal"
+        minimalLede="Connect the quality record to the tools already holding your lots, suppliers, and complaints."
+        logos={PRODUCT_INTEGRATION_LOGOS.qms}
+      />
 
+      {/* ============================ 05 · WHO IT IS FOR =================
+       * Same treatment as the DMS stylized page: one card per persona on the
+       * QMS row (UPD-1) in Notion, portrait + lifecycle span + three daily
+       * lines. Membership follows the Target Personas relation on sync. */}
       <section className="dms-section dms-audience" id="who" aria-labelledby="qms-audience-title">
         <div className="dms-wrap">
           <header className="dms-audience__head" data-reveal>
             <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="qms-audience-title">{QMS_DATA.owners.heading}</h2>
-            <p className="dms-lede">From the first signal on the floor to the effectiveness check, every role works from the same quality record.</p>
+            <h2 className="dms-h2" id="qms-audience-title">{qmsCopy("audience.heading", QMS_AUDIENCE.heading)}</h2>
+            <p className="dms-lede">{qmsCopy("audience.lede", QMS_AUDIENCE.lede)}</p>
           </header>
 
           <div className="dms-audience__personas">
-            {QMS_DATA.owners.items.map((owner, index) => {
-              const frame = QMS_OWNER_FRAMES[owner.name];
-              return (
-                <article className="dms-owner" key={owner.name} data-reveal>
-                  <div className="dms-owner__head">
-                    <span className="dms-owner__idx" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                    {owner.img ? <img className="dms-owner__photo" src={owner.img} alt="" loading="lazy" /> : null}
+            {QMS_AUDIENCE.personas.map((persona) => (
+              <article className="dms-owner" key={persona.role} data-reveal>
+                <header className="dms-owner__identity">
+                  <div className="dms-owner__portrait" aria-hidden="true">
+                    <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
                   </div>
-                  <div className="dms-owner__body">
-                    <div className="dms-owner__kicker">
-                      <h3 className="dms-owner__role">{owner.name}</h3>
-                      <span className="dms-owner__owns">{frame?.owns ?? owner.tier}</span>
-                    </div>
-                    <p className="dms-owner__q">{frame?.question ?? owner.summary}</p>
+                  <div className="dms-owner__identity-copy">
+                    <h3 className="dms-owner__role">
+                      {persona.href ? (
+                        <Link href={persona.href}>
+                          {persona.role}<span aria-hidden="true">↗</span>
+                        </Link>
+                      ) : persona.role}
+                    </h3>
                   </div>
-                </article>
-              );
-            })}
+                </header>
+
+                {persona.owns && (
+                  <dl className="dms-owner__scope">
+                    <dt>Lifecycle ownership</dt>
+                    <dd>{persona.owns}</dd>
+                  </dl>
+                )}
+
+                <div className="dms-owner__work">
+                  <p className="dms-owner__work-label">Day to day</p>
+                  <ul className="dms-owner__daily" aria-label={`${persona.role} responsibilities`}>
+                    {persona.daily.map((responsibility) => (
+                      <li key={responsibility}>{responsibility}</li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
 
-      <QmsProofStories stories={QMS_DATA.proof.testimonials} />
+      <QmsProofFilms />
 
       <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="qms-compliance-title">
         <div className="dms-wrap">

@@ -620,5 +620,174 @@
       "35e860e6-b45e-8178-b903-dfdbc683c893",
       "35e860e6-b45e-8135-9b6d-f7ced80b744a"
     ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8177-9c59-ddb0147f90a9",
+    "id": "31",
+    "name": "Shop Floor Operator runs a released work order through the eTraveller on the eTravellers Module",
+    "description": "Triggered when planning releases the work order to the line at shift start. The operator is at the station, expected to start on time. Session spans one operation, minutes to hours. Ends when the operation is signed and the traveller advances to the next station. Crosses web and mobile at the station.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-81f9-ae92-cd8156553076",
+      "360860e6-b45e-8140-b854-db4f40b603fa",
+      "360860e6-b45e-819c-9ee6-e561035a55ba",
+      "360860e6-b45e-8174-9963-ec1d6d753a56"
+    ],
+    "persona": [
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e"
+    ],
+    "steps": [
+      "3c0860e6-b45e-81c8-83cb-ec90b9828e15",
+      "3c0860e6-b45e-812f-95ac-feb6f1de013e",
+      "3c0860e6-b45e-814c-976d-e0d682a446f9",
+      "3c0860e6-b45e-8159-b95f-db642023d664",
+      "3c0860e6-b45e-8150-be38-ffdd5b1b5894"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-813d-956b-da804d63cccd",
+      "35f860e6-b45e-81f5-914c-ea6e91131cd5",
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35f860e6-b45e-81cd-8712-e2394f3d6412"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8196-a15c-eb88ec29d7a7",
+    "id": "32",
+    "name": "Quality Inspector proves the first article against the control plan on the FAI & Control Plan Execution Module",
+    "description": "Triggered when the first article comes off the line and the FAI task fires. The inspector is at the bench with the run waiting on the result. Session is minutes while the line holds. Ends when the first article is dispositioned and the run is released or reset. Crosses web for the control plan and disposition, mobile for bench capture.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-81cf-926b-da0e47ebac59",
+      "360860e6-b45e-819c-9ee6-e561035a55ba"
+    ],
+    "persona": [
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "steps": [
+      "3c0860e6-b45e-81be-867c-e60dc84ae2b0",
+      "3c0860e6-b45e-814a-8a3e-fcec9ea8c461",
+      "3c0860e6-b45e-81fa-a0fa-cb61455a3dc9",
+      "3c0860e6-b45e-81df-84e0-caf40b72e65e",
+      "3c0860e6-b45e-81c2-93fd-d12246d73a7b"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-8178-b903-dfdbc683c893",
+      "35f860e6-b45e-818c-a497-c57a7b4cdef4",
+      "35f860e6-b45e-81f5-914c-ea6e91131cd5",
+      "35e860e6-b45e-8174-9b10-ff7ff0dcce2a"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-819d-bd38-ce9fef9c6873",
+    "id": "33",
+    "name": "Production Supervisor seals and releases the electronic batch record on the Electronic Batch/Lot Records Module",
+    "description": "Triggered when the last operation closes and the lot reaches end of line. The supervisor wants the lot out the door without a paper chase. Session under an hour for a clean lot. Ends when the batch record is sealed under a Part 11 signature and the lot releases with QR traceability. Web, with notifications for exceptions.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8174-9963-ec1d6d753a56",
+      "360860e6-b45e-81f9-ae92-cd8156553076"
+    ],
+    "persona": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "steps": [
+      "3c0860e6-b45e-818b-9512-c7057324af18",
+      "3c0860e6-b45e-8190-bdda-d8f4b07c6a9d",
+      "3c0860e6-b45e-81d7-bafc-ebab297df321",
+      "3c0860e6-b45e-8119-a656-efa52f38e2d9",
+      "3c0860e6-b45e-8155-bc05-d4590b973bec"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-8135-9b6d-f7ced80b744a",
+      "35e860e6-b45e-81cb-bc48-cad09f705166",
+      "35f860e6-b45e-8155-a39a-c17d2f806edc"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8196-9375-db4eecb414a2",
+    "id": "34",
+    "name": "Design Engineer carries a specification change through design controls on the Product Specifications Module",
+    "description": "Triggered by a complaint or field signal that points at the current specification. The engineer owns the change and wants it through review without re-assembling context for each reviewer. Session spans days across the review window. Ends when the revision releases and the design history file entry is written. Web, with notifications for approvals.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8111-a174-d087651a29c3",
+      "360860e6-b45e-8166-8c6a-c3a5b4853822",
+      "360860e6-b45e-8181-acbf-f9420f5ac529"
+    ],
+    "persona": [
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b"
+    ],
+    "steps": [
+      "3c0860e6-b45e-818f-9be8-c31cf33b6bf2",
+      "3c0860e6-b45e-8134-9bbb-ea2d86d05c17",
+      "3c0860e6-b45e-81cc-8d6f-e5cc66db1b9e",
+      "3c0860e6-b45e-81ff-9ed5-cddca951204a",
+      "3c0860e6-b45e-8180-8da6-c32fe443c552"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-8198-8db5-e23150405bdd",
+      "35f860e6-b45e-813f-8958-c860ed283892",
+      "35f860e6-b45e-8126-a83c-caa5513ab3db",
+      "35f860e6-b45e-810b-9ed8-dac98eb96b74"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8107-b465-d2f63fd6e804",
+    "id": "35",
+    "name": "APQP Engineer builds the control plan from the FMEA on the FMEA & Control Plan Definition Module",
+    "description": "Triggered when an approved specification change moves the risk picture. The engineer owns the FMEA and the control plan and wants them to stay one story. Session spans a working day. Ends when the inspection and process parameters publish to the floor. Web.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8191-83af-f8702aaccf13",
+      "360860e6-b45e-8145-9547-e6da0daaf1f2"
+    ],
+    "persona": [
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c"
+    ],
+    "steps": [
+      "3c0860e6-b45e-8160-afd7-e27966317619",
+      "3c0860e6-b45e-81de-bb69-fae07c46bd61",
+      "3c0860e6-b45e-8102-bda0-d692bd9d4b8e",
+      "3c0860e6-b45e-81d7-bd37-fd6c294aa75a",
+      "3c0860e6-b45e-814a-84d6-c22d09722c3f"
+    ],
+    "outcomes": [
+      "35f860e6-b45e-81bb-b4ac-f18f1a383171",
+      "35f860e6-b45e-81ad-96e9-ca58fde1d157",
+      "35f860e6-b45e-81f5-914c-ea6e91131cd5"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81c6-81c9-f18da82e4ee8",
+    "id": "36",
+    "name": "Engineering Manager closes verification coverage and releases the design on the Design Controls & Traceability Module",
+    "description": "Triggered by the release review landing on the calendar. The manager wants no silent gaps at the gate. Session spans the release window, typically days. Ends when the revision releases with an unbroken requirement-to-result trace. Web, with notifications for assigned verifications.",
+    "status": "Hypothesised",
+    "goalZero": "Pending",
+    "modules": [
+      "360860e6-b45e-8181-acbf-f9420f5ac529"
+    ],
+    "persona": [
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "steps": [
+      "3c0860e6-b45e-81f9-8842-db0c659e45cc",
+      "3c0860e6-b45e-81ed-953e-d1e672c4d2ce",
+      "3c0860e6-b45e-814b-b499-d613dc02d1e9",
+      "3c0860e6-b45e-81a3-9ae1-eecd08b4f422",
+      "3c0860e6-b45e-8123-be34-cad45f9dcc7a"
+    ],
+    "outcomes": [
+      "35e860e6-b45e-81d1-8587-fd4c81ede1d2",
+      "35e860e6-b45e-81d5-a225-d9512e4c98ac",
+      "35e860e6-b45e-8135-9b6d-f7ced80b744a",
+      "35e860e6-b45e-819b-98da-ecee5189d7de"
+    ]
   }
 ]

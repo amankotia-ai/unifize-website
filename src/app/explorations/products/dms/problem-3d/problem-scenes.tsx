@@ -32,7 +32,7 @@ import type { DmsProblemIllustrationKind } from "../dms-problem-visuals";
 
 /* dms-problems tokens, resolved from oklch to hex for WebGL */
 const C = {
-  accent: "#0052ff",
+  accent: "#1c72d6",
   accentDeep: "#0a3fd6",
   accentGlow: "#79a7ff",
   surface: "#fdfdff",
@@ -723,7 +723,7 @@ function StudioEnv() {
   return (
     <Environment frames={1} resolution={256}>
       <Lightformer color="#ffffff" intensity={2} position={[0, 4, 4]} rotation={[-Math.PI / 2.7, 0, 0]} scale={[10, 6, 1]} />
-      <Lightformer color="#dbe6ff" intensity={1.2} position={[-6, 1, 2]} rotation={[0, Math.PI / 3.2, 0]} scale={[6, 8, 1]} />
+      <Lightformer color="#deecff" intensity={1.2} position={[-6, 1, 2]} rotation={[0, Math.PI / 3.2, 0]} scale={[6, 8, 1]} />
       <Lightformer color="#ffffff" intensity={0.9} position={[6, 0, 1]} rotation={[0, -Math.PI / 3, 0]} scale={[5, 7, 1]} />
     </Environment>
   );

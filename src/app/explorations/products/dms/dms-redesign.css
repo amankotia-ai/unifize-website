@@ -23,7 +23,7 @@
   --dms-d-ink-3: #8b929f;
   --dms-accent: var(--u-primary);
   --dms-accent-hover: var(--u-primary-hover);
-  --dms-accent-tint: #edf1ff;
+  --dms-accent-tint: #f0f6ff;
   --dms-maxw: 1560px;
   --dms-gutter: clamp(20px, 3.3vw, 56px);
   --dms-section-y: clamp(88px, 7.5vw, 128px);
@@ -38,7 +38,10 @@
   letter-spacing: normal !important;
 }
 
-.dms--redesign :where(.dms-h1, .dms-h2, .dms-h3, .dms-hero__title, .dms-close__h) {
+/* Headings render in the display face (IBM Plex Sans), including their child
+   spans — the universal reset above would otherwise pin descendants to Inter. */
+.dms--redesign :where(h1, h2, h3, h4, h5, h6, .dms-h1, .dms-h2, .dms-h3, .dms-hero__title, .dms-close__h),
+.dms--redesign :where(h1, h2, h3, h4, h5, h6, .dms-h1, .dms-h2, .dms-h3, .dms-hero__title, .dms-close__h) * {
   font-family: var(--u-display) !important;
 }
 
@@ -242,7 +245,7 @@
   border: 0;
   border-radius: 0;
   background: transparent;
-  color: #829cff;
+  color: #70aeff;
 }
 .dms--redesign .dms-hero__product-mark svg { width: 17px; height: 17px; }
 .dms--redesign .dms-hero__product-mark path {
@@ -262,7 +265,7 @@
   max-width: 1120px;
   margin: 0;
   color: var(--dms-d-ink);
-  font-size: clamp(3rem, 5vw, 5.4rem);
+  font-size: clamp(3rem, 5vw, 4.5rem);
   font-weight: 520;
   font-kerning: normal;
   font-feature-settings: "kern" 1;
@@ -483,15 +486,15 @@
 .dms--redesign .dms-appframe__bar--window .dms-dot--minimize { background: #deb05b; }
 .dms--redesign .dms-appframe__bar--window .dms-dot--maximize { background: #70ba7d; }
 .dms--redesign .dms-appframe__brand { width: 96px; }
-.dms--redesign .dms-appframe__live { color: #0052ff; font-size: 0.7rem; }
-.dms--redesign .dms-appframe__live i { border-color: #dbe6ff; background: #0052ff; }
+.dms--redesign .dms-appframe__live { color: #1c72d6; font-size: 0.7rem; }
+.dms--redesign .dms-appframe__live i { border-color: #deecff; background: #1c72d6; }
 .dms--redesign .dms-mock__head,
 .dms--redesign .dms-mock__mono,
 .dms--redesign .dms-mock__next,
 .dms--redesign .dms-mock__rev { font-variant-numeric: tabular-nums; }
 .dms--redesign .dms-mock__head { color: #6b7280; text-transform: none; }
 .dms--redesign .dms-mock__row { min-height: 44px; border-color: #e4e7eb; }
-.dms--redesign .dms-mock__row.is-key { background: #edf1ff; }
+.dms--redesign .dms-mock__row.is-key { background: #f0f6ff; }
 .dms--redesign .dms-mock__state { border-radius: 999px; padding: 4px 8px; }
 
 /* Trust strip */
@@ -554,7 +557,7 @@
   --dms-problem-panel: oklch(0.981 0.009 270);
   --dms-gfx-surface: oklch(0.995 0.002 270);
   --dms-gfx-surface-muted: oklch(0.958 0.02 270);
-  --dms-gfx-blue-soft: oklch(0.92 0.045 263);
+  --dms-gfx-blue-soft: #c5deff;
   --dms-gfx-line-soft: oklch(0.86 0.016 263);
   --dms-gfx-line: oklch(0.7 0.025 263);
   --dms-gfx-muted: oklch(0.5 0.018 263);
@@ -886,7 +889,7 @@
 .dms--redesign .dms-ctax__metric {
   margin: 10px 0 0;
   color: var(--dms-ink);
-  font-size: clamp(2rem, 4.2vw, 4.6rem);
+  font-size: clamp(2rem, 4.2vw, 4.5rem);
   font-variant-numeric: tabular-nums;
   font-weight: 620;
   line-height: 1;
@@ -1064,11 +1067,11 @@
 }
 .dms--redesign .dms-owner__role a span { font-size: 0.72rem; }
 .dms--redesign .dms-owner__role a:hover { color: var(--dms-accent); text-decoration-color: currentColor; }
+/* Label stacked over value: a side-by-side pair wraps at narrow card widths
+ * (QMS runs four columns), which shifts everything below it card by card. */
 .dms--redesign .dms-owner__scope {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: baseline;
-  gap: 16px;
+  gap: 4px;
   margin: 24px 0 0;
   padding: 14px 0;
   border-top: 1px solid var(--dms-audience-divider);
@@ -1085,7 +1088,6 @@
   font-size: 0.84rem;
   font-weight: 650;
   line-height: 1.4;
-  white-space: nowrap;
 }
 .dms--redesign .dms-owner__work {
   margin-top: 22px;
@@ -1108,6 +1110,10 @@
   grid-template-columns: 6px minmax(0, 1fr);
   gap: 11px;
   align-items: start;
+  /* Every row reserves two lines (2 x 1.45em + vertical padding) so the
+   * dividers sit at the same height in neighbouring cards whether the
+   * text wraps or not. */
+  min-height: calc(2.9em + 22px);
   padding: 11px 0;
   color: var(--dms-muted);
   font-size: 0.86rem;
@@ -1337,7 +1343,7 @@
   font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
-.dms--redesign .dms-modx__it.is-active .dms-modx__idx { color: #829cff; }
+.dms--redesign .dms-modx__it.is-active .dms-modx__idx { color: #70aeff; }
 .dms--redesign .dms-modx__name {
   grid-column: 2;
   color: var(--dms-d-ink-2);
@@ -1410,7 +1416,7 @@
   padding: 7px;
   border-radius: 50%;
   background: var(--dms-d-bg-3);
-  color: #829cff;
+  color: #70aeff;
   box-sizing: content-box;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.055);
 }
@@ -1525,7 +1531,7 @@
   height: 27px;
   margin-bottom: 7px;
   border-radius: 3px;
-  background: #0052ff;
+  background: #1c72d6;
   color: #fff;
   font-size: 0.65rem;
   font-weight: 750;
@@ -1538,7 +1544,7 @@
 }
 .dms--redesign .dms-productshell__nav-item.is-active {
   background: #f0f4ff;
-  color: #0052ff;
+  color: #1c72d6;
   box-shadow: inset 0 0 0 1px #d6e0ff;
 }
 .dms--redesign .dms-productshell__nav-item svg { width: 14px; height: 14px; }
@@ -1610,7 +1616,7 @@
   flex: none;
   padding: 6px 9px;
   border-radius: 3px;
-  background: #0052ff;
+  background: #1c72d6;
   color: #fff;
   font-weight: 650;
   line-height: 1;
@@ -1941,7 +1947,7 @@
   color: #0b7953;
   font-weight: 750;
 }
-.dms--redesign .is-pending .dms-changeview__route-state { background: #fff; color: #0052ff; box-shadow: inset 0 0 0 1px #8ca9ff; }
+.dms--redesign .is-pending .dms-changeview__route-state { background: #fff; color: #1c72d6; box-shadow: inset 0 0 0 1px #a3caff; }
 .dms--redesign .dms-changeview__route > div > span:nth-child(3),
 .dms--redesign .dms-changeview__route time { overflow: hidden; color: #646b78; font-size: 0.51rem; text-overflow: ellipsis; white-space: nowrap; }
 .dms--redesign .dms-changeview__route time { font-family: var(--dms-mono); font-variant-numeric: tabular-nums; }
@@ -1955,7 +1961,7 @@
 }
 .dms--redesign .dms-changeview__cascade span { color: #8b93a0; font-family: var(--dms-mono); font-size: 0.48rem; text-transform: uppercase; }
 .dms--redesign .dms-changeview__cascade strong { color: #2b2f38; font-size: 0.54rem; }
-.dms--redesign .dms-changeview__cascade i { color: #0052ff; font-style: normal; }
+.dms--redesign .dms-changeview__cascade i { color: #1c72d6; font-style: normal; }
 
 /* Training management combines the dashboard KPI cadence with the people
  * shell's dense directory table. */
@@ -2032,7 +2038,7 @@
 }
 .dms--redesign .dms-trainingview__footer span { display: inline-flex; align-items: center; gap: 6px; }
 .dms--redesign .dms-trainingview__footer strong { color: #2b2f38; font-size: 0.52rem; }
-.dms--redesign .dms-trainingstate__dot { width: 7px; height: 7px; border-radius: 50%; background: #0052ff; }
+.dms--redesign .dms-trainingstate__dot { width: 7px; height: 7px; border-radius: 50%; background: #1c72d6; }
 
 @container dms-product-shell (max-width: 700px) {
   .dms--redesign .dms-productshell__top-search { display: none; }
@@ -2849,7 +2855,7 @@
   max-width: 1120px;
   margin: 0;
   color: var(--dms-d-ink);
-  font-size: clamp(3rem, 5vw, 5.4rem);
+  font-size: clamp(3rem, 5vw, 4.5rem);
   font-weight: 520;
   font-kerning: normal;
   font-feature-settings: "kern" 1;

@@ -70,7 +70,6 @@ export const NAV: NavItem[] = [
       { code: "MES", label: "Manufacturing execution", href: "/explorations/products/mes", desc: "Electronic batch records and shop-floor execution, paperless.", icon: "mes" },
       { code: "PLM", label: "Product lifecycle", href: "/explorations/products/plm", desc: "Specs, BOMs and design history from concept to launch.", icon: "plm" },
     ],
-    foot: { title: "One connected platform", desc: "Quality, documents and production on a single record.", href: "/explorations/platform", cta: "Explore platform" },
   },
   {
     label: "Solutions",

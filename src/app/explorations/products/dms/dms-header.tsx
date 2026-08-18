@@ -129,8 +129,9 @@ export function DmsHeader() {
         : cl.contains("dms-section--alt")
           ? "alt"
           : "light";
-      /* transparent over the hero; frosted (surface-tinted) over everything else */
-      setFrosted(overProductFrame || !cl.contains("dms-hero"));
+      /* transparent only while the page sits at the very top of the hero;
+       * once scrolled, hero content slides under the bar, so frost it too */
+      setFrosted(overProductFrame || window.scrollY > 8 || !cl.contains("dms-hero"));
       setTheme((prev) => (prev === next ? prev : next));
     };
 

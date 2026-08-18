@@ -11,17 +11,21 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteFooter } from "../../_shared/site-footer";
 import { DmsHeader } from "../dms/dms-header";
-import { CoordinationTax } from "../dms/dms-coordination";
+import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
+import { PLM_CTAX_SCENES, PLM_CTAX_AFTER_NOTES, PLM_CTAX_COPY } from "./plm-ctax";
 import { IntegrationLayer } from "../dms/dms-integrations";
+import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import { CapGlyph } from "../dms/dms-linework";
-import { Eyebrow, ShellFrame } from "../dms/dms-primitives";
+import { Eyebrow } from "../dms/dms-primitives";
+import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import { FaqAccordion, LifecycleExplorer, ModuleExplorer } from "../dms/dms-interactive";
-import { PLM_DATA, PLM_MODULES, PLM_PROBLEMS, PLM_FLOWS } from "./plm-data";
-import { PLM_ARCADE_FLOW_CONFIGS, PLM_MODULE_ARCADE_CONFIGS } from "./plm-arcade";
+import { PLM_AUDIENCE, PLM_DATA, PLM_MODULES, PLM_PROBLEMS, PLM_FLOWS } from "./plm-data";
+import { plmCopy } from "./plm-copy";
+import { PLM_ARCADE_FLOW_CONFIGS, PLM_HERO_STEPS, PLM_MODULE_ARCADE_CONFIGS } from "./plm-arcade";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 import { PlmProblemSpotlight } from "./plm-problem-visuals";
-import { PlmProofStories } from "./plm-proof";
+import { PlmProofFilms } from "./plm-proof";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
 import "../dms/dms-redesign.css";
@@ -40,13 +44,6 @@ const PLM_MODULE_POINT_ICONS: Record<string, string[]> = {
   "design-controls-traceability": ["template", "route", "assessment", "evidence"],
   "inspection-process-parameters": ["evidence", "matrix", "route", "template"],
   "fmea-control-plan": ["matrix", "report", "route", "assign"],
-};
-
-/* the lifecycle span each persona owns (distilled from their Notion Daily
- * Activities; the daily lists live in PLM_DATA.owners) */
-const PLM_OWNER_SCOPES: Record<string, string> = {
-  "Design Engineer": "Design input → Verification",
-  "Engineering Manager": "Review → Release",
 };
 
 /* one staged prototype per lifecycle step (spec → trace → FMEA → trace → spec) */
@@ -87,12 +84,12 @@ export default function PlmProductPage() {
             </div>
           </div>
 
-          <div className="dms-hero__frame dms-hero__product-demo">
-            <div className="dms-hero__stage">
-              <ShellFrame url="app.unifize.com / plm / design-controls">
-                <PlmTraceMatrix />
-              </ShellFrame>
-            </div>
+          {/* The establishing shot is the arcade itself: one app window
+            * walking SPC-310's controlled change from live trace to closed
+            * trace, with a numbered step rail under it. Same treatment as
+            * every product page hero. */}
+          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
+            <HeroArcade steps={PLM_HERO_STEPS} />
           </div>
         </div>
       </section>
@@ -134,7 +131,12 @@ export default function PlmProductPage() {
 
       {/* ==================== THE COORDINATION TAX =====================
        * The four failure modes roll up into one measurable root cause. */}
-      <CoordinationTax variant="revision" problems={PLM_PROBLEMS} />
+      <StylizedCoordinationTax
+        problems={PLM_PROBLEMS}
+        scenes={PLM_CTAX_SCENES}
+        afterNotes={PLM_CTAX_AFTER_NOTES}
+        copy={PLM_CTAX_COPY}
+      />
 
       {/* ============================ 02 · MODULES BUNDLED =============== */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
@@ -193,7 +195,7 @@ export default function PlmProductPage() {
           flows={PLM_FLOWS}
           arcadeConfigsByFlow={PLM_ARCADE_FLOW_CONFIGS}
           flowsLabel="Follow the work through the lifecycle."
-          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
+          showFlowOutcomes={false}
         />
       </section>
 
@@ -202,42 +204,49 @@ export default function PlmProductPage() {
         data={PLM_DATA.integrations}
         variant="minimal"
         minimalLede="Connect the product record to the tools already holding your parts, drawings, and process data."
+        logos={PRODUCT_INTEGRATION_LOGOS.plm}
       />
 
       {/* ============================ 05 · WHO IT IS FOR =================
-       * The two owning personas in one compact register. Each card shows the
-       * lifecycle span that role owns and three day-to-day responsibilities. */}
+       * Same treatment as the DMS stylized page: one card per persona on the
+       * PLM row (UPD-4) in Notion, portrait + lifecycle span + three daily
+       * lines. Membership follows the Target Personas relation on sync. */}
       <section className="dms-section dms-audience" id="who" aria-labelledby="plm-audience-title">
         <div className="dms-wrap">
           <header className="dms-audience__head" data-reveal>
             <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="plm-audience-title">{PLM_DATA.owners.heading}</h2>
-            <p className="dms-lede">From design input to release, every role works from the same controlled record.</p>
+            <h2 className="dms-h2" id="plm-audience-title">{plmCopy("audience.heading", PLM_AUDIENCE.heading)}</h2>
+            <p className="dms-lede">{plmCopy("audience.lede", PLM_AUDIENCE.lede)}</p>
           </header>
 
           <div className="dms-audience__personas">
-            {PLM_DATA.owners.items.map((persona, index) => (
-              <article className="dms-owner" key={persona.name} data-reveal>
+            {PLM_AUDIENCE.personas.map((persona) => (
+              <article className="dms-owner" key={persona.role} data-reveal>
                 <header className="dms-owner__identity">
                   <div className="dms-owner__portrait" aria-hidden="true">
                     <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
                   </div>
                   <div className="dms-owner__identity-copy">
-                    <span className="dms-owner__idx">
-                      Persona {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <h3 className="dms-owner__role">{persona.name}</h3>
+                    <h3 className="dms-owner__role">
+                      {persona.href ? (
+                        <Link href={persona.href}>
+                          {persona.role}<span aria-hidden="true">↗</span>
+                        </Link>
+                      ) : persona.role}
+                    </h3>
                   </div>
                 </header>
 
-                <dl className="dms-owner__scope">
-                  <dt>Lifecycle ownership</dt>
-                  <dd>{PLM_OWNER_SCOPES[persona.name]}</dd>
-                </dl>
+                {persona.owns && (
+                  <dl className="dms-owner__scope">
+                    <dt>Lifecycle ownership</dt>
+                    <dd>{persona.owns}</dd>
+                  </dl>
+                )}
 
                 <div className="dms-owner__work">
                   <p className="dms-owner__work-label">Day to day</p>
-                  <ul className="dms-owner__daily" aria-label={`${persona.name} responsibilities`}>
+                  <ul className="dms-owner__daily" aria-label={`${persona.role} responsibilities`}>
                     {persona.daily.map((responsibility) => (
                       <li key={responsibility}>{responsibility}</li>
                     ))}
@@ -250,7 +259,7 @@ export default function PlmProductPage() {
       </section>
 
       {/* ============================ 06 · PROOF ========================= */}
-      <PlmProofStories stories={PLM_DATA.proof.testimonials} />
+      <PlmProofFilms />
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
       <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="plm-compliance-title">

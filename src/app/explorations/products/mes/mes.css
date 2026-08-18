@@ -2,22 +2,10 @@
  * The problem-spotlight scenes use the shared `.dms-gfx*` illustration
  * vocabulary from dms-redesign.css and need no rules here. */
 
-/* ---------------------------------------------------------------- lifecycle
- * The live panel stages a product prototype per step instead of a chat. */
-.mes.dms--redesign .dms-lifex__stagemock {
-  width: min(620px, 100%);
-  margin-inline: auto;
-  animation: dms-rise 0.45s var(--dms-ease) both;
-}
-
-/* ---------------------------------------------------------------- proof rail */
-.mes.dms--redesign .mes-story__quote {
-  font-size: clamp(1.18rem, 1.45vw, 1.42rem);
-  font-weight: 540;
-  line-height: 1.35;
-}
-.mes.dms--redesign .mes-story .dms-film__body { min-height: 240px; }
-.mes.dms--redesign .mes-story .dms-film__foot { margin-top: auto; }
+/* NOTE: the lifecycle live panel is the shared arcade scene (PF-31/32/33);
+ * it sizes itself via arcade.css. The old width-capped stagemock override for
+ * the static MesWorkOrder/MesTraveller mocks clipped the arcade camera and
+ * was removed when the flows went Notion-backed. */
 
 /* ---------------------------------------------------------------- mock states
  * Record states the MES prototypes use beyond the shared kit's set. */

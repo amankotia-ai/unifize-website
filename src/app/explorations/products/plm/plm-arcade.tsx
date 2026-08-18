@@ -1,13 +1,16 @@
 /* ----------------------------------------------------------------------------
- * plm-arcade.tsx - DRAFT arcade journey for the PLM page. The Product Flows
- * DB in Notion has no PLM-module flows yet, so this flow is page-owned and
- * labeled draft: the step rows below are written in the DB's own idiom
- * (name / what happens / decision / role / primitives) so they can be
- * ratified into Notion nearly verbatim, at which point the page switches to
- * the Notion-backed copy and this file keeps only the scene configs.
+ * plm-arcade.tsx - persistent-camera arcade journeys for the PLM page's
+ * Notion-backed Product Flows (PF-34, PF-35, PF-36: the design record's arc
+ * from a specification change through the control plan to a release with
+ * the trace closed). Same staging recipe as the DMS and QMS journeys: one
+ * app window, one world per record, the camera moves between poses and each
+ * step's copy is the Notion Flow Step truth restaged, never invented
+ * capability.
  * Fictional dataset: Engineering Industries, specification SPC-310 (seal
  * housing tolerance) revised after complaint CMP-341 - the same complaint
  * that drives CAPA-612 on the QMS page, so the pages tell one story.
+ * People: E. Marsh (Design Engineer), A. Chen (Quality), T. Brandt (APQP
+ * Engineer), S. Okafor (Engineering Manager), D. Fontaine (Quality Manager).
  * Server module, no state.
  * -------------------------------------------------------------------------- */
 
@@ -15,12 +18,11 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../_shared/arcade/arcade";
-import { type ProductFlow } from "../_shared/product-flows";
+import { type HeroArcadeStep } from "../_shared/arcade/hero-arcade";
 
-const DRAFT_NOTE =
-  "Draft journey staged for review. The matching Product Flow rows are proposed for the Notion DB; this flow goes Notion-backed the moment they land.";
-
-/* ============================================================ world */
+/* ============================================================ PF-34 world
+ * The specification under a controlled change: the trace, the risk, and the
+ * cross-functional review live on the record. */
 const SPEC_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Specification",
@@ -81,62 +83,138 @@ const SPEC_WORLD: ArcadeFlowWorld = {
   ],
 };
 
-/* ============================================================ draft flow
- * Step rows in the Product Flows DB idiom, ready to ratify into Notion. */
-export const PLM_DRAFT_FLOWS: ProductFlow[] = [
-  {
-    id: "plm-d1",
-    actor: "Design Engineer",
-    title: "Carry a spec change through design controls (draft)",
-    fullName:
-      "Design Engineer carries a specification change through design controls to release",
-    description: DRAFT_NOTE,
-    stations: [],
-    outcomes: [],
-    steps: [
-      {
-        index: 1,
-        name: "Open the specification with the requirement trace in view",
-        what: "Opens the product specification record. The requirements it satisfies and the verifications that cover it are linked on the record, so the change starts from the live trace rather than a spreadsheet matrix.",
-        decision: "Which requirements the proposed change touches.",
-        role: "Engineer",
-        primitives: ["Reconciliation"],
-      },
-      {
-        index: 2,
-        name: "Assess the risk with the FMEA linked",
-        what: "Runs the risk assessment on the record with the FMEA line items linked. Severity, occurrence, and detection are judged against the current controls rather than a copy on someone's drive.",
-        decision: "Does the residual risk stay acceptable, or does the change need a new mitigation.",
-        role: "Assessor",
-        primitives: ["Decision-rebuilding", "Errors"],
-      },
-      {
-        index: 3,
-        name: "Revise the specification as a controlled change",
-        what: "Makes the tolerance change as a controlled revision: the old and new values sit side by side with the rationale, and the affected documents surface automatically.",
-        decision: "Is the rationale strong enough to carry the design review.",
-        role: "Author",
-        primitives: ["Translation"],
-      },
-      {
-        index: 4,
-        name: "Route the design review across functions",
-        what: "Routes the design review to engineering, quality, and regulatory in one structured step. Each reviewer receives the change, the risk assessment, and the trace in a single package on the record.",
-        decision: "Who must sign, given the classification of the change.",
-        role: "Coordinator",
-        primitives: ["Status-chasing", "Meetings"],
-      },
-      {
-        index: 5,
-        name: "Verify the trace and update the design history file",
-        what: "On approval, the requirement-to-verification trace updates and the design history file entry writes itself from the record. Verification evidence links where an auditor will look for it.",
-        decision: "Is the trace complete, with no orphaned requirement or uncovered change.",
-        role: "Verifier",
-        primitives: ["Reconciliation", "Status-chasing"],
-      },
+/* ============================================================ PF-35 world
+ * The process FMEA and its control plan as one record: the rescored risk,
+ * the tightened plan, and the parameters that flow to the floor. */
+const FMEA_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "FMEA",
+  owner: "T. Brandt",
+  ownerInitials: "TB",
+  participants: ["TB", "EM", "SO"],
+  participantsLabel: "T. Brandt, E. Marsh, and S. Okafor",
+  recordKicker: "PROCESS FMEA",
+  context: {
+    initials: "EM",
+    name: "E. Marsh",
+    time: "10:20",
+    message: "SPC-310 Rev C approved; the seal tolerance moved.",
+    detail: "FMEA-88 · seal interface · rescore requested",
+  },
+  inboxNeighbors: [
+    { title: "Specification", time: "09:58", detail: "SPC-310 · Rev C · approved", kind: "Specification" },
+    { title: "Control plan", time: "Yesterday", detail: "CP-31 · coating step", kind: "Document" },
+    { title: "Design review", time: "Yesterday", detail: "DR-77 · closed", kind: "Review" },
+  ],
+  checklistTitle: "FMEA & Control Plan",
+  checklistSections: [
+    {
+      title: "RISK SCORING",
+      items: [
+        { label: "Failure mode · seal leak at fit", note: "Severity 6 · Occurrence 3 · Detection 4" },
+        {
+          label: "RPN",
+          kind: "field",
+          value: "144 · above the action threshold 120",
+          note: "Rescored after SPC-310 Rev C",
+        },
+        { label: "Current controls", note: "Linked from CP-31, not remembered" },
+      ],
+    },
+    {
+      title: "CONTROL PLAN",
+      items: [
+        {
+          label: "Detection point",
+          kind: "revision",
+          from: "Final leak test · per lot",
+          to: "Seal fit check · per shift",
+          note: "Moved upstream · rationale attached",
+        },
+        { label: "Failure mode link", note: "Each control carries the mode it mitigates" },
+        { label: "Threshold review", note: "Escalated on the record" },
+      ],
+    },
+    {
+      title: "PARAMETERS & FLOW-DOWN",
+      items: [
+        { label: "Seal fit force · 12-18 N", note: "3 samples per lot · fixture 2" },
+        { label: "Coating thickness · 45-55 µm", note: "Per shift" },
+        { label: "Plan approval", kind: "approval", signer: "E. Marsh", state: "Signed", note: "Publishes to the traveller" },
+      ],
+    },
+  ],
+};
+
+/* ============================================================ PF-36 world
+ * Release readiness on the design record: coverage as it stands, the gap,
+ * the assigned verification, and the release with the trace unbroken. */
+const RELEASE_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "Design Release",
+  owner: "S. Okafor",
+  ownerInitials: "SO",
+  participants: ["SO", "EM", "AC"],
+  participantsLabel: "S. Okafor, E. Marsh, and A. Chen",
+  recordKicker: "DESIGN RELEASE",
+  context: {
+    initials: "AC",
+    name: "A. Chen",
+    time: "08:41",
+    message: "Release review confirmed for Friday.",
+    detail: "SPC-310 Rev C · DR-77 window · agenda on the record",
+  },
+  inboxNeighbors: [
+    { title: "Specification", time: "09:58", detail: "SPC-310 · Rev C · approved", kind: "Specification" },
+    { title: "Verification protocol", time: "Yesterday", detail: "VER-131 · seal fit test", kind: "Document" },
+    { title: "FMEA review", time: "Yesterday", detail: "FMEA-88 · rescored", kind: "Risk" },
+  ],
+  reports: {
+    title: "Release readiness · SPC-310 Rev C",
+    kpis: [
+      { label: "Requirements covered", value: "23 of 24" },
+      { label: "Open verifications", value: "1", note: "VER-131" },
+      { label: "Days to gate", value: "4" },
+    ],
+    panels: [
+      { label: "Requirement coverage", kind: "bars" },
+      { label: "Verification status", kind: "donut" },
+      { label: "Coverage trend", kind: "lines" },
     ],
   },
-];
+  checklistTitle: "Release Readiness",
+  checklistSections: [
+    {
+      title: "COVERAGE",
+      items: [
+        { label: "Requirements · 24 linked", note: "REQ-041 … REQ-064" },
+        {
+          label: "Uncovered requirement",
+          kind: "field",
+          value: "REQ-058 · no linked verification",
+          note: "Surfaced by the trace, not by the review",
+        },
+        { label: "Outputs", note: "Each linked to the input it satisfies" },
+      ],
+    },
+    {
+      title: "VERIFICATION",
+      items: [
+        { label: "VER-131 · seal fit test", note: "E. Marsh · due Friday" },
+        { label: "Protocol", note: "Attached to the task" },
+        { label: "Result", note: "Links to REQ-058 on completion" },
+      ],
+    },
+    {
+      title: "RELEASE",
+      items: [
+        { label: "Release approval", kind: "approval", signer: "S. Okafor", state: "Signed", note: "Engineering · Quality · Regulatory" },
+        { label: "Design history file", note: "Entry writes from the record" },
+        { label: "Effective definition", note: "The floor builds to Rev C" },
+      ],
+    },
+  ],
+};
 
 /* ============================================================ modules
  * The modules section as camera work: five module tabs, five poses on the
@@ -260,11 +338,13 @@ export const PLM_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = {
   },
 };
 
-/* ============================================================ scenes */
+/* ============================================================ scenes
+ * One entry per Notion flow id; one scene per Flow Step, in step order. */
 export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
-  "plm-d1": [
+  /* -------- PF-34 · Design Engineer carries the spec change ------------- */
+  "34": [
     {
-      source: "PLM draft s1 · the live trace",
+      source: "PF-34 s1 · the live trace",
       ghost: "Trace",
       type: "Specification",
       id: "#310",
@@ -285,7 +365,7 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "REQUIREMENT TRACE": 2, "RISK · FMEA": 0, "CHANGE & RELEASE": 0 },
     },
     {
-      source: "PLM draft s2 · risk against current controls",
+      source: "PF-34 s2 · risk against current controls",
       ghost: "Assess",
       type: "Specification",
       id: "#310",
@@ -311,7 +391,7 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 2, "CHANGE & RELEASE": 0 },
     },
     {
-      source: "PLM draft s3 · controlled revision",
+      source: "PF-34 s3 · controlled revision",
       ghost: "Revise",
       type: "Specification",
       id: "#310",
@@ -337,7 +417,7 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 3, "CHANGE & RELEASE": 1 },
     },
     {
-      source: "PLM draft s4 · one structured review",
+      source: "PF-34 s4 · one structured review",
       ghost: "Route",
       type: "Specification",
       id: "#310",
@@ -363,7 +443,7 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "REQUIREMENT TRACE": 3, "RISK · FMEA": 3, "CHANGE & RELEASE": 2 },
     },
     {
-      source: "PLM draft s5 · the trace closes itself",
+      source: "PF-34 s5 · the trace closes itself",
       ghost: "Verify",
       type: "Specification",
       id: "#310",
@@ -385,4 +465,283 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       related: 3,
     },
   ],
+
+  /* -------- PF-35 · APQP Engineer builds the control plan --------------- */
+  "35": [
+    {
+      source: "PF-35 s1 · the FMEA at the changed interface",
+      ghost: "Open",
+      type: "FMEA",
+      id: "#88",
+      title: "Seal interface · process FMEA",
+      status: "In Review",
+      actor: "You",
+      event: "Opened FMEA-88 filtered to the SPC-310 line items",
+      eventDetail: "Current controls linked on the record, not remembered",
+      checklist: "RISK SCORING",
+      checklistItems: ["Failure mode · seal leak at fit", "Current controls"],
+      focus: "record",
+      focusTitle: "The FMEA opens at the change",
+      focusRows: ["Seal leak at fit · S6 · O3 · D4", "Controls linked from CP-31"],
+      focusAction: "Rescore the change",
+      ownershipNote: "Which failure modes the change moves",
+      world: FMEA_WORLD,
+      checklistOpen: "RISK SCORING",
+      checklistProgress: { "RISK SCORING": 1, "CONTROL PLAN": 0, "PARAMETERS & FLOW-DOWN": 0 },
+    },
+    {
+      source: "PF-35 s2 · over the action threshold",
+      ghost: "Score",
+      type: "FMEA",
+      id: "#88",
+      title: "Seal interface · process FMEA",
+      status: "In Review",
+      actor: "You",
+      event: "Rescored the risk; one mode crossed the threshold",
+      eventDetail: "Escalated to review on the record · not the next FMEA workshop",
+      checklist: "RISK SCORING",
+      checklistItems: ["Failure mode · seal leak at fit", "RPN", "Current controls"],
+      focus: "review",
+      focusTitle: "Risk evaluation · seal leak at fit",
+      focusRows: [
+        "Severity 6 · Occurrence 3 · Detection 4",
+        "RPN · 144 · threshold 120",
+        "Escalated to review on the record",
+      ],
+      focusAction: "Add a control",
+      focusAlts: ["Accept current controls"],
+      ownershipNote: "The threshold makes the call visible",
+      world: FMEA_WORLD,
+      checklistOpen: "RISK SCORING",
+      checklistProgress: { "RISK SCORING": 3, "CONTROL PLAN": 0, "PARAMETERS & FLOW-DOWN": 0 },
+    },
+    {
+      source: "PF-35 s3 · detection moved upstream",
+      ghost: "Tighten",
+      type: "FMEA",
+      id: "#88",
+      title: "Seal interface · process FMEA",
+      status: "In Review",
+      actor: "You",
+      event: "Tightened the control plan from the FMEA line items",
+      eventDetail: "Each control carries its rationale and the mode it mitigates",
+      checklist: "CONTROL PLAN",
+      checklistItems: ["Detection point", "Failure mode link"],
+      focus: "diff",
+      focusKicker: "CONTROL PLAN",
+      focusTitle: "Detection, moved upstream",
+      focusRows: [
+        "Final leak test · per lot",
+        "Seal fit check · per shift · fixture 2",
+        "The FMEA and the plan stay one record",
+      ],
+      focusAction: "Update control plan",
+      ownershipNote: "Detects the mode earliest at acceptable cost",
+      world: FMEA_WORLD,
+      checklistOpen: "CONTROL PLAN",
+      checklistProgress: { "RISK SCORING": 3, "CONTROL PLAN": 2, "PARAMETERS & FLOW-DOWN": 0 },
+    },
+    {
+      source: "PF-35 s4 · parameters as structure",
+      ghost: "Define",
+      type: "FMEA",
+      id: "#88",
+      title: "Seal interface · process FMEA",
+      status: "In Review",
+      actor: "You",
+      event: "Defined the inspection and process parameters",
+      eventDetail: "Limits and sampling rules tied to the characteristic they control",
+      checklist: "PARAMETERS & FLOW-DOWN",
+      checklistItems: ["Seal fit force · 12-18 N", "Coating thickness · 45-55 µm"],
+      focus: "tasks",
+      poseVariant: "plan",
+      focusTitle: "Parameters, owned and bounded",
+      focusRows: [
+        "Seal fit force · 12-18 N · 3 per lot",
+        "Coating thickness · 45-55 µm · per shift",
+      ],
+      focusAction: "Define parameters",
+      ownershipNote: "Which characteristics need checks, at what frequency",
+      world: FMEA_WORLD,
+      checklistOpen: "PARAMETERS & FLOW-DOWN",
+      checklistProgress: { "RISK SCORING": 3, "CONTROL PLAN": 3, "PARAMETERS & FLOW-DOWN": 2 },
+    },
+    {
+      source: "PF-35 s5 · published to the floor",
+      ghost: "Publish",
+      type: "FMEA",
+      id: "#88",
+      title: "Seal interface · process FMEA",
+      status: "Approved",
+      actor: "automator",
+      event: "Published the parameters to the traveller",
+      eventDetail: "What production measures is exactly what the plan defines",
+      checklist: "PARAMETERS & FLOW-DOWN",
+      checklistItems: ["Seal fit force · 12-18 N · 3 per lot", "Coating thickness · 45-55 µm · per shift", "Flows to the traveller · station checklists"],
+      focus: "trace",
+      focusTitle: "Plan on the floor",
+      focusRows: ["No re-keying between systems", "Governs the next run"],
+      focusAction: "Publish to the floor",
+      ownershipNote: "No re-keying between systems",
+      world: FMEA_WORLD,
+      checklistOpen: "PARAMETERS & FLOW-DOWN",
+      checklistProgress: { "RISK SCORING": 3, "CONTROL PLAN": 3, "PARAMETERS & FLOW-DOWN": 3 },
+      related: 2,
+    },
+  ],
+
+  /* -------- PF-36 · Engineering Manager releases with the trace closed -- */
+  "36": [
+    {
+      source: "PF-36 s1 · coverage as it stands",
+      ghost: "Open",
+      type: "Design Release",
+      id: "#310",
+      title: "SPC-310 · seal housing · Rev C",
+      status: "In Review",
+      actor: "automator",
+      event: "Release readiness assembled from the record",
+      eventDetail: "Not a spreadsheet built the week before the gate",
+      checklist: "COVERAGE",
+      checklistItems: ["Requirements · 24 linked", "Outputs"],
+      focus: "dashboard",
+      focusTitle: "Requirement coverage",
+      focusRows: ["Covered · 23", "Uncovered · 1 · REQ-058"],
+      focusAction: "Open the gap",
+      ownershipNote: "Close enough to schedule the review",
+      world: RELEASE_WORLD,
+      checklistProgress: { COVERAGE: 1, VERIFICATION: 0, RELEASE: 0 },
+    },
+    {
+      source: "PF-36 s2 · the gap surfaces itself",
+      ghost: "Find",
+      type: "Design Release",
+      id: "#310",
+      title: "SPC-310 · seal housing · Rev C",
+      status: "In Review",
+      actor: "You",
+      event: "Found the requirement with no linked result",
+      eventDetail: "Surfaced on the record · not a silent pass and a predictable audit finding",
+      checklist: "COVERAGE",
+      checklistItems: ["Requirements · 24 linked", "Uncovered requirement"],
+      focus: "record",
+      focusTitle: "REQ-058 · no covering verification",
+      focusRows: ["REQ-058 · seal retention under load", "No linked verification · gap on the record"],
+      focusAction: "Resolve the gap",
+      ownershipNote: "Block the release, or document the deviation",
+      world: RELEASE_WORLD,
+      checklistOpen: "COVERAGE",
+      checklistProgress: { COVERAGE: 2, VERIFICATION: 0, RELEASE: 0 },
+    },
+    {
+      source: "PF-36 s3 · assigned with its context",
+      ghost: "Assign",
+      type: "Design Release",
+      id: "#310",
+      title: "SPC-310 · seal housing · Rev C",
+      status: "In Review",
+      actor: "You",
+      event: "Assigned VER-131 with the requirement and protocol linked",
+      eventDetail: "The assignee starts from the record, not a forwarded email chain",
+      checklist: "VERIFICATION",
+      checklistItems: ["VER-131 · seal fit test", "Protocol"],
+      focus: "queue",
+      poseVariant: "route",
+      focusKicker: "VERIFICATION ASSIGNMENT",
+      focusTitle: "Owner and due date, on the record",
+      focusRows: [
+        "E. Marsh · Design Engineer · VER-131 · due Friday",
+        "A. Chen · Quality · informed",
+        "S. Okafor · Engineering · gate owner",
+      ],
+      focusAction: "Assign verification",
+      ownershipNote: "Who owns it, and by when",
+      world: RELEASE_WORLD,
+      checklistProgress: { COVERAGE: 2, VERIFICATION: 2, RELEASE: 0 },
+    },
+    {
+      source: "PF-36 s4 · the chain closes live",
+      ghost: "Link",
+      type: "Design Release",
+      id: "#310",
+      title: "SPC-310 · seal housing · Rev C",
+      status: "In Review",
+      actor: "automator",
+      event: "VER-131 result linked to the requirement it closes",
+      eventDetail: "Coverage updates live · the gap leaves the release view",
+      checklist: "VERIFICATION",
+      checklistItems: ["VER-131 · seal fit test", "Result"],
+      focus: "comment",
+      focusRows: ["VER-131 · seal fit test · passed → REQ-058"],
+      focusTitle: "Result linked",
+      focusAction: "Open the result",
+      ownershipNote: "Does the result satisfy the criteria",
+      world: RELEASE_WORLD,
+      checklistOpen: "VERIFICATION",
+      checklistProgress: { COVERAGE: 3, VERIFICATION: 3, RELEASE: 0 },
+    },
+    {
+      source: "PF-36 s5 · released with the trace unbroken",
+      ghost: "Release",
+      type: "Design Release",
+      id: "#310",
+      title: "SPC-310 · seal housing · Rev C",
+      status: "Approved",
+      actor: "automator",
+      event: "Released Rev C with an unbroken requirement-to-result chain",
+      eventDetail: "The design history file entry writes from the record",
+      checklist: "RELEASE",
+      checklistItems: ["REQ-041 … REQ-064 · every requirement covered", "Design history file · written from the record", "Rev C effective · the floor builds to it"],
+      focus: "trace",
+      focusTitle: "Released on evidence",
+      focusRows: ["Unbroken chain, requirement to result", "Release Rev C"],
+      focusAction: "Release Rev C",
+      ownershipNote: "Approve, or return with the gaps named",
+      world: RELEASE_WORLD,
+      checklistOpen: "RELEASE",
+      checklistProgress: { COVERAGE: 3, VERIFICATION: 3, RELEASE: 3 },
+      signedItems: [
+        {
+          name: "S. Okafor",
+          initials: "SO",
+          role: "Engineering · Release approval",
+          approvalId: "REL-310-C",
+          time: "16:12",
+        },
+      ],
+      related: 3,
+    },
+  ],
 };
+
+/* ===================================================== hero journey (arcade)
+ * The hero product shot is the arcade itself, same treatment as every
+ * product page (shared HeroArcade): the five poses of SPC-310's controlled
+ * change (PF-34), carrying the headline's claim - the trace from requirement
+ * to result has no gaps. The hero and the lifecycle section tell the same
+ * story with the same facts: the spec opens ON its trace, the risk is judged
+ * against live controls, the revision routes as one package, and the trace
+ * closes itself into the design history file. Labels are the reader's
+ * handle on the step. */
+export const PLM_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Open the trace",
+    config: PLM_ARCADE_FLOW_CONFIGS["34"][0],
+  },
+  {
+    label: "Assess the risk",
+    config: PLM_ARCADE_FLOW_CONFIGS["34"][1],
+  },
+  {
+    label: "Revise the spec",
+    config: PLM_ARCADE_FLOW_CONFIGS["34"][2],
+  },
+  {
+    label: "Route the review",
+    config: PLM_ARCADE_FLOW_CONFIGS["34"][3],
+  },
+  {
+    label: "Close the trace",
+    config: PLM_ARCADE_FLOW_CONFIGS["34"][4],
+  },
+];

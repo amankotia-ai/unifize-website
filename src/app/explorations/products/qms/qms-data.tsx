@@ -11,6 +11,7 @@
 import type { ProductPageData } from "../_shared/ProductPage";
 import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { buildProductFlows } from "../_shared/product-flows";
+import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/product-audience";
 import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
 
 /* real short-names of the QMS external standards (Notion External Standards) */
@@ -205,7 +206,7 @@ const STANDARDS: ProductPageData["compliance"]["standards"] = [
  * remain to resolve once the Notion API is reachable again. */
 const INDUSTRIES: string[] = ["Medical Devices", "Pharmaceuticals", "Automotive", "Aerospace"];
 
-export const QMS_DATA: ProductPageData = {
+export const QMS_DATA: Omit<ProductPageData, "owners"> = {
   slug: "qms",
   crumbLabel: "Quality Management System",
   metaTitle: "Quality Management System · Unifize",
@@ -294,87 +295,19 @@ export const QMS_DATA: ProductPageData = {
     mobileNote: { label: "CAPA decision trace", id: "CAPA-2148 · raise → evidence → review → disposition → CAPA → seal" },
   },
 
-  // NOTE: hubSystems below are REPRESENTATIVE of the stack Unifize coexists with
-  // (grounded in the industry coexistence copy), not a certified connector list.
-  // Verify against the real connector catalogue before shipping.
+  // NOTE: hubSystems name tools from the Notion "Website Integrations" DB
+  // (mirrored in _shared/integrations-catalog.ts, Live rows only), so this is
+  // the real connector catalogue rather than a representative stack.
   integrations: {
     heading: "The finding lands against the record your systems already hold.",
     lede: "A quality event rarely starts in the quality system. Unifize sits over the ERP, floor, and customer tools you already run, so a non-conformance opens against the real lot, supplier, and complaint, not a re-keyed copy.",
     record: "the quality record",
-    hubSystems: ["SAP", "Oracle", "NetSuite", "MES", "LIMS", "Salesforce", "Zendesk", "Okta"],
+    hubSystems: ["SAP", "Oracle NetSuite", "Dynamics 365", "Salesforce", "Jira", "Slack", "Email", "SSO/SAML"],
   },
 
-  owners: {
-    eyebrowN: 5,
-    heading: "Built for the people a quality finding lands on first.",
-    // NOTE: `img` values are PLACEHOLDERS — the two existing DMS persona
-    // portraits, reused (alternating) so the photo layout is visible now. Swap
-    // each for an art-directed portrait of the actual role (see
-    // persona-image-art-direction: low-key film look, fg+bg ghost motion blur,
-    // 3:2, sourced >=1800x1200).
-    items: [
-      {
-        name: "Quality Inspector",
-        tier: "Primary owner",
-        aka: "QC / QA Inspector · Incoming · IPQA · Final Inspector",
-        summary: "Owns whether a batch, lot, or shipment meets specification. Runs incoming, in-process, and final inspections, raises non-conformances, and releases or rejects product.",
-        daily: ["Perform inspections to plan, sample against AQL", "Raise non-conformances, segregate failing material", "Release passing material, escalate the rest"],
-        img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-      },
-      {
-        name: "Continuous Improvement Lead",
-        tier: "Primary owner",
-        aka: "CI Manager · Lean Lead · Six Sigma Black Belt",
-        summary: "Owns that the organization gets better quarter over quarter. Facilitates improvement projects, runs 8Ds and DMAIC, and measures the benefit of every corrective action.",
-        daily: ["Facilitate kaizens, run 8Ds, coach DMAIC teams", "Track benefits against the effectiveness window", "Report progress to the steering committee"],
-        img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-      },
-      {
-        name: "Engineering Manager",
-        tier: "Primary owner",
-        aka: "Director of Engineering · R&D Manager · Engineering Lead",
-        summary: "Approves the engineering side of quality decisions. Signs off CAPAs and deviations that touch design, and joins the Quality Manager on findings that cross the design line.",
-        daily: ["Sign off CAPAs and deviations affecting engineering", "Chair design reviews, review FMEAs", "Report engineering quality to management review"],
-        img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-      },
-      {
-        name: "Production Supervisor",
-        tier: "Primary owner",
-        aka: "Shift Supervisor · Line Lead · Operations Supervisor",
-        summary: "Owns that today's shift makes good product. Handles deviations in real time on the line, coordinates with quality on holds and releases, and closes shift handovers.",
-        daily: ["Investigate deviations at the point of use", "Coordinate with quality on holds and releases", "Close handovers between shifts"],
-        img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-      },
-    ],
-  },
-
-  // NOTE: sample stories in the industry-template-modern fiction (fictional
-  // brands, stock portraits); replace with real, verified stories before
-  // shipping. Landscape portraits, faces-cropped, mirror the DMS proof band.
-  proof: {
-    eyebrowN: 6,
-    kicker: "What quality teams say",
-    testimonials: [
-      {
-        quote: "The auditor asked for our CAPA effectiveness history and it was already on the record. No scramble, no spreadsheet.",
-        name: "Elena Vasquez",
-        title: "VP Quality · Nordhaus Medical",
-        img: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-      {
-        quote: "A recurring supplier issue finally showed up on a scorecard instead of in a complaint. We caught it a quarter early.",
-        name: "Daniel Osei",
-        title: "Supplier Quality Manager · Caldera Devices",
-        img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-      {
-        quote: "A CAPA can't close here until the effectiveness check passes. Repeat findings dropped to almost none.",
-        name: "Sarah Lindqvist",
-        title: "Head of Quality · Meridian Bio",
-        img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-    ],
-  },
+  // Who it is for renders from the Notion mirrors via QMS_AUDIENCE below;
+  // Customer proof renders from the Website Customer Videos mirror via
+  // qms-proof.tsx (real films, Notion-governed); no sample stories here.
 
   pains: {
     eyebrowN: 7,
@@ -462,4 +395,74 @@ export const QMS_DATA: ProductPageData = {
       },
     ],
   },
+};
+
+/* who it is for - section 05. Derived from the Notion mirrors, not
+ * hand-typed. Membership = the Target Personas relation on the QMS row
+ * (UPD-1) in src/content/notion/products.json; facts (role name, daily
+ * activities) come from the personas mirror. Adding or removing a persona on
+ * the QMS row in Notion adds or removes the card here on the next sync.
+ * Presentation (the span each role owns in the quality-event lifecycle,
+ * portrait, QMS-context daily lines distilled from the persona's Notion
+ * Daily Activities) stays page-owned below, keyed by persona ID.
+ * NOTE: `img` values are PLACEHOLDERS: the two existing DMS persona
+ * portraits, reused (alternating) so the photo layout is visible now. Swap
+ * each for an art-directed portrait of the actual role (see
+ * persona-image-art-direction: low-key film look, fg+bg ghost motion blur,
+ * 3:2, sourced >=1800x1200). */
+const QMS_PERSONA_PRESENTATION: Record<string, PersonaPresentation> = {
+  /* Training Coordinator: retraining is how a corrective action reaches people */
+  "PPS-6": {
+    owns: "Corrective action → Retrained",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Assign retraining when procedures change", "Chase incomplete training to closure", "Produce training evidence for audits"],
+  },
+  /* Engineering Manager */
+  "PPS-8": {
+    owns: "CAPA → Design",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Sign off CAPAs and deviations affecting engineering", "Chair design reviews, review FMEAs", "Report engineering quality to management review"],
+  },
+  /* Production Supervisor */
+  "PPS-9": {
+    owns: "Signal → Containment",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Investigate deviations at the point of use", "Coordinate with quality on holds and releases", "Close handovers between shifts"],
+  },
+  /* Quality Inspector */
+  "PPS-11": {
+    owns: "Intake → Disposition",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Perform inspections to plan, sample against AQL", "Raise non-conformances, segregate failing material", "Release passing material, escalate the rest"],
+  },
+  /* EHS Manager */
+  "PPS-14": {
+    owns: "Incident → Closed action",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Triage incidents and near misses", "Assign and track corrective actions", "Close out audit findings"],
+  },
+  /* Lab Manager */
+  "PPS-15": {
+    owns: "OOS result → Release",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Review OOS investigations", "Release results, approve methods", "Sign off stability programs"],
+  },
+  /* Continuous Improvement Lead */
+  "PPS-18": {
+    owns: "Root cause → Effectiveness",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Run 8Ds on recurring findings", "Track benefits against the effectiveness window", "Report progress to the steering committee"],
+  },
+  /* APQP Engineer */
+  "PPS-19": {
+    owns: "Control plan → PPAP",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Build control plans, lead PFMEAs", "Chair phase gate reviews", "Coordinate PPAP and supplier sub-PPAPs"],
+  },
+};
+
+export const QMS_AUDIENCE = {
+  heading: "Built for the people a quality finding lands on first.",
+  lede: "From the first signal on the floor to the effectiveness check, every role works from the same quality record.",
+  personas: buildAudiencePersonas("UPD-1", QMS_PERSONA_PRESENTATION),
 };

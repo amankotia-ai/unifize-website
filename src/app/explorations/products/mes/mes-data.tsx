@@ -12,7 +12,7 @@
 import type { DmsCoordinationProblem } from "../dms/dms-data";
 import type { IntegrationData } from "../dms/dms-integrations";
 import { buildProductFlows } from "../_shared/product-flows";
-import { MES_DRAFT_FLOWS } from "./mes-arcade";
+import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/product-audience";
 
 export const PRODUCT = {
   id: "UPD-5",
@@ -85,24 +85,43 @@ export const MES_PROBLEMS: DmsCoordinationProblem[] = [
 ];
 
 /* ---- Product Flows: persona journeys for the MES modules -----------------
- * No flow in the Product Flows DB has steps for the MES modules yet; the
- * Notion wiring below activates the moment Ben's team adds one. Until then
- * the page carries the page-owned DRAFT journey from mes-arcade.tsx,
- * labeled as such, whose step rows are proposed for the DB. */
-export const MES_FLOWS = [
-  ...buildProductFlows({
-    page: "mes",
-    moduleIds: [
-      "360860e6-b45e-81f9-ae92-cd8156553076" /* Work Order Management */,
-      "360860e6-b45e-8140-b854-db4f40b603fa" /* eTravellers */,
-      "360860e6-b45e-81cf-926b-da0e47ebac59" /* FAI & Control Plan Execution */,
-      "360860e6-b45e-819c-9ee6-e561035a55ba" /* Inspections, Forms & Checklists */,
-      "360860e6-b45e-8174-9963-ec1d6d753a56" /* Electronic Batch/Lot Records */,
-    ],
-    presentation: {},
-  }),
-  ...MES_DRAFT_FLOWS,
-];
+ * Notion-backed (Product Flows DB): PF-31 operator eTraveller run, PF-32
+ * inspector first article, PF-33 supervisor batch-record seal - the lot's
+ * arc across the lifecycle stations. Chip titles, actors, descriptions, and
+ * station spans are page-owned presentation; the step truth is the DB's. */
+export const MES_FLOWS = buildProductFlows({
+  page: "mes",
+  moduleIds: [
+    "360860e6-b45e-81f9-ae92-cd8156553076" /* Work Order Management */,
+    "360860e6-b45e-8140-b854-db4f40b603fa" /* eTravellers */,
+    "360860e6-b45e-81cf-926b-da0e47ebac59" /* FAI & Control Plan Execution */,
+    "360860e6-b45e-819c-9ee6-e561035a55ba" /* Inspections, Forms & Checklists */,
+    "360860e6-b45e-8174-9963-ec1d6d753a56" /* Electronic Batch/Lot Records */,
+  ],
+  presentation: {
+    "31": {
+      order: 0,
+      title: "Run the eTraveller",
+      actor: "Shop Floor Operator",
+      description: "Pick up the released work order and build the batch record as the work happens.",
+      stations: [0, 1],
+    },
+    "32": {
+      order: 1,
+      title: "Prove the first article",
+      actor: "Quality Inspector",
+      description: "Measure against the control plan, hold on a failed characteristic, and release the run on evidence.",
+      stations: [2, 3],
+    },
+    "33": {
+      order: 2,
+      title: "Seal the batch record",
+      actor: "Production Supervisor",
+      description: "Review by exception, close the genealogy, and release the lot with its trace attached.",
+      stations: [3, 4],
+    },
+  },
+});
 
 /* the five bundled modules - the core of the product. points feed the module
  * explorer; blurbs are distilled from each module's Notion Description. */
@@ -213,14 +232,14 @@ export const LIFECYCLE: { state: string; gate: string; detail: string }[] = [
 ];
 
 /* integrations - the connector section after the lifecycle.
- * NOTE: representative of the stack Unifize coexists with (grounded in the
- * industry coexistence copy), not a certified connector list. Verify against
- * the real connector catalogue before shipping. */
+ * NOTE: hubSystems name tools from the Notion "Website Integrations" DB
+ * (mirrored in _shared/integrations-catalog.ts, Live rows only), so this is
+ * the real connector catalogue rather than a representative stack. */
 export const INTEGRATIONS: IntegrationData = {
   heading: "The floor runs the order the ERP released, and answers back.",
   lede: "The shop floor is where the plan meets the machine. Unifize sits over the ERP and equipment you already run, so the batch record captures the work order the ERP released and what the line actually did with it.",
   record: "the batch record",
-  hubSystems: ["SAP", "Oracle", "NetSuite", "PLC / SCADA", "Historian", "OPC UA", "QMS", "LIMS"],
+  hubSystems: ["SAP", "Oracle NetSuite", "Epicor Kinetic", "Infor CloudSuite", "SYSPRO", "Dynamics 365", "Slack", "CSV Import"],
 };
 
 /* the one product-specific line of the minimal integrations beat */
@@ -238,39 +257,47 @@ export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
   { title: "Deviations at the point of use", body: "An operator raises a deviation or quality issue from the operation, and it holds the work.", glyph: "access" },
 ];
 
-/* who it is for - section 05. The two floor operators and the inspector who
- * releases their work share one visual tier. Each card shows lifecycle
- * ownership and three daily responsibilities.
+/* who it is for - section 05. Derived from the Notion mirrors, not
+ * hand-typed. Membership = the Target Personas relation on the MES row
+ * (UPD-5) in src/content/notion/products.json; facts (role name, daily
+ * activities) come from the personas mirror. Adding or removing a persona on
+ * the MES row in Notion adds or removes the card here on the next sync.
+ * Presentation (the span each role owns in the work-order lifecycle,
+ * portrait, MES-context daily lines distilled from the persona's Notion
+ * Daily Activities) stays page-owned below, keyed by persona ID.
  * NOTE: `img` values are PLACEHOLDERS: the two existing DMS persona portraits,
  * reused so the photo layout is visible now. Swap each for an art-directed
  * portrait of the actual role (see persona-image-art-direction: low-key film
  * look, fg+bg ghost motion blur, 3:2, sourced >=1800x1200). */
+const MES_PERSONA_PRESENTATION: Record<string, PersonaPresentation> = {
+  /* Production Supervisor */
+  "PPS-9": {
+    owns: "Released → Closed",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Hold start-of-shift, assign work", "Sign batch and lot records", "Coordinate holds, downtime, and deviations"],
+  },
+  /* Shop Floor Operator */
+  "PPS-10": {
+    owns: "In process → Signed",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Execute steps, record results electronically", "Flag deviations, respond to quality holds", "Record downtime at the equipment"],
+  },
+  /* Quality Inspector */
+  "PPS-11": {
+    owns: "Inspection → Release",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Perform inspections to plan, sample against AQL", "Raise non-conformances, segregate failing material", "Release passing material, hold the rest"],
+  },
+};
+
 export const AUDIENCE: {
+  heading: string;
   lede: string;
   personas: { role: string; owns: string; daily: string[]; img: string; href?: string }[];
 } = {
+  heading: "For the people who run the shift.",
   lede: "From the released order to the sealed record, every role signs the same lot.",
-  personas: [
-    {
-      role: "Production Supervisor",
-      owns: "Released → Closed",
-      // source: Personas DB, Daily Activities
-      daily: ["Hold start-of-shift, assign work", "Sign batch and lot records", "Coordinate holds, downtime, and deviations"],
-      img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-    },
-    {
-      role: "Shop Floor Operator",
-      owns: "In process → Signed",
-      daily: ["Execute steps, record results electronically", "Flag deviations, respond to quality holds", "Record downtime at the equipment"],
-      img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-    },
-    {
-      role: "Quality Inspector",
-      owns: "Inspection → Release",
-      daily: ["Perform inspections to plan, sample against AQL", "Raise non-conformances, segregate failing material", "Release passing material, hold the rest"],
-      img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-    },
-  ],
+  personas: buildAudiencePersonas("UPD-5", MES_PERSONA_PRESENTATION),
 };
 
 /* the standards frame. short bodies. (Notion External Standards relation) */
@@ -288,29 +315,8 @@ export const STANDARDS: { name: string; geo: string; body: string; issuer: strin
  * broader REPRESENTATIVE set; this list is the honest "validated across". */
 export const INDUSTRIES: string[] = ["Medical Devices", "Pharmaceuticals"];
 
-/* customer proof stories - sample stories in the industry-template-modern
- * fiction (fictional brands, stock portraits); replace with real, verified
- * MES customer films before shipping (mirror dms-data PROOF_FILMS). */
-export const PROOF_STORIES: { quote: string; name: string; title: string; img: string }[] = [
-  {
-    quote: "The batch record is built as the line runs, not rebuilt at review. Our release cycle dropped by days.",
-    name: "Grace Adeyemi",
-    title: "Plant Quality Manager · Steriva Labs",
-    img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-  },
-  {
-    quote: "A failed check now holds the line the moment it happens. We stopped finding problems at final inspection.",
-    name: "Viktor Novak",
-    title: "Production Manager · Lindqvist Pharma",
-    img: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-  },
-  {
-    quote: "When a recall question came, we traced the lot by QR in minutes instead of chasing paper travellers.",
-    name: "Mei Tan",
-    title: "Operations Director · Corevance Manufacturing",
-    img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-  },
-];
+/* Customer proof renders from the Website Customer Videos mirror via
+ * mes-proof.tsx (real films, Notion-governed); no sample stories here. */
 
 /* FAQ - answers grounded in the canonical product copy above. */
 export const FAQS: { q: string; a: string }[] = [

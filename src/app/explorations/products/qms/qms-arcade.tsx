@@ -15,6 +15,7 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../_shared/arcade/arcade";
+import { type HeroArcadeStep } from "../_shared/arcade/hero-arcade";
 
 /* ============================================================ PF-5 world
  * The non-conformance record as the Quality Engineer captures and contains
@@ -1662,3 +1663,38 @@ export const QMS_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
   "11": QMS_FLOW_STEP_SCENES["11"],
   "2": QMS_FLOW_STEP_SCENES["2"],
 };
+
+/* ===================================================== hero journey (arcade)
+ * The hero product shot is the arcade itself, same treatment as every
+ * product page (shared HeroArcade): five poses carrying the headline's
+ * claim - a finding isn't closed until the fix is proven. Steps are lifted
+ * straight from the page's own flows so the hero and the lifecycle section
+ * tell the same story with the same facts:
+ *   PF-5 · capture at the line and task the containment (NC-204)
+ *   PF-6 · put the root cause to the participants (NC-204)
+ *   PF-3 · implement the corrective action and prove it off the live
+ *          dashboard (CAPA-612) - the escalation is the point: the NC's
+ *          discipline hands over to the CAPA's evidence-backed close.
+ * Labels are the reader's handle on the step. */
+export const QMS_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Capture it",
+    config: QMS_FLOW_STEP_SCENES["5"][0],
+  },
+  {
+    label: "Contain it",
+    config: QMS_FLOW_STEP_SCENES["5"][4],
+  },
+  {
+    label: "Agree the cause",
+    config: QMS_FLOW_STEP_SCENES["6"][3],
+  },
+  {
+    label: "Fix it",
+    config: QMS_FLOW_STEP_SCENES["3"][5],
+  },
+  {
+    label: "Prove it",
+    config: QMS_FLOW_STEP_SCENES["3"][7],
+  },
+];

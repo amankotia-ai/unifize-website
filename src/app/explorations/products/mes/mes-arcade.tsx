@@ -1,13 +1,15 @@
 /* ----------------------------------------------------------------------------
- * mes-arcade.tsx - DRAFT arcade journey for the MES page. The Product Flows
- * DB in Notion has no MES-module flows yet, so this flow is page-owned and
- * labeled draft: the step rows below are written in the DB's own idiom
- * (name / what happens / decision / role / primitives) so they can be
- * ratified into Notion nearly verbatim, at which point the page switches to
- * the Notion-backed copy and this file keeps only the scene configs.
+ * mes-arcade.tsx - persistent-camera arcade journeys for the MES page's
+ * Notion-backed Product Flows (PF-31, PF-32, PF-33: the lot's arc from a
+ * released work order to a sealed, traceable batch record). Same staging
+ * recipe as the DMS and QMS journeys: one app window, one world per record,
+ * the camera moves between poses and each step's copy is the Notion Flow
+ * Step truth restaged, never invented capability.
  * Fictional dataset: Engineering Industries, work order WO-9021 building
  * PRT-4412 housings (lot 224-B) on line 2 - the same part the QMS journeys
- * investigate, so the two pages tell one continuous story.
+ * investigate, so the two pages tell one continuous story. People:
+ * P. Ndiaye (Shop Floor Operator), M. Osei (Production Supervisor),
+ * R. Vance (Quality Inspector), S. Okafor (Process Engineering).
  * Server module, no state.
  * -------------------------------------------------------------------------- */
 
@@ -15,12 +17,12 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../_shared/arcade/arcade";
-import { type ProductFlow } from "../_shared/product-flows";
+import { type HeroArcadeStep } from "../_shared/arcade/hero-arcade";
 
-const DRAFT_NOTE =
-  "Draft journey staged for review. The matching Product Flow rows are proposed for the Notion DB; this flow goes Notion-backed the moment they land.";
-
-/* ============================================================ world */
+/* ============================================================ PF-31 world
+ * The work order as the operator runs it: traveller, checks, batch entries.
+ * Checklist sections are the record's stable anatomy; steps only open
+ * sections and advance completion. */
 const TRAVELLER_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Work Order",
@@ -74,68 +76,134 @@ const TRAVELLER_WORLD: ArcadeFlowWorld = {
           note: "Sealed 10:42 · P. Ndiaye",
         },
         { label: "Lot genealogy", note: "Consumed lots linked" },
-        { label: "Release signature", kind: "approval", signer: "P. Ndiaye", state: "Signed", note: "21 CFR Part 11" },
+        { label: "Step signature", kind: "approval", signer: "P. Ndiaye", state: "Signed", note: "21 CFR Part 11" },
       ],
     },
   ],
 };
 
-/* ============================================================ draft flow
- * Step rows in the Product Flows DB idiom, ready to ratify into Notion. */
-export const MES_DRAFT_FLOWS: ProductFlow[] = [
-  {
-    id: "mes-d1",
-    actor: "Shop Floor Operator",
-    title: "Run the eTraveller (draft)",
-    fullName:
-      "Shop Floor Operator runs a work order through the eTraveller to a sealed batch record",
-    description: DRAFT_NOTE,
-    stations: [],
-    outcomes: [],
-    steps: [
-      {
-        index: 1,
-        name: "Pick up the released work order from the queue",
-        what: "The released work order lands on the operator's queue with the traveller, routing, and staged materials linked. Picked up from the queue rather than a printed packet at a shift-start huddle.",
-        decision: "Is everything staged to start, or does the release need to be queried.",
-        role: "Operator",
-        primitives: ["Status-chasing"],
-      },
-      {
-        index: 2,
-        name: "Open the eTraveller with routing and the current SOP in context",
-        what: "Opens the eTraveller. The routing step, the controlled work instruction at its current revision, and the lot context sit on the record; nothing is fetched from a binder or a shared drive.",
-        decision: "Is this the right step and revision for the lot on the line.",
-        role: "Operator",
-        primitives: ["Errors", "Reconciliation"],
-      },
-      {
-        index: 3,
-        name: "Execute the control-plan checks as structured tasks",
-        what: "Runs the inspection and control-plan checks as structured tasks with acceptance criteria attached. Each result is captured at the station as it happens, not transcribed later.",
-        decision: "Does each reading pass its criteria, or does the step need a hold.",
-        role: "Inspector",
-        primitives: ["Errors"],
-      },
-      {
-        index: 4,
-        name: "Record batch data with evidence sealed to the lot",
-        what: "Readings, consumed lots, and equipment land on the electronic batch record with operator and timestamp sealed to each entry. The record builds itself as the work happens instead of being assembled at the end.",
-        decision: "Is the entry complete before the step closes.",
-        role: "Recorder",
-        primitives: ["Reconciliation", "Decision-rebuilding"],
-      },
-      {
-        index: 5,
-        name: "Complete the traveller and release with an electronic signature",
-        what: "Completes the final step and signs the release with a regulated electronic signature. The sealed batch record closes with full genealogy; review-by-exception replaces the end-of-lot paper chase.",
-        decision: "Is the record clean enough to release, or does an exception need review.",
-        role: "Approver",
-        primitives: ["Status-chasing", "Errors"],
-      },
-    ],
+/* ============================================================ PF-32 world
+ * The first article at the bench: characteristics against the control plan,
+ * a hold on the failed reading, and a release on evidence. */
+const FAI_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "First Article",
+  owner: "R. Vance",
+  ownerInitials: "RV",
+  participants: ["RV", "MO", "SO"],
+  participantsLabel: "R. Vance, M. Osei, and S. Okafor",
+  recordKicker: "FIRST ARTICLE INSPECTION",
+  context: {
+    initials: "MO",
+    name: "M. Osei",
+    time: "07:15",
+    message: "First article off line 2 for WO-9021.",
+    detail: "FAI-52 · fixture 2 · control plan Rev C attached",
   },
-];
+  inboxNeighbors: [
+    { title: "Work order", time: "06:52", detail: "WO-9021 · lot 224-B · in process", kind: "Work Order" },
+    { title: "In-process inspection", time: "Yesterday", detail: "INS-0871 · passed", kind: "Inspection" },
+    { title: "Non-conformance", time: "Yesterday", detail: "NC-204 · coating · dispositioned", kind: "Quality event" },
+  ],
+  homeTiles: [
+    { label: "First articles", count: 2 },
+    { label: "My inspections", count: 3 },
+    { label: "Holds", count: 1 },
+  ],
+  checklistTitle: "First Article",
+  checklistSections: [
+    {
+      title: "CHARACTERISTICS",
+      items: [
+        { label: "Dimensions · 12 characteristics", note: "Criteria from control plan Rev C" },
+        { label: "Coating thickness · 45-55 µm", note: "3 samples · fixture 2" },
+        { label: "Seal fit force · 12-18 N", note: "3 samples" },
+      ],
+    },
+    {
+      title: "DISPOSITION",
+      items: [
+        {
+          label: "Hold reason",
+          kind: "field",
+          value: "CH-07 seal fit 19.4 N · above the 18 N limit",
+          note: "Raised at the bench · line held",
+        },
+        { label: "Supervisor review", note: "Routed with the evidence attached" },
+        { label: "Corrective adjustment", note: "Setup offset corrected · re-measure" },
+      ],
+    },
+    {
+      title: "RELEASE",
+      items: [
+        { label: "First article approval", kind: "approval", signer: "R. Vance", state: "Signed", note: "Disposition sealed" },
+        { label: "Run released", note: "Line 2 resumes on approval" },
+      ],
+    },
+  ],
+};
+
+/* ============================================================ PF-33 world
+ * The batch record at end of lot: review by exception, the genealogy, and
+ * the Part 11 seal that releases the lot. */
+const EBR_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "Batch Record",
+  owner: "M. Osei",
+  ownerInitials: "MO",
+  participants: ["MO", "PN", "RV"],
+  participantsLabel: "M. Osei, P. Ndiaye, and R. Vance",
+  recordKicker: "ELECTRONIC BATCH RECORD",
+  context: {
+    initials: "PN",
+    name: "P. Ndiaye",
+    time: "14:20",
+    message: "Final operation closed on WO-9021.",
+    detail: "Lot 224-B · batch record complete · 3 exceptions flagged",
+  },
+  inboxNeighbors: [
+    { title: "Work order", time: "14:20", detail: "WO-9021 · all operations closed", kind: "Work Order" },
+    { title: "First article inspection", time: "09:40", detail: "FAI-52 · approved", kind: "Inspection" },
+    { title: "Line clearance", time: "06:40", detail: "Line 2 · cleared for lot 224-B", kind: "Checklist" },
+  ],
+  homeTiles: [
+    { label: "Exceptions", count: 3 },
+    { label: "Lots at end of line", count: 2 },
+    { label: "Pending approvals", count: 2 },
+  ],
+  checklistTitle: "Batch Record · Lot 224-B",
+  checklistSections: [
+    {
+      title: "EXCEPTIONS",
+      items: [
+        {
+          label: "Missing torque entry",
+          kind: "field",
+          value: "Station 4 · returned for capture",
+          note: "Resolved on the record",
+        },
+        { label: "Out-of-trend thickness", note: "41.2 µm · in spec · trend flagged" },
+        { label: "Missing signature · op 30", note: "Signed at the station" },
+      ],
+    },
+    {
+      title: "GENEALOGY",
+      items: [
+        { label: "Consumed lots", note: "224-A resin · 198-C seals" },
+        { label: "Equipment", note: "Line 2 · fixture 2 · calibrated" },
+        { label: "Operators", note: "3 signed operations" },
+      ],
+    },
+    {
+      title: "SEAL & RELEASE",
+      items: [
+        { label: "Release signature", kind: "approval", signer: "M. Osei", state: "Signed", note: "21 CFR Part 11" },
+        { label: "QR codes", note: "QR-224B-01…04 generated" },
+        { label: "Distribution", note: "Traceable downstream by lot" },
+      ],
+    },
+  ],
+};
 
 /* ============================================================ modules
  * The modules section as camera work: five module tabs, five poses on the
@@ -247,7 +315,7 @@ export const MES_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = {
     event: "Entering the reading on the batch record",
     eventDetail: "Operator and timestamp seal to the entry · genealogy links as lots are consumed",
     checklist: "BATCH RECORD",
-    checklistItems: ["Thickness reading", "Lot genealogy", "Release signature"],
+    checklistItems: ["Thickness reading", "Lot genealogy", "Step signature"],
     focus: "checklist",
     focusTitle: "The record builds as the work happens",
     focusRows: ["Nothing assembled at the end of the lot"],
@@ -259,11 +327,13 @@ export const MES_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = {
   },
 };
 
-/* ============================================================ scenes */
+/* ============================================================ scenes
+ * One entry per Notion flow id; one scene per Flow Step, in step order. */
 export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
-  "mes-d1": [
+  /* -------- PF-31 · Shop Floor Operator runs the eTraveller ------------- */
+  "31": [
     {
-      source: "MES draft s1 · released to the queue",
+      source: "PF-31 s1 · released to the queue",
       ghost: "Start",
       type: "Work Order",
       id: "#9021",
@@ -288,7 +358,7 @@ export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "ROUTING & SETUP": 1, "IN-PROCESS CHECKS": 0, "BATCH RECORD": 0 },
     },
     {
-      source: "MES draft s2 · traveller in context",
+      source: "PF-31 s2 · traveller in context",
       ghost: "Open",
       type: "Work Order",
       id: "#9021",
@@ -309,15 +379,15 @@ export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "ROUTING & SETUP": 3, "IN-PROCESS CHECKS": 0, "BATCH RECORD": 0 },
     },
     {
-      source: "MES draft s3 · control plan as tasks",
+      source: "PF-31 s3 · checks as structured tasks",
       ghost: "Check",
       type: "Work Order",
       id: "#9021",
       title: "PRT-4412 housing · lot 224-B",
       status: "In Process",
       actor: "You",
-      event: "Ran the control-plan checks at the station",
-      eventDetail: "Acceptance criteria attached to each task · captured as it happens",
+      event: "Ran the step's checks as structured tasks",
+      eventDetail: "Acceptance criteria attached to each task · a failed criterion holds the step",
       checklist: "IN-PROCESS CHECKS",
       checklistItems: ["Thickness · 3 samples", "Visual inspection", "Torque check"],
       focus: "tasks",
@@ -334,7 +404,7 @@ export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "ROUTING & SETUP": 3, "IN-PROCESS CHECKS": 2, "BATCH RECORD": 0 },
     },
     {
-      source: "MES draft s4 · the record builds itself",
+      source: "PF-31 s4 · the record builds itself",
       ghost: "Seal",
       type: "Work Order",
       id: "#9021",
@@ -356,25 +426,311 @@ export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "ROUTING & SETUP": 3, "IN-PROCESS CHECKS": 3, "BATCH RECORD": 0 },
     },
     {
-      source: "MES draft s5 · release under Part 11",
-      ghost: "Release",
+      source: "PF-31 s5 · sign the operation, hand off the record",
+      ghost: "Sign",
       type: "Work Order",
       id: "#9021",
       title: "PRT-4412 housing · lot 224-B",
-      status: "Completed",
+      status: "In Process",
       actor: "You",
-      event: "Signed the release on the sealed batch record",
-      eventDetail: "Full genealogy closed with the lot · review-by-exception, not a paper chase",
+      event: "Signing step 3; the traveller advances to station 4",
+      eventDetail: "The handoff carries the record, not a verbal summary",
       checklist: "BATCH RECORD",
-      checklistItems: ["Entries sealed", "Lot genealogy", "Release signature"],
+      checklistItems: ["Entries sealed", "Lot genealogy", "Step signature"],
       focus: "signature",
-      focusTitle: "Release lot 224-B",
-      focusRows: ["Sealed batch record · 8 of 8 steps", "Genealogy complete"],
+      focusTitle: "Sign step 3 · coating",
+      focusRows: ["Operation complete · evidence sealed", "Next station receives the context"],
       focusAction: "Apply your signature",
-      ownershipNote: "An exception would route to review instead",
+      ownershipNote: "An exception would be flagged before handoff",
       world: TRAVELLER_WORLD,
       checklistOpen: "BATCH RECORD",
-      checklistProgress: { "ROUTING & SETUP": 3, "IN-PROCESS CHECKS": 3, "BATCH RECORD": 3 },
+      checklistProgress: { "ROUTING & SETUP": 3, "IN-PROCESS CHECKS": 3, "BATCH RECORD": 2 },
+    },
+  ],
+
+  /* -------- PF-32 · Quality Inspector proves the first article ---------- */
+  "32": [
+    {
+      source: "PF-32 s1 · FAI on the queue",
+      ghost: "Pick",
+      type: "First Article",
+      id: "#52",
+      title: "FAI-52 · PRT-4412 · fixture 2",
+      status: "Pending",
+      actor: "automator",
+      event: "First article inspection fired for WO-9021",
+      eventDetail: "Control plan characteristics and acceptance criteria attached to the task",
+      checklist: "CHARACTERISTICS",
+      checklistItems: ["Dimensions · 12 characteristics", "Coating thickness", "Seal fit force"],
+      focus: "queue",
+      focusTitle: "First articles",
+      focusRows: [
+        "FAI-52 · PRT-4412 housing · due",
+        "Characteristics attached · control plan Rev C",
+        "Line 2 waiting on the result",
+      ],
+      focusAction: "Open first article",
+      ownershipNote: "The run waits on this call",
+      world: FAI_WORLD,
+      queueTile: "First articles",
+      checklistProgress: { CHARACTERISTICS: 0, DISPOSITION: 0, RELEASE: 0 },
+    },
+    {
+      source: "PF-32 s2 · measured against the plan",
+      ghost: "Measure",
+      type: "First Article",
+      id: "#52",
+      title: "FAI-52 · PRT-4412 · fixture 2",
+      status: "In Review",
+      actor: "You",
+      event: "Measuring the characteristics against the control plan",
+      eventDetail: "Each measurement captured against its tolerance as it is taken · no paper transcription",
+      checklist: "CHARACTERISTICS",
+      checklistItems: ["Dimensions · 12 characteristics", "Coating thickness · 45-55 µm", "Seal fit force · 12-18 N"],
+      focus: "tasks",
+      focusTitle: "Characteristic checks",
+      focusRows: [
+        "Dimensions · 12 characteristics · CMM",
+        "Coating thickness · 3 samples",
+        "Seal fit force · 3 samples · fixture 2",
+      ],
+      focusAction: "Capture measurements",
+      ownershipNote: "Criteria sit beside each entry",
+      world: FAI_WORLD,
+      checklistOpen: "CHARACTERISTICS",
+      checklistProgress: { CHARACTERISTICS: 2, DISPOSITION: 0, RELEASE: 0 },
+    },
+    {
+      source: "PF-32 s3 · out of tolerance, line held",
+      ghost: "Hold",
+      type: "First Article",
+      id: "#52",
+      title: "FAI-52 · PRT-4412 · fixture 2",
+      status: "On Hold",
+      actor: "You",
+      event: "Flagged CH-07 and held the run",
+      eventDetail: "The failed characteristic raises the hold in real time · not from an inbox",
+      checklist: "DISPOSITION",
+      checklistItems: ["Hold reason", "Supervisor review"],
+      focus: "review",
+      focusTitle: "CH-07 · seal fit force",
+      focusRows: [
+        "Measured · 19.4 N",
+        "Limit · 12-18 N",
+        "Status · out of tolerance",
+      ],
+      focusAction: "Hold the run",
+      focusAlts: ["Pass with deviation"],
+      ownershipNote: "The line is not running on a bad setup",
+      world: FAI_WORLD,
+      checklistOpen: "DISPOSITION",
+      checklistProgress: { CHARACTERISTICS: 3, DISPOSITION: 1, RELEASE: 0 },
+    },
+    {
+      source: "PF-32 s4 · disposition with the evidence",
+      ghost: "Route",
+      type: "First Article",
+      id: "#52",
+      title: "FAI-52 · PRT-4412 · fixture 2",
+      status: "On Hold",
+      actor: "You",
+      event: "Escalated the disposition with the evidence attached",
+      eventDetail: "Measurement, characteristic, and criterion in one thread · decided where the evidence is",
+      checklist: "DISPOSITION",
+      checklistItems: ["Hold reason", "Supervisor review", "Corrective adjustment"],
+      focus: "queue",
+      poseVariant: "route",
+      focusKicker: "DISPOSITION REVIEW",
+      focusTitle: "The call, made on the record",
+      focusRows: [
+        "M. Osei · Production Supervisor · required",
+        "S. Okafor · Process Engineering · required",
+        "R. Vance · Quality Inspector · evidence attached",
+      ],
+      focusAction: "Route disposition",
+      ownershipNote: "Rework the setup, or scrap and reset",
+      world: FAI_WORLD,
+      checklistProgress: { CHARACTERISTICS: 3, DISPOSITION: 2, RELEASE: 0 },
+    },
+    {
+      source: "PF-32 s5 · proven, released",
+      ghost: "Release",
+      type: "First Article",
+      id: "#52",
+      title: "FAI-52 · PRT-4412 · fixture 2",
+      status: "Approved",
+      actor: "You",
+      event: "Approved the first article; the run is released",
+      eventDetail: "The disposition and its evidence seal to the record",
+      checklist: "RELEASE",
+      checklistItems: ["CH-07 re-measured · 15.1 N · in spec", "12 of 12 characteristics in spec", "Disposition sealed with evidence"],
+      focus: "trace",
+      focusTitle: "First article proven",
+      focusRows: ["Where the auditor will look", "Release the run"],
+      focusAction: "Release the run",
+      ownershipNote: "Line 2 resumes on approval",
+      world: FAI_WORLD,
+      checklistOpen: "RELEASE",
+      checklistProgress: { CHARACTERISTICS: 3, DISPOSITION: 3, RELEASE: 2 },
+      related: 2,
+    },
+  ],
+
+  /* -------- PF-33 · Production Supervisor seals the batch record -------- */
+  "33": [
+    {
+      source: "PF-33 s1 · review by exception",
+      ghost: "Review",
+      type: "Batch Record",
+      id: "#224B",
+      title: "Lot 224-B · PRT-4412 housing",
+      status: "In Review",
+      actor: "automator",
+      event: "Lot 224-B reached end of line with 3 exceptions flagged",
+      eventDetail: "The clean entries do not ask for time",
+      checklist: "EXCEPTIONS",
+      checklistItems: ["Missing torque entry", "Out-of-trend thickness", "Missing signature · op 30"],
+      focus: "queue",
+      focusTitle: "Exceptions",
+      focusRows: [
+        "Missing torque entry · station 4",
+        "Out-of-trend thickness · op 20",
+        "Missing signature · op 30",
+      ],
+      focusAction: "Review exceptions",
+      ownershipNote: "Which exception to clear first",
+      world: EBR_WORLD,
+      queueTile: "Exceptions",
+      checklistProgress: { EXCEPTIONS: 0, GENEALOGY: 0, "SEAL & RELEASE": 0 },
+    },
+    {
+      source: "PF-33 s2 · each exception, on the record",
+      ghost: "Resolve",
+      type: "Batch Record",
+      id: "#224B",
+      title: "Lot 224-B · PRT-4412 housing",
+      status: "In Review",
+      actor: "You",
+      event: "Resolving the flagged entries where they live",
+      eventDetail: "Who captured it, at which step, against which criterion · in view",
+      checklist: "EXCEPTIONS",
+      checklistItems: ["Missing torque entry", "Out-of-trend thickness"],
+      focus: "review",
+      focusTitle: "Exception · missing torque entry",
+      focusRows: [
+        "Captured · station 4 · op 40",
+        "Criterion · 4.2-4.8 N·m",
+        "Resolution · returned for capture",
+      ],
+      focusAction: "Send back to station",
+      focusAlts: ["Accept with justification"],
+      ownershipNote: "The resolution lands next to the entry",
+      world: EBR_WORLD,
+      checklistOpen: "EXCEPTIONS",
+      checklistProgress: { EXCEPTIONS: 2, GENEALOGY: 0, "SEAL & RELEASE": 0 },
+    },
+    {
+      source: "PF-33 s3 · the genealogy closes",
+      ghost: "Trace",
+      type: "Batch Record",
+      id: "#224B",
+      title: "Lot 224-B · PRT-4412 housing",
+      status: "In Review",
+      actor: "You",
+      event: "Verified the lot genealogy end to end",
+      eventDetail: "Checked on the record · not reconciled across ERP, paper, and a logbook",
+      checklist: "GENEALOGY",
+      checklistItems: ["Consumed lots · 224-A resin · 198-C seals", "Equipment · line 2 · fixture 2 · calibrated", "Operators · 3 signed operations"],
+      focus: "trace",
+      focusTitle: "Genealogy closed",
+      focusRows: ["No orphan entries", "Ready to seal"],
+      focusAction: "Confirm genealogy",
+      ownershipNote: "No orphan entries",
+      world: EBR_WORLD,
+      checklistOpen: "GENEALOGY",
+      checklistProgress: { EXCEPTIONS: 3, GENEALOGY: 3, "SEAL & RELEASE": 0 },
+    },
+    {
+      source: "PF-33 s4 · sealed under Part 11",
+      ghost: "Seal",
+      type: "Batch Record",
+      id: "#224B",
+      title: "Lot 224-B · PRT-4412 housing",
+      status: "In Review",
+      actor: "You",
+      event: "Sealing the reconciled batch record",
+      eventDetail: "Signer, meaning, and timestamp · every entry carries who, when, and against what criterion",
+      checklist: "SEAL & RELEASE",
+      checklistItems: ["Release signature", "QR codes"],
+      focus: "signature",
+      focusTitle: "Seal batch record · lot 224-B",
+      focusRows: ["Exceptions resolved · genealogy closed", "8 of 8 operations signed"],
+      focusAction: "Confirm and sign",
+      ownershipNote: "Review-by-exception, not a paper chase",
+      world: EBR_WORLD,
+      checklistOpen: "SEAL & RELEASE",
+      checklistProgress: { EXCEPTIONS: 3, GENEALOGY: 3, "SEAL & RELEASE": 1 },
+    },
+    {
+      source: "PF-33 s5 · released, traceable by lot",
+      ghost: "Ship",
+      type: "Batch Record",
+      id: "#224B",
+      title: "Lot 224-B · PRT-4412 housing",
+      status: "Released",
+      actor: "automator",
+      event: "Lot 224-B released with QR-coded traceability",
+      eventDetail: "An auditor's question about this lot starts and ends at one record",
+      checklist: "SEAL & RELEASE",
+      checklistItems: ["Release signature", "QR codes", "Distribution"],
+      focus: "record",
+      focusTitle: "Sealed and released",
+      focusRows: ["Lot 224-B · sealed under Part 11", "QR-224B-01…04 · traceable through distribution"],
+      focusAction: "Track downstream",
+      ownershipNote: "Traceable by lot, downstream",
+      world: EBR_WORLD,
+      checklistOpen: "SEAL & RELEASE",
+      checklistProgress: { EXCEPTIONS: 3, GENEALOGY: 3, "SEAL & RELEASE": 3 },
+      signedItems: [
+        {
+          name: "M. Osei",
+          initials: "MO",
+          role: "Production Supervisor · Release",
+          approvalId: "EBR-224B-SEAL",
+          time: "15:02",
+        },
+      ],
+      related: 3,
     },
   ],
 };
+
+/* ===================================================== hero journey (arcade)
+ * The hero product shot is the arcade itself, same treatment as every
+ * product page (shared HeroArcade): five moments of the lot's life carrying
+ * the headline's claim - what happened on the floor is a record, not a
+ * memory. Steps 1-4 are the PF-31 operator journey; the closing shot is the
+ * PF-33 Part 11 seal, so the hero spans release to sealed lot with the same
+ * facts as the lifecycle section. Labels are the reader's handle on the step. */
+export const MES_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Pick up the order",
+    config: MES_ARCADE_FLOW_CONFIGS["31"][0],
+  },
+  {
+    label: "Open the traveller",
+    config: MES_ARCADE_FLOW_CONFIGS["31"][1],
+  },
+  {
+    label: "Run the checks",
+    config: MES_ARCADE_FLOW_CONFIGS["31"][2],
+  },
+  {
+    label: "Seal the entry",
+    config: MES_ARCADE_FLOW_CONFIGS["31"][3],
+  },
+  {
+    label: "Release the lot",
+    config: MES_ARCADE_FLOW_CONFIGS["33"][3],
+  },
+];

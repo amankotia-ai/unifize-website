@@ -14,9 +14,9 @@
  * draft in a block never reaches the site. */
 export const COPY_TARGETS = {
   dms: "src/app/explorations/products/dms/dms-copy.json",
-  // qms: "src/app/explorations/products/qms/qms-copy.json",
-  // plm: "src/app/explorations/products/plm/plm-copy.json",
-  // mes: "src/app/explorations/products/mes/mes-copy.json",
+  qms: "src/app/explorations/products/qms/qms-copy.json",
+  plm: "src/app/explorations/products/plm/plm-copy.json",
+  mes: "src/app/explorations/products/mes/mes-copy.json",
   // home: "src/app/explorations/home/home-copy.json",
 };
 
@@ -34,7 +34,9 @@ export const CONTENT_BLOCKS = {
  * Renders column so the canonical data is visible where it is used. */
 export const WRITEBACK_PRODUCTS = {
   dms: "UPD-2",
-  // qms: "UPD-1", plm: "UPD-3", mes: "UPD-4" when those pages onboard
+  qms: "UPD-1",
+  plm: "UPD-4",
+  mes: "UPD-5",
 };
 
 /* ---- Structured sources ---------------------------------------------------
@@ -132,6 +134,34 @@ export const SOURCES = {
       role: { property: "Role-in-the-moment" },
       primitives: { property: "CT Primitives at Risk" },
       journey: { property: "Parent Journey" },
+    },
+  },
+  /* Website Customer Videos (Webflow export, Wistia-hosted) drives the
+   * Customer proof film rails on the product pages. Governance lives in the
+   * DB: only rows with Status Live AND Web Use Approved checked may render
+   * (the adapter in products/_shared/customer-films.ts enforces both, plus
+   * completeness: wistia + thumbnail + slug + attributed customer). Each
+   * page picks films whose Module tags intersect the page's modules. */
+  customerVideos: {
+    database_id: "5a2c0f46a2a64464949f4df6f27027dc",
+    mirror: "src/content/notion/customer-videos.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      customer: { property: "Customer" },
+      role: { property: "Role" },
+      company: { property: "Company" },
+      industry: { property: "Industry" },
+      modules: { property: "Module", kind: "list" },
+      persona: { property: "Persona" },
+      metrics: { property: "Metrics", kind: "list" },
+      duration: { property: "Duration" },
+      wistia: { property: "Wistia ID" },
+      slug: { property: "Slug" },
+      thumbnail: { property: "Thumbnail" },
+      favCount: { property: "Fav Count" },
+      status: { property: "Status" },
+      webUseApproved: { property: "Web Use Approved" },
     },
   },
 };

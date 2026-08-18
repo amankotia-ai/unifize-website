@@ -1,13 +1,16 @@
 "use client";
 
 /* ============================================================================
- * stylized-hero-arcade.tsx - the hero product shot for /products/dms/stylized.
- * Replaces the single static register mock with the shared stylized-arcade
- * engine (products/_shared/arcade): ONE persistent app window and a camera
- * that walks five key moments of SOP-118 (find, trust, compare, sign,
- * release). The step rail under the stage names each moment and lets the
- * reader take the wheel; taking the wheel stops the timer for good, so the
- * camera never yanks away mid-read.
+ * hero-arcade.tsx - the hero product shot shared by every product page.
+ * Lifted from dms/stylized (stylized-hero-arcade.tsx) on 2026-08-19 so DMS,
+ * QMS, PLM, and MES all open on the same treatment: the shared stylized-
+ * arcade engine (./arcade) as the establishing shot - ONE persistent app
+ * window and a camera that walks a handful of key moments of one record.
+ * Each page brings its own journey (a HeroArcadeStep[] lifted from that
+ * page's own flows, so the hero and the lifecycle section tell the same
+ * story with the same facts); the step rail under the stage names each
+ * moment and lets the reader take the wheel. Taking the wheel stops the
+ * timer for good, so the camera never yanks away mid-read.
  *
  * Motion rules, same as every other arcade mount on the site: the timer only
  * runs while the stage is on screen, and prefers-reduced-motion holds the
@@ -15,12 +18,17 @@
  * ========================================================================== */
 
 import { useEffect, useRef, useState } from "react";
-import { ArcadeStepScene } from "../../_shared/arcade/arcade";
-import type { StylizedHeroStep } from "./stylized-mocks";
+import { ArcadeStepScene, type ArcadeStepConfig } from "./arcade";
+import "./hero-arcade.css";
+
+export type HeroArcadeStep = {
+  label: string;
+  config: ArcadeStepConfig;
+};
 
 const DWELL_MS = 5200;
 
-export function StylizedHeroArcade({ steps }: { steps: StylizedHeroStep[] }) {
+export function HeroArcade({ steps }: { steps: HeroArcadeStep[] }) {
   const [active, setActive] = useState(0);
   const [engaged, setEngaged] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);

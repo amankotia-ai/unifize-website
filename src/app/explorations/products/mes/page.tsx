@@ -10,7 +10,8 @@
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
-import { MES_ARCADE_FLOW_CONFIGS, MES_MODULE_ARCADE_CONFIGS } from "./mes-arcade";
+import { MES_ARCADE_FLOW_CONFIGS, MES_HERO_STEPS, MES_MODULE_ARCADE_CONFIGS } from "./mes-arcade";
+import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import {
   PRODUCT,
   MES_PROBLEMS,
@@ -24,15 +25,16 @@ import {
   AUDIENCE,
   STANDARDS,
   INDUSTRIES,
-  PROOF_STORIES,
   FAQS,
 } from "./mes-data";
 import { DmsHeader } from "../dms/dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
 import { NAV } from "../../_shared/nav-data";
-import { CoordinationTax } from "../dms/dms-coordination";
+import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
+import { MES_CTAX_SCENES, MES_CTAX_AFTER_NOTES, MES_CTAX_COPY } from "./mes-ctax";
 import { IntegrationLayer } from "../dms/dms-integrations";
-import { Eyebrow, ShellFrame } from "../dms/dms-primitives";
+import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
+import { Eyebrow } from "../dms/dms-primitives";
 import { CapGlyph } from "../dms/dms-linework";
 import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import {
@@ -44,7 +46,8 @@ import {
   MES_MODULE_MOCKS,
 } from "./mes-mocks";
 import { MesProblemSpotlight } from "./mes-problem-visuals";
-import { MesProofStories } from "./mes-proof";
+import { mesCopy } from "./mes-copy";
+import { MesProofFilms } from "./mes-proof";
 import {
   ModuleExplorer,
   LifecycleExplorer,
@@ -115,12 +118,12 @@ export default function MesProductPage() {
             </div>
           </div>
 
-          <div className="dms-hero__frame dms-hero__product-demo">
-            <div className="dms-hero__stage">
-              <ShellFrame url="app.unifize.com / work orders">
-                <MesWorkOrder />
-              </ShellFrame>
-            </div>
+          {/* The establishing shot is the arcade itself: one app window
+            * walking WO-9021 from the release queue to the sealed lot, with
+            * a numbered step rail under it. Same treatment as every product
+            * page hero. */}
+          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
+            <HeroArcade steps={MES_HERO_STEPS} />
           </div>
 
         </div>
@@ -168,7 +171,12 @@ export default function MesProductPage() {
 
       {/* ==================== THE COORDINATION TAX =====================
        * The four daily symptoms roll up into one measurable root cause. */}
-      <CoordinationTax variant="revision" problems={MES_PROBLEMS} />
+      <StylizedCoordinationTax
+        problems={MES_PROBLEMS}
+        scenes={MES_CTAX_SCENES}
+        afterNotes={MES_CTAX_AFTER_NOTES}
+        copy={MES_CTAX_COPY}
+      />
 
       {/* ============================ 02 · MODULES BUNDLED ===============
        * The Unifize product story begins after the problem is fully framed. */}
@@ -223,7 +231,7 @@ export default function MesProductPage() {
           flows={MES_FLOWS}
           arcadeConfigsByFlow={MES_ARCADE_FLOW_CONFIGS}
           flowsLabel="Follow the work through the lifecycle."
-          flowsLede="Each flow is one person's journey across the record: what they do, the call they make at each step, and the coordination tax that disappears."
+          showFlowOutcomes={false}
           stageMocks={[
             <MesWorkOrder key="released" />,
             <MesTraveller key="in-process" />,
@@ -242,30 +250,33 @@ export default function MesProductPage() {
        * Connective beat after the lifecycle: the batch record does not stop
        * at Unifize's edge. Unnumbered interstitial, on ink, so it continues
        * the dark block (02-04) one section longer before the light 05. */}
-      <IntegrationLayer data={INTEGRATIONS} variant="minimal" minimalLede={INTEGRATIONS_MINIMAL_LEDE} />
+      <IntegrationLayer
+        data={INTEGRATIONS}
+        variant="minimal"
+        minimalLede={INTEGRATIONS_MINIMAL_LEDE}
+        logos={PRODUCT_INTEGRATION_LOGOS.mes}
+      />
 
       {/* ============================ 05 · WHO IT IS FOR =================
-       * Three roles in one compact row. Each card shows the lifecycle span
-       * that role owns and three day-to-day responsibilities. */}
+       * Same treatment as the DMS stylized page: one card per persona on the
+       * MES row (UPD-5) in Notion, portrait + lifecycle span + three daily
+       * lines. Membership follows the Target Personas relation on sync. */}
       <section className="dms-section dms-audience" id="who" aria-labelledby="mes-audience-title">
         <div className="dms-wrap">
           <header className="dms-audience__head" data-reveal>
             <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="mes-audience-title">For the people who run the shift.</h2>
-            <p className="dms-lede">{AUDIENCE.lede}</p>
+            <h2 className="dms-h2" id="mes-audience-title">{mesCopy("audience.heading", AUDIENCE.heading)}</h2>
+            <p className="dms-lede">{mesCopy("audience.lede", AUDIENCE.lede)}</p>
           </header>
 
           <div className="dms-audience__personas">
-            {AUDIENCE.personas.map((persona, index) => (
+            {AUDIENCE.personas.map((persona) => (
               <article className="dms-owner" key={persona.role} data-reveal>
                 <header className="dms-owner__identity">
                   <div className="dms-owner__portrait" aria-hidden="true">
                     <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
                   </div>
                   <div className="dms-owner__identity-copy">
-                    <span className="dms-owner__idx">
-                      Persona {String(index + 1).padStart(2, "0")}
-                    </span>
                     <h3 className="dms-owner__role">
                       {persona.href ? (
                         <Link href={persona.href}>
@@ -276,10 +287,12 @@ export default function MesProductPage() {
                   </div>
                 </header>
 
-                <dl className="dms-owner__scope">
-                  <dt>Lifecycle ownership</dt>
-                  <dd>{persona.owns}</dd>
-                </dl>
+                {persona.owns && (
+                  <dl className="dms-owner__scope">
+                    <dt>Lifecycle ownership</dt>
+                    <dd>{persona.owns}</dd>
+                  </dl>
+                )}
 
                 <div className="dms-owner__work">
                   <p className="dms-owner__work-label">Day to day</p>
@@ -295,10 +308,8 @@ export default function MesProductPage() {
         </div>
       </section>
 
-      {/* ============================ 06 · PROOF =========================
-       * Story rail on the film-rail shell. Sample stories for now; swap for
-       * real MES customer films (see mes-proof.tsx note). */}
-      <MesProofStories stories={PROOF_STORIES} />
+      {/* ============================ 06 · PROOF ========================= */}
+      <MesProofFilms />
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
       <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="mes-compliance-title">

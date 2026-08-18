@@ -102,14 +102,14 @@
 .dp-tax-gfx__detour-label,
 .dp-tax-gfx__tax-sub {
   fill: var(--dms-muted);
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 11px;
   font-weight: 650;
 }
 
 .dp-tax-gfx__tax-title {
   fill: var(--dms-ink);
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 23px;
   font-weight: 620;
 }
@@ -124,7 +124,7 @@
 .dp-tax-gfx__channel text,
 .dp-tax-gfx__paper text {
   fill: var(--dms-muted);
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 11px;
   font-weight: 650;
 }
@@ -161,7 +161,7 @@
 
 .dp-tax-gfx__verb text {
   fill: var(--dms-accent);
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 9px;
   font-weight: 700;
 }

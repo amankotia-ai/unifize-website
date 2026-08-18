@@ -1,11 +1,12 @@
 /* ============================================================================
- * stylized-ctax.tsx - the coordination-tax section for /products/dms/stylized:
- * a per-stage comparison ledger. One row per stage; each row pairs the stage
- * as it is paid for today (scene + metric + the coordination it costs) with
- * the same stage on one governed record (scene + outcome), so the flip is
- * read side by side instead of two bands apart. The shared revision visual
- * (dms-coordination-visual) stays as it is for DMS, QMS, PLM and MES; this
- * is the stylized page's own.
+ * stylized-ctax.tsx - the coordination-tax comparison ledger. One row per
+ * stage; each row pairs the stage as it is paid for today (scene + metric +
+ * the coordination it costs) with the same stage on one governed record
+ * (scene + outcome), so the flip is read side by side instead of two bands
+ * apart. Born on /products/dms/stylized; now the shared treatment for the
+ * QMS, PLM and MES product pages too, each bringing its own scenes, after
+ * notes, and header copy (defaults below are the DMS page's own, so the
+ * stylized page renders unchanged).
  *
  * Scenes reuse the problem section's graphic language (dms-gfx-*): a quiet
  * halo, white cards with line detail, small-caps tags, one accent per frame.
@@ -13,7 +14,7 @@
  * floating in space), and every badge is anchored to the thing it judges.
  * BEFORE frames break the chain (dashed links, warn badges); AFTER frames
  * close it (solid links, sealed marks). Stage names, metrics and outcomes are
- * the page's own DMS_PROBLEMS data; only the AFTER note is authored here.
+ * each page's own *_PROBLEMS data; only the AFTER note is authored here.
  * ========================================================================== */
 import { Eyebrow } from "../dms-primitives";
 import type { DmsCoordinationProblem } from "../dms-data";
@@ -27,9 +28,50 @@ const AFTER_NOTES: Record<string, string> = {
   training: "Automatically assigned. Automatically tracked.",
 };
 
+/* one before/after drawing pair per stage, keyed by the problem's visual */
+export type CtaxScenePair = { before: React.ReactNode; after: React.ReactNode };
+export type CtaxScenes = Record<string, CtaxScenePair>;
+
+/* the section's prose, overridable per page; defaults are the DMS page's */
+export type CtaxCopy = {
+  eyebrow: string;
+  heading: string;
+  lede: string;
+  /* the screen-reader narration of the whole ledger */
+  srSummary: string;
+  /* the stage-column caption in the ledger header */
+  stageColumn: string;
+  beforeNote: string;
+  afterNote: string;
+  codaStrong: string;
+  codaRest: string;
+  recordLeft: string;
+  recordRight: string;
+};
+
+const DMS_COPY: CtaxCopy = {
+  eyebrow: "The cost of fragmentation",
+  heading: "The coordination tax sits between question and proof.",
+  lede: "Work moves faster, accountability stays visible, and the evidence is already audit-ready.",
+  srSummary:
+    "Four stages of regulated document work, each compared side by side. Today each stage is separated " +
+    "from the next by coordination work: assembling evidence takes days of senior time, three copies claim " +
+    "to be current, change effectivity reaches the floor months after approval, and retraining lands weeks " +
+    "late. On one governed record the same four stages stay connected: evidence is already bound, one " +
+    "version is effective, effectivity reaches the line, and training is assigned on release. The metrics " +
+    "keep their original units and are not plotted on a shared scale.",
+  stageColumn: "The same four stages, paid for twice",
+  beforeNote: "Useful work is fragmented by the coordination needed to find, verify, and reconcile it.",
+  afterNote: "Every step, owner, decision, and piece of evidence stays attached to the same record.",
+  codaStrong: "The work stays.",
+  codaRest: "The coordination gaps do not.",
+  recordLeft: "One governed record",
+  recordRight: "Every handoff stays attached",
+};
+
 /* ------------------------------------------------------------------ glyphs */
 
-function Person({ x, y, scale = 1, tone }: { x: number; y: number; scale?: number; tone?: "quiet" }) {
+export function Person({ x, y, scale = 1, tone }: { x: number; y: number; scale?: number; tone?: "quiet" }) {
   return (
     <g className={"sctx-person" + (tone ? " is-quiet" : "")} transform={`translate(${x} ${y}) scale(${scale})`}>
       <circle cx="0" cy="-8" r="6.8" />
@@ -39,7 +81,7 @@ function Person({ x, y, scale = 1, tone }: { x: number; y: number; scale?: numbe
 }
 
 /* a filled status badge with a white ring, so it reads over any furniture */
-function Badge({
+export function Badge({
   x,
   y,
   kind,
@@ -65,7 +107,7 @@ function Badge({
 }
 
 /* a source-app tile (mail, sheet, doc, chat) for the scatter scenes */
-function Tile({ x, y, children, rotate = 0 }: { x: number; y: number; children: React.ReactNode; rotate?: number }) {
+export function Tile({ x, y, children, rotate = 0 }: { x: number; y: number; children: React.ReactNode; rotate?: number }) {
   return (
     <g className="sctx-tile" transform={`translate(${x} ${y}) rotate(${rotate} 20 20)`}>
       <rect width="40" height="40" rx="6" />
@@ -75,7 +117,7 @@ function Tile({ x, y, children, rotate = 0 }: { x: number; y: number; children: 
 }
 
 /* a document card; children draw its face */
-function Card({
+export function Card({
   x,
   y,
   w = 46,
@@ -250,15 +292,15 @@ function SceneTrainingAfter() {
   );
 }
 
-const SCENES: Record<string, { before: React.ReactNode; after: React.ReactNode }> = {
+const SCENES: CtaxScenes = {
   audit: { before: <SceneAuditBefore />, after: <SceneAuditAfter /> },
   versions: { before: <SceneVersionsBefore />, after: <SceneVersionsAfter /> },
   change: { before: <SceneChangeBefore />, after: <SceneChangeAfter /> },
   training: { before: <SceneTrainingBefore />, after: <SceneTrainingAfter /> },
 };
 
-function Scene({ visual, world }: { visual: string; world: "before" | "after" }) {
-  const scene = SCENES[visual];
+function Scene({ scenes, visual, world }: { scenes: CtaxScenes; visual: string; world: "before" | "after" }) {
+  const scene = scenes[visual];
   return (
     <span className={"sctx-fig is-" + world} aria-hidden="true">
       <svg viewBox="0 0 168 168">{scene ? scene[world] : null}</svg>
@@ -315,35 +357,39 @@ function LegendIcon({ kind }: { kind: "handoff-manual" | "rework" | "handoff-aut
 
 /* ------------------------------------------------------------------ section */
 
-export function StylizedCoordinationTax({ problems }: { problems: DmsCoordinationProblem[] }) {
+export function StylizedCoordinationTax({
+  problems,
+  scenes = SCENES,
+  afterNotes = AFTER_NOTES,
+  copy: copyOverrides,
+}: {
+  problems: DmsCoordinationProblem[];
+  scenes?: CtaxScenes;
+  afterNotes?: Record<string, string>;
+  copy?: Partial<CtaxCopy>;
+}) {
+  const copy: CtaxCopy = { ...DMS_COPY, ...copyOverrides };
   return (
     <section className="dms-section sctx" id="coordination" aria-labelledby="sctx-title">
       <div className="dms-wrap">
         <header className="sctx__head" data-reveal>
-          <Eyebrow>The cost of fragmentation</Eyebrow>
-          <h2 className="dms-h2" id="sctx-title">The coordination tax sits between question and proof.</h2>
-          <p className="dms-lede">Work moves faster, accountability stays visible, and the evidence is already audit-ready.</p>
+          <Eyebrow>{copy.eyebrow}</Eyebrow>
+          <h2 className="dms-h2" id="sctx-title">{copy.heading}</h2>
+          <p className="dms-lede">{copy.lede}</p>
         </header>
 
-        <p className="dms-sr-only">
-          Four stages of regulated document work, each compared side by side. Today each stage is separated
-          from the next by coordination work: assembling evidence takes days of senior time, three copies claim
-          to be current, change effectivity reaches the floor months after approval, and retraining lands weeks
-          late. On one governed record the same four stages stay connected: evidence is already bound, one
-          version is effective, effectivity reaches the line, and training is assigned on release. The metrics
-          keep their original units and are not plotted on a shared scale.
-        </p>
+        <p className="dms-sr-only">{copy.srSummary}</p>
 
         <div className="sctx__frame" data-reveal>
           {/* ------------------------------------------------- world header */}
           <div className="sctx__header" aria-hidden="true">
             <div className="sctx__header-stage">
-              <span>The same four stages, paid for twice</span>
+              <span>{copy.stageColumn}</span>
             </div>
             <div className="sctx__header-world">
               <span className="sctx__world-kicker">Before</span>
               <strong className="sctx__world-name">Today</strong>
-              <p className="sctx__world-note">Useful work is fragmented by the coordination needed to find, verify, and reconcile it.</p>
+              <p className="sctx__world-note">{copy.beforeNote}</p>
               <ul className="sctx-legend">
                 <li><LegendIcon kind="handoff-manual" />Manual handoffs</li>
                 <li><LegendIcon kind="rework" />Rework and delays</li>
@@ -353,7 +399,7 @@ export function StylizedCoordinationTax({ problems }: { problems: DmsCoordinatio
             <div className="sctx__header-world is-after">
               <span className="sctx__world-kicker">After</span>
               <strong className="sctx__world-name">With Unifize</strong>
-              <p className="sctx__world-note">Every step, owner, decision, and piece of evidence stays attached to the same record.</p>
+              <p className="sctx__world-note">{copy.afterNote}</p>
               <ul className="sctx-legend">
                 <li><LegendIcon kind="handoff-auto" />Automated handoffs</li>
                 <li><LegendIcon kind="sealed" />Audit-ready by design</li>
@@ -372,7 +418,7 @@ export function StylizedCoordinationTax({ problems }: { problems: DmsCoordinatio
                 </div>
 
                 <div className="sctx__cell sctx__cell--before">
-                  <Scene visual={problem.visual} world="before" />
+                  <Scene scenes={scenes} visual={problem.visual} world="before" />
                   <div className="sctx__cell-copy">
                     <strong className="sctx__metric">{problem.metric}</strong>
                     <span className="sctx__metric-label">{problem.metricLabel}</span>
@@ -389,10 +435,10 @@ export function StylizedCoordinationTax({ problems }: { problems: DmsCoordinatio
                 </div>
 
                 <div className="sctx__cell sctx__cell--after">
-                  <Scene visual={problem.visual} world="after" />
+                  <Scene scenes={scenes} visual={problem.visual} world="after" />
                   <div className="sctx__cell-copy">
                     <strong className="sctx__outcome">{problem.outcome}</strong>
-                    <span className="sctx__after-note">{AFTER_NOTES[problem.visual]}</span>
+                    <span className="sctx__after-note">{afterNotes[problem.visual]}</span>
                   </div>
                 </div>
               </li>
@@ -400,14 +446,14 @@ export function StylizedCoordinationTax({ problems }: { problems: DmsCoordinatio
           </ol>
 
           {/* ------------------------------------------------- close */}
-          <p className="sctx__coda"><strong>The work stays.</strong> The coordination gaps do not.</p>
+          <p className="sctx__coda"><strong>{copy.codaStrong}</strong> {copy.codaRest}</p>
           <div className="sctx__record">
             <span>
               <LegendIcon kind="sealed" />
-              One governed record
+              {copy.recordLeft}
             </span>
             <i aria-hidden="true" />
-            <span>Every handoff stays attached</span>
+            <span>{copy.recordRight}</span>
           </div>
         </div>
       </div>

@@ -27,6 +27,14 @@ const jetbrainsMono = localFont({
   display: "swap",
 });
 
+// Alloy 2026 display family (font/family/ibmPlexSans)
+const ibmPlexSans = localFont({
+  src: "./fonts/ibm-plex-sans-variable.woff2",
+  variable: "--font-ibm-plex-sans",
+  weight: "100 700",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://unifize.com"),
   title: {
@@ -78,7 +86,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${geist.variable} ${jetbrainsMono.variable}`}
+      className={`${inter.variable} ${geist.variable} ${jetbrainsMono.variable} ${ibmPlexSans.variable}`}
     >
       <body>{children}</body>
     </html>

@@ -1,7 +1,7 @@
 /* ============================================================================
  * DMS - Document Management System. PRODUCT page.
  * Design language borrowed from the industry-template-modern exploration
- * (Geist display, Inter body, Unifize blue, dark hero/close, dashed dividers,
+ * (IBM Plex Sans display, Inter body, Unifize blue 700, dark hero/close, dashed dividers,
  * restrained reveal motion). Editorial system: numbered chapters, hairline
  * ledgers and registers instead of card grids, mono indices, big display type.
  * Product visuals are explicit placeholders (DmsPlaceholder) awaiting real
@@ -25,6 +25,7 @@ import { DmsHeader } from "./dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
 import { CoordinationTax } from "./dms-coordination";
 import { IntegrationLayer } from "./dms-integrations";
+import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { Eyebrow } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
 import { DmsProblemSpotlight } from "./dms-problem-visuals";
@@ -153,6 +154,7 @@ export default function DmsProductPage() {
         minimalEyebrow="Integrations"
         minimalHeading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
         minimalLede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
+        logos={PRODUCT_INTEGRATION_LOGOS.dms}
         ctaHeading={dmsCopy("integrations.cta.heading", "Don’t see your system?")}
         ctaBody={dmsCopy("integrations.cta.body", "We are always adding connectors. Bring us the stack you need to keep in step.")}
         ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}
@@ -209,8 +211,8 @@ export default function DmsProductPage() {
       </section>
 
       {/* ============================ 06 · PROOF =========================
-       * Real customer films from the Webflow CMS (see PROOF_FILMS), on the
-       * itm carousel shell; the attested figure keeps the lead card. */}
+       * Real customer films from the Website Customer Videos mirror
+       * (Notion-governed); the attested figure keeps the lead card. */}
       <div className="itm dms-proof-reference">
         <DmsProofFilms />
       </div>

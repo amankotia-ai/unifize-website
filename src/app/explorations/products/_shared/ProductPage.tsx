@@ -94,7 +94,9 @@ export type ProductPageData = {
 
   owners: { eyebrowN: number; heading: string; items: Owner[] };
 
-  proof: { eyebrowN: number; kicker: string; testimonials: Testimonial[] };
+  /* optional since the bespoke pages render Customer proof from the Website
+   * Customer Videos mirror instead (see products/_shared/proof-films.tsx) */
+  proof?: { eyebrowN: number; kicker: string; testimonials: Testimonial[] };
 
   pains: { eyebrowN: number; heading: string; items: Pain[] };
 
@@ -327,13 +329,15 @@ export function ProductPage({ data }: { data: ProductPageData }) {
       </section>
 
       {/* ============================ 06 · PROOF (carousel) =========== */}
-      <section className="dms-section dms-proof-section" aria-label="Customer proof">
-        <ProofCarousel
-          eyebrowN={data.proof.eyebrowN}
-          kicker={data.proof.kicker}
-          testimonials={data.proof.testimonials}
-        />
-      </section>
+      {data.proof && (
+        <section className="dms-section dms-proof-section" aria-label="Customer proof">
+          <ProofCarousel
+            eyebrowN={data.proof.eyebrowN}
+            kicker={data.proof.kicker}
+            testimonials={data.proof.testimonials}
+          />
+        </section>
+      )}
 
       {/* ============================ 07 · WHAT IT CLOSES ============== */}
       <section className="dms-section dms-section--alt">

@@ -31,5 +31,86 @@
       "Own the audit programme",
       "Chair management review"
     ]
+  },
+  {
+    "pageId": "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b",
+    "id": "PPS-7",
+    "name": "Design Engineer",
+    "description": "Owns 'this product can be made, used, and supported' for new and changing products. Lives in PLM and APQP: drafting design inputs, running design reviews, completing risk analyses (FMEA / hazard analysis), driving change orders, releasing drawings and specifications to manufacturing. Typical caseload 3 to 10 active design projects plus 20 to 100 in-flight change orders. Adjacent to the Engineering Manager (gate approvals), Production Supervisor (manufacturability handoff), Quality Inspector (specification clarifications), and Supplier Quality (component changes).",
+    "daily": [
+      "Author design documents; run design reviews; complete FMEAs and risk assessments; raise and process engineering change orders; release drawings and BOMs; respond to manufacturing and supplier questions; close design verification and validation activities"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8115-9243-c81508af35cc",
+    "id": "PPS-8",
+    "name": "Engineering Manager",
+    "description": "Approves design and change decisions on behalf of the engineering function. Lives in PLM and the QMS change module: chairs design reviews, signs off engineering change orders, balances cost versus quality versus schedule, owns the engineering side of CAPAs. Typical caseload 30 to 100 open change orders, 5 to 20 active projects, plus people management. Adjacent to the Design Engineer (manages them), the Quality Manager (joint sign-off on CAPAs that touch design), and the Production Supervisor (joint sign-off on manufacturing-driven changes).",
+    "daily": [
+      "Approve ECOs; chair design reviews; review FMEAs; allocate engineering resource; sign off CAPAs and deviations affecting engineering; report engineering metrics to management review"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8172-aa5d-e01efb3ef313",
+    "id": "PPS-9",
+    "name": "Production Supervisor",
+    "description": "Owns 'today's shift makes good product' for one production line or area. Lives in MES, QMS shop floor, and CMMS: assigns work, signs off batch and lot records, handles deviations in real time, escalates equipment issues, runs the daily start-of-shift meeting. Typical caseload 10 to 40 operators, 1 to 5 lines or cells. Adjacent to the Shop Floor Operator (manages them), the Quality Inspector (handoff on holds and releases), the Maintenance Technician (downtime triage), and the Production Manager (escalations).",
+    "daily": [
+      "Hold start-of-shift; assign work; sign batch and lot records; investigate deviations; coordinate with maintenance on downtime; coordinate with quality on holds; close handovers between shifts"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8156-84b8-f8d3d131bb6e",
+    "id": "PPS-10",
+    "name": "Shop Floor Operator",
+    "description": "The person doing the work. Lives in MES and QMS shop floor: pulls work orders, executes operations, logs results, raises deviations and quality issues, completes electronic batch and lot records. Typical caseload one piece of equipment or cell per shift. Adjacent to the Production Supervisor (reports to), Quality Inspector (handoff), and Maintenance Technician (signal downtime).",
+    "daily": [
+      "Receive work assignments; execute production steps; record results electronically; flag deviations; respond to quality holds; record downtime"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-81db-9230-ee70ac746e48",
+    "id": "PPS-11",
+    "name": "Quality Inspector",
+    "description": "Owns 'this batch or lot or shipment meets specification'. Lives in QMS inspection, MES quality holds, and supplier quality: runs incoming, in-process, and final inspections, raises nonconformances, releases or rejects product. Typical caseload 50 to 500 inspections per week. Adjacent to the Production Supervisor (holds and releases), the Quality Manager (escalations), and the Supplier Quality engineer (incoming material issues).",
+    "daily": [
+      "Pull inspection lists; perform inspections to plan; record results; raise nonconformances; release passing material; segregate failing material; sample-plan against AQL"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-810d-b38c-fa27d3add5b3",
+    "id": "PPS-14",
+    "name": "EHS Manager",
+    "description": "Owns 'no one gets hurt and the site stays in environmental compliance'. Lives in the EHS product and QMS event modules: tracks incidents, near misses, observations, manages permits, audits, drives corrective actions, owns regulatory reporting. Typical caseload 5 to 50 open incidents and observations at any time, plus a moving slate of permits and inspections. Adjacent to the Maintenance Manager (LOTO, permits), Quality Manager (CAPA overlap), and HR (injury follow-up).",
+    "daily": [
+      "Triage incidents and near misses; assign corrective actions; pull permits; conduct walk-throughs; submit regulatory reports; lead toolbox talks; close out audit findings"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8189-9069-f1d24eb544d3",
+    "id": "PPS-15",
+    "name": "Lab Manager",
+    "description": "Owns 'the lab produces accurate, audit-ready results on time'. Lives in LIMS: builds sample plans, approves methods, releases batch results, manages reagent inventory, schedules instrument calibration, oversees lab analysts. Typical caseload 200 to 2000 samples per month. Adjacent to the Quality Manager (release decisions), Lab Analyst (manages them), and EHS Manager (lab safety).",
+    "daily": [
+      "Approve methods; release results; manage sample priorities; review OOS investigations; manage instrument qualification; manage analyst schedules; sign off on stability programs"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8134-be6a-c5123ecb5918",
+    "id": "PPS-18",
+    "name": "Continuous Improvement Lead",
+    "description": "Owns 'this organization gets better quarter over quarter'. Lives in the CI product, Kaizen and 8D and DMAIC workflows: facilitates improvement projects, tracks ideas, runs A3s, measures benefits, captures lessons learned. Typical caseload 5 to 30 active improvement projects, 50 to 500 active ideas. Adjacent to the Quality Manager (CAPA overlap), Engineering Manager (design CI), and Production Supervisor (kaizen on the line).",
+    "daily": [
+      "Facilitate kaizens; run 8Ds; coach DMAIC teams; track benefits; manage idea funnel; report progress to steering committee"
+    ]
+  },
+  {
+    "pageId": "361860e6-b45e-8138-a16d-cb9161aa0f1c",
+    "id": "PPS-19",
+    "name": "APQP Engineer",
+    "description": "Owns 'this new program is on track to PPAP'. Lives in APQP & PPAP: drives the 18 element checklist, runs phase reviews with the customer, owns control plans, FMEAs and PPAP submissions, coordinates suppliers. Typical caseload 1 to 5 active programs, each with 6 to 24 month timelines. Adjacent to the Design Engineer (design release), Engineering Manager (gate approvals), Production Supervisor (PSW / pilot), and Supplier Quality (component PPAPs).",
+    "daily": [
+      "Drive APQP element checklists; chair phase gate reviews; build control plans; lead PFMEAs; coordinate PPAP submissions; chase suppliers for sub-PPAPs"
+    ]
   }
 ]

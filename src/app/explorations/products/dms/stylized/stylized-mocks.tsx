@@ -19,6 +19,7 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../../_shared/arcade/arcade";
+import { type HeroArcadeStep } from "../../_shared/arcade/hero-arcade";
 
 const stateClass = (s: string) => "is-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 
@@ -1679,12 +1680,10 @@ export const STYLIZED_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = 
  * lifecycle section tell the same story with the same facts:
  *   PF-29 · find and confirm the current revision (shop floor)
  *   PF-4  · compare, sign under Part 11, release the training cascade
- * Labels are the reader's handle on the step. Rendered by
- * StylizedHeroArcade (stylized-hero-arcade.tsx). */
-export type StylizedHeroStep = {
-  label: string;
-  config: ArcadeStepConfig;
-};
+ * Labels are the reader's handle on the step. Rendered by the shared
+ * HeroArcade (_shared/arcade/hero-arcade.tsx), the same treatment every
+ * product page hero mounts. */
+export type StylizedHeroStep = HeroArcadeStep;
 
 export const STYLIZED_HERO_STEPS: StylizedHeroStep[] = [
   {

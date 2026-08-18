@@ -27,5 +27,119 @@
       "31b860e6-b45e-8136-a302-c009790a9dbb",
       "92a9e0bc-dea1-4e5b-94c8-310992d47afa"
     ]
+  },
+  {
+    "pageId": "360860e6-b45e-8172-9159-c3257ede244c",
+    "id": "UPD-1",
+    "name": "QMS",
+    "description": "Quality Management System. Bundles Non-conformance, Corrective and Preventive Actions, Audit Management, and Supplier Quality Modules in a single governed deployment for regulated manufacturers. Anchors under the Quality buyer Domain.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830",
+      "361860e6-b45e-8115-9243-c81508af35cc",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-810d-b38c-fa27d3add5b3",
+      "361860e6-b45e-8189-9069-f1d24eb544d3",
+      "361860e6-b45e-8134-be6a-c5123ecb5918",
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c"
+    ],
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891",
+      "360860e6-b45e-81f9-b780-eed760e72d52",
+      "360860e6-b45e-81d3-a93a-e61b8d677b3f",
+      "360860e6-b45e-8190-93dd-c339472bd5e8",
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-817b-a763-c1d362e2de2d",
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-8176-a514-d0c34e2bf0cd"
+    ],
+    "industries": [
+      "185860e6-b45e-8023-a7d3-e6053bad2a2b",
+      "34f58e4f-ed19-4e78-ad7b-cb8d41c2bdbd",
+      "fcb2a808-624e-4297-b048-2dab681a0074",
+      "20cf7650-f1ae-438f-88eb-e841ea97ab9c",
+      "2de860e6-b45e-8033-b605-de36415bd124",
+      "5006ba36-169f-4339-b104-ba91b347fd7c",
+      "325860e6-b45e-8123-a22b-efe9f976e999",
+      "26b79857-62aa-4ad3-825e-6fe2996db554"
+    ],
+    "standards": [
+      "e6dfdb52-f86a-463b-941d-dde4d96397ad",
+      "173ab229-ed9c-4f08-a64c-bd25dea753b2",
+      "cd6042e4-d95f-45f5-b387-5ac408a09d15",
+      "2ceb348a-2941-4c07-bdfd-236bf5a5886d",
+      "502770d7-4c7d-4c48-b8bd-104026db1294",
+      "31b860e6-b45e-8136-a302-c009790a9dbb",
+      "31b860e6-b45e-8162-96b9-eefd3da9e9c4",
+      "4e3e7984-f104-46ea-9752-8d31fa3c1c3c"
+    ]
+  },
+  {
+    "pageId": "360860e6-b45e-81f1-bc99-d32136dd45c7",
+    "id": "UPD-4",
+    "name": "PLM",
+    "description": "Product Lifecycle Management. Manages product specifications, design controls, process parameters, and FMEA/control plans through the product lifecycle. Bundles Product Specifications, Product Risk Management, Design Controls and Traceability, Inspection and Process Parameters, and FMEA and Control Plan Definition Modules. Pricing: starts at $1,650 per organization per month standalone; included in the Growth and Ultimate plans.",
+    "personas": [
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-8111-a174-d087651a29c3",
+      "360860e6-b45e-8166-8c6a-c3a5b4853822",
+      "360860e6-b45e-8181-acbf-f9420f5ac529",
+      "360860e6-b45e-8145-9547-e6da0daaf1f2",
+      "360860e6-b45e-8191-83af-f8702aaccf13"
+    ],
+    "industries": [
+      "185860e6-b45e-8023-a7d3-e6053bad2a2b",
+      "34f58e4f-ed19-4e78-ad7b-cb8d41c2bdbd",
+      "2de860e6-b45e-8033-b605-de36415bd124",
+      "5006ba36-169f-4339-b104-ba91b347fd7c",
+      "26b79857-62aa-4ad3-825e-6fe2996db554",
+      "49a68539-96cb-4f10-bb3d-ae130f016fd0",
+      "325860e6-b45e-8123-a22b-efe9f976e999"
+    ],
+    "standards": [
+      "173ab229-ed9c-4f08-a64c-bd25dea753b2",
+      "bb78e4c8-5b77-4399-a9b0-49fc14347465",
+      "2ceb348a-2941-4c07-bdfd-236bf5a5886d",
+      "502770d7-4c7d-4c48-b8bd-104026db1294",
+      "cd6042e4-d95f-45f5-b387-5ac408a09d15",
+      "fb9c85e8-d949-4c0d-9b71-c8ba960d7f06"
+    ]
+  },
+  {
+    "pageId": "360860e6-b45e-8166-8823-f1be9933b831",
+    "id": "UPD-5",
+    "name": "MES",
+    "description": "Manufacturing Execution System. Drives work order execution, electronic travellers, FAI and control plan execution, electronic batch records, and floor-level inspection. Bundles Work Order Management, eTravellers, FAI and Control Plan Execution, Inspections Forms and Checklists, and Electronic Batch/Lot Records with QR Codes Modules. Pricing: starts at $1,950 per organization per month standalone; included in the Ultimate plan.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e",
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-ae92-cd8156553076",
+      "360860e6-b45e-8140-b854-db4f40b603fa",
+      "360860e6-b45e-81cf-926b-da0e47ebac59",
+      "360860e6-b45e-819c-9ee6-e561035a55ba",
+      "360860e6-b45e-8174-9963-ec1d6d753a56"
+    ],
+    "industries": [
+      "34f58e4f-ed19-4e78-ad7b-cb8d41c2bdbd",
+      "185860e6-b45e-8023-a7d3-e6053bad2a2b",
+      "20cf7650-f1ae-438f-88eb-e841ea97ab9c",
+      "fcb2a808-624e-4297-b048-2dab681a0074",
+      "49a68539-96cb-4f10-bb3d-ae130f016fd0",
+      "26b79857-62aa-4ad3-825e-6fe2996db554"
+    ],
+    "standards": [
+      "ded7b898-02fe-45dc-b7bc-e4c02b9af6e7",
+      "173ab229-ed9c-4f08-a64c-bd25dea753b2",
+      "cd6042e4-d95f-45f5-b387-5ac408a09d15",
+      "31b860e6-b45e-8136-a302-c009790a9dbb",
+      "2ceb348a-2941-4c07-bdfd-236bf5a5886d",
+      "e11ef55d-7667-44dd-bc9d-2e08d0368ba5"
+    ]
   }
 ]

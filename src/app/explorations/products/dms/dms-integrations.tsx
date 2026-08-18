@@ -14,12 +14,15 @@
  * platform-level and shared across all four product pages. Used by the
  * standalone DMS page and the data-driven ProductPage.
  *
- * NOTE: the systems are REPRESENTATIVE of the stack Unifize coexists with,
- * not a certified connector list. Verify against the real connector catalogue
- * before shipping. Server component, no state.
+ * NOTE: the minimal-variant logo grid is grounded in the Notion "Website
+ * Integrations" DB via _shared/integrations-catalog.ts (Live rows only); each
+ * product page passes its own selection through the `logos` prop. The full
+ * variant's hubSystems come from each product's data file and name catalogue
+ * tools. Server component, no state.
  * -------------------------------------------------------------------------- */
 import { Eyebrow } from "./dms-primitives";
 import { Glyph } from "./dms-linework";
+import { PRODUCT_INTEGRATION_LOGOS, type IntegrationLogo } from "../_shared/integrations-catalog";
 
 export type IntegrationData = {
   heading: string;
@@ -50,15 +53,10 @@ const FACTS: { glyph: string; stat: string; sub: string }[] = [
   { glyph: "versions", stat: "Always current", sub: "One record, every system in step." },
 ];
 
-const LOGO_INTEGRATIONS = [
-  { name: "SAP", logo: "https://api.iconify.design/logos:sap.svg" },
-  { name: "Oracle", logo: "https://api.iconify.design/logos:oracle.svg" },
-  { name: "NetSuite", logo: "https://api.iconify.design/cib:oracle-netsuite.svg?color=%232D5B86" },
-  { name: "Okta", logo: "https://api.iconify.design/logos:okta.svg" },
-  { name: "SharePoint", logo: "https://api.iconify.design/streamline-logos:microsoft-sharepoint-logo-block.svg?color=%230078D4" },
-  { name: "Microsoft Teams", logo: "https://api.iconify.design/logos:microsoft-teams.svg" },
-  { name: "Google Drive", logo: "https://api.iconify.design/logos:google-drive.svg" },
-] as const;
+/* Default logo roster for the minimal variant: the DMS selection from the
+ * Website Integrations catalogue, so the standalone DMS pages are correct
+ * with no overrides passed. Other products pass their own selection. */
+const DEFAULT_LOGO_INTEGRATIONS = PRODUCT_INTEGRATION_LOGOS.dms;
 
 function IntegrationHub({ systems, record }: { systems: string[]; record: string }) {
   return (
@@ -85,6 +83,7 @@ export function IntegrationLayer({
   minimalHeading = "Works with the systems you already run.",
   minimalLede = "Connect document control to the tools already holding your product, people, and process data.",
   minimalEyebrow,
+  logos = DEFAULT_LOGO_INTEGRATIONS,
   ctaHeading = "Don’t see your system?",
   ctaBody = "We are always adding connectors. Bring us the stack you need to keep in step.",
   ctaLabel = "Talk to us",
@@ -98,6 +97,10 @@ export function IntegrationLayer({
   /** Optional section label for product pages that treat the minimal connector
    * layer as a named beat in the page hierarchy. */
   minimalEyebrow?: React.ReactNode;
+  /** The minimal-variant logo roster, from the Website Integrations catalogue
+   * (integrationLogos / PRODUCT_INTEGRATION_LOGOS). Defaults to the DMS
+   * selection. Keep it at seven so the grid fills two rows exactly. */
+  logos?: IntegrationLogo[];
   ctaHeading?: string;
   ctaBody?: string;
   ctaLabel?: string;
@@ -113,7 +116,7 @@ export function IntegrationLayer({
           </header>
 
           <div className="dms-intg__logo-grid" data-reveal>
-            {LOGO_INTEGRATIONS.map((integration) => (
+            {logos.map((integration) => (
               <div className="dms-intg__logo-card" key={integration.name}>
                 <img src={integration.logo} alt={`${integration.name} logo`} />
                 <span>{integration.name}</span>

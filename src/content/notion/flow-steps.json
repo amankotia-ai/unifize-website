@@ -1467,5 +1467,477 @@
     "journey": [
       "3a4860e6-b45e-8121-b027-ed7a344f97f9"
     ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81c8-83cb-ec90b9828e15",
+    "id": "124",
+    "name": "Pick up the released work order from the line queue",
+    "index": 1,
+    "what": "The released work order lands on the operator's queue with the traveller, routing, and staged materials linked. The shift starts from the queue, not from a printed packet handed out at the huddle.",
+    "decision": "Is everything staged to start, or does the release need a query back to planning.",
+    "role": "Operator",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8177-9c59-ddb0147f90a9"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-812f-95ac-feb6f1de013e",
+    "id": "125",
+    "name": "Open the eTraveller with the current work instruction in context",
+    "index": 2,
+    "what": "The traveller opens at the active routing step with the controlled work instruction at its current revision and the lot context on the record. Nothing is fetched from a binder or a shared drive.",
+    "decision": "Is this the right step and revision for the lot on the line.",
+    "role": "Operator",
+    "primitives": [
+      "Errors",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8177-9c59-ddb0147f90a9"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-814c-976d-e0d682a446f9",
+    "id": "126",
+    "name": "Execute the step's checks as structured tasks at the station",
+    "index": 3,
+    "what": "In-process checks run as structured tasks with acceptance criteria attached. Each reading is captured at the station as it happens, and a failed criterion holds the step and raises the exception in real time.",
+    "decision": "Does each reading pass its criteria, or does the step need a hold.",
+    "role": "Inspector",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8177-9c59-ddb0147f90a9"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8159-b95f-db642023d664",
+    "id": "127",
+    "name": "Record batch data with evidence sealed to the lot",
+    "index": 4,
+    "what": "Readings, consumed lots, and equipment land on the electronic batch record with operator and timestamp sealed to each entry. Genealogy links as lots are consumed, so the record builds as the work happens instead of being assembled at the end.",
+    "decision": "Is the entry complete before the step closes.",
+    "role": "Recorder",
+    "primitives": [
+      "Reconciliation",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8177-9c59-ddb0147f90a9"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8150-be38-ffdd5b1b5894",
+    "id": "128",
+    "name": "Sign the operation and hand the traveller to the next station",
+    "index": 5,
+    "what": "The operator signs the completed operation with a regulated electronic signature and the traveller advances to the next station with its context attached. The handoff carries the record, not a verbal summary.",
+    "decision": "Is the operation clean to hand off, or does an exception need to be flagged first.",
+    "role": "Approver",
+    "primitives": [
+      "Status-chasing",
+      "Meetings"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8177-9c59-ddb0147f90a9"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81be-867c-e60dc84ae2b0",
+    "id": "129",
+    "name": "Pick up the first article inspection from the queue",
+    "index": 1,
+    "what": "The FAI lands on the inspector's queue when the first article comes off the line, with the control plan characteristics and acceptance criteria already attached to the task.",
+    "decision": "Act on the first article now or finish the current inspection first.",
+    "role": "Queue scanner",
+    "primitives": [
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-a15c-eb88ec29d7a7"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-814a-8a3e-fcec9ea8c461",
+    "id": "130",
+    "name": "Measure the characteristics against the control plan",
+    "index": 2,
+    "what": "The inspector works through the characteristic list with the criteria beside each entry. Each measurement is captured against its tolerance as it is taken, not transcribed from a paper form afterwards.",
+    "decision": "Does each characteristic measure within its tolerance.",
+    "role": "Inspector",
+    "primitives": [
+      "Errors",
+      "Translation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-a15c-eb88ec29d7a7"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81fa-a0fa-cb61455a3dc9",
+    "id": "131",
+    "name": "Flag the out-of-tolerance reading and hold the run",
+    "index": 3,
+    "what": "One dimension measures out of tolerance. The failed characteristic raises a hold on the record in real time, so the line is not running while the result sits in an inbox.",
+    "decision": "Hold the run, or pass with a documented deviation.",
+    "role": "Gatekeeper",
+    "primitives": [
+      "Errors",
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-a15c-eb88ec29d7a7"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81df-84e0-caf40b72e65e",
+    "id": "132",
+    "name": "Escalate the disposition with the evidence attached",
+    "index": 4,
+    "what": "The hold routes to the production supervisor and process engineer with the measurement, the characteristic, and the control-plan criterion in one thread on the record. The disposition call is made where the evidence already is.",
+    "decision": "Rework the setup, or scrap the first article and reset.",
+    "role": "Coordinator",
+    "primitives": [
+      "Meetings",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-a15c-eb88ec29d7a7"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81c2-93fd-d12246d73a7b",
+    "id": "133",
+    "name": "Approve the first article and release the run",
+    "index": 5,
+    "what": "After the correction, the re-measured characteristic passes and the inspector approves the first article. The disposition and its evidence seal to the record and the run is released to continue.",
+    "decision": "Is the first article proven enough to release the run.",
+    "role": "Approver",
+    "primitives": [
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-a15c-eb88ec29d7a7"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-818b-9512-c7057324af18",
+    "id": "134",
+    "name": "Open the review-by-exception queue at end of lot",
+    "index": 1,
+    "what": "The lot closes with its batch record already built. The supervisor's queue shows only the exceptions: flagged entries, missing signatures, out-of-trend readings. The clean entries do not ask for time.",
+    "decision": "Which exception to clear first.",
+    "role": "Queue scanner",
+    "primitives": [
+      "Status-chasing",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-819d-bd38-ce9fef9c6873"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8190-bdda-d8f4b07c6a9d",
+    "id": "135",
+    "name": "Resolve each exception on the record",
+    "index": 2,
+    "what": "Each flagged entry opens with its station context: who captured it, at which step, against which criterion. The resolution is decided in the record's thread and lands next to the entry it concerns.",
+    "decision": "Accept with justification, or send back to the station for correction.",
+    "role": "Reviewer",
+    "primitives": [
+      "Decision-rebuilding",
+      "Meetings"
+    ],
+    "journey": [
+      "3c0860e6-b45e-819d-bd38-ce9fef9c6873"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81d7-bafc-ebab297df321",
+    "id": "136",
+    "name": "Verify the lot genealogy end to end",
+    "index": 3,
+    "what": "Consumed lots, equipment, and operators trace through the record. The genealogy is checked on the record itself, not reconciled across the ERP, the paper traveller, and a logbook.",
+    "decision": "Does the genealogy close with no orphan entries.",
+    "role": "Verifier",
+    "primitives": [
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-819d-bd38-ce9fef9c6873"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8119-a656-efa52f38e2d9",
+    "id": "137",
+    "name": "Seal the batch record with a Part 11 signature",
+    "index": 4,
+    "what": "The reconciled record seals under a regulated electronic signature with signer, meaning, and timestamp. From release to seal, every entry carries who, when, and against what criterion.",
+    "decision": "Is the record complete enough to seal, or does anything need a final correction.",
+    "role": "Approver",
+    "primitives": [
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-819d-bd38-ce9fef9c6873"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8155-bc05-d4590b973bec",
+    "id": "138",
+    "name": "Release the lot with QR-coded traceability",
+    "index": 5,
+    "what": "The sealed lot releases with QR codes that carry its traceability downstream through distribution. An auditor's question about this lot starts and ends at one record.",
+    "decision": "Release to distribution now or stage the lot.",
+    "role": "Releaser",
+    "primitives": [
+      "Status-chasing",
+      "Translation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-819d-bd38-ce9fef9c6873"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-818f-9be8-c31cf33b6bf2",
+    "id": "139",
+    "name": "Open the specification with its requirement trace in view",
+    "index": 1,
+    "what": "The product specification opens with the requirements it satisfies and the verifications that cover it linked on the record, so the change starts from the live trace rather than a spreadsheet matrix.",
+    "decision": "Which requirements the proposed change touches.",
+    "role": "Engineer",
+    "primitives": [
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-9375-db4eecb414a2"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8134-9bbb-ea2d86d05c17",
+    "id": "140",
+    "name": "Assess the risk with the FMEA linked",
+    "index": 2,
+    "what": "The risk assessment runs on the record with the FMEA line items linked. Severity, occurrence, and detection are judged against the current controls rather than a copy on someone's drive.",
+    "decision": "Does the residual risk stay acceptable, or does the change need a new mitigation.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding",
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-9375-db4eecb414a2"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81cc-8d6f-e5cc66db1b9e",
+    "id": "141",
+    "name": "Revise the specification as a controlled change",
+    "index": 3,
+    "what": "The tolerance change is made as a controlled revision: the old and new values sit side by side with the rationale, and the affected documents surface automatically.",
+    "decision": "Is the rationale strong enough to carry the design review.",
+    "role": "Author",
+    "primitives": [
+      "Translation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-9375-db4eecb414a2"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81ff-9ed5-cddca951204a",
+    "id": "142",
+    "name": "Route the design review across functions",
+    "index": 4,
+    "what": "The design review routes to engineering, quality, and regulatory in one structured step. Each reviewer receives the change, the risk assessment, and the trace in a single package on the record.",
+    "decision": "Who must sign, given the classification of the change.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing",
+      "Meetings"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-9375-db4eecb414a2"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8180-8da6-c32fe443c552",
+    "id": "143",
+    "name": "Close the trace and write the design history file entry",
+    "index": 5,
+    "what": "On approval, the requirement-to-verification trace updates and the design history file entry writes itself from the record. Verification evidence links where an auditor will look for it.",
+    "decision": "Is the trace complete, with no orphaned requirement or uncovered change.",
+    "role": "Verifier",
+    "primitives": [
+      "Reconciliation",
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8196-9375-db4eecb414a2"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8160-afd7-e27966317619",
+    "id": "144",
+    "name": "Open the FMEA at the changed interface",
+    "index": 1,
+    "what": "The process FMEA opens filtered to the line items the specification change touches. Severity, occurrence, and detection are scored against the current controls, which are linked on the record, not remembered.",
+    "decision": "Which failure modes the change moves.",
+    "role": "Assessor",
+    "primitives": [
+      "Decision-rebuilding",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8107-b465-d2f63fd6e804"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81de-bb69-fae07c46bd61",
+    "id": "145",
+    "name": "Rescore the risk and surface the modes over threshold",
+    "index": 2,
+    "what": "Rescoring raises one mode's RPN above the action threshold. The mode escalates to review on the record instead of waiting for the next FMEA workshop.",
+    "decision": "Accept the risk with the current controls, or add a control.",
+    "role": "Assessor",
+    "primitives": [
+      "Meetings",
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8107-b465-d2f63fd6e804"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8102-bda0-d692bd9d4b8e",
+    "id": "146",
+    "name": "Tighten the control plan from the FMEA line items",
+    "index": 3,
+    "what": "The control plan updates from the FMEA: detection moves upstream, and each control carries its rationale and the failure mode it mitigates. The FMEA and the plan stay one record, not two spreadsheets.",
+    "decision": "Which control detects the mode earliest at acceptable cost.",
+    "role": "Author",
+    "primitives": [
+      "Translation",
+      "Reconciliation"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8107-b465-d2f63fd6e804"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81d7-bd37-fd6c294aa75a",
+    "id": "147",
+    "name": "Define the inspection and process parameters",
+    "index": 4,
+    "what": "Inspection points, process parameters, limits, and sampling rules are defined as structured fields tied to the characteristic they control, with acceptance criteria that will travel with them.",
+    "decision": "Which characteristics need checks, at what frequency.",
+    "role": "Author",
+    "primitives": [
+      "Translation",
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8107-b465-d2f63fd6e804"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-814a-84d6-c22d09722c3f",
+    "id": "148",
+    "name": "Publish the parameters to the floor",
+    "index": 5,
+    "what": "On approval the parameters flow to the traveller and the station checklists. What production measures is exactly what the plan defines, with no re-keying between systems.",
+    "decision": "Is the plan ready to govern the next run.",
+    "role": "Publisher",
+    "primitives": [
+      "Translation",
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-8107-b465-d2f63fd6e804"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81f9-8842-db0c659e45cc",
+    "id": "149",
+    "name": "Open release readiness with the trace matrix live",
+    "index": 1,
+    "what": "The release view shows requirement-to-result coverage as it stands: every input, the outputs that satisfy it, and the verifications that close it, assembled from the record rather than a spreadsheet built the week before the gate.",
+    "decision": "Is the design close enough to schedule the release review.",
+    "role": "Reviewer",
+    "primitives": [
+      "Reconciliation",
+      "Status-chasing"
+    ],
+    "journey": [
+      "3c0860e6-b45e-81c6-81c9-f18da82e4ee8"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81ed-953e-d1e672c4d2ce",
+    "id": "150",
+    "name": "Find the requirement with no linked result",
+    "index": 2,
+    "what": "One requirement shows no covering verification. It surfaces as a gap on the record instead of passing review silently and becoming a predictable audit finding.",
+    "decision": "Block the release on the gap, or accept a documented deviation.",
+    "role": "Gatekeeper",
+    "primitives": [
+      "Errors",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3c0860e6-b45e-81c6-81c9-f18da82e4ee8"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-814b-b499-d613dc02d1e9",
+    "id": "151",
+    "name": "Assign the verification with its context attached",
+    "index": 3,
+    "what": "The verification task routes to the responsible engineer with the requirement, the output, and the protocol linked. The assignee starts from the record, not from a forwarded email chain.",
+    "decision": "Who owns the verification, and by when.",
+    "role": "Coordinator",
+    "primitives": [
+      "Status-chasing",
+      "Meetings"
+    ],
+    "journey": [
+      "3c0860e6-b45e-81c6-81c9-f18da82e4ee8"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-81a3-9ae1-eecd08b4f422",
+    "id": "152",
+    "name": "Close the chain as the result links back",
+    "index": 4,
+    "what": "The test result lands on the record and links to the requirement it closes. Coverage updates live, and the gap disappears from the release view the moment the evidence exists.",
+    "decision": "Does the result actually satisfy the requirement's acceptance criteria.",
+    "role": "Verifier",
+    "primitives": [
+      "Reconciliation",
+      "Errors"
+    ],
+    "journey": [
+      "3c0860e6-b45e-81c6-81c9-f18da82e4ee8"
+    ]
+  },
+  {
+    "pageId": "3c0860e6-b45e-8123-be34-cad45f9dcc7a",
+    "id": "153",
+    "name": "Release the revision with the trace unbroken",
+    "index": 5,
+    "what": "The release approves with an unbroken chain from requirement to result. The design history file entry writes from the record, and the released definition becomes the one the floor builds to.",
+    "decision": "Approve the release, or return it with the gaps named.",
+    "role": "Approver",
+    "primitives": [
+      "Status-chasing",
+      "Decision-rebuilding"
+    ],
+    "journey": [
+      "3c0860e6-b45e-81c6-81c9-f18da82e4ee8"
+    ]
   }
 ]

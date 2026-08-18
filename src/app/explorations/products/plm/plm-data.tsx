@@ -8,9 +8,9 @@
  * record IDs in the mocks are illustrative.
  * ========================================================================== */
 import type { ProductPageData } from "../_shared/ProductPage";
+import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/product-audience";
 import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { buildProductFlows } from "../_shared/product-flows";
-import { PLM_DRAFT_FLOWS } from "./plm-arcade";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 
 const HERO_STANDARDS = ["ISO 13485", "21 CFR 820", "ISO 14971", "IATF 16949", "AS 9100", "IEC 62304"];
@@ -119,24 +119,43 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
 ];
 
 /* ---- Product Flows: persona journeys for the PLM modules -----------------
- * No flow in the Product Flows DB touches the PLM modules yet; the Notion
- * wiring below activates when Ben's team authors design control flows.
- * Until then the page carries the page-owned DRAFT journey from
- * plm-arcade.tsx, labeled as such, whose step rows are proposed for the DB. */
-export const PLM_FLOWS = [
-  ...buildProductFlows({
-    page: "plm",
-    moduleIds: [
-      "360860e6-b45e-8111-a174-d087651a29c3" /* Product Specifications */,
-      "360860e6-b45e-8166-8c6a-c3a5b4853822" /* Product Risk Management */,
-      "360860e6-b45e-8181-acbf-f9420f5ac529" /* Design Controls & Traceability */,
-      "360860e6-b45e-8145-9547-e6da0daaf1f2" /* Inspection & Process Parameters */,
-      "360860e6-b45e-8191-83af-f8702aaccf13" /* FMEA & Control Plan Definition */,
-    ],
-    presentation: {},
-  }),
-  ...PLM_DRAFT_FLOWS,
-];
+ * Notion-backed (Product Flows DB): PF-34 design engineer spec change,
+ * PF-35 APQP control plan from the FMEA, PF-36 engineering manager release
+ * with the trace closed. Chip titles, actors, descriptions, and station
+ * spans are page-owned presentation; the step truth is the DB's. */
+export const PLM_FLOWS = buildProductFlows({
+  page: "plm",
+  moduleIds: [
+    "360860e6-b45e-8111-a174-d087651a29c3" /* Product Specifications */,
+    "360860e6-b45e-8166-8c6a-c3a5b4853822" /* Product Risk Management */,
+    "360860e6-b45e-8181-acbf-f9420f5ac529" /* Design Controls & Traceability */,
+    "360860e6-b45e-8145-9547-e6da0daaf1f2" /* Inspection & Process Parameters */,
+    "360860e6-b45e-8191-83af-f8702aaccf13" /* FMEA & Control Plan Definition */,
+  ],
+  presentation: {
+    "34": {
+      order: 0,
+      title: "Carry a spec change to release",
+      actor: "Design Engineer",
+      description: "Change the specification under design controls with the trace and the risk in view.",
+      stations: [0, 1, 2],
+    },
+    "35": {
+      order: 1,
+      title: "Build the control plan",
+      actor: "APQP Engineer",
+      description: "Score the FMEA, tighten the plan, and flow the parameters to the floor without re-keying.",
+      stations: [2, 3],
+    },
+    "36": {
+      order: 2,
+      title: "Release with the trace closed",
+      actor: "Engineering Manager",
+      description: "Find the uncovered requirement before the gate does, and release on evidence.",
+      stations: [3, 4],
+    },
+  },
+});
 
 /* the PLM external standards (Notion External Standards relation) */
 const STANDARDS: ProductPageData["compliance"]["standards"] = [
@@ -151,7 +170,7 @@ const STANDARDS: ProductPageData["compliance"]["standards"] = [
  * remain to resolve once the Notion API is reachable again. */
 const INDUSTRIES: string[] = ["Medical Devices", "Pharmaceuticals", "Automotive", "Aerospace"];
 
-export const PLM_DATA: ProductPageData = {
+export const PLM_DATA: Omit<ProductPageData, "owners"> = {
   slug: "plm",
   crumbLabel: "Product Lifecycle Management",
   metaTitle: "Product Lifecycle Management · Unifize",
@@ -239,70 +258,19 @@ export const PLM_DATA: ProductPageData = {
     mobileNote: { label: "Design controls trace", id: "requirement → output → verification → validation → release" },
   },
 
-  // NOTE: hubSystems below are REPRESENTATIVE of the stack Unifize coexists with
-  // (grounded in the industry coexistence copy), not a certified connector list.
-  // Verify against the real connector catalogue before shipping.
+  // NOTE: hubSystems name tools from the Notion "Website Integrations" DB
+  // (mirrored in _shared/integrations-catalog.ts, Live rows only), so this is
+  // the real connector catalogue rather than a representative stack.
   integrations: {
     heading: "The released design and the systems downstream never diverge.",
     lede: "A product record is only useful if the ERP, CAD, and floor agree with it. Unifize sits over the tools that already hold your parts and drawings, so a change to a requirement reaches every system it touches without a re-keyed BOM.",
     record: "the product record",
-    hubSystems: ["SAP", "Oracle", "NetSuite", "SolidWorks", "Onshape", "Autodesk", "Arena", "MES"],
+    hubSystems: ["Solidworks", "AutoCAD", "SAP", "Oracle NetSuite", "Epicor Kinetic", "Jira", "SharePoint", "SSO/SAML"],
   },
 
-  owners: {
-    eyebrowN: 5,
-    heading: "For the people who own the product definition.",
-    // NOTE: `img` values are PLACEHOLDERS — the two existing DMS persona
-    // portraits, reused so the photo layout is visible now. Swap each for an
-    // art-directed portrait of the actual role (see persona-image-art-direction:
-    // low-key film look, fg+bg ghost motion blur, 3:2, sourced >=1800x1200).
-    items: [
-      {
-        name: "Design Engineer",
-        tier: "Primary owner",
-        aka: "R&D Engineer · Mechanical · Electrical · NPD Engineer",
-        summary: "Owns that the product can be made, used, and supported. Drafts design inputs, runs design reviews, completes FMEAs, and releases drawings and specifications to manufacturing.",
-        daily: ["Author design documents, run design reviews", "Complete FMEAs and risk assessments", "Close design verification and validation"],
-        img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-      },
-      {
-        name: "Engineering Manager",
-        tier: "Primary owner",
-        aka: "Director of Engineering · R&D Manager · Engineering Lead",
-        summary: "Approves design and change decisions for the engineering function. Chairs design reviews, signs off engineering change orders, and balances cost against quality against schedule.",
-        daily: ["Approve ECOs, chair design reviews", "Review FMEAs, allocate engineering resource", "Report engineering metrics to management review"],
-        img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
-      },
-    ],
-  },
-
-  // NOTE: sample stories in the industry-template-modern fiction (fictional
-  // brands, stock portraits); replace with real, verified stories before
-  // shipping. Landscape portraits, faces-cropped, mirror the DMS proof band.
-  proof: {
-    eyebrowN: 6,
-    kicker: "What engineering teams say",
-    testimonials: [
-      {
-        quote: "Every requirement now points to the test that closed it. Design review stopped being an archaeology project.",
-        name: "Rahul Menon",
-        title: "Director of Engineering · Vantage Instruments",
-        img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-      {
-        quote: "A spec change shows every FMEA and control plan it touches before anyone approves it. We stopped breaking things downstream.",
-        name: "Clara Boden",
-        title: "Principal Design Engineer · Helix Surgical",
-        img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-      {
-        quote: "Our design history file used to take weeks to assemble. Now the trace is intact the day we release.",
-        name: "Tomas Herrera",
-        title: "R&D Manager · Aerinox",
-        img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&crop=faces&w=2000&h=1000&q=70",
-      },
-    ],
-  },
+  // Who it is for renders from the Notion mirrors via PLM_AUDIENCE below;
+  // Customer proof renders from the Website Customer Videos mirror via
+  // plm-proof.tsx (real films, Notion-governed); no sample stories here.
 
   pains: {
     eyebrowN: 7,
@@ -390,4 +358,37 @@ export const PLM_DATA: ProductPageData = {
       },
     ],
   },
+};
+
+/* who it is for - section 05. Derived from the Notion mirrors, not
+ * hand-typed. Membership = the Target Personas relation on the PLM row
+ * (UPD-4) in src/content/notion/products.json; facts (role name, daily
+ * activities) come from the personas mirror. Adding or removing a persona on
+ * the PLM row in Notion adds or removes the card here on the next sync.
+ * Presentation (the span each role owns in the design lifecycle, portrait,
+ * PLM-context daily lines distilled from the persona's Notion Daily
+ * Activities) stays page-owned below, keyed by persona ID.
+ * NOTE: `img` values are PLACEHOLDERS: the two existing DMS persona
+ * portraits, reused so the photo layout is visible now. Swap each for an
+ * art-directed portrait of the actual role (see persona-image-art-direction:
+ * low-key film look, fg+bg ghost motion blur, 3:2, sourced >=1800x1200). */
+const PLM_PERSONA_PRESENTATION: Record<string, PersonaPresentation> = {
+  /* Design Engineer */
+  "PPS-7": {
+    owns: "Design input → Verification",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    daily: ["Author design documents, run design reviews", "Complete FMEAs and risk assessments", "Close design verification and validation"],
+  },
+  /* Engineering Manager */
+  "PPS-8": {
+    owns: "Review → Release",
+    img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
+    daily: ["Approve ECOs, chair design reviews", "Review FMEAs, allocate engineering resource", "Report engineering metrics to management review"],
+  },
+};
+
+export const PLM_AUDIENCE = {
+  heading: "For the people who own the product definition.",
+  lede: "From design input to release, every role works from the same controlled record.",
+  personas: buildAudiencePersonas("UPD-4", PLM_PERSONA_PRESENTATION),
 };

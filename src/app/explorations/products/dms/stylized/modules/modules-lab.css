@@ -40,7 +40,7 @@
 
 .stx-mlab__title {
   margin: 0 0 10px;
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: clamp(26px, 3.4vw, 40px);
   font-weight: 750;
   letter-spacing: -0.02em;

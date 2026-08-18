@@ -44,7 +44,7 @@
   position: absolute;
   right: clamp(-10px, 0.5vw, 18px);
   top: clamp(2px, 1.2vw, 18px);
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: clamp(84px, 9.6vw, 148px);
   font-weight: 700;
   letter-spacing: -0.04em;
@@ -126,7 +126,7 @@
 .dms--stylized .stx-panel__glyph svg { width: 18px; height: 18px; }
 .dms--stylized .stx-panel__id { display: flex; flex-direction: column; gap: 2px; min-width: 0; margin-right: auto; }
 .dms--stylized .stx-panel__id b {
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 20px;
   font-weight: 650;
   letter-spacing: -0.01em;
@@ -357,7 +357,7 @@
 }
 .dms--stylized .stx-doccard__id .stx-mono { font-size: 18px; font-weight: 700; }
 .dms--stylized .stx-doccard__title {
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 18px;
   font-weight: 650;
   letter-spacing: -0.005em;
@@ -454,7 +454,7 @@
   gap: 12px;
 }
 .dms--stylized .stx-signcard__top b {
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -559,7 +559,7 @@
   margin: 0 0 12px;
 }
 .dms--stylized .stx-timeline__head b {
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 18px;
   font-weight: 650;
   letter-spacing: -0.01em;
@@ -727,7 +727,7 @@
 .dms--stylized .stx-arc__bar > b {
   min-width: 0;
   overflow: hidden;
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 14px;
   font-weight: 650;
   text-overflow: ellipsis;
@@ -1142,7 +1142,7 @@
   margin-bottom: 7px;
   background: var(--dms-accent);
   color: #fff;
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-size: 17px;
   font-weight: 750;
 }
@@ -2102,17 +2102,17 @@
 }
 
 .dms--stylized .stx-modvis.is-document .stx-modvis__geometry {
-  background: #0758ed;
+  background: #1c72d6;
   clip-path: polygon(49% 100%, 49% 71%, 100% 10%, 100% 100%);
 }
 
 .dms--stylized .stx-modvis.is-training .stx-modvis__geometry {
-  background: #0758ed;
+  background: #1c72d6;
   clip-path: polygon(39% 100%, 39% 68%, 72% 8%, 100% 8%, 100% 100%);
 }
 
 .dms--stylized .stx-modvis.is-change .stx-modvis__geometry {
-  background: linear-gradient(180deg, #064dbf, #0b5cf0);
+  background: linear-gradient(180deg, #005bb7, #1c72d6);
   clip-path: polygon(0 0, 33% 0, 33% 100%, 0 100%);
 }
 
@@ -2144,7 +2144,7 @@
 .dms--stylized .stx-modvis p { margin: 0; }
 
 .dms--stylized .stx-modvis h3 {
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
   font-weight: 650;
   letter-spacing: -0.025em;
   line-height: 1.08;
@@ -2183,7 +2183,7 @@
 }
 
 .dms--stylized .stx-modvis__status.is-implementation {
-  background: linear-gradient(180deg, #0c5ce9, #0346bd);
+  background: linear-gradient(180deg, #1c72d6, #005bb7);
   color: #fff;
 }
 
@@ -2194,7 +2194,7 @@
   width: clamp(38px, 5.4cqi, 70px);
   height: clamp(44px, 6.3cqi, 80px);
   flex: none;
-  color: #0758ed;
+  color: #1c72d6;
 }
 
 .dms--stylized .stx-modvis__docicon.is-green { color: #109955; }
@@ -2232,7 +2232,7 @@
   position: absolute;
   z-index: 1;
   overflow: visible;
-  color: #0758ed;
+  color: #1c72d6;
 }
 
 /* Document Control: current controlled version connected to its immutable history. */
@@ -2322,11 +2322,11 @@
 }
 
 .dms--stylized .stx-modvis__history-row b { color: #29303b; }
-.dms--stylized .stx-modvis__history-row.is-current b { color: #0758ed; }
+.dms--stylized .stx-modvis__history-row.is-current b { color: #1c72d6; }
 .dms--stylized .stx-modvis__history-row em {
   padding: 0.4em 0.7em;
   border-radius: 999px;
-  background: #0758ed;
+  background: #1c72d6;
   color: #fff;
   font-size: 0.8em;
   font-style: normal;
@@ -2443,13 +2443,13 @@
 .dms--stylized .stx-modvis__affected > .stx-modvis__docicon {
   padding: 0.5em;
   border-radius: 0.7em;
-  background: #eaf1ff;
+  background: #deecff;
 }
 
 .dms--stylized .stx-modvis__affected > div { display: flex; min-width: 0; flex-direction: column; gap: 0.3em; }
 .dms--stylized .stx-modvis__affected small { color: #202733; white-space: nowrap; }
 .dms--stylized .stx-modvis__affected b {
-  color: #0758ed;
+  color: #1c72d6;
   font-size: clamp(17px, 2.6cqi, 32px);
   letter-spacing: -0.02em;
 }
@@ -2465,7 +2465,7 @@
   height: clamp(28px, 3.7cqi, 46px);
   border: clamp(3px, 0.35cqi, 5px) solid #dbe6fa;
   border-radius: 50%;
-  background: #0758ed;
+  background: #1c72d6;
   color: #fff;
   font-size: clamp(14px, 1.8cqi, 22px);
   font-weight: 700;
@@ -2492,9 +2492,9 @@
   line-height: 1.2;
 }
 
-.dms--stylized .stx-modvis__automator-strip b { color: #1f72ff; font-size: 1.12em; }
+.dms--stylized .stx-modvis__automator-strip b { color: #1c72d6; font-size: 1.12em; }
 .dms--stylized .stx-modvis__automator-strip i { width: 1px; height: 1.5em; flex: none; background: #87909d; }
-.dms--stylized .stx-modvis__spark { color: #1f72ff; font-size: 1.5em; }
+.dms--stylized .stx-modvis__spark { color: #1c72d6; font-size: 1.5em; }
 
 /* Training Management: the released revision fans out into individual evidence. */
 .dms--stylized .stx-modvis__release-card {
@@ -2544,7 +2544,7 @@
   display: flex;
   align-items: center;
   gap: 0.6em;
-  color: #0758ed;
+  color: #1c72d6;
   font-size: clamp(15px, 2.2cqi, 27px);
 }
 
@@ -2554,7 +2554,7 @@
   width: 1.85em;
   height: 1.85em;
   border-radius: 50%;
-  background: #0758ed;
+  background: #1c72d6;
   color: #fff;
 }
 
@@ -2605,10 +2605,10 @@
   width: 2.5em;
   height: 2.5em;
   border-radius: 50%;
-  background: #eaf1ff;
-  color: #0758ed;
+  background: #deecff;
+  color: #1c72d6;
   font-size: 1.2em;
-  font-family: var(--u-display);
+  font-family: var(--u-display) !important;
 }
 
 .dms--stylized .dms-modx__standards {
@@ -2679,107 +2679,4 @@
   .dms--stylized .dms-modx__standards span:nth-child(n + 3) {
     display: none;
   }
-}
-
-/* ========================================================== HERO ARCADE
- * The hero product shot is the shared arcade engine walking five moments of
- * SOP-118 (stylized-hero-arcade.tsx). The scene brings its own accent field,
- * so the old blue plate and its framed screenshot drop away; what stays is
- * the app window on the field, a numbered step rail under it, and the
- * caption that says what the frame proves. Dark-hero tokens throughout. */
-.dms--stylized .dms-hero__product-demo--arcade .dms-heroarc__stage {
-  position: relative;
-  overflow: hidden;
-  background: transparent;
-}
-.dms--stylized .dms-heroarc__stage .stx-root { display: block; height: 100%; }
-/* the field is the hero's own dark ground plus the accent wash the engine
- * paints; the free-floating geometry stays, cropped by the stage */
-.dms--stylized .dms-heroarc__stage .sty-scene.is-arcade {
-  overflow: hidden;
-  background: linear-gradient(
-    152deg,
-    color-mix(in oklab, var(--dms-accent), #fff 6%),
-    var(--dms-accent) 46%,
-    color-mix(in oklab, var(--dms-accent), #08102c 30%)
-  );
-}
-.dms--stylized .dms-heroarc__stage .stx-arc__camera {
-  outline-color: oklch(1 0 0 / 0.16);
-  box-shadow:
-    0 24px 48px -18px oklch(0 0 0 / 0.5),
-    0 64px 120px -34px oklch(0 0 0 / 0.55);
-}
-
-/* ------------------------------------------------------------- step rail */
-.dms--stylized .dms-heroarc__rail {
-  display: grid;
-  margin-top: 20px;
-}
-.dms--stylized .dms-heroarc__steps {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid var(--dms-d-border);
-  list-style: none;
-}
-.dms--stylized .dms-heroarc__btn {
-  position: relative;
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  width: 100%;
-  padding: 14px 12px 14px 0;
-  border: 0;
-  background: none;
-  color: var(--dms-d-ink-3);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: color 160ms ease-out;
-}
-.dms--stylized .dms-heroarc__n {
-  font-family: var(--dms-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-}
-.dms--stylized .dms-heroarc__label {
-  font-size: 0.95rem;
-  font-weight: 600;
-  line-height: 1.2;
-}
-.dms--stylized .dms-heroarc__btn:hover,
-.dms--stylized .dms-heroarc__btn:focus-visible { color: var(--dms-d-ink); }
-.dms--stylized .dms-heroarc__step.is-past .dms-heroarc__btn { color: var(--dms-d-ink-2); }
-.dms--stylized .dms-heroarc__step.is-active .dms-heroarc__btn { color: var(--dms-d-ink); }
-/* the active step owns the rule above it; while the timer runs, the rule
- * fills left to right so the dwell is legible instead of surprising */
-.dms--stylized .dms-heroarc__step.is-active .dms-heroarc__btn::before {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  content: "";
-  background: color-mix(in oklab, var(--dms-accent), transparent 62%);
-}
-.dms--stylized .dms-heroarc__tick {
-  position: absolute;
-  top: -1px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--dms-accent);
-  transform-origin: 0 50%;
-  animation: dms-heroarc-tick linear both;
-}
-@keyframes dms-heroarc-tick {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
-}
-
-@media (max-width: 860px) {
-  .dms--stylized .dms-heroarc__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dms--stylized .dms-heroarc__step { border-bottom: 1px solid var(--dms-d-border); }
 }

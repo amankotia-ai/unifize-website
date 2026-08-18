@@ -270,14 +270,14 @@ export const DMS_FLOWS: DmsFlow[] = buildProductFlows({
  * coordination layer over the systems of record a document library lives
  * against: ERP (part masters), PLM (specs it controls), identity (who is
  * trained), and content sources it consolidates.
- * NOTE: hubSystems are REPRESENTATIVE of the stack Unifize coexists with
- * (grounded in the industry coexistence copy), not a certified connector list.
- * Verify against the real connector catalogue before shipping. */
+ * NOTE: hubSystems name tools from the Notion "Website Integrations" DB
+ * (mirrored in _shared/integrations-catalog.ts, Live rows only), so this is
+ * the real connector catalogue rather than a representative stack. */
 export const INTEGRATIONS: IntegrationData = {
   heading: dmsCopy("integrations.diagram.heading", "A controlled document is filed against the record it governs."),
   lede: dmsCopy("integrations.diagram.lede", "A document never lives alone. Unifize sits over the ERP, PLM, and identity systems you already run, so a controlled document is filed against the real part, distributed to the real people, and never becomes a fourth copy."),
   record: "the controlled document",
-  hubSystems: ["SAP", "Oracle", "NetSuite", "Windchill", "Arena", "Okta", "Entra ID", "SharePoint"],
+  hubSystems: ["SAP", "Oracle NetSuite", "Dynamics 365", "SharePoint", "Solidworks", "Slack", "Email", "SSO/SAML"],
 };
 
 /* capabilities - six, one short line each. glyph keys map to the line-work
