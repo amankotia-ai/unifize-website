@@ -4,7 +4,9 @@
  * stylized component fragments (no full screens, no app sidebar, no window
  * chrome), background arcs linking records, oversized stylized headers, and
  * the AI acting from outside the frame. The hero's establishing shot is the
- * shared arcade engine walking five key moments of SOP-118.
+ * shared arcade engine walking six key moments of SOP-118, bookended by the
+ * no-code process builder and the live document-control dashboard (both
+ * lifted from the DMS demo video, Aug 2026).
  * Copy, data, and every non-product-visual section are identical to ../page.
  * ========================================================================== */
 import type { Metadata } from "next";
@@ -91,7 +93,8 @@ export default function DmsStylizedPage() {
           </div>
 
           {/* The establishing shot is the arcade itself: one app window walking
-            * five moments of SOP-118, with a numbered step rail under it. */}
+            * six moments of SOP-118 (build → find → trust → sign → release →
+            * measure), with a numbered step rail under it. */}
           <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
             <HeroArcade steps={STYLIZED_HERO_STEPS} />
           </div>

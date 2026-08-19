@@ -26,6 +26,7 @@ export type ArcadeFocus =
   | "history"
   | "trace"
   | "dashboard"
+  | "builder"
   | "checklist";
 
 /* A checklist item is not just a check mark (Ben, Aug 5): plain rows carry
@@ -78,6 +79,17 @@ export type ArcadeFlowWorld = {
     title: string;
     kpis: { label: string; value: string; note?: string }[];
     panels: { label: string; kind: "bars" | "donut" | "lines" }[];
+  };
+  /* process-builder page; its presence mounts the settings page the
+   * "builder" pose navigates to (same one-window page-change idiom as
+   * home/reports): the process's typed field list plus the add-field
+   * palette that makes the no-code point. Tones name the chip colors. */
+  builder?: {
+    title: string;
+    note: string;
+    tabs: string[];
+    fields: { kind: string; tone: string; label: string }[];
+    palette: { label: string; note: string; tone: string }[];
   };
   context: { initials: string; name: string; time: string; message: string; detail: string };
   inboxNeighbors: { title: string; time: string; detail: string; kind: string }[];
@@ -134,56 +146,11 @@ export type ArcadeStepConfig = {
   checklistEntry?: { section: string; item: string };
 };
 
-/* PF-29's document world: the fallback so pre-world call sites render unchanged. */
-const DOCUMENT_WORLD: ArcadeFlowWorld = {
-  team: "Engineering Industries",
-  recordNoun: "Document",
-  owner: "R. Mehta",
-  ownerInitials: "RM",
-  participants: ["RM", "QA", "+2"],
-  participantsLabel: "R. Mehta, Quality Assurance, and two others",
-  recordKicker: "STANDARD OPERATING PROCEDURE",
-  searchResult: "SOP-118 · Rev D · current result",
-  context: {
-    initials: "RM",
-    name: "R. Mehta",
-    time: "09:14",
-    message: "Released revision D to point of use.",
-    detail: "Quality approved · effective since 02 Jul 2026",
-  },
-  inboxNeighbors: [
-    { title: "Line clearance", time: "11:42", detail: "WI-092 · Packaging", kind: "Document" },
-    { title: "Water system review", time: "09:18", detail: "Periodic review due Friday", kind: "Review" },
-    { title: "Batch record exception", time: "Yesterday", detail: "Owner response received", kind: "Quality event" },
-  ],
-  checklistTitle: "Document Control",
-  checklistSections: [
-    {
-      title: "DOCUMENT CLASSIFICATION",
-      items: [
-        { label: "Effective revision", note: "Revision D · Effective" },
-        { label: "Approval signature", kind: "approval", signer: "N. Varga", state: "Signed" },
-        { label: "Signed document", note: "Signed and sealed" },
-      ],
-    },
-    {
-      title: "SIGNED DOCUMENT",
-      items: [
-        { label: "Document-118-Cleaning_Validation.pdf", note: "Current render · 4 pages" },
-        { label: "Revision", kind: "revision", from: "Rev C · superseded", to: "Rev D · approved" },
-        { label: "Effective date", note: "02 Jul 2026" },
-      ],
-    },
-    {
-      title: "CONTROLLED COPY",
-      items: [
-        { label: "Reason for print", kind: "field", value: "Screen unavailable at packaging line 2", note: "Entered at print" },
-        { label: "Copy owner", note: "Packaging line 2" },
-        { label: "Expiry and recall", note: "07 Aug 2026" },
-      ],
-    },
-  ],
-};
+/* PF-29's document world (the pre-world fallback) lives in ./document-world,
+ * outside this file's "use client" boundary, so server-component mocks files
+ * can extend it as plain data. Re-exported for existing client-side imports. */
+import { DOCUMENT_WORLD } from "./document-world";
+export { DOCUMENT_WORLD };
 
 /* ------------------------------------------------------------------ icons
  * The window chrome used to lean on unicode glyphs (⌂ ▢ ▤ ⌕ ••• × › ✓ ◔),
@@ -276,7 +243,7 @@ function Scene({ config, children }: { config: ArcadeStepConfig; children: React
   );
 }
 
-function ArcadeRail({ world, active = "records" }: { world: ArcadeFlowWorld; active?: "home" | "records" | "reports" }) {
+function ArcadeRail({ world, active = "records" }: { world: ArcadeFlowWorld; active?: "home" | "records" | "reports" | "settings" }) {
   return (
     <nav className="stx-arc__rail" aria-label="Product navigation">
       <span className="stx-arc__rail-logo">U</span>
@@ -284,7 +251,7 @@ function ArcadeRail({ world, active = "records" }: { world: ArcadeFlowWorld; act
       <span className={active === "records" ? "is-active" : ""} aria-hidden="true"><Icon name="records" /></span>
       <span className={active === "reports" ? "is-active" : ""} aria-hidden="true"><Icon name="reports" /></span>
       <span aria-hidden="true"><Icon name="grid" /></span><span aria-hidden="true"><Icon name="people" /></span><i />
-      <span aria-hidden="true"><Icon name="settings" /></span><span className="stx-arc__rail-avatar">{viewerInitials(world)}</span>
+      <span className={active === "settings" ? "is-active" : ""} aria-hidden="true"><Icon name="settings" /></span><span className="stx-arc__rail-avatar">{viewerInitials(world)}</span>
     </nav>
   );
 }
@@ -399,6 +366,67 @@ function ArcadeReports({ config, world }: { config: ArcadeStepConfig; world: Arc
               </section>
             );
           })}
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+/* The process builder as a full PAGE inside the one app window, mirroring
+ * the home/reports idiom: it overlays the content area (the rail stays),
+ * crossfades in when a builder step is active. Left: the process's typed
+ * field list (drag grips, tone chips, field-name inputs). Right: the
+ * add-field palette that makes the no-code point. The step's focusTitle
+ * names the field row whose settings expand, its focusRows become that
+ * row's routing summary, and focusAction labels the palette footer. */
+function ArcadeBuilder({ config, world }: { config: ArcadeStepConfig; world: ArcadeFlowWorld }) {
+  if (!world.builder) return null;
+  const live = config.focus === "builder";
+  return (
+    <aside className="stx-arc__builder" aria-hidden={!live}>
+      <div className="stx-arc__builder-body">
+        <header>
+          <small>Process builder</small>
+          <b>{world.builder.title}</b>
+          <span>{world.builder.note}</span>
+        </header>
+        <nav className="stx-arc__builder-tabs" aria-hidden="true">
+          {world.builder.tabs.map((tab, index) => (
+            <span className={index === 0 ? "is-active" : ""} key={tab}>{tab}</span>
+          ))}
+        </nav>
+        <div className="stx-arc__builder-grid">
+          <div className="stx-arc__builder-fields">
+            {world.builder.fields.map((field) => {
+              const target = live && field.label === config.focusTitle;
+              return (
+                <div className={"stx-arc__builder-field" + (target ? " is-target" : "")} key={field.label}>
+                  <p>
+                    <i className="stx-arc__builder-grip" aria-hidden="true" />
+                    <em className={"stx-arc__builder-kind is-" + field.tone}>{field.kind}</em>
+                    <span>{field.label}</span>
+                    <b aria-hidden="true"><Icon name="settings" /></b>
+                  </p>
+                  {target ? (
+                    <div className="stx-arc__builder-settings">
+                      {config.focusRows.map((row) => (
+                        <p key={row}><i aria-hidden="true"><Icon name="check" /></i><span>{row}</span></p>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+          </div>
+          <div className="stx-arc__builder-palette">
+            <header><b>Add a field</b><small>No code</small></header>
+            <div className="stx-arc__builder-tiles">
+              {world.builder.palette.map((tile) => (
+                <p key={tile.label}><i className={"is-" + tile.tone} aria-hidden="true" /><b>{tile.label}</b><small>{tile.note}</small></p>
+              ))}
+            </div>
+            {config.focusAction ? <footer><b>{config.focusAction}</b></footer> : null}
+          </div>
         </div>
       </div>
     </aside>
@@ -713,8 +741,9 @@ function ArcadeChecklist({ config, world }: { config: ArcadeStepConfig; world: A
 export function ArcadeStepScene({ config }: { config: ArcadeStepConfig }) {
   const world = config.world ?? DOCUMENT_WORLD;
   const isDashboard = config.focus === "dashboard";
-  const pageClass = isHomeQueue(config) ? " is-page-home" : isDashboard ? " is-page-dashboard" : "";
-  const railActive = isHomeQueue(config) ? "home" : isDashboard ? "reports" : "records";
+  const isBuilder = config.focus === "builder";
+  const pageClass = isHomeQueue(config) ? " is-page-home" : isDashboard ? " is-page-dashboard" : isBuilder ? " is-page-builder" : "";
+  const railActive = isHomeQueue(config) ? "home" : isDashboard ? "reports" : isBuilder ? "settings" : "records";
   return (
     <div className="stx-root">
       <Scene config={config}>
@@ -724,6 +753,7 @@ export function ArcadeStepScene({ config }: { config: ArcadeStepConfig }) {
             <ArcadeInbox config={config} world={world} /><ArcadeConversation config={config} world={world} /><ArcadeChecklist config={config} world={world} />
             <ArcadeHome config={config} world={world} />
             <ArcadeReports config={config} world={world} />
+            <ArcadeBuilder config={config} world={world} />
             {config.focus === "signature" ? <ArcadeSignDialog config={config} world={world} /> : null}
           </div>
         </div>

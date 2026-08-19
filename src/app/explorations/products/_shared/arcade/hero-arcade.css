@@ -38,7 +38,9 @@
 }
 .dms-hero__product-demo--arcade .dms-heroarc__steps {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  /* one column per step; the component sets the count so a five-step page
+   * (QMS/PLM/MES) and a six-step one (DMS) share the same rail */
+  grid-template-columns: repeat(var(--heroarc-count, 5), minmax(0, 1fr));
   margin: 0;
   padding: 0;
   border-top: 1px solid var(--dms-d-border);

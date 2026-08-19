@@ -19,6 +19,10 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../../_shared/arcade/arcade";
+/* imported from the server-safe module, NOT via arcade.tsx: a value that
+ * crosses the "use client" boundary arrives here as a client reference,
+ * not an object, and the spread below would silently produce {} */
+import { DOCUMENT_WORLD } from "../../_shared/arcade/document-world";
 import { type HeroArcadeStep } from "../../_shared/arcade/hero-arcade";
 
 const stateClass = (s: string) => "is-" + s.toLowerCase().replace(/[^a-z0-9]+/g, "-");
@@ -1685,7 +1689,112 @@ export const STYLIZED_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = 
  * product page hero mounts. */
 export type StylizedHeroStep = HeroArcadeStep;
 
+/* ------------------------------------------------------------ hero scenes
+ * Two moments the lifecycle flows don't walk, lifted from the DMS product
+ * demo video (Wistia, c814b5ebaav06td): the no-code process builder that
+ * CONFIGURES the lifecycle the middle steps ride (demo 0:14-0:30), and the
+ * live document-control dashboard the release rolls into (demo 1:11-1:17).
+ * Both extend PF-29's document world so the hero stays one story: the
+ * builder opens it (why the record is governed), the dashboard closes it
+ * (what the governance proves). */
+const HERO_DOC_WORLD: ArcadeFlowWorld = {
+  ...DOCUMENT_WORLD,
+  builder: {
+    title: "Document process",
+    note: "The lifecycle every document walks, configured, not coded.",
+    tabs: ["Checklist", "Privacy", "Reminders", "Layout", "Notifications"],
+    fields: [
+      { kind: "Selection", tone: "selection", label: "Basic details" },
+      { kind: "Picklist", tone: "picklist", label: "Document type" },
+      { kind: "Linked field", tone: "linked", label: "Department" },
+      { kind: "File upload", tone: "upload", label: "Draft document" },
+      { kind: "Approval", tone: "approval", label: "Quality approval" },
+      { kind: "Revision", tone: "revision", label: "Revision(s)" },
+      { kind: "Generate PDF", tone: "pdf", label: "Signed render" },
+    ],
+    palette: [
+      { label: "Approval", note: "Digital signatures on the record", tone: "approval" },
+      { label: "Linked field", note: "Link to another process", tone: "linked" },
+      { label: "Revision", note: "Managed revisions of the record", tone: "revision" },
+      { label: "Generate PDF", note: "Printable render of the checklist", tone: "pdf" },
+      { label: "Picklist", note: "Drop-down selection of items", tone: "picklist" },
+      { label: "File upload", note: "Attach documents or images", tone: "upload" },
+    ],
+  },
+  reports: {
+    title: "Document control",
+    kpis: [
+      { label: "Documents effective", value: "412", note: "One current version each" },
+      { label: "Training completion", value: "96%", note: "42 assigned this release" },
+      { label: "Avg. approval", value: "3.2d", note: "Routed, not chased" },
+      { label: "Overdue reviews", value: "0", note: "Periodic reviews on rule" },
+    ],
+    panels: [
+      { label: "Training cycle times", kind: "bars" },
+      { label: "Documents by state", kind: "donut" },
+      { label: "Approval aging", kind: "lines" },
+    ],
+  },
+};
+
+const HERO_BUILD_STEP: ArcadeStepConfig = {
+  source: "DMS demo 0:14-0:30 · add-field palette + approval routing",
+  ghost: "Build",
+  type: "Document",
+  id: "#118",
+  title: "Cleaning validation",
+  status: "Effective",
+  actor: "You",
+  event: "Configured the document lifecycle in the builder",
+  eventDetail: "Fields, approval routing and automations · no code",
+  checklist: "DOCUMENT CLASSIFICATION",
+  checklistItems: ["Field list", "Approval routing", "Automations"],
+  focus: "builder",
+  focusTitle: "Quality approval",
+  focusRows: [
+    "Signature of any 1 QA approver",
+    "Contingent on review complete",
+    "On approval · release and retraining",
+  ],
+  focusAction: "Add field",
+  ownershipNote: "Process owner · R. Mehta",
+  world: HERO_DOC_WORLD,
+  checklistProgress: { "CONTROLLED COPY": 0 },
+};
+
+const HERO_MEASURE_STEP: ArcadeStepConfig = {
+  source: "DMS demo 1:11-1:17 · training dashboard",
+  ghost: "Measure",
+  type: "Document",
+  id: "#118",
+  title: "Cleaning validation",
+  status: "Effective",
+  actor: "automator",
+  event: "Rolled the release into the live dashboards",
+  eventDetail: "Cycle times, completion and aging · live from every record",
+  checklist: "TRAINING RECORD(S)",
+  checklistItems: ["Training cycle times", "Documents by state", "Approval aging"],
+  focus: "dashboard",
+  focusTitle: "Training cycle times",
+  focusRows: [
+    "Revision D retraining · 42 of 44 complete",
+    "Median cycle · 2.1 days",
+    "No export · no reconciliation",
+  ],
+  focusAction: "Open report",
+  ownershipNote: "Live from every record",
+  world: HERO_DOC_WORLD,
+};
+
+/* The hero rail: configuration opens, analytics closes, and the document
+ * journey (PF-29 find/trust, PF-4 sign/release) stays intact in the middle.
+ * "Compare it" (PF-4 s2) moved down to the lifecycle section where the
+ * approver flow still walks it. */
 export const STYLIZED_HERO_STEPS: StylizedHeroStep[] = [
+  {
+    label: "Build it",
+    config: HERO_BUILD_STEP,
+  },
   {
     label: "Find it",
     config: FLOW_STEP_SCENES["29"][0],
@@ -1695,15 +1804,15 @@ export const STYLIZED_HERO_STEPS: StylizedHeroStep[] = [
     config: FLOW_STEP_SCENES["29"][1],
   },
   {
-    label: "Compare it",
-    config: FLOW_STEP_SCENES["4"][2],
-  },
-  {
     label: "Sign it",
     config: FLOW_STEP_SCENES["4"][4],
   },
   {
     label: "Release it",
     config: FLOW_STEP_SCENES["4"][5],
+  },
+  {
+    label: "Measure it",
+    config: HERO_MEASURE_STEP,
   },
 ];

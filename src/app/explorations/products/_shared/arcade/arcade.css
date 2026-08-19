@@ -3197,6 +3197,140 @@
   .stx-root .stx-arc__reports-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* ================================================= builder pose
+ * The process builder as a full PAGE in the one app window, mirroring the
+ * home/reports idiom: overlays the content area (rail stays), crossfades in
+ * on builder steps. The field list carries drag grips and typed tone chips
+ * (full pills, never single-edge borders); only the step's target row
+ * expands its routing summary. The add-field palette on the right makes
+ * the no-code point. Grounded in the DMS product demo (0:14-0:30). */
+.stx-root .stx-arc__builder {
+  position: absolute;
+  inset: 0 0 0 54px;
+  z-index: 5;
+  overflow: hidden;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+.stx-root .stx-arc__camera.is-page-builder .stx-arc__builder { opacity: 1; }
+
+.stx-root .stx-arc__builder-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; height: 100%; padding: 22px 28px; overflow: hidden; }
+.stx-root .stx-arc__builder-body > header { display: flex; flex-direction: column; gap: 5px; }
+.stx-root .stx-arc__builder-body > header small { color: var(--dms-muted); font-size: 10px; }
+.stx-root .stx-arc__builder-body > header b { font-size: 21px; }
+.stx-root .stx-arc__builder-body > header span { color: var(--dms-muted); font-size: 11px; }
+
+.stx-root .stx-arc__builder-tabs { display: flex; gap: 4px; }
+.stx-root .stx-arc__builder-tabs span { padding: 5px 9px; border-radius: 3px; color: var(--dms-muted); font-size: 9px; font-weight: 600; }
+.stx-root .stx-arc__builder-tabs span.is-active { background: var(--dms-accent-tint); color: var(--dms-accent); }
+
+.stx-root .stx-arc__builder-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 14px; flex: 1; min-height: 0; }
+
+.stx-root .stx-arc__builder-fields { display: flex; flex-direction: column; gap: 6px; min-height: 0; }
+.stx-root .stx-arc__builder-field {
+  border-radius: 4px;
+  background: var(--dms-surface-quiet, #fafbfc);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.06);
+}
+.stx-root .stx-arc__builder-field > p { display: flex; align-items: center; gap: 9px; margin: 0; padding: 7px 10px; }
+.stx-root .stx-arc__builder-grip {
+  flex: 0 0 9px;
+  height: 13px;
+  background-image: radial-gradient(circle, oklch(0 0 0 / 0.26) 1.1px, transparent 1.4px);
+  background-size: 4.5px 4.5px;
+}
+.stx-root .stx-arc__builder-kind {
+  flex: 0 0 74px;
+  padding: 4px 0;
+  border-radius: 3px;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+.stx-root .stx-arc__builder-kind.is-selection { background: #f6e3ef; color: #8f2f68; }
+.stx-root .stx-arc__builder-kind.is-picklist { background: #fdf0dc; color: #8a5a15; }
+.stx-root .stx-arc__builder-kind.is-linked { background: #dff0ee; color: #1f6f66; }
+.stx-root .stx-arc__builder-kind.is-text { background: #ddf0e4; color: #185f35; }
+.stx-root .stx-arc__builder-kind.is-upload { background: #faf3d9; color: #7a641a; }
+.stx-root .stx-arc__builder-kind.is-approval { background: #eae4f8; color: #533a9e; }
+.stx-root .stx-arc__builder-kind.is-revision { background: #e7e9fb; color: #3a479e; }
+.stx-root .stx-arc__builder-kind.is-pdf { background: #fbe9e5; color: #7c3629; }
+.stx-root .stx-arc__builder-field > p > span {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 9px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.1);
+  font-size: 9.5px;
+}
+.stx-root .stx-arc__builder-field > p > b { display: inline-flex; color: var(--dms-muted); font-size: 12px; }
+
+.stx-root .stx-arc__builder-settings { display: flex; flex-direction: column; padding: 0 12px 8px 32px; }
+.stx-root .stx-arc__builder-settings p { display: flex; align-items: center; gap: 7px; margin: 0; padding: 6px 0; border-top: 1px solid oklch(0 0 0 / 0.05); font-size: 9px; }
+.stx-root .stx-arc__builder-settings p:first-child { border-top: 0; }
+.stx-root .stx-arc__builder-settings p > i { display: inline-flex; color: var(--dms-accent); font-size: 9px; }
+
+.stx-root .stx-arc__builder-palette {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 12px 13px;
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--dms-accent), #fff 96%);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.05);
+}
+.stx-root .stx-arc__builder-palette > header { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.stx-root .stx-arc__builder-palette > header b { font-size: 10.5px; }
+.stx-root .stx-arc__builder-palette > header small { color: var(--dms-muted); font-family: var(--u-mono); font-size: 8px; }
+.stx-root .stx-arc__builder-tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-content: start; flex: 1; min-height: 0; }
+.stx-root .stx-arc__builder-tiles p {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin: 0;
+  padding: 9px 10px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.07);
+}
+.stx-root .stx-arc__builder-tiles p > i { width: 10px; height: 10px; border-radius: 2px; }
+.stx-root .stx-arc__builder-tiles p > i.is-selection { background: #c2478f; }
+.stx-root .stx-arc__builder-tiles p > i.is-picklist { background: #c98a2b; }
+.stx-root .stx-arc__builder-tiles p > i.is-linked { background: #2c8c80; }
+.stx-root .stx-arc__builder-tiles p > i.is-text { background: #2c9257; }
+.stx-root .stx-arc__builder-tiles p > i.is-upload { background: #b1922c; }
+.stx-root .stx-arc__builder-tiles p > i.is-approval { background: #6a4fc0; }
+.stx-root .stx-arc__builder-tiles p > i.is-revision { background: #4d5cc4; }
+.stx-root .stx-arc__builder-tiles p > i.is-pdf { background: #c25445; }
+.stx-root .stx-arc__builder-tiles p > b { font-size: 9px; }
+.stx-root .stx-arc__builder-tiles p > small { color: var(--dms-muted); font-size: 7.5px; line-height: 1.35; }
+.stx-root .stx-arc__builder-palette > footer b { display: inline-flex; padding: 6px 10px; border-radius: 3px; box-shadow: inset 0 0 0 1.5px var(--dms-accent); color: var(--dms-accent); font-size: 8.5px; }
+
+/* the builder camera: the full settings page in frame, same footing as the
+ * home/dashboard poses so the page change reads as navigation, not a cut */
+.stx-root .stx-arc__camera.is-focus-builder {
+  --stx-camera-x: 0px;
+  --stx-camera-y: 0px;
+  --stx-camera-scale: 0.72;
+  --stx-inbox-opacity: 0.76;
+  --stx-thread-opacity: 0.84;
+  --stx-checklist-opacity: 0.76;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stx-root .stx-arc__builder { transition: opacity 240ms ease-in-out; }
+}
+
+@media (max-width: 600px) {
+  .stx-root .stx-arc__camera.is-focus-builder { --stx-camera-x: 120px; --stx-camera-y: 30px; --stx-camera-scale: 0.62; }
+  .stx-root .stx-arc__builder-tiles { grid-template-columns: minmax(0, 1fr); }
+}
+
 /* ================================================= checklist as a surface
  * Ben (Aug 5): "the checklist is not just a checklist - it's got to have
  * data entry, approval flows and revisions in it." Three richer row kinds

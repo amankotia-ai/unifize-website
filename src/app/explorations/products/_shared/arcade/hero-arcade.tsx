@@ -67,7 +67,10 @@ export function HeroArcade({ steps }: { steps: HeroArcadeStep[] }) {
       </div>
 
       <div className="dms-heroarc__rail">
-        <ol className="dms-heroarc__steps">
+        <ol
+          className="dms-heroarc__steps"
+          style={{ "--heroarc-count": steps.length } as React.CSSProperties}
+        >
           {steps.map((s, i) => (
             <li
               className={
