@@ -40,6 +40,13 @@ const PORTRAIT_TRAIN = "/Gemini_Generated_Image_r84h7yr84h7yr84h.png"; // traini
 export type Chapter = { t: string; label: string };
 export type Metric = { value: string; label: string };
 
+/* the item page's narrative, in the customer-story grammar:
+ * challenge -> solution -> impact, each a heading + short prose,
+ * solution/impact carrying bold-led points. */
+export type StoryPoint = { lead: string; text: string };
+export type StoryBlock = { heading: string; body: string[]; points?: StoryPoint[] };
+export type Story = { challenge: StoryBlock; solution: StoryBlock; impact: StoryBlock };
+
 export type Testimonial = {
   slug: string;
   person: string;
@@ -57,6 +64,57 @@ export type Testimonial = {
   featured?: boolean;
   chapters: Chapter[];
   metrics: Metric[];
+  /** company profile shown in the item page's About card */
+  about: string;
+  size: string;
+  standards: string[];
+  story: Story;
+};
+
+/* company profiles shared by every video from the same customer */
+const CO = {
+  corvent: {
+    about:
+      "Corvent Medical designs and manufactures Class III implantable cardiovascular devices, carrying products from design controls through post-market surveillance under FDA and EU MDR oversight.",
+    size: "420 employees",
+    standards: ["ISO 13485", "21 CFR 820", "21 CFR Part 11", "EU MDR"],
+  },
+  aldale: {
+    about:
+      "Aldale Therapeutics is a sterile injectables CDMO running fill-finish and lyophilization programs for clinical and commercial customers under FDA and EU GMP oversight.",
+    size: "260 employees",
+    standards: ["21 CFR Part 211", "21 CFR Part 11", "EU GMP Annex 1", "ICH Q10"],
+  },
+  northpin: {
+    about:
+      "Northpin Aerospace is a Tier-1 supplier of structural assemblies for commercial and defense airframes, delivering build-to-print and design-assist programs under AS9100 and NADCAP accreditation.",
+    size: "1,100 employees",
+    standards: ["AS9100D", "ISO 9001", "NADCAP", "ITAR"],
+  },
+  veremark: {
+    about:
+      "Veremark Devices develops Class II diagnostic instruments and assays, taking products through design controls, verification, and FDA submission on an ISO 13485 quality system.",
+    size: "180 employees",
+    standards: ["ISO 13485", "21 CFR 820", "21 CFR Part 11"],
+  },
+  brightbore: {
+    about:
+      "Brightbore Automotive machines and assembles powertrain components for global vehicle OEMs, running IATF 16949 quality across high-volume production lines.",
+    size: "680 employees",
+    standards: ["IATF 16949", "ISO 9001", "VDA 6.3"],
+  },
+  fenmoor: {
+    about:
+      "Fenmoor Foods manufactures ready-to-eat meals across three production sites, running HACCP-based food safety under FSMA and GFSI certification.",
+    size: "350 employees",
+    standards: ["FSMA 21 CFR 117", "HACCP", "SQF"],
+  },
+  atlas: {
+    about:
+      "Atlas Contract Manufacturing is a medical device CDMO building finished devices and subassemblies for a dozen client programs on a shared ISO 13485 backbone.",
+    size: "540 employees",
+    standards: ["ISO 13485", "21 CFR 820", "21 CFR Part 11"],
+  },
 };
 
 export const TESTIMONIALS: Testimonial[] = [
@@ -84,6 +142,36 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "63%", label: "faster CAPA closure" },
       { value: "0", label: "overdue at last audit" },
     ],
+    ...CO.corvent,
+    story: {
+      challenge: {
+        heading: "A backlog that outgrew the team",
+        body: [
+          "Corvent's corrective actions spanned a QMS, a document system, and an inbox. Every investigation waited on a subject-matter expert who never saw the request, and every effectiveness check waited on evidence someone still had to find.",
+          "The backlog was never a discipline problem. Work went cold in the handoffs between owners and systems, and audit season meant a week of reconstruction.",
+        ],
+      },
+      solution: {
+        heading: "One thread per CAPA, owner to evidence",
+        body: [
+          "Corvent moved corrective actions onto Unifize, where each CAPA runs as a single thread that carries its people, its records, and its deadlines.",
+        ],
+        points: [
+          { lead: "Investigations in the open.", text: "Root cause, containment, and linked evidence live in the thread, not in attachments nobody can find." },
+          { lead: "Effectiveness checks that schedule themselves.", text: "The check is created the moment the action closes, with the data source already linked." },
+          { lead: "Training tied to revisions.", text: "When a corrective action changes an SOP, retraining assigns itself to the people the change touches." },
+        ],
+      },
+      impact: {
+        heading: "Closure became routine",
+        body: ["The change showed up within a quarter, and it held up in front of an auditor."],
+        points: [
+          { lead: "63% faster closure.", text: "Actions stopped waiting between steps, so the backlog drained without added headcount." },
+          { lead: "Nothing overdue at audit.", text: "The team walked into ISO 13485 surveillance with a clean queue for the first time." },
+          { lead: "Evidence pulled live.", text: "Auditor questions were answered from the thread, while they watched." },
+        ],
+      },
+    },
   },
   {
     slug: "aldale-therapeutics-batch-release",
@@ -109,6 +197,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "2 days", label: "cut from release" },
       { value: "98%", label: "right-first-time" },
     ],
+    ...CO.aldale,
+    story: {
+      challenge: {
+        heading: "Release was a paper chase",
+        body: [
+          "Every batch ended in a line-by-line review of a paper record, whether anything had gone wrong or not. Clean batches waited days behind dirty ones, and deviations surfaced at review, long after the step that caused them.",
+          "For a CDMO, those days were the product. Clients measured Aldale on how fast a finished batch became a released batch.",
+        ],
+      },
+      solution: {
+        heading: "eDHR with review-by-exception",
+        body: ["Aldale put the batch record on Unifize as an electronic record the floor fills in as it works."],
+        points: [
+          { lead: "In-line checks at the step.", text: "A reading out of spec opens a deviation right there, with the operator and the step already attached." },
+          { lead: "Deviations as threads.", text: "Quality is pulled in while the batch is still on the line, not after the fact." },
+          { lead: "Review-by-exception.", text: "A complete, in-spec record needs no line-by-line pass. Reviewers only touch the exceptions." },
+        ],
+      },
+      impact: {
+        heading: "Same-shift release",
+        body: ["The review queue disappeared as the clean majority stopped waiting on the dirty few."],
+        points: [
+          { lead: "2 days off release.", text: "A clean batch is ready for release the moment the record completes." },
+          { lead: "98% right-first-time.", text: "The same in-line checks that speed release prevent the deviations that slow it." },
+          { lead: "Reviewers on real work.", text: "The quality team spends its time on the two percent that needs judgment." },
+        ],
+      },
+    },
   },
   {
     slug: "northpin-aerospace-audit",
@@ -131,6 +247,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "0", label: "major findings" },
       { value: "40%", label: "less audit prep" },
     ],
+    ...CO.northpin,
+    story: {
+      challenge: {
+        heading: "Audit season, every season",
+        body: [
+          "Between customer audits, NADCAP, and AS9100 surveillance, Northpin was preparing for someone's visit most of the year. Traceability existed, but it had to be reconstructed from binders and shared drives for every request.",
+          "The quality team's calendar belonged to evidence assembly instead of the quality system itself.",
+        ],
+      },
+      solution: {
+        heading: "Traceability as the default",
+        body: ["Northpin moved change control, nonconformances, and specifications onto Unifize, recorded against the part and serial number as work happens."],
+        points: [
+          { lead: "History on the record.", text: "Every change to a spec carries its approvals, its effectivity, and its reasons in one thread." },
+          { lead: "Findings closed live.", text: "An observation becomes an owned action in the same conversation it was raised in." },
+          { lead: "Nothing assembled.", text: "The evidence for any question is the thread where the work happened." },
+        ],
+      },
+      impact: {
+        heading: "Surveillance with nothing to prepare",
+        body: ["The last AS9100 surveillance ran against live records."],
+        points: [
+          { lead: "Zero major findings.", text: "The auditor watched change history pulled up in the thread, in the room." },
+          { lead: "40% less prep.", text: "Audit preparation shrank to a walkthrough of a system that was already ready." },
+          { lead: "Quality's calendar back.", text: "Time moved from assembling proof to running the system it proves." },
+        ],
+      },
+    },
   },
   {
     slug: "veremark-devices-dhf",
@@ -154,6 +298,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "5 wks", label: "off submission prep" },
       { value: "1:1", label: "req-to-test coverage" },
     ],
+    ...CO.veremark,
+    story: {
+      challenge: {
+        heading: "The end-of-project crunch",
+        body: [
+          "Design controls at Veremark were a document assembled at the end: weeks before each submission spent reconstructing decisions from memory, email, and half-current files.",
+          "The team knew its design was sound. Proving the chain from user need to verification was the part that consumed a quarter.",
+        ],
+      },
+      solution: {
+        heading: "Design controls in the flow of work",
+        body: ["Veremark runs design work on Unifize, where the trace builds as decisions are made."],
+        points: [
+          { lead: "Needs linked to inputs, live.", text: "A requirement is born connected to the need it serves." },
+          { lead: "One-to-one to verification.", text: "Every input traces to an output and the test that proves it." },
+          { lead: "Changes carry their reasons.", text: "Each change holds its justification and approval where the auditor will look for it." },
+        ],
+      },
+      impact: {
+        heading: "A DHF that is always ready",
+        body: ["The design history file stopped being a deliverable and became a view."],
+        points: [
+          { lead: "5 weeks off submission prep.", text: "The file is generated from the work, not assembled from it." },
+          { lead: "1:1 requirement coverage.", text: "The trace matrix is complete by construction, not by reconciliation." },
+          { lead: "Submission-ready on any Tuesday.", text: "The crunch before a filing is gone because the file was never behind." },
+        ],
+      },
+    },
   },
   {
     slug: "brightbore-automotive-ppap",
@@ -176,6 +348,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "1 click", label: "PPAP package" },
       { value: "92%", label: "first-time accept" },
     ],
+    ...CO.brightbore,
+    story: {
+      challenge: {
+        heading: "Submissions that bounced",
+        body: [
+          "PPAP elements lived in spreadsheets and folders, disconnected from the part revision they described. Assembling a submission took a week, and packages still bounced back when a control plan or dimensional result was out of date.",
+          "Every rejection restarted the loop with the OEM's clock still running.",
+        ],
+      },
+      solution: {
+        heading: "Every element tied to the revision",
+        body: ["Brightbore put the PPAP file on Unifize, bound element by element to the governing part revision."],
+        points: [
+          { lead: "PSWs, control plans, results in one place.", text: "Each element updates against the revision it belongs to." },
+          { lead: "Drift made impossible.", text: "A design change pulls its control plan with it, so documents cannot fall out of sync." },
+          { lead: "The package as a view.", text: "The submission is generated from linked records, not collected from folders." },
+        ],
+      },
+      impact: {
+        heading: "First-time acceptance",
+        body: ["OEM customers started approving on the first pass."],
+        points: [
+          { lead: "One click to a package.", text: "A week of assembly became a generated artifact." },
+          { lead: "92% first-time acceptance.", text: "Packages arrive current because they cannot be anything else." },
+          { lead: "Less rework, faster launches.", text: "Submission rework fell by a third across programs." },
+        ],
+      },
+    },
   },
   {
     slug: "fenmoor-foods-haccp",
@@ -198,6 +398,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "100%", label: "CCP capture" },
       { value: "0", label: "holds shipped" },
     ],
+    ...CO.fenmoor,
+    story: {
+      challenge: {
+        heading: "Deviations found a week late",
+        body: [
+          "Critical control points were checked on paper and reviewed in batches, so a drifting CCP could ship product before anyone senior saw the reading.",
+          "The plan was sound. The lag between the line and the people who could act on it was the risk.",
+        ],
+      },
+      solution: {
+        heading: "CCP checks that escalate themselves",
+        body: ["Fenmoor moved HACCP monitoring onto Unifize at the point of the check."],
+        points: [
+          { lead: "Checks on the line.", text: "Operators record CCP readings where they take them, against the batch." },
+          { lead: "Escalation beats the shift.", text: "An out-of-limit reading opens a thread with QA and the line lead already in it." },
+          { lead: "Disposition on the record.", text: "Hold, rework, or release is decided and documented in the same thread." },
+        ],
+      },
+      impact: {
+        heading: "Caught on the floor",
+        body: ["Food safety stopped depending on the review lag."],
+        points: [
+          { lead: "100% CCP capture.", text: "Every check lands in the system the moment it is taken." },
+          { lead: "Zero holds shipped.", text: "Product on hold cannot move because the hold lives with the batch record." },
+          { lead: "Audit-ready HACCP.", text: "The monitoring record is the working record, so nothing is assembled for the auditor." },
+        ],
+      },
+    },
   },
   {
     slug: "atlas-contract-mfg-transfer",
@@ -220,6 +448,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "3x", label: "faster transfer" },
       { value: "12", label: "programs, one system" },
     ],
+    ...CO.atlas,
+    story: {
+      challenge: {
+        heading: "Every client, a new binder",
+        body: [
+          "Each new program arrived with its own document set, conventions, and quality expectations. Standing that up alongside eleven other programs meant quarters of setup before the first article ran.",
+          "Transfer speed is the business for a CDMO, and the paperwork around the process was the bottleneck.",
+        ],
+      },
+      solution: {
+        heading: "One workspace per program",
+        body: ["Atlas gives every client program its own Unifize workspace on a shared quality spine."],
+        points: [
+          { lead: "Documents and batch records together.", text: "The client's controlled documents and batch record stand up in the same workspace." },
+          { lead: "Separation without silos.", text: "Programs stay walled from each other while running one quality system." },
+          { lead: "A repeatable playbook.", text: "Transfer became a template, not a project plan written from scratch." },
+        ],
+      },
+      impact: {
+        heading: "Weeks, not quarters",
+        body: ["Onboarding stopped being a project."],
+        points: [
+          { lead: "3x faster transfer.", text: "New programs reach first article in weeks." },
+          { lead: "12 programs, one system.", text: "Every program runs on the same spine without collision." },
+          { lead: "Uniform audit-readiness.", text: "A client audit of any program finds the same live records." },
+        ],
+      },
+    },
   },
   {
     slug: "corvent-medical-training",
@@ -243,6 +499,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "100%", label: "training current" },
       { value: "1 day", label: "to full sign-off" },
     ],
+    ...CO.corvent,
+    story: {
+      challenge: {
+        heading: "The stale training matrix",
+        body: [
+          "Training records lived in a spreadsheet beside the document system, so every SOP revision opened a gap between what the documents said and what people were trained on.",
+          "The matrix was updated by hand, after the fact, and audits kept finding the lag.",
+        ],
+      },
+      solution: {
+        heading: "Retraining driven by revisions",
+        body: ["Corvent tied training directly to controlled documents on Unifize."],
+        points: [
+          { lead: "Revisions assign retraining.", text: "An SOP change routes read-and-understand to exactly the people the change touches." },
+          { lead: "Sign-off in the thread.", text: "Completion lands on the person and the revision, timestamped." },
+          { lead: "The matrix as a view.", text: "Competency status is read from the system, never maintained beside it." },
+        ],
+      },
+      impact: {
+        heading: "Never stale, never separate",
+        body: ["Training now moves at the speed of the documents."],
+        points: [
+          { lead: "100% training current.", text: "No revision ships without its retraining assigned." },
+          { lead: "Full sign-off in a day.", text: "Read-and-understand cycles close in one day instead of weeks." },
+          { lead: "Audit questions answered live.", text: "Who was trained on what revision is one lookup, not an investigation." },
+        ],
+      },
+    },
   },
   {
     slug: "aldale-therapeutics-supplier",
@@ -265,6 +549,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "48%", label: "faster SCAR close" },
       { value: "0", label: "lost actions" },
     ],
+    ...CO.aldale,
+    story: {
+      challenge: {
+        heading: "The cold SCAR",
+        body: [
+          "A supplier corrective action used to be an email chain: raised with good intent, then cold within a month, with no owner, no due date, and no way to check effectiveness.",
+          "Supplier quality carried the risk without the levers.",
+        ],
+      },
+      solution: {
+        heading: "Suppliers inside the thread",
+        body: ["Aldale runs SCARs on Unifize with the supplier in the conversation."],
+        points: [
+          { lead: "An owner and a clock.", text: "Every SCAR has a named owner and a visible due date from the day it opens." },
+          { lead: "The supplier sees the record.", text: "Evidence, responses, and commitments accumulate in one place both sides read." },
+          { lead: "Effectiveness built in.", text: "The follow-up check schedules itself at closure, against real receiving data." },
+        ],
+      },
+      impact: {
+        heading: "Closure that sticks",
+        body: ["Corrective actions stopped disappearing."],
+        points: [
+          { lead: "48% faster SCAR closure.", text: "Actions move because waiting is visible." },
+          { lead: "Zero lost actions.", text: "Nothing goes cold in an inbox, because nothing lives in one." },
+          { lead: "Fixes that hold.", text: "Effectiveness checks catch the fix that did not stick before the next lot does." },
+        ],
+      },
+    },
   },
   {
     slug: "northpin-aerospace-ncr",
@@ -287,6 +599,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "70%", label: "faster disposition" },
       { value: "-55%", label: "WIP on hold" },
     ],
+    ...CO.northpin,
+    story: {
+      challenge: {
+        heading: "Parts in the hold cage",
+        body: [
+          "A nonconforming part waited in a cage for the weekly MRB meeting, and the line waited with it. Disposition was fast once the right people looked, but getting them to look took days.",
+          "Work-in-progress on hold was the visible cost. The invisible one was engineers rebuilding context for every part.",
+        ],
+      },
+      solution: {
+        heading: "The NCR opens at the station",
+        body: ["Northpin opens the nonconformance where it is found."],
+        points: [
+          { lead: "Flagged by the operator.", text: "The NCR starts at the station, with photos, the serial number, and the step attached." },
+          { lead: "MRB without the meeting.", text: "The board is pulled into the thread the moment the NCR opens." },
+          { lead: "Disposition on the serial.", text: "Use-as-is, rework, or scrap is recorded against the part's own history." },
+        ],
+      },
+      impact: {
+        heading: "The cage emptied",
+        body: ["Disposition stopped waiting for a calendar slot."],
+        points: [
+          { lead: "70% faster disposition.", text: "Most parts are dispositioned the day they are flagged." },
+          { lead: "55% less WIP on hold.", text: "The hold cage stopped being a queue." },
+          { lead: "Full serial history.", text: "Every disposition is traceable when the customer asks." },
+        ],
+      },
+    },
   },
   {
     slug: "northpin-aerospace-eco",
@@ -310,6 +650,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "6 days", label: "ECO cycle, was 21" },
       { value: "0", label: "builds on old revisions" },
     ],
+    ...CO.northpin,
+    story: {
+      challenge: {
+        heading: "The ECO that stalled a line",
+        body: [
+          "Change orders moved through review meetings and email approvals, and the gap between approval and effectivity once let a line build to a dead revision.",
+          "Engineering, quality, and production each held a piece of the change. Nobody held the whole of it.",
+        ],
+      },
+      solution: {
+        heading: "The change carries its own sign-offs",
+        body: ["Northpin runs ECOs as threads that hold the entire chain."],
+        points: [
+          { lead: "Joint sign-offs, visible.", text: "Engineering, quality, and production approve in the open, in sequence." },
+          { lead: "Effectivity is explicit.", text: "The cut-in date, the affected serials, and the supplier notice travel with the change." },
+          { lead: "Design history for free.", text: "The approved change files itself into the product's record." },
+        ],
+      },
+      impact: {
+        heading: "From 21 days to 6",
+        body: ["The change cycle collapsed once the waiting between approvals disappeared."],
+        points: [
+          { lead: "6-day ECO cycle.", text: "Down from 21, with more scrutiny on the change, not less." },
+          { lead: "Zero builds on old revisions.", text: "Effectivity gates the floor automatically." },
+          { lead: "No review meetings.", text: "The meeting became a thread everyone already read." },
+        ],
+      },
+    },
   },
   {
     slug: "veremark-devices-doc-control",
@@ -332,6 +700,34 @@ export const TESTIMONIALS: Testimonial[] = [
       { value: "3 days", label: "revision cycle, was 14" },
       { value: "0", label: "overdue periodic reviews" },
     ],
+    ...CO.veremark,
+    story: {
+      challenge: {
+        heading: "Ambushed by reviews",
+        body: [
+          "Document control ran on calendars kept beside the documents, so periodic reviews surfaced late, sometimes in an audit finding rather than a reminder.",
+          "Revisions crawled because routing was manual and every approver was chased by hand.",
+        ],
+      },
+      solution: {
+        heading: "Documents that route themselves",
+        body: ["Veremark moved controlled documents onto Unifize with the lifecycle built in."],
+        points: [
+          { lead: "Routing that closes itself.", text: "A revision moves through its approvers with the chase built into the thread." },
+          { lead: "Reviews that come to you.", text: "Periodic reviews open ahead of their due date, assigned to the document owner." },
+          { lead: "Training in lockstep.", text: "The revision carries retraining with it, to exactly the affected people." },
+        ],
+      },
+      impact: {
+        heading: "Nothing overdue, nothing surprising",
+        body: ["The document system stopped generating findings."],
+        points: [
+          { lead: "3-day revision cycle.", text: "Down from 14, without shortening a single review." },
+          { lead: "Zero overdue periodic reviews.", text: "Reviews surface early, so due dates stopped being discoveries." },
+          { lead: "Audit trail by default.", text: "Every approval and every read is already on the record." },
+        ],
+      },
+    },
   },
 ];
 
@@ -524,6 +920,10 @@ export type CaseStudy = {
   summary: string;
   size: string;
   standards: string[];
+  /** company profile shown in the item page's About card */
+  about: string;
+  /** display headings for the challenge/approach/result story blocks */
+  storyHeads: { challenge: string; approach: string; result: string };
   metrics: Metric[]; // 3 headline results
   quote: { text: string; person: string; role: string; img?: string };
   challenge: string[];
@@ -544,6 +944,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A growing Class III manufacturer was drowning in a CAPA list that spanned three systems. Consolidating quality, documents, and design onto one thread-based backbone turned closure into a routine, not a fire drill.",
     size: "420 employees",
     standards: ["ISO 13485", "21 CFR 820", "21 CFR Part 11", "EU MDR"],
+    about: CO.corvent.about,
+    storyHeads: { challenge: "Three systems, one backlog", approach: "One thread-based backbone", result: "Nothing overdue, nothing assembled" },
     metrics: [
       { value: "63%", label: "faster CAPA closure" },
       { value: "0", label: "overdue CAPAs at audit" },
@@ -583,6 +985,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A sterile injectables CDMO replaced paper batch records with an electronic record that releases clean batches by exception - freeing reviewers to work only the deviations.",
     size: "260 employees",
     standards: ["21 CFR Part 211", "21 CFR Part 11", "EU GMP Annex 1", "ICH Q10"],
+    about: CO.aldale.about,
+    storyHeads: { challenge: "Days lost to line-by-line review", approach: "eDHR with review-by-exception", result: "Release on the same shift" },
     metrics: [
       { value: "2 days", label: "cut from batch release" },
       { value: "98%", label: "right-first-time" },
@@ -621,6 +1025,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A Tier-1 aerostructures supplier tied every change, nonconformance, and disposition to the part serial number - so traceability is the default and audit prep nearly disappeared.",
     size: "1,100 employees",
     standards: ["AS9100D", "ISO 9001", "NADCAP", "ITAR"],
+    about: CO.northpin.about,
+    storyHeads: { challenge: "Traceability rebuilt for every audit", approach: "Recorded against the serial number", result: "Surveillance became a non-event" },
     metrics: [
       { value: "0", label: "major findings" },
       { value: "40%", label: "less audit prep" },
@@ -658,6 +1064,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A powertrain components supplier tied every PPAP element to the part revision, turning a week-long submission package into a single click - and lifting first-time acceptance from OEM customers.",
     size: "680 employees",
     standards: ["IATF 16949", "ISO 9001", "VDA 6.3"],
+    about: CO.brightbore.about,
+    storyHeads: { challenge: "PPAP scattered across folders", approach: "Every element bound to the revision", result: "Accepted the first time" },
     metrics: [
       { value: "1 click", label: "PPAP package" },
       { value: "92%", label: "first-time acceptance" },
@@ -695,6 +1103,8 @@ export const CASE_STUDIES: CaseStudy[] = [
       "A medical-device contract manufacturer gave every client program its own workspace on a shared quality spine - turning tech transfer from a project into a routine.",
     size: "540 employees",
     standards: ["ISO 13485", "21 CFR 820", "21 CFR Part 11"],
+    about: CO.atlas.about,
+    storyHeads: { challenge: "Every client, a separate project", approach: "One workspace per program", result: "Transfer in weeks, audit-ready by default" },
     metrics: [
       { value: "3x", label: "faster tech transfer" },
       { value: "12", label: "programs on one system" },

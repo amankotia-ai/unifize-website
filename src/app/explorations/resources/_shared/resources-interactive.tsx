@@ -4,16 +4,14 @@
  * resources-interactive.tsx - the client layer for the Resources area,
  * following unifize.com's collection structure in the DMS design language:
  *
- *   QuoteCarousel      - the video hero's rotating featured customer quotes.
  *   TestimonialLibrary - the /videos pattern: one "Filter by" bar over a
  *                        uniform card grid.
  *   BlogLibrary        - category chips + search over the post grid.
  *   CaseLibrary        - industry/module chips + search over the case grid.
- *   VideoPlayer        - the item page's player.
+ *   CineMedia          - the item page's cinematic hero media + play state.
  * -------------------------------------------------------------------------- */
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useMemo, useState } from "react";
 import {
   MODULES,
   INDUSTRIES,
@@ -48,60 +46,6 @@ function Chip({ active, onClick, children }: { active: boolean; onClick: () => v
 
 function FilterLabel({ children }: { children: React.ReactNode }) {
   return <span className="rs-filterlab">{children}</span>;
-}
-
-/* ===================================================== featured quote carousel
- * The live /videos hero: a rotating card of customer quotes beside the intro.
- * Auto-advances; pauses on hover; dots to jump. */
-export function QuoteCarousel({ items }: { items: Testimonial[] }) {
-  const [idx, setIdx] = useState(0);
-  const hover = useRef(false);
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      if (!hover.current) setIdx((i) => (i + 1) % items.length);
-    }, 6000);
-    return () => window.clearInterval(id);
-  }, [items.length]);
-
-  const t = items[idx];
-  return (
-    <div
-      className="rs-qcar"
-      onMouseEnter={() => { hover.current = true; }}
-      onMouseLeave={() => { hover.current = false; }}
-    >
-      <Link key={t.slug} href={`/explorations/resources/testimonials/${t.slug}`} className="rs-qcard">
-        <div className="rs-qcard__media">
-          {t.poster
-            ? <img className="rs-qcard__img" src={t.poster} alt="" />
-            : <span className="rs-qcard__ghost" aria-hidden="true">{initialsOf(t.company)}</span>}
-          <PlayGlyph className="rs-qcard__play" />
-          <span className="rs-qcard__dur">{t.duration}</span>
-        </div>
-        <div className="rs-qcard__body">
-          <blockquote className="rs-qcard__q">&ldquo;{t.quote}&rdquo;</blockquote>
-          <div className="rs-qcard__who">
-            <span className="rs-qcard__name">{t.person}</span>
-            <span className="rs-qcard__role">{t.role}, {t.company}</span>
-          </div>
-        </div>
-      </Link>
-      <div className="rs-qcar__dots" role="tablist" aria-label="Featured stories">
-        {items.map((it, i) => (
-          <button
-            key={it.slug}
-            type="button"
-            role="tab"
-            aria-selected={i === idx}
-            aria-label={`Story ${i + 1}: ${it.company}`}
-            className={"rs-qcar__dot" + (i === idx ? " is-active" : "")}
-            onClick={() => setIdx(i)}
-          />
-        ))}
-      </div>
-    </div>
-  );
 }
 
 /* ============================================================ video library
@@ -230,28 +174,32 @@ export function CaseLibrary({ studies }: { studies: CaseStudy[] }) {
   );
 }
 
-/* ============================================================ video player */
-export function VideoPlayer({ t }: { t: Testimonial }) {
+/* ====================================================== cinematic hero media
+ * The video item's hero layer: the poster (or a ghost monogram) as the full
+ * stage, a centered play control, and a quiet scrub bar on the bottom edge.
+ * The server page lays the title block over it; this component only owns the
+ * media and its play state. */
+export function CineMedia({ t }: { t: Testimonial }) {
   const [playing, setPlaying] = useState(false);
   return (
-    <div className={"rs-player" + (playing ? " is-playing" : "")}>
-      {t.poster ? <img className="rs-player__img" src={t.poster} alt="" /> : <span className="rs-player__ghost" aria-hidden="true">{initialsOf(t.company)}</span>}
-      <span className="rs-player__scrim" aria-hidden="true" />
-      <span className="rs-player__no">{t.industry}</span>
+    <div className={"rs-cine__media" + (playing ? " is-playing" : "")}>
+      {t.poster ? <img className="rs-cine__img" src={t.poster} alt="" /> : <span className="rs-cine__ghost" aria-hidden="true">{initialsOf(t.company)}</span>}
+      <span className="rs-cine__scrim" aria-hidden="true" />
+      <span className="rs-cine__sample">Sample</span>
       {playing ? (
-        <div className="rs-player__note">
-          <span className="rs-player__note-lab">Sample reel</span>
+        <div className="rs-cine__note">
+          <span className="rs-cine__note-lab">Sample reel</span>
           <p>The customer&rsquo;s video plays here. Swap in the real footage before this page ships.</p>
         </div>
       ) : (
-        <button type="button" className="rs-player__cta" onClick={() => setPlaying(true)} aria-label={`Play ${t.person}'s story`}>
+        <button type="button" className="rs-cine__play" onClick={() => setPlaying(true)} aria-label={`Play ${t.person}'s story`}>
           <PlayGlyph />
-          <span className="rs-player__runtime">{t.duration}</span>
+          <span className="rs-cine__runtime">{t.duration}</span>
         </button>
       )}
-      <div className="rs-player__bar" aria-hidden="true">
-        <span className="rs-player__scrub"><span className="rs-player__fill" style={{ transform: playing ? "scaleX(0.34)" : "scaleX(0)" }} /></span>
-        <span className="rs-player__time">{playing ? "1:24" : "0:00"} / {t.duration}</span>
+      <div className="rs-cine__bar" aria-hidden="true">
+        <span className="rs-cine__scrub"><span className="rs-cine__fill" style={{ transform: playing ? "scaleX(0.34)" : "scaleX(0)" }} /></span>
+        <span className="rs-cine__time">{playing ? "1:24" : "0:00"} / {t.duration}</span>
       </div>
     </div>
   );

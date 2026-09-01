@@ -34,7 +34,10 @@ export function VideoCard({ t }: { t: Testimonial }) {
       <div className="rs-card__body">
         <h3 className="rs-card__title">{t.headline}</h3>
         <p className="rs-card__dek">{t.quote}</p>
-        <p className="rs-card__meta">{t.person} · {t.role}, {t.company}</p>
+        <p className="rs-card__by">
+          <span className="rs-card__name">{t.person}</span>
+          <span className="rs-card__role">{t.role}, {t.company}</span>
+        </p>
       </div>
     </Link>
   );
@@ -51,7 +54,10 @@ export function PostCard({ p }: { p: Post }) {
       <div className="rs-card__body">
         <h3 className="rs-card__title">{p.title}</h3>
         <p className="rs-card__dek">{p.dek}</p>
-        <p className="rs-card__meta">{p.dateLabel} · {p.author.name}</p>
+        <p className="rs-card__by">
+          <span className="rs-card__name">{p.author.name}</span>
+          <span className="rs-card__role">{p.dateLabel} · {p.readMins} min read</span>
+        </p>
       </div>
     </Link>
   );

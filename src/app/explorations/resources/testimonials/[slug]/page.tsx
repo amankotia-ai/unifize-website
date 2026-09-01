@@ -1,16 +1,21 @@
 /* ============================================================================
- * /explorations/resources/testimonials/[slug] - a single customer video,
- * structured like the live video item: a compact light masthead, the player
- * as anchor, chapters + quote beside the fact card, then related videos.
+ * /explorations/resources/testimonials/[slug] - a single customer video in the
+ * customer-story grammar: a full-bleed cinematic video hero (the film IS the
+ * masthead), an About card with the company facts and the video's chapters,
+ * a centered challenge -> solution -> impact narrative with the outcome
+ * metrics, the spoken quote as a centerpiece, then more stories. Structure
+ * follows the classic customer-story page; the language stays DMS: square
+ * corners, hairlines, IBM Plex display, Unifize blue used sparingly.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ResourceShell } from "../../_shared/resource-shell";
-import { ResourceMast, ResourceCTA, ResourceFooter, TagRow } from "../../_shared/resource-chrome";
-import { VideoPlayer } from "../../_shared/resources-interactive";
+import { ResourceCTA, ResourceFooter } from "../../_shared/resource-chrome";
+import { CineMedia } from "../../_shared/resources-interactive";
 import { VideoCard } from "../../_shared/resource-cards";
-import { TESTIMONIALS, getTestimonial } from "../../_shared/resources-data";
+import { TESTIMONIALS, getTestimonial, type StoryBlock } from "../../_shared/resources-data";
+import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export function generateStaticParams() {
   return TESTIMONIALS.map((t) => ({ slug: t.slug }));
@@ -21,6 +26,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const t = getTestimonial(slug);
   if (!t) return { title: "Customer story — Unifize" };
   return { title: `${t.company}: ${t.headline} — Unifize`, description: t.quote };
+}
+
+function Fact({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rs-cine-fact">
+      <span className="rs-cine-fact__lab">{label}</span>
+      <span className="rs-cine-fact__val">{value}</span>
+    </div>
+  );
+}
+
+function Block({ eyebrow, block, children }: { eyebrow: string; block: StoryBlock; children?: React.ReactNode }) {
+  return (
+    <article className="rs-story__block" data-reveal>
+      <span className="dms-eyebrow">{eyebrow}</span>
+      <h2 className="rs-story__h">{block.heading}</h2>
+      {block.body.map((p) => <p className="rs-story__p" key={p.slice(0, 24)}>{p}</p>)}
+      {block.points ? (
+        <ul className="rs-story__points">
+          {block.points.map((pt) => (
+            <li key={pt.lead}><b>{pt.lead}</b> {pt.text}</li>
+          ))}
+        </ul>
+      ) : null}
+      {children}
+    </article>
+  );
 }
 
 export default async function TestimonialItemPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -34,65 +66,93 @@ export default async function TestimonialItemPage({ params }: { params: Promise<
 
   return (
     <ResourceShell>
-      <ResourceMast
-        trail={[{ label: "Videos", href: "/explorations/resources/testimonials" }, { label: t.company }]}
-        title={t.headline}
-        desc={`${t.person}, ${t.role} at ${t.company} · ${t.companyKind}`}
-        compact
-      >
-        <TagRow modules={t.modules} industry={t.industry} />
-      </ResourceMast>
-
-      {/* player */}
-      <section className="dms-section rs-block" style={{ paddingTop: 0 }}>
-        <div className="dms-wrap">
-          <div data-reveal><VideoPlayer t={t} /></div>
+      {/* cinematic hero - the video is the masthead */}
+      <section className="dms-section dms-section--dark rs-cine">
+        <CineMedia t={t} />
+        <div className="dms-wrap rs-cine__frame">
+          <nav className="rs-crumb rs-crumb--dark" aria-label="Breadcrumb">
+            <Link href="/explorations/resources">Resources</Link>
+            <span className="rs-crumb__seg"><span aria-hidden="true">/</span><Link href="/explorations/resources/testimonials">Videos</Link></span>
+            <span className="rs-crumb__seg"><span aria-hidden="true">/</span><span>{t.company}</span></span>
+          </nav>
+          <div className="rs-cine__foot">
+            <div className="rs-cine__head">
+              <span className="rs-cine__co">{t.company}</span>
+              <h1 className="rs-cine__title">{t.headline}</h1>
+              <p className="rs-cine__sub">{t.person}, {t.role} · {t.companyKind}</p>
+            </div>
+            <div className="rs-cine__cta">
+              <BookDemoButton className="dms-btn" source="video-hero">Book a demo</BookDemoButton>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* body */}
-      <section className="dms-section rs-block dms-section--alt">
-        <div className="dms-wrap rs-item-grid">
-          <div data-reveal>
-            <h2 className="rs-lab">In this video</h2>
-            <ol className="rs-chapters">
-              {t.chapters.map((c) => (
-                <li className="rs-chapter" key={c.t}>
-                  <span className="rs-chapter__t">{c.t}</span>
-                  <span className="rs-chapter__label">{c.label}</span>
-                </li>
-              ))}
-            </ol>
-            <figure className="rs-pull">
-              <blockquote className="rs-pull__q">&ldquo;{t.quote}&rdquo;</blockquote>
-              <figcaption className="rs-pull__cite">
-                {t.poster ? <img className="rs-pull__ava" src={t.poster} alt="" /> : null}
-                <span className="rs-pull__who">
-                  <span className="rs-pull__name">{t.person}</span>
-                  <span className="rs-pull__role">{t.role}, {t.company}</span>
-                </span>
-              </figcaption>
-            </figure>
+      {/* body: about card + story column + quote */}
+      <section className="dms-section dms-section--alt rs-block rs-cine-body">
+        <div className="dms-wrap">
+          <div className="rs-cine-about" data-reveal>
+            <div className="rs-cine-about__grid">
+              <div className="rs-cine-about__head">
+                <span className="rs-cine-fact__lab">About</span>
+                <h2 className="rs-cine-about__co">{t.company}</h2>
+              </div>
+              <p className="rs-cine-about__desc">{t.about}</p>
+            </div>
+            <div className="rs-cine-about__facts">
+              <Fact label="Industry" value={t.industry} />
+              <Fact label="Company size" value={t.size} />
+              <Fact label="Compliance frame" value={t.standards.join(" · ")} />
+              <Fact label="Modules in play" value={t.modules.join(", ")} />
+            </div>
+            <div className="rs-cine-about__ch">
+              <span className="rs-cine-fact__lab">In this video</span>
+              <ol className="rs-cine-chlist">
+                {t.chapters.map((c) => (
+                  <li className="rs-cine-chit" key={c.t}>
+                    <span className="rs-cine-chit__t">{c.t}</span>
+                    <span className="rs-cine-chit__l">{c.label}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
 
-          <aside data-reveal>
-            <div className="rs-spec">
-              <div className="rs-spec__row"><span className="rs-spec__lab">Company</span><span className="rs-spec__val">{t.company} · {t.companyKind}</span></div>
-              <div className="rs-spec__row"><span className="rs-spec__lab">Industry</span><span className="rs-spec__val">{t.industry}</span></div>
-              <div className="rs-spec__row"><span className="rs-spec__lab">Modules in play</span><span className="rs-spec__val">{t.modules.join(", ")}</span></div>
-              {t.metrics.map((m) => (
-                <div className="rs-spec__row" key={m.label}><span className="rs-spec__lab">{m.label}</span><span className="rs-spec__stat">{m.value}</span></div>
-              ))}
-              <div className="rs-spec__row"><span className="rs-spec__lab">Read the full account</span><Link href="/explorations/resources/case-studies" className="rs-spec__val">Case studies &rarr;</Link></div>
-            </div>
-          </aside>
+          <div className="rs-story">
+            <Block eyebrow="Challenge" block={t.story.challenge} />
+            <Block eyebrow="Solution" block={t.story.solution} />
+            <Block eyebrow="Impact" block={t.story.impact}>
+              <div className="rs-statband rs-statband--duo">
+                {t.metrics.map((m) => (
+                  <div className="rs-statband__it" key={m.label}>
+                    <span className="rs-statband__v">{m.value}</span>
+                    <span className="rs-statband__l">{m.label}</span>
+                  </div>
+                ))}
+              </div>
+            </Block>
+          </div>
+
+          <figure className="rs-cine-quote" data-reveal>
+            <blockquote className="rs-cine-quote__q">&ldquo;{t.quote}&rdquo;</blockquote>
+            <figcaption className="rs-cine-quote__cite">
+              {t.poster ? <img className="rs-cine-quote__ava" src={t.poster} alt="" /> : null}
+              <span className="rs-cine-quote__who">
+                <span className="rs-cine-quote__name">{t.person}</span>
+                <span className="rs-cine-quote__role">{t.role}, {t.company}</span>
+              </span>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
       {/* related */}
       <section className="dms-section rs-block">
         <div className="dms-wrap">
-          <h2 className="rs-relhead">More videos</h2>
+          <div className="rs-relrow">
+            <h2 className="rs-relhead">More customer stories</h2>
+            <Link className="rs-relall" href="/explorations/resources/testimonials">View all &rarr;</Link>
+          </div>
           <div className="rs-grid rs-grid--3" data-reveal>
             {relatedAll.map((o) => <VideoCard key={o.slug} t={o} />)}
           </div>

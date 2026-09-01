@@ -32,7 +32,7 @@ import Link from "next/link";
 import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
-import { HeroArcadeSwitcher } from "./home-interactive";
+import { HeroArcadeSwitcher, ProductSuiteShowcase } from "./home-interactive";
 import { PlatformJourney } from "../platform/platform-interactive";
 import {
   HOME_HERO_QUALITY_CONFIG,
@@ -41,6 +41,9 @@ import {
   HOME_HERO_DOCUMENT_CONFIG,
   HOME_JOURNEY_CONFIGS,
 } from "./home-arcade";
+import { QMS_MODULE_ARCADE_CONFIGS } from "../products/qms/qms-arcade";
+import { MES_MODULE_ARCADE_CONFIGS } from "../products/mes/mes-arcade";
+import { PLM_MODULE_ARCADE_CONFIGS } from "../products/plm/plm-arcade";
 import { TESTIMONIALS } from "../resources/_shared/resources-data";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
@@ -113,6 +116,8 @@ const PRIMARY_SOLUTIONS = [
   { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development" },
 ];
 
+/* 04 - each product poses the arcade window in its own world: the same
+ * signature scenes its product page leads with, not a diagram of them. */
 const PRODUCTS = [
   {
     code: "QMS",
@@ -120,6 +125,7 @@ const PRODUCTS = [
     body: "CAPA, audits, nonconformances, and change control on one governed quality record.",
     outcome: "Close the finding. Keep the decision.",
     href: "/explorations/products/qms",
+    config: QMS_MODULE_ARCADE_CONFIGS["non-conformance"],
   },
   {
     code: "DMS",
@@ -127,6 +133,7 @@ const PRODUCTS = [
     body: "Controlled documents, versioning, training, and e-signatures from draft to obsolete.",
     outcome: "One current version, everywhere.",
     href: "/explorations/products/dms",
+    config: HOME_HERO_DOCUMENT_CONFIG,
   },
   {
     code: "MES",
@@ -134,6 +141,7 @@ const PRODUCTS = [
     body: "Electronic batch records and shop-floor execution with evidence captured as work happens.",
     outcome: "The record builds with the shift.",
     href: "/explorations/products/mes",
+    config: MES_MODULE_ARCADE_CONFIGS["electronic-batch-lot-records"],
   },
   {
     code: "PLM",
@@ -141,6 +149,7 @@ const PRODUCTS = [
     body: "Requirements, design controls, BOMs, and change orders on one traceable product record.",
     outcome: "Keep the trace from input to release.",
     href: "/explorations/products/plm",
+    config: PLM_MODULE_ARCADE_CONFIGS["design-controls-traceability"],
   },
 ];
 
@@ -203,6 +212,7 @@ const ENTRY_PATHS = [
     links: [
       INDUSTRY_GROUPS[0].industries[0],
       INDUSTRY_GROUPS[0].industries[1],
+      INDUSTRY_GROUPS[1].industries[0],
       INDUSTRY_GROUPS[2].industries[1],
     ].map((industry) => ({ name: industry.name, meta: industry.standard, href: industry.href })),
     href: "#industries",
@@ -272,16 +282,6 @@ function SymptomVisual({ type }: { type: string }) {
       </div>
     );
   }
-  if (type === "revisions") {
-    return (
-      <div className="hm-cardviz hm-cardviz--revisions" aria-hidden="true">
-        <div className="hm-cardviz__sheet is-back"><span>REV B</span><i /><i /></div>
-        <div className="hm-cardviz__sheet is-mid"><span>REV C</span><i /><i /></div>
-        <div className="hm-cardviz__sheet is-front"><span>REV D</span><b>?</b><i /><i /></div>
-        <small>Which one is current?</small>
-      </div>
-    );
-  }
   if (type === "wip") {
     return (
       <div className="hm-cardviz hm-cardviz--wip" aria-hidden="true">
@@ -302,70 +302,13 @@ function SymptomVisual({ type }: { type: string }) {
       </div>
     );
   }
-  if (type === "trace") {
-    return (
-      <div className="hm-cardviz hm-cardviz--trace" aria-hidden="true">
-        <div><i>01</i><span>Design review</span></div>
-        <b>→</b>
-        <div className="is-gap"><i>?</i><span>Decision trail</span></div>
-        <b>→</b>
-        <div><i>03</i><span>DHF</span></div>
-      </div>
-    );
-  }
   return (
-    <div className="hm-cardviz hm-cardviz--audit" aria-hidden="true">
-      <div className="hm-cardviz__evidence"><span>PDF</span><span>CSV</span><span>DOC</span><span>MSG</span></div>
+    <div className="hm-cardviz hm-cardviz--trace" aria-hidden="true">
+      <div><i>01</i><span>Design review</span></div>
       <b>→</b>
-      <div className="hm-cardviz__packet"><i /><i /><i /><span>Audit packet</span></div>
-    </div>
-  );
-}
-
-/* 04 - each product card leads with its governed record's signature shape, in
- * the same linework register as the symptom cards; the fiction stays the one
- * Engineering Industries universe the arcade scenes journey through. */
-function ProductVisual({ code }: { code: string }) {
-  if (code === "QMS") {
-    return (
-      <div className="hm-prodviz hm-prodviz--qms" aria-hidden="true">
-        <div className="hm-prodviz__node"><i>NC-204</i><span>Coating out of spec</span><em>Contained</em></div>
-        <div className="hm-prodviz__node"><i>CAPA-612</i><span>Nozzle wear corrected</span><em>Actioned</em></div>
-        <div className="hm-prodviz__seal"><b>✓</b><span>Closed · decision on the record</span></div>
-      </div>
-    );
-  }
-  if (code === "DMS") {
-    return (
-      <div className="hm-prodviz hm-prodviz--dms" aria-hidden="true">
-        <div className="hm-prodviz__rev is-old"><i>REV C</i><span>Superseded</span></div>
-        <div className="hm-prodviz__rev is-new"><i>REV D</i><span>Effective</span><b>✓</b></div>
-        <div className="hm-prodviz__where"><small>At point of use</small><span>Line 2</span><span>Lab</span><span>Receiving</span></div>
-      </div>
-    );
-  }
-  if (code === "MES") {
-    return (
-      <div className="hm-prodviz hm-prodviz--mes" aria-hidden="true">
-        <div className="hm-prodviz__route">
-          <i className="is-done" /><i className="is-done" /><i className="is-live" /><i /><i /><i /><i /><i />
-          <span>Step 3 of 8 · Coating</span>
-        </div>
-        <div className="hm-prodviz__read"><i>09:12</i><span>Thickness · 41.2 µm</span><b>✓</b></div>
-        <div className="hm-prodviz__read"><i>10:05</i><span>Visual · pass</span><b>✓</b></div>
-        <div className="hm-prodviz__read is-pending"><i>--:--</i><span>Torque check</span></div>
-      </div>
-    );
-  }
-  return (
-    <div className="hm-prodviz hm-prodviz--plm" aria-hidden="true">
-      <div className="hm-prodviz__chain">
-        <span><i>REQ-118</i><small>Requirement</small></span>
-        <span><i>DSN-42</i><small>Design</small></span>
-        <span><i>ECO-1187</i><small>Change</small></span>
-        <span className="is-release"><i>REL 2.4</i><small>Release</small></span>
-      </div>
-      <p className="hm-prodviz__foot"><b>✓</b>Trace intact · input to release</p>
+      <div className="is-gap"><i>?</i><span>Decision trail</span></div>
+      <b>→</b>
+      <div><i>03</i><span>DHF</span></div>
     </div>
   );
 }
@@ -573,20 +516,11 @@ export default function HomePage() {
               you already trust.
             </p>
           </div>
-          <ul className="hm-products" data-reveal>
-            {PRODUCTS.map((product) => (
-              <li key={product.code}>
-                <Link className="hm-product" href={product.href}>
-                  <span className="hm-product__code dms-data">{product.code}</span>
-                  <ProductVisual code={product.code} />
-                  <h3>{product.name}</h3>
-                  <p>{product.body}</p>
-                  <strong>{product.outcome}</strong>
-                  <span className="hm-product__cta">Explore {product.code} <span aria-hidden="true">&rarr;</span></span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/* the suite, led by the product: one window, four governed
+            * records, each posed in its own product's world */}
+          <div data-reveal>
+            <ProductSuiteShowcase items={PRODUCTS} />
+          </div>
         </div>
       </section>
 
@@ -596,7 +530,7 @@ export default function HomePage() {
           <div className="hm-split-head" data-reveal>
             <div>
               <Eyebrow n={5}>Your regulated world</Eyebrow>
-              <h2 className="dms-h2">Built for the standards—and the moments—that govern you.</h2>
+              <h2 className="dms-h2">Built for the standards, and the moments, that govern you.</h2>
             </div>
             <p className="dms-lede">
               Find the version of Unifize grounded in your systems, regulatory frame, and the decisions your teams
