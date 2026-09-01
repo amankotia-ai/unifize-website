@@ -1,13 +1,10 @@
 /* ============================================================================
- * DMS - Document Management System. PRIMARY product page.
- * Promoted from ./stylized (Sep 2026): the Asana-idiom product visuals agreed
- * on the Jul 23 Website Rebuild call are now the page - deliberately stylized
- * component fragments (no full screens, no app sidebar, no window chrome),
- * background arcs linking records, oversized stylized headers, and the AI
- * acting from outside the frame. The hero's establishing shot is the shared
- * arcade engine walking six key moments of SOP-118, bookended by the no-code
- * process builder and the live document-control dashboard (both lifted from
- * the DMS demo video, Aug 2026). The previous primary lives on at ./classic.
+ * DMS · CLASSIC - the previous primary DMS product page, preserved as a
+ * variant when the stylized Asana-idiom page was promoted to ../page.
+ * Design language borrowed from the industry-template-modern exploration
+ * (IBM Plex Sans display, Inter body, Unifize blue 700, dark hero/close, dashed dividers,
+ * restrained reveal motion). Editorial system: numbered chapters, hairline
+ * ledgers and registers instead of card grids, mono indices, big display type.
  * Content is sourced from the Unifize Products database (Notion): DMS (UPD-2).
  * ========================================================================== */
 import type { Metadata } from "next";
@@ -21,86 +18,43 @@ import {
   AUDIENCE,
   STANDARDS,
   TRUST_INDUSTRIES,
-} from "./dms-data";
-import { dmsCopy } from "./dms-copy";
-import { DmsHeader } from "./dms-header";
-import { SiteFooter } from "../../_shared/site-footer";
-import { IntegrationLayer } from "./dms-integrations";
-import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
-import { Eyebrow } from "./dms-primitives";
-import { CapGlyph } from "./dms-linework";
-import { DmsProblemSpotlight } from "./dms-problem-visuals";
-import { DmsIndustryIcon } from "./dms-industry-icons";
-import { DmsProofFilms } from "./dms-proof";
+} from "../dms-data";
+import { dmsCopy } from "../dms-copy";
+import { DmsHeader } from "../dms-header";
+import { SiteFooter } from "../../../_shared/site-footer";
+import { CoordinationTax } from "../dms-coordination";
+import { IntegrationLayer } from "../dms-integrations";
+import { PRODUCT_INTEGRATION_LOGOS } from "../../_shared/integrations-catalog";
+import { Eyebrow } from "../dms-primitives";
+import { CapGlyph } from "../dms-linework";
+import { DmsProblemSpotlight } from "../dms-problem-visuals";
+import { DmsHeroSection } from "../dms-hero-visuals";
+import { DmsIndustryIcon } from "../dms-industry-icons";
+import { DmsProofFilms } from "../dms-proof";
 import {
   ModuleExplorer,
   LifecycleExplorer,
   FaqAccordion,
-} from "./dms-interactive";
-import {
-  STYLIZED_ARCADE_FLOW_CONFIGS,
-  STYLIZED_HERO_STEPS,
-  STYLIZED_LIFECYCLE_MOCKS,
-  STYLIZED_MODULE_ARCADE_CONFIGS,
-} from "./stylized/stylized-mocks";
-import { HeroArcade } from "../_shared/arcade/hero-arcade";
-import { StylizedCoordinationTax } from "./stylized/stylized-ctax";
-import "../../industry-template-modern/itm.css";
-import "./dms.css";
-import "./dms-redesign.css";
-import "./stylized/stylized.css";
+} from "../dms-interactive";
+import "../../../industry-template-modern/itm.css";
+import "../dms.css";
+import "../dms-redesign.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
-  title: "Document Management System · Unifize",
+  title: "Document Management System · Classic · Unifize",
   description:
     "DMS bundles Document Control, Change Control, and Training into one governed record. Controlled documents from draft to obsolete, with 21 CFR Part 11 e-signature where required.",
+  robots: { index: false },
 };
 
-export default function DmsProductPage() {
+export default function DmsClassicPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized">
+    <main className="dms dms--redesign dms--consistent-eyebrows">
       <DmsHeader />
 
       {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="Document Management System">
-        <div className="dms-wrap dms-hero__inner">
-          <div className="dms-hero__grid">
-            <div className="dms-hero__left">
-              <Link className="dms-hero__product" href="/explorations/platform">
-                <span className="dms-hero__product-mark" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path className="dms-hero__product-sheet" d="M7 3.75h7.4L18 7.35v12.9H7V3.75Z" />
-                    <path className="dms-hero__product-detail" d="M14 3.75v4h4M9.75 12h5.5M9.75 15.5h5.5" />
-                  </svg>
-                </span>
-                <span>Document Management System</span>
-              </Link>
-              <h1 className="dms-hero__title">
-                <span className="dms-hero__line">{dmsCopy("hero.line1", "One current version.")}</span>
-                <span className="dms-hero__line dms-hero__turn">{dmsCopy("hero.line2", "Everywhere you look.")}</span>
-              </h1>
-            </div>
-            <div className="dms-hero__right">
-              <p className="dms-lede dms-hero__sub">{dmsCopy("hero.sub", PRODUCT.description)}</p>
-              <div className="dms-hero__ctas">
-                <BookDemoButton className="dms-btn" source="hero">{dmsCopy("hero.cta1", "Book a demo")} &rarr;</BookDemoButton>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                  {dmsCopy("hero.cta2", "Take Coordination Tax Assessment")}
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* The establishing shot is the arcade itself: one app window walking
-            * six moments of SOP-118 (build → find → trust → sign → release →
-            * measure), with a numbered step rail under it. */}
-          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-            <HeroArcade steps={STYLIZED_HERO_STEPS} />
-          </div>
-
-        </div>
-      </section>
+      <DmsHeroSection variant="governed-record" />
 
       {/* ============================ TRUST STRIP ======================= */}
       <section className="dms-section dms-section--dark dms-trust" aria-label="Industries served">
@@ -145,18 +99,15 @@ export default function DmsProductPage() {
       </section>
 
       {/* ==================== THE COORDINATION TAX =====================
-       * The four daily symptoms roll up into one measurable root cause, read
-       * as a BEFORE / AFTER ledger with a drawn scene per stage. */}
-      <StylizedCoordinationTax problems={DMS_PROBLEMS} />
+       * The four daily symptoms roll up into one measurable root cause. */}
+      <CoordinationTax variant="revision" problems={DMS_PROBLEMS} />
 
       {/* ============================ 02 · MODULES BUNDLED ===============
-       * Stylized: fragment scenes replace the framed workspace mocks. */}
+       * The Unifize product story begins after the problem is fully framed. */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
         <ModuleExplorer
           heading={dmsCopy("modules.heading", "Three modules. One continuous record.")}
           lede={dmsCopy("modules.lede", "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.")}
-          arcadeConfigsByModule={STYLIZED_MODULE_ARCADE_CONFIGS}
-          frame={false}
         />
       </section>
 
@@ -181,26 +132,22 @@ export default function DmsProductPage() {
       </section>
 
       {/* ============================ 04 · LIFECYCLE =====================
-       * Stylized: one fragment scene per lifecycle station in the sticky
-       * live panel, indexed by station so persona flows land right too.
-       * mapChip=false: only the Notion-backed flows render as journeys;
-       * the page-owned lifecycle map chip is held back. */}
+       * Sticky scroll story (mirrors section 02): the component owns the
+       * head, the brand field container, and the trail + shell inside it.
+       * On ink: near-black field + black bottom breathing room. */}
       <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
         <LifecycleExplorer
           layout="sticky-visual"
           heading={dmsCopy("lifecycle.heading", "Every state has a gate. Every gate has an owner.")}
           flows={DMS_FLOWS}
           flowsLabel={dmsCopy("flows.heading", "Follow the work through the lifecycle.")}
-          stageMocks={STYLIZED_LIFECYCLE_MOCKS}
-          arcadeConfigsByFlow={STYLIZED_ARCADE_FLOW_CONFIGS}
-          stageFrame={false}
-          stageByStation
-          mapChip={false}
-          showFlowOutcomes={false}
         />
       </section>
 
-      {/* ==================== INTEGRATIONS (connector layer) =========== */}
+      {/* ==================== INTEGRATIONS (connector layer) ===========
+       * Connective beat after the lifecycle: the controlled document does not
+       * stop at Unifize's edge. Unnumbered interstitial, on ink, so it continues
+       * the dark block (02-04) one section longer before the light 05. */}
       <IntegrationLayer
         data={INTEGRATIONS}
         variant="minimal"
@@ -213,7 +160,9 @@ export default function DmsProductPage() {
         ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}
       />
 
-      {/* ============================ 05 · WHO IT IS FOR ================= */}
+      {/* ============================ 05 · WHO IT IS FOR =================
+       * Three roles in one compact row. Each card shows the lifecycle span
+       * that role owns and three day-to-day responsibilities. */}
       <section className="dms-section dms-audience" id="who" aria-labelledby="dms-audience-title">
         <div className="dms-wrap">
           <header className="dms-audience__head" data-reveal>
@@ -261,7 +210,9 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 06 · PROOF ========================= */}
+      {/* ============================ 06 · PROOF =========================
+       * Real customer films from the Website Customer Videos mirror
+       * (Notion-governed); the attested figure keeps the lead card. */}
       <div className="itm dms-proof-reference">
         <DmsProofFilms />
       </div>
@@ -349,7 +300,7 @@ export default function DmsProductPage() {
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <SiteFooter tagline={dmsCopy("footer.tagline", "One governed home for every controlled document.")} note="Document Management System · UPD-2" />
+      <SiteFooter tagline={dmsCopy("footer.tagline", "One governed home for every controlled document.")} note="Document Management System · UPD-2 · classic" />
     </main>
   );
 }
