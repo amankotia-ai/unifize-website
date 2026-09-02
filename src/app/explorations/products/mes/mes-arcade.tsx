@@ -707,12 +707,117 @@ export const MES_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
 
 /* ===================================================== hero journey (arcade)
  * The hero product shot is the arcade itself, same treatment as every
- * product page (shared HeroArcade): five moments of the lot's life carrying
- * the headline's claim - what happened on the floor is a record, not a
- * memory. Steps 1-4 are the PF-31 operator journey; the closing shot is the
- * PF-33 Part 11 seal, so the hero spans release to sealed lot with the same
- * facts as the lifecycle section. Labels are the reader's handle on the step. */
+ * product page (shared HeroArcade): moments of the lot's life carrying the
+ * headline's claim - what happened on the floor is a record, not a memory.
+ * Steps 2-5 are the PF-31 operator journey; the closing shot is the PF-33
+ * Part 11 seal, so the hero spans release to sealed lot with the same facts
+ * as the lifecycle section. Two hero-only bookends follow the DMS/QMS hero
+ * recipe, grounded in the MES combined customer video (Wistia, af5axaaz):
+ * the no-code process builder that CONFIGURES the traveller the middle
+ * steps ride (the record anatomy at 0:02, restaged in the builder grammar
+ * the QMS demo 0:54-1:09 established), and the live manufacturing dashboard
+ * the running lot reports into (video 0:24-0:36 NC closure TAT chart with
+ * its 4-5-weeks-to-7.2-days trend, 2:38 Manufacturing Overview with the
+ * saved-report rail). Labels are the reader's handle on the step. */
+const HERO_TRAVELLER_WORLD: ArcadeFlowWorld = {
+  ...TRAVELLER_WORLD,
+  builder: {
+    title: "eTraveller process",
+    note: "The traveller every work order walks, configured, not coded.",
+    tabs: ["Checklist", "Team", "Statuses", "Privacy", "Reminders"],
+    fields: [
+      { kind: "Selection", tone: "selection", label: "Basic details" },
+      { kind: "Linked field", tone: "linked", label: "Routing & work instruction" },
+      { kind: "Linked field", tone: "linked", label: "Materials & lot genealogy" },
+      { kind: "Text", tone: "text", label: "In-process checks · criteria" },
+      { kind: "File upload", tone: "upload", label: "Station photos & readings" },
+      { kind: "Approval", tone: "approval", label: "Step signature" },
+      { kind: "Generate PDF", tone: "pdf", label: "Batch record render" },
+    ],
+    palette: [
+      { label: "Approval", note: "Digital signatures on the record", tone: "approval" },
+      { label: "File upload", note: "Photos and readings from the line", tone: "upload" },
+      { label: "Linked field", note: "Link to another process", tone: "linked" },
+      { label: "Picklist", note: "Drop-down selection of items", tone: "picklist" },
+      { label: "Revision", note: "Managed revisions of the record", tone: "revision" },
+      { label: "Generate PDF", note: "Printable render of the checklist", tone: "pdf" },
+    ],
+  },
+};
+
+const HERO_EBR_WORLD: ArcadeFlowWorld = {
+  ...EBR_WORLD,
+  reports: {
+    title: "Manufacturing overview",
+    kpis: [
+      { label: "Active work orders", value: "24", note: "5 released today" },
+      { label: "On-time delivery", value: "96%", note: "12-month rolling" },
+      { label: "NC closure TAT", value: "7.2d", note: "down from 4-5 weeks" },
+      { label: "Open exceptions", value: "3", note: "all on lot 224-B" },
+    ],
+    panels: [
+      { label: "Non-conformance closure TAT", kind: "bars" },
+      { label: "Rework cases over time", kind: "lines" },
+      { label: "Active production by department", kind: "donut" },
+    ],
+  },
+};
+
+const MES_HERO_BUILD_STEP: ArcadeStepConfig = {
+  source: "MES video 0:02 record anatomy · builder bookend (QMS demo 0:54-1:09 grammar)",
+  ghost: "Build",
+  type: "Work Order",
+  id: "#9021",
+  title: "PRT-4412 housing · lot 224-B",
+  status: "Open",
+  actor: "You",
+  event: "Configured the eTraveller in the builder",
+  eventDetail: "Routing, checks, signatures and the batch record · no code",
+  checklist: "ROUTING & SETUP",
+  checklistItems: ["Field list", "Approval routing", "Automations"],
+  focus: "builder",
+  focusTitle: "Step signature",
+  focusRows: [
+    "Signature of the station operator",
+    "Contingent on in-process checks complete",
+    "On signature · the traveller advances a station",
+  ],
+  focusAction: "Add field",
+  ownershipNote: "Process owner · S. Okafor",
+  world: HERO_TRAVELLER_WORLD,
+  checklistProgress: { "ROUTING & SETUP": 0, "IN-PROCESS CHECKS": 0, "BATCH RECORD": 0 },
+};
+
+const MES_HERO_DASH_STEP: ArcadeStepConfig = {
+  source: "MES video 0:24-0:36 + 2:38 · NC closure TAT chart + Manufacturing Overview",
+  ghost: "Watch",
+  type: "Batch Record",
+  id: "#224B",
+  title: "Lot 224-B · PRT-4412 housing",
+  status: "In Review",
+  actor: "automator",
+  event: "The floor reports itself while the lot runs",
+  eventDetail: "Closure times, work orders and exceptions · live from every record, no export",
+  checklist: "EXCEPTIONS",
+  checklistItems: ["Missing torque entry", "Out-of-trend thickness"],
+  focus: "dashboard",
+  focusTitle: "Non-conformance closure TAT",
+  focusRows: [
+    "Apr-Jun · closures took 4-5 weeks",
+    "This quarter · 7.2 days median",
+    "Every bar opens the records behind it",
+  ],
+  focusAction: "Open the report",
+  ownershipNote: "No spreadsheet was assembled for this",
+  world: HERO_EBR_WORLD,
+  checklistProgress: { EXCEPTIONS: 2, GENEALOGY: 0, "SEAL & RELEASE": 0 },
+};
+
 export const MES_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Build the process",
+    config: MES_HERO_BUILD_STEP,
+  },
   {
     label: "Pick up the order",
     config: MES_ARCADE_FLOW_CONFIGS["31"][0],
@@ -728,6 +833,10 @@ export const MES_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Seal the entry",
     config: MES_ARCADE_FLOW_CONFIGS["31"][3],
+  },
+  {
+    label: "Watch the floor",
+    config: MES_HERO_DASH_STEP,
   },
   {
     label: "Release the lot",

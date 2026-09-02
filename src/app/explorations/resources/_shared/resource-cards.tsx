@@ -6,7 +6,8 @@
  * excerpt, and a quiet meta foot. Styled by resources-kit.css on DMS tokens.
  * ========================================================================== */
 import Link from "next/link";
-import type { Testimonial, Post, CaseStudy } from "./resources-data";
+import type { Post, CaseStudy } from "./resources-data";
+import type { CustomerVideo } from "./customer-videos";
 
 export const initialsOf = (name: string) =>
   name.split(/\s+/).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
@@ -20,23 +21,23 @@ export function PlayGlyph({ className }: { className?: string }) {
 }
 
 /* ------------------------------------------------------------------ video */
-export function VideoCard({ t }: { t: Testimonial }) {
+export function VideoCard({ v }: { v: CustomerVideo }) {
+  const byline = [v.role, v.company].filter(Boolean).join(", ") || v.industry || "Customer story";
   return (
-    <Link href={`/explorations/resources/testimonials/${t.slug}`} className="rs-card rs-vcard">
+    <Link href={`/explorations/resources/testimonials/${v.slug}`} className="rs-card rs-vcard">
       <div className="rs-plate">
-        {t.poster
-          ? <img className="rs-plate__img" src={t.poster} alt="" loading="lazy" />
-          : <span className="rs-plate__ghost" aria-hidden="true">{initialsOf(t.company)}</span>}
+        {v.thumb
+          ? <img className="rs-plate__img rs-plate__img--center" src={v.thumb} alt="" loading="lazy" />
+          : <span className="rs-plate__ghost" aria-hidden="true">{initialsOf(v.company ?? v.person)}</span>}
         <PlayGlyph className="rs-plate__play" />
-        <span className="rs-plate__dur">{t.duration}</span>
-        <span className="rs-plate__sample">Sample</span>
+        <span className="rs-plate__dur">{v.duration}</span>
       </div>
       <div className="rs-card__body">
-        <h3 className="rs-card__title">{t.headline}</h3>
-        <p className="rs-card__dek">{t.quote}</p>
+        <h3 className="rs-card__title">{v.name}</h3>
+        <p className="rs-card__dek">{v.description}</p>
         <p className="rs-card__by">
-          <span className="rs-card__name">{t.person}</span>
-          <span className="rs-card__role">{t.role}, {t.company}</span>
+          <span className="rs-card__name">{v.person}</span>
+          <span className="rs-card__role">{byline}</span>
         </p>
       </div>
     </Link>

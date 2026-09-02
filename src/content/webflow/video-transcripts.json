@@ -1,0 +1,1565 @@
+{
+ "meta": {
+  "source": "unifize.com live site, Webflow Content collection pages (div.transcript rich text)",
+  "generated": "2026-09-01",
+  "note": "Timestamped transcripts for the 50 videos in customer-videos.ts. Re-run the pull to refresh; do not hand-edit."
+ },
+ "transcripts": {
+  "importance-of-approvals": [
+   {
+    "t": "0:00",
+    "text": "So just having a automated system in place to remind people that things still need approval has been a big deal for us because, as a smaller company, as we were growing, you know, the amount of hats that people wear continue to increase."
+   },
+   {
+    "t": "0:13",
+    "text": "And so the ability to stay on top of our big ongoing projects or big ongoing quality open cases became more and more difficult. And things like basic things like just getting the sign-offs and approvals in the back end would linger on for weeks to months because no one was staying on top of it. No one was reminding people that this is something that needed to be done because you're busy all the time during the day."
+   },
+   {
+    "t": "0:36",
+    "text": "These things are easy to leave in the wayside, being able to tie the approval sorry, automate the approval and tie it to the process itself. So our case, the managing team can always see I am getting reminders every three days, every seven days, this needs your approval. Get it done and all it takes is a quick logging in and sign off and everyone can see that it's been it's been approved and you can move on to the next stage."
+   },
+   {
+    "t": "1:00",
+    "text": "Being able to assign accountability for each stage in the process to people for both approvals, as well as just moving the process along, has also been really valuable for us too."
+   },
+   {
+    "t": "1:10",
+    "text": "So this is where Unifize has played a really big role in improving our quality management system."
+   },
+   {
+    "t": "1:14",
+    "text": "I'd say approvals. It's really very much all over the place, anywhere from three or four weeks to sometimes could linger to 6 to 8 months because things just fall within the cracks. And it's not until, you know, you have, say, an external audit coming up, you start to review your open cases. They realize that things haven't been addressed."
+   },
+   {
+    "t": "1:32",
+    "text": "I've been left open for for half a year."
+   },
+   {
+    "t": "1:36",
+    "text": "Being able to utilize Unifize to create more efficiency and transparency in the process has allowed us to reduce that variability down to pretty consistently about two weeks."
+   },
+   {
+    "t": "1:47",
+    "text": "So that has been a huge benefit to us overall. It allows us to move our product development, move our quality assurance issues, move our quality improvement processes along much quicker so that all those improvements impact the quality of the overall product."
+   },
+   {
+    "t": "2:02",
+    "text": "And the product as a whole gains more value in the eyes of our consumers and products."
+   }
+  ],
+  "how-unifizes-no-code-configuration-speeds-up-implementation": [
+   {
+    "t": "0:00",
+    "text": "And what I really enjoyed about Unifize is the fact that we could configure the program to be what we needed it to be rather than trying to work against a program to make it fit into what, for example, we'd want a Design History File to look like we were able to configure Unifize to design it, how we needed it and how we wanted it."
+   },
+   {
+    "t": "0:20",
+    "text": "As a part of the configuration of a new process, one of the great things is that I'm able to build these things myself."
+   },
+   {
+    "t": "0:26",
+    "text": "I don't need to submit a work order or submit an IT ticket and have the Unifize team build it for me, you know, between two and four weeks."
+   },
+   {
+    "t": "0:34",
+    "text": "You know, it's something that I can go into and it's really easy to have the buttons and ability to say, okay, for example, I have a change order. What else does that require? Okay, I need text boxes to explain, what? Each thing needs to go in there. And so I can easily, you know, from a grouping of options, drag and drop, I'm biomedical engineering."
+   },
+   {
+    "t": "0:56",
+    "text": "I didn't take a whole lot of software. So much more on the mechanical side of that. So for me, it was so easy to say, Oh, yes, I need to. TextBox, let me drag it over here. Let me arrange it how I need to and write in descriptions and what I need, you know, And another important thing is getting approvals."
+   },
+   {
+    "t": "1:14",
+    "text": "You know, you can describe a change order all you want, but you need to make sure that you're getting the proper approvals. So being able to go with advanced approvals and say, okay, here are the options of people that I need to have approve and being able to say, you know, I don't care necessarily who it is, you know, sometimes you might have a problem where, you know, oh, somebody is on vacation."
+   },
+   {
+    "t": "1:35",
+    "text": "And in typical other programs, I would see, you know, that person was requested as a signature they either need to, log in on vacation, which nobody wants to do, or completely cancel that change order and go back to the preliminary, which, again, huge waste of time. You know, that can add several days on to a simple change order."
+   },
+   {
+    "t": "1:55",
+    "text": "But with Unifize, I can say, okay, I need this to be from a group of product development, create a group with all those users in it."
+   },
+   {
+    "t": "2:02",
+    "text": "In that program say, okay, I need somebody from product development to sign here. So I worked with, but I can also have these other people who can look at the conversations and look at everything and Unifize and understand what's going on to sign if I need to as well."
+   },
+   {
+    "t": "2:17",
+    "text": "And so it's so simple to be able to drag and drop as many times as you need"
+   }
+  ],
+  "how-unifize-makes-audits-easier": [
+   {
+    "t": "0:00",
+    "text": "So we use Unifize for our internal audits and we we do a monthly we have our internal audit conversation type and Unifize."
+   },
+   {
+    "t": "0:06",
+    "text": "And what what's amazing about that is we're walking my team walking through where they take pictures and they store it with the audit. They say, Here's what I saw and they add the context because at other companies and other places I've been, you'll do the audit, you'll make some notes on a piece of paper, then you'll go back to your desk and you'll, if you have time in my case, get to it when you could and maybe, Oh, shoot, I'd rather have an image of it."
+   },
+   {
+    "t": "0:30",
+    "text": "And then you have to go back out and hopefully it sounds weird to say, but hopefully the problem's still there so that you can capture, capture the images if you missed them. But here I'm doing it real time while we're walking around on a tablet and we're saying, Here's what I saw, here's the image for context. Here's my explanation of why it's a problem."
+   },
+   {
+    "t": "0:47",
+    "text": "And moreover, I can assign we use tasks and so I can assign an owner, I can assign a task, I can assign a due date. So let's get this resolved. And then they come back. And when it's resolved, not only do they, the owner gets an alert that says, Hey, go do this. Then when they do it, they say, I did this."
+   },
+   {
+    "t": "1:03",
+    "text": "And through the the actually what's been wonderful, especially recently, is the workflow signatures that Unifize is given us so that that person signs saying I did it and then it goes back to whoever we build into the checklist to say, hey, this is done and and quality would go out and then confirm it. And that chain of command and custody and responsibility and accountability is is effortless"
+   },
+   {
+    "t": "1:28",
+    "text": "So the next major step I want to take with the Unifize team is to be able to scan that finished product and connect these employee training records and employee badges to that finished goods. So I can see who made it when they made it, how they made it, and all the way back to the ingredients and the employees and their training records and and that level of visibility and traceability is second to none."
+   },
+   {
+    "t": "1:52",
+    "text": "And it affords me this incredible advantage because a lot of people will sell you these concepts, but it's window dressing. But the fact is here I actually have the meat and potatoes to back it up in the sense I want to get to a place where for my regulatory audits, for my my compliance audits, I would love and I think we could do it to use Unifize to be able to just hand them a tablet and to go nuts out there, which anybody who works in quality will tell you sounds ludicrous."
+   },
+   {
+    "t": "2:21",
+    "text": "But with what we have here and what Unifize has helped us build, I'm not scared of that. I actually would welcome that."
+   }
+  ],
+  "how-unifize-speeds-up-approvals-around-product-specifications": [
+   {
+    "t": "0:00",
+    "text": "So when I talk about specs, I'm talking about the product and you know, when looking at this is the dosage form, this is what we make in the loosest sense of the word, but this is what goes out to market obviously with label and claims and supplement facts."
+   },
+   {
+    "t": "0:16",
+    "text": "But at this moment in my business, at Biovation there isn’t an aspect of our finished product that isn't contained within collaborated about or monitored through Unifize and that ability to. When I came in and started here, they were emailing just just to release a Finished Good Lot, right? They were sending making a word document, sending an email to the, the approver, the they would respond and that was slow, arduous bit of a hurdle."
+   },
+   {
+    "t": "0:46",
+    "text": "Now we as we're inputting the finished good results the end customer user approver is seeing it as we're putting it in so they're releasing as we're doing it and what used to take let's be honest couple of days is a couple of minutes."
+   },
+   {
+    "t": "1:02",
+    "text": "I mean, I know what our challenges around product development were, and that's they would look at each product as if it were unique and and not similar. And I don't know how to say that because similar everybody wants to think their products."
+   },
+   {
+    "t": "1:21",
+    "text": "But what it gave us was, yes, you want green tea extract? How about this one? Because I can. I know we're buying that. And it allowed me to, again, collaborate in there with directly with my customer and saying, I know you want this, but we sourced this. Will that work for you? And that has a twofold impact. One, we already have it to my volumes go up, so then I can go back to my suppliers and say, Look, I'm buying more."
+   },
+   {
+    "t": "1:45",
+    "text": "I need a better price. And so now imagine that in the example I use of the multivitamin 42 ingredients. If that's happening with all 42, the savings is immediate and forever,"
+   }
+  ],
+  "transitioning-from-an-existing-eqms-to-unifize": [
+   {
+    "t": "0:00",
+    "text": "I mean, as we transitioned to Unifize, a lot of the organization was on MasterControl and there was a lot of apprehension actually to are we going to lose that data?"
+   },
+   {
+    "t": "0:10",
+    "text": "Where are we going to have to work out of two systems? Is this is this kind of arduous hybrid system for a minute? And Unifize was an absolute helping and and partner in that transition to engage people so they could focus on Unifize and know that all of the stuff we had was safe and accessible. And that transition kind of just happened without skipping a beat."
+   }
+  ],
+  "wear-a-seatbelt-using-unifize-to-avoid-accidents-and-save-money": [
+   {
+    "t": "0:00",
+    "text": "So as I've said before, quality isn't a revenue generator."
+   },
+   {
+    "t": "0:02",
+    "text": "And and people like to use this illustration of quality isn't a problem till it's a major problem. So by doing our job where you don't think your seatbelt because you didn't crash that day, but you want the seatbelt when you crash, that's how I think about quality is it's not a revenue generator. And a mentor of mine once told me the cost savings and cost and cost avoidance is not revenue, and I understand that."
+   },
+   {
+    "t": "0:28",
+    "text": "But because Unifize has this high visibility of everything, everywhere, all the time, all at once, it's impossible for people to not acknowledge what we've done, how we've increased throughput, and helped me build that model that I always want to build and always try to build of quality. Being there as a supportive function, not just pointing out the problems."
+   },
+   {
+    "t": "0:50",
+    "text": "And when you see, you know, it's hard to get thanked for the mistakes you didn't make and Unifize because of this real time collaboration and effective communication, you you actually do see what the accidents you didn't get in. And by Unifize having that, it allows me to change our culture to a culture of quality and continuous improvement."
+   }
+  ],
+  "enabling-supplier-quality-on-unifize": [
+   {
+    "t": "0:00",
+    "text": "When we had our paper system, you know, and we were getting parts in from different vendors. And if there were parts that were out of specification or that sort of thing, you know, being in the research space, kind of documenting it. And it was very tribal knowledge of, you know, oh, we just know that this vendor has difficulty with this, that or the other which tribal knowledge is pretty useless, especially when you have people leaving the company coming back to, you know, new people joining the company."
+   },
+   {
+    "t": "0:28",
+    "text": "And a lot of that knowledge gets lost. So the ability, you know, we've seen in Unifize, you know, we've had vendors who we've been working with since the beginning and noticing that, oh, wait, you know, because of the trending, we're able to see they've actually have a terrible yield rate. Or every time they send us a lot of parts, we've noticed that, you know, 30% are out of spec or, you know, they're there's a specific type of part that's really critical to the robot that almost always comes in out of spec."
+   },
+   {
+    "t": "1:03",
+    "text": "And we're always scrambling to try to fix that. And I think it's really easy to be reactive in that situation where you're like, okay, let me fix it. Let me contact the vendor and get them to send me another part and make sure that it's correct. And it's really easy to put out a fire and move on. But with Unifize, we've been able to see, Oh, hey, this is a pattern."
+   },
+   {
+    "t": "1:26",
+    "text": "And being able to use that evidence to go to our vendor and say, Hey, this is what we need from you. You know, we need you know, this is what we need from you. We need you all to work on your yield, to work on your processes. And that has been able to allow us to work with our vendors and have the evidence to say, hey, we you know, we deserve we deserve parts that are made correctly."
+   },
+   {
+    "t": "1:55",
+    "text": "And especially when you have a small company that doesn't have like the buying power of a large medical device company like Stryker or whatever, you know, it's really you have to be you have to advocate for yourself and Unifize is allowed us to abdicate for ourselves by showing them these trending non conformance is or these trending issues to be able to open up a SCAR (supplier corrective action) report really easily and say here's the history, here's why we need to work together to come to a solution or we're not going to be working together anymore."
+   },
+   {
+    "t": "2:31",
+    "text": "And that's able to work on, you know, time is money. And so being able to build robots in a quick way with good parts, you know, that's able to allow us to have a higher yield on the manufacturing floor to build more parts in a more efficient way because we're able to show what we need. And if we need to go to a different vendor, we have the history to explain to maybe higher ups or other people who don't understand what's going on, why we need to have a change."
+   },
+   {
+    "t": "3:09",
+    "text": "And Unifize just makes that so much more simple, because right at a click of a button, I can go instantly to what we're referring to and double check it and make sure we're compliant."
+   }
+  ],
+  "streamlining-processes-efficiently-in-a-small-company-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "The biggest improvements are around visibility and accountability for us."
+   },
+   {
+    "t": "0:04",
+    "text": "I'd say it's mainly a big quality of life improvement in how that process works. As a smaller company, we don't have a lot of personnel involved in the process as it stands, you know, there's a lot of responsibility and ownership between product leaders, quality control and so on, as well as a CTO."
+   },
+   {
+    "t": "0:24",
+    "text": "And so we didn't see any efficiency gains in reducing manpower involved in executing the process because we didn't have a lot of manpower to begin with. But we saw efficiency gains in the quality of communication involved in executing the process itself."
+   },
+   {
+    "t": "0:41",
+    "text": "We didn't have to ask if a certain document had been sent out to a supplier or if it had been sent back and filled out correctly. We didn't had to ask if certain coding documentation was already in place before we moved to another stage in the validation process."
+   },
+   {
+    "t": "0:54",
+    "text": "We can see that it's already been done and so those questions, those conversations didn't need to happen again. It didn't need to happen in the first place."
+   }
+  ],
+  "impact-of-lockdown-on-cosmetic-ingredient-manufacturers": [
+   {
+    "t": "0:00",
+    "text": "I'd be remiss if I didn't mention the effects of the lockdown, the pandemic on how things had operated in the industry. You know, beforehand, it was easy, or at least significantly easier in terms of global transportation of goods and supply all around the world for manufacturers like us and contract manufacturers of formulations for indie brands and otherwise, and the legacy manufacturers as well, to be able to do more just in time manufacturing because they can source in ingredients very quickly."
+   },
+   {
+    "t": "0:26",
+    "text": "Lead times are a lot shorter."
+   },
+   {
+    "t": "0:28",
+    "text": "Availability was in abundance, but then the lockdown happened and all of that went completely upside down. Everyone that was operating on just in time manufacturing realized it could not get anything at all. And the lead times for everything up and down the entire supply chain ballooned anywhere from 500 to 800%."
+   },
+   {
+    "t": "0:46",
+    "text": "The cost of shipping goods overseas also increased dramatically as well due to the lockdown."
+   },
+   {
+    "t": "0:51",
+    "text": "The ability for people to actually ship goods and actually have it be received at major ports around the world that we all collapsed. And this is nothing, nothing new to anyone that's that's working in the industry right now. So there are some lasting effects from from that."
+   },
+   {
+    "t": "1:05",
+    "text": "You know, the industry as a whole, from the manufacturers side as well as the brand side, they're working in response to that."
+   },
+   {
+    "t": "1:13",
+    "text": "The effects of that lockdown that overstocked on almost everything because they thought, if I can't get it, I need to buy a ton of it now and have it available just in case. And so this year overall has been an interesting year because brands, customers aren't buying as much because they overstocked. Everything's being pushed over to 2024, so it'll be."
+   },
+   {
+    "t": "1:32",
+    "text": "I'm excited by the possibility I guess - possibilities of what next year will bring because we feel like once that overstock has been worked through by retailers everywhere, that it will be another sign of the continued booming economy that we're enjoying right now."
+   },
+   {
+    "t": "1:49",
+    "text": "One of the biggest things that we did in response, and this was in line with what most people did during the lockdown itself."
+   },
+   {
+    "t": "1:55",
+    "text": "We you know, this industry has always been fairly traditional in how marketing works and how lead generation works. So very tradeshow heavy focused. Alright. And also sales focus in terms of generating those leads, in terms of in-person, high touch type of styles, which of course you couldn't do any of that during the lockdown. So there was a much more renewed emphasis on broadening and upgrading digital marketing technology and the types of technology stacks that were required to make digital marketing an effective surrogate for in-person sales."
+   },
+   {
+    "t": "2:29",
+    "text": "I think everyone upped their game in terms of being able to generate interesting content to keep people engaged, customers engaged, and then of course, with Zoom and Teams and being able to utilize or leverage those tools in conjunction with those digital marketing initiatives to create a more holistic view of brand marketing overall that didn't necessarily require someone in person."
+   },
+   {
+    "t": "2:49",
+    "text": "But I think that as those initiatives began to be rolled out, people quickly realized you still need that human element, you still need to talk to people in-person. There's no way that video conferencing technology or video call technology could ever replace that. Don't meet at all. And so now we're in that sort of hybrid mode where people want to see customers, people want to see people come in for sales presentations and lunch and learns and stuff like that."
+   },
+   {
+    "t": "3:16",
+    "text": "But being able to still leverage that, those video calls for more immediate concerns that could be answered within 2 minutes. Within a call with all the relevant stakeholders online."
+   }
+  ],
+  "why-should-a-cosmetic-ingredients-manufacturer-consider-using-unifize": [
+   {
+    "t": "0:00",
+    "text": "I would absolutely recommend it."
+   },
+   {
+    "t": "0:01",
+    "text": "I think any manufacturer of cosmetic ingredients would stand to see a lot of benefit in rolling out a, a Unifize style system."
+   },
+   {
+    "t": "0:12",
+    "text": "I understand that it was it's somewhat easier for us, given our size."
+   },
+   {
+    "t": "0:17",
+    "text": "The resource question you posed to companies larger than us would be infinitely more complicated. But overall, the value proposition, I think scales really, really well as the business begins to grow."
+   },
+   {
+    "t": "0:28",
+    "text": "I would say to other companies in our industry that if you're having issues with interdepartmental collaboration for quality assurance in maintaining the quality output of your products, consider using, you know, giving Unifize a shot because I know that there's still lots of larger companies out there. They're still using a manual system and they have lots of headcount dedicated towards making that manual system work."
+   },
+   {
+    "t": "0:50",
+    "text": "And I think there's just a lot of efficiencies that could be discovered. They are being able to leverage a tool like Unifize, Unifize itself is not a solution to having bad processes. But if you have good processes in place, but the way you execute those processes is too resource intensive, and you're having issues with keeping everyone on the same page, a platform like Unifize can solve a lot of those issues."
+   }
+  ],
+  "adopting-a-new-system-in-an-institutional-knowledge-based-shop-floor": [
+   {
+    "t": "0:00",
+    "text": "Institutional knowledge based shop floor. It's hard to invite or open your mind to using something else."
+   },
+   {
+    "t": "0:07",
+    "text": "And I you know, Seth touched on it and was like, we have some that. And just like, oh my God, this is awesome. And others who just don't know if they're not understanding, I haven’t got my point across or whatever."
+   },
+   {
+    "t": "0:18",
+    "text": "But every time somebody has actually took the time to use it, it's like, that's, magnificently easy. That's like, yeah, and you don't have to keep track of paper anymore to turn back into the, you know, the office."
+   },
+   {
+    "t": "0:30",
+    "text": "That's coming. Once we are ready to rock and roll on getting all of our processes, you know, buttoned up without any errors, we're going, we're going all in. I'm going to drive it."
+   }
+  ],
+  "about-carol-and-her-role-at-efco": [
+   {
+    "t": "0:00",
+    "text": "Efco sells concrete forming systems to supply and make bridges or houses or parking garages or beams and so forth."
+   },
+   {
+    "t": "0:10",
+    "text": "I'm Carol Wilson, and I'm one of the senior purchasers of Efco. I'm responsible for all the steel, for all the forming systems that we make here."
+   },
+   {
+    "t": "0:21",
+    "text": "We bring in about ten flatbeds a week or more of steel and we buy from the mill or we buy from a supplier."
+   },
+   {
+    "t": "0:29",
+    "text": "If we buy from the mill, then you're bringing in several truckloads at a time and a supplier is a weekly or milk run type."
+   },
+   {
+    "t": "0:37",
+    "text": "You know, it has a mixture of different steel on it."
+   }
+  ],
+  "closing-the-loop-traceability-and-lot-tracking-using-unifize": [
+   {
+    "t": "0:00",
+    "text": "We did some lots and batches. We are doing devices and that's part of that."
+   },
+   {
+    "t": "0:04",
+    "text": "A lot of what we did is tracing what information is going into what device and what parts were being used and consumed. And also if any of those parts that were consumed had issues we were tracing to that. So there was a lot of tracing of instrument is being activated, what systems are going into that activation and where what the consumption rate for that material was."
+   },
+   {
+    "t": "0:29",
+    "text": "We were using lot traceability for material that is being consumed for each of our robots. The way we use the lot traceability at Harmonic Bionics is to look at just imagine you have a robot and we needed to develop the robot in many segments."
+   },
+   {
+    "t": "0:47",
+    "text": "And what we did is look at the robot and determine what was required to make the robot."
+   },
+   {
+    "t": "0:51",
+    "text": "So in each station we had material that was assigned for that robot to be consumed. And as each material was being consumed, it was being added or consumed to the robot and updated in Unifize. So as soon as this can happen to the material that was shown in Unifize as being consumed and if there was an issue with that material, we would find out where that material, whether it was an issue that because it was on hold or because we have a supplier issue, then it could flag and say this material probably should not use it because there's an issue that needs to be resolved with that material."
+   }
+  ],
+  "comparing-unifize-vs-qt9": [
+   {
+    "t": "0:00",
+    "text": "The only other one that's worth to do worth bringing up is QT9. I was impressed with their platform, but their sales delivery of it was awful."
+   },
+   {
+    "t": "0:09",
+    "text": "I had the executives in here, for that presentation and it was just a jumbled mess and what set Unifize apart ultimately was, the sales side of it being upfront of what the capabilities were and what they can become in the future and the collaboration, I think, collaboration within a conversation, making things more personal instead of somebody getting flagged by a piece of software saying, “Hey, you got a problem, go fix it.”"
+   },
+   {
+    "t": "0:40",
+    "text": "Well, with Unifize, we can collaborate. And I was like, okay, do we try this? You know, what's next? You know, what else can be done? And I think it (Unifize) set itself apart for that reason."
+   },
+   {
+    "t": "0:52",
+    "text": "We're not sending emails or whatever we're doing everything inside Unifize smaller groups that can help everybody just concentrate on the issue that need solved."
+   },
+   {
+    "t": "1:03",
+    "text": "To me, it's more personal because you can have one on one conversations, direct messages with Unifize with that individual that needs to address the issue it's kind of like a committee, that you don't have to take time for and find a conference room to sit down and discuss."
+   },
+   {
+    "t": "1:17",
+    "text": "You can, you know, you can make decisions on the fly within Unifize. 100% accountability on our performance."
+   },
+   {
+    "t": "1:24",
+    "text": "When we were looking for quality management systems, we were primarily concerned with something very easy to use and we can get 100% accountability of whatever, the quality performance of the facility."
+   },
+   {
+    "t": "1:39",
+    "text": "We are able to gain that with Unifize."
+   },
+   {
+    "t": "1:41",
+    "text": "Before that, you know, when we are pretty much paper based, my estimations were we were missing 30% of the records that we actually put out to the floor. We just miss it."
+   },
+   {
+    "t": "1:54",
+    "text": "So our performance metrics were skewed always, and because we just didn't have the information back to us. Now with Unifize, it's always there. It's always in front of us. We even go back to say, if something takes two weeks to find a resolution on, we can go back and, you know, post-date it or move the date to the current day."
+   },
+   {
+    "t": "2:16",
+    "text": "And that's when it happened."
+   },
+   {
+    "t": "2:19",
+    "text": "So we've had unified for nine months now and I think we had a paper ticket turned in to us that was dated three years ago. Somehow it just reappeared. So we don't have to worry about that anymore."
+   },
+   {
+    "t": "2:34",
+    "text": "Basically comparing QT9 to Unifize, both platforms did the same thing other than what Unifize stood out as is for the collaboration of the conversation."
+   },
+   {
+    "t": "2:45",
+    "text": "The QT9 was just strictly record keeping. You put it out there, you know, somebody might get flagged that they need to do something, whatever. There was no collaboration with it."
+   },
+   {
+    "t": "2:54",
+    "text": "So it wasn't as, you know, personal."
+   },
+   {
+    "t": "2:56",
+    "text": "I know this is a big company and all that, but I still like the personal side of talking to our colleagues and all that and solving problems that way."
+   },
+   {
+    "t": "3:05",
+    "text": "That was the main selling point between QT9 and because what QT9 had Unifize had also with the addition of the collaboration side, that's what set Unifize apart from QT9."
+   }
+  ],
+  "does-efco-comply-to-any-external-standards": [
+   {
+    "t": "0:00",
+    "text": "We aren't necessarily certified with any, you know, world wide industrial, you know, organizations like ISO or anything like that. But we pretty much copy what ISO is, you know, our process of keeping records of basically say what you do, do what you say. That's basically what ISO is."
+   },
+   {
+    "t": "0:22",
+    "text": "We're not ready for that transition. Yeah, but we do hold, we do run with ASTM standards for all aspects of manufacturing threaded products to welding."
+   },
+   {
+    "t": "0:35",
+    "text": "We bring welders in and train them to AWS standards to before they can become a welder."
+   },
+   {
+    "t": "0:41",
+    "text": "We're pretty well structured like we're ready for those certifications."
+   },
+   {
+    "t": "0:45",
+    "text": "I truly believe we are, but we're just not. We haven't pulled the trigger on getting those certifications, haven't had the need for it just yet."
+   }
+  ],
+  "how-smaller-groups-lead-to-70-faster-actions": [
+   {
+    "t": "0:00",
+    "text": "Great thing about Unifize is it has created smaller groups of discussion when problems arise and we can collaborate through those conversations and we produce those records basically online."
+   },
+   {
+    "t": "0:15",
+    "text": "Everybody that needs to be involved knows what's going on and what's in front of them all the time to come to a resolution of whatever the issue is."
+   },
+   {
+    "t": "0:23",
+    "text": "We are the first initial step in getting that awareness of, this needs to happen. You scrap these parts out. We need to get them going."
+   },
+   {
+    "t": "0:30",
+    "text": "Everybody involved with that process, including inventory control, all they have to do is pull up Unifize, and know exactly what needs to be adjusted, what needs to be ran, when it needs to be done."
+   },
+   {
+    "t": "0:41",
+    "text": "And we stay organized that way, thanks to Unifize on that. It's minutes now with Unifize."
+   },
+   {
+    "t": "0:47",
+    "text": "For the most part back when we were using strictly paper, just for an example, we've had what we call quality action tickets through Unifize formerly known as our scrap ticket paperwork where we kept track of the same information, whatever."
+   },
+   {
+    "t": "1:02",
+    "text": "But to date from inception of Unifize till today, we've written over 952 tickets."
+   },
+   {
+    "t": "1:09",
+    "text": "I believe time wise and reaction time to those tickets has increased 70% just for the time it takes to get people involved through email and all that. Now smaller groups inside Unifize and our reaction time is 70% better now than what it was plus we have a more focused group of the issue because not everybody's getting an email and then all of a sudden, you’re not waiting for the paper to hit the floor."
+   },
+   {
+    "t": "1:37",
+    "text": "Before tickets, it all depends on what was going on. But you know, they average it would take roughly 7 minutes, to fill out the paperwork and get it down to the floor. Now, less than 2 minutes."
+   },
+   {
+    "t": "1:46",
+    "text": "So, you know, I my figures of you know, for those 952 tickets this year, we, paper based that was 111 hours."
+   },
+   {
+    "t": "1:54",
+    "text": "Unifize that got us down to 33 hours of time savings."
+   },
+   {
+    "t": "1:59",
+    "text": "So that just opens up doors for, you know, allocating our resources to help other people elsewhere and not sitting in the office filling out paper all the time."
+   }
+  ],
+  "how-did-you-discover-unifize": [
+   {
+    "t": "0:00",
+    "text": "Thanks to Google I just started searching QMS. In our search for quality management system, we found a company called Software Advice. Put in, let them know what style of QMS we were looking for, and they replied back to us with a list."
+   },
+   {
+    "t": "0:21",
+    "text": "I believe it was five QMSes that were there and, you know, Unifize and QT9, like I said, are the only two I remember."
+   },
+   {
+    "t": "0:29",
+    "text": "The other software companies were basically going to make us use the exact same processes we were using to keep, keep track of records. We were still using papers, still using Access. And I'll just it was very clunky."
+   },
+   {
+    "t": "0:44",
+    "text": "They were not necessarily cloud based. We totally axed that and started looking for cloud based quality management systems landed on QT9 and Unifize. Then we started comparing those two both really good. We just like the collaboration of Unifize better."
+   },
+   {
+    "t": "1:01",
+    "text": "We ended up going with Unifize."
+   }
+  ],
+  "improving-accountability": [
+   {
+    "t": "0:00",
+    "text": "I think, collaboration within a conversation, makes things more personal instead of somebody getting flagged by a piece of software saying, “Hey, you got a problem, go fix it.”"
+   },
+   {
+    "t": "0:11",
+    "text": "Well, with Unifize, we can collaborate. And I was like, okay, do we try this? What's next? What can we know, what else can be done?"
+   },
+   {
+    "t": "0:17",
+    "text": "And Unifize set itself apart for that reason."
+   },
+   {
+    "t": "0:21",
+    "text": "We're not sending emails or whatever we're doing everything inside Unifize smaller groups that can help everybody just concentrate on the issue that need solved."
+   },
+   {
+    "t": "0:32",
+    "text": "To me, it's more personal because you can have one on one conversations, direct messages with Unifize with that individual that needs to address the issue or, it's kind of like a committee, that you don't have to take time for and find a conference room to sit down and discuss."
+   },
+   {
+    "t": "0:45",
+    "text": "You can you know, you can make decisions on the fly within Unifize. 100% accountability on our performance."
+   }
+  ],
+  "using-dashboards-on-unifize-to-make-management-review-meetings-easier": [
+   {
+    "t": "0:00",
+    "text": "In terms of putting dashboards together, as an executive, one of the things that we do is understanding what type of data you need."
+   },
+   {
+    "t": "0:10",
+    "text": "You have to know what type of data you need and then what in what format. I wanted to know, for example, high risk Non-Conformances and deviations."
+   },
+   {
+    "t": "0:19",
+    "text": "I wanted to know high risk CAPAs and what their status are and which ones are close to closure and what is holding them up. Those are conversations I wanted to have at my fingertips."
+   },
+   {
+    "t": "0:31",
+    "text": "The best place for that is your dashboards. We did dashboards for individuals so you could have your own dashboard, but you could also configure the dashboard for management review."
+   },
+   {
+    "t": "0:40",
+    "text": "We used Unifize for management review. So instead of spending 15 hours being an analyst and getting somebody to put all these data together, the data was already available in dashboards, in Unifize."
+   },
+   {
+    "t": "0:52",
+    "text": "So what we did is basically take a screenshot of the data and Unifize, and that would be a management review slide made it very simple. So instead of weeks of looking for data, aggregating them into sales and uploading them in a format that you want, you could just simply do a nice management review dashboard and then you could take a screenshot or email it or put in a PowerPoint presentation."
+   },
+   {
+    "t": "1:16",
+    "text": "There very many ways of doing that, but you could easily have that information and have it in Unifize."
+   }
+  ],
+  "about-tedd-and-the-will-burt-company": [
+   {
+    "t": "0:00",
+    "text": "Yeah, Hello. My name is Ted Carr. I'm director of Quality here at the Will-Burt Company. I've been here for 40 years now. We're a company of about 350 people, and my responsibilities are are for quality in both quality assurance and quality control. And one thing I've learned is the boundaries of quality, they go well beyond the quality department."
+   },
+   {
+    "t": "0:23",
+    "text": "They involve all the functional groups such as Human Resources, Sales, Engineering, Purchasing, Receiving, Manufacturing, Maintenance, Shipping and Customer Service. The Will-Burt Company is an employee owned company."
+   },
+   {
+    "t": "0:38",
+    "text": "We design and manufacture and provide proprietary product and services for communications and lighting, emergency first responders to the warfare fighters to payload elevation solutions. We also provide, manufacturing services for original equipment manufacturers in the light, medium sheet metal fabrication, including value added services such as powder coating and assembly process. We're also proud to add that the Will-Burt Company recently celebrated 100 years of business"
+   },
+   {
+    "t": "1:11",
+    "text": "Our customer base is really spread out. We do a lot of commercial construction, military, a lot of aerospace work, and with all these different customers, they all have their own set of requirements and expectations."
+   },
+   {
+    "t": "1:25",
+    "text": "There's just a lot of diversity and there are a lot of, a lot of mixed requirements. It really makes it challenging from a quality standpoint to try to address all those variables in the quality world."
+   }
+  ],
+  "accelerate-any-process-on-unifize-quotes-formulas-lot-release-raw-material-specs-and-approvals": [
+   {
+    "t": "0:00",
+    "text": "So because we're in a regulated environment, as I mentioned, we have doc control and we have to have reviewers, approvers and a lot of systems out there will offer you the digital signatures and 21 CFR part 11 compliance, which is the set of regulations that applies to digital documentation and signatures and Unifize, has this amazing approval workflows that we've used."
+   },
+   {
+    "t": "0:24",
+    "text": "I mean, we use it for raw materials, for suppliers, for formulas, for quotes, for product release, for raw material, Lot release every Lot, every day where we're using that workflow. And what I mean by that is they it's a button click and they just like a lot of digital signatures work, but built into it is automatic notifications. One example that comes to mind that has been incredibly helpful as I've started to get my arms around our formulation and our new product development and customer onboarding has been our request for quotes and it starts, the person starts it, then they click a button sign saying, This is what I want."
+   },
+   {
+    "t": "1:00",
+    "text": "It immediately goes to my quotation specialist who then it says Hey at. His name is Benjamin. Um, this quotes ready for you to make. He attaches it request approval, goes back to the person, says Here's your quote. What do you think? Basically and these automatic notifications, owners, changing of owners, removing people, adding people at each step when you need to really helps the I think the undiscovered aspect of it is a lot of times people go sign blind."
+   },
+   {
+    "t": "1:29",
+    "text": "I call it when they get inundated with emails because by nature they're everybody's own all at once. But being able to segment it through the checklist and Unifize through the approvals and Unifize and add and subtract people at the right stages, stops people from or helps mitigate people from ignoring these notifications because they're only notified when it is them actually,"
+   },
+   {
+    "t": "1:49",
+    "text": "Using the approval workflows and the collaboration allows me to, for example, myself, I'll get a notification that it's my turn. I'm up to bat, so to speak, and if I have questions, I ask it in the environment prior to signing. I don't have to go find people don't have to call people."
+   },
+   {
+    "t": "2:04",
+    "text": "I don't have meetings, I don't have to have emails. I'm actually asking, Hey, wait, what about this aspect before I sign? And then once I'm comfortable, I get comfortable signing through the collaboration. And so it actually makes that the intent behind having approvers, it makes it all the more meaningful."
+   },
+   {
+    "t": "2:20",
+    "text": "I mean, the the digital signature and approval workflows, streamline my Lot, release unfinished goods, as I mentioned, because before that was email back and forth. Now my quality supervisor uploads the test upload to see if a clicks a button says, All right, I'm done, and it goes right to the customer because I select the customer by selecting the customer at the beginning, it automatically knows who that's going to go to and when she clicks her button, it goes to those."
+   },
+   {
+    "t": "2:42",
+    "text": "The appropriate people say, Hey, this is ready for you to release. And again, something that used to take days at times takes minutes at worst."
+   }
+  ],
+  "breaking-organisational-silos-with-unifize-centralizing-knowledge-and-achieving-organisational-alignment": [
+   {
+    "t": "0:00",
+    "text": "So when I say connecting things, what I mean to say is again, using B12 as the example of if I just looking at the ingredient vitamin B12, how quickly can I look at every result and how long does that take? Am I going to file cabinets, Am I going opening record of each individual record?"
+   },
+   {
+    "t": "0:19",
+    "text": "And what I've seen in some other systems that are out in the market is you have to pull and open each individual record as opposed to a quick dropdown that says Here's everything and connecting the raw material spec for that. Again, Vitamin B12 to each and every Lot I received and each and every result per Lot that I received, the value of being able to at a high level quickly see all of it is invaluable."
+   },
+   {
+    "t": "0:46",
+    "text": "People who are evaluating QMSes think outside the box because Unifize will let you."
+   },
+   {
+    "t": "0:52",
+    "text": "You don't don't get a quality management system to manage quality, get it to improve your organization every day. And nobody else can give you that. The way this has it's it's not there to just be there. I mean, a lot of times that I've been at many companies where they'll have one system that they're managing their suppliers and their specs in another, that they're, they're managing their artwork approvals and review and another that they're managing their training and they're paying a very substantial amount for each individual system, whereas Unifize puts it all together at once and then connects them end to end."
+   },
+   {
+    "t": "1:28",
+    "text": "I don't have to even open another screen or another app or another program I can get everywhere in my process. Everything about this bottle, every everything that went into it, I could get there at any point in the process."
+   }
+  ],
+  "about-michael-hogan-harmonic-bionics": [
+   {
+    "t": "0:00",
+    "text": "Hi, my name is Michael Hogan, I'm a mechanical engineer here at Harmonic Bionics, and I deal with the nuts and bolts of Harmony."
+   },
+   {
+    "t": "0:07",
+    "text": "So we are a medical device startup and we're working to bring rehab robotics into the upper body stroke rehabilitation space."
+   },
+   {
+    "t": "0:17",
+    "text": "Our flagship device is Harmony SHR. It's bilateral upper extremity rehab exoskeleton"
+   },
+   {
+    "t": "0:25",
+    "text": "It's used to help stroke patients recover from stroke events faster. So one of the things that we do that's really unique is bilateral sync therapy, right? We can mirror our motion from one arm to the other. And, you know, if you think about a stroke, right, it's something that happens."
+   },
+   {
+    "t": "0:39",
+    "text": "It's a connection between the brain and the muscles that it's severed. Right. And we can help rebuild that. We help also with what's called scapula humeral rhythm. So if you were to raise your arm like I'm doing now, right, your shoulder blade raises as you lift, Right. That's not something that's connected by your musculoskeletal system. It's something that your brain is coordinating and our device is able to help coordinate that motion and help make it more natural so that hopefully when people recover from Stokes, they're recovering in the right way"
+   }
+  ],
+  "about-jesse-kolstad": [
+   {
+    "t": "0:00",
+    "text": "I'm the Director of Quality, Compliance and Formulation at Biovation Labs here in Salt Lake City, part of a larger organization, Wellful."
+   },
+   {
+    "t": "0:07",
+    "text": "We have both internal and external customers is what I call that. We have the brands that are all under the Wellful umbrella, that we're all part of the same company and we're they're predominant, if not entire manufacturer for capsules and tablets here by Biovation. But we also do some contract manufacturing with some large customers that you'll see out in in the industry, your Walgreens and CVSes and things like that, who also do, in the dietary supplement sector, predominantly joint health and men’s health really."
+   },
+   {
+    "t": "0:36",
+    "text": "But that's that's sort of the bread and butter."
+   },
+   {
+    "t": "0:40",
+    "text": "My background was in biochemistry. I spent about five years in the pharmaceutical industry doing method development and method validation for novel compounds at a Contract Research Organization."
+   },
+   {
+    "t": "0:53",
+    "text": "After a few years, I realized that the FDA was gunning for the nutraceuticals industry, and I thought it would be advantageous to make the switch to this industry from pharma."
+   },
+   {
+    "t": "1:04",
+    "text": "And so far I've been correct. I started at a big contract manufacturer in Nelson Nutraceuticals. Worked my way up there. Um, actually the big break there was I launched MasterControl and I was the global admin for it and that's kind of how I started down the path of wanting a more automated, streamlined digital documentation and quality management system."
+   },
+   {
+    "t": "1:28",
+    "text": "This is the place I wanted to be in my career in this world class quality management system because it starts to manage itself. My job, I've always viewed, is to design myself out of my current job and Unifize absolutely has given me that ability."
+   }
+  ],
+  "building-a-knowledge-base-in-a-startup": [
+   {
+    "t": "0:00",
+    "text": "The thing about working at a small company is that it's the you know, it's about relationships, both with your coworkers, but with your suppliers, with your customers."
+   },
+   {
+    "t": "0:14",
+    "text": "Right. When you have your people, the importance of people over systems becomes much more important. There's always there's always that balance, right? You can work for these huge 80,000, 80,000 person companies like Raytheon, where you have a very clearly defined role. It's very rigidly boxed. You only know the information for your particular project that you need to know."
+   },
+   {
+    "t": "0:40",
+    "text": "I mean, literally your design inputs don't tell you anything about what you're actually working on in some cases for for good reasons. At a startup, it is it is very much about, you know, what is my what is my working relationship with my quality engineer, what is my working relationship with my suppliers? Right. Because at the end of the day, for a small company they live and die on, on relationships."
+   },
+   {
+    "t": "1:07",
+    "text": "As far as the that ties into compliance, I mean, the thing is that everybody has to hold everybody accountable, right? We don't have the overhead or the or the systems that accrue over time that a rigidly enforce a set of standards as determined by the company. Right. And, you know, regulations are written from, at least in my opinion, from the sense that if you're doing everything right, everything that you should be doing, if you're doing a good job, you know, you will be very close."
+   },
+   {
+    "t": "1:44",
+    "text": "If not already compliant with most standards. There was very few gotchas I've seen there in a tripped up. But the key thing is, is that you need to communicate right? I don't have a walking corpus of, you know, ISO 60601 in my head, right? I can't know everything about it, but between all the people at this company we do."
+   },
+   {
+    "t": "2:07",
+    "text": "And so being able to communicate clearly with each other and being able to have information in a way that's easily accessible, that is flexible processes, is it is the strategy that you need to maintain, Right? If you try to enforce a rigid system on a start, it's just not going to work. There's no way, right?"
+   },
+   {
+    "t": "2:32",
+    "text": "You you know, there are days where I'll put on more of a quality engineering hat and maybe I'll go audit suppliers."
+   },
+   {
+    "t": "2:40",
+    "text": "There are days where, you know, in the old days I'd literally was building robots in back. I was the technician. So I think that, you know, tying it back to regulation and I guess to Unifize is that the system that we have with Unifize reflects the scale and size of our company and the fact that it's so adaptive and we've changed it several times over already as we've learned more how to use the system and as we grow as the company is, that's really, you know, what we need as a company"
+   }
+  ],
+  "establishing-accountability-and-taking-faster-decisions-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "Another drawback to these multiple systems is not having a solid way of establishing ownership and accountability."
+   },
+   {
+    "t": "0:08",
+    "text": "You know, in one example, our non conformances were distributed strictly through an email blast, so a non conformance would be written and it would go out to a host of people and basically everyone on the email became the owner or actually no one became the owner and it would take a lot of effort to keep things moving, to keep the conversation going, to address the issues relative to the non conformance."
+   },
+   {
+    "t": "0:37",
+    "text": "And then when you would get feedback, it would come through many different responses. Sometimes a text message, a phone call,  it could be through an email, but it really wasn't any way to pull all this information together and to look at that and make a decision to keep, to keep moving forward."
+   },
+   {
+    "t": "0:55",
+    "text": "So in other cases, the right people were left out of the conversation."
+   },
+   {
+    "t": "1:01",
+    "text": "And again, this would just kind of drag things out and,  additionally, you would end up on this email blast. You would have people on there that really had no value to add to the conversation. So ultimately, for them to to read it and to review it was really just wasted time. They couldn't add value to the conversation."
+   },
+   {
+    "t": "1:26",
+    "text": "We've now reduced our number of quality support systems from what was five different systems. It's now consolidated into one platform, which is Unifize."
+   },
+   {
+    "t": "1:39",
+    "text": "And regardless of that activity or that task, they all have very clear assigned ability and accountability. That's something we were really missing in our, in our old systems. And again, that just drives a really solid behavior on getting, on getting issues closed."
+   },
+   {
+    "t": "1:57",
+    "text": "Our tasks that have taken weeks or months are now completed in days. And we just know that as we mature, we'll continue to see improvements in the efficiency of the effectivity of what the software can do for us."
+   },
+   {
+    "t": "2:10",
+    "text": "We've already had conversations that have launched and then closed all in the same day. And for us that's just unheard of."
+   }
+  ],
+  "doing-95-internal-audits-remotely-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "One of our locations is in Tulsa, Oklahoma, and we typically would travel there to conduct our internal audits. So with COVID 19, we’re restricted on travel. So what we're doing now is we're setting up  the internal audit process to do remotely,  and we believe that we can do  probably 90 to 95% of the audit without ever stepping foot in the Tulsa location."
+   },
+   {
+    "t": "0:29",
+    "text": "And that's a huge benefit for us to do that. And we believe that that will keep us in compliance, you know, for our upcoming audit in June."
+   },
+   {
+    "t": "0:40",
+    "text": "But I believe the fact  that it's a conversational driven  software that's really where the power comes in."
+   }
+  ],
+  "collaborating-with-vendors-using-unifize": [
+   {
+    "t": "0:00",
+    "text": "So at Harmonic Bionics, we follow a system where we document our design outputs. So the file that we would send to our vendors is a step file or a PDF or some immutable document that captures a snapshot and the design of the robot that is reviewed and released and entered into Unifize my day to day workflow will usually start with me."
+   },
+   {
+    "t": "0:26",
+    "text": "You know, maybe looking at a quality notification on Unifize saying that, hey, we should update maybe our cosmetic finishes standard and maybe I sit down, discuss the vendors over the phone, come to an agreement and update a print in SolidWorks that calls out a new specification. I'll make a commit to our version control software, get my commit number, and I will create my export files, my step in my PDF and those together we'll go on to a change order that I've created on Unifize."
+   },
+   {
+    "t": "0:57",
+    "text": "That change order will get released and those parts will be live in our system. Our purchaser can go in, download those parts from Unifize. He knows that it's the same file that I was working on earlier that day and he knows that if he sends it to that vendor, that that's the print. The changes that we talked about that day are going to be on there."
+   },
+   {
+    "t": "1:15",
+    "text": "So it's very versatile. You know, everybody has access to the data. There's no, you know, gates or, you know, blocks that could prevent somebody from getting to the information that they need. And it's easy to use."
+   },
+   {
+    "t": "1:27",
+    "text": "So we have a I guess you call it a sub process for parts in Unifize where we specify a revision for those parts."
+   },
+   {
+    "t": "1:36",
+    "text": "So let's say my purchaser needs to go in and look at, you know, the version of part before I made that print update to see if, you know, maybe our parts are going to look differently. If they came in on an old video, he can look at the old version of the part that we have stored in there, and he'll still have all of that product, the product definition, the step file, the PDF stored in there, that's available for for them to look at."
+   },
+   {
+    "t": "2:03",
+    "text": "So the way we handle it is we have the and I actually don't know if this is something that Unifize does by default or if this is the way we've configured ours. But the default process for displaying our provisions is to only display the most recent version. If you were to go do a search for that part number and then you would open up a submenu to access the previous revisions, only the most recent revision would be marked as active."
+   },
+   {
+    "t": "2:30",
+    "text": "It would have a status. All previous versions, I believe, would be marked as obsolete."
+   }
+  ],
+  "how-unifize-ensures-everyone-is-trained-on-the-right-version-of-documents-and-sops": [
+   {
+    "t": "0:00",
+    "text": "So with regard to document control, which is something that's required in the regulations and it's something that's ubiquitous to every quality group across the board in this industry. And actually any regulated industry for the most part, in my experience from a neutral infant formula, I mean, they all have their own set of guidelines and controls."
+   },
+   {
+    "t": "0:19",
+    "text": "I think it's even I sort of have them on right. And a lot of people think doc control is quite literally: I have a signed, approved master copy and I put it in a file cabinet and I control it then. And every and I mean every quality management system bolt on to an inventory management system. I've worked with LIMS systems they, they all approach you first and foremost as a doc controller, which I think is a it's shortsighted because MasterControl did this."
+   },
+   {
+    "t": "0:49",
+    "text": "They'll come at you and say, we can store your documents, will, so can a file cabinet, so can an email server. So I mean, and people get romantic about that and they and they like that and they said this is what I need. I need to be able to store it electronically. What do you do is that that powerful and Unifize gave me that."
+   },
+   {
+    "t": "1:09",
+    "text": "I mean right away I was able to I have all my SOPs. I digitally signed them."
+   },
+   {
+    "t": "1:13",
+    "text": "But Unifize give me the ability to go one step further because when you have aStandard Operating Procedure, your SOPs, well, those you don't have them just to have them because the regulations say you need them. They're supposed to be yourStandard Operating Procedure."
+   },
+   {
+    "t": "1:23",
+    "text": "Right. But that requires training. So somebody needs to understand how to do their job via the Standard Operating Procedure. That's how they operate. And who needs that training? Well, there's different job descriptions across the company. You have your operators, you have your maintenance techs, quality techs, etc., etc.. So who needs what training from that SOP and Unifize allowed me to start my SOP, build my training, attach that to all the jobs that's that it's meant for."
+   },
+   {
+    "t": "1:54",
+    "text": "And then I went the last step was okay, what employees are in those jobs? And so day one employee start and their training is right in front of them and they have one button access to the reference documents, which is helping me to build that sort of Holy Grail with regard to quality compliance and training of having them use our SOPs"
+   },
+   {
+    "t": "2:13",
+    "text": "Because there our SOPs, not because we wrote them."
+   }
+  ],
+  "how-unifize-helped-reduce-60-000-of-material-cost-on-just-one-product": [
+   {
+    "t": "0:00",
+    "text": "And really being able to high level just start with what do we do and let's get it all in front of us. From there it's saying, okay, now let's start seeing what our what our volumes are so that we can go to the bargaining table and also go to the bargaining table with how are these ingredients performing?"
+   },
+   {
+    "t": "0:17",
+    "text": "Which one is our best in the case of 16 different SKUs or which one is the best, most consistent, most cost effective, least amount of lead time and consistently hits the specs it needs to get. And I was able to go from 16 down to two that we use and that was incredibly powerful. And then from those to drill down to, okay, who are we buying those two from?"
+   },
+   {
+    "t": "0:39",
+    "text": "And in this case there was two or three and I actually went out and found a better one. That was about 60% of the cost on this one ingredient that we I think we use, I don't know, maybe a couple of metric tons a year. And so if you look at that, that savings, even a few dollars, and in this case it was 60% of 400 or 4000 kilos a year you're saving."
+   },
+   {
+    "t": "1:02",
+    "text": "I think I saved on that one roughly $50, $60,000. And Unifize gave me that high level visibility to drill down quickly and make decisions effectively"
+   },
+   {
+    "t": "1:16",
+    "text": "Just to test with spec versus what is my spec and which supplier can consistently hit my spec and that decreased my testing cost, decrease my lead times, increase my throughput across the board. And if you look at it on an ingredient by ingredient basis, I mean some of these products have I know, for example, our multivitamin has 42 different ingredients."
+   },
+   {
+    "t": "1:36",
+    "text": "So being able to say, all right, of 42 different ingredients in one product, how many different suppliers are there? Well, if there's 2 to 3 per ingredient now you see how it exponentially it's and but looking at that product all at once gives me the ability to make the decision about that product in an instant for 42 ingredients, which is powerful and driving the cost down per ingredient, increasing the throughput per ingredient, negotiating going, collaborating with my suppliers."
+   },
+   {
+    "t": "2:03",
+    "text": "And maybe there's a supplier that gives me three of those ingredients. Turns out they can give me six. And being able to do that all at once in the conversation, collaborate with the customer and the formulator and say, Hey, I think we have some alternatives here that'll net us savings forever. And I'm using the multivitamin because I did that and Unifize gave me that ability my second month."
+   },
+   {
+    "t": "2:22",
+    "text": "So kind of made me a hero right away."
+   },
+   {
+    "t": "2:26",
+    "text": "So as I've said before, quality isn't a revenue generator."
+   },
+   {
+    "t": "2:28",
+    "text": "And and people like to use this illustration of quality isn't a problem till it's a major problem. So by doing our job where you don't think your seatbelt because you didn't crash that day, but you want the seatbelt when you crash, that's how I think about quality is it's not a revenue generator. And a mentor of mine once told me the cost savings and cost and cost avoidance is not revenue, and I understand that."
+   },
+   {
+    "t": "2:54",
+    "text": "But because Unifize has this high visibility of everything, everywhere, all the time, all at once, it's impossible for people to not acknowledge what we've done, how we've increased throughput, and helped me build that model that I always want to build and always try to build of quality. Being there as a supportive function, not just pointing out the problems."
+   },
+   {
+    "t": "3:16",
+    "text": "And when you see, you know, it's hard to get thanked for the mistakes you didn't make and Unifize because of this real time collaboration and effective communication, you you actually do see what the accidents you didn't get in. And by Unifize having that, it allows me to change our culture to a culture of quality and continuous improvement."
+   }
+  ],
+  "how-unifize-improved-our-non-conformance-closure-time-by-75-within-the-first-month": [
+   {
+    "t": "0:00",
+    "text": "So over the last 30 days since the launch of Unifize, we have already noticed some some positive trends."
+   },
+   {
+    "t": "0:08",
+    "text": "If we go back and we look at some of our historical data when internal non conformances, when we were probably averaging 4 to 5 weeks to get full closure and there was some action taken to prevent reoccurrence  Through the Unifize analytics  we're already showing that our average time to closure in that first month is now 7.2 days. That's a 75% improvement. And we're extremely confident now that this will continue to show improvements as you used to become comfortable  and things get pushed through a lot quicker."
+   },
+   {
+    "t": "0:42",
+    "text": "The VoC’s, the customer complaints in the past, would often take four weeks, sometimes even longer, for closure  Through March,  we found that we're averaging 11.4 days. That's a 60% improvement. And again, there's a lot more opportunity for us to improve there and it will as we bring our sales and customer service people on board, they understand the true power and the functionality of Unifize and how they can get, they can get the voice of the customer in front of a lot of people very, very quickly."
+   },
+   {
+    "t": "1:16",
+    "text": "So a VoC can get logged in the morning and by afternoon we have closure. It goes a long way with our customers to see that type of attention to what their concerns are."
+   },
+   {
+    "t": "1:27",
+    "text": "So we're very, very, very pleased with how quick and how efficient the process works. We can tell you that in just one short month, Unifize has been a game changer. We're very excited and we know that will continue to improve and take full advantage of what Unifize has to offer."
+   }
+  ],
+  "how-unifize-already-had-everything-we-were-looking-for": [
+   {
+    "t": "0:00",
+    "text": "One of the big ones for us was ease of use, the training, implementation time,  knowing that  if it's not easy to use, if the implementation takes a long time, it was a tremendous amount of training. If the learning curve is large, the people aren't going to take an interest or they're going to, they're going to turn it off and they're just not going to embrace it."
+   },
+   {
+    "t": "0:21",
+    "text": "Most of the software I looked at out there, I really felt like it was boilerplate, and aside from maybe moving a few fields around or changing color schemes, you get what you get."
+   },
+   {
+    "t": "0:33",
+    "text": "So other key, other key factors we were looking for in the software is, is something that would help us with some of the core values, internal audits, non-conformances, voice of the customer or customer complaints. And then CAPAs, the corrective action process. And what we found is this is all part of Unifize."
+   },
+   {
+    "t": "0:54",
+    "text": "It's all on the platform  there are additional modules and that we can add in later as we go on. Other things that really are important to us is, is having software that could be tailored to to us. Something that was configurable, something with flexible feel, something that would allow us to tailor everything to our needs."
+   }
+  ],
+  "how-unifize-helps-save-time": [
+   {
+    "t": "0:00",
+    "text": "So what I like about Unifize is that I see exactly what's happening with the information or the designs that I am putting forward to get released."
+   },
+   {
+    "t": "0:09",
+    "text": "Everybody's looking at the same files. Everybody has the same chat history. There's no obfuscation of what's going on. And so I think having a common understanding of the process that our parts designs, our deviations, quality notifications are going through is really useful. And I think that, it is a time saver for me because ultimately I need to think about the system less and I can just focus on my job more, right?"
+   },
+   {
+    "t": "0:43",
+    "text": "As an engineer, right, my job is to solve problems with the product and make sure that we have a good saleable device that hits the market and does what it needs to it. That helps people. And if I do that, if I do my job as the engineer, the way that we've set up our QMS with Unifize I'm just writing what I've done and that's the process, right? I think that's pretty useful."
+   },
+   {
+    "t": "1:09",
+    "text": "I mean if you think about in just raw turnaround time to close out an issue. In the past, you know, a design update where I'd get all my paperwork ready, send it off, wait two weeks to maybe get a response like now, like literally after this meeting, I may go out and submit a Change Order and it will be approved, maybe even by the time you guys leave, Right?"
+   },
+   {
+    "t": "1:28",
+    "text": "Like, so it's very responsive. And if I need to get something done now, it gets done now. There's, you can cut to the chaff and get with them what needs to get done."
+   }
+  ],
+  "how-unifize-made-me-a-hero-in-my-company": [
+   {
+    "t": "0:00",
+    "text": "And really being able to high level just start with what do we do and let's get it all in front of us. From there it's saying, okay, now let's start seeing what our what our volumes are so that we can go to the bargaining table and also go to the bargaining table with how are these ingredients performing?"
+   },
+   {
+    "t": "0:17",
+    "text": "Which one is our best in the case of 16 different SKUs or which one is the best, most consistent, most cost effective, least amount of lead time and consistently hits the specs it needs to get. And I was able to go from 16 down to two that we use and that was incredibly powerful. And then from those to drill down to, okay, who are we buying those two from?"
+   },
+   {
+    "t": "0:39",
+    "text": "And in this case there was two or three and I actually went out and found a better one. That was about 60% of the cost on this one ingredient that we I think we use, I don't know, maybe a couple of metric tons a year. And so if you look at that, that savings, even a few dollars, and in this case it was 60% of 400 or 4000 kilos a year you're saving."
+   },
+   {
+    "t": "1:02",
+    "text": "I think I saved on that one roughly $50, $60,000. And Unifize gave me that high level visibility to drill down quickly and make decisions effectively"
+   },
+   {
+    "t": "1:16",
+    "text": "Just to test with spec versus what is my spec and which supplier can consistently hit my spec and that decreased my testing cost, decrease my lead times, increase my throughput across the board. And if you look at it on an ingredient by ingredient basis, I mean some of these products have I know, for example, our multivitamin has 42 different ingredients."
+   },
+   {
+    "t": "1:36",
+    "text": "So being able to say, all right, of 42 different ingredients in one product, how many different suppliers are there? Well, if there's 2 to 3 per ingredient now you see how it exponentially it's and but looking at that product all at once gives me the ability to make the decision about that product in an instant for 42 ingredients, which is powerful and driving the cost down per ingredient, increasing the throughput per ingredient, negotiating going, collaborating with my suppliers."
+   },
+   {
+    "t": "2:03",
+    "text": "And maybe there's a supplier that gives me three of those ingredients. Turns out they can give me six. And being able to do that all at once in the conversation, collaborate with the customer and the formulator and say, Hey, I think we have some alternatives here that'll net us savings forever. And I'm using the multivitamin because I did that and Unifize gave me that ability my second month."
+   },
+   {
+    "t": "2:22",
+    "text": "So kind of made me a hero right away."
+   }
+  ],
+  "how-i-reduced-mock-recall-time-down-to-18-minutes-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "I think Mock Recalls to most people are a requirement. And one of those things that you just have to do and it's sort of a pain."
+   },
+   {
+    "t": "0:12",
+    "text": "What Unifize because of the connectivity gave me even now, is something that you have to do it when you're doing a certification audit, for example, and you have a four hour window. It's sort of just part of your compliance and they say, okay, here's a finished good, here's a lot. Now do not pretend that there was a problem and do a Mock Recall and they give you 4 hours."
+   },
+   {
+    "t": "0:32",
+    "text": "And in my history at other companies, you're hard pressed to hit that four hour timeline. My audit last year, I think it took us 18 minutes while we were walking around. He said, okay, we're going to do a Mock Recall of that Lot. Well, I scanned that QR code at my team and said, Hey, we're doing the Mock Recall on this while we're walking."
+   },
+   {
+    "t": "0:49",
+    "text": "By the time we got back from our tour of the facility and our walk through, the Mock Recall was done and I actually it was done long before and I had the timestamps in there to prove it, which just kind of blew the auditor away of, okay, I see what you guys have. This is amazing. And that was his response."
+   },
+   {
+    "t": "1:05",
+    "text": "And although because they had already connected the raw materials, they'd already connected everything about it was already connected just for me scanning that QR code, as I've said. And that traceability allows a Mock Recall to take no time."
+   }
+  ],
+  "how-unifize-helps-quality-leaders-take-better-decisions-on-out-of-specs": [
+   {
+    "t": "0:00",
+    "text": "Going back to when I first started here at Biovation, I remember one of the internal customers asked me to address a backlog of Out of Specifications going back two years at the time. And frankly, I said no because I wasn't here for those. But I can promise that we're going to streamline those and then I again, second day was digging into an Out of Spec which started me down the path of continuing to look at what is our Out of Spec process, how do we document it, how many do we have, Do we are we able to trend that along the lines of per ingredient, per supplier, per lab, etc.?"
+   },
+   {
+    "t": "0:35",
+    "text": "And again, no. And they were using, I think at the time about 21 different labs. And the problem with the Out of Specs was they would get an Out of Spec and then they would send it to another lab and they would still get an Out of Spec and they would send it to another lab. And this was time."
+   },
+   {
+    "t": "0:51",
+    "text": "This was money because each lab would take approximately 5 to 7 business days at best to get back the results. And at no point were they able to actually discover was it Out of Spec and what to do about it. They just were waiting for results. Now, hopefully I'm not showing too much under the skirt, so to speak, but by being able to dig in there, I saw that that was the best and most valuable place to start to get our product released in a streamlined fashion."
+   },
+   {
+    "t": "1:22",
+    "text": "when I started here at Biovation, I remember my interview seeing they had just pumped a lot of money and it's a beautiful state of the art facility."
+   },
+   {
+    "t": "1:32",
+    "text": "And then I started on my first day and saw from a quality side it was still very paper based. It was still very chaotic. And could you I mean, there was a lot of early and easy wins. I called them and a lot of people would refer to it as low hanging fruit. But the my second day I remember I solved an Out of Spec and they had spent gobs of money at this point on this one material because it kept failing."
+   },
+   {
+    "t": "1:57",
+    "text": "I believe it was vitamin B12. And I said, okay, let's look at the history and the people in my team who I started with here I was like, “Can you pull any other Out of Specs for this ingredient?” And I realized very quickly that pulling that historical data was, if possible, incredibly difficult."
+   },
+   {
+    "t": "2:16",
+    "text": "So Out of Specifications, I think it's sort of a multi-headed beast in the sense that people set specs because the regulations say, what is it, 21 CFR 111 subsection E 70 through 75, it says, What's specifications must you establish?"
+   },
+   {
+    "t": "2:33",
+    "text": "And people interpret that kind of to the letter and they set specifications to have specifications not because of the intent behind them, which is what does your material, what does your product, what does it need to do? And so they're your specifications. And I think speaking to frustrations, a lot of times people aren't comfortable, first and foremost, setting the specifications for what they need, not for what's written."
+   },
+   {
+    "t": "2:57",
+    "text": "And then that results in a lack of understanding. I think, in interpreting the results. And then they treat it like it's black and white. So speaking to B12, let's say it, it's supposed to be no less than 85% and they get 84% and they go “well it’s Out of Spec”. Well, is it and with my background in analytical chemistry and method development, I'm afforded the advantage of being able to say, well, there's always uncertainty associated with it."
+   },
+   {
+    "t": "3:25",
+    "text": "There's lab performance, there's, you know, digging into the methods. But when I started, they were, as I said, using about 21 labs here, which told me that there was a disconnect between specification and result. And it was kind of a thumbs up, thumbs down situation, whereas it's a little more interpretive than that. But speaking to the frustrations, that interpretation comes from an understanding of your specs and why you're testing it and what you're testing for."
+   },
+   {
+    "t": "3:50",
+    "text": "So when I talk about managing specs, let's be frank, I'm talking about managing Out of Specs because specifications, you establish them. And as I said, no news is good news for most people. What Unifize gives me the opportunity to do is when we talk about managing specs, as I said, we're talking about managing Out of Specs is in an instant at the same time"
+   },
+   {
+    "t": "4:13",
+    "text": "When I first started as I said, I started with out aspects because it was an easy place to start and it's typically where I always start and I realized they were sending to too many labs, they were sending too many samples and too many retests."
+   },
+   {
+    "t": "4:25",
+    "text": "And there's there's very real numbers associated with that. So within a month, I think I had not only increased or decreased the time it takes to close out on that aspect, which does increase throughput, but eliminate unnecessary retest, consolidate two labs where then I use that to negotiate better pricing, faster turnaround, more commitments. And I took our testing cost by my second month from roughly $150,000 a month down to about 70."
+   },
+   {
+    "t": "4:55",
+    "text": "So that's a 50% savings month on month and that has consistently happened for two years now."
+   },
+   {
+    "t": "5:01",
+    "text": "Unifize has giving me the ability to make all of my team more effective so I can do a lot more with less heads because we have we are we have eyes and ears everywhere all the time."
+   },
+   {
+    "t": "5:10",
+    "text": "So I don't need to throw a quality person at each layer, at each. They're not at blending, at packaging, at weighing it. They're everywhere. And somebody can just say, Hey, I need you. And in the chat environment and they're over there ready to look at Non-Conformance is to deal with the problem. And so the delays the rough spots immediately start smoothing out and I, I encountered that right away."
+   }
+  ],
+  "how-unifize-helped-reduce-our-training-time-and-costs": [
+   {
+    "t": "0:00",
+    "text": "So with regard to training, Unifize allowed me to create that that structure of SOP to training, to job, to employee. But it also gave me this ability as a quality representative and the head of quality to audit and sort of sanity check myself constantly. And I did that by actually printing QR codes on our RFID badges, which is part of our our food defense and food security by, you know, an employee has to have this to even get in the door."
+   },
+   {
+    "t": "0:30",
+    "text": "And so I said, well, what if I could print this reference QR code per employee? So my vision and Unifize helped me achieve this vision is I can walk out there, see an employee walking around, pull their badge, scan it with my the app and see are they current on their training. And as an internal audit tool, that's nobody does that"
+   },
+   {
+    "t": "0:48",
+    "text": "Unifize took that structure of of training to employee and then in the employee they help me generate a PDF just a one button click of generate QR code. And then I took that digital file and we printed on the on the employee badges. And right away I saw, well, wait, can I do it with more than just employees?"
+   },
+   {
+    "t": "1:08",
+    "text": "And so I took that concept and I applied it to my Raw Material Lots. So I'm walking around that warehouse while I said I can scan an employee and see their training via Unifize, I can turn to my left and see an ingredient with a little QR code on it and see its release status, see its test, see its supplier, see what products it goes into."
+   },
+   {
+    "t": "1:26",
+    "text": "And I could do that right now and something that would normally take people hours. I literally could do in 3 minutes."
+   }
+  ],
+  "how-unifize-links-raw-materials-to-lots-formulas-and-finished-products": [
+   {
+    "t": "0:00",
+    "text": "I think other softwares can if you know how to do it and you have to go in with that intent, it's a little more effortless within Unifize because I can link a supplier to all the ingredients and an ingredient to all the Lots and all the Lots to all the formulas and finished product it goes into."
+   },
+   {
+    "t": "0:17",
+    "text": "And it's that's three button clicks if I'm counting right. And it's I don't have to go in with the intent of spending half an hour, an hour compiling and pulling individual records. So I think in that regard, systems do that. If you know that you want to do that. But it it's based on it would be based on me, not based on the system, if that makes sense."
+   }
+  ],
+  "how-unifize-helped-build-our-processes-efficiently-from-scratch": [
+   {
+    "t": "0:00",
+    "text": "When I was using MasterControl, that was another thing they did of, well, you can buy the document module, you can buy the training module and, and you have these, these things that structure that the system had built that you could buy because it kind of sort of probably solved a bit of your problem."
+   },
+   {
+    "t": "0:15",
+    "text": "And the ones that had this structure for you I can see the value of that going back to early in my career, I didn't know what I was doing."
+   },
+   {
+    "t": "0:25",
+    "text": "And so being spoon fed, here's the structure was better than the chaos I was trying to organize. But knowing what I know now, having a blank canvas is and building to suit, building to you, building to your process, not this sort of standard structure that is for all intents and purposes, outlined by the regulations."
+   },
+   {
+    "t": "0:45",
+    "text": "So they're ticking boxes for most people and that's why they all do it. But I would, as I've said, much rather build my process around my process instead of fitting a square peg into a round hole that frankly, most systems, even the cloud and SaaS services, will do."
+   },
+   {
+    "t": "1:07",
+    "text": "Back when I was shopping around, Unifize, well, the team reached out to me and frankly it was a sort of cold call, but they gave me the Dime tour. And I saw immediately the beauty of being able to paint on a blank canvas, which is what I had always been looking for."
+   },
+   {
+    "t": "1:31",
+    "text": "And I could tell I saw immediately that I could, if I needed a process, I could build it. I could say, All right, I need an Out of Spec. Well, what does Out of Spec get you Out of Spec takes you to what are my specs and specs for ingredients predominantly is where I start. And then from there, who are my suppliers of my ingredients and that branches into where am I testing it?"
+   },
+   {
+    "t": "1:51",
+    "text": "And I saw that right at the get go that these things that have been ruminating in my head since I first was introduced to QMS and how I, I thought I could make it better or build it better for the systems I want to put in place. It afforded me that advantage and that's why I ended up going the route of Unifize is because I could build it and it builds with me as I learn more."
+   },
+   {
+    "t": "2:17",
+    "text": "So probably the most unique aspect of Unifize that really got me attracted to it right away was drag and drop built to suit and how short the learning curve was if and it's really helped me implement effectively because implementation is very hard with new softwares, with new systems, especially where there's, you know, probably some old established areas and change is hard."
+   },
+   {
+    "t": "2:44",
+    "text": "But what Unifize allows me to do is if I see a broken process or a problem, I could say, Hey, maybe this just needs a checklist and I engage the people who are in it and say, Would this be better? And then I show them how to build it and next thing I know it can. Each conversation type not only engages the users, so you're getting better feedback, better usage."
+   },
+   {
+    "t": "3:02",
+    "text": "They're helping you build. So now you have absolute buy in for these people who are across the board, whether they're involved in warehousing or production or maintenance or coding or sales or it's all I find a problem and we customize the checklist at that time with the people and they're part of that. And when you get that, I mean, you can't buy that level of buy in and it gains its own momentum and growth and becomes self-sustaining."
+   },
+   {
+    "t": "3:28",
+    "text": "It doesn't need me as the director of quality to constantly oversee it and birddog it. It gets a life of its own. And that's what you want."
+   },
+   {
+    "t": "3:35",
+    "text": "People who are evaluating QMSes think outside the box because Unifize will let you."
+   },
+   {
+    "t": "3:41",
+    "text": "You don't don't get a quality management system to manage quality, get it to improve your organization every day. And nobody else can give you that. The way this has it's it's not there to just be there. I mean, a lot of times that I've been at many companies where they'll have one system that they're managing their suppliers and their specs in another, that they're, they're managing their artwork approvals and review and another that they're managing their training and they're paying a very substantial amount for each individual system, whereas Unifize puts it all together at once and then connects them end to end."
+   },
+   {
+    "t": "4:16",
+    "text": "I don't have to even open another screen or another app or another program I can get everywhere in my process. Everything about this bottle, every everything that went into it, I could get there at any point in the process."
+   },
+   {
+    "t": "4:30",
+    "text": "I think other systems approach the problem as we have the solution. You want it, use it, Unifize’s philosophy said, We acknowledge you have a problem. Let's help you figure it out and build your system to use it. And I think other systems, I see how they got there. I see why they got their and I see why it gained traction."
+   },
+   {
+    "t": "4:52",
+    "text": "But I think I don't think I'm misspeaking when I say most people, when they look backwards and say, Gosh, I wish I would have built it the way I wanted as opposed to down the line going, Well, now I'm kind of not committed to this whole system that's got everything I know I need, but it doesn't work the way I need it to."
+   },
+   {
+    "t": "5:13",
+    "text": "And that's kind of been truthfully, that's kind of been my career progression from when I moved up at Nelson to rolling out MasterControl to where I am now. I look backwards and say, I. I know that that's what I would have wanted if I could go back."
+   }
+  ],
+  "starting-the-transformational-journey-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "One of the most frustrating things about managing quality is and I've been at several companies that it's the same song and dance every time I start."
+   },
+   {
+    "t": "0:06",
+    "text": "They have file cabinets, they have labs they use, and they just kind of store even if they have scans or they have an existing QMS, it's there, but you're not letting your data work for you and, and again, stepping in and shoring up ourStandard Operating Procedures. I usually spend the first probably month as a fly on the wall before I before I've made a single move, written a single document."
+   },
+   {
+    "t": "0:34",
+    "text": "I want to know where we're at. But I've done it enough now that I can assume some things right away. And Out of Specs have been the easy, low hanging fruit early and often win that I get at every company I've started that."
+   },
+   {
+    "t": "0:48",
+    "text": "I think other systems approach the problem as we have the solution. You want it, use it, Unifize’s philosophy said, We acknowledge you have a problem. Let's help you figure it out and build your system to use it. And I think other systems, I see how they got there. I see why they got their and I see why it gained traction."
+   },
+   {
+    "t": "1:10",
+    "text": "But I think I don't think I'm misspeaking when I say most people, when they look backwards and say, Gosh, I wish I would have built it the way I wanted as opposed to down the line going, Well, now I'm kind of not committed to this whole system that's got everything I know I need, but it doesn't work the way I need it to."
+   },
+   {
+    "t": "1:30",
+    "text": "And that's kind of been truthfully, that's kind of been my career progression from when I moved up at Nelson to rolling out MasterControl to where I am now. I look backwards and say, I. I know that that's what I would have wanted if I could go back."
+   },
+   {
+    "t": "1:47",
+    "text": "People who are evaluating QMSes think outside the box because Unifize will let you."
+   },
+   {
+    "t": "1:52",
+    "text": "You don't don't get a quality management system to manage quality, get it to improve your organization every day. And nobody else can give you that. The way this has it's it's not there to just be there. I mean, a lot of times that I've been at many companies where they'll have one system that they're managing their suppliers and their specs in another, that they're, they're managing their artwork approvals and review and another that they're managing their training and they're paying a very substantial amount for each individual system, whereas Unifize puts it all together at once and then connects them end to end."
+   },
+   {
+    "t": "2:28",
+    "text": "I don't have to even open another screen or another app or another program I can get everywhere in my process. Everything about this bottle, every everything that went into it, I could get there at any point in the process,"
+   }
+  ],
+  "problems-with-managing-quality-at-nutraceutical-companies": [
+   {
+    "t": "0:00",
+    "text": "So one of the most frustrating things about managing quality is and I've been at several companies that it's the same song and dance every time I start."
+   },
+   {
+    "t": "0:07",
+    "text": "They have file cabinets, they have labs they use, and they just kind of store even if they have scans or they have an existing QMS, it's there, but you're not letting your data work for you and, and again, stepping in and shoring up ourStandard Operating Procedures. I usually spend the first probably month as a fly on the wall before I before I've made a single move, written a single document."
+   },
+   {
+    "t": "0:34",
+    "text": "I want to know where we're at. But I've done it enough now that I can assume some things right away. And Out of Specs have been the easy, low hanging fruit early and often win that I get at every company I've started that."
+   },
+   {
+    "t": "0:49",
+    "text": "I think other softwares can if you know how to do it and you have to go in with that intent, it's a little more effortless within Unifize because I can link a supplier to all the ingredients and an ingredient to all the Lots and all the Lots to all the formulas and finished product it goes into."
+   },
+   {
+    "t": "1:06",
+    "text": "And it's that's three button clicks if I'm counting right. And it's I don't have to go in with the intent of spending half an hour, an hour compiling and pulling individual records. So I think in that regard, systems do that. If you know that you want to do that. But it it's based on it would be based on me, not based on the system, if that makes sense."
+   },
+   {
+    "t": "1:28",
+    "text": "So in my experience with a lot of quality management systems, they hold the data, but they don't connect the data. So if you wanted to, let's say trend specific ingredient, let's go back to vitamin B12. I would have to knowingly go back and look on a case by case basis. And I would, as the user and as the director have to say, I am I am trying to look at vitamin B12 from this supplier."
+   },
+   {
+    "t": "1:53",
+    "text": "And it's trending test results. And more often than not, I would then look at each individual result and then I'd put it into Excel and then you do some data processing just using Excel. And I think the connectivity and the streamline trending, in my experience with most quality management systems, isn't there."
+   },
+   {
+    "t": "2:13",
+    "text": "So when I say connecting things, what I mean to say is again, using B12 as the example of if I just looking at the ingredient vitamin B12, how quickly can I look at every result and how long does that take? Am I going to file cabinets, Am I going opening record of each individual record?"
+   },
+   {
+    "t": "2:33",
+    "text": "And what I've seen in some other systems that are out in the market is you have to pull and open each individual record as opposed to a quick dropdown that says Here's everything"
+   },
+   {
+    "t": "2:43",
+    "text": "and connecting the raw material spec for that. Again, Vitamin B12 to each and every Lot I received and each and every result per Lot that I received, the value of being able to at a high level quickly see all of it is invaluable."
+   },
+   {
+    "t": "3:00",
+    "text": "people who are evaluating QMSes think outside the box because Unifize will let you."
+   },
+   {
+    "t": "3:06",
+    "text": "You don't don't get a quality management system to manage quality, get it to improve your organization every day. And nobody else can give you that. The way this has it's it's not there to just be there. I mean, a lot of times that I've been at many companies where they'll have one system that they're managing their suppliers and their specs in another, that they're, they're managing their artwork approvals and review and another that they're managing their training and they're paying"
+   },
+   {
+    "t": "3:33",
+    "text": "a very substantial amount for each individual system, whereas Unifize puts it all together at once and then connects them end to end."
+   },
+   {
+    "t": "3:42",
+    "text": "I don't have to even open another screen or another app or another program I can get everywhere in my process. Everything about this bottle, every everything that went into it, I could get there at any point in the process,"
+   },
+   {
+    "t": "3:55",
+    "text": "I think other systems approach the problem as we have the solution. You want it, use it, Unifize’s philosophy said, We acknowledge you have a problem. Let's help you figure it out and build your system to use it. And I think other systems, I see how they got there. I see why they got their and I see why it gained traction."
+   },
+   {
+    "t": "4:18",
+    "text": "But I think I don't think I'm misspeaking when I say most people, when they look backwards and say, Gosh, I wish I would have built it the way I wanted as opposed to down the line going, Well, now I'm kind of not committed to this whole system that's got everything I know I need, but it doesn't work the way I need it to."
+   },
+   {
+    "t": "4:38",
+    "text": "And that's kind of been truthfully, that's kind of been my career progression from when I moved up at Nelson to rolling out MasterControl to where I am now. I look backwards and say, I. I know that that's what I would have wanted if I could go back."
+   }
+  ],
+  "reducing-the-time-to-resolve-customer-complaints-on-unifize": [
+   {
+    "t": "0:00",
+    "text": "The beauty of the customer complaints conversation that I have and Unifize is that it's immediately connected to the Finished"
+   },
+   {
+    "t": "0:05",
+    "text": "Good Lot, because customers when they complain, are always talking about a product, a bottle a Lot and rather than having to take what they said and go open file cabinets and emails and looking here and there, you just, oh, this is a Lot. And then just like I can scan it out in the warehouse by connecting that Lot, the Finished Good Lot into the customer complaint thing."
+   },
+   {
+    "t": "0:27",
+    "text": "I can see everything about that Lot. So I can do my quality investigation, my root cause analysis right then and there as just by saying, Oh, this is the Lot number on the bottom of that bottle."
+   },
+   {
+    "t": "0:37",
+    "text": "Let's take a Non-Conformance that I recently had a it's an email from an outside customer. They say we had problem X and we all we needed was the Lot on the bottom of it and we're already off to the races. I mean, you're already 70% done just by doing that because all of the history of that product and that Lot is in Unifize."
+   },
+   {
+    "t": "0:56",
+    "text": "So then you can from there figure out when, where, who, what, why. And it is it is right away the most powerful thing that Unifize does for those kind of quality events is it allows you to see the scope immediately. So is it a is it a one off or is could this be 10,000 bottles"
+   },
+   {
+    "t": "1:13",
+    "text": "Probably the first most important question when you when you deal with these things and having that answer by virtue of just saying here's the Lot number dramatically decreases the time that it takes to appropriately, effectively investigate and find the true root cause and the impact both financially and from, you know, brand awareness and risk and compliance."
+   }
+  ],
+  "problems-with-other-eqms": [
+   {
+    "t": "0:00",
+    "text": "The relationship I've had with a quality management system in my previous roles has more or less been: Get your design together, throw it over the fence, and two or three weeks later you might get an email saying that you need to add some field to a part property or something like that."
+   },
+   {
+    "t": "0:16",
+    "text": "There's no communication back and forth. As far as I knew, it was just sending parts out into the void. With a smaller company, you cannot do that, right? There's nobody in the void to send it to. And more importantly like that, those two weeks you don't have. Right. We need to get this stuff out now. And So what I like about Unifize is that I see exactly what's happening with the information or the designs that I am putting forward to get released."
+   },
+   {
+    "t": "0:45",
+    "text": "Everybody's looking at the same files. Everybody has the same chat history. There's no obfuscation of what's going on. And so I think having a common understanding of the process that our parts designs, our deviations, quality notifications are going through is really useful. And I think that, it is a time saver for me because ultimately I need to think about the system less and I can just focus on my job more, right?"
+   },
+   {
+    "t": "1:18",
+    "text": "As an engineer, right, my job is to solve problems with the product and make sure that we have a good saleable device that hits the market and does what it needs to it. That helps people. And if I do that, if I do my job as the engineer, the way that we've set up our QMS with Unifize I'm just writing what I've done and that's the process, right?"
+   },
+   {
+    "t": "1:42",
+    "text": "I think that's pretty useful."
+   }
+  ],
+  "product-lifecycle-management": [
+   {
+    "t": "0:00",
+    "text": "So when Harmony started, it was several grad students at the Renew Robotics Lab working on Robot designs in their spare time."
+   },
+   {
+    "t": "0:11",
+    "text": "You know, it started as a company out of a house, you know, in a neighborhood somewhere in Austin. It was it was a very small team of essentially college students designing what would become the medical device robot. And as we grew, I joined on about two and a half years ago. It became very apparent that we needed a better way of doing documentation, of controlling records, of managing our device requirements and how that traces through to our design outputs."
+   },
+   {
+    "t": "0:45",
+    "text": "In the medical device space. We have a product lifecycle that we need to go through. We need to clearly define our user needs. We need to define our requirements, the outputs that we need to test to and validate. And that's something that, you know, if you're a couple of guys in a college robotics lab, it's just not something that you're thinking about when you're putting together this thing that's never been made before."
+   },
+   {
+    "t": "1:09",
+    "text": "So as we grew as a company, we got more serious about launch and we knew that something had to change."
+   },
+   {
+    "t": "1:14",
+    "text": "What we started with was literally a pen and paper quality system. So like word documents that you'd print out and somebody would be signing pen on paper when let's say a part comes in, it needs to be inspected."
+   },
+   {
+    "t": "1:27",
+    "text": "It was very tedious. There was no way of tracing the documentation when it was generated. There was no way to link anything. Somebody would have to literally sit down and go through a file cabinet to figure out what had what had gone on. It was just non workable, especially for a company that had at the time like seven people."
+   },
+   {
+    "t": "1:43",
+    "text": "Like, what are you going to do, have three of your employees looking at a file cabinet? All that and it just wasn't going to happen. The so where Unifize came in and and we we did go from pen and paper to Unifize was that it procedure realized all of our processes right you know you can if you just have a pen and paper you can kind of and a you know, skip your way through a bunch of stuff that becomes tedious but Unifize it."
+   },
+   {
+    "t": "2:12",
+    "text": "You are specifying a process that you have to follow every time. And that consistency helps, right? Whenever I'm looking back on something that's been done, if I'm looking at, say, our receiving inspector's comments on our material that we have, I know that it's going to be in the same format every time, which is it's nice. It's good to be able to go back and look at that."
+   },
+   {
+    "t": "2:31",
+    "text": "The other thing is that the ability to link different quality system activities together helps tell the story of our product as it's being made. And so I can go back and look at the history of, you know, if we're trying to diagnose the root cause of some process issue, I can look through and find where that was. You know, it's like we have a virtual router that follows our parts and our device around until it gets into the field."
+   },
+   {
+    "t": "2:58",
+    "text": "I think that that's something that's really invaluable about Unifize. And I think that it's probably the biggest benefit over our old system, which was once again, pen and paper."
+   }
+  ],
+  "reducing-lot-release-time-down-to-minutes-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "Using the approval workflows and the collaboration allows me to, for example, myself, I'll get a notification that it's my turn. I'm up to bat, so to speak, and if I have questions, I ask it in the environment prior to signing. I don't have to go find people don't have to call people."
+   },
+   {
+    "t": "0:14",
+    "text": "I don't have meetings, I don't have to have emails. I'm actually asking, Hey, wait, what about this aspect before I sign? And then once I'm comfortable, I get comfortable signing through the collaboration. And so it actually makes that the intent behind having approvers, it makes it all the more meaningful."
+   },
+   {
+    "t": "0:30",
+    "text": "I mean, the the digital signature and approval workflows, streamline my Lot, release unfinished goods, as I mentioned, because before that was email back and forth. Now my quality supervisor uploads the test upload to see if a clicks a button says, All right, I'm done, and it goes right to the customer because I select the customer by selecting the customer at the beginning, it automatically knows who that's going to go to and when she clicks her button, it goes to those."
+   },
+   {
+    "t": "0:52",
+    "text": "The appropriate people say, Hey, this is ready for you to release. And again, something that used to take days at times takes minutes at worst."
+   }
+  ],
+  "taking-faster-decisions-on-non-conformances-with-unifize": [
+   {
+    "t": "0:00",
+    "text": "I'll use case recently they they found out in blending that they had added ten kilos too much of one ingredient to one of the batches and they @ me and my team and Unifize."
+   },
+   {
+    "t": "0:12",
+    "text": "We generated the Non-Conformance because it was a Non-Conformance, but we were able to do the risk assessment, collaborate real time and give an answer to the blending tech out there on the floor as it was happening. And so, and sometimes the Non-Conformance escalates to the point where I need to involve the customer or the brand owner and I'm doing that as I'm finding it with, with them."
+   },
+   {
+    "t": "0:31",
+    "text": "Just like I would collaborate on specs. If I find an issue, I can actually involve them in the decision. We do the risk assessment and rather than holding a product, segregating it and taking the time, we're making a decision at the shop floor."
+   },
+   {
+    "t": "0:46",
+    "text": "Being able to real time collaborate about a Non-Conformance and again, an Out of Spec or even just we use what we've termed Observations. They may not be a problem, but they could be a leading indicator of a problem and collaborating with decisions right then and there. What used to take. All right, let's segregate it, let's set it aside."
+   },
+   {
+    "t": "1:06",
+    "text": "Let's set up a meeting, let's set up a call. Let's talk. I'm talking to them as it's happening. What used to take days, weeks, sometimes months is seconds and minutes."
+   }
+  ],
+  "near-instant-implementation-and-adoption-of-unifize": [
+   {
+    "t": "0:00",
+    "text": "So probably the most unique aspect of Unifize that really got me attracted to it right away was drag and drop built to suit and how short the learning curve was if and it's really helped me implement effectively because implementation is very hard with new softwares, with new systems, especially where there's, you know, probably some old established areas and change is hard."
+   },
+   {
+    "t": "0:26",
+    "text": "But what Unifize allows me to do is if I see a broken process or a problem, I could say, Hey, maybe this just needs a checklist and I engage the people who are in it and say, Would this be better? And then I show them how to build it and next thing I know it can. Each conversation type not only engages the users, so you're getting better feedback, better usage."
+   },
+   {
+    "t": "0:44",
+    "text": "They're helping you build. So now you have absolute buy in for these people who are across the board, whether they're involved in warehousing or production or maintenance or coding or sales or it's all I find a problem and we customize the checklist at that time with the people and they're part of that. And when you get that, I mean, you can't buy that level of buy in and it gains its own momentum and growth and becomes self-sustaining."
+   },
+   {
+    "t": "1:10",
+    "text": "It doesn't need me as the director of quality to constantly oversee it and birddog it. It gets a life of its own. And that's what you want"
+   },
+   {
+    "t": "1:17",
+    "text": "So sometimes I've and I found this to be effective is I will actually at a user and, and they'll get an email what's this."
+   },
+   {
+    "t": "1:26",
+    "text": "And there are those that will just respond or go to it and start playing around. And those I've helped me identify my power users right away. And then there are those that will come find me and say, What am I seeing? And then I give them the tour and next thing you know, they're now a good user. And it's this sort of sneaky user onboarding."
+   },
+   {
+    "t": "1:47",
+    "text": "And then by once they're engaged, they understand it because it's pretty straightforward relative to things I've seen in the past. And, and especially now that it has the help icon at the bottom gives you quick videos if they're curious and now that person is a user from then on and it just becomes ingrained in the process by doing the process."
+   },
+   {
+    "t": "2:07",
+    "text": "So when we adopted Unifize, I didn't encounter much resistance, quite the contrary. We actually encountered people building too much. I remember the first conversation that I built with my counterparts across the organization in Quality was for Finished Good Lot."
+   },
+   {
+    "t": "2:24",
+    "text": "And it they wanted they realize that they could do everything and you kind of have to back yourself off. And that's what I found is, you know, the KISS model of Keep It Simple, Stupid, because the first iteration of it had 189 different items in the checklist. And the people who wanted that thought they needed it, thought they wanted it, but then they tried to actually do it right after and realize, Whoa, we can walk this back."
+   },
+   {
+    "t": "2:45",
+    "text": "And it it helped by virtue of seeing that actually seeing it laid out in front of them. Oh, wait, we can get a lot faster. And by doing it, they got a lot faster. Everything got a lot smoother because it's sometimes it's good to challenge yourself as to what are we currently doing, why are we currently doing it?"
+   },
+   {
+    "t": "3:04",
+    "text": "And as they were building it, these people were saying, Wait, why are we doing this? And that was huge. And it's very different than I've seen in other scenarios with systems where they're, Oh, here we go. I got to adopt this because somebody told me I have to. It helps them road test themselves, sanity check themselves. And again, and that culture of continuous improvement, it just happens."
+   },
+   {
+    "t": "3:24",
+    "text": "Unifize is amazing because it grows with you. It solves problems with you as the problems come up. So if a conversation or process doesn't exist, guess what?"
+   },
+   {
+    "t": "3:31",
+    "text": "You can make it exist right then and there. So it's more than just quality management. It started there for us, but this journey has been amazing because it does so much more now. So and by being by breaking down those silos, but breaking down the walls and the barriers that this is quality job, this is quality function to this is all of our job, all of our function."
+   },
+   {
+    "t": "3:49",
+    "text": "Then it expands and expands and expands and it gains its own inertia constantly. And what I mean by that is that every time there's a problem now, people start coming to me and saying, Hey, could Unifize's do this? And that's so unique. I've never seen that before in any company where I have people from maintenance or people from receiving or people from warehouse or various other areas coming to us to quality and saying, Hey, do you think that this could be a solution for us?"
+   },
+   {
+    "t": "4:13",
+    "text": "And it's so amazing to be able to say, Yeah, it is, let's do it."
+   }
+  ],
+  "how-conversations-in-unifize-foster-better-collaboration": [
+   {
+    "t": "0:00",
+    "text": "But I believe the fact  that it's a conversational driven  software that's really where the power comes in."
+   },
+   {
+    "t": "0:06",
+    "text": "I don't know what happened  after the the refresher course on Thursday, but Friday I was out of the office but still kind of monitoring what was happening in Unifize."
+   },
+   {
+    "t": "0:18",
+    "text": "And I saw the activity pick up and I said, well, that's probably because of the refresher course. But then yesterday rolled around and  I don't know, at one point in time I thought I was sitting in Las Vegas in front of a slot machine. It was just a constant pinging going on and it was just all these conversations taking place."
+   },
+   {
+    "t": "0:38",
+    "text": "It was really a good feeling to see that there was so many different people involved and so many different conversations. But I never felt like I had no idea what was going on. Everything seemed to be  in its place  and so the organization, the conversation was great. And I could just see things continue to progress and move forward."
+   }
+  ],
+  "how-biovation-uses-unifize-to-create-traceability-and-take-better-decisions": [
+   {
+    "t": "0:00",
+    "text": "So I use Unifize for my ingredient specs. Then that goes into my formulation and my formulation into my finished product specs and to monitor, trend, track and outline my Out of Specs by lab, by supplier, by ingredient, by product. And because they're so interconnected that being able to go from an ingredient and it is in a finished product, they kind of move synonymously."
+   },
+   {
+    "t": "0:27",
+    "text": "So by establishing A I'm ready for Z and I use Unifize to also monitor performance by ingredient. If I if I'm, you know, seeing a lot of Out of Specs for a particular ingredient, I can say is it always from the same supplier or is it always tested at the same lab or is it going then failing in the finished product and make good decisions based on a wealth of data?"
+   },
+   {
+    "t": "0:56",
+    "text": "There isn’t aspect of this of our product that isn't touched by Unifize. If you look at the tablets in here, the ingredients that went into it, the formula that made it, the parameters they use to dosage it, the specs for this bottle, the specs for this lid, the approvals and everything that went into it that culminates in this on your shelf Unifize has a and moreover a complaint at the bottom after the fact is Unifize is every has its hand in every piece of this."
+   }
+  ],
+  "hear-about-things-in-real-time-and-start-conversations-early-on-with-unifizes-mobile-capabilities": [
+   {
+    "t": "0:00",
+    "text": "Other things that were important to us is, is making sure that we could have a web or a cloud based with mobile capabilities."
+   },
+   {
+    "t": "0:08",
+    "text": "We've also found that the Unifize platform works equally well on mobile devices. Our salespeople really appreciate that they spend a lot of time on the road and if they have to haul bulky equipment along and fire up their laptop to launch a customer concern,  it probably just won't happen. Now, with Unifize, they can do it right from their mobile, their mobile app on their phone and we hear about things real time and we could start conversations early on."
+   },
+   {
+    "t": "0:40",
+    "text": "And that's been a valuable tool."
+   },
+   {
+    "t": "0:42",
+    "text": "What was really different is the fact that it's just now conversation driven  and things just happened much more timely. We've noticed that every day, every day we see progress and how it's being embraced. The conversations within Unifize become more relaxed and it we just found ways to keep, to keep things moving forward."
+   }
+  ]
+ }
+}

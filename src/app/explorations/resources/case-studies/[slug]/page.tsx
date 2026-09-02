@@ -12,7 +12,8 @@ import { notFound } from "next/navigation";
 import { ResourceShell } from "../../_shared/resource-shell";
 import { Crumb, BandHead, ResourceCTA, ResourceFooter } from "../../_shared/resource-chrome";
 import { CaseCard, PlayGlyph, initialsOf } from "../../_shared/resource-cards";
-import { CASE_STUDIES, getCaseStudy, TESTIMONIALS } from "../../_shared/resources-data";
+import { CASE_STUDIES, getCaseStudy } from "../../_shared/resources-data";
+import { CUSTOMER_VIDEOS } from "../../_shared/customer-videos";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export function generateStaticParams() {
@@ -46,7 +47,7 @@ export default async function CaseStudyItemPage({ params }: { params: Promise<{ 
   const c = getCaseStudy(slug);
   if (!c) notFound();
 
-  const video = TESTIMONIALS.find((t) => t.company === c.company);
+  const video = CUSTOMER_VIDEOS.find((o) => o.company === c.company);
   const related = CASE_STUDIES.filter((o) => o.slug !== c.slug && o.industry === c.industry);
   const fill = CASE_STUDIES.filter((o) => o.slug !== c.slug && !related.includes(o));
   const relatedAll = [...related, ...fill].slice(0, 3);

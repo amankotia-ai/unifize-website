@@ -119,9 +119,10 @@ export default function MesProductPage() {
           </div>
 
           {/* The establishing shot is the arcade itself: one app window
-            * walking WO-9021 from the release queue to the sealed lot, with
-            * a numbered step rail under it. Same treatment as every product
-            * page hero. */}
+            * walking WO-9021 from the no-code builder that configures its
+            * traveller, through the release queue and the live floor
+            * dashboard, to the sealed lot, with a numbered step rail under
+            * it. Same treatment as every product page hero. */}
           <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
             <HeroArcade steps={MES_HERO_STEPS} />
           </div>

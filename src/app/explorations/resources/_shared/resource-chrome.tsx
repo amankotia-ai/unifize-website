@@ -7,7 +7,8 @@
  * Pure server components rendered inside `<main className="dms dms--redesign rs">`.
  * ========================================================================== */
 import Link from "next/link";
-import { RESOURCE_FOOTER, TESTIMONIALS, type Testimonial } from "./resources-data";
+import { RESOURCE_FOOTER } from "./resources-data";
+import { CUSTOMER_VIDEOS, type CustomerVideo } from "./customer-videos";
 import { SiteFooter } from "../../_shared/site-footer";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
@@ -71,16 +72,16 @@ export function BandHead({ title, link }: { title: string; link?: { label: strin
 
 /* ------------------------------------------------------------- quote band
  * The dark customer-proof band that closes every collection page: a display
- * heading, then three quote cards (spoken quote, person, company fact, a
- * watch link into the story). Static, server-rendered. */
+ * heading, then three real customer videos (title, speaker, industry fact,
+ * a watch link into the story). Static, server-rendered. */
 export function QuoteBand({
   heading = "Teams run their quality on Unifize.",
   items,
 }: {
   heading?: string;
-  items?: Testimonial[];
+  items?: CustomerVideo[];
 }) {
-  const list = (items ?? [...TESTIMONIALS.filter((t) => t.featured), ...TESTIMONIALS.filter((t) => !t.featured)]).slice(0, 3);
+  const list = (items ?? CUSTOMER_VIDEOS).slice(0, 3);
   return (
     <section className="dms-section dms-section--dark rs-qband">
       <div className="dms-wrap">
@@ -89,16 +90,16 @@ export function QuoteBand({
           <Link className="rs-qband__all" href="/explorations/resources/testimonials">All customer stories &rarr;</Link>
         </div>
         <div className="rs-qband__grid">
-          {list.map((t) => (
-            <Link href={`/explorations/resources/testimonials/${t.slug}`} className="rs-qcell" key={t.slug}>
-              <blockquote className="rs-qcell__q">&ldquo;{t.quote}&rdquo;</blockquote>
+          {list.map((v) => (
+            <Link href={`/explorations/resources/testimonials/${v.slug}`} className="rs-qcell" key={v.slug}>
+              <p className="rs-qcell__q">{v.name}</p>
               <div className="rs-qcell__who">
-                <span className="rs-qcell__name">{t.person}</span>
-                <span className="rs-qcell__role">{t.role}, {t.company}</span>
+                <span className="rs-qcell__name">{v.person}</span>
+                <span className="rs-qcell__role">{[v.role, v.company].filter(Boolean).join(", ") || v.industry}</span>
               </div>
               <div className="rs-qcell__foot">
-                <span className="rs-qcell__fact">{t.companyKind} · {t.size}</span>
-                <span className="rs-qcell__go">Watch · {t.duration}</span>
+                <span className="rs-qcell__fact">{v.industry ?? "Customer story"}</span>
+                <span className="rs-qcell__go">Watch · {v.duration}</span>
               </div>
             </Link>
           ))}

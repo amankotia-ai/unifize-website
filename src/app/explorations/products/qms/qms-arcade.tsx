@@ -1666,17 +1666,100 @@ export const QMS_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
 
 /* ===================================================== hero journey (arcade)
  * The hero product shot is the arcade itself, same treatment as every
- * product page (shared HeroArcade): five poses carrying the headline's
- * claim - a finding isn't closed until the fix is proven. Steps are lifted
- * straight from the page's own flows so the hero and the lifecycle section
- * tell the same story with the same facts:
+ * product page (shared HeroArcade): poses carrying the headline's claim -
+ * a finding isn't closed until the fix is proven. The middle steps are
+ * lifted straight from the page's own flows so the hero and the lifecycle
+ * section tell the same story with the same facts:
  *   PF-5 · capture at the line and task the containment (NC-204)
  *   PF-6 · put the root cause to the participants (NC-204)
  *   PF-3 · implement the corrective action and prove it off the live
  *          dashboard (CAPA-612) - the escalation is the point: the NC's
  *          discipline hands over to the CAPA's evidence-backed close.
+ * Two hero-only bookends are lifted from the QMS product demo (Wistia,
+ * 2pdzk5q9iw), same recipe as the DMS hero: the no-code process builder
+ * that CONFIGURES the discipline the middle steps ride (demo 0:54-1:09,
+ * drag-and-drop field list + add-field palette + approval routing), and
+ * the Part 11 signature that CLOSES the record only after the dashboard
+ * proves the fix (demo 1:29-1:34, the Apply-your-signature dialog).
  * Labels are the reader's handle on the step. */
+const HERO_NC_WORLD: ArcadeFlowWorld = {
+  ...NC_CAPTURE_WORLD,
+  builder: {
+    title: "Non-conformance process",
+    note: "The lifecycle every finding walks, configured, not coded.",
+    tabs: ["Checklist", "Team", "Statuses", "Privacy", "Reminders"],
+    fields: [
+      { kind: "Selection", tone: "selection", label: "Basic details" },
+      { kind: "Linked field", tone: "linked", label: "Part & work order" },
+      { kind: "Text", tone: "text", label: "Problem description" },
+      { kind: "File upload", tone: "upload", label: "Photos & readings" },
+      { kind: "Picklist", tone: "picklist", label: "Severity" },
+      { kind: "Approval", tone: "approval", label: "Disposition approval" },
+      { kind: "Generate PDF", tone: "pdf", label: "NC report" },
+    ],
+    palette: [
+      { label: "Approval", note: "Digital signatures on the record", tone: "approval" },
+      { label: "File upload", note: "Photos and readings from the line", tone: "upload" },
+      { label: "Linked field", note: "Link to another process", tone: "linked" },
+      { label: "Picklist", note: "Drop-down selection of items", tone: "picklist" },
+      { label: "Revision", note: "Managed revisions of the record", tone: "revision" },
+      { label: "Generate PDF", note: "Printable render of the checklist", tone: "pdf" },
+    ],
+  },
+};
+
+const QMS_HERO_BUILD_STEP: ArcadeStepConfig = {
+  source: "QMS demo 0:54-1:09 · drag-and-drop builder + add-field palette",
+  ghost: "Build",
+  type: "Non-conformance",
+  id: "#204",
+  title: "Coating thickness out of spec",
+  status: "Open",
+  actor: "You",
+  event: "Configured the non-conformance process in the builder",
+  eventDetail: "Fields, approval routing and automations · no code",
+  checklist: "CAPTURE & EVIDENCE",
+  checklistItems: ["Field list", "Approval routing", "Automations"],
+  focus: "builder",
+  focusTitle: "Disposition approval",
+  focusRows: [
+    "Signature of the Quality Manager",
+    "Contingent on containment complete",
+    "On approval · instruction routes to the line",
+  ],
+  focusAction: "Add field",
+  ownershipNote: "Process owner · D. Fontaine",
+  world: HERO_NC_WORLD,
+  checklistProgress: { "CAPTURE & EVIDENCE": 0, CONTAINMENT: 0, "SEVERITY & HISTORY": 0 },
+};
+
+const QMS_HERO_CLOSE_STEP: ArcadeStepConfig = {
+  source: "QMS demo 1:29-1:34 · Apply-your-signature dialog (PF-3 s8 close)",
+  ghost: "Close",
+  type: "CAPA",
+  id: "#612",
+  title: "Recurring seal failure",
+  status: "Closed",
+  actor: "You",
+  event: "Closed the CAPA under a Part 11 signature",
+  eventDetail: "Effectiveness verified against live metrics · the close updates complaint CMP-341",
+  checklist: "EFFECTIVENESS",
+  checklistItems: ["Recurrence check", "Part 11 sign-off"],
+  focus: "signature",
+  focusTitle: "Sign off effectiveness",
+  focusRows: ["No recurrence in the window", "CMP-341 · updated on close"],
+  focusAction: "Apply your signature",
+  ownershipNote: "Effective, partially effective, or reopen",
+  world: CAPA_WORLD,
+  checklistOpen: "EFFECTIVENESS",
+  checklistProgress: { INVESTIGATION: 3, "ACTION PLAN": 3, EFFECTIVENESS: 3 },
+};
+
 export const QMS_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Build it",
+    config: QMS_HERO_BUILD_STEP,
+  },
   {
     label: "Capture it",
     config: QMS_FLOW_STEP_SCENES["5"][0],
@@ -1696,5 +1779,9 @@ export const QMS_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Prove it",
     config: QMS_FLOW_STEP_SCENES["3"][7],
+  },
+  {
+    label: "Close it",
+    config: QMS_HERO_CLOSE_STEP,
   },
 ];

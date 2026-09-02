@@ -9,16 +9,18 @@
  *     (Apple product-page idiom) until the visitor takes over; respects
  *     prefers-reduced-motion.
  *
- *   PlatformStack - the canonical four-band platform stack (PLT-2) as a
- *     touchable object: pick a band, the stack explodes around it and the
- *     detail panel reads it out.
+ *   PlatformStack - the three customer-facing bands as one white sheet: a
+ *     tab list on the left (the pick opens to its line and its link) and a
+ *     tinted panel on the right holding three plain cards that show, not
+ *     tell, what the band is. A trust strip sits under the sheet.
  *
  * Both are self-contained client components, keyboard-operable, styled by
  * platform-kit.css (pf-journey / pf-stack namespaces).
  * -------------------------------------------------------------------------- */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { OutcomesCards, SuiteCards, BlocksCards } from "./platform-stack-cards";
 import { cn } from "@/lib/cn";
 import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arcade/arcade";
 
@@ -112,18 +114,20 @@ export function PlatformJourney({
 }
 
 /* ============================================================ PLATFORM STACK
- * The four bands, verbatim from the concept map: Outcomes + AI Assist on
- * top, Core Platform underneath everything. */
+ * The three customer-facing bands, per the Story Architecture: Outcomes +
+ * AI Assist on top, Products, Workflow Components. The Core Platform band
+ * is internal infrastructure and stays off the page; its customer-relevant
+ * facts live in the Coexistence and Compliance sections instead. */
 
 type StackBand = {
   key: string;
   name: string;
   tag: string;
-  body: string;
-  chips?: string[];
-  chipsLabel?: string;
-  products?: { code: string; name: string; href: string }[];
-  note?: string;
+  desc: string;
+  link: { label: string; href: string };
+  /* an optional mono caption above the cards (the frame they sit in) */
+  caption?: string;
+  cards: () => ReactNode;
 };
 
 const BANDS: StackBand[] = [
@@ -131,108 +135,131 @@ const BANDS: StackBand[] = [
     key: "outcomes",
     name: "Outcomes + AI Assist",
     tag: "What you feel",
-    body:
-      "Work closes faster and arrives provable: less waiting, fewer reopens, evidence complete at sign-off. AI drafts, chases, and summarizes inside the work; your people approve and stay accountable.",
-    chipsLabel: "AI assists with",
-    chips: ["Assisted capture", "Execution assist", "Measurement assist"],
+    desc: "Work closes faster and arrives provable. AI drafts, chases, and summarizes inside the work; your people approve.",
+    link: { label: "See it measured", href: "#measured" },
+    caption: "One change control, as your team meets it",
+    cards: OutcomesCards,
   },
   {
     key: "products",
     name: "Product Suite",
     tag: "What you buy",
-    body:
-      "Products your team and your auditors already understand, ready for your industry on day one. Start with one; add the next on the same foundation when you are ready.",
-    products: [
-      { code: "QMS", name: "Quality management", href: "/explorations/products/qms" },
-      { code: "DMS", name: "Document management", href: "/explorations/products/dms" },
-      { code: "PLM", name: "Product lifecycle", href: "/explorations/products/plm" },
-      { code: "MES", name: "Manufacturing execution", href: "/explorations/products/mes" },
-    ],
+    desc: "Products your team and your auditors already understand. Start with one; add the next on the same foundation.",
+    link: { label: "Explore the products", href: "/explorations/products/qms" },
+    caption: "Start with one · add the rest when you are ready",
+    cards: SuiteCards,
   },
   {
     key: "components",
     name: "Workflow Components",
     tag: "What it runs on",
-    body:
-      "Every product above is assembled from the same no-code blocks, so the platform shapes itself to your process, not the other way around.",
-    chipsLabel: "The blocks",
-    chips: ["Stages", "Gates", "Roles", "Approvals", "Evidence requirements", "Forms", "Automations", "Templates"],
-  },
-  {
-    key: "core",
-    name: "Core Platform",
-    tag: "What holds it",
-    body:
-      "One governed layer under everything: accountable threads, structured data, and an audit trail that writes itself as the work happens. Your systems of record stay authoritative.",
-    chipsLabel: "Always on",
-    chips: ["Accountable threads", "Structured data", "Audit trail", "Part 11 e-signatures", "Permissions", "API & connectors"],
+    desc: "Every product is assembled from the same no-code blocks, so the platform shapes itself to your process.",
+    link: { label: "Watch one change close", href: "#platform" },
+    caption: "Eight blocks · every product is built from them",
+    cards: BlocksCards,
   },
 ];
 
+/* the trust strip: the same badge set the home page carries */
+const TRUST_BADGES: { label: string; glyph: ReactNode }[] = [
+  { label: "SOC 2 Type II", glyph: <path d="M22 13l-6 2.6v4.6c0 3.7 2.6 6.6 6 7.6 3.4-1 6-3.9 6-7.6v-4.6L22 13zm-2.6 8.2l1.9 1.9 3.6-3.6" /> },
+  { label: "GDPR ready", glyph: <path d="M16.5 20.5h11v8h-11zM19.5 20.5v-2.5a2.5 2.5 0 0 1 5 0v2.5" /> },
+  { label: "Zero data training", glyph: <path d="M22 15.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM22 18v4l2.5 1.6" /> },
+];
+
+const Chevron = () => (
+  <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M4.5 2.5L8 6l-3.5 3.5" />
+  </svg>
+);
+
 export function PlatformStack() {
-  const [active, setActive] = useState(1); /* land on the products band */
-  const band = BANDS[active];
+  const [active, setActive] = useState(0);
 
   return (
     <div className="pf-stack">
-      {/* the object: four touchable bands that explode around the pick */}
-      <div className="pf-stack__object" role="tablist" aria-label="The four bands of the platform">
-        {BANDS.map((item, index) => (
-          <button
-            key={item.key}
-            type="button"
-            role="tab"
-            aria-selected={index === active}
-            aria-controls="pf-stack-detail"
-            className={cn(
-              "pf-stack__band",
-              index === active && "is-active",
-              index < active && "is-above",
-              index > active && "is-below",
-            )}
-            onClick={() => setActive(index)}
-          >
-            <span className="pf-stack__band-idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
-            <span className="pf-stack__band-name">{item.name}</span>
-            <span className="pf-stack__band-tag">{item.tag}</span>
-          </button>
-        ))}
-        <span className="pf-stack__ground" aria-hidden="true">Your systems of record · your tools · unchanged</span>
+      <div className="pf-stack__card">
+        {/* the tab list: the pick opens to its line and its link. Every
+         * tab's open block stays mounted so the reveal is a measured
+         * height transition, not a jump. */}
+        <div className="pf-stack__tabs" role="tablist" aria-label="The three bands of the platform">
+          {BANDS.map((item, index) => {
+            const isActive = index === active;
+            return (
+              <div key={item.key} className={cn("pf-stack__tab", isActive && "is-active")}>
+                <button
+                  type="button"
+                  role="tab"
+                  id={`pf-stack-tab-${item.key}`}
+                  aria-selected={isActive}
+                  aria-controls={`pf-stack-panel-${item.key}`}
+                  className="pf-stack__tab-btn"
+                  onClick={() => setActive(index)}
+                >
+                  {item.name}
+                </button>
+                <div className="pf-stack__tab-open" aria-hidden={!isActive}>
+                  <div className="pf-stack__tab-open-inner">
+                    <p className="pf-stack__tab-desc">{item.desc}</p>
+                    <Link className="pf-stack__tab-link" href={item.link.href} tabIndex={isActive ? 0 : -1}>
+                      {item.link.label}
+                      <Chevron />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* the panel: every band's cards stacked in one grid cell, so the
+         * sheet is always as tall as its tallest state */}
+        <div className="pf-stack__panel">
+          <div className="pf-stack__panels">
+            {BANDS.map((item, index) => {
+              const isActive = index === active;
+              return (
+                <div
+                  key={item.key}
+                  className="pf-stack__cards"
+                  id={`pf-stack-panel-${item.key}`}
+                  role="tabpanel"
+                  aria-labelledby={`pf-stack-tab-${item.key}`}
+                  aria-hidden={!isActive}
+                  data-active={isActive}
+                >
+                  {item.caption ? <span className="pf-stack__cap">{item.caption}</span> : null}
+                  <item.cards />
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      {/* the active band, read out */}
-      <div className="pf-stack__detail" id="pf-stack-detail" role="tabpanel" aria-label={band.name}>
-        <div className="pf-stack__detail-inner" key={band.key}>
-          <span className="pf-stack__detail-tag">{band.tag}</span>
-          <h3 className="pf-stack__detail-name">{band.name}</h3>
-          <p className="pf-stack__detail-body">{band.body}</p>
-
-          {band.products ? (
-            <ul className="pf-stack__products">
-              {band.products.map((product) => (
-                <li key={product.code}>
-                  <Link className="pf-stack__product" href={product.href}>
-                    <span className="pf-stack__product-code">{product.code}</span>
-                    <span className="pf-stack__product-name">{product.name}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
-
-          {band.chips ? (
-            <div className="pf-stack__chips-row">
-              {band.chipsLabel ? <span className="pf-stack__chips-lab">{band.chipsLabel}</span> : null}
-              <ul className="pf-stack__chips">
-                {band.chips.map((chip) => (
-                  <li key={chip} className="pf-stack__chip">{chip}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-
-          {band.note ? <p className="pf-stack__detail-note">{band.note}</p> : null}
-        </div>
+      {/* the trust strip, tucked under the sheet */}
+      <div className="pf-stack__trust">
+        <p className="pf-stack__trust-lead">
+          Engineered with security and privacy at its core.
+          <a className="pf-stack__trust-link" href="#compliance">
+            Compliance
+            <Chevron />
+          </a>
+        </p>
+        <ul className="pf-stack__badges" aria-label="Security and privacy">
+          {TRUST_BADGES.map((badge) => (
+            <li className="pf-stack__badge" key={badge.label}>
+              <span className="pf-stack__badge-seal" aria-hidden="true">
+                <svg viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="22" cy="22" r="19" />
+                  <circle cx="22" cy="22" r="15.5" strokeDasharray="2.2 3" />
+                  {badge.glyph}
+                </svg>
+              </span>
+              {badge.label}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

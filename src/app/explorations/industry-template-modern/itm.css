@@ -466,9 +466,27 @@
 .itm-pex__list li::before { content:""; position:absolute; left:2px; top:16px; width:5px; height:5px; background:var(--itm-d-accent); }
 .itm-pex__list--worry li::before { background:var(--itm-warn); }
 
+/* The industries-kit PersonaExplorer variant (industries/_shared): icon-tile
+ * head, cares/worries chip registers, per-seat CTA. Same dark-section
+ * furniture as the facts variant above; the role glyph is CONSTRAINED to a
+ * 48px tile (unsized it inflates to the tabpanel column width). */
+.itm-pex__head { display:flex; align-items:center; gap:var(--itm-s-5); margin-bottom:clamp(24px,3vw,40px); }
+.itm-pex__icon { flex:none; width:48px; height:48px; display:grid; place-items:center; background:oklch(1 0 0 / 0.05); border:1px solid var(--itm-d-border-2); color:var(--itm-d-accent); }
+.itm-pex__icon svg { width:22px; height:22px; }
+.itm-pex__head-text { display:flex; flex-direction:column; gap:4px; min-width:0; }
+.itm-pex__name { margin:0; font-family:var(--itm-display); font-weight:500; font-size:1.25rem; letter-spacing:-0.014em; color:var(--itm-d-ink); }
+.itm-pex__titles { margin:0; font-size:0.8125rem; line-height:1.5; color:var(--itm-d-ink-3); }
+.itm-pex__cw { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(28px,3vw,56px); margin-top:clamp(32px,4vw,48px); padding-top:var(--itm-s-7); border-top:1px solid var(--itm-d-border-2); }
+.itm-pex__cw-lab { display:block; font-family:var(--itm-mono); font-size:var(--itm-mono-size); font-weight:500; text-transform:uppercase; letter-spacing:var(--itm-mono-ls); color:var(--itm-d-ink-3); margin-bottom:var(--itm-s-4); }
+.itm-pex__chips { display:flex; flex-wrap:wrap; gap:8px; }
+.itm-pex__chip { position:relative; padding:5px 10px 5px 22px; font-family:var(--itm-mono); font-size:0.6875rem; letter-spacing:0.04em; color:var(--itm-d-ink-2); border:1px solid var(--itm-d-border-2); }
+.itm-pex__chip::before { content:""; position:absolute; left:9px; top:50%; margin-top:-2.5px; width:5px; height:5px; background:var(--itm-d-accent); }
+.itm-pex__chips--worry .itm-pex__chip::before { background:var(--itm-warn); }
+.itm-pex__cta { margin-top:clamp(28px,3.5vw,44px); }
+
 .itm-pex :where(button):focus-visible { box-shadow:var(--itm-ring-dark); }
 @media (max-width:1024px) { .itm-pex { grid-template-columns:1fr; gap:var(--itm-s-10); } }
-@media (max-width:640px) { .itm-pex__facts { grid-template-columns:1fr; gap:var(--itm-s-6); } }
+@media (max-width:640px) { .itm-pex__facts { grid-template-columns:1fr; gap:var(--itm-s-6); } .itm-pex__cw { grid-template-columns:1fr; gap:var(--itm-s-6); } }
 
 /* ============================================================ E · COVERAGE
  * Indexed domain ledger on ink. A standard-filter bar sits over nine rows;

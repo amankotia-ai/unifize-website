@@ -55,6 +55,78 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: MDR-0912 as its owner lives it, one pose per
+ * flow.trail step. The record vocabulary comes from this page's own
+ * canonical story (the reportability decision in section 03: field event →
+ * per-market classification → causality → submission). Sections and items
+ * never change mid-journey; steps only open sections and advance counts. */
+const REGULATORY_WORLD: ArcadeFlowWorld = {
+  team: "Regulatory Affairs",
+  recordNoun: "Vigilance case",
+  owner: "N. Vega",
+  ownerInitials: "NV",
+  participants: ["NV", "EB", "+3"],
+  participantsLabel: "N. Vega, E. Braun, and three others",
+  recordKicker: "REPORTABILITY",
+  context: {
+    initials: "KS",
+    name: "K. Sato",
+    time: "08:47",
+    message: "Field event logged from the distributor: device alarm failure during home use.",
+    detail: "Complaint C-3312 · Product REN-40 · Lot 22-081",
+  },
+  inboxNeighbors: [
+    { title: "Alarm failure · REN-40", time: "08:47", detail: "C-3312 · intake complete", kind: "Complaint" },
+    { title: "REN-40 device history", time: "Yesterday", detail: "2 similar events · 24 months", kind: "Product record" },
+    { title: "Label change LC-118", time: "Yesterday", detail: "Alarm instructions · under review", kind: "Change" },
+  ],
+  checklistTitle: "Reportability",
+  checklistSections: [
+    {
+      title: "INTAKE & TRIAGE",
+      items: [
+        { label: "Event narrative", kind: "field", value: "Alarm failure during home use · no patient harm reported", note: "Entered at intake" },
+        { label: "Product and lot", note: "REN-40 · Lot 22-081" },
+        { label: "Similar events", note: "2 in 24 months · trended" },
+      ],
+    },
+    {
+      title: "CLASSIFICATION",
+      items: [
+        { label: "Reportability per market", note: "FDA MDR · 30-day reportable" },
+        { label: "Causality assessment", note: "Device malfunction · confirmed" },
+        { label: "Medical review", kind: "approval", signer: "Dr. E. Braun", state: "Signed" },
+      ],
+    },
+    {
+      title: "SUBMISSION & CLOSURE",
+      items: [
+        { label: "eMDR prepared", note: "Form 3500A · complete" },
+        { label: "Submitted to the authority", note: "FDA eMDR · acknowledgement received" },
+        { label: "Case closure", kind: "approval", signer: "H. Lindqvist", state: "Signed" },
+      ],
+    },
+  ],
+};
+
+/* the same case as the submitter sees it: rail avatar, "You" initials and
+ * the signature dialog all follow the viewer */
+const REGULATORY_SUBMIT_WORLD: ArcadeFlowWorld = {
+  ...REGULATORY_WORLD,
+  viewer: "M. Rossi",
+  viewerInitials: "MR",
+};
+
+/* the constants every pose of the journey shares */
+const REGULATORY_REC = {
+  type: "Vigilance",
+  id: "MDR-0912",
+  title: "Alarm failure · REN-40",
+  world: REGULATORY_WORLD,
+} as const;
 
 export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
   slug: "regulatory-affairs",
@@ -172,6 +244,22 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
   leaks: {
     heading: "The filing was true the day you sent it.",
     lede: "The failure modes we see inside regulatory teams. Each one is a document or a decision that moved after the record stopped watching.",
+    /* the old world, staged (section 02's evidence artifact): the
+     * reportability file assembling itself by inbox while the statutory
+     * clock runs. Furniture is illustrative, not a claim. */
+    scene: {
+      kicker: "Inbox · vigilance",
+      chip: "Day 4 of 30",
+      title: "The reportability file",
+      rows: [
+        { state: "done", label: "Complaint logged", age: "Day 0" },
+        { state: "wait", label: "FW: is this reportable?", age: "2d, no reply", warn: true },
+        { state: "wait", label: "RE: device history extract", age: "v2 attached" },
+        { state: "idle", label: "Causality opinion", age: "Unread" },
+      ],
+      float: { kicker: "MDR clock", note: "26 days left. The evidence is still in five inboxes." },
+      caption: "The clock is statutory. The assembly is manual.",
+    },
     pains: [
       {
         severity: "Critical",
@@ -231,6 +319,112 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / vigilance / MDR-0912",
     mobileLabel: "MDR reportability trace",
     mobileId: "MDR-0912 · intake → reportability → causality → submitted",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...REGULATORY_REC,
+          source: "DK · MDR-0912 · intake",
+          ghost: "Intake",
+          status: "Draft",
+          actor: "You",
+          event: "Opened the reportability assessment from the complaint",
+          eventDetail: "C-3312 · the clock starts with the evidence already attached",
+          checklist: "INTAKE & TRIAGE",
+          checklistItems: ["Event narrative", "Product and lot", "Similar events"],
+          focus: "print",
+          focusTitle: "Vigilance case",
+          focusRows: ["Alarm failure · home use", "REN-40 · Lot 22-081", "2 similar events · trended"],
+          focusAction: "Open the classification",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "INTAKE & TRIAGE",
+          checklistEntry: { section: "INTAKE & TRIAGE", item: "Event narrative" },
+          checklistProgress: { "INTAKE & TRIAGE": 2, "CLASSIFICATION": 0, "SUBMISSION & CLOSURE": 0 },
+          checklistFootnote: "Device history and trend pulled onto the case",
+        },
+        {
+          ...REGULATORY_REC,
+          source: "DK · MDR-0912 · classify",
+          ghost: "Classify",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the per-market reportability review",
+          eventDetail: "Every market's rule against the same evidence",
+          checklist: "CLASSIFICATION",
+          checklistItems: ["Reportability per market", "Causality assessment", "Medical review"],
+          focus: "review",
+          focusTitle: "Reportability per market",
+          focusRows: ["FDA · MDR, 30-day reportable", "EU · vigilance threshold not met", "Health Canada · not reportable"],
+          focusAction: "Confirm classification",
+          focusAlts: ["Escalate to medical review"],
+          ownershipNote: "The classification and who made it, together",
+          checklistOpen: "CLASSIFICATION",
+          checklistProgress: { "CLASSIFICATION": 1, "SUBMISSION & CLOSURE": 0 },
+        },
+        {
+          ...REGULATORY_REC,
+          source: "DK · MDR-0912 · causality",
+          ghost: "Assess",
+          status: "Open",
+          actor: "automator",
+          event: "Bound the causality assessment to the case",
+          eventDetail: "Device history, returned-unit exam and the medical view, in one pass",
+          checklist: "CLASSIFICATION",
+          checklistItems: ["Device history · 2 similar events in 24 months", "Returned-unit exam · fault reproduced", "Medical assessment · no patient harm"],
+          focus: "trace",
+          focusTitle: "Causality on the record",
+          focusRows: ["The evidence the authority will ask for", "3 records linked"],
+          focusAction: "Open evidence chain",
+          ownershipNote: "Assembled from the record, not from inboxes",
+          checklistOpen: "CLASSIFICATION",
+          checklistProgress: { "CLASSIFICATION": 2, "SUBMISSION & CLOSURE": 0 },
+          related: 3,
+        },
+        {
+          ...REGULATORY_REC,
+          source: "DK · MDR-0912 · submit",
+          ghost: "Submit",
+          status: "Needs Approval",
+          actor: "You",
+          event: "Re-authenticated to sign the submission",
+          eventDetail: "Signer, meaning and time seal to MDR-0912",
+          checklist: "SUBMISSION & CLOSURE",
+          checklistItems: ["eMDR prepared", "Submitted to the authority", "Case closure"],
+          focus: "signature",
+          focusTitle: "Sign the submission",
+          focusRows: [],
+          focusAction: "Confirm and sign",
+          ownershipNote: "Identity re-verified · 21 CFR Part 11",
+          world: REGULATORY_SUBMIT_WORLD,
+          checklistOpen: "SUBMISSION & CLOSURE",
+          checklistProgress: { "SUBMISSION & CLOSURE": 1 },
+          signedItems: [
+            { name: "Dr. E. Braun", initials: "EB", role: "Medical review", approvalId: "2F84C0912B37", time: "Day 11" },
+          ],
+        },
+        {
+          ...REGULATORY_REC,
+          source: "DK · MDR-0912 · seal",
+          ghost: "Seal",
+          status: "Completed",
+          actor: "automator",
+          event: "Filed the eMDR and sealed the trace",
+          eventDetail: "Intake → classification → causality → submission, on one thread",
+          checklist: "SUBMISSION & CLOSURE",
+          checklistItems: ["eMDR prepared", "Submitted to the authority", "Case closure"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["MDR-0912 · Closed · trace sealed", "FDA eMDR · acknowledgement received", "CAPA raised from the alarm trend"],
+          ownershipNote: "Replayable for the authority",
+          checklistOpen: "SUBMISSION & CLOSURE",
+          signedItems: [
+            { name: "H. Lindqvist", initials: "HL", role: "Head of Regulatory Affairs", approvalId: "8D02C0912A64", time: "Day 28" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -429,6 +623,9 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline. It measures non-conformance coordination cost, not submission work, and is shown because the same governed record carries both.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["Complaints", "Design History File", "Traceability Matrix", "Audit Management"],
     references: [
       {
         tag: "Named reference",

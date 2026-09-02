@@ -8,14 +8,15 @@ import type { Metadata } from "next";
 import { ResourceShell } from "./_shared/resource-shell";
 import { CollectionMast, BandHead, QuoteBand, ResourceCTA, ResourceFooter } from "./_shared/resource-chrome";
 import { VideoCard, PostCard, CaseCard } from "./_shared/resource-cards";
-import { TESTIMONIALS, CASE_STUDIES, POSTS } from "./_shared/resources-data";
+import { CASE_STUDIES, POSTS } from "./_shared/resources-data";
+import { CUSTOMER_VIDEOS } from "./_shared/customer-videos";
 
 export const metadata: Metadata = {
   title: "Resources — Unifize",
   description: "Customer videos, case studies, and writing on running quality in regulated manufacturing.",
 };
 
-const films = TESTIMONIALS.slice(0, 3);
+const films = CUSTOMER_VIDEOS.slice(0, 3);
 const studies = CASE_STUDIES.slice(0, 3);
 const latest = POSTS.slice(0, 3);
 
@@ -31,9 +32,9 @@ export default function ResourcesHubPage() {
 
       <section className="dms-section rs-block rs-hubband">
         <div className="dms-wrap">
-          <BandHead title="Customer stories" link={{ label: `All ${TESTIMONIALS.length} videos`, href: "/explorations/resources/testimonials" }} />
+          <BandHead title="Customer stories" link={{ label: `All ${CUSTOMER_VIDEOS.length} videos`, href: "/explorations/resources/testimonials" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
-            {films.map((t) => <VideoCard key={t.slug} t={t} />)}
+            {films.map((f) => <VideoCard key={f.slug} v={f} />)}
           </div>
         </div>
       </section>

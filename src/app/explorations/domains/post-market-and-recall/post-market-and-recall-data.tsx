@@ -53,6 +53,71 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: FSCA-0417 as its owner lives it, one pose per
+ * flow.trail step. The record vocabulary comes from this page's own
+ * canonical story (the field action in section 03: complaint → reportability
+ * → scope and hazard class → four parallel tracks → effectiveness). Sections
+ * and items never change mid-journey; steps only open sections and advance
+ * counts. */
+const POST_MARKET_WORLD: ArcadeFlowWorld = {
+  team: "Post-Market Surveillance",
+  recordNoun: "Field action",
+  owner: "G. Ellison",
+  ownerInitials: "GE",
+  participants: ["GE", "VA", "+4"],
+  participantsLabel: "G. Ellison, V. Adeyemi, and four others",
+  recordKicker: "FIELD SAFETY CORRECTIVE ACTION",
+  context: {
+    initials: "TN",
+    name: "T. Nakamura",
+    time: "08:31",
+    message: "Complaint logged from the pharmacy chain: cap seal breach on Lot 22-303.",
+    detail: "Complaint C-4471 · Product VYN-12 · Lot 22-303",
+  },
+  inboxNeighbors: [
+    { title: "Cap seal breach · VYN-12", time: "08:31", detail: "C-4471 · intake complete", kind: "Complaint" },
+    { title: "MDR-0931 · reportability", time: "10:12", detail: "Filed · Day 4", kind: "Vigilance" },
+    { title: "Seal process CAPA", time: "Yesterday", detail: "CAPA-2211 · investigation open", kind: "CAPA" },
+  ],
+  checklistTitle: "Field action",
+  checklistSections: [
+    {
+      title: "SIGNAL & DECISION",
+      items: [
+        { label: "Complaint reference", kind: "field", value: "C-4471 · cap seal breach · Lot 22-303", note: "Entered at intake" },
+        { label: "Reportability", note: "FDA MDR filed · Day 4" },
+        { label: "Hazard class", note: "Class II · voluntary recall" },
+      ],
+    },
+    {
+      title: "FOUR TRACKS",
+      items: [
+        { label: "Stock hold", note: "Warehouse and distributors · same hour" },
+        { label: "Consignee notification", note: "1,840 consignees · letter and portal" },
+        { label: "Returns and reconciliation", note: "Return authorisations issued" },
+      ],
+    },
+    {
+      title: "SUBMISSION & CLOSURE",
+      items: [
+        { label: "Authority submission", note: "FDA · recall event filed" },
+        { label: "Effectiveness checks", note: "3 waves · 96% response" },
+        { label: "Closure", kind: "approval", signer: "V. Adeyemi", state: "Signed" },
+      ],
+    },
+  ],
+};
+
+/* the constants every pose of the journey shares */
+const POST_MARKET_REC = {
+  type: "Field Action",
+  id: "FSCA-0417",
+  title: "Cap seal breach · Lot 22-303",
+  world: POST_MARKET_WORLD,
+} as const;
 
 export const POST_MARKET_DATA: DomainPageData = {
   slug: "post-market-and-recall",
@@ -165,6 +230,21 @@ export const POST_MARKET_DATA: DomainPageData = {
   leaks: {
     heading: "The action gets executed. The chain can't be shown.",
     lede: "The failure modes we see in post-market teams. None of them is a missing feature. All of them are decisions and evidence that sat outside the record when the clock started.",
+    /* the old world, staged (section 02's evidence artifact): one recall,
+     * four trackers, four clocks. Furniture is illustrative, not a claim. */
+    scene: {
+      kicker: "FSCA-0417",
+      chip: "4 clocks running",
+      title: "The recall, across four trackers",
+      rows: [
+        { state: "done", label: "Complaint file", age: "Day 0" },
+        { state: "wait", label: "MDR draft", age: "due Day 30", warn: true },
+        { state: "wait", label: "Stock hold confirmations", age: "2 of 6 sites" },
+        { state: "idle", label: "Consignee list", age: "3 versions" },
+      ],
+      float: { kicker: "Regulatory", note: "Which lot list is the current one?" },
+      caption: "Four workflows, four owners, four clocks. No one thread.",
+    },
     pains: [
       {
         severity: "Critical",
@@ -220,6 +300,107 @@ export const POST_MARKET_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / field-action / FSCA-0417",
     mobileLabel: "Field action decision trace",
     mobileId: "FSCA-0417 · complaint → reportability → scope → verified close",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...POST_MARKET_REC,
+          source: "DK · FSCA-0417 · intake",
+          ghost: "Intake",
+          status: "Draft",
+          actor: "You",
+          event: "Opened the field-action assessment from the complaint",
+          eventDetail: "C-4471 · product, lot and channel referenced at intake",
+          checklist: "SIGNAL & DECISION",
+          checklistItems: ["Complaint reference", "Reportability", "Hazard class"],
+          focus: "print",
+          focusTitle: "Field action",
+          focusRows: ["Cap seal breach", "VYN-12 · Lot 22-303", "3 events · one lot"],
+          focusAction: "Open the assessment",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "SIGNAL & DECISION",
+          checklistEntry: { section: "SIGNAL & DECISION", item: "Complaint reference" },
+          checklistProgress: { "SIGNAL & DECISION": 1, "FOUR TRACKS": 0, "SUBMISSION & CLOSURE": 0 },
+          checklistFootnote: "Lot genealogy pulled onto the record",
+        },
+        {
+          ...POST_MARKET_REC,
+          source: "DK · FSCA-0417 · reportability",
+          ghost: "Classify",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the reportability review",
+          eventDetail: "The vigilance clock and the recall decision, one evidence set",
+          checklist: "SIGNAL & DECISION",
+          checklistItems: ["Complaint reference", "Reportability", "Hazard class"],
+          focus: "review",
+          focusTitle: "Reportability",
+          focusRows: ["FDA · MDR filed, Day 4", "EU · FSCA notification prepared", "Trend · 3 events, one lot"],
+          focusAction: "Confirm and file",
+          focusAlts: ["Escalate to medical review"],
+          ownershipNote: "Filed from the record it was decided on",
+          checklistOpen: "SIGNAL & DECISION",
+          checklistProgress: { "SIGNAL & DECISION": 2, "FOUR TRACKS": 0, "SUBMISSION & CLOSURE": 0 },
+        },
+        {
+          ...POST_MARKET_REC,
+          source: "DK · FSCA-0417 · scope",
+          ghost: "Scope",
+          status: "Open",
+          actor: "automator",
+          event: "Bound the recall scope to the record",
+          eventDetail: "Genealogy, distribution and hazard class, in one pass",
+          checklist: "SIGNAL & DECISION",
+          checklistItems: ["Lot genealogy · 22-303 and 2 sister lots", "Distribution · 1,840 consignees, 4 regions", "Hazard assessment · Class II"],
+          focus: "trace",
+          focusTitle: "Recall scope",
+          focusRows: ["The scope, from the record", "3 records linked"],
+          focusAction: "Open evidence chain",
+          ownershipNote: "Scoped by rule, not by memory",
+          checklistOpen: "SIGNAL & DECISION",
+          checklistProgress: { "FOUR TRACKS": 0, "SUBMISSION & CLOSURE": 0 },
+          related: 3,
+        },
+        {
+          ...POST_MARKET_REC,
+          source: "DK · FSCA-0417 · tracks",
+          ghost: "Run",
+          status: "Open",
+          actor: "You",
+          event: "Started the four tracks against the same record",
+          eventDetail: "Hold, notification, returns and submission · four clocks, one thread",
+          checklist: "FOUR TRACKS",
+          checklistItems: ["Stock hold", "Consignee notification", "Returns and reconciliation"],
+          focus: "tasks",
+          focusTitle: "Four tracks in parallel",
+          focusRows: ["Stock hold · Operations", "Consignee notification · Customer Service", "Returns and reconciliation · Distribution", "Authority submission · Regulatory"],
+          ownershipNote: "Each clock answers on the record",
+          checklistOpen: "FOUR TRACKS",
+          checklistProgress: { "FOUR TRACKS": 2, "SUBMISSION & CLOSURE": 0 },
+        },
+        {
+          ...POST_MARKET_REC,
+          source: "DK · FSCA-0417 · verify",
+          ghost: "Verify",
+          status: "Completed",
+          actor: "automator",
+          event: "Verified effectiveness and sealed the trace",
+          eventDetail: "Complaint → reportability → scope → four tracks → verified, on one thread",
+          checklist: "SUBMISSION & CLOSURE",
+          checklistItems: ["Authority submission", "Effectiveness checks", "Closure"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["FSCA-0417 · Closed · trace sealed", "96% effectiveness · 3 check waves", "CAPA-2211 running on the seal process"],
+          ownershipNote: "Reconstructable for the authority",
+          checklistOpen: "SUBMISSION & CLOSURE",
+          signedItems: [
+            { name: "V. Adeyemi", initials: "VA", role: "VP Quality", approvalId: "3C68C0417F15", time: "Day 62" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -421,6 +602,9 @@ export const POST_MARKET_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline. The figure is anonymized and covers non-conformance coordination, the work a complaint escalates into; named references are shown separately.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["Mock Recall", "Complaints", "Traceability Matrix", "Electronic Lot Records"],
     references: [
       {
         tag: "Named reference",

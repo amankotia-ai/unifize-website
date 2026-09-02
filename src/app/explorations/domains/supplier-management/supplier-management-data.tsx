@@ -56,6 +56,71 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: CAPA-2148 (the supplier corrective action) as
+ * its owner lives it, one pose per flow.trail step. The record vocabulary
+ * comes from this page's own canonical story (the SCAR flow in section 03:
+ * failed lot → MRB disposition → SCAR → supplier root cause → verified at
+ * re-inspection). Sections and items never change mid-journey; steps only
+ * open sections and advance counts. */
+const SUPPLIER_WORLD: ArcadeFlowWorld = {
+  team: "Supplier Quality",
+  recordNoun: "Supplier CAPA",
+  owner: "J. Barnes",
+  ownerInitials: "JB",
+  participants: ["JB", "RW", "+3"],
+  participantsLabel: "J. Barnes, R. Whitfield, and three others",
+  recordKicker: "SUPPLIER CORRECTIVE ACTION",
+  context: {
+    initials: "PM",
+    name: "P. Musa",
+    time: "07:58",
+    message: "Lot 4471 failed incoming. Plating thickness out of spec on 3 of 20 samples.",
+    detail: "Receipt R-8874 · Apex Metals · PO-2211",
+  },
+  inboxNeighbors: [
+    { title: "Lot 4471 · plating thickness", time: "07:58", detail: "NC-0904 · disposition pending", kind: "Non-conformance" },
+    { title: "Apex Metals scorecard · Q3", time: "Yesterday", detail: "Trend under review", kind: "Scorecard" },
+    { title: "Quality agreement · Apex Metals", time: "Monday", detail: "QA-118 · current revision", kind: "Document" },
+  ],
+  checklistTitle: "Supplier CAPA",
+  checklistSections: [
+    {
+      title: "NON-CONFORMANCE",
+      items: [
+        { label: "Failure description", kind: "field", value: "Plating 8–11 µm against 12 µm minimum · 3 of 20 samples", note: "Entered at incoming inspection" },
+        { label: "Lot disposition", note: "Lot 4471 · rejected and held" },
+        { label: "Supplier notified", note: "Apex Metals · on the record" },
+      ],
+    },
+    {
+      title: "SUPPLIER INVESTIGATION",
+      items: [
+        { label: "Requirements stated", note: "Root cause · corrective action · interim control" },
+        { label: "Supplier root cause", note: "Bath temperature drift · shift 2" },
+        { label: "Root cause accepted", kind: "approval", signer: "R. Whitfield", state: "Accepted" },
+      ],
+    },
+    {
+      title: "VERIFICATION & CLOSURE",
+      items: [
+        { label: "Corrective action evidence", note: "Bath controller replaced · calibration record" },
+        { label: "Re-inspection", note: "Next 3 lots · tightened sampling" },
+        { label: "Closure", kind: "approval", signer: "C. Mbeki", state: "Signed" },
+      ],
+    },
+  ],
+};
+
+/* the constants every pose of the journey shares */
+const SUPPLIER_REC = {
+  type: "Supplier CAPA",
+  id: "CAPA-2148",
+  title: "Plating failure · Apex Metals",
+  world: SUPPLIER_WORLD,
+} as const;
 
 export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
   slug: "supplier-management",
@@ -167,6 +232,22 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
   leaks: {
     heading: "The work gets done. The boundary eats the record.",
     lede: "The failure modes we see across the supplier boundary. Every one of them is a decision that landed in somebody's inbox, on one side of the relationship or the other.",
+    /* the old world, staged (section 02's evidence artifact): the SCAR
+     * spreadsheet going quiet while the supplier investigates by email.
+     * Furniture is illustrative, not a claim. */
+    scene: {
+      kicker: "SCAR tracker.xlsx",
+      chip: "Last edit 11d ago",
+      title: "Open supplier corrective actions",
+      rows: [
+        { state: "done", label: "SCAR-118 issued", age: "Day 4" },
+        { state: "wait", label: "Supplier root cause", age: "17d waiting", warn: true },
+        { state: "wait", label: "8D report", age: "v3, by email" },
+        { state: "idle", label: "Re-inspection", age: "Not scheduled" },
+      ],
+      float: { kicker: "supplier@apexmetals.com", note: "Which template do you want this on?" },
+      caption: "The investigation crosses two companies. The record crosses none.",
+    },
     pains: [
       { severity: "Critical", surface: "POs & shipping records", name: "Lot genealogy breaks at the supplier handoff", body: "Internal lot genealogy is clean. The genealogy back into the supplier's lots is partial, so when a recall, complaint or supplier issue forces traceability, the supplier side is rebuilt by hand from purchase orders, shipping records and whatever batch data the supplier can send." },
       { severity: "High", surface: "Inbox handoffs", name: "Supplier change notifications drop between supplier, sourcing and quality", body: "The supplier notifies sourcing of a process, sub-supplier or material change. Sourcing acknowledges. Quality and engineering hear about it weeks later, often after parts arrive carrying the change. The notification crossed the boundary and lost its addressee." },
@@ -213,6 +294,110 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / supplier-capa / CAPA-2148",
     mobileLabel: "Supplier corrective action trace",
     mobileId: "CAPA-2148 · receipt → disposition → request → verified close",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...SUPPLIER_REC,
+          source: "DK · CAPA-2148 · fail",
+          ghost: "Fail",
+          status: "Draft",
+          actor: "You",
+          event: "Raised the non-conformance from incoming inspection",
+          eventDetail: "Receipt R-8874 · the lot and the evidence on one record",
+          checklist: "NON-CONFORMANCE",
+          checklistItems: ["Failure description", "Lot disposition", "Supplier notified"],
+          focus: "print",
+          focusTitle: "Incoming failure",
+          focusRows: ["Plating below minimum", "Lot 4471 · 3 of 20 samples", "Apex Metals · PO-2211"],
+          focusAction: "Send to material review",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "NON-CONFORMANCE",
+          checklistEntry: { section: "NON-CONFORMANCE", item: "Failure description" },
+          checklistProgress: { "NON-CONFORMANCE": 2, "SUPPLIER INVESTIGATION": 0, "VERIFICATION & CLOSURE": 0 },
+          checklistFootnote: "Measurement data attached from the CMM",
+        },
+        {
+          ...SUPPLIER_REC,
+          source: "DK · CAPA-2148 · disposition",
+          ghost: "Disposition",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the material review board",
+          eventDetail: "Quality, Engineering and Procurement on one thread",
+          checklist: "NON-CONFORMANCE",
+          checklistItems: ["Failure description", "Lot disposition", "Supplier notified"],
+          focus: "review",
+          focusTitle: "MRB disposition",
+          focusRows: ["Disposition · Reject, return to supplier", "Material · Held in the MRB cage", "Stock impact · 11 days on hand"],
+          focusAction: "Confirm disposition",
+          focusAlts: ["Use as is · waiver"],
+          ownershipNote: "The reasoning lands with the disposition",
+          checklistOpen: "NON-CONFORMANCE",
+          checklistProgress: { "SUPPLIER INVESTIGATION": 0, "VERIFICATION & CLOSURE": 0 },
+        },
+        {
+          ...SUPPLIER_REC,
+          source: "DK · CAPA-2148 · scar",
+          ghost: "Request",
+          status: "Open",
+          actor: "automator",
+          event: "Issued the corrective action request to Apex Metals",
+          eventDetail: "The supplier answers on the record both companies see",
+          checklist: "SUPPLIER INVESTIGATION",
+          checklistItems: ["Requirements stated", "Supplier root cause", "Root cause accepted"],
+          focus: "checklist",
+          focusTitle: "Supplier corrective action request",
+          focusRows: ["Root cause required", "Corrective action required", "Interim control required"],
+          focusAction: "Send to supplier",
+          ownershipNote: "Stated requirements, not a forwarded email",
+          checklistOpen: "SUPPLIER INVESTIGATION",
+          checklistProgress: { "SUPPLIER INVESTIGATION": 1, "VERIFICATION & CLOSURE": 0 },
+          checklistFootnote: "Apex Metals sees the same checklist",
+        },
+        {
+          ...SUPPLIER_REC,
+          source: "DK · CAPA-2148 · root-cause",
+          ghost: "Accept",
+          status: "Needs Approval",
+          actor: "Unifize Assistant",
+          event: "Posted the supplier's investigation for acceptance",
+          eventDetail: "Root cause, corrective action and interim control, on the thread",
+          checklist: "SUPPLIER INVESTIGATION",
+          checklistItems: ["Requirements stated", "Supplier root cause", "Root cause accepted"],
+          focus: "review",
+          focusTitle: "Supplier root cause",
+          focusRows: ["Root cause · Bath temperature drift", "Corrective action · Controller replaced", "Interim control · 100% inspection"],
+          focusAction: "Accept root cause",
+          focusAlts: ["Return to supplier"],
+          ownershipNote: "Accepted across the company boundary",
+          poseVariant: "supplier",
+          checklistOpen: "SUPPLIER INVESTIGATION",
+          checklistProgress: { "SUPPLIER INVESTIGATION": 2, "VERIFICATION & CLOSURE": 0 },
+        },
+        {
+          ...SUPPLIER_REC,
+          source: "DK · CAPA-2148 · verify",
+          ghost: "Verify",
+          status: "Completed",
+          actor: "automator",
+          event: "Verified the fix at re-inspection and sealed the trace",
+          eventDetail: "Receipt → disposition → request → root cause → verified, on one thread",
+          checklist: "VERIFICATION & CLOSURE",
+          checklistItems: ["Corrective action evidence", "Re-inspection", "Closure"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["CAPA-2148 · Closed · trace sealed", "3 lots re-inspected · clean", "Scorecard updated · Apex Metals"],
+          ownershipNote: "Provable at the next audit",
+          checklistOpen: "VERIFICATION & CLOSURE",
+          signedItems: [
+            { name: "C. Mbeki", initials: "CM", role: "Supplier Quality Director", approvalId: "6E53C2148B72", time: "Day 47" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -428,6 +613,9 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline, measured on non-conformance coordination. The figure is anonymized; named references are shown separately.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["Supplier Quality", "Supplier Corrective Actions (SCAR)", "Raw Material Validation"],
     references: [
       {
         tag: "Named reference",

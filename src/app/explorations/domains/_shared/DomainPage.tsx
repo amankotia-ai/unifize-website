@@ -24,7 +24,12 @@ import { ItmMotion } from "../../industry-template-modern/itm-motion";
 import { Eyebrow, ShellFrame, SeverityIcon } from "../../industry-template-modern/itm-primitives";
 import { PersonaExplorer, ModuleIndex } from "../../industries/_shared/industry-interactive";
 import { DomainIngressNav, LeakRegister } from "./domain-interactive";
-import type { DomainPageData, WorkGlyph } from "./types";
+import { DomainCoexist } from "./domain-coexist";
+import { DomainHeroArcade, DomainTraceArcade } from "./domain-arcade";
+import { DomainFilmRail } from "./domain-proof-films";
+import { IndustryIcon } from "./industry-icons";
+import { filmsForModules } from "../../products/_shared/customer-films";
+import type { DomainPageData, LeakScene, WorkGlyph } from "./types";
 import "../../industry-template-modern/itm.css";
 import "./domain-kit.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
@@ -48,9 +53,69 @@ const ROW_ARROW = (
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
+/* ---------------------------------------------------------------- scene
+ * Section 02's "old world" artifact: one coherent mini-UI surface in the
+ * homepage symptom-scene grammar (status by icon + label color, never a
+ * colored edge). Purely presentational; the caption carries the meaning. */
+const SCENE_ICONS: Record<LeakScene["rows"][number]["state"], React.ReactNode> = {
+  done: (
+    <svg viewBox="0 0 14 14" aria-hidden="true">
+      <circle cx="7" cy="7" r="6.4" />
+      <path d="m4.4 7.2 1.9 1.9 3.4-4" />
+    </svg>
+  ),
+  wait: (
+    <svg viewBox="0 0 14 14" aria-hidden="true">
+      <circle cx="7" cy="7" r="6.4" />
+      <path d="M7 4v3.4l2.2 1.4" />
+    </svg>
+  ),
+  idle: (
+    <svg viewBox="0 0 14 14" aria-hidden="true">
+      <circle cx="7" cy="7" r="5.9" />
+    </svg>
+  ),
+};
+
+function LeakSceneCard({ scene }: { scene: LeakScene }) {
+  return (
+    <figure className="dk-scene">
+      <div className="dk-scene__ui" aria-hidden="true">
+        <div className="dk-scene__bar">
+          <span className="dk-scene__kicker">{scene.kicker}</span>
+          <span className="dk-scene__chip">{scene.chip}</span>
+        </div>
+        <div className="dk-scene__title">{scene.title}</div>
+        <ul className="dk-scene__rows">
+          {scene.rows.map((row) => (
+            <li key={row.label} className={"is-" + row.state}>
+              <span className="dk-scene__ico">{SCENE_ICONS[row.state]}</span>
+              <span className="dk-scene__cell">{row.label}</span>
+              <span className={"dk-scene__age" + (row.warn ? " is-warn" : "")}>{row.age}</span>
+            </li>
+          ))}
+        </ul>
+        {scene.float ? (
+          <div className="dk-scene__float">
+            <span className="dk-scene__kicker">{scene.float.kicker}</span>
+            <span>{scene.float.note}</span>
+          </div>
+        ) : null}
+      </div>
+      <figcaption className="dk-scene__cap">
+        <span className="itm-dot" aria-hidden="true" />
+        {scene.caption}
+      </figcaption>
+    </figure>
+  );
+}
+
 export function DomainPage({ data }: { data: DomainPageData }) {
   const d = data;
   let workIdx = 0;
+  /* real customer films whose Notion Module tags intersect the domain's;
+   * governance (Live + Web Use Approved) is enforced in the adapter */
+  const proofFilms = d.proof?.filmTags ? filmsForModules(d.proof.filmTags, { limit: 8 }) : [];
 
   return (
     <main className="itm">
@@ -83,7 +148,16 @@ export function DomainPage({ data }: { data: DomainPageData }) {
         </div>
 
         <div className="itm-hero__stage" aria-hidden="true">
-          <div className="itm-hero__shot"><img src="/hero-product.png" alt="" /></div>
+          {/* the app window IS the product shot: the arcade quietly walks the
+              domain's own record when the data carries a journey; the static
+              screenshot stays as the no-journey fallback */}
+          {d.flow.arcade ? (
+            <div className="itm-hero__shot">
+              <DomainHeroArcade steps={d.flow.arcade.steps} order={d.flow.arcade.heroOrder} />
+            </div>
+          ) : (
+            <div className="itm-hero__shot"><img src="/hero-product.png" alt="" /></div>
+          )}
           {d.hero.floats?.map((f) => (
             <div
               key={f.title}
@@ -136,10 +210,11 @@ export function DomainPage({ data }: { data: DomainPageData }) {
           </div>
 
           <div className="dk-wgs">
-            {d.work.groups.map((g) => (
+            {d.work.groups.map((g, gi) => (
               <div key={g.name} className="dk-wg" data-reveal>
+                <span className="dk-wg__ghost" aria-hidden="true">{pad(gi + 1)}</span>
                 <div className="dk-wg__head">
-                  <span className="dk-wg__icon" aria-hidden="true">
+                  <span className="dk-wg__tile" aria-hidden="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">{WORK_ICONS[g.glyph]}</svg>
                   </span>
                   <div className="dk-wg__text">
@@ -150,19 +225,17 @@ export function DomainPage({ data }: { data: DomainPageData }) {
                     <Link href={g.runsIn.href} className="dk-wg__runsin">{g.runsIn.label}</Link>
                   ) : null}
                 </div>
-                <ol className="dk-wg__items">
+                <ol className="dk-wg__cells">
                   {g.items.map((w) => {
                     workIdx += 1;
                     return (
-                      <li key={w.name} className="dk-rest">
-                        <span className="dk-rest__idx" aria-hidden="true">{pad(workIdx)}</span>
-                        <div>
-                          <h4 className="dk-rest__name">{w.name}</h4>
-                          <p className="dk-rest__line">
-                            {w.line}
-                            {w.href ? <> <Link href={w.href} className="dk-work__go">{w.hrefLabel ?? "See it →"}</Link></> : null}
-                          </p>
-                        </div>
+                      <li key={w.name} className="dk-cell">
+                        <span className="dk-cell__idx" aria-hidden="true">{pad(workIdx)}</span>
+                        <h4 className="dk-cell__name">{w.name}</h4>
+                        <p className="dk-cell__line">
+                          {w.line}
+                          {w.href ? <> <Link href={w.href} className="dk-work__go">{w.hrefLabel ?? "See it →"}</Link></> : null}
+                        </p>
                       </li>
                     );
                   })}
@@ -176,11 +249,24 @@ export function DomainPage({ data }: { data: DomainPageData }) {
       {/* ==================== 02 · WHERE IT LEAKS =========================== */}
       <section className="itm-section itm-section--alt" id="leaks">
         <div className="itm-wrap">
-          <div className="itm-head-block" data-reveal>
-            <Eyebrow n={2}>Where it leaks</Eyebrow>
-            <h2 className="itm-h2">{d.leaks.heading}</h2>
-            <p className="itm-lede">{d.leaks.lede}</p>
-          </div>
+          {d.leaks.scene ? (
+            /* the head shares its row with the old world, staged: the copy
+               names the failure, the artifact shows it aging */
+            <div className="dk-lk__stage" data-reveal>
+              <div className="itm-head-block dk-lk__stagehead">
+                <Eyebrow n={2}>Where it leaks</Eyebrow>
+                <h2 className="itm-h2">{d.leaks.heading}</h2>
+                <p className="itm-lede">{d.leaks.lede}</p>
+              </div>
+              <LeakSceneCard scene={d.leaks.scene} />
+            </div>
+          ) : (
+            <div className="itm-head-block" data-reveal>
+              <Eyebrow n={2}>Where it leaks</Eyebrow>
+              <h2 className="itm-h2">{d.leaks.heading}</h2>
+              <p className="itm-lede">{d.leaks.lede}</p>
+            </div>
+          )}
           <div data-reveal>
             <LeakRegister pains={d.leaks.pains} note={d.leaks.note} />
           </div>
@@ -205,33 +291,44 @@ export function DomainPage({ data }: { data: DomainPageData }) {
             <p className="itm-lede">{d.flow.lede}</p>
           </div>
 
-          <div className="itm-diff__grid">
-            <aside className="itm-trail" aria-label="How the decision moves" data-reveal>
-              <span className="itm-trail__lab">{d.flow.trailLabel}</span>
-              <ol className="itm-trail__steps">
-                {d.flow.trail.map((s, i) => (
-                  <li className={"itm-trail__step" + (i === d.flow.trail.length - 1 ? " is-sealed" : "")} key={s.t}>
-                    <span className="itm-trail__node" aria-hidden="true" />
-                    <span className="itm-trail__t">{s.t}</span>
-                    <span className="itm-trail__meta">{s.who} <span className="itm-data">· {s.when}</span></span>
-                  </li>
-                ))}
-              </ol>
-              <p className="itm-trail__foot">{d.flow.trailFoot}</p>
-            </aside>
+          {d.flow.arcade ? (
+            /* the live pinned scroll story: the trail drives the camera
+               through the domain's own record (see domain-arcade.tsx) */
+            <DomainTraceArcade
+              trailLabel={d.flow.trailLabel}
+              trail={d.flow.trail}
+              trailFoot={d.flow.trailFoot}
+              steps={d.flow.arcade.steps}
+            />
+          ) : (
+            <div className="itm-diff__grid">
+              <aside className="itm-trail" aria-label="How the decision moves" data-reveal>
+                <span className="itm-trail__lab">{d.flow.trailLabel}</span>
+                <ol className="itm-trail__steps">
+                  {d.flow.trail.map((s, i) => (
+                    <li className={"itm-trail__step" + (i === d.flow.trail.length - 1 ? " is-sealed" : "")} key={s.t}>
+                      <span className="itm-trail__node" aria-hidden="true" />
+                      <span className="itm-trail__t">{s.t}</span>
+                      <span className="itm-trail__meta">{s.who} <span className="itm-data">· {s.when}</span></span>
+                    </li>
+                  ))}
+                </ol>
+                <p className="itm-trail__foot">{d.flow.trailFoot}</p>
+              </aside>
 
-            <div className="itm-thread" data-reveal>
-              <div className="itm-thread__live">
-                <ShellFrame url={d.flow.shellUrl}>
-                  <ChatShell variant={d.flow.chatVariant} />
-                </ShellFrame>
-              </div>
-              <div className="itm-thread__mobile" aria-hidden="true">
-                <span className="itm-thread__mobile-lab">{d.flow.mobileLabel}</span>
-                <span className="itm-thread__mobile-id">{d.flow.mobileId}</span>
+              <div className="itm-thread" data-reveal>
+                <div className="itm-thread__live">
+                  <ShellFrame url={d.flow.shellUrl}>
+                    <ChatShell variant={d.flow.chatVariant} />
+                  </ShellFrame>
+                </div>
+                <div className="itm-thread__mobile" aria-hidden="true">
+                  <span className="itm-thread__mobile-lab">{d.flow.mobileLabel}</span>
+                  <span className="itm-thread__mobile-id">{d.flow.mobileId}</span>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 
@@ -262,6 +359,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
                 <li key={row.name}>
                   <Link href={row.href} className="dk-ind" aria-label={`${d.name} for ${row.name}`}>
                     <span className="dk-ind__idx" aria-hidden="true">{pad(i + 1)}</span>
+                    <span className="dk-ind__tile" aria-hidden="true"><IndustryIcon name={row.name} /></span>
                     <span className="dk-ind__name">{row.name}</span>
                     <span className="dk-ind__line">{row.line}</span>
                     <span className="dk-ind__chips" aria-label="Regulatory frame">
@@ -308,32 +406,43 @@ export function DomainPage({ data }: { data: DomainPageData }) {
               <h2 className="itm-h2">{d.triggers.heading}</h2>
               <p className="itm-lede">{d.triggers.lede}</p>
             </div>
-            <div className="itm-trigs" data-reveal>
-              {d.triggers.rows.map((t) => {
-                const sev = t.severity === "Urgent" ? " is-urgent" : " is-high";
-                const inner = (
-                  <>
-                    <div className="itm-trig__top">
-                      <span className="itm-trig__sev">
-                        <span className="itm-trig__sev-ic" aria-hidden="true"><SeverityIcon severity={t.severity} /></span>
-                        {t.severity}
-                      </span>
+            {/* the flagship's status-board treatment: one severity-coded band
+                per level; the band header carries shape + label only (the
+                no-inventory-counts rule — the cards are the answer) */}
+            <div className="itm-trigs-wrap">
+              {(["Urgent", "High"] as const).map((level) => {
+                const rows = d.triggers.rows.filter((t) => t.severity === level);
+                if (!rows.length) return null;
+                return (
+                  <div key={level} className={"itm-trigs-band " + (level === "Urgent" ? "is-urgent" : "is-high")} data-reveal>
+                    <div className="itm-trigs-band__head">
+                      <SeverityIcon severity={level} />
+                      <span className="itm-trigs-band__lab">{level}</span>
                     </div>
-                    <p className="itm-trig__name">{t.name}</p>
-                    <span className="itm-trig__clock">{t.clock}</span>
-                    <div className="itm-trig__foot">
-                      <span className="itm-trig__route">
-                        <span className="itm-trig__mod">{t.routesTo}</span>
-                        <span className="itm-trig__owner">{t.owner}</span>
-                      </span>
-                      <span className="itm-trig__go">{t.href ? "Open the trigger page →" : " "}</span>
+                    <div className="itm-trigs">
+                      {rows.map((t) => {
+                        const sev = level === "Urgent" ? " is-urgent" : " is-high";
+                        const inner = (
+                          <>
+                            <p className="itm-trig__name">{t.name}</p>
+                            <span className="itm-trig__clock">{t.clock}</span>
+                            <div className="itm-trig__foot">
+                              <span className="itm-trig__route">
+                                <span className="itm-trig__mod">{t.routesTo}</span>
+                                <span className="itm-trig__owner">{t.owner}</span>
+                              </span>
+                              {t.href ? <span className="itm-trig__go">Open the trigger page →</span> : null}
+                            </div>
+                          </>
+                        );
+                        return t.href ? (
+                          <Link key={t.name} href={t.href} className={"itm-trig itm-trig--live" + sev} aria-label={`Open the page for: ${t.name}`}>{inner}</Link>
+                        ) : (
+                          <div key={t.name} className={"itm-trig" + sev}>{inner}</div>
+                        );
+                      })}
                     </div>
-                  </>
-                );
-                return t.href ? (
-                  <Link key={t.name} href={t.href} className={"itm-trig itm-trig--live" + sev} aria-label={`Open the page for: ${t.name}`}>{inner}</Link>
-                ) : (
-                  <div key={t.name} className={"itm-trig" + sev}>{inner}</div>
+                  </div>
                 );
               })}
             </div>
@@ -341,7 +450,13 @@ export function DomainPage({ data }: { data: DomainPageData }) {
         </section>
       </div>
 
-      {/* ==================== 08 · COEXISTENCE ============================== */}
+      {/* ==================== 08 · COEXISTENCE ==============================
+       * With `paths`: the page spec's three-path answer (have / none / gaps)
+       * behind the "where is yours today?" selector — replace-vs-coexist
+       * resolved per situation instead of argued both ways. Without paths:
+       * the single-story fallback (chips row removed — the diagram's boxes
+       * already name the systems; the aria-label now describes only what
+       * the picture draws). */}
       {d.coexistence ? (
         <section className="itm-section itm-section--short" id="coexistence">
           <div className="itm-wrap">
@@ -349,26 +464,46 @@ export function DomainPage({ data }: { data: DomainPageData }) {
               <div className="itm-coexist__head" data-reveal>
                 <Eyebrow n={8}>Coexistence</Eyebrow>
                 <h2 className="itm-h2">{d.coexistence.heading}</h2>
-                <div className="itm-sor">
-                  {d.coexistence.systemsOfRecord.map((s) => <span key={s} className="itm-chip">{s}</span>)}
-                </div>
-                <p className="itm-body">{d.coexistence.body}</p>
+                {d.coexistence.paths?.length ? null : <p className="itm-body">{d.coexistence.body}</p>}
               </div>
 
-              <div
-                className="itm-diagram"
-                role="img"
-                aria-label={`Diagram: Unifize sits as a coordination layer over your ${d.coexistence.systemsOfRecord.join(", ")}, which stay in place as your systems of record.`}
-                data-reveal
-              >
-                <div className="itm-diagram__unifize"><b>Unifize</b><span>Coordination layer</span></div>
-                <div className="itm-diagram__sors" aria-hidden="true">
-                  {d.coexistence.systemsOfRecord.map((s) => (
-                    <div key={s} className="itm-diagram__sor"><b>{s}</b><span>System of record</span></div>
-                  ))}
+              {d.coexistence.paths?.length ? (
+                <div data-reveal>
+                  <DomainCoexist
+                    selectorLabel={d.coexistence.selectorLabel ?? "Where is your system today?"}
+                    paths={d.coexistence.paths}
+                  />
                 </div>
-                <p className="itm-diagram__cap">{d.coexistence.diagramCaption}</p>
-              </div>
+              ) : (
+                <div
+                  className="dk-flowmap"
+                  role="img"
+                  aria-label={`Diagram: Unifize sits as a coordination layer over your ${d.coexistence.systemsOfRecord.join(", ")}, which stay in place as your systems of record.`}
+                  style={{ "--dk-sors": d.coexistence.systemsOfRecord.length } as React.CSSProperties}
+                  data-reveal
+                >
+                  <div className="dk-flowmap__layer" aria-hidden="true">
+                    <div className="dk-flowmap__brand">
+                      <b>Unifize</b>
+                      <span>Coordination layer</span>
+                    </div>
+                    <div className="dk-flowmap__chips">
+                      <i>One governed thread</i>
+                      <i>Evidence bound to decisions</i>
+                      <i>Attributable e-signatures</i>
+                    </div>
+                  </div>
+                  <div className="dk-flowmap__wires" aria-hidden="true">
+                    {d.coexistence.systemsOfRecord.map((s) => <i key={s} />)}
+                  </div>
+                  <div className="dk-flowmap__sors" aria-hidden="true">
+                    {d.coexistence.systemsOfRecord.map((s) => (
+                      <div key={s} className="dk-flowmap__sor"><b>{s}</b><span>System of record</span></div>
+                    ))}
+                  </div>
+                  <p className="dk-flowmap__cap">{d.coexistence.diagramCaption}</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -383,28 +518,51 @@ export function DomainPage({ data }: { data: DomainPageData }) {
               <h2 className="itm-h2">{d.proof.heading}</h2>
               <p className="itm-lede">{d.proof.lede}</p>
             </div>
-            <div className="dk-att" data-reveal>
-              <div className="dk-att__panel">
-                <span className="dk-att__lab">{d.proof.attested.label}</span>
-                <span className="dk-att__stat itm-data">{d.proof.attested.stat}</span>
-                <span className="dk-att__statlab">{d.proof.attested.statLabel}</span>
-                <p className="dk-att__body">{d.proof.attested.body}</p>
-                <span className="dk-att__note"><span className="itm-dot" aria-hidden="true" />{d.proof.attested.note}</span>
-              </div>
-              <div className="dk-att__refs">
-                {d.proof.references.map((c) => (
-                  <div key={c.name} className="dk-ref">
-                    <span className="dk-ref__tag">{c.tag}</span>
-                    <h3 className="dk-ref__name">{c.name}</h3>
-                    <p className="dk-ref__desc">{c.desc}</p>
-                    {c.link ? <Link href={c.link.href} className="dk-work__go">{c.link.label}</Link> : null}
+            {proofFilms.length ? (
+              /* the film rail: the one signed figure leads, then real films
+                 from the Website Customer Videos mirror (Notion-governed) */
+              <>
+                <div data-reveal>
+                  <DomainFilmRail lead={d.proof.attested} films={proofFilms} />
+                </div>
+                <div className="dk-refrow" data-reveal>
+                  {d.proof.references.map((c) => (
+                    <div key={c.name} className="dk-ref">
+                      <span className="dk-ref__tag">{c.tag}</span>
+                      <h3 className="dk-ref__name">{c.name}</h3>
+                      <p className="dk-ref__desc">{c.desc}</p>
+                      {c.link ? <Link href={c.link.href} className="dk-work__go">{c.link.label}</Link> : null}
+                    </div>
+                  ))}
+                  <div className="dk-refrow__foot">
+                    <Link href={d.proof.foot.href} className="itm-btn itm-btn-ghost">{d.proof.foot.label} →</Link>
                   </div>
-                ))}
-                <div className="dk-att__foot">
-                  <Link href={d.proof.foot.href} className="itm-btn itm-btn-ghost">{d.proof.foot.label} →</Link>
+                </div>
+              </>
+            ) : (
+              <div className="dk-att" data-reveal>
+                <div className="dk-att__panel">
+                  <span className="dk-att__lab">{d.proof.attested.label}</span>
+                  <span className="dk-att__stat itm-data">{d.proof.attested.stat}</span>
+                  <span className="dk-att__statlab">{d.proof.attested.statLabel}</span>
+                  <p className="dk-att__body">{d.proof.attested.body}</p>
+                  <span className="dk-att__note"><span className="itm-dot" aria-hidden="true" />{d.proof.attested.note}</span>
+                </div>
+                <div className="dk-att__refs">
+                  {d.proof.references.map((c) => (
+                    <div key={c.name} className="dk-ref">
+                      <span className="dk-ref__tag">{c.tag}</span>
+                      <h3 className="dk-ref__name">{c.name}</h3>
+                      <p className="dk-ref__desc">{c.desc}</p>
+                      {c.link ? <Link href={c.link.href} className="dk-work__go">{c.link.label}</Link> : null}
+                    </div>
+                  ))}
+                  <div className="dk-att__foot">
+                    <Link href={d.proof.foot.href} className="itm-btn itm-btn-ghost">{d.proof.foot.label} →</Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
       ) : null}
@@ -466,22 +624,27 @@ export function DomainPage({ data }: { data: DomainPageData }) {
               <p className="itm-lede">{d.growth.lede}</p>
             </div>
             <ol className="dk-grow" data-reveal>
-              {d.growth.steps.map((s, i) => (
-                <li key={s.name} className="dk-grow__step">
-                  {i > 0 ? <span className="dk-grow__arrow" aria-hidden="true">{ROW_ARROW}</span> : null}
-                  {s.href ? (
-                    <Link href={s.href} className="dk-grow__card dk-grow__card--live">
-                      <span className="dk-grow__name">{s.name}</span>
-                      <span className="dk-grow__note">{s.note}</span>
-                    </Link>
-                  ) : (
-                    <span className="dk-grow__card">
-                      <span className="dk-grow__name">{s.name}</span>
-                      <span className="dk-grow__note">{s.note}</span>
-                    </span>
-                  )}
-                </li>
-              ))}
+              {d.growth.steps.map((s, i) => {
+                const here = !s.href && s.note.toLowerCase() === "you are here";
+                return (
+                  <li key={s.name} className="dk-grow__step">
+                    {i > 0 ? <span className="dk-grow__arrow" aria-hidden="true">{ROW_ARROW}</span> : null}
+                    {s.href ? (
+                      <Link href={s.href} className="dk-grow__card dk-grow__card--live">
+                        <span className="dk-grow__idx" aria-hidden="true">{pad(i + 1)}</span>
+                        <span className="dk-grow__name">{s.name}</span>
+                        <span className="dk-grow__note">{s.note}</span>
+                      </Link>
+                    ) : (
+                      <span className={"dk-grow__card" + (here ? " dk-grow__card--here" : "")}>
+                        <span className="dk-grow__idx" aria-hidden="true">{pad(i + 1)}</span>
+                        <span className="dk-grow__name">{s.name}</span>
+                        <span className="dk-grow__note">{s.note}</span>
+                      </span>
+                    )}
+                  </li>
+                );
+              })}
             </ol>
           </div>
         </section>
@@ -507,7 +670,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
       </section>
 
       {/* ----------------------------------------------------- site footer */}
-      <SiteFooter tagline="The decision trace for regulated operations." note={`Solutions template · ${d.name} instance`} />
+      <SiteFooter tagline="The decision trace for regulated operations." />
     </main>
   );
 }

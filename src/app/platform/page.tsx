@@ -5,11 +5,11 @@ import { DashboardShell } from "@/components/organisms";
 import { PlatformExplorer, type ExploreSection } from "./platform-explorer";
 
 /* ------------------------------------------------------------
- * Section glyphs — 14 cols × 7 rows pixel-art icons that signal
+ * Section glyphs: 14 cols × 7 rows pixel-art icons that signal
  * the shape of each ingress point.
  * ------------------------------------------------------------ */
 
-// Factory skyline — three buildings of varying heights with a chimney.
+// Factory skyline: three buildings of varying heights with a chimney.
 const GLYPH_INDUSTRY: CellState[] = [
   "off","off","on","off","off","off","off","off","off","off","off","off","off","off",
   "off","on","on","on","off","off","off","off","off","off","off","on","off","off",
@@ -20,7 +20,7 @@ const GLYPH_INDUSTRY: CellState[] = [
   "on","on","on","on","on","on","on","on","on","on","on","on","on","on",
 ];
 
-// 2×2 quadrant grid — four named domains, each its own enclosure.
+// 2×2 quadrant grid: four named domains, each its own enclosure.
 const GLYPH_DOMAIN: CellState[] = [
   "on","on","on","on","on","on","off","off","on","on","on","on","on","on",
   "on","off","off","off","off","on","off","off","on","off","off","off","off","on",
@@ -31,7 +31,7 @@ const GLYPH_DOMAIN: CellState[] = [
   "on","off","off","off","off","on","off","off","on","off","off","off","off","on",
 ];
 
-// Person silhouette — head, shoulders, body.
+// Person silhouette: head, shoulders, body.
 const GLYPH_BUYER: CellState[] = [
   "off","off","off","off","off","on","on","on","on","off","off","off","off","off",
   "off","off","off","off","on","on","on","on","on","on","off","off","off","off",
@@ -43,9 +43,9 @@ const GLYPH_BUYER: CellState[] = [
 ];
 
 export const metadata: Metadata = {
-  title: "Explore the platform — by industry, domain, or buyer",
+  title: "Explore the platform by industry, domain, or buyer",
   description:
-    "Three doors into Unifize. Pick the one that matches your starting point — the industry you operate in, the domain you own, or the buyer you are.",
+    "Three doors into Unifize: the industry you operate in, the domain you own, or the buyer you are.",
 };
 
 const SECTIONS: ExploreSection[] = [
@@ -55,7 +55,7 @@ const SECTIONS: ExploreSection[] = [
     eyebrow: "By industry",
     title: "By industry",
     blurb:
-      "Where coordination tax accumulates differently — by regulation, by supply chain shape, by the failure event you most need to avoid.",
+      "Where coordination tax lands depends on your regulation, your supply chain, and the failure you can't afford.",
     pattern: GLYPH_INDUSTRY,
     items: [
       {
@@ -63,9 +63,9 @@ const SECTIONS: ExploreSection[] = [
         title: "Medical Devices",
         href: "/industries/medical-devices",
         description:
-          "Class II & III device OEMs and CDMOs. The deepest coverage in the platform.",
+          "Class II and III device OEMs and CDMOs.",
         longDescription:
-          "Your DHF, DMR, CAPA, and design-change work has to stay traceable across R&D, QA, manufacturing, and supply chain — without slowing the team down. Unifize sits inside the quality team's day-to-day and binds the conversation to the device record, so the audit trail is built as the work happens.",
+          "DHF, DMR, CAPA, and design changes have to stay traceable across R&D, QA, manufacturing, and supply chain. Unifize binds the conversation to the device record, so the audit trail builds itself as the work happens.",
         details: [
           {
             label: "Standards we speak",
@@ -81,7 +81,7 @@ const SECTIONS: ExploreSection[] = [
         description:
           "Drug substance and product manufacturers, plus CDMOs and CMOs.",
         longDescription:
-          "Deviations, CAPAs, change control, and batch-record review run under 21 CFR 210/211, ICH Q10, and Annex 11. Unifize keeps the cross-functional decisions — what was escalated, what was approved, what was changed — bound to the regulated record, and carries through to APR, training cascades, and label changes.",
+          "Deviations, CAPAs, change control, and batch-record review run under 21 CFR 211, ICH Q10, and Annex 11. Unifize keeps every cross-functional decision bound to the regulated record, through to APR and label changes.",
         details: [
           {
             label: "Standards we speak",
@@ -95,9 +95,9 @@ const SECTIONS: ExploreSection[] = [
         num: "03",
         title: "Aerospace",
         description:
-          "Airframe, propulsion, and component manufacturers under AS9100 and NADCAP.",
+          "Airframe, propulsion, and component makers under AS9100.",
         longDescription:
-          "Configuration management drives most of your audit findings, and a NADCAP special-process issue can revoke accreditation in 90 days. Unifize binds FAI, ECO, CDRL, and program-quality-plan work to a defensible trail — so the next audit doesn't depend on someone's memory.",
+          "Configuration management drives most audit findings, and a NADCAP special-process issue can cost accreditation in 90 days. Unifize binds FAI, ECO, and CDRL work to one defensible trail.",
         details: [
           {
             label: "Standards we speak",
@@ -111,9 +111,9 @@ const SECTIONS: ExploreSection[] = [
         num: "04",
         title: "Industrial Machinery",
         description:
-          "Capital equipment makers serving regulated end-markets — pharma, food, semiconductor.",
+          "Capital equipment makers serving pharma, food, and semiconductor.",
         longDescription:
-          "Your customer's compliance bar becomes yours. CE marking technical files, FAT/SAT qualification packets, and engineering-change orders today live across emails, spreadsheets, and drives. Unifize consolidates them into one thread you can ship with the machine.",
+          "Your customer's compliance bar becomes yours. CE technical files, FAT/SAT packets, and ECOs live across emails and drives today. Unifize puts them in one thread you can ship with the machine.",
         details: [
           {
             label: "Standards we speak",
@@ -127,9 +127,9 @@ const SECTIONS: ExploreSection[] = [
         num: "05",
         title: "Laboratories",
         description:
-          "Clinical, environmental, and pharmaceutical QC labs under ISO/IEC 17025.",
+          "Clinical, environmental, and QC labs under ISO/IEC 17025.",
         longDescription:
-          "Your LIMS handles results, not document control or corrective action. Unifize fills the gap — method deviations, non-conformances, analyst competency, and audit responses in one place, so the biennial accreditation surveillance doesn't become a scramble.",
+          "Your LIMS handles results, not document control or corrective action. Unifize covers method deviations, non-conformances, and analyst competency, so accreditation surveillance stops being a scramble.",
         details: [
           {
             label: "Standards we speak",
@@ -143,9 +143,9 @@ const SECTIONS: ExploreSection[] = [
         num: "06",
         title: "Automotive",
         description:
-          "OEMs and Tier 1/2 suppliers under IATF 16949, APQP, PPAP, and 8D.",
+          "OEMs and Tier 1/2 suppliers under IATF 16949.",
         longDescription:
-          "PPAP alone is a high-coordination document assembly that crosses every function. Customer-specific requirements from Ford, GM, and others stack on top. Warranty and 8D corrective action keep coming. Unifize gives all of it one home — so the customer scorecard doesn't slip.",
+          "PPAP crosses every function, customer-specific requirements stack on top, and 8D never stops. Unifize gives all of it one home, so the customer scorecard doesn't slip.",
         details: [
           {
             label: "Standards we speak",
@@ -159,9 +159,9 @@ const SECTIONS: ExploreSection[] = [
         num: "07",
         title: "Cosmetics",
         description:
-          "Personal-care brands and contract manufacturers under MoCRA and EU 1223/2009.",
+          "Personal-care brands and contract manufacturers under MoCRA.",
         longDescription:
-          "MoCRA brought new facility-registration, adverse-event-reporting, and safety-substantiation requirements. EU rules require a PIF and Responsible Person per SKU. Unifize keeps the safety files, supplier COAs, and adverse-event work tied to each SKU and ready for a retailer audit.",
+          "MoCRA added facility registration, adverse-event reporting, and safety substantiation. EU rules add a PIF per SKU. Unifize keeps safety files, supplier COAs, and adverse events tied to each SKU.",
         details: [
           {
             label: "Standards we speak",
@@ -175,9 +175,9 @@ const SECTIONS: ExploreSection[] = [
         num: "08",
         title: "Food Processing",
         description:
-          "Food manufacturers under FSMA preventive controls and GFSI certification.",
+          "Food manufacturers under FSMA and GFSI certification.",
         longDescription:
-          "HACCP, allergen control, supplier COAs, corrective actions — all high-frequency, all weakly tooled in the mid-market. Unifize lands on corrective action and deviation management first, then carries through to the recall mock and the annual GFSI surveillance.",
+          "HACCP, allergen control, supplier COAs, and corrective actions are high-frequency and weakly tooled in the mid-market. Unifize starts with corrective action and carries through to the GFSI audit.",
         details: [
           {
             label: "Standards we speak",
@@ -191,9 +191,9 @@ const SECTIONS: ExploreSection[] = [
         num: "09",
         title: "Nutritional Supplements",
         description:
-          "Dietary supplement brands and contract manufacturers under 21 CFR Part 111.",
+          "Supplement brands and co-manufacturers under 21 CFR Part 111.",
         longDescription:
-          "FDA 483s in this space almost always cite weak document control or CAPA. Identity-testing rigor, supplier qualification, and batch-record completeness are what move the needle. Unifize gives the brand owner and the co-man one thread, with trails NSF, USP, and Informed Sport will accept.",
+          "FDA 483s here almost always cite weak document control or CAPA. Unifize gives the brand owner and the co-manufacturer one thread, with trails NSF and USP will accept.",
         details: [
           {
             label: "Standards we speak",
@@ -207,9 +207,9 @@ const SECTIONS: ExploreSection[] = [
         num: "10",
         title: "Chemicals",
         description:
-          "Specialty chemical manufacturers serving pharma, food, and industrial markets.",
+          "Specialty chemical makers serving pharma, food, and industrial markets.",
         longDescription:
-          "When you supply pharma, GMP scrutiny lands on you. REACH, TSCA, and food-contact rules add documentation burden, and process safety adds incident workflows. Unifize is the governed layer where change control, supplier qualification, and incident investigation share one trail.",
+          "Supplying pharma brings GMP scrutiny. REACH, TSCA, and process safety add more. Unifize is where change control, supplier qualification, and incident investigation share one trail.",
         details: [
           {
             label: "Standards we speak",
@@ -227,7 +227,7 @@ const SECTIONS: ExploreSection[] = [
     eyebrow: "By domain",
     title: "By domain",
     blurb:
-      "Each is a named door — a persona, a workflow, a trigger. None were designed to live in the seam between systems. That is the work Unifize does.",
+      "Each domain has its own owner and workflow. None were built for the seam between systems. Unifize was.",
     pattern: GLYPH_DOMAIN,
     items: [
       {
@@ -237,7 +237,7 @@ const SECTIONS: ExploreSection[] = [
         description:
           "CAPAs, deviations, MRB, audit findings.",
         longDescription:
-          "When a hold comes off, when an exception is granted, when an investigation closes — the trail of who decided what, when, and with what evidence usually lives in email and side channels. Unifize makes the conversation itself the audit trail, with the disposition and the record bound at the moment of decision.",
+          "Who decided what, when, and on what evidence usually lives in email. Unifize makes the conversation the audit trail, binding the disposition to the record at the moment of decision.",
         meta: "Typically owned by VP Quality / QA Director",
       },
       {
@@ -246,61 +246,61 @@ const SECTIONS: ExploreSection[] = [
         description:
           "WIP aging, production holds, schedule instability, MRB backlog.",
         longDescription:
-          "Dispositions, engineering calls, lab results — your team chases them all day across email and escalation calls. Shortage allocation happens on a call with no record. Unifize gives every decision a trace and a clear owner, so the floor doesn't lose a shift waiting on a missing approval.",
+          "Dispositions, engineering calls, and lab results get chased across email all day. Unifize gives every decision a trace and an owner, so the floor never loses a shift to a missing approval.",
         meta: "Typically owned by VP Operations / Plant Manager",
       },
       {
         num: "03",
         title: "Product Development",
         description:
-          "End-to-end coordination from idea to commercial product — and every change after.",
+          "Idea to launch, and every change after.",
         longDescription:
-          "In medical devices it's DHF and design transfer. In pharma it's CMC and tech transfer. In aerospace and auto it's stage gates and PPAP. The structure is the same: multi-function sign-off, evidence packaging at each gate, sustaining change after launch. Unifize keeps the gate decisions, exit criteria, and impact assessments in one defensible place.",
+          "DHF and design transfer, CMC and tech transfer, stage gates and PPAP: the structure is the same. Unifize keeps gate decisions, exit criteria, and impact assessments in one defensible place.",
         meta: "Typically owned by VP R&D / VP Engineering",
       },
       {
         num: "04",
         title: "Supplier Management",
         description:
-          "Supplier qualification, PPAP/APQP, supplier CAPA, quality agreements, incoming inspection, RFQ-to-PO.",
+          "Supplier qualification, PPAP/APQP, supplier CAPA, incoming inspection.",
         longDescription:
-          "A supplier issue starts in email and ages there. The CPO, the SQ Director, and Quality all touch different pieces. Unifize gives the supplier one governed channel and your team one queue — with closure trails the auditor will accept.",
+          "A supplier issue starts in email and ages there while Procurement, Supplier Quality, and QA each hold a piece. Unifize gives the supplier one governed channel and your team one queue.",
         meta: "Typically owned by CPO / Supplier Quality Director",
       },
       {
         num: "05",
         title: "Document and Records Control",
         description:
-          "Procedure authoring, review, approval, controlled distribution, and obsolescence.",
+          "Procedure review, approval, controlled distribution, obsolescence.",
         longDescription:
-          "Audit findings come from a document in active use at a site that can't be tied back to an approval record. Unifize handles the multi-owner review, version integrity, and controlled distribution in one place — and fires the training cascade automatically when a procedure changes.",
+          "Audit findings come from a document in use that can't be tied to an approval record. Unifize handles review, version integrity, and controlled distribution, then fires the training cascade when a procedure changes.",
         meta: "Typically owned by VP Quality / Doc Control Lead",
       },
       {
         num: "06",
         title: "Regulatory Affairs",
         description:
-          "MDR/vigilance reporting, 510(k)/PMA/BLA prep, label approval across multi-market variants.",
+          "MDR/vigilance reporting, submission prep, multi-market label approval.",
         longDescription:
-          "30-day MDR clock, 15-day EU NCA clock, hundreds of country-specific label variants — each on its own approval timeline. Unifize keeps the submission assembly, label changes, and vigilance commitments on one timeline you can defend.",
+          "A 30-day MDR clock, a 15-day EU clock, and hundreds of label variants, each on its own timeline. Unifize keeps submissions, label changes, and vigilance commitments on one timeline you can defend.",
         meta: "Typically owned by Head of Regulatory Affairs",
       },
       {
         num: "07",
         title: "Change Control",
         description:
-          "ECO and ECR workflows requiring multi-function sign-off, DHF evidence packaging, and version-controlled distribution.",
+          "ECO/ECR sign-off, DHF evidence packaging, controlled distribution.",
         longDescription:
-          "Approvals happen in email threads; design reviews leave no record of what was decided or why. Unifize captures the impact assessments, the conditions accepted, and the cut-in plan — so the change record is whole when an audit asks.",
+          "Approvals happen in email threads, and design reviews leave no record of why. Unifize captures the impact assessments, accepted conditions, and cut-in plan, so the change record is whole at audit time.",
         meta: "Typically owned by VP Engineering / Head of R&D",
       },
       {
         num: "08",
         title: "Training and Competency",
         description:
-          "Training cascades triggered by change control, new procedure releases, and audit findings.",
+          "Training cascades from change control, SOP releases, audit findings.",
         longDescription:
-          "Every SOP change should fire a training cascade, but the document system and the training system don't talk. Compliance gaps accumulate on every effective date. Unifize closes the loop: the workflow that releases the new SOP starts the cascade and tracks completion.",
+          "Every SOP change should fire a training cascade, but the document system and the training system don't talk. Unifize closes the loop: releasing the SOP starts the cascade and tracks completion.",
         meta: "Typically owned by VP Quality / Head of Training",
       },
       {
@@ -309,16 +309,16 @@ const SECTIONS: ExploreSection[] = [
         description:
           "RFQ response, bid evaluation, quote management, contract review.",
         longDescription:
-          "Bid-evaluation rationale, qualification context, and approval threads live in email — until a dispute or rebid arrives and nobody can find them. Unifize keeps the customer-facing thread governed, so the next RFQ inherits the qualification, not the chaos.",
+          "Bid rationale, qualification context, and approval threads live in email until a dispute or rebid arrives. Unifize keeps the customer thread governed, so the next RFQ inherits the qualification, not the chaos.",
         meta: "Typically owned by VP Sales / Commercial Director",
       },
       {
         num: "10",
         title: "Supply Chain and Planning",
         description:
-          "Shortage allocation, PO change management, expedite decisions, schedule freeze, supply disruption.",
+          "Shortage allocation, PO changes, expedite decisions, supply disruption.",
         longDescription:
-          "Three production lines compete for the same last component. The call happens, the decision sticks — and no one captures why. Unifize gives the commit point a structure, so the rationale outlives the call.",
+          "Three lines compete for the last component. The call happens, the decision sticks, and nobody captures why. Unifize gives the commit point a structure, so the rationale outlives the call.",
         meta: "Typically owned by VP Supply Chain / CPO",
       },
       {
@@ -327,7 +327,7 @@ const SECTIONS: ExploreSection[] = [
         description:
           "Complaint investigation, MDR/vigilance reporting, recall scope, FSCA execution.",
         longDescription:
-          "A recall runs in parallel — manufacturing hold, customer notifications, returns logistics, regulatory filings — all under hard deadlines with cross-functional sign-off at every step. Unifize is the one place where those workflows share state.",
+          "A recall runs manufacturing holds, customer notices, returns, and regulatory filings in parallel, all under hard deadlines. Unifize is the one place those workflows share state.",
         meta: "Typically owned by VP Quality / Chief Medical Officer",
       },
       {
@@ -336,7 +336,7 @@ const SECTIONS: ExploreSection[] = [
         description:
           "APR, PQR, and data-integrity governance.",
         longDescription:
-          "APR/PQR assembly pulls data from production, QA, complaints, stability, and regulatory on a hard internal deadline that costs the VP Quality weeks of personal time every year. Unifize keeps the evidence indexed and assembly-ready, year over year.",
+          "APR and PQR assembly pulls data from production, QA, complaints, stability, and regulatory on a hard deadline. Unifize keeps the evidence indexed and assembly-ready, year over year.",
         meta: "Typically owned by VP Quality / Head of Regulatory Affairs",
       },
       {
@@ -345,16 +345,16 @@ const SECTIONS: ExploreSection[] = [
         description:
           "Sourcing decisions, supplier selection, bid evaluation, commercial governance.",
         longDescription:
-          "Award rationale and alternate-qualification context live in email and spreadsheets. The CPO and the SQ Director see different parts. Unifize keeps them aligned with one decision record.",
+          "Award rationale and alternate-qualification context live in email and spreadsheets, and the CPO and Supplier Quality see different parts. Unifize keeps them aligned on one decision record.",
         meta: "Typically owned by CPO / Head of Procurement",
       },
       {
         num: "14",
         title: "Compliance",
         description:
-          "CSV validation, data integrity, EHS, regulatory change management, cross-border alignment.",
+          "CSV validation, data integrity, EHS, regulatory change.",
         longDescription:
-          "Compliance often runs as its own governance layer above or beside the QMS — a separate function with its own audit cycle. Unifize gives the Compliance & Validation team their own governed thread without forcing them onto the QMS.",
+          "Compliance often runs as its own governance layer beside the QMS, with its own audit cycle. Unifize gives the Compliance and Validation team a governed thread without forcing them onto the QMS.",
         meta: "Typically owned by Director of Quality Compliance / Validation Manager",
       },
     ],
@@ -365,7 +365,7 @@ const SECTIONS: ExploreSection[] = [
     eyebrow: "By buyer",
     title: "By buyer persona",
     blurb:
-      "Who you are when you walk in. Unifize is built for the people accountable for cross-functional execution — and for the auditors, regulators, and customers who hold them to it.",
+      "Built for the people accountable for cross-functional execution, and for the auditors and customers who hold them to it.",
     pattern: GLYPH_BUYER,
     items: [
       {
@@ -373,55 +373,55 @@ const SECTIONS: ExploreSection[] = [
         title: "Operations Leader",
         href: "/buyers/operations-leader",
         description:
-          "COO, VP Operations, Plant Manager, GM, Site Director.",
+          "COO, VP Operations, Plant Manager, Site Director.",
         longDescription:
-          "You're accountable for output, stability, and delivery across a site, business unit, or company. Unifize turns daily firefighting into a repeatable record — without slowing the floor down.",
+          "You're accountable for output, stability, and delivery across a site or company. Unifize turns daily firefighting into a repeatable record without slowing the floor down.",
       },
       {
         num: "02",
         title: "Quality governance",
         description:
-          "VP Quality, Head of Quality, Quality Director, Quality Manager, QA Manager, RAQA Director.",
+          "VP Quality, Quality Director, QA Manager, RAQA Director.",
         longDescription:
-          "You own release confidence, audit outcomes, and recurrence. Unifize gives you defensibility by default — so audit prep stops being a sprint.",
+          "You own release confidence, audit outcomes, and recurrence. Unifize gives you defensibility by default, so audit prep stops being a sprint.",
       },
       {
         num: "03",
         title: "Regulatory affairs governance",
         description:
-          "Head of Regulatory Affairs, VP Regulatory, RA Director, RA Manager, Director of Regulatory Strategy.",
+          "Head of Regulatory Affairs, VP Regulatory, RA Director.",
         longDescription:
-          "You're on the clock for submissions, label currency, and vigilance — across markets you can't miss. Unifize keeps the cross-functional commitments, evidence chains, and label versions on one timeline.",
+          "You're on the clock for submissions, label currency, and vigilance across markets. Unifize keeps the commitments, evidence chains, and label versions on one timeline.",
       },
       {
         num: "04",
         title: "Compliance & validation",
         description:
-          "Validation Manager, CSV Lead, QA Validation Lead, Quality Compliance Manager, Director of Quality Compliance.",
+          "Validation Manager, CSV Lead, Director of Quality Compliance.",
         longDescription:
-          "You keep validated systems defensible without becoming a bottleneck. Unifize captures controlled execution and audit-readiness as a byproduct of the work, not a separate project.",
+          "You keep validated systems defensible without becoming a bottleneck. Unifize captures controlled execution and audit-readiness as a byproduct of the work.",
       },
       {
         num: "05",
         title: "Supplier quality governance",
         description:
-          "Supplier Quality Director, VP Supplier Quality, SQ Manager, Senior / Lead SQE.",
+          "Supplier Quality Director, SQ Manager, Lead SQE.",
         longDescription:
-          "You want zero supplier-caused line stops and clean audit results on supplier oversight. Unifize turns the supplier exchange into a governed channel with closure trails the auditor accepts.",
+          "You want zero supplier-caused line stops and clean audits on supplier oversight. Unifize turns the supplier exchange into a governed channel with closure trails the auditor accepts.",
       },
       {
         num: "06",
         title: "Engineering change governance",
         description:
-          "VP Engineering, Head of Engineering, Director of Engineering, NPI Manager, Engineering PM, R&D Director.",
+          "VP Engineering, Director of Engineering, NPI Manager, R&D Director.",
         longDescription:
-          "You move change through faster without losing control. Unifize keeps the ECO conversation, impact reviews, and cut-in decisions in one thread that survives the launch.",
+          "You move change through faster without losing control. Unifize keeps the ECO conversation, impact reviews, and cut-in decisions in one thread that survives launch.",
       },
       {
         num: "07",
         title: "Innovation and NPI execution",
         description:
-          "VP R&D, Head of NPI, NPI Program Director, Product Development Director, Design Transfer Lead.",
+          "VP R&D, Head of NPI, Product Development Director, Design Transfer Lead.",
         longDescription:
           "You ship on time without skipping readiness. Unifize keeps validation, evidence packaging, and design-transfer decisions indexed against the design record.",
       },
@@ -429,7 +429,7 @@ const SECTIONS: ExploreSection[] = [
         num: "08",
         title: "Manufacturing engineering execution",
         description:
-          "Manufacturing Engineering Manager, Process Engineering Manager, IE Manager, Methods Engineer Lead.",
+          "Manufacturing Engineering Manager, Process Engineering Manager, IE Manager.",
         longDescription:
           "You keep processes stable while methods change. Unifize handles SOP-cascade adoption at the point of use, so revisions don't cause variation.",
       },
@@ -447,13 +447,13 @@ const SECTIONS: ExploreSection[] = [
         description:
           "VP Supply Chain, Planning Manager, Materials Manager, Logistics Manager.",
         longDescription:
-          "You're keeping materials and finished goods moving while disruption hits. Unifize keeps allocation, expedite, and recovery decisions in one place — with explicit owners.",
+          "You keep materials and finished goods moving while disruption hits. Unifize keeps allocation, expedite, and recovery decisions in one place, with explicit owners.",
       },
       {
         num: "11",
         title: "Procurement decisioning",
         description:
-          "CPO, Head of Procurement, Category Manager, Strategic Sourcing Manager, Purchasing Manager.",
+          "CPO, Head of Procurement, Category Manager, Purchasing Manager.",
         longDescription:
           "You want sourcing outcomes Finance will recognise and a compliance posture you can defend. Unifize is where Procurement, Quality, and Engineering converge on one auditable award.",
       },
@@ -461,7 +461,7 @@ const SECTIONS: ExploreSection[] = [
         num: "12",
         title: "Customer service and field quality",
         description:
-          "VP Customer Success, Head of Customer Service, Service Ops Director, Field Quality Manager.",
+          "VP Customer Success, Service Ops Director, Field Quality Manager.",
         longDescription:
           "You're closing complaints faster with less warranty drag. Unifize gives the field, the lab, and the QMS one shared thread for triage and closure.",
       },
@@ -471,21 +471,21 @@ const SECTIONS: ExploreSection[] = [
         description:
           "EHS Manager, Director of EHS, Safety Manager.",
         longDescription:
-          "You own incident-closure discipline and compliance evidence. Unifize keeps the investigation, controls, and effectiveness checks tied to the incident — so recurrence stops climbing.",
+          "You own incident-closure discipline and compliance evidence. Unifize keeps the investigation, controls, and effectiveness checks tied to the incident, so recurrence stops climbing.",
       },
       {
         num: "14",
         title: "Finance governance",
         description:
-          "CFO, VP Finance, Controller, Plant Controller, FP&A Director, Finance Business Partner.",
+          "CFO, VP Finance, Plant Controller, FP&A Director.",
         longDescription:
-          "You protect margin and cash with proof discipline. Unifize attaches the operational decision trail to the saving — so Finance can recognise it.",
+          "You protect margin and cash with proof discipline. Unifize attaches the operational decision trail to the saving, so Finance can recognise it.",
       },
       {
         num: "15",
         title: "IT risk & enablement",
         description:
-          "CIO, VP IT, IT Director, Enterprise Architect, CISO, Head of IT Applications, ERP Director.",
+          "CIO, IT Director, Enterprise Architect, CISO, ERP Director.",
         longDescription:
           "You enable the business without adding risk. Unifize is a defensible, validated layer that sits between QMS, ERP, and PLM without expanding shadow IT.",
       },
@@ -493,15 +493,15 @@ const SECTIONS: ExploreSection[] = [
         num: "16",
         title: "Regulated systems governance",
         description:
-          "Quality Systems Manager, Director of Quality Systems, Head of Digital Quality, VP IT (Life Sciences).",
+          "Director of Quality Systems, Head of Digital Quality, VP IT.",
         longDescription:
-          "You're eliminating fragmentation across QMS, ERP, PLM, and MES while staying defensible under Part 11 and Annex 11. Unifize gives the cross-system decision trail one home — and AI tooling stops sitting on undocumented data.",
+          "You're eliminating fragmentation across QMS, ERP, PLM, and MES while staying defensible under Part 11 and Annex 11. Unifize gives the cross-system decision trail one home.",
       },
       {
         num: "17",
         title: "Digital transformation & AI governance",
         description:
-          "Head of Digital Transformation, CDO, AI Programme Manager, Director of Digital Innovation, VP Digital.",
+          "Head of Digital Transformation, CDO, VP Digital.",
         longDescription:
           "You're building AI capability on regulated data without losing defensibility. Unifize is the structured operational substrate that makes AI outputs auditable under GxP and Part 11.",
       },
@@ -511,7 +511,7 @@ const SECTIONS: ExploreSection[] = [
         description:
           "CEO, President, Managing Director.",
         longDescription:
-          "You see catastrophic risk, customer trust, and the cost of execution surprises. Unifize is the layer that makes operational performance auditable across sites — and AI investment legible.",
+          "You see catastrophic risk, customer trust, and the cost of execution surprises. Unifize makes operational performance auditable across sites and AI investment legible.",
       },
     ],
   },
@@ -531,11 +531,9 @@ export default function PlatformPage() {
             <em>One governed layer.</em>
           </h1>
           <p className="sub">
-            Pick the door that matches your starting point — the{" "}
-            <strong>industry</strong> you operate in, the{" "}
-            <strong>domain</strong> you own, or the{" "}
-            <strong>buyer</strong> you are. Each leads to the same governed
-            layer underneath.
+            Enter by <strong>industry</strong>, by <strong>domain</strong>, or
+            by <strong>buyer</strong>. All three lead to the same governed
+            layer.
           </p>
           <div className="hero-ctas">
             <Button arrow size="lg">
@@ -559,9 +557,8 @@ export default function PlatformPage() {
                 Same layer underneath. Different door in.
               </h2>
               <p className="close-sub">
-                Whichever door you walked through, the work lives in one place
-                and binds to the record at the moment of decision. No
-                reconstruction from inboxes. No audit-prep sprint.
+                Whichever door you came in, the work lives in one place, bound
+                to the record at the moment of decision. No audit-prep sprint.
               </p>
               <div className="close-ctas">
                 <Button arrow size="lg">

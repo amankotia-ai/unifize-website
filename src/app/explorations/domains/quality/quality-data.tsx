@@ -36,6 +36,70 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: CAPA-1284 as its owner lives it, one pose per
+ * flow.trail step. The record vocabulary comes from this page's own
+ * canonical story (the CAPA flow in section 03, the hero's sealed-CAPA
+ * float, NC/batch/audit neighbours from the pain map). Sections and items
+ * never change mid-journey; steps only open sections and advance counts. */
+const QUALITY_WORLD: ArcadeFlowWorld = {
+  team: "Quality Operations",
+  recordNoun: "CAPA",
+  owner: "D. Okafor",
+  ownerInitials: "DO",
+  participants: ["DO", "MC", "+3"],
+  participantsLabel: "D. Okafor, M. Chen, and three others",
+  recordKicker: "CORRECTIVE ACTION",
+  context: {
+    initials: "DO",
+    name: "D. Okafor",
+    time: "09:12",
+    message: "Escalated NC-0871 to CAPA. Third seal failure on line 2 this quarter.",
+    detail: "Linked to NC-0871 · Batch 22-114 on hold",
+  },
+  inboxNeighbors: [
+    { title: "Seal failure on line 2", time: "08:54", detail: "NC-0871 · disposition pending", kind: "Non-conformance" },
+    { title: "Batch 22-114 release review", time: "Yesterday", detail: "Held pending CAPA-1284", kind: "Batch record" },
+    { title: "Internal audit · packaging", time: "Yesterday", detail: "IA-2026-07 · 2 findings open", kind: "Audit" },
+  ],
+  checklistTitle: "CAPA",
+  checklistSections: [
+    {
+      title: "EVENT & CONTAINMENT",
+      items: [
+        { label: "Reason for escalation", kind: "field", value: "Recurring seal failure · third event this quarter", note: "Entered at escalation" },
+        { label: "Linked non-conformance", note: "NC-0871 · line 2" },
+        { label: "Containment", note: "Batch 22-114 held · sampling raised" },
+      ],
+    },
+    {
+      title: "INVESTIGATION",
+      items: [
+        { label: "Root cause analysis", note: "5-Why · seal fixture drift" },
+        { label: "Root cause accepted", kind: "approval", signer: "M. Chen", state: "Accepted" },
+        { label: "Risk file updated", note: "FMEA · seal integrity row" },
+      ],
+    },
+    {
+      title: "ACTIONS & CLOSURE",
+      items: [
+        { label: "Corrective actions", note: "3 committed · owners and dates named" },
+        { label: "Effectiveness check", note: "30-day window · line 2 yield" },
+        { label: "Closure approval", kind: "approval", signer: "S. Ferreira", state: "Signed" },
+      ],
+    },
+  ],
+};
+
+/* the constants every pose of the journey shares */
+const QUALITY_REC = {
+  type: "CAPA",
+  id: "CAPA-1284",
+  title: "Seal failure · line 2",
+  world: QUALITY_WORLD,
+} as const;
 
 export const QUALITY_DATA: DomainPageData = {
   slug: "quality",
@@ -147,6 +211,23 @@ export const QUALITY_DATA: DomainPageData = {
     lede: "The failure modes we see inside quality teams. None of them is a missing feature. All of them are decisions that happened off the record.",
     // `surface` = where the decision leaks to, condensed from each pain's
     // Description (the DMS coordination-tax surface-tag pattern).
+    /* the old world, staged (section 02's evidence artifact): the CAPA
+     * sign-off tracker aging while the work sits done. It dramatizes the
+     * "status-chasing" and "evidence not bound" pains below; furniture is
+     * illustrative, not a claim. */
+    scene: {
+      kicker: "CAPA-0091",
+      chip: "Day 90",
+      title: "Closure sign-offs",
+      rows: [
+        { state: "done", label: "Investigation complete", age: "Day 5" },
+        { state: "done", label: "Containment verified", age: "Day 9" },
+        { state: "wait", label: "QA director sign-off", age: "18d waiting", warn: true },
+        { state: "idle", label: "Effectiveness review", age: "Queued" },
+      ],
+      float: { kicker: "Audit day", note: "Please pull the full evidence trail for this CAPA." },
+      caption: "The work took a week. The record is still open at day 90.",
+    },
     pains: [
       { severity: "Critical", surface: "Audit day", name: "Audit-day evidence pull collapses to a manual rebuild", body: "When an auditor asks for the full record of a deviation, change or CAPA, the team spends hours stitching together exports, screenshots and email forwards. The audit passes; the cost of passing is days of senior time." },
       { severity: "Critical", surface: "Drives & threads", name: "Evidence not bound to commit points", body: "Disposition, root-cause acceptance, effectiveness verification, closure: the decisions happen at definable commit points, but the supporting evidence lives in attachments and threads that are not bound to them." },
@@ -190,6 +271,107 @@ export const QUALITY_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / capa / CAPA-1284",
     mobileLabel: "CAPA decision trace",
     mobileId: "CAPA-1284 · event → root cause → actions → verified close",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...QUALITY_REC,
+          source: "DK · CAPA-1284 · escalate",
+          ghost: "Escalate",
+          status: "Draft",
+          actor: "You",
+          event: "Escalated NC-0871 to a corrective action",
+          eventDetail: "Recurrence rule met · containment on the record",
+          checklist: "EVENT & CONTAINMENT",
+          checklistItems: ["Reason for escalation", "Linked non-conformance", "Containment"],
+          focus: "print",
+          focusTitle: "Corrective action",
+          focusRows: ["Recurring seal failure", "NC-0871 · line 2", "Batch 22-114 held"],
+          focusAction: "Open the investigation",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "EVENT & CONTAINMENT",
+          checklistEntry: { section: "EVENT & CONTAINMENT", item: "Reason for escalation" },
+          checklistProgress: { "EVENT & CONTAINMENT": 2, "INVESTIGATION": 0, "ACTIONS & CLOSURE": 0 },
+          checklistFootnote: "Containment held before the investigation opens",
+        },
+        {
+          ...QUALITY_REC,
+          source: "DK · CAPA-1284 · root-cause",
+          ghost: "Accept",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the root-cause review",
+          eventDetail: "5-Why and fixture data on the thread · QA decision pending",
+          checklist: "INVESTIGATION",
+          checklistItems: ["Root cause analysis", "Root cause accepted", "Risk file updated"],
+          focus: "review",
+          focusTitle: "Root cause review",
+          focusRows: ["Root cause · Seal fixture drift", "Method · 5-Why on the record", "Reviewer · M. Chen, QA"],
+          focusAction: "Accept root cause",
+          focusAlts: ["Return to investigation"],
+          ownershipNote: "The acceptance stays on the record",
+          checklistOpen: "INVESTIGATION",
+          checklistProgress: { "INVESTIGATION": 1, "ACTIONS & CLOSURE": 0 },
+        },
+        {
+          ...QUALITY_REC,
+          source: "DK · CAPA-1284 · actions",
+          ghost: "Commit",
+          status: "Open",
+          actor: "You",
+          event: "Committed the corrective actions with owners",
+          eventDetail: "Three actions, three owners, dated · nothing waits in an inbox",
+          checklist: "ACTIONS & CLOSURE",
+          checklistItems: ["Corrective actions", "Effectiveness check", "Closure approval"],
+          focus: "tasks",
+          focusTitle: "Corrective actions",
+          focusRows: ["Re-shim seal fixture · J. Alvarez", "PM schedule updated · Maintenance", "Line 2 retraining · Training"],
+          ownershipNote: "Owners answer on the record",
+          checklistOpen: "ACTIONS & CLOSURE",
+          checklistProgress: { "ACTIONS & CLOSURE": 1 },
+        },
+        {
+          ...QUALITY_REC,
+          source: "DK · CAPA-1284 · verify",
+          ghost: "Verify",
+          status: "Needs Approval",
+          actor: "automator",
+          event: "Closed the effectiveness window with the evidence bound",
+          eventDetail: "30 days on line 2 · yield steady · no recurrence",
+          checklist: "ACTIONS & CLOSURE",
+          checklistItems: ["Line 2 yield · 30 days in window", "Recurrence search · clean", "Retraining verified · 12 of 12"],
+          focus: "trace",
+          focusTitle: "Effectiveness check",
+          focusRows: ["Verified inside the window", "3 records linked"],
+          focusAction: "Open closure approval",
+          ownershipNote: "A real recurrence test, not paperwork",
+          checklistOpen: "ACTIONS & CLOSURE",
+          checklistProgress: { "ACTIONS & CLOSURE": 2 },
+          related: 3,
+        },
+        {
+          ...QUALITY_REC,
+          source: "DK · CAPA-1284 · seal",
+          ghost: "Seal",
+          status: "Completed",
+          actor: "automator",
+          event: "Closed CAPA-1284 and sealed the trace",
+          eventDetail: "Event → root cause → actions → effectiveness, on one thread",
+          checklist: "ACTIONS & CLOSURE",
+          checklistItems: ["Corrective actions", "Effectiveness check", "Closure approval"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["CAPA-1284 · Closed · trace sealed", "NC-0871 · disposition linked", "Batch 22-114 · released"],
+          ownershipNote: "Reconstructable at audit",
+          checklistOpen: "ACTIONS & CLOSURE",
+          signedItems: [
+            { name: "S. Ferreira", initials: "SF", role: "Head of Quality", approvalId: "7B41C1284F09", time: "Day 35" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -224,7 +406,9 @@ export const QUALITY_DATA: DomainPageData = {
    * QMS modules link to the live product page; LIMS and CI have no page yet. */
   coverage: {
     heading: "The products that do the quality work.",
-    lede: "The modules below serve this domain, bundled into the Quality Management System, LIMS and Continuous Improvement products. Filter by the standard you are audited against.",
+    // The reconciling line: section 05 and section 08 tell ONE story now —
+    // the modules can BE the QMS or run beside the one you keep.
+    lede: "The modules below serve this domain, bundled into the Quality Management System, LIMS and Continuous Improvement products. Run them as your QMS, or alongside the one you keep — coexistence below. Filter by the standard you are audited against.",
     standardFilters: ["ISO 9001", "ISO 13485", "21 CFR 820", "21 CFR 211", "IATF 16949", "AS 9100", "ISO/IEC 17025"],
     groups: [
       {
@@ -364,11 +548,72 @@ export const QUALITY_DATA: DomainPageData = {
    * source: MD_COEXISTENCE canonical context (systems of record, Part 11
    * e-signature approval) + the pharma industry page's shipped coexistence
    * copy. Panel finding: the integration story was absent from this page. */
+  /* The page-spec three-path answer (Website Page Spec, Quality slice §5):
+   * "Unifize works with the QMS you already have. Or it can be your QMS."
+   * Panel round 2's top finding was the page arguing replace-vs-coexist both
+   * ways; the selector commits to one answer per situation. Vendor names from
+   * the spec's own selector list; every capability named is canonical (the
+   * live QMS modules in section 05, the Part 11 e-signature claim). */
   coexistence: {
-    heading: "It sits on the stack you already run.",
+    heading: "Bring your QMS, or run on ours.",
     systemsOfRecord: ["QMS", "ERP", "LIMS", "MES"],
     body: "Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the decision trace goes missing, not the systems of record that already passed your audits. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your QMS, ERP, LIMS and MES.",
+    selectorLabel: "Where is your QMS today?",
+    paths: [
+      {
+        id: "have",
+        label: "We run a dedicated eQMS",
+        vendors: ["MasterControl", "ETQ", "Veeva", "Qualio", "Greenlight Guru", "TrackWise"],
+        heading: "Keep it. Unifize runs the coordination it can't see.",
+        body: "Your QMS keeps doing what it does — storing the approved records that already passed your audits. Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the investigation, the evidence gathering and the sign-off chasing actually happen, and the approved outcome carries a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
+        diagram: {
+          role: "Coordination layer",
+          chips: ["One governed thread", "Evidence bound to decisions", "Attributable e-signatures"],
+          boxes: [
+            { name: "QMS", note: "System of record", kind: "sor" },
+            { name: "ERP", note: "System of record", kind: "sor" },
+            { name: "LIMS", note: "System of record", kind: "sor" },
+            { name: "MES", note: "System of record", kind: "sor" },
+          ],
+          caption: "Unifize as the coordination layer over the QMS, ERP, LIMS and MES you keep.",
+        },
+      },
+      {
+        id: "none",
+        label: "Spreadsheets and shared drives",
+        heading: "Unifize is the QMS.",
+        body: "Non-conformance, CAPA, quality events, audit and risk management run as governed Unifize modules — the system of record and the coordination layer in one platform, with named ownership, evidence binding and 21 CFR Part 11 e-signatures from the first workstream.",
+        diagram: {
+          role: "QMS + coordination layer",
+          chips: ["Governed quality records", "Evidence bound to decisions", "Part 11 e-signatures"],
+          boxes: [
+            { name: "Quality records", note: "Runs in Unifize", kind: "unifize" },
+            { name: "ERP", note: "System of record", kind: "sor" },
+            { name: "LIMS", note: "System of record", kind: "sor" },
+            { name: "MES", note: "System of record", kind: "sor" },
+          ],
+          caption: "Unifize as the quality system of record, alongside the ERP, LIMS and MES you keep.",
+        },
+      },
+      {
+        id: "weak",
+        label: "A QMS with gaps",
+        heading: "Keep what passed. Run the gaps on Unifize.",
+        body: "Document control is solid but CAPA lives in spreadsheets? Keep the parts of your QMS that already passed your audits, and run the gap — the CAPA thread, the audit response, the complaint file — as a governed Unifize module. The coordination layer runs across all of it, so the decision trace stays whole even where the records are split.",
+        diagram: {
+          role: "Coordination layer + the gap module",
+          chips: ["One governed thread", "Evidence bound to decisions", "Attributable e-signatures"],
+          boxes: [
+            { name: "QMS", note: "Keeps its records", kind: "sor" },
+            { name: "CAPA", note: "Runs in Unifize", kind: "unifize" },
+            { name: "ERP", note: "System of record", kind: "sor" },
+            { name: "MES", note: "System of record", kind: "sor" },
+          ],
+          caption: "Unifize fills the CAPA gap and coordinates across the systems you keep.",
+        },
+      },
+    ],
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -386,6 +631,9 @@ export const QUALITY_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline. The figure is anonymized; named references are shown separately.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["CAPAs", "NCs / Defects", "Audit Management", "Out of Spec", "Complaints"],
     references: [
       {
         tag: "Named reference",

@@ -7,8 +7,8 @@
 import type { Metadata } from "next";
 import { ResourceShell } from "../_shared/resource-shell";
 import { CollectionMast, QuoteBand, ResourceCTA, ResourceFooter } from "../_shared/resource-chrome";
-import { TestimonialLibrary } from "../_shared/resources-interactive";
-import { TESTIMONIALS } from "../_shared/resources-data";
+import { VideoLibrary } from "../_shared/resources-interactive";
+import { CUSTOMER_VIDEOS } from "../_shared/customer-videos";
 
 export const metadata: Metadata = {
   title: "Customer stories — Unifize",
@@ -22,11 +22,11 @@ export default function TestimonialsPage() {
         trail={[{ label: "Customer stories" }]}
         title="Customer stories,"
         dim="told by the teams."
-        desc="How teams cleared backlogs, released batches faster, and turned audits into non-events on Unifize. Filter by industry or module."
+        desc="How teams run quality, documents, product, and manufacturing on Unifize, in their own words. Filter by industry or role."
       />
 
       <section className="dms-section rs-libsection">
-        <TestimonialLibrary testimonials={TESTIMONIALS} />
+        <VideoLibrary videos={CUSTOMER_VIDEOS} />
       </section>
 
       <QuoteBand heading="Hear it in their own words." />

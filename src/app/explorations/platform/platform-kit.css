@@ -1,11 +1,13 @@
 /* ============================================================================
- * PLATFORM KIT - the reworked minimal Platform page.
+ * PLATFORM KIT - the revised-flow Platform page (2026-09-01 panel audit).
  *
  * The route rides the Product-page redesign token layer (`dms--redesign`)
- * and adds only what this page composes: the hero arcade frame, the stat
- * band, the end-to-end journey (persistent arcade camera + step rail), the
- * four-band stack object, the measured scene, the standards strip, and the
- * close links. Everything scoped under `.pf-page`.
+ * and adds only what this page composes: the hero arcade frame, the symptom
+ * ledger + tax naming + stat footnote, the end-to-end journey (persistent
+ * arcade camera + step rail), the three-zone
+ * coexistence diagram, the three-band stack object, the measured scene with
+ * its attested step, the compliance posture rows + standards strip, and the
+ * close doors. Everything scoped under `.pf-page`.
  * ========================================================================== */
 
 .dms--redesign.pf-page {
@@ -54,7 +56,10 @@
     0 36px 90px -36px oklch(0 0 0 / .4);
 }
 
-/* -------------------------------------------------------- 01 · the problem */
+/* -------------------------------------------------------- 01 · the problem
+ * The evidence band: three sourced numbers, each carried by a small chart
+ * in the product's linework idiom (hairline baselines, square markers,
+ * mono labels, one accent). */
 .pf-page .pf-tax-section { background:var(--dms-surface); }
 .pf-page .pf-stats {
   display:grid;
@@ -64,39 +69,181 @@
   border:1px solid var(--dms-hairline);
   background:var(--dms-hairline);
 }
-.pf-page .pf-stats .dms-bigstat {
+.pf-page .pf-evi {
   display:flex;
   flex-direction:column;
-  gap:12px;
-  min-height:196px;
-  justify-content:flex-end;
-  padding:clamp(26px, 3vw, 42px);
+  padding:clamp(26px, 3vw, 40px);
   background:var(--dms-surface);
 }
-.pf-page .pf-stats .dms-bigstat__v {
+.pf-page .pf-evi__head { display:flex; flex-direction:column; gap:12px; }
+.pf-page .pf-evi__tag {
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.pf-page .pf-evi__v {
   font-family:var(--dms-display);
-  font-size:clamp(2.7rem, 4.8vw, 4.1rem);
+  font-size:clamp(2.6rem, 4.2vw, 3.7rem);
   font-weight:560;
   letter-spacing:-0.025em;
   line-height:1;
   color:var(--dms-ink);
   font-variant-numeric:tabular-nums;
 }
-.pf-page .pf-stats .dms-bigstat__l {
+.pf-page .pf-evi__l {
   max-width:26ch;
   color:var(--dms-muted);
   font-size:.92rem;
   line-height:1.55;
   text-wrap:pretty;
 }
-.pf-page .pf-stats__src {
-  margin:16px 0 0;
+.pf-page .pf-evi__fig {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  margin-top:clamp(24px, 2.4vw, 36px);
+}
+.pf-page .pf-evi__cap {
+  margin:14px 0 0;
   color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+.pf-page .pf-evi__src {
+  margin:clamp(24px, 2.4vw, 34px) 0 0;
+  padding-top:14px;
+  border-top:1px dashed var(--dms-hairline);
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+
+/* the leak ledger: one bar of R&D spend, the 30% that leaks in accent */
+.pf-page .pf-leak__track {
+  display:flex;
+  height:46px;
+  outline:1px solid var(--dms-hairline);
+  outline-offset:-1px;
+}
+.pf-page .pf-leak__seg.is-leak { width:30%; background:var(--dms-accent); }
+.pf-page .pf-leak__seg.is-keep { flex:1; background:var(--dms-surface-sunk); }
+.pf-page .pf-leak__rule {
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  padding-top:6px;
+  border-top:1px solid var(--dms-hairline);
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.03em;
+}
+.pf-page .pf-leak__legend {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:16px;
+}
+.pf-page .pf-leak__legend span {
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  color:var(--dms-muted);
   font-family:var(--dms-mono);
   font-size:.72rem;
   letter-spacing:.02em;
-  text-align:center;
 }
+.pf-page .pf-leak__legend i { width:10px; height:10px; }
+.pf-page .pf-leak__legend i.is-leak { background:var(--dms-accent); }
+.pf-page .pf-leak__legend i.is-keep { background:var(--dms-surface-sunk); box-shadow:inset 0 0 0 1px var(--dms-line-strong); }
+
+/* one recall week: an event-square per recall, stacked into daily bars */
+.pf-page .pf-week__grid {
+  display:flex;
+  align-items:flex-end;
+  gap:clamp(10px, 1.2vw, 18px);
+  padding-bottom:8px;
+  border-bottom:1px solid var(--dms-line-strong);
+}
+.pf-page .pf-week__day {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.pf-page .pf-week__stack {
+  display:flex;
+  flex-direction:column-reverse;
+  gap:3px;
+  width:min(100%, 18px);
+}
+.pf-page .pf-week__stack i {
+  height:9px;
+  background:color-mix(in oklab, var(--dms-accent), #fff 30%);
+}
+.pf-page .pf-week__stack i:first-child { background:var(--dms-accent); }
+.pf-page .pf-week__day small {
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.03em;
+}
+
+/* the year's accrual: staircase to $1.5T, square markers, dashed stems */
+.pf-page .pf-accrual__svg { display:block; color:var(--dms-lw-ink); }
+.pf-page .pf-accrual__path {
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.5;
+  stroke-dasharray:1;
+  stroke-dashoffset:0;
+}
+.pf-page .pf-accrual__stem { stroke:currentColor; stroke-width:1; stroke-dasharray:3 4; opacity:.5; }
+.pf-page .pf-accrual__pt { fill:var(--dms-surface); stroke:currentColor; stroke-width:1.5; }
+.pf-page .pf-accrual__q.is-key .pf-accrual__pt { fill:var(--dms-lw-key); stroke:var(--dms-lw-key); }
+.pf-page .pf-accrual__q.is-key .pf-accrual__stem { opacity:.8; }
+.pf-page .pf-accrual__lab {
+  font-family:var(--dms-mono);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  fill:var(--dms-faint);
+}
+.pf-page .pf-accrual__base { stroke:var(--dms-line-strong); stroke-width:1; }
+.pf-page .pf-accrual__ticks { stroke:currentColor; opacity:.16; stroke-width:10; stroke-dasharray:1 5; }
+
+/* draw-in, keyed off the shared reveal layer: the leak bar wipes in, the
+ * recall stacks rise day by day, the accrual staircase draws to Q4 */
+.dms[data-motion] .pf-evi .pf-leak__seg.is-leak { transform-origin:left; transition:transform .8s var(--dms-ease) .3s; }
+.dms[data-motion] .pf-evi.dms-will-reveal:not(.is-in) .pf-leak__seg.is-leak { transform:scaleX(0); }
+.dms[data-motion] .pf-evi .pf-week__stack { transform-origin:bottom; transition:transform .7s var(--dms-ease); }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(1) .pf-week__stack { transition-delay:.25s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(2) .pf-week__stack { transition-delay:.31s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(3) .pf-week__stack { transition-delay:.37s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(4) .pf-week__stack { transition-delay:.43s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(5) .pf-week__stack { transition-delay:.49s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(6) .pf-week__stack { transition-delay:.55s; }
+.dms[data-motion] .pf-evi .pf-week__day:nth-child(7) .pf-week__stack { transition-delay:.61s; }
+.dms[data-motion] .pf-evi.dms-will-reveal:not(.is-in) .pf-week__stack { transform:scaleY(0); }
+.dms[data-motion] .pf-evi .pf-accrual__path { transition:stroke-dashoffset 1s var(--dms-ease) .3s; }
+.dms[data-motion] .pf-evi.dms-will-reveal:not(.is-in) .pf-accrual__path { stroke-dashoffset:1; }
+.dms[data-motion] .pf-evi .pf-accrual__q { transition:opacity .5s ease-out; }
+.dms[data-motion] .pf-evi .pf-accrual__q:nth-of-type(1) { transition-delay:.4s; }
+.dms[data-motion] .pf-evi .pf-accrual__q:nth-of-type(2) { transition-delay:.55s; }
+.dms[data-motion] .pf-evi .pf-accrual__q:nth-of-type(3) { transition-delay:.7s; }
+.dms[data-motion] .pf-evi .pf-accrual__q:nth-of-type(4) { transition-delay:.85s; }
+.dms[data-motion] .pf-evi.dms-will-reveal:not(.is-in) .pf-accrual__q { opacity:0; }
 
 /* -------------------------------------------------- 02 · the journey (ink) */
 .pf-page .pf-journey { margin-top:clamp(52px, 6vw, 88px); }
@@ -175,77 +322,260 @@
 }
 @keyframes pf-timer { to { transform:scaleX(1); } }
 
-/* ---------------------------------------------------- 03 · the stack object */
-.pf-page .pf-stack-section { background:var(--dms-surface); }
-.pf-page .pf-stack {
+/* -------------------------------------------------- 03 · coexistence
+ * The three-zone placement diagram in the linework idiom: record systems
+ * left (authoritative), the day-to-day channels right (still used), the
+ * governed layer between, with the five labeled flows drawn as hairlines. */
+.pf-page .pf-coex-section { background:var(--dms-surface); }
+.pf-page .pf-coex { margin-top:clamp(52px, 6vw, 88px); }
+.pf-page .pf-coex__diagram {
   display:grid;
-  grid-template-columns:minmax(320px, .92fr) minmax(0, 1.08fr);
-  gap:clamp(44px, 6vw, 104px);
-  align-items:center;
-  margin-top:clamp(52px, 6vw, 88px);
+  grid-template-columns:minmax(150px, .9fr) minmax(128px, .66fr) minmax(270px, 1.3fr) minmax(128px, .66fr) minmax(150px, .9fr);
+  column-gap:clamp(14px, 1.8vw, 26px);
+  align-items:stretch;
 }
 
-.pf-page .pf-stack__object { display:flex; flex-direction:column; }
-.pf-page .pf-stack__band {
-  position:relative;
-  display:grid;
-  grid-template-columns:auto minmax(0, 1fr) auto;
-  gap:16px;
+.pf-page .pf-coex__zone { display:flex; flex-direction:column; gap:10px; }
+.pf-page .pf-coex__zone-lab {
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.pf-page .pf-coex__tiles { flex:1; display:flex; flex-direction:column; justify-content:space-between; gap:7px; margin:0; padding:0; list-style:none; }
+.pf-page .pf-coex__tile {
+  display:flex;
   align-items:center;
-  min-height:92px;
-  margin:0;
-  padding:0 clamp(20px, 2.4vw, 32px);
+  gap:12px;
+  min-height:46px;
+  padding:0 16px;
   border:1px solid var(--dms-line-strong);
   background:var(--dms-surface);
-  cursor:pointer;
-  text-align:left;
-  transition:transform .38s cubic-bezier(.22,.8,.3,1), background-color .2s ease-out,
-    border-color .2s ease-out, box-shadow .38s cubic-bezier(.22,.8,.3,1);
-}
-.pf-page .pf-stack__band + .pf-stack__band { margin-top:7px; }
-.pf-page .pf-stack__band:hover { background:var(--dms-surface-alt); }
-.pf-page .pf-stack__band:focus-visible { outline:2px solid var(--dms-accent); outline-offset:3px; }
-/* the pick lifts; its neighbours give it room (the exploded stack) */
-.pf-page .pf-stack__band.is-above { transform:translateY(-9px); }
-.pf-page .pf-stack__band.is-below { transform:translateY(9px); }
-.pf-page .pf-stack__band.is-active {
-  z-index:1;
-  border-color:var(--dms-accent);
-  background:var(--dms-accent);
-  transform:scale(1.035);
-  box-shadow:
-    0 2px 6px -2px color-mix(in oklab, var(--dms-accent), transparent 55%),
-    0 26px 60px -22px color-mix(in oklab, var(--dms-accent), transparent 40%);
-}
-.pf-page .pf-stack__band-idx {
-  color:var(--dms-faint);
-  font-size:.72rem;
-  font-variant-numeric:tabular-nums;
-  transition:color .2s ease-out;
-}
-.pf-page .pf-stack__band-name {
   color:var(--dms-ink);
   font-family:var(--dms-display);
-  font-size:1.06rem;
-  font-weight:650;
-  letter-spacing:-0.012em;
-  transition:color .2s ease-out;
+  font-size:.92rem;
+  font-weight:600;
+  letter-spacing:-0.008em;
 }
-.pf-page .pf-stack__band-tag {
-  color:var(--dms-muted);
+.pf-page .pf-coex__zone-note {
+  padding-top:10px;
+  border-top:1px dashed var(--dms-hairline);
+  color:var(--dms-faint);
   font-family:var(--dms-mono);
-  font-size:.72rem;
-  letter-spacing:.02em;
-  white-space:nowrap;
-  transition:color .2s ease-out;
+  font-size:.68rem;
+  letter-spacing:.03em;
 }
-.pf-page .pf-stack__band.is-active .pf-stack__band-idx { color:oklch(1 0 0 / .72); }
-.pf-page .pf-stack__band.is-active .pf-stack__band-name { color:oklch(1 0 0); }
-.pf-page .pf-stack__band.is-active .pf-stack__band-tag { color:oklch(1 0 0 / .78); }
 
-/* the ground the stack sits on: everything you already run, unchanged */
-.pf-page .pf-stack__ground {
-  margin-top:22px;
+.pf-page .pf-coex__flows { display:flex; flex-direction:column; justify-content:center; gap:clamp(30px, 3.4vw, 44px); }
+.pf-page .pf-coex__flow { position:relative; display:flex; flex-direction:column; align-items:center; gap:14px; }
+/* the label is a chip sitting on the line; the note hangs beneath */
+.pf-page .pf-coex__flow-lab {
+  position:absolute;
+  top:0;
+  left:50%;
+  z-index:1;
+  display:inline-flex;
+  align-items:center;
+  height:22px;
+  padding:0 9px;
+  border:1px solid var(--dms-accent-border);
+  background:var(--dms-surface);
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.64rem;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  white-space:nowrap;
+  transform:translate(-50%, -50%);
+}
+.pf-page .pf-coex__flow-note { color:var(--dms-muted); font-family:var(--dms-mono); font-size:.68rem; letter-spacing:.01em; line-height:1.45; text-align:center; text-wrap:balance; }
+.pf-page .pf-coex__flow .pf-coex__arrow { width:100%; }
+.pf-page .pf-coex__arrow { position:relative; height:1px; background:var(--dms-line-strong); }
+.pf-page .pf-coex__arrow::after {
+  content:"";
+  position:absolute;
+  top:-3.5px;
+  width:6px;
+  height:8px;
+  background:var(--dms-line-strong);
+}
+/* toward Unifize from the left; back out to the records; in from the right */
+.pf-page .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="in"] .pf-coex__arrow::after { right:-1px; clip-path:polygon(0 0, 0 100%, 100% 50%); }
+.pf-page .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="out"] .pf-coex__arrow::after { left:-1px; clip-path:polygon(100% 0, 100% 100%, 0 50%); }
+.pf-page .pf-coex__flows[data-side="right"] .pf-coex__flow .pf-coex__arrow::after { left:-1px; clip-path:polygon(100% 0, 100% 100%, 0 50%); }
+
+.pf-page .pf-coex__core {
+  display:flex;
+  flex-direction:column;
+  background:var(--dms-surface);
+  outline:1px solid var(--dms-accent);
+  outline-offset:-1px;
+  box-shadow:
+    0 2px 6px -2px color-mix(in oklab, var(--dms-accent), transparent 70%),
+    0 30px 70px -34px color-mix(in oklab, var(--dms-accent), transparent 55%);
+}
+.pf-page .pf-coex__core-head {
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:8px;
+  padding:16px clamp(20px, 2.2vw, 28px) 14px;
+  border-bottom:1px solid var(--dms-hairline);
+  background:color-mix(in oklab, var(--dms-accent), #fff 93%);
+}
+.pf-page .pf-coex__core-logo { display:block; width:auto; height:22px; }
+.pf-page .pf-coex__core-name {
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.64rem;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.pf-page .pf-coex__core-body {
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  padding:6px clamp(20px, 2.2vw, 28px) clamp(16px, 1.8vw, 22px);
+}
+.pf-page .pf-coex__core-rows { display:flex; flex-direction:column; margin:0; padding:0; list-style:none; }
+.pf-page .pf-coex__core-row {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 0;
+  border-bottom:1px solid var(--dms-hairline);
+  color:var(--dms-ink-2);
+  font-size:.9rem;
+  line-height:1.45;
+}
+.pf-page .pf-coex__core-row::before { content:""; flex:none; width:7px; height:7px; background:var(--dms-accent); }
+.pf-page .pf-coex__core-ai {
+  margin:auto 0 0;
+  padding-top:14px;
+  color:var(--dms-muted);
+  font-size:.82rem;
+  line-height:1.55;
+  text-wrap:pretty;
+}
+
+/* the field under the diagram: the product arcade's brand-blue plate
+ * (hero-arcade.css / arcade.css), reused so the platform's placement
+ * diagram and the product shots read as one family. Geometry mirrors the
+ * .stx-arc-field pieces, nudged so none of them sit under a label. */
+.pf-page .pf-coex__field {
+  position:relative;
+  overflow:hidden;
+  padding:clamp(36px, 4vw, 60px) clamp(24px, 3.2vw, 52px) 0;
+  background:linear-gradient(
+    152deg,
+    color-mix(in oklab, var(--dms-accent), #fff 6%),
+    var(--dms-accent) 46%,
+    color-mix(in oklab, var(--dms-accent), #08102c 30%)
+  );
+  box-shadow:inset 0 0 0 1px oklch(1 0 0 / 0.08);
+}
+.pf-page .pf-coex__field-geo { position:absolute; inset:0; pointer-events:none; }
+.pf-page .pf-coex__field-geo i { position:absolute; display:block; }
+.pf-page .pf-coex__field-geo i:nth-child(1) {
+  top:-96px;
+  left:-88px;
+  width:280px;
+  height:280px;
+  box-shadow:inset 0 0 0 2px oklch(1 0 0 / 0.14);
+}
+.pf-page .pf-coex__field-geo i:nth-child(2) {
+  right:-150px;
+  bottom:-190px;
+  width:460px;
+  height:460px;
+  border-radius:50%;
+  box-shadow:inset 0 0 0 2px oklch(1 0 0 / 0.12);
+}
+.pf-page .pf-coex__field-geo i:nth-child(3) {
+  top:-16px;
+  right:-16px;
+  width:76px;
+  height:76px;
+  background:oklch(1 0 0 / 0.1);
+}
+.pf-page .pf-coex__field-geo i:nth-child(4) {
+  bottom:22px;
+  left:-34px;
+  width:150px;
+  height:10px;
+  background:oklch(1 0 0 / 0.1);
+}
+.pf-page .pf-coex__field .pf-coex__diagram { position:relative; z-index:1; }
+
+/* the diagram's ink, retuned for the blue ground: labels and hairlines go
+ * white at reduced opacity, tiles and the core stay white cards */
+.pf-page .pf-coex__field .pf-coex__zone-lab { color:oklch(1 0 0 / 0.9); }
+.pf-page .pf-coex__field .pf-coex__flow-lab {
+  border-color:oklch(1 0 0 / 0.32);
+  background:var(--dms-accent);
+  box-shadow:inset 0 0 0 40px oklch(1 0 0 / 0.16);
+  color:oklch(1 0 0 / 0.95);
+}
+.pf-page .pf-coex__field .pf-coex__zone-note,
+.pf-page .pf-coex__field .pf-coex__flow-note { color:oklch(1 0 0 / 0.66); }
+.pf-page .pf-coex__field .pf-coex__zone-note { border-top-color:oklch(1 0 0 / 0.28); }
+
+/* tiles: lifted white cards with the same square marker the core rows use,
+ * so the three columns read as one vocabulary */
+.pf-page .pf-coex__field .pf-coex__tiles { gap:8px; }
+.pf-page .pf-coex__field .pf-coex__tile { min-height:48px; }
+.pf-page .pf-coex__field .pf-coex__tile {
+  gap:12px;
+  padding:0 16px 0 18px;
+  border-color:transparent;
+  box-shadow:
+    0 1px 0 oklch(0 0 0 / 0.1),
+    0 12px 28px -16px oklch(0 0 0 / 0.45);
+}
+.pf-page .pf-coex__tile-icon { flex:none; width:16px; height:16px; fill:var(--dms-accent); }
+
+/* flows: a hairline connector with an origin mark and a solid head */
+.pf-page .pf-coex__field .pf-coex__flow { gap:8px; }
+.pf-page .pf-coex__field .pf-coex__arrow,
+.pf-page .pf-coex__field .pf-coex__arrow::after { background:oklch(1 0 0 / 0.6); }
+.pf-page .pf-coex__field .pf-coex__arrow::after { top:-4px; width:7px; height:9px; background:oklch(1 0 0 / 0.95); }
+.pf-page .pf-coex__field .pf-coex__arrow::before {
+  content:"";
+  position:absolute;
+  top:-2.5px;
+  width:6px;
+  height:6px;
+  background:oklch(1 0 0 / 0.95);
+}
+.pf-page .pf-coex__field .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="in"] .pf-coex__arrow::before { left:0; }
+.pf-page .pf-coex__field .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="out"] .pf-coex__arrow::before { right:0; }
+.pf-page .pf-coex__field .pf-coex__flows[data-side="right"] .pf-coex__flow .pf-coex__arrow::before { right:0; }
+
+/* the core: the one object with a halo, so the eye lands on the layer */
+.pf-page .pf-coex__field .pf-coex__core {
+  outline:0;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.08),
+    0 0 0 8px oklch(1 0 0 / 0.1),
+    0 36px 80px -30px oklch(0 0 0 / 0.6);
+}
+
+/* the ground line becomes the field's footer strip */
+.pf-page .pf-coex__field .pf-coex__ground {
+  position:relative;
+  z-index:1;
+  margin:clamp(30px, 3.4vw, 48px) 0 0;
+  padding:16px 0 clamp(18px, 2vw, 24px);
+  border-top:1px solid oklch(1 0 0 / 0.2);
+  color:oklch(1 0 0 / 0.72);
+}
+
+.pf-page .pf-coex__ground {
+  margin:22px 0 0;
   padding-top:14px;
   border-top:1px dashed var(--dms-line-strong);
   color:var(--dms-faint);
@@ -255,107 +585,678 @@
   text-align:center;
 }
 
-/* the active band, read out */
-.pf-page .pf-stack__detail { min-height:400px; display:flex; align-items:center; }
-.pf-page .pf-stack__detail-inner { display:flex; flex-direction:column; gap:18px; }
-@media (prefers-reduced-motion: no-preference) {
-  .pf-page .pf-stack__detail-inner { animation:pf-fade .32s var(--dms-ease, ease-out); }
-}
-@keyframes pf-fade { from { opacity:0; transform:translateY(10px); } }
-.pf-page .pf-stack__detail-tag {
-  color:var(--dms-accent-text);
-  font-family:var(--dms-mono);
-  font-size:.74rem;
-  letter-spacing:.02em;
-}
-.pf-page .pf-stack__detail-name {
-  margin:0;
-  color:var(--dms-ink);
-  font-family:var(--dms-display);
-  font-size:clamp(1.6rem, 2.5vw, 2.4rem);
-  font-weight:560;
-  letter-spacing:-0.018em;
-}
-.pf-page .pf-stack__detail-body {
-  max-width:56ch;
-  margin:0;
-  color:var(--dms-ink-2);
-  font-size:1rem;
-  line-height:1.65;
-  text-wrap:pretty;
-}
-.pf-page .pf-stack__detail-note { margin:0; color:var(--dms-muted); font-size:.88rem; line-height:1.55; }
-
-.pf-page .pf-stack__products {
+.pf-page .pf-coex__notes {
   display:grid;
-  grid-template-columns:repeat(2, minmax(0, 1fr));
+  grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:1px;
-  margin:8px 0 0;
+  margin:clamp(40px, 4.5vw, 60px) 0 0;
   padding:0;
   border:1px solid var(--dms-hairline);
   background:var(--dms-hairline);
   list-style:none;
 }
-.pf-page .pf-stack__product {
+.pf-page .pf-coex__note {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:clamp(22px, 2.4vw, 32px);
+  background:var(--dms-surface);
+}
+.pf-page .pf-coex__note-lab {
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+.pf-page .pf-coex__note-body { margin:0; color:var(--dms-ink-2); font-size:.92rem; line-height:1.6; text-wrap:pretty; }
+
+/* the authored moment: the flows draw toward the governed layer as the
+ * diagram enters; the core settles last */
+.dms[data-motion] .pf-coex .pf-coex__tile { transition:opacity .5s ease-out, transform .6s var(--dms-ease); }
+.dms[data-motion] .pf-coex .pf-coex__tile:nth-child(2) { transition-delay:.07s; }
+.dms[data-motion] .pf-coex .pf-coex__tile:nth-child(3) { transition-delay:.14s; }
+.dms[data-motion] .pf-coex .pf-coex__tile:nth-child(4) { transition-delay:.21s; }
+.dms[data-motion] .pf-coex .pf-coex__tile:nth-child(5) { transition-delay:.28s; }
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__tile { opacity:0; transform:translateY(12px); }
+.dms[data-motion] .pf-coex .pf-coex__zone-lab,
+.dms[data-motion] .pf-coex .pf-coex__zone-note { transition:opacity .5s ease-out .3s; }
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__zone-lab,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__zone-note { opacity:0; }
+.dms[data-motion] .pf-coex .pf-coex__arrow { transition:transform .7s var(--dms-ease) .55s; }
+.dms[data-motion] .pf-coex .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="in"] .pf-coex__arrow { transform-origin:left; }
+.dms[data-motion] .pf-coex .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="out"] .pf-coex__arrow { transform-origin:right; }
+.dms[data-motion] .pf-coex .pf-coex__flows[data-side="right"] .pf-coex__arrow { transform-origin:right; }
+.dms[data-motion] .pf-coex .pf-coex__flow:nth-child(2) .pf-coex__arrow { transition-delay:.7s; }
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__arrow { transform:scaleX(0); }
+.dms[data-motion] .pf-coex .pf-coex__flow-lab,
+.dms[data-motion] .pf-coex .pf-coex__flow-note { transition:opacity .5s ease-out .85s; }
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__flow-lab,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__flow-note { opacity:0; }
+.dms[data-motion] .pf-coex .pf-coex__core { transition:opacity .6s ease-out .95s, transform .7s var(--dms-ease) .95s, box-shadow .8s ease-out 1.3s; }
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__core { opacity:0; transform:translateY(10px); box-shadow:none; }
+/* the hidden state lands instantly (the reveal script tags it after load);
+ * only the way back in is animated */
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__tile,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__zone-lab,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__zone-note,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__arrow,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__flow-lab,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__flow-note,
+.dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__core { transition:none; }
+
+/* ---------------------------------------------------- 04 · the stack object */
+/* ----------------------------------------------------------- 04 · the stack
+ * One white sheet: the three bands as a tab list on the left (the pick
+ * opens to its line and its link), a quiet tinted panel on the right that
+ * holds a short stack of plain cards, and a trust strip tucked underneath. */
+.pf-page .pf-stack { margin-top:clamp(52px, 6vw, 88px); }
+.pf-page .pf-stack__card {
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:minmax(300px, .82fr) minmax(0, 1.18fr);
+  background:var(--dms-surface);
+  border:1px solid var(--dms-hairline);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 30px 70px -40px oklch(0 0 0 / 0.22);
+}
+
+/* ---- the tab list ---- */
+.pf-page .pf-stack__tabs { display:flex; flex-direction:column; border-right:1px solid var(--dms-hairline); }
+.pf-page .pf-stack__tab {
+  flex:1 1 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(24px, 2.8vw, 36px) clamp(20px, 2.6vw, 40px);
+  border-bottom:1px solid var(--dms-hairline);
+  text-align:center;
+}
+.pf-page .pf-stack__tab:last-child { border-bottom:0; }
+.pf-page .pf-stack__tab-btn {
+  margin:0;
+  padding:0;
+  border:0;
+  background:none;
+  color:var(--dms-faint);
+  font-family:var(--dms-display);
+  font-size:clamp(1.25rem, 1.6vw, 1.5rem);
+  font-weight:500;
+  letter-spacing:-0.012em;
+  line-height:1.2;
+  font-kerning:normal;
+  font-feature-settings:"kern" 1, "liga" 1;
+  text-rendering:optimizeLegibility;
+  cursor:pointer;
+  transition:color .28s ease-out;
+}
+.pf-page .pf-stack__tab-btn:hover { color:var(--dms-ink-2); }
+.pf-page .pf-stack__tab-btn:focus-visible { outline:2px solid var(--dms-accent); outline-offset:6px; }
+.pf-page .pf-stack__tab.is-active .pf-stack__tab-btn { color:var(--dms-ink); cursor:default; }
+
+/* the open block: a measured reveal (grid rows 0fr to 1fr), the copy
+ * fading in a beat after the space has opened */
+.pf-page .pf-stack__tab-open {
+  display:grid;
+  grid-template-rows:0fr;
+  width:100%;
+  opacity:0;
+  transition:grid-template-rows .46s var(--dms-ease, ease), opacity .22s ease-out;
+}
+.pf-page .pf-stack__tab.is-active .pf-stack__tab-open {
+  grid-template-rows:1fr;
+  opacity:1;
+  transition:grid-template-rows .46s var(--dms-ease, ease), opacity .3s ease-out .16s;
+}
+.pf-page .pf-stack__tab-open-inner {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  min-height:0;
+  overflow:hidden;
+}
+.pf-page .pf-stack__tab-desc {
+  max-width:30ch;
+  margin:14px 0 0;
+  color:var(--dms-muted);
+  font-size:1.02rem;
+  line-height:1.5;
+  text-wrap:pretty;
+}
+.pf-page .pf-stack__tab-link {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:2px;
+  color:var(--dms-ink);
+  font-size:.96rem;
+  font-weight:500;
+  text-decoration:none;
+  transition:color .16s ease-out;
+}
+.pf-page .pf-stack__tab-link svg { width:12px; height:12px; }
+.pf-page .pf-stack__tab-link:hover { color:var(--dms-accent-text); }
+
+/* ---- the panel: a quiet tinted field holding the cards ---- */
+.pf-page .pf-stack__panel {
+  position:relative;
   display:flex;
   flex-direction:column;
   justify-content:center;
-  gap:4px;
-  min-height:88px;
-  padding:18px 20px;
-  background:var(--dms-surface);
-  text-decoration:none;
-  transition:background-color 160ms ease-out;
+  min-height:520px;
+  padding:clamp(36px, 4.5vw, 72px) clamp(28px, 5vw, 84px);
+  background:
+    radial-gradient(110% 70% at 18% 0%, var(--dms-accent-tint), transparent 62%),
+    radial-gradient(70% 50% at 100% 100%, color-mix(in oklab, var(--dms-accent-tint), transparent 40%), transparent 70%),
+    var(--dms-surface-quiet);
 }
-.pf-page .pf-stack__product:hover { background:var(--dms-accent-tint); }
-.pf-page .pf-stack__product-code {
+.pf-page .pf-stack__panels { display:grid; width:100%; max-width:520px; margin:0 auto; }
+.pf-page .pf-stack__cards { grid-area:1 / 1; min-width:0; display:flex; flex-direction:column; gap:22px; }
+.pf-page .pf-stack__cards[data-active="false"] { visibility:hidden; opacity:0; pointer-events:none; }
+.pf-page .pf-stack__cap {
+  margin:0 0 -6px;
   color:var(--dms-accent-text);
   font-family:var(--dms-mono);
-  font-size:.74rem;
-  font-weight:700;
-  letter-spacing:.04em;
-}
-.pf-page .pf-stack__product-name {
-  color:var(--dms-ink);
-  font-family:var(--dms-display);
-  font-size:.94rem;
+  font-size:.7rem;
   font-weight:600;
-  letter-spacing:-0.008em;
+  letter-spacing:.05em;
+  text-transform:uppercase;
 }
+.pf-page .pf-mini {
+  border:1px solid var(--dms-hairline);
+  border-radius:4px;
+  background:var(--dms-surface);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 14px 30px -22px oklch(0 0 0 / 0.25);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pf-page .pf-stack__cards[data-active="true"] .pf-mini { animation:pf-mini-in .5s var(--dms-ease, ease-out) both; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-mini:nth-of-type(2) { animation-delay:.08s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-mini:nth-of-type(3) { animation-delay:.16s; }
+}
+@keyframes pf-mini-in { from { opacity:0; transform:translateY(10px); } }
+.pf-page .pf-mini__head {
+  display:flex;
+  align-items:center;
+  gap:9px;
+  min-height:44px;
+  padding:0 16px;
+  border-bottom:1px solid var(--dms-hairline);
+  border-radius:4px 4px 0 0;
+  background:var(--dms-surface-alt);
+}
+.pf-page .pf-mini__icon { flex:none; width:15px; height:15px; color:var(--dms-faint); }
+.pf-page .pf-mini__icon svg { display:block; width:100%; height:100%; }
+.pf-page .pf-mini__kicker { color:var(--dms-faint); font-size:.9rem; white-space:nowrap; }
+.pf-page .pf-mini__name { color:var(--dms-ink); font-size:.9rem; font-weight:500; letter-spacing:-0.005em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pf-page .pf-mini__aside { margin-left:auto; flex:none; display:inline-flex; align-items:center; }
+.pf-page .pf-mini__src { color:var(--dms-faint); font-family:var(--dms-mono); font-size:.66rem; letter-spacing:.02em; white-space:nowrap; }
+.pf-page .pf-mini__body { padding:13px 16px 14px; color:var(--dms-ink-2); font-size:.9rem; line-height:1.45; }
 
-.pf-page .pf-stack__chips-row { display:flex; flex-direction:column; gap:10px; margin-top:6px; }
-.pf-page .pf-stack__chips-lab {
-  color:var(--dms-faint);
-  font-family:var(--dms-mono);
-  font-size:.72rem;
-  letter-spacing:.02em;
-}
-.pf-page .pf-stack__chips { display:flex; flex-wrap:wrap; gap:8px; margin:0; padding:0; list-style:none; }
-.pf-page .pf-stack__chip {
+/* shared bits: chips, buttons */
+.pf-page .pf-mini__chip {
   display:inline-flex;
   align-items:center;
-  min-height:34px;
-  padding:6px 11px;
+  height:22px;
+  padding:0 8px;
   border:1px solid var(--dms-hairline);
   background:var(--dms-surface);
+  color:var(--dms-muted);
+  font-family:var(--dms-mono);
+  font-size:.64rem;
+  letter-spacing:.03em;
+  white-space:nowrap;
+}
+.pf-page .pf-mini__chip[data-tone="ok"] { border-color:transparent; background:var(--dms-accent-tint); color:var(--dms-accent-text); }
+.pf-page .pf-mini__btn {
+  display:inline-flex;
+  align-items:center;
+  height:28px;
+  padding:0 12px;
+  border:1px solid var(--dms-line-strong);
+  color:var(--dms-ink);
+  font-size:.8rem;
+  font-weight:500;
+}
+.pf-page .pf-mini__btn.is-primary { border-color:var(--dms-accent); background:var(--dms-accent); color:#fff; }
+
+/* 01 · the thread line, the draft, the closure stats */
+.pf-page .pf-mini__msg { display:flex; gap:11px; align-items:flex-start; }
+.pf-page .pf-mini__avatar {
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  background:var(--dms-surface-sunk);
   color:var(--dms-ink-2);
   font-family:var(--dms-mono);
-  font-size:.76rem;
+  font-size:.62rem;
+  font-weight:600;
   letter-spacing:.02em;
 }
+.pf-page .pf-mini__msg-text { display:flex; flex-direction:column; gap:2px; }
+.pf-page .pf-mini__msg-meta { color:var(--dms-faint); font-size:.76rem; }
+.pf-page .pf-mini__draft {
+  margin:0 0 11px;
+  padding:9px 12px;
+  border-left:2px solid var(--dms-accent);
+  background:var(--dms-surface-quiet);
+  color:var(--dms-ink-2);
+  font-size:.86rem;
+}
+.pf-page .pf-mini__actions { display:flex; align-items:center; gap:8px; }
+.pf-page .pf-mini__actions-note { margin-left:auto; color:var(--dms-faint); font-family:var(--dms-mono); font-size:.64rem; letter-spacing:.02em; }
+.pf-page .pf-mini__stats { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:14px; margin:0; padding:0; list-style:none; }
+.pf-page .pf-mini__stats li { display:flex; flex-direction:column; gap:2px; }
+.pf-page .pf-mini__stats li + li { padding-left:14px; border-left:1px solid var(--dms-hairline); }
+.pf-page .pf-mini__stats b { color:var(--dms-ink); font-family:var(--dms-display); font-size:1.15rem; font-weight:600; letter-spacing:-0.015em; font-variant-numeric:tabular-nums; }
+.pf-page .pf-mini__stats span { color:var(--dms-faint); font-size:.74rem; line-height:1.35; }
 
-/* ------------------------------------------------------- 04 · measured (ink) */
+/* 02 · the four products: one live, three waiting, one foundation */
+.pf-page .pf-suite { display:flex; flex-direction:column; }
+.pf-page .pf-suite__grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin:0; padding:0; list-style:none; }
+.pf-page .pf-suite__card {
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  min-height:138px;
+  padding:15px 16px 15px;
+  border:1px solid var(--dms-hairline);
+  border-radius:4px;
+  background:var(--dms-surface);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 14px 30px -22px oklch(0 0 0 / 0.25);
+}
+.pf-page .pf-suite__card[data-state="live"] { border-color:var(--dms-accent); }
+.pf-page .pf-suite__card[data-state="add"] { border-style:dashed; border-color:var(--dms-line-strong); box-shadow:none; background:color-mix(in oklab, var(--dms-surface), transparent 30%); }
+@media (prefers-reduced-motion: no-preference) {
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__card { animation:pf-mini-in .5s var(--dms-ease, ease-out) both; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__card:nth-child(2) { animation-delay:.06s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__card:nth-child(3) { animation-delay:.12s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__card:nth-child(4) { animation-delay:.18s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__drops,
+  .pf-page .pf-stack__cards[data-active="true"] .pf-suite__base { animation:pf-mini-in .5s var(--dms-ease, ease-out) both; animation-delay:.26s; }
+}
+.pf-page .pf-suite__top { display:flex; align-items:center; gap:10px; }
+.pf-page .pf-suite__glyph {
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:32px;
+  height:32px;
+  background:var(--dms-accent-tint);
+  color:var(--dms-accent);
+}
+.pf-page .pf-suite__card[data-state="live"] .pf-suite__glyph { background:var(--dms-accent); color:#fff; }
+.pf-page .pf-suite__card[data-state="add"] .pf-suite__glyph { background:var(--dms-surface-alt); color:var(--dms-muted); }
+.pf-page .pf-suite__glyph svg { width:17px; height:17px; fill:currentColor; }
+.pf-page .pf-suite__code { color:var(--dms-accent-text); font-family:var(--dms-mono); font-size:.72rem; font-weight:700; letter-spacing:.06em; }
+.pf-page .pf-suite__card[data-state="add"] .pf-suite__code { color:var(--dms-muted); }
+.pf-page .pf-suite__state {
+  margin-left:auto;
+  display:inline-flex;
+  align-items:center;
+  height:20px;
+  padding:0 7px;
+  font-family:var(--dms-mono);
+  font-size:.62rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.pf-page .pf-suite__card[data-state="live"] .pf-suite__state { background:var(--dms-accent-tint); color:var(--dms-accent-text); }
+.pf-page .pf-suite__card[data-state="live"] .pf-suite__state::before { content:""; width:6px; height:6px; margin-right:6px; border-radius:50%; background:var(--dms-accent); }
+.pf-page .pf-suite__card[data-state="add"] .pf-suite__state { border:1px dashed var(--dms-line-strong); color:var(--dms-faint); }
+.pf-page .pf-suite__name { color:var(--dms-ink); font-family:var(--dms-display); font-size:1rem; font-weight:600; letter-spacing:-0.012em; line-height:1.25; }
+.pf-page .pf-suite__card[data-state="add"] .pf-suite__name { color:var(--dms-ink-2); }
+.pf-page .pf-suite__live { margin-top:auto; color:var(--dms-ink-2); font-size:.82rem; line-height:1.4; font-variant-numeric:tabular-nums; }
+.pf-page .pf-suite__records { display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; }
+.pf-page .pf-suite__record {
+  display:inline-flex;
+  align-items:center;
+  height:22px;
+  padding:0 8px;
+  border:1px solid var(--dms-hairline);
+  color:var(--dms-muted);
+  font-family:var(--dms-mono);
+  font-size:.64rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+/* the foundation: two drops from the bottom row onto one accent bar */
+.pf-page .pf-suite__drops { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; height:22px; }
+.pf-page .pf-suite__drops i { position:relative; display:block; width:1px; height:100%; margin:0 auto; background:var(--dms-line-strong); }
+.pf-page .pf-suite__drops i::after { content:""; position:absolute; left:-3px; bottom:-1px; width:7px; height:7px; background:var(--dms-accent); }
+.pf-page .pf-suite__base {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:12px 16px;
+  background:var(--dms-surface);
+  outline:1px solid var(--dms-accent);
+  outline-offset:-1px;
+  box-shadow:0 2px 6px -2px color-mix(in oklab, var(--dms-accent), transparent 70%);
+}
+.pf-page .pf-suite__base-lab { flex:none; color:var(--dms-accent-text); font-family:var(--dms-mono); font-size:.68rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+.pf-page .pf-suite__base-rows { display:grid; grid-template-columns:repeat(2, auto); gap:6px 18px; margin:0 0 0 auto; padding:0; list-style:none; }
+.pf-page .pf-suite__base-rows li { display:flex; align-items:center; gap:7px; color:var(--dms-ink-2); font-size:.78rem; white-space:nowrap; }
+.pf-page .pf-suite__base-rows li::before { content:""; width:6px; height:6px; background:var(--dms-accent); }
+
+/* 03 · the eight blocks, grouped by what they shape, under one example */
+.pf-page .pf-blocks { display:flex; flex-direction:column; gap:16px; }
+.pf-page .pf-blocks__example {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:14px 16px 12px;
+  border:1px dashed var(--dms-line-strong);
+}
+.pf-page .pf-blocks__example-lab { color:var(--dms-faint); font-family:var(--dms-mono); font-size:.66rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+.pf-page .pf-blocks__rail { display:flex; align-items:flex-start; margin:0; padding:0; list-style:none; }
+.pf-page .pf-blocks__step { display:flex; flex:1; align-items:flex-start; min-width:0; }
+.pf-page .pf-blocks__step:last-child { flex:0 0 auto; }
+.pf-page .pf-blocks__pill { display:flex; flex-direction:column; align-items:center; gap:5px; }
+.pf-page .pf-blocks__pill-name {
+  display:inline-flex;
+  align-items:center;
+  height:30px;
+  padding:0 14px;
+  border:1px solid var(--dms-line-strong);
+  background:var(--dms-surface);
+  color:var(--dms-ink);
+  font-size:.82rem;
+  font-weight:500;
+  white-space:nowrap;
+}
+.pf-page .pf-blocks__pill-kind,
+.pf-page .pf-blocks__link-kind { color:var(--dms-faint); font-family:var(--dms-mono); font-size:.6rem; letter-spacing:.05em; text-transform:uppercase; }
+.pf-page .pf-blocks__link { position:relative; flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; padding-top:15px; }
+.pf-page .pf-blocks__link::before { content:""; position:absolute; top:15px; left:0; right:0; height:1px; background:var(--dms-line-strong); }
+.pf-page .pf-blocks__diamond { position:relative; z-index:1; display:block; width:9px; height:9px; margin-top:-4px; border:1px solid var(--dms-accent); background:var(--dms-surface); transform:rotate(45deg); }
+.pf-page .pf-blocks__link-kind { margin-top:3px; }
+
+.pf-page .pf-blocks__groups { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
+.pf-page .pf-blocks__group { display:flex; flex-direction:column; gap:8px; }
+.pf-page .pf-blocks__group-lab { color:var(--dms-accent-text); font-family:var(--dms-mono); font-size:.66rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+.pf-page .pf-blocks__list { display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none; }
+.pf-page .pf-blocks__card {
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  padding:11px 12px 11px 11px;
+  border:1px solid var(--dms-hairline);
+  border-radius:4px;
+  background:var(--dms-surface);
+  box-shadow:
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 14px 30px -22px oklch(0 0 0 / 0.25);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pf-page .pf-stack__cards[data-active="true"] .pf-blocks__example { animation:pf-mini-in .5s var(--dms-ease, ease-out) both; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-blocks__card { animation:pf-mini-in .5s var(--dms-ease, ease-out) both; animation-delay:.1s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-blocks__card:nth-child(2) { animation-delay:.16s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-blocks__card:nth-child(3) { animation-delay:.22s; }
+  .pf-page .pf-stack__cards[data-active="true"] .pf-blocks__card:nth-child(4) { animation-delay:.28s; }
+}
+.pf-page .pf-blocks__glyph {
+  flex:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:30px;
+  height:30px;
+  background:var(--dms-accent-tint);
+  color:var(--dms-accent);
+}
+.pf-page .pf-blocks__glyph .pf-mini__icon { width:15px; height:15px; color:inherit; }
+.pf-page .pf-blocks__text { display:flex; flex-direction:column; gap:1px; min-width:0; }
+.pf-page .pf-blocks__name { color:var(--dms-ink); font-family:var(--dms-display); font-size:.9rem; font-weight:600; letter-spacing:-0.01em; line-height:1.25; }
+.pf-page .pf-blocks__line { color:var(--dms-muted); font-size:.76rem; line-height:1.4; }
+
+/* ---- the trust strip under the sheet ---- */
+.pf-page .pf-stack__trust {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  margin:0 clamp(12px, 2.4vw, 44px);
+  padding:clamp(24px, 2.8vw, 36px) clamp(24px, 3.4vw, 56px);
+  background:var(--dms-surface-sunk);
+}
+.pf-page .pf-stack__trust-lead { margin:0; color:var(--dms-muted); font-size:1.02rem; line-height:1.5; }
+.pf-page .pf-stack__trust-link {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-left:14px;
+  color:var(--dms-ink);
+  font-weight:500;
+  text-decoration:none;
+  white-space:nowrap;
+}
+.pf-page .pf-stack__trust-link svg { width:12px; height:12px; }
+.pf-page .pf-stack__trust-link:hover { color:var(--dms-accent-text); }
+.pf-page .pf-stack__badges { display:flex; gap:clamp(22px, 3vw, 44px); margin:0; padding:0; list-style:none; }
+.pf-page .pf-stack__badge {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  color:var(--dms-muted);
+  font-family:var(--dms-mono);
+  font-size:.72rem;
+  letter-spacing:.03em;
+  white-space:nowrap;
+}
+.pf-page .pf-stack__badge-seal { width:44px; height:44px; color:var(--dms-faint); }
+.pf-page .pf-stack__badge-seal svg { display:block; width:100%; height:100%; }
+
+/* ------------------------------------------------------- 05 · measured (ink)
+ * The measured object: the fall (median closure falling away from your own
+ * baseline, week by week) plus three companion ledgers - the problem
+ * section's linework idiom (hairline baselines, square markers, mono
+ * labels, one accent) translated to ink. */
 .pf-page .pf-measured-section { background:var(--dms-d-bg); }
-.pf-page .pf-measured-scene {
-  position:relative;
-  overflow:hidden;
+.pf-page .pf-meas {
+  display:grid;
+  /* same three tracks as the proof steps below, so the column lines meet */
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:1px;
   margin-top:clamp(52px, 6vw, 88px);
-  outline:1px solid oklch(1 0 0 / .14);
+  border:1px solid var(--pf-dark-line);
+  background:var(--pf-dark-line);
+}
+.pf-page .pf-meas__head { display:flex; flex-direction:column; gap:11px; }
+.pf-page .pf-meas__tag {
+  color:var(--dms-d-accent);
+  font-family:var(--dms-mono);
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.pf-page .pf-meas__v {
+  color:var(--dms-d-ink);
+  font-family:var(--dms-display);
+  font-weight:560;
+  letter-spacing:-0.025em;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.pf-page .pf-meas__l {
+  max-width:36ch;
+  color:var(--dms-d-ink-2);
+  font-size:.92rem;
+  line-height:1.55;
+  text-wrap:pretty;
+}
+.pf-page .pf-meas__cap {
+  margin:18px 0 0;
+  color:var(--dms-d-ink-3);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+
+/* the fall: dashed baseline, staircase down, the reclaimed gap labeled */
+.pf-page .pf-fall {
+  grid-column:span 2;
+  display:flex;
+  flex-direction:column;
+  margin:0;
+  padding:clamp(26px, 3vw, 42px);
+  background:var(--dms-d-bg-2);
+}
+.pf-page .pf-fall .pf-meas__v { font-size:clamp(2.4rem, 3.6vw, 3.4rem); }
+.pf-page .pf-fall__fig { flex:1; display:flex; align-items:center; margin-top:clamp(20px, 2.2vw, 32px); }
+.pf-page .pf-fall__svg { display:block; width:100%; color:var(--dms-d-ink-2); }
+.pf-page .pf-fall__base { stroke:var(--dms-d-ink-3); stroke-width:1; stroke-dasharray:3 4; opacity:.75; }
+.pf-page .pf-fall__baselab,
+.pf-page .pf-fall__lab {
+  font-family:var(--dms-mono);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  fill:var(--dms-d-ink-3);
+}
+.pf-page .pf-fall__lab { font-size:10px; }
+.pf-page .pf-fall__path { fill:none; stroke:currentColor; stroke-width:1.5; stroke-dasharray:1; stroke-dashoffset:0; }
+.pf-page .pf-fall__pt { fill:var(--dms-d-bg-2); stroke:currentColor; stroke-width:1.5; }
+.pf-page .pf-fall__wk.is-key .pf-fall__pt { fill:var(--dms-d-accent); stroke:var(--dms-d-accent); }
+.pf-page .pf-fall__wk.is-key .pf-fall__lab { fill:var(--dms-d-accent); }
+.pf-page .pf-fall__floor { stroke:var(--dms-d-border-2); stroke-width:1; }
+.pf-page .pf-fall__delta { stroke:var(--dms-d-accent); stroke-width:1; stroke-dasharray:3 4; opacity:.85; }
+.pf-page .pf-fall__deltalab {
+  font-family:var(--dms-mono);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  fill:var(--dms-d-accent);
+}
+.pf-page .pf-fall__deltasub {
+  font-family:var(--dms-mono);
+  font-size:10px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  fill:var(--dms-d-ink-3);
+}
+.pf-page .pf-fall__now {
+  font-family:var(--dms-mono);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  fill:var(--dms-d-accent);
+}
+
+/* the companion ledgers: threads, waiting share, evidence completeness */
+.pf-page .pf-meas__side { display:grid; grid-template-rows:repeat(3, minmax(0, 1fr)); gap:1px; }
+.pf-page .pf-kpi {
+  display:flex;
+  flex-direction:column;
+  padding:clamp(20px, 2.2vw, 28px);
+  background:var(--dms-d-bg-2);
+}
+.pf-page .pf-kpi .pf-meas__head { gap:8px; }
+.pf-page .pf-kpi .pf-meas__v { font-size:1.7rem; }
+.pf-page .pf-kpi__fig { margin-top:auto; padding-top:16px; }
+
+/* 24 threads, stacked by team (the recall-week grammar, in ink) */
+.pf-page .pf-th__grid {
+  display:flex;
+  align-items:flex-end;
+  gap:clamp(8px, 1vw, 14px);
+  padding-bottom:6px;
+  border-bottom:1px solid var(--dms-d-border-2);
+}
+.pf-page .pf-th__team { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0; }
+.pf-page .pf-th__stack { display:flex; flex-direction:column-reverse; gap:3px; width:min(100%, 16px); }
+.pf-page .pf-th__stack i { height:7px; background:color-mix(in oklab, var(--dms-d-accent), transparent 55%); }
+.pf-page .pf-th__stack i:first-child { background:var(--dms-d-accent); }
+.pf-page .pf-th__team small { color:var(--dms-d-ink-3); font-family:var(--dms-mono); font-size:.64rem; letter-spacing:.05em; }
+
+/* waiting share: the leak ledger, after - 9% of open time */
+.pf-page .pf-wait__track {
+  display:flex;
+  height:16px;
+  background:var(--dms-d-bg-3);
+  outline:1px solid var(--dms-d-border-2);
   outline-offset:-1px;
 }
+.pf-page .pf-wait__seg { width:9%; background:var(--dms-d-accent); }
+.pf-page .pf-wait__rule {
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  padding-top:6px;
+  border-top:1px solid var(--dms-d-border-2);
+  color:var(--dms-d-ink-3);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.03em;
+}
+
+/* evidence: fifty sign-offs on a tally strip, one shy of complete */
+.pf-page .pf-tally { display:flex; gap:3px; }
+.pf-page .pf-tally i { flex:1; height:24px; background:color-mix(in oklab, var(--dms-d-accent), transparent 55%); }
+.pf-page .pf-tally i.is-open { background:transparent; box-shadow:inset 0 0 0 1px var(--dms-d-ink-3); }
+
+/* draw-in, keyed off the shared reveal layer: the fall path draws, weeks
+ * land one by one, the reclaimed gap labels itself last; ledgers wipe in */
+.dms[data-motion] .pf-fall .pf-fall__path { transition:stroke-dashoffset 1.1s var(--dms-ease) .25s; }
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__path { stroke-dashoffset:1; }
+.dms[data-motion] .pf-fall .pf-fall__wk { transition:opacity .45s ease-out; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(1) { transition-delay:.3s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(2) { transition-delay:.36s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(3) { transition-delay:.42s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(4) { transition-delay:.48s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(5) { transition-delay:.54s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(6) { transition-delay:.6s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(7) { transition-delay:.66s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(8) { transition-delay:.72s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(9) { transition-delay:.78s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(10) { transition-delay:.84s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(11) { transition-delay:.9s; }
+.dms[data-motion] .pf-fall .pf-fall__wk:nth-of-type(12) { transition-delay:.96s; }
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__wk { opacity:0; }
+.dms[data-motion] .pf-fall .pf-fall__delta,
+.dms[data-motion] .pf-fall .pf-fall__deltalab,
+.dms[data-motion] .pf-fall .pf-fall__deltasub,
+.dms[data-motion] .pf-fall .pf-fall__now { transition:opacity .6s ease-out 1.15s; }
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__delta,
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__deltalab,
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__deltasub,
+.dms[data-motion] .pf-fall.dms-will-reveal:not(.is-in) .pf-fall__now { opacity:0; }
+.dms[data-motion] .pf-kpi .pf-th__stack { transform-origin:bottom; transition:transform .6s var(--dms-ease); }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(1) .pf-th__stack { transition-delay:.2s; }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(2) .pf-th__stack { transition-delay:.26s; }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(3) .pf-th__stack { transition-delay:.32s; }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(4) .pf-th__stack { transition-delay:.38s; }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(5) .pf-th__stack { transition-delay:.44s; }
+.dms[data-motion] .pf-kpi .pf-th__team:nth-child(6) .pf-th__stack { transition-delay:.5s; }
+.dms[data-motion] .pf-kpi.dms-will-reveal:not(.is-in) .pf-th__stack { transform:scaleY(0); }
+.dms[data-motion] .pf-kpi .pf-wait__seg { transform-origin:left; transition:transform .7s var(--dms-ease) .3s; }
+.dms[data-motion] .pf-kpi.dms-will-reveal:not(.is-in) .pf-wait__seg { transform:scaleX(0); }
+.dms[data-motion] .pf-kpi .pf-tally { transform-origin:left; transition:transform .7s var(--dms-ease) .3s; }
+.dms[data-motion] .pf-kpi.dms-will-reveal:not(.is-in) .pf-tally { transform:scaleX(0); }
 .pf-page .pf-proofsteps {
   display:grid;
-  grid-template-columns:repeat(2, minmax(0, 1fr));
+  grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:1px;
   margin-top:1px;
   border:1px solid var(--pf-dark-line);
@@ -365,7 +1266,7 @@
 .pf-page .pf-proofstep {
   display:flex;
   flex-direction:column;
-  justify-content:flex-end;
+  justify-content:flex-start;
   gap:12px;
   min-height:196px;
   padding:clamp(26px, 3vw, 42px);
@@ -375,33 +1276,94 @@
 .pf-page .pf-proofstep__name { color:var(--dms-d-ink); font-family:var(--dms-display); font-size:1.14rem; font-weight:650; letter-spacing:-0.01em; }
 .pf-page .pf-proofstep__note { max-width:52ch; margin:0; color:var(--dms-d-ink-2); line-height:1.6; text-wrap:pretty; }
 
-/* --------------------------------------------------------- 05 · compliance */
+/* the attested step: the one number on the section a customer says on film */
+.pf-page .pf-proofstep--film {
+  text-decoration:none;
+  transition:background-color 180ms ease-out;
+}
+.pf-page .pf-proofstep--film:hover { background:color-mix(in oklab, var(--dms-d-bg-2), #fff 4%); }
+.pf-page .pf-proofstep--film:focus-visible { outline:2px solid var(--dms-d-accent); outline-offset:-3px; }
+.pf-page .pf-proofstep__go {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:2px;
+  color:var(--dms-d-accent);
+  font-family:var(--dms-mono);
+  font-size:.74rem;
+  letter-spacing:.02em;
+}
+.pf-page .pf-proofstep__go svg { width:14px; height:14px; transition:transform 180ms ease-out; }
+.pf-page .pf-proofstep--film:hover .pf-proofstep__go svg { transform:translate(2px, -2px); }
+
+/* --------------------------------------------------------- 07 · compliance
+ * The standards grid names what the platform is run under. */
 .pf-page .pf-compliance-section { background:var(--dms-surface-alt); }
+
+/* One ledger under the centered head: each standards group is a row with a
+ * label rail on the left and its tiles on the right, so the block reads as a
+ * single symmetric table rather than loose left-aligned captions. */
+.pf-page .pf-stds-ledger {
+  margin:clamp(40px, 4.5vw, 60px) 0 0;
+  border:1px solid var(--dms-hairline);
+  background:var(--dms-surface);
+}
+.pf-page .pf-stds-group {
+  display:grid;
+  grid-template-columns:minmax(200px, 240px) minmax(0, 1fr);
+}
+.pf-page .pf-stds-group + .pf-stds-group { border-top:1px solid var(--dms-hairline); }
+.pf-page .pf-stds-group__head {
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  padding:26px 28px;
+  border-right:1px solid var(--dms-hairline);
+  background:var(--dms-surface-alt);
+}
+.pf-page .pf-stds-group__lab {
+  margin:0;
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.pf-page .pf-stds-group__ind {
+  margin:0;
+  color:var(--dms-ink-2);
+  font-size:.86rem;
+  line-height:1.5;
+  text-wrap:pretty;
+}
+/* Each tile draws its own right and bottom hairline so a short last row ends
+ * cleanly. The grid is pulled 1px right and down so the last column and row
+ * sit on the ledger's outer border instead of doubling it. */
 .pf-page .pf-stds {
   display:grid;
-  grid-template-columns:repeat(5, minmax(0, 1fr));
-  gap:1px;
-  margin:clamp(52px, 6vw, 84px) 0 0;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  margin:0 -1px -1px 0;
   padding:0;
-  border:1px solid var(--dms-hairline);
-  background:var(--dms-hairline);
   list-style:none;
 }
 .pf-page .pf-std {
   display:flex;
   flex-direction:column;
   justify-content:center;
-  gap:6px;
-  min-height:104px;
-  padding:20px 22px;
-  background:var(--dms-surface);
+  gap:5px;
+  min-height:92px;
+  padding:18px 22px;
+  border-right:1px solid var(--dms-hairline);
+  border-bottom:1px solid var(--dms-hairline);
 }
 .pf-page .pf-std__name {
   color:var(--dms-ink);
   font-family:var(--dms-display);
-  font-size:.95rem;
+  font-size:.93rem;
   font-weight:650;
   letter-spacing:-0.008em;
+  text-wrap:balance;
 }
 .pf-page .pf-std__geo {
   color:var(--dms-faint);
@@ -410,40 +1372,74 @@
   letter-spacing:.03em;
 }
 
+.dms[data-motion] .pf-stds-ledger { transition:opacity .55s ease-out, transform .55s var(--dms-ease); }
+.dms[data-motion] .pf-stds-ledger.dms-will-reveal:not(.is-in) { opacity:0; transform:translateY(9px); }
+
 /* ------------------------------------------------------------------ close */
 .pf-page .dms-close__cta { flex-wrap:wrap; gap:10px; }
-.pf-page .pf-close-links { display:flex; flex-wrap:wrap; justify-content:center; gap:10px 26px; margin-top:0; }
-.pf-page .pf-close-links a {
-  color:var(--dms-d-ink-2);
-  font-family:var(--dms-mono);
-  font-size:.78rem;
-  letter-spacing:.02em;
-  text-decoration:none;
-  transition:color 160ms ease-out;
-}
-.pf-page .pf-close-links a:hover { color:var(--dms-d-ink); }
 
 /* ------------------------------------------------------------- responsive */
 @media (max-width: 1100px) {
-  .pf-page .pf-stack { grid-template-columns:1fr; gap:40px; }
-  .pf-page .pf-stack__detail { min-height:0; }
+  .pf-page .pf-stds { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  .pf-page .pf-stack__card { grid-template-columns:minmax(0, 1fr); }
+  .pf-page .pf-stack__tabs { border-right:0; border-bottom:1px solid var(--dms-hairline); }
+  .pf-page .pf-stack__panel { min-width:0; min-height:0; padding:60px 24px 36px; }
+    .pf-page .pf-mini__head { flex-wrap:wrap; row-gap:4px; padding-block:10px; }
+  .pf-page .pf-blocks__groups { grid-template-columns:1fr; }
+  .pf-page .pf-suite__base { flex-direction:column; align-items:flex-start; gap:8px; }
+  .pf-page .pf-suite__base-rows { margin-left:0; }
+  .pf-page .pf-mini__name { white-space:normal; }
+  .pf-page .pf-mini__head .pf-mini__src { display:none; }
+  .pf-page .pf-mini__stats { grid-template-columns:1fr; gap:8px; }
+  .pf-page .pf-mini__stats li + li { padding-left:0; border-left:0; }
+  .pf-page .pf-stack__trust { flex-direction:column; align-items:flex-start; gap:22px; }
+  .pf-page .pf-meas { grid-template-columns:1fr; }
+  .pf-page .pf-fall { grid-column:auto; }
+  .pf-page .pf-meas__side { grid-template-rows:none; grid-template-columns:repeat(3, minmax(0, 1fr)); }
+
+  /* the diagram stacks: zones become rows, the flows turn vertical */
+  .pf-page .pf-coex__diagram { grid-template-columns:1fr; row-gap:22px; }
+  .pf-page .pf-coex__tiles { flex-direction:row; flex-wrap:wrap; }
+  .pf-page .pf-coex__tile { min-height:40px; padding:0 14px; font-size:.86rem; }
+  .pf-page .pf-coex__flows { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:18px; }
+  .pf-page .pf-coex__flow { align-items:center; text-align:center; gap:8px; }
+  .pf-page .pf-coex__flow-lab { position:static; transform:none; }
+  .pf-page .pf-coex__flow .pf-coex__arrow { width:1px; }
+  .pf-page .pf-coex__tiles { justify-content:flex-start; }
+
+  .pf-page .pf-coex__arrow { width:1px; height:26px; background:var(--dms-line-strong); }
+  .pf-page .pf-coex__arrow::after { top:auto; left:-3.5px; width:8px; height:6px; }
+  .pf-page .pf-coex__field .pf-coex__arrow::before { display:none; }
+  .pf-page .pf-coex__field .pf-coex__arrow::after { top:auto; left:-3.5px; width:8px; height:6px; }
+  .pf-page .pf-coex__field-geo i:nth-child(4) { display:none; }
+  /* context flows down into the layer; write-back climbs out; the channels
+   * below hand decisions and artifacts up */
+  .pf-page .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="in"] .pf-coex__arrow::after { right:auto; bottom:-1px; clip-path:polygon(0 0, 100% 0, 50% 100%); }
+  .pf-page .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="out"] .pf-coex__arrow::after { left:-3.5px; top:-1px; clip-path:polygon(50% 0, 0 100%, 100% 100%); }
+  .pf-page .pf-coex__flows[data-side="right"] .pf-coex__flow .pf-coex__arrow::after { left:-3.5px; top:-1px; clip-path:polygon(50% 0, 0 100%, 100% 100%); }
+  .dms[data-motion] .pf-coex.dms-will-reveal:not(.is-in) .pf-coex__arrow { transform:scaleY(0); }
+  .dms[data-motion] .pf-coex .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="in"] .pf-coex__arrow { transform-origin:top; }
+  .dms[data-motion] .pf-coex .pf-coex__flows[data-side="left"] .pf-coex__flow[data-dir="out"] .pf-coex__arrow { transform-origin:bottom; }
+  .dms[data-motion] .pf-coex .pf-coex__flows[data-side="right"] .pf-coex__arrow { transform-origin:bottom; }
 }
 @media (max-width: 1000px) {
   .pf-page .pf-journey__rail { grid-template-columns:1fr; }
   .pf-page .pf-journey__step { min-height:0; padding-block:18px; }
 }
 @media (max-width: 900px) {
+  .pf-page .pf-stds-group { grid-template-columns:1fr; }
+  .pf-page .pf-stds-group__head { padding:20px 22px; border-right:0; border-bottom:1px solid var(--dms-hairline); }
   .pf-page .pf-stds { grid-template-columns:repeat(2, minmax(0, 1fr)); }
-  .pf-page .pf-stats { grid-template-columns:1fr; }
-  .pf-page .pf-stats .dms-bigstat { min-height:0; }
   .pf-page .pf-proofsteps { grid-template-columns:1fr; }
   .pf-page .pf-proofstep { min-height:0; }
+  .pf-page .pf-meas__side { grid-template-columns:1fr; }
+  .pf-page .pf-meas__l { max-width:none; }
+  .pf-page .pf-coex__notes { grid-template-columns:1fr; }
+  .pf-page .pf-stats { grid-template-columns:1fr; }
+  .pf-page .pf-evi__fig { margin-top:24px; }
+  .pf-page .pf-accrual__svg { max-width:420px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-page .pf-stack__band,
-  .pf-page .pf-stack__band.is-above,
-  .pf-page .pf-stack__band.is-below,
-  .pf-page .pf-stack__band.is-active { transform:none; transition:none; }
   .pf-page .pf-journey__timer { display:none; }
 }

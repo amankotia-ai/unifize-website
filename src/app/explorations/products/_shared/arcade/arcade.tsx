@@ -519,7 +519,7 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
     : config.focusRows.length;
   return (
     <main className="stx-arc__conversation">
-      <header className="stx-arc__bar"><span><StateChip state={config.status} /><i>{config.type} {config.id}</i></span><b>{config.title}</b><em aria-hidden="true"><Icon name="kebab" /></em></header>
+      <header className="stx-arc__bar"><span><StateChip state={config.status} /><i>{config.id.startsWith(config.type) ? config.id : `${config.type} ${config.id}`}</i></span><b>{config.title}</b><em aria-hidden="true"><Icon name="kebab" /></em></header>
       <div className="stx-arc__ownership">
         <span className="stx-arc__meta-label">Owner</span><Avatar initials={world.ownerInitials} /><b>{world.owner}</b><span className="stx-arc__meta-label">Participants</span>
         <span className="stx-arc__participants" aria-label={world.participantsLabel}>{world.participants.map((chip) => <i key={chip}>{chip}</i>)}</span><span className="stx-arc__ownership-note">{config.ownershipNote}</span>
@@ -625,7 +625,7 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
         </article>
         {isIssue ? <article><span className="stx-arc__actor is-you" aria-hidden="true">{world.ownerInitials}</span><div className="stx-arc__message is-target"><header><b>You</b><time>Now</time></header><p>Section 4.2 does not match the rinse conductivity check on line 2.</p><small>Raised from SOP-118 · document owner notified · revision candidate</small><span className="stx-arc__message-link"><Icon name="arrow" />Related record · SOP-118 Rev D</span></div></article> : null}
       </section>
-      <footer className={"stx-arc__composer" + (isIssue ? " is-target" : "")}><span>{isIssue ? "Add more context…" : `Reply to ${world.recordNoun} ${config.id}…`}</span><i aria-hidden="true"><Icon name="plus" /></i><b>Send</b></footer>
+      <footer className={"stx-arc__composer" + (isIssue ? " is-target" : "")}><span>{isIssue ? "Add more context…" : `Reply to ${config.id.startsWith(world.recordNoun) ? config.id : `${world.recordNoun} ${config.id}`}…`}</span><i aria-hidden="true"><Icon name="plus" /></i><b>Send</b></footer>
     </main>
   );
 }

@@ -17,16 +17,57 @@
  *
  * ProductSuiteShowcase: section 04 in the platform journey's stage-and-rail
  * idiom - one product window on the blue stage, four governed records on the
- * rail, each posed in its own product's world. Worlds change wholesale
- * between products, so the scene remounts keyed instead of panning.
+ * rail, each posed in its own product's world.
+ *
+ * Both stages keep ONE arcade window mounted and let a config change PAN the
+ * camera - arcade.css already transitions the transform, the panel
+ * opacities, and the target highlight (2026-09-01; the old keyed remounts
+ * hard-cut and replayed the entry animation on every tab, reading as a page
+ * load). Worlds change wholesale between tabs - a different record,
+ * different people - so the swap hides under a short interior dip
+ * (usePannedConfig): the panels dim, the config swaps at the bottom of the
+ * dip, and the pan carries the new record in. Reduced motion swaps
+ * instantly, matching the disabled camera transition.
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arcade/arcade";
+import { PlatformJourney, type PlatformJourneyStep } from "../platform/platform-interactive";
 
-export type HeroArcadeView = { key: string; label: string; config: ArcadeStepConfig };
+export type HeroArcadeView = {
+  key: string;
+  label: string;
+  config: ArcadeStepConfig;
+  /* the tab's exit: the L2 page that owns this record's world (2026-09-01
+   * panel: a search-intent visitor should not need two scrolls to reach the
+   * thing the tab names) */
+  door?: { label: string; href: string };
+};
+
+/* the record-swap dip: dim-out finishes on the 160ms panel transition in
+ * arcade.css before the new world lands */
+const SWAP_DIP_MS = 170;
+
+function usePannedConfig(target: ArcadeStepConfig) {
+  const [shown, setShown] = useState(target);
+  const [dipped, setDipped] = useState(false);
+  useEffect(() => {
+    if (shown === target) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      setShown(target);
+      return;
+    }
+    setDipped(true);
+    const timer = window.setTimeout(() => {
+      setShown(target);
+      setDipped(false);
+    }, SWAP_DIP_MS);
+    return () => window.clearTimeout(timer);
+  }, [target, shown]);
+  return { shown, dipped };
+}
 
 const ADVANCE_MS = 6400;
 
@@ -54,6 +95,7 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
   };
 
   const view = views[active];
+  const scene = usePannedConfig(view.config);
   return (
     <div
       className="hm-heromock"
@@ -81,13 +123,62 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
           </button>
         ))}
       </div>
-      {/* keyed remount: worlds change wholesale between tabs, so the scene
-        * swaps clean instead of morphing the camera across records */}
-      <div key={view.key} className="hm-heromock__stage">
-        <div className="hm-heromock__scene">
-          <ArcadeStepScene config={view.config} />
+      {/* the active tab's door: same 1040px column as the tabs */}
+      {view.door ? (
+        <div className="hm-heromock__doorrow">
+          <Link className="hm-heromock__door" href={view.door.href}>
+            {view.door.label} <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
+      ) : null}
+      {/* one persistent window: the camera pans between worlds, the interior
+        * dips for the record swap */}
+      <div className="hm-heromock__stage">
+        <div className={cn("hm-heromock__scene", scene.dipped && "is-dipped")}>
+          <ArcadeStepScene config={scene.shown} />
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ================================================== MECHANISM RECORD TOGGLE
+ * Section 03's journey, runnable on more than one record (2026-09-01 panel:
+ * the mechanism shown only on NC-204 pattern-matched to "quality's tool").
+ * The journey stays MOUNTED across a record switch: the same step index
+ * re-poses on the other record's world, so switching proves the claim - one
+ * mechanism, any record - with the camera pan instead of a reload. */
+
+export type MechanismRecordJourney = {
+  key: string;
+  label: string;
+  meta: string;
+  steps: PlatformJourneyStep[];
+  configs: ArcadeStepConfig[];
+};
+
+export function MechanismJourney({ records }: { records: MechanismRecordJourney[] }) {
+  const [active, setActive] = useState(0);
+  const record = records[active];
+  return (
+    <div className="hm-journeyrec">
+      <div className="hm-journeyrec__bar" role="tablist" aria-label="Follow the mechanism on a record">
+        <span className="hm-journeyrec__label">Follow it on</span>
+        {records.map((r, index) => (
+          <button
+            key={r.key}
+            type="button"
+            role="tab"
+            aria-selected={index === active}
+            className={cn("hm-journeyrec__pick", index === active && "is-active")}
+            onClick={() => setActive(index)}
+          >
+            <span className="dms-data">{r.meta}</span>
+            {r.label}
+          </button>
+        ))}
+      </div>
+      <PlatformJourney steps={record.steps} configs={record.configs} />
     </div>
   );
 }
@@ -145,12 +236,14 @@ export function ProductSuiteShowcase({ items }: { items: ProductSuiteItem[] }) {
   };
 
   const item = items[Math.min(active, items.length - 1)];
+  const scene = usePannedConfig(item.config);
   return (
     <div className="hm-suite" ref={hostRef}>
       <div className="hm-suite__stage" id="hm-suite-stage" role="tabpanel" aria-live="polite">
-        {/* keyed remount: each product poses in its own world */}
-        <div key={item.code} className="hm-suite__scene">
-          <ArcadeStepScene config={item.config} />
+        {/* one persistent window: the camera pans between product worlds, the
+          * interior dips for the record swap */}
+        <div className={cn("hm-suite__scene", scene.dipped && "is-dipped")}>
+          <ArcadeStepScene config={scene.shown} />
         </div>
       </div>
 

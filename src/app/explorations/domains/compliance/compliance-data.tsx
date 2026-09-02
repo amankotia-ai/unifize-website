@@ -51,6 +51,70 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: CSV-0912 as its owner lives it, one pose per
+ * flow.trail step. The record vocabulary comes from this page's own
+ * canonical story (the data-integrity finding in section 03: audit-trail
+ * gap on a GxP system, remediated and revalidated). Sections and items
+ * never change mid-journey; steps only open sections and advance counts. */
+const COMPLIANCE_WORLD: ArcadeFlowWorld = {
+  team: "Quality Compliance",
+  recordNoun: "Finding",
+  owner: "A. Novak",
+  ownerInitials: "AN",
+  participants: ["AN", "RI", "+3"],
+  participantsLabel: "A. Novak, R. Iyer, and three others",
+  recordKicker: "DATA INTEGRITY FINDING",
+  context: {
+    initials: "AN",
+    name: "A. Novak",
+    time: "09:24",
+    message: "Cited the audit-trail gap on the LIMS from the internal audit.",
+    detail: "Linked to IA-2026-04 · LIMS v7.2",
+  },
+  inboxNeighbors: [
+    { title: "LIMS v7.2 periodic review", time: "10:05", detail: "Validated state · review in scope", kind: "Validation" },
+    { title: "User access review · Q3", time: "Yesterday", detail: "3 admin roles flagged", kind: "Access review" },
+    { title: "E-signature governance SOP", time: "Yesterday", detail: "SOP-201 · periodic review due", kind: "Document" },
+  ],
+  checklistTitle: "Finding",
+  checklistSections: [
+    {
+      title: "FINDING & IMPACT",
+      items: [
+        { label: "Finding description", kind: "field", value: "Audit trail disabled on result amendments · LIMS v7.2", note: "Entered from the audit" },
+        { label: "Affected system", note: "LIMS v7.2 · GxP critical" },
+        { label: "Records exposure", note: "214 amended results in scope" },
+      ],
+    },
+    {
+      title: "REMEDIATION",
+      items: [
+        { label: "Access rights corrected", note: "3 admin roles narrowed" },
+        { label: "Audit trail enabled", kind: "revision", from: "Amendments · trail off", to: "Amendments · trail on" },
+        { label: "Interim control", note: "Manual second check · QA" },
+      ],
+    },
+    {
+      title: "REVALIDATION & CLOSURE",
+      items: [
+        { label: "Revalidation executed", note: "IQ/OQ on v7.2.1" },
+        { label: "QA review", kind: "approval", signer: "T. Osei", state: "Approved" },
+        { label: "Closure", kind: "approval", signer: "L. Duarte", state: "Signed" },
+      ],
+    },
+  ],
+};
+
+/* the constants every pose of the journey shares */
+const COMPLIANCE_REC = {
+  type: "Finding",
+  id: "CSV-0912",
+  title: "Audit-trail gap · LIMS",
+  world: COMPLIANCE_WORLD,
+} as const;
 
 export const COMPLIANCE_DATA: DomainPageData = {
   slug: "compliance",
@@ -202,6 +266,22 @@ export const COMPLIANCE_DATA: DomainPageData = {
     lede: "The failure modes we see inside compliance and EHS functions. None of them is a missing feature. All of them are obligations governed outside the record.",
     // `surface` = where the answer actually lives today, condensed from each
     // pain's Description.
+    /* the old world, staged (section 02's evidence artifact): the paper
+     * validated state, aging quietly between audits. Furniture is
+     * illustrative, not a claim. */
+    scene: {
+      kicker: "Validation binder · LIMS",
+      chip: "Review overdue",
+      title: "Validated state, on paper",
+      rows: [
+        { state: "done", label: "IQ/OQ executed", age: "2023" },
+        { state: "wait", label: "Periodic review", age: "9mo late", warn: true },
+        { state: "wait", label: "User access review", age: "3 roles flagged" },
+        { state: "idle", label: "Audit-trail verification", age: "Not scheduled" },
+      ],
+      float: { kicker: "Inspector", note: "Show me who amended this result, and when." },
+      caption: "Provable at the last audit. Nobody can say whether it still is.",
+    },
     pains: [
       {
         severity: "High",
@@ -257,6 +337,107 @@ export const COMPLIANCE_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / capa / CSV-0912",
     mobileLabel: "Data integrity decision trace",
     mobileId: "CSV-0912 · finding → impact → remediation → verified close",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...COMPLIANCE_REC,
+          source: "DK · CSV-0912 · cite",
+          ghost: "Cite",
+          status: "Draft",
+          actor: "You",
+          event: "Cited the audit-trail gap from the internal audit",
+          eventDetail: "IA-2026-04 · finding captured where it will be answered",
+          checklist: "FINDING & IMPACT",
+          checklistItems: ["Finding description", "Affected system", "Records exposure"],
+          focus: "print",
+          focusTitle: "Audit finding",
+          focusRows: ["Audit trail disabled", "LIMS v7.2 · GxP critical", "214 results in scope"],
+          focusAction: "Open the impact assessment",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "FINDING & IMPACT",
+          checklistEntry: { section: "FINDING & IMPACT", item: "Finding description" },
+          checklistProgress: { "FINDING & IMPACT": 2, "REMEDIATION": 0, "REVALIDATION & CLOSURE": 0 },
+          checklistFootnote: "Cited against the validated state of LIMS v7.2",
+        },
+        {
+          ...COMPLIANCE_REC,
+          source: "DK · CSV-0912 · impact",
+          ghost: "Assess",
+          status: "Open",
+          actor: "automator",
+          event: "Bound the impact assessment across the GxP systems",
+          eventDetail: "Exposure listed, adjacent systems checked, in one pass",
+          checklist: "FINDING & IMPACT",
+          checklistItems: ["LIMS v7.2 · audit-trail scope confirmed", "214 amended results · exposure listed", "Adjacent GxP systems · MES, eDMS clear"],
+          focus: "trace",
+          focusTitle: "Impact across the GxP estate",
+          focusRows: ["Everything the gap touches", "3 records linked"],
+          focusAction: "Open evidence chain",
+          ownershipNote: "Scoped by rule, not by memory",
+          checklistOpen: "FINDING & IMPACT",
+          checklistProgress: { "REMEDIATION": 0, "REVALIDATION & CLOSURE": 0 },
+          related: 3,
+        },
+        {
+          ...COMPLIANCE_REC,
+          source: "DK · CSV-0912 · remediate",
+          ghost: "Commit",
+          status: "Open",
+          actor: "You",
+          event: "Committed the access remediation with owners",
+          eventDetail: "Access, audit trail and the interim control · owners and dates named",
+          checklist: "REMEDIATION",
+          checklistItems: ["Access rights corrected", "Audit trail enabled", "Interim control"],
+          focus: "tasks",
+          focusTitle: "Remediation actions",
+          focusRows: ["Narrow admin roles · R. Iyer", "Enable amendment audit trail · IT", "Interim second check · QA"],
+          ownershipNote: "Owners answer on the record",
+          checklistOpen: "REMEDIATION",
+          checklistProgress: { "REMEDIATION": 1, "REVALIDATION & CLOSURE": 0 },
+        },
+        {
+          ...COMPLIANCE_REC,
+          source: "DK · CSV-0912 · revalidate",
+          ghost: "Revalidate",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the revalidation review",
+          eventDetail: "IQ/OQ evidence on the thread · QA decision pending",
+          checklist: "REVALIDATION & CLOSURE",
+          checklistItems: ["Revalidation executed", "QA review", "Closure"],
+          focus: "review",
+          focusTitle: "Revalidation review",
+          focusRows: ["IQ/OQ · v7.2.1 passed", "Amendment trail · verified on", "Reviewer · T. Osei, QA"],
+          focusAction: "Approve revalidation",
+          focusAlts: ["Return with comment"],
+          ownershipNote: "The validated state, restored on the record",
+          checklistOpen: "REVALIDATION & CLOSURE",
+          checklistProgress: { "REVALIDATION & CLOSURE": 1 },
+        },
+        {
+          ...COMPLIANCE_REC,
+          source: "DK · CSV-0912 · seal",
+          ghost: "Seal",
+          status: "Completed",
+          actor: "automator",
+          event: "Closed CSV-0912 and sealed the trace",
+          eventDetail: "Finding → impact → remediation → revalidation, on one thread",
+          checklist: "REVALIDATION & CLOSURE",
+          checklistItems: ["Revalidation executed", "QA review", "Closure"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["CSV-0912 · Closed · trace sealed", "LIMS v7.2.1 · validated state restored", "214 results reviewed · disposition logged"],
+          ownershipNote: "Provable again tomorrow",
+          checklistOpen: "REVALIDATION & CLOSURE",
+          signedItems: [
+            { name: "L. Duarte", initials: "LD", role: "Director of Quality Compliance", approvalId: "5A19C0912E88", time: "Day 30" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -472,6 +653,9 @@ export const COMPLIANCE_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline, measured on coordination cost. The figure is anonymized; named references are shown separately.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["Audit Management", "Approval Workflows", "Document Management", "Training"],
     references: [
       {
         tag: "Named reference",

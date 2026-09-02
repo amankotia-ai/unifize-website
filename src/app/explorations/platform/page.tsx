@@ -1,15 +1,20 @@
 /* ============================================================================
- * PLATFORM - reworked minimal. The coordination tax is still the protagonist,
- * but the page now SHOWS instead of arguing: one claim per chapter, one
- * proof per claim, and the proof is the product (the shared stylized-arcade
- * system the product pages journey on). Composition, Apple-style:
- *   hero      - the claim + the product, live
+ * PLATFORM - revised flow (2026-09-01 panel audit). The coordination tax is
+ * still the protagonist, but the page earns the name before it uses it:
+ * symptoms first, the tax named after the nod, and the strongest proof (the
+ * product itself, then customers on film) pulled up the scroll. Composition:
+ *   hero      - the claim + the product, live (symptom language, no jargon)
  *   01 problem - the gap and the tax in one breath, three sourced numbers
+ *                on small linework charts (the evidence band)
  *   02 platform - one change control followed end to end (arcade journey)
- *   03 stack   - the canonical four-band stack, touchable (PLT-2 bands)
- *   04 measured - the reports page as the product renders it
- *   05 compliance - the standards strip
- *   close     - one ask
+ *   03 coexistence - the three-zone placement diagram: systems of record,
+ *                Unifize, the tools where work happens; five labeled flows
+ *   04 stack   - the three customer-facing bands, touchable
+ *   05 measured - the fall vs your own baseline (linework, in ink) + a
+ *                customer-attested number on film
+ *   06 proof   - the customer film rail (real films, real people)
+ *   07 compliance - posture statements, then the standards strip
+ *   close     - one ask + the product doors
  * Anchors preserved for inbound links: #platform, #stack, #compliance.
  * Design system: shared Product-page redesign tokens + pf-* compositions.
  * ========================================================================== */
@@ -18,13 +23,17 @@ import Link from "next/link";
 import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
-import { BigStat } from "../products/dms/dms-linework";
+import { DmsMotion } from "../products/dms/dms-motion";
 import { ArcadeStepScene } from "../products/_shared/arcade/arcade";
 import { PlatformJourney, PlatformStack } from "./platform-interactive";
+import { PlatformCoexistence } from "./platform-coexistence";
+import { PlatformEvidence } from "./platform-evidence";
+import { PlatformProofFilms } from "./platform-proof";
+import { PlatformMeasured } from "./platform-measured";
+import { filmByWistia } from "../products/_shared/customer-films";
 import {
   PLATFORM_HERO_CONFIG,
   PLATFORM_JOURNEY_CONFIGS,
-  PLATFORM_DASHBOARD_CONFIG,
 } from "./platform-arcade";
 import "../products/dms/dms.css";
 import "../products/dms/dms-redesign.css";
@@ -34,7 +43,7 @@ import { BookDemoButton } from "@/components/organisms/book-demo";
 export const metadata: Metadata = {
   title: "The Platform",
   description:
-    "Unifize connects the decisions, evidence, and completion your teams scatter across email, meetings, and spreadsheets, and measures the time it gives you back, on every CAPA, change order, and approval.",
+    "Unifize makes the cross-functional work behind every CAPA, change order, and approval visible, measurable, and faster, without replacing the systems you run.",
 };
 
 /* 02 - the journey rail: one claim per pose, the scene proves it */
@@ -46,24 +55,88 @@ const JOURNEY_STEPS = [
   { title: "The seal", body: "Sign-off is a Part 11 signature with its meaning attached." },
 ];
 
-/* 05 - the standards strip: the names carry the credibility */
-const STANDARDS = [
-  { name: "21 CFR Part 11", geo: "FDA · US" },
-  { name: "EU Annex 11", geo: "EC · EU" },
-  { name: "ISO 9001", geo: "ISO · Global" },
-  { name: "ISO 13485", geo: "ISO · Global" },
-  { name: "21 CFR Part 820", geo: "FDA · US" },
-  { name: "EU GMP", geo: "EC · EU" },
-  { name: "IATF 16949", geo: "IATF · Global" },
-  { name: "AS9100", geo: "IAQG · Global" },
-  { name: "ISO/IEC 17025", geo: "ISO · Global" },
-  { name: "FSMA", geo: "FDA · US" },
+/* 07 - the standards strip: the names carry the credibility */
+/* Every standard an industry in the nav dropdown is governed by, grouped the
+ * way the dropdown groups the industries. Keep this in step with nav-data. */
+const STANDARD_GROUPS = [
+  {
+    label: "Electronic records and quality systems",
+    industries: "Every industry we serve",
+    items: [
+      { name: "21 CFR Part 11", geo: "FDA · US" },
+      { name: "EU Annex 11", geo: "EC · EU" },
+      { name: "GAMP 5", geo: "ISPE · Global" },
+      { name: "ISO 9001", geo: "ISO · Global" },
+      { name: "ISO 14001", geo: "ISO · Global" },
+      { name: "ISO 45001", geo: "ISO · Global" },
+    ],
+  },
+  {
+    label: "Life sciences",
+    industries: "Medical devices · Pharmaceuticals · Contract research · Laboratories",
+    items: [
+      { name: "ISO 13485", geo: "ISO · Global" },
+      { name: "21 CFR Part 820 (QMSR)", geo: "FDA · US" },
+      { name: "EU MDR 2017/745", geo: "EC · EU" },
+      { name: "EU IVDR 2017/746", geo: "EC · EU" },
+      { name: "ISO 14971", geo: "ISO · Global" },
+      { name: "21 CFR Parts 210 & 211", geo: "FDA · US" },
+      { name: "EU GMP", geo: "EC · EU" },
+      { name: "ICH Q7", geo: "ICH · Global" },
+      { name: "ICH Q10", geo: "ICH · Global" },
+      { name: "ICH E6 (GCP)", geo: "ICH · Global" },
+      { name: "21 CFR Part 58 (GLP)", geo: "FDA · US" },
+      { name: "ISO/IEC 17025", geo: "ISO · Global" },
+      { name: "ISO 15189", geo: "ISO · Global" },
+      { name: "CLIA", geo: "CMS · US" },
+    ],
+  },
+  {
+    label: "Process and consumer",
+    industries: "Chemicals · Cosmetics · Food processing · Nutritional supplements",
+    items: [
+      { name: "REACH", geo: "ECHA · EU" },
+      { name: "GHS", geo: "UN · Global" },
+      { name: "OSHA PSM", geo: "OSHA · US" },
+      { name: "MoCRA", geo: "FDA · US" },
+      { name: "ISO 22716", geo: "ISO · Global" },
+      { name: "EU Cosmetics Reg. 1223/2009", geo: "EC · EU" },
+      { name: "FSMA", geo: "FDA · US" },
+      { name: "HACCP", geo: "Codex · Global" },
+      { name: "ISO 22000", geo: "ISO · Global" },
+      { name: "FSSC 22000", geo: "GFSI · Global" },
+      { name: "BRCGS", geo: "GFSI · Global" },
+      { name: "SQF", geo: "GFSI · Global" },
+      { name: "21 CFR Part 111", geo: "FDA · US" },
+      { name: "NSF/ANSI 173", geo: "NSF · US" },
+    ],
+  },
+  {
+    label: "Discrete manufacturing",
+    industries: "Automotive · Aerospace · Industrial machinery",
+    items: [
+      { name: "IATF 16949", geo: "IATF · Global" },
+      { name: "VDA 6.3", geo: "VDA · EU" },
+      { name: "APQP / PPAP", geo: "AIAG · Global" },
+      { name: "AS9100", geo: "IAQG · Global" },
+      { name: "AS9110", geo: "IAQG · Global" },
+      { name: "AS9120", geo: "IAQG · Global" },
+      { name: "NADCAP", geo: "PRI · Global" },
+      { name: "CE marking · Machinery Reg. 2023/1230", geo: "EC · EU" },
+      { name: "ISO 12100", geo: "ISO · Global" },
+    ],
+  },
 ];
 
 export default function PlatformPage() {
+  /* customer-attested figures; each card disappears if its film is ever
+   * unapproved or unpublished in Notion (governance lives in the adapter) */
+  const measuredFilm = filmByWistia("qp7129voyy"); /* Tedd Carr · Will-Burt · NC closure down 75% */
+
   return (
     <main className="dms dms--redesign pf-page">
       <DmsHeader />
+      <DmsMotion />
 
       {/* ============================ HERO ============================= */}
       <section className="dms-section dms-hero" aria-label="The Unifize platform">
@@ -87,9 +160,8 @@ export default function PlatformPage() {
             </div>
             <div className="dms-hero__right">
               <p className="dms-lede dms-hero__sub">
-                The hidden cost of holding cross-functional work together is the coordination tax. Unifize is the
-                platform that makes it visible, measurable, and smaller every week, without replacing the systems
-                you already run.
+                Approvals, changes, and investigations close in email and meetings your systems never see.
+                Unifize makes that work visible, measurable, and faster.
               </p>
               <div className="dms-hero__ctas">
                 <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
@@ -108,26 +180,19 @@ export default function PlatformPage() {
       </section>
 
       {/* ============================ 01 · THE PROBLEM ==================
-       * The gap and the tax in one breath, then three sourced numbers. */}
+       * The gap and the tax in one breath, then three sourced numbers -
+       * each carried by a small linework chart of its own evidence. */}
       <section className="dms-section pf-tax-section" id="tax" aria-labelledby="pf-tax-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
             <Eyebrow n={1}>The problem</Eyebrow>
             <h2 className="dms-h2" id="pf-tax-title">Your systems hold the outcome. Not the work.</h2>
             <p className="dms-lede">
-              The decisions, handoffs, and evidence that produce every record live in email, meetings, and
-              spreadsheets, and vanish when the record closes. That cost has a name, the coordination tax, and
-              nothing on your stack measures it.
+              The decisions and evidence behind every record live in email and meetings, then vanish at
+              closure. That is the coordination tax, and nothing on your stack measures it.
             </p>
           </header>
-          <div className="pf-stats">
-            <BigStat value="30%" label="of R&D spend leaks into duplication and rework" />
-            <BigStat value="3,200" label="US product recalls a year, at up to $10M per event" />
-            <BigStat value="$1.5T" label="lost annually to stalled production and operational bottlenecks" />
-          </div>
-          <p className="pf-stats__src">
-            European Commission · Harvard Business Review · Sedgwick · Institute for Supply Management
-          </p>
+          <PlatformEvidence />
         </div>
       </section>
 
@@ -140,44 +205,59 @@ export default function PlatformPage() {
             <Eyebrow n={2}>The platform</Eyebrow>
             <h2 className="dms-h2" id="pf-journey-title">One change, followed end to end.</h2>
             <p className="dms-lede">
-              Unifize turns every cross-functional event into an accountable thread. Watch one change control
-              cross quality, engineering, and production without ever leaving the record.
+              Every cross-functional event becomes one accountable thread. Watch a change control cross
+              quality, engineering, and production without leaving the record.
             </p>
           </header>
           <PlatformJourney steps={JOURNEY_STEPS} configs={PLATFORM_JOURNEY_CONFIGS} />
         </div>
       </section>
 
-      {/* ============================ 03 · THE STACK ==================== */}
-      <section className="dms-section pf-stack-section" id="stack" aria-labelledby="pf-stack-title">
+      {/* ============================ 03 · COEXISTENCE ================== */}
+      <section className="dms-section pf-coex-section" id="coexistence" aria-labelledby="pf-coex-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={3}>The stack</Eyebrow>
+            <Eyebrow n={3}>Coexistence</Eyebrow>
+            <h2 className="dms-h2" id="pf-coex-title">Your systems stay. The gap between them closes.</h2>
+            <p className="dms-lede">
+              Your systems of record stay authoritative and your team keeps its tools. Unifize is the
+              governed layer between them: context flows in, only what you agree flows back.
+            </p>
+          </header>
+          <PlatformCoexistence />
+        </div>
+      </section>
+
+      {/* ============================ 04 · THE STACK ==================== */}
+      <section className="dms-section dms-section--alt pf-stack-section" id="stack" aria-labelledby="pf-stack-title">
+        <div className="dms-wrap">
+          <header className="pf-centered-head">
+            <Eyebrow n={4}>The stack</Eyebrow>
             <h2 className="dms-h2" id="pf-stack-title">You come for a product. The platform comes with it.</h2>
             <p className="dms-lede">
-              Four bands, one foundation. Whichever product you start with, the rest of the stack arrives on day
-              one, not as a future add-on.
+              Three bands on one governed foundation. Start with any product and the rest of the platform
+              arrives on day one.
             </p>
           </header>
           <PlatformStack />
         </div>
       </section>
 
-      {/* ============================ 04 · MEASURED =====================
-       * The reports page, as the product renders it. */}
+      {/* ============================ 05 · MEASURED =====================
+       * The comparison, drawn: closure time falling away from your own
+       * baseline, week by week, in the linework idiom turned to ink -
+       * then the first number on the page a customer states on film. */}
       <section className="dms-section dms-section--dark pf-measured-section" id="measured" aria-labelledby="pf-measured-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={4}>Measured</Eyebrow>
+            <Eyebrow n={5}>Measured</Eyebrow>
             <h2 className="dms-h2" id="pf-measured-title">You watch the tax fall, week by week.</h2>
             <p className="dms-lede">
-              Every thread carries its own clock: how long it has been open, how long it spent waiting, how
-              complete its evidence is. This is the view your Monday morning starts with.
+              Every thread carries its own clock: time open, time waiting, evidence complete. This is what
+              your first quarter looks like.
             </p>
           </header>
-          <div className="pf-measured-scene">
-            <ArcadeStepScene config={PLATFORM_DASHBOARD_CONFIG} />
-          </div>
+          <PlatformMeasured />
           <div className="pf-proofsteps">
             <div className="pf-proofstep">
               <span className="pf-proofstep__lab">First</span>
@@ -190,33 +270,59 @@ export default function PlatformPage() {
               <span className="pf-proofstep__lab">Then</span>
               <span className="pf-proofstep__name">The savings show up in money.</span>
               <p className="pf-proofstep__note">
-                Less scrap, less rework, less premium freight. Every dollar claim is tied to work you can point
-                at; if it cannot be traced, we do not claim it.
+                Less scrap, rework, and premium freight. Every dollar claim is tied to work you can point at,
+                or we do not claim it.
               </p>
             </div>
+            {measuredFilm ? (
+              <a className="pf-proofstep pf-proofstep--film" href={measuredFilm.url} target="_blank" rel="noreferrer">
+                <span className="pf-proofstep__lab">On film</span>
+                <span className="pf-proofstep__name">&ldquo;Closure time down 75% in the first month.&rdquo;</span>
+                <p className="pf-proofstep__note">
+                  Non-conformance closure, said on camera by {measuredFilm.person}, {measuredFilm.role},{" "}
+                  {measuredFilm.company}.
+                </p>
+                <span className="pf-proofstep__go">Watch the customer say it
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H8M17 7v9" /></svg>
+                </span>
+              </a>
+            ) : null}
           </div>
         </div>
       </section>
 
-      {/* ============================ 05 · COMPLIANCE =================== */}
+      {/* ============================ 06 · CUSTOMER PROOF =============== */}
+      <PlatformProofFilms />
+
+      {/* ============================ 07 · COMPLIANCE =================== */}
       <section className="dms-section dms-section--alt pf-compliance-section" id="compliance" aria-labelledby="pf-compliance-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={5}>Compliance</Eyebrow>
+            <Eyebrow n={7}>Compliance</Eyebrow>
             <h2 className="dms-h2" id="pf-compliance-title">Audit-ready, whichever standard governs you.</h2>
             <p className="dms-lede">
-              Every thread carries e-signatures with meaning, a complete audit trail, and its own evidence. The
-              record you show an auditor is the record the work created, under any of these.
+              The record you show an auditor is the record the work created.
             </p>
           </header>
-          <ul className="pf-stds" aria-label="Standards the platform is run under">
-            {STANDARDS.map((standard) => (
-              <li className="pf-std" key={standard.name}>
-                <span className="pf-std__name">{standard.name}</span>
-                <span className="pf-std__geo">{standard.geo}</span>
-              </li>
+
+          <div className="pf-stds-ledger" data-reveal>
+            {STANDARD_GROUPS.map((group) => (
+              <section className="pf-stds-group" key={group.label} aria-label={`${group.label} standards`}>
+                <header className="pf-stds-group__head">
+                  <h3 className="pf-stds-group__lab">{group.label}</h3>
+                  <p className="pf-stds-group__ind">{group.industries}</p>
+                </header>
+                <ul className="pf-stds">
+                  {group.items.map((standard) => (
+                    <li className="pf-std" key={standard.name}>
+                      <span className="pf-std__name">{standard.name}</span>
+                      <span className="pf-std__geo">{standard.geo}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
             ))}
-          </ul>
+          </div>
         </div>
       </section>
 
@@ -241,10 +347,6 @@ export default function PlatformPage() {
               <div className="dms-close__cta">
                 <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
                 <a href="#platform" className="dms-btn dms-btn-ghost">Watch one change close</a>
-              </div>
-              <div className="pf-close-links">
-                <Link href="/explorations/industry-template-modern">See it in your industry &rarr;</Link>
-                <Link href="/explorations/domains">Explore solutions &rarr;</Link>
               </div>
             </div>
           </div>

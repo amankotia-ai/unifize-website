@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TESTIMONIALS } from "../resources/_shared/resources-data";
+import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
 
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
   return (
@@ -113,7 +113,7 @@ const HOME_INDUSTRY_GROUPS = [
   },
 ];
 
-const HOME_TRUST_COMPANIES = [...new Set(TESTIMONIALS.map((testimonial) => testimonial.company))].slice(0, 6);
+const HOME_TRUST_COMPANIES = [...new Set(CUSTOMER_VIDEOS.map((video) => video.company).filter((c): c is string => Boolean(c)))].slice(0, 6);
 
 const HOME_SYMPTOMS = [
   {
@@ -185,25 +185,32 @@ const HOME_PRODUCTS = [
 ];
 
 const HOME_PROOF_CONTEXT = {
-  "corvent-medical-capa": [
-    { label: "Medical devices", href: "/explorations/industry-template-modern" },
+  "how-unifize-improved-our-non-conformance-closure-time-by-75-within-the-first-month": [
+    { label: "Manufacturing", href: "/explorations/industries" },
     { label: "Quality", href: "/explorations/domains/quality" },
     { label: "QMS", href: "/explorations/products/qms" },
   ],
-  "aldale-therapeutics-batch-release": [
-    { label: "Pharmaceuticals", href: "/explorations/industries/pharmaceuticals" },
+  "how-smaller-groups-lead-to-70-faster-actions": [
     { label: "Operations", href: "/explorations/domains/operations" },
-    { label: "MES", href: "/explorations/products/mes" },
+    { label: "Collaboration", href: "/explorations/platform" },
+    { label: "QMS", href: "/explorations/products/qms" },
   ],
-  "northpin-aerospace-audit": [
-    { label: "Aerospace", href: "/explorations/industries/aerospace" },
+  "how-unifize-helped-reduce-60-000-of-material-cost-on-just-one-product": [
+    { label: "Nutritional supplements", href: "/explorations/industries" },
     { label: "Product development", href: "/explorations/domains/product-development" },
     { label: "PLM", href: "/explorations/products/plm" },
   ],
 };
 
-const HOME_PROOF = ["corvent-medical-capa", "aldale-therapeutics-batch-release", "northpin-aerospace-audit"]
-  .map((slug) => TESTIMONIALS.find((testimonial) => testimonial.slug === slug))
+/* the attested figure each film leads with, straight from the video's title */
+const HOME_PROOF_STATS: Record<string, { value: string; label: string }> = {
+  "how-unifize-improved-our-non-conformance-closure-time-by-75-within-the-first-month": { value: "75%", label: "faster NC closure, first month" },
+  "how-smaller-groups-lead-to-70-faster-actions": { value: "70%", label: "faster actions in smaller groups" },
+  "how-unifize-helped-reduce-60-000-of-material-cost-on-just-one-product": { value: "$60k", label: "material cost off one product" },
+};
+
+const HOME_PROOF = Object.keys(HOME_PROOF_STATS)
+  .map((slug) => CUSTOMER_VIDEOS.find((video) => video.slug === slug))
   .filter((story): story is NonNullable<typeof story> => Boolean(story));
 
 const HOME_RESOURCES = [
@@ -664,13 +671,13 @@ export function HomeProof() {
                     {context.map((item) => <Link href={item.href} key={item.label}>{item.label}</Link>)}
                   </div>
                   <p className="sf-proof-story__metric">
-                    <strong>{story.metrics[0].value}</strong>
-                    <span>{story.metrics[0].label}</span>
+                    <strong>{HOME_PROOF_STATS[story.slug].value}</strong>
+                    <span>{HOME_PROOF_STATS[story.slug].label}</span>
                   </p>
-                  <blockquote>“{story.quote}”</blockquote>
+                  <blockquote>{story.name}</blockquote>
                   <div className="sf-proof-story__who">
                     <span className="sf-proof-story__avatar" aria-hidden="true">{story.person.split(" ").map((part) => part[0]).join("")}</span>
-                    <p><b>{story.person}</b><span>{story.role} · {story.company}</span><small>{story.companyKind}</small></p>
+                    <p><b>{story.person}</b><span>{[story.role, story.company].filter(Boolean).join(" · ")}</span><small>{story.industry}</small></p>
                   </div>
                   <Link className="sf-proof-story__link" href={`/explorations/resources/testimonials/${story.slug}`}>
                     Watch the story <Arrow />

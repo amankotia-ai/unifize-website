@@ -215,6 +215,67 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
   },
 ];
 
+/* ================================================== mechanism journey · change
+ * The same five claims, followed on CC-2148 (2026-09-01 panel: the journey
+ * shown only on a quality event pattern-matched to "quality's tool" for the
+ * engineering and ops readers; the mechanism has to be provable on a record
+ * they own). Poses 1-3 ride the platform journey verbatim so the universe
+ * stays one continuous story; write-back and measure are posed here. */
+const CHANGE_RECORD = {
+  type: "Change Control",
+  id: "CC-2148",
+  title: "Torque spec update · housing assembly",
+} as const;
+const CHANGE_WORLD = PLATFORM_JOURNEY_CONFIGS[0].world;
+
+export const HOME_JOURNEY_CHANGE_CONFIGS: ArcadeStepConfig[] = [
+  PLATFORM_JOURNEY_CONFIGS[0], // capture: the queue, context attached
+  PLATFORM_JOURNEY_CONFIGS[3], // coordinate: the route, owners and one clock
+  PLATFORM_JOURNEY_CONFIGS[4], // prove: the Part 11 seal
+  {
+    source: "HOME s4-cc · write back",
+    ghost: "Sync",
+    ...CHANGE_RECORD,
+    status: "Closed",
+    actor: "automator",
+    event: "Released revision D to your systems",
+    eventDetail: "Unifize keeps the trail and the effectivity · your systems of record keep the final state",
+    checklist: "CLOSURE",
+    checklistItems: ["Revision", "Training assigned"],
+    focus: "history",
+    focusKicker: "SYSTEMS OF RECORD",
+    focusTitle: "The change, written back",
+    focusRows: [
+      "PLM · Rev D effective · BOM updated",
+      "ERP · routing and spec synced",
+      "Training assigned · 12 operators",
+    ],
+    focusAction: "Open audit trail",
+    ownershipNote: "Your systems of record stay authoritative",
+    world: CHANGE_WORLD,
+    checklistOpen: "CLOSURE",
+    checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 3, CLOSURE: 2 },
+  },
+  {
+    source: "HOME s5-cc · measure",
+    ghost: "Measure",
+    ...CHANGE_RECORD,
+    status: "Closed",
+    actor: "automator",
+    event: "Updated the closure metrics from the record",
+    eventDetail: "Every thread carries its own clock · no export, no reconciliation",
+    checklist: "CLOSURE",
+    checklistItems: ["Effectiveness check"],
+    focus: "dashboard",
+    focusTitle: "Closure time, month by month",
+    focusRows: ["Median closure · 11 days", "Baseline · 34 days", "Waiting share · 9%"],
+    focusAction: "Open the threads behind this number",
+    ownershipNote: "Measured on your work, against your baseline",
+    world: CHANGE_WORLD,
+    checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 3, CLOSURE: 2 },
+  },
+];
+
 /* ================================================================= hero views
  * Tab 1 rides the mechanism journey mid-flight (the accountable thread);
  * tab 2 borrows CC-2148's approval route from the platform page. */
@@ -330,3 +391,37 @@ export const HOME_HERO_DOCUMENT_CONFIG: ArcadeStepConfig = {
   checklistOpen: "SIGNED DOCUMENT",
   checklistProgress: { "CONTROLLED COPY": 0 },
 };
+
+/* The suite's DMS pose (section 04): the revision chain, NOT the viewer the
+ * hero's fourth tab already stages - the suite shouldn't repeat the hero's
+ * artifact. Versioning is the product's essence claim: "one current version"
+ * is proven BY the chain (D effective, C superseded and retained, the change
+ * record between them). Facts mirror the DMS page's change-control module
+ * scene, restaged on the shared document world. */
+export const HOME_SUITE_DMS_CONFIG: ArcadeStepConfig = {
+  source: "HOME suite · revision chain",
+  ghost: "Version",
+  type: "Document",
+  id: "#118",
+  title: "Cleaning validation",
+  status: "Effective",
+  actor: "automator",
+  event: "Carried change #77 through to revision D",
+  eventDetail: "Impact assessed · approvals routed · the superseded revision retained",
+  checklist: "SIGNED DOCUMENT",
+  checklistItems: ["Revision", "Effective date"],
+  focus: "history",
+  focusKicker: "REVISION HISTORY",
+  focusTitle: "One continuous chain",
+  focusRows: [
+    "Rev D · Effective · current",
+    "Change Control #77 · Verified & Approved",
+    "Rev C · Superseded · retained",
+  ],
+  focusAction: "Open change record",
+  ownershipNote: "One current version, everywhere",
+  checklistOpen: "SIGNED DOCUMENT",
+  checklistProgress: { "CONTROLLED COPY": 0 },
+  related: 3,
+};
+

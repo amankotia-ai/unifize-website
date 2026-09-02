@@ -10,8 +10,8 @@
  *     arcade system (home-arcade.ts) so the homepage, product pages, and
  *     platform page stage one continuous product world.
  *   - Intent chips under the CTAs route search-intent visitors on screen 1.
- *   - Trust strip shows named companies (sample regime, one source of truth
- *     with the Resources testimonials data) instead of placeholder bars.
+ *   - Trust strip shows REAL customer companies from the Website Customer
+ *     Videos mirror (Notion-governed) instead of placeholder bars.
  *   - 02 swaps the macro-stat wall (dismissed by 6/6 as "industry numbers")
  *     for the per-thread measurement mock: the mechanism, in your numbers.
  *     2026-08-09: 03's bespoke governed-thread mock became the platform
@@ -19,32 +19,47 @@
  *     NC-204 followed capture -> coordinate -> prove -> write back.
  *   - 04 carries the layer-vs-suite line (provisional wording pending Ben)
  *     and a Product Development door (panel-caught gap).
- *   - Proof is a static, attributed three-up wired to the testimonials data
- *     (quality + ops-CDMO + engineering voices), replacing the carousel.
+ *   - Proof is the shared customer film rail (products/_shared/proof-films
+ *     .tsx, the product pages' carousel): one attested lead card, then REAL
+ *     customer films from the Website Customer Videos mirror; 2026-09-02,
+ *     replacing the three-row film ledger. Quality + operations +
+ *     engineering voices preserved per the panel's role-coverage finding.
  *   - 06 is the compliance certificate wall (canonical standards copy shared
  *     with the platform page): first-touch reassurance, late in the page,
  *     that the standard governing the visitor is already handled.
+ *   - 2026-09-01 panel polish wave (marketing/audiences/simulations/
+ *     home-page-2026-09-01.md): hero tabs carry doors to their L2 pages; 03
+ *     opens payoff-first with the tax defined second and states the
+ *     accountable-AI claim the metadata title makes; the journey is runnable
+ *     on NC-204 OR CC-2148 (same five claims, record toggle); chase + floor
+ *     lines in the step copy; DMS suite cell carries the retraining trigger.
  * Flow still follows the third-scroll rule from the 2026-07-09 call: hook,
  * parity, THEN the coordination tax named at scroll three.
  * ========================================================================== */
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
-import { HeroArcadeSwitcher, ProductSuiteShowcase } from "./home-interactive";
-import { PlatformJourney } from "../platform/platform-interactive";
+import { HeroArcadeSwitcher, MechanismJourney, ProductSuiteShowcase } from "./home-interactive";
+import { SymptomVisual } from "./home-symptom-scenes";
 import {
   HOME_HERO_QUALITY_CONFIG,
   HOME_HERO_CHANGE_CONFIG,
   HOME_HERO_OPS_CONFIG,
   HOME_HERO_DOCUMENT_CONFIG,
+  HOME_SUITE_DMS_CONFIG,
   HOME_JOURNEY_CONFIGS,
+  HOME_JOURNEY_CHANGE_CONFIGS,
 } from "./home-arcade";
 import { QMS_MODULE_ARCADE_CONFIGS } from "../products/qms/qms-arcade";
 import { MES_MODULE_ARCADE_CONFIGS } from "../products/mes/mes-arcade";
 import { PLM_MODULE_ARCADE_CONFIGS } from "../products/plm/plm-arcade";
-import { TESTIMONIALS } from "../resources/_shared/resources-data";
+import { CASE_STUDIES, POSTS } from "../resources/_shared/resources-data";
+import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
+import { attestedCompanies } from "../products/_shared/customer-films";
+import { HomeProofFilms } from "./home-proof";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
@@ -59,21 +74,59 @@ export const metadata: Metadata = {
 };
 
 /* the hero visual: one arcade app window, four worlds - pick yours. One
- * artifact per audience, per the panel's role-coverage finding. */
+ * artifact per audience, per the panel's role-coverage finding. Each tab
+ * carries a door to the L2 page that owns its record's world (2026-09-01
+ * panel: the doc controller should not need two scrolls and a platform
+ * thesis to reach the thing they searched for). */
 const HERO_VIEWS = [
-  { key: "quality", label: "Quality event", config: HOME_HERO_QUALITY_CONFIG },
-  { key: "change", label: "Change order", config: HOME_HERO_CHANGE_CONFIG },
-  { key: "ops", label: "Holds & release", config: HOME_HERO_OPS_CONFIG },
-  { key: "document", label: "Controlled document", config: HOME_HERO_DOCUMENT_CONFIG },
+  {
+    key: "quality",
+    label: "Quality event",
+    config: HOME_HERO_QUALITY_CONFIG,
+    door: { label: "Explore the Quality solution", href: "/explorations/domains/quality" },
+  },
+  {
+    key: "change",
+    label: "Change order",
+    config: HOME_HERO_CHANGE_CONFIG,
+    door: { label: "Explore Change Control", href: "/explorations/domains/change-control" },
+  },
+  {
+    key: "ops",
+    label: "Holds & release",
+    config: HOME_HERO_OPS_CONFIG,
+    door: { label: "Explore MES", href: "/explorations/products/mes" },
+  },
+  {
+    key: "document",
+    label: "Controlled document",
+    config: HOME_HERO_DOCUMENT_CONFIG,
+    door: { label: "Explore DMS", href: "/explorations/products/dms" },
+  },
 ];
 
-/* 03 - the mechanism journey rail: one claim per pose, the scene proves it */
-const MECHANISM_STEPS = [
-  { title: "Capture", body: "The event opens one governed thread with its context attached: the reading, the part, the work order. Nothing is re-keyed." },
-  { title: "Coordinate", body: "Every handoff gets an owner and a clock everyone can see. The waiting becomes visible." },
+/* 03 - the mechanism journey rail: one claim per pose, the scene proves it.
+ * Two records, same five claims (2026-09-01 panel: the journey run only on a
+ * quality event read as "quality's tool" to engineering and ops; the chase
+ * and floor lines answer "visible vs chased" and "what does the operator
+ * actually touch"). */
+const MECHANISM_STEPS_EVENT = [
+  { title: "Capture", body: "The event opens one governed thread with its context attached: the reading, the part, the work order. Logged once, at the station; nothing is re-keyed." },
+  { title: "Coordinate", body: "Every handoff gets an owner and a clock everyone can see. Reminders and escalations chase the overdue ones, so you don't." },
   { title: "Prove", body: "Evidence and approvals close with the work, so the record is complete at sign-off, not at audit prep." },
   { title: "Write back", body: "The approved outcome writes back. Unifize keeps the cross-functional trail; your systems of record stay authoritative." },
   { title: "Measure", body: "Every thread carries its own clock. You watch the coordination tax fall, week by week, against your own baseline." },
+];
+const MECHANISM_STEPS_CHANGE = [
+  { title: "Capture", body: "The change opens one governed thread with its context attached: the drawing, the risk file, the affected documents. Raised straight from the finding; nothing is re-keyed." },
+  { title: "Coordinate", body: "Quality, engineering, and production see one route: an owner on every approval, one clock. Reminders and escalations chase the overdue ones, so you don't." },
+  { title: "Prove", body: "Approvals are Part 11 signatures with their meaning attached, so the change is defensible at sign-off, not reconstructed at audit prep." },
+  { title: "Write back", body: "The released revision writes back. Your PLM keeps the BOM and the revision; Unifize keeps the decision trail and the effectivity." },
+  { title: "Measure", body: "Every change carries its own clock. You watch review and approval time fall against your own baseline." },
+];
+const MECHANISM_RECORDS = [
+  { key: "event", label: "Quality event", meta: "NC-204", steps: MECHANISM_STEPS_EVENT, configs: HOME_JOURNEY_CONFIGS },
+  { key: "change", label: "Change order", meta: "CC-2148", steps: MECHANISM_STEPS_CHANGE, configs: HOME_JOURNEY_CHANGE_CONFIGS },
 ];
 
 /* Four primary solution doors. The homepage recognizes the symptom; the L2
@@ -116,8 +169,17 @@ const PRIMARY_SOLUTIONS = [
   { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development" },
 ];
 
-/* 04 - each product poses the arcade window in its own world: the same
- * signature scenes its product page leads with, not a diagram of them. */
+/* 04 - each product poses the arcade window on its ESSENCE artifact, the one
+ * moment only that product owns (2026-09-01 repose: the QMS capture pose and
+ * the hero-duplicated DMS viewer read as the same chat window four times):
+ *   QMS - the CAPA action plan mid-implementation; the differentiator is the
+ *         closure discipline, not the capture. Fresh record too: NC-204
+ *         already appears in the hero and the 03 journey.
+ *   DMS - the revision chain (D effective, C superseded, the change record
+ *         between); the hero's fourth tab keeps point of use.
+ *   MES - the batch record building itself at the station, live entry caret.
+ *   PLM - the requirement-to-verification trace, closed.
+ * Four poses, four camera positions, four artifacts - not four chat threads. */
 const PRODUCTS = [
   {
     code: "QMS",
@@ -125,15 +187,15 @@ const PRODUCTS = [
     body: "CAPA, audits, nonconformances, and change control on one governed quality record.",
     outcome: "Close the finding. Keep the decision.",
     href: "/explorations/products/qms",
-    config: QMS_MODULE_ARCADE_CONFIGS["non-conformance"],
+    config: QMS_MODULE_ARCADE_CONFIGS["capa"],
   },
   {
     code: "DMS",
     name: "Document management",
-    body: "Controlled documents, versioning, training, and e-signatures from draft to obsolete.",
+    body: "Controlled documents, versioning, and e-signatures from draft to obsolete. A revision going effective assigns the retraining itself.",
     outcome: "One current version, everywhere.",
     href: "/explorations/products/dms",
-    config: HOME_HERO_DOCUMENT_CONFIG,
+    config: HOME_SUITE_DMS_CONFIG,
   },
   {
     code: "MES",
@@ -158,32 +220,105 @@ const INDUSTRY_GROUPS = [
     name: "Life sciences",
     body: "Decision trails that stand up to inspectors, sponsors, and assessors.",
     industries: [
-      { name: "Medical Devices", standard: "FDA 820 · ISO 13485", href: "/explorations/industry-template-modern" },
-      { name: "Pharmaceuticals", standard: "cGMP · Annex 11", href: "/explorations/industries/pharmaceuticals" },
-      { name: "Contract Research Orgs", standard: "GCP · ICH E6", href: "/explorations/industries/cro" },
-      { name: "Laboratories", standard: "ISO/IEC 17025", href: "/explorations/industries/laboratories" },
+      { name: "Medical Devices", standard: "FDA 820 · ISO 13485", href: "/explorations/industry-template-modern", icon: "medical-devices" },
+      { name: "Pharmaceuticals", standard: "cGMP · Annex 11", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals" },
+      { name: "Contract Research Orgs", standard: "GCP · ICH E6", href: "/explorations/industries/cro", icon: "cro" },
+      { name: "Laboratories", standard: "ISO/IEC 17025", href: "/explorations/industries/laboratories", icon: "laboratories" },
     ],
   },
   {
     name: "Process & consumer",
     body: "Controlled changes and evidence across formulation, production, and release.",
     industries: [
-      { name: "Chemicals", standard: "REACH · GHS", href: "/explorations/industries/chemicals" },
-      { name: "Cosmetics", standard: "MoCRA · ISO 22716", href: "/explorations/industries/cosmetics" },
-      { name: "Food Processing", standard: "FSMA · GFSI", href: "/explorations/industries/food-processing" },
-      { name: "Nutritional Supplements", standard: "21 CFR 111", href: "/explorations/industries/nutritional-supplements" },
+      { name: "Chemicals", standard: "REACH · GHS", href: "/explorations/industries/chemicals", icon: "chemicals" },
+      { name: "Cosmetics", standard: "MoCRA · ISO 22716", href: "/explorations/industries/cosmetics", icon: "cosmetics" },
+      { name: "Food Processing", standard: "FSMA · GFSI", href: "/explorations/industries/food-processing", icon: "food-processing" },
+      { name: "Nutritional Supplements", standard: "21 CFR 111", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements" },
     ],
   },
   {
     name: "Discrete manufacturing",
     body: "Configuration, supplier, and production decisions with the rationale intact.",
     industries: [
-      { name: "Automotive", standard: "IATF 16949", href: "/explorations/industries/automotive" },
-      { name: "Aerospace", standard: "AS9100 · NADCAP", href: "/explorations/industries/aerospace" },
-      { name: "Industrial Machinery", standard: "ISO 9001 · CE", href: "/explorations/industries/industrial-machinery" },
+      { name: "Automotive", standard: "IATF 16949", href: "/explorations/industries/automotive", icon: "automotive" },
+      { name: "Aerospace", standard: "AS9100 · NADCAP", href: "/explorations/industries/aerospace", icon: "aerospace" },
+      { name: "Industrial Machinery", standard: "ISO 9001 · CE", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery" },
     ],
   },
 ];
+
+/* 05 - one solid pictogram per industry: filled geometric silhouettes with
+ * negative-space cutouts, all on the same 24 grid so the registry rows read
+ * as one drawn set. */
+const INDUSTRY_ICON_PATHS: Record<string, ReactNode> = {
+  "medical-devices": (
+    <path
+      fillRule="evenodd"
+      d="M12 20.8C7.1 16.7 3.4 13.4 3.4 9.3 3.4 6.1 5.7 3.9 8.4 3.9c1.4 0 2.8.7 3.6 1.8.8-1.1 2.2-1.8 3.6-1.8 2.7 0 5 2.2 5 5.4 0 4.1-3.7 7.4-8.6 11.5zM10.9 7.9h2.2v2h2v2.2h-2v2h-2.2v-2h-2V9.9h2z"
+    />
+  ),
+  pharmaceuticals: (
+    <g transform="rotate(45 12 12)">
+      <path
+        fillRule="evenodd"
+        d="M7.2 8.6h9.6a3.4 3.4 0 0 1 0 6.8H7.2a3.4 3.4 0 0 1 0-6.8zM11.2 8.6h1.6v6.8h-1.6z"
+      />
+    </g>
+  ),
+  cro: (
+    <path
+      fillRule="evenodd"
+      d="M9 2.8h6v1.7h4.2v16.7H4.8V4.5H9zm1.95 13.5L7.8 13.15l1.5-1.5 1.65 1.65 3.75-3.75 1.5 1.5z"
+    />
+  ),
+  laboratories: (
+    <path
+      fillRule="evenodd"
+      d="M9.6 2.8h4.8v1.8h-1v4.2l5 9.6c.65 1.25-.25 2.8-1.65 2.8H7.25c-1.4 0-2.3-1.55-1.65-2.8l5-9.6V4.6h-1zM12 15.4a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8zm-1.8-2.9a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8z"
+    />
+  ),
+  chemicals: (
+    <path
+      fillRule="evenodd"
+      d="M12 2.6l8.2 4.7v9.4L12 21.4l-8.2-4.7V7.3zm0 6.3a3.1 3.1 0 1 1 0 6.2 3.1 3.1 0 0 1 0-6.2z"
+    />
+  ),
+  cosmetics: (
+    <path d="M9.2 3.4l5.6 2.6v4.6H9.2zM8.2 10.6h7.6v3H8.2zM6.6 13.6h10.8v7.4H6.6z" />
+  ),
+  "food-processing": (
+    <path d="M13.1 6.1c.3-2.1 2-3.5 4.2-3.5-.1 2.2-1.6 3.8-4.2 3.5zM11.3 3.9h1.4c-.1 1.4 0 2.5.3 3.6h-2c.3-1.1.4-2.2.3-3.6zM8.6 6.6c1.2 0 2.4.5 3.4 1.5 1-1 2.2-1.5 3.4-1.5 2.8 0 4.7 2.3 4.7 5.2 0 3.9-2.8 8.9-5.2 8.9-.9 0-1.5-.5-2.9-.5s-2 .5-2.9.5c-2.4 0-5.2-5-5.2-8.9 0-2.9 1.9-5.2 4.7-5.2z" />
+  ),
+  "nutritional-supplements": (
+    <path
+      fillRule="evenodd"
+      d="M8 2.8h8v2.9h1.6v15.5H6.4V5.7H8zm1.3 9.7h5.4a1.5 1.5 0 0 1 0 3H9.3a1.5 1.5 0 0 1 0-3z"
+    />
+  ),
+  automotive: (
+    <path
+      fillRule="evenodd"
+      d="M2.6 17.2v-4.6c0-.7.5-1.3 1.1-1.5l1.7-.5 1.6-3.5c.4-.9 1.3-1.5 2.3-1.5h5.4c1 0 1.9.6 2.3 1.5l1.6 3.5 1.7.5c.7.2 1.1.8 1.1 1.5v4.6zM7.7 13.1a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8zm8.6 0a1.9 1.9 0 1 1 0 3.8 1.9 1.9 0 0 1 0-3.8z"
+    />
+  ),
+  aerospace: (
+    <path d="M11.2 2.9c.2-.8 1.4-.8 1.6 0l1.4 4.8 7 4.2v2.7l-6.7-2-.5 4.6 2.5 1.9v2.2L12 19.9l-4.5 1.4v-2.2l2.5-1.9-.5-4.6-6.7 2v-2.7l7-4.2z" />
+  ),
+  "industrial-machinery": (
+    <path
+      fillRule="evenodd"
+      d="M10.7 2.5h2.6l.5 2.2c.6.2 1.2.4 1.7.8l2.1-.9 1.8 1.8-.9 2.1c.3.5.6 1.1.8 1.7l2.2.5v2.6l-2.2.5c-.2.6-.4 1.2-.8 1.7l.9 2.1-1.8 1.8-2.1-.9c-.5.3-1.1.6-1.7.8l-.5 2.2h-2.6l-.5-2.2c-.6-.2-1.2-.4-1.7-.8l-2.1.9-1.8-1.8.9-2.1c-.3-.5-.6-1.1-.8-1.7l-2.2-.5v-2.6l2.2-.5c.2-.6.4-1.2.8-1.7l-.9-2.1 1.8-1.8 2.1.9c.5-.3 1.1-.6 1.7-.8zM12 9.4a2.6 2.6 0 1 1 0 5.2 2.6 2.6 0 0 1 0-5.2z"
+    />
+  ),
+};
+
+function IndustryIcon({ type }: { type: string }) {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      {INDUSTRY_ICON_PATHS[type]}
+    </svg>
+  );
+}
 
 const ENTRY_PATHS = [
   {
@@ -220,98 +355,33 @@ const ENTRY_PATHS = [
   },
 ];
 
-/* 06 - proof: three attributed stories from the canonical testimonials data
- * (same records the Resources area renders; sample regime until real
- * customer footage lands). Quality, operations-at-CDMO, and engineering
- * voices, per the panel's role-coverage finding. */
-const PROOF_SLUGS = [
-  "corvent-medical-capa",
-  "aldale-therapeutics-batch-release",
-  "northpin-aerospace-eco",
-] as const;
-const PROOF_CONTEXT = {
-  "corvent-medical-capa": [
-    { label: "Medical Devices", href: "/explorations/industry-template-modern" },
-    { label: "Quality", href: "/explorations/domains/quality" },
-    { label: "QMS", href: "/explorations/products/qms" },
-  ],
-  "aldale-therapeutics-batch-release": [
-    { label: "Pharmaceuticals", href: "/explorations/industries/pharmaceuticals" },
-    { label: "Operations", href: "/explorations/domains/operations" },
-    { label: "MES", href: "/explorations/products/mes" },
-  ],
-  "northpin-aerospace-eco": [
-    { label: "Aerospace", href: "/explorations/industries/aerospace" },
-    { label: "Product Development", href: "/explorations/domains/product-development" },
-    { label: "PLM", href: "/explorations/products/plm" },
-  ],
-};
-const PROOF = PROOF_SLUGS.map((slug) => ({
-  story: TESTIMONIALS.find((testimonial) => testimonial.slug === slug)!,
-  context: PROOF_CONTEXT[slug],
-})).filter(({ story }) => Boolean(story));
-
-const RESOURCE_PATHS = [
+/* the resources band is a typographic index: one row per collection, with
+ * the live count pulled from the same canonical records the Resources pages
+ * render. */
+const RESOURCE_ROWS = [
   {
     label: "Customer stories",
     body: "Hear the change in the words of the people who ran it.",
     href: "/explorations/resources/testimonials",
+    cta: `Watch all ${CUSTOMER_VIDEOS.length} stories`,
   },
   {
     label: "Case studies",
     body: "See the backlog, the intervention, and the measured result.",
     href: "/explorations/resources/case-studies",
+    cta: `See all ${CASE_STUDIES.length} case studies`,
   },
   {
     label: "Blog",
     body: "Field notes for quality, operations, and product leaders.",
     href: "/explorations/resources/blog",
+    cta: `Read all ${POSTS.length} field notes`,
   },
 ];
 
-/* trust strip: named companies from the same testimonials source */
-const TRUST_COMPANIES = [...new Set(TESTIMONIALS.map((t) => t.company))].slice(0, 6);
-
-function SymptomVisual({ type }: { type: string }) {
-  if (type === "cycle") {
-    return (
-      <div className="hm-cardviz hm-cardviz--cycle" aria-hidden="true">
-        <div className="hm-cardviz__metric"><b>90</b><span>days to closure</span></div>
-        <div className="hm-cardviz__cyclebar"><i /><i /></div>
-        <div className="hm-cardviz__legend"><span>Investigation</span><span>Waiting on handoffs</span></div>
-      </div>
-    );
-  }
-  if (type === "wip") {
-    return (
-      <div className="hm-cardviz hm-cardviz--wip" aria-hidden="true">
-        <div className="hm-cardviz__wiphead"><span>WIP hold queue</span><span>Age</span></div>
-        <div><span><i />Batch 220-B</span><b>2d</b></div>
-        <div><span><i />Line 2 containment</span><b>1d</b></div>
-        <div><span><i />Incoming lot 5541</span><b>6h</b></div>
-      </div>
-    );
-  }
-  if (type === "handoffs") {
-    return (
-      <div className="hm-cardviz hm-cardviz--handoffs" aria-hidden="true">
-        <div className="hm-cardviz__handoffnode"><i>QA</i><span>Qualification</span></div>
-        <div className="hm-cardviz__mail"><b>12</b><span>email replies</span></div>
-        <div className="hm-cardviz__handoffnode"><i>SU</i><span>Supplier</span></div>
-        <div className="hm-cardviz__handoffline"><i /><i /><i /><i /><i /></div>
-      </div>
-    );
-  }
-  return (
-    <div className="hm-cardviz hm-cardviz--trace" aria-hidden="true">
-      <div><i>01</i><span>Design review</span></div>
-      <b>→</b>
-      <div className="is-gap"><i>?</i><span>Decision trail</span></div>
-      <b>→</b>
-      <div><i>03</i><span>DHF</span></div>
-    </div>
-  );
-}
+/* trust strip: real companies from the Website Customer Videos mirror - only
+ * names a customer attested on the record render here */
+const TRUST_COMPANIES = attestedCompanies(6);
 
 /* 01 - the three ways in, drawn: converging process lanes, the product mark's
  * module squares, a certificate. One stroke, one weight. */
@@ -380,8 +450,8 @@ export default function HomePage() {
       </section>
 
       {/* ============================ TRUST STRIP =======================
-       * Named companies (canonical sample records shared with Resources;
-       * swaps to real logos from the same data when footage clears). */}
+       * Real companies from the Website Customer Videos mirror; each name
+       * is attested on film by its own people. */}
       <section className="dms-section dms-section--dark dms-trust" aria-label="Customers">
         <div className="dms-wrap dms-trust__inner">
           <div className="hm-wordmarks" role="list" aria-label="Customer companies">
@@ -483,9 +553,18 @@ export default function HomePage() {
               <h2 className="dms-h2">Turn hidden waiting into a governed decision trail.</h2>
             </div>
             <div className="hm-mechanism__copy">
+              {/* payoff first; the tax named and defined second (2026-09-01
+                * panel: the concept-first opener is where operators stop) */}
               <p className="dms-lede">
-                The coordination tax is the time lost holding cross-functional work together when no system owns it
-                end to end. Unifize makes that waiting visible, accountable, and recoverable.
+                Every cross-functional record gets one owner, one visible clock, and evidence that closes with
+                the work, so the waiting between teams stops hiding and starts falling.
+              </p>
+              <p className="hm-mechanism__note">
+                That waiting is the coordination tax: the time lost when no system owns the work end to end.
+              </p>
+              <p className="hm-mechanism__note">
+                The AI does the raising, routing, and chasing; your people make the decisions, and every
+                decision carries a Part 11 signature.
               </p>
               <div className="hm-mechanism__ctas">
                 <Link href="/explorations/platform" className="dms-btn">Explore the platform &rarr;</Link>
@@ -495,10 +574,11 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          {/* the argument, shown: NC-204 followed end to end on the same
-            * persistent camera the platform and product pages journey on */}
+          {/* the argument, shown: one record followed end to end on the same
+            * persistent camera the platform and product pages journey on -
+            * runnable on NC-204 or CC-2148, same five claims */}
           <div className="pf-page hm-journey" data-reveal>
-            <PlatformJourney steps={MECHANISM_STEPS} configs={HOME_JOURNEY_CONFIGS} />
+            <MechanismJourney records={MECHANISM_RECORDS} />
           </div>
         </div>
       </section>
@@ -548,7 +628,10 @@ export default function HomePage() {
                   {group.industries.map((industry) => (
                     <li key={industry.name}>
                       <Link href={industry.href}>
-                        <span>{industry.name}</span>
+                        <span className="hm-industry__tile" aria-hidden="true">
+                          <IndustryIcon type={industry.icon} />
+                        </span>
+                        <span className="hm-industry__name">{industry.name}</span>
                         <small>{industry.standard}</small>
                       </Link>
                     </li>
@@ -564,50 +647,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============================ 06 · PROOF & RESOURCES ============ */}
-      <section className="dms-section hm-proof-section" id="proof">
+      {/* ============================ 06 · PROOF (film rail) ============ */}
+      <HomeProofFilms />
+
+      {/* ============================ RESOURCES ========================= */}
+      <section className="dms-section hm-resources-section" aria-labelledby="hm-resources-h">
         <div className="dms-wrap">
-          <div className="hm-split-head" data-reveal>
-            <div>
-              <Eyebrow n={6}>Proof in context</Eyebrow>
-              <h2 className="dms-h2">From the people who stopped paying the coordination tax.</h2>
-            </div>
-            <p className="dms-lede">
-              Follow the proof by industry, by solution, or by the governed system that changed the work.
-            </p>
-          </div>
-          <ul className="hm-proof" data-reveal>
-            {PROOF.map(({ story, context }) => (
-              <li className="hm-proof__card" key={story.slug}>
-                <div className="hm-proof__context" aria-label="Related pages">
-                  {context.map((item) => <Link href={item.href} key={item.label}>{item.label}</Link>)}
-                </div>
-                <div className="hm-proof__stat">
-                  <span className="hm-proof__value dms-data">{story.metrics[0].value}</span>
-                  <span className="hm-proof__vlab">{story.metrics[0].label}</span>
-                </div>
-                <blockquote className="hm-proof__q">&ldquo;{story.quote}&rdquo;</blockquote>
-                <div className="hm-proof__who">
-                  <span className="hm-proof__name">{story.person}</span>
-                  <span className="hm-proof__role">{story.role} · {story.company}</span>
-                  <span className="hm-proof__kind">{story.companyKind}</span>
-                </div>
-                <Link className="hm-proof__link" href={`/explorations/resources/testimonials/${story.slug}`}>
-                  Watch the story &rarr;
-                </Link>
-              </li>
-            ))}
-          </ul>
           <div className="hm-resources" data-reveal>
             <div className="hm-resources__intro">
               <span>Keep exploring</span>
-              <h3>Evidence for the next conversation.</h3>
+              <h3 id="hm-resources-h">Evidence for the next conversation.</h3>
+              <p>The voices, the numbers, and the field notes behind the claims on this page.</p>
+              <Link className="hm-resources__all" href="/explorations/resources">
+                Browse all resources <span aria-hidden="true">&rarr;</span>
+              </Link>
             </div>
-            <div className="hm-resources__links">
-              {RESOURCE_PATHS.map((resource) => (
-                <Link href={resource.href} key={resource.label}>
-                  <span><strong>{resource.label}</strong><small>{resource.body}</small></span>
-                  <i aria-hidden="true">&rarr;</i>
+            <div className="hm-resources__rows">
+              {RESOURCE_ROWS.map((row) => (
+                <Link className="hm-resrow" href={row.href} key={row.label}>
+                  <span className="hm-resrow__col">
+                    <strong>{row.label}</strong>
+                    <small>{row.body}</small>
+                  </span>
+                  <span className="hm-resrow__go">
+                    {row.cta} <i aria-hidden="true">&rarr;</i>
+                  </span>
                 </Link>
               ))}
             </div>

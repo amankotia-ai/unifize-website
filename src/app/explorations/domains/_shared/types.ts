@@ -26,6 +26,21 @@
 
 import type { ReactNode } from "react";
 import type { MapDomain, PersonaCard, TriggerRow } from "../../industries/_shared/types";
+import type { ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
+
+/** The live product layer (see _shared/domain-arcade.tsx): one
+ *  ArcadeStepConfig per `flow.trail` row, in the same order, walking the
+ *  domain's OWN record (the CAPA, the finding, the SCAR, the field action,
+ *  the change) through the shared stylized-arcade engine. The hero cycles
+ *  the same journey (`heroOrder` indexes into `steps`; defaults to
+ *  [1, 2, 3, 4, 0] — open on the strongest establishing frame, then loop).
+ *  Facts inside the journey follow the page's provenance rule: record
+ *  vocabulary, actors and clocks come from the domain's canonical trail and
+ *  pain map, never invented metrics. */
+export interface DomainArcadeJourney {
+  steps: ArcadeStepConfig[];
+  heroOrder?: number[];
+}
 
 /** Pain Points DB severity scale (Critical / High / Medium; Low unused on page). */
 export type PainSeverity = "Critical" | "High" | "Medium";
@@ -57,6 +72,33 @@ export interface WorkGroup {
   runsIn?: { label: string; href: string };
 }
 
+/** One row of the section-02 "old world" artifact (see LeakScene). */
+export interface LeakSceneRow {
+  state: "done" | "wait" | "idle";
+  label: string;
+  age: string;
+  /** the age carries the warn tone (the clock that is actually running) */
+  warn?: boolean;
+}
+
+/** Section 02's stylized evidence artifact — ONE coherent surface of the old
+ *  world (a tracker, an inbox, a binder) staged in the same mini-UI grammar
+ *  as the homepage's symptom scenes: square corners, hairlines, status by
+ *  icon + label color, never a colored edge, never a fragment collage. The
+ *  rows dramatize the domain's own pain map; the caption says what it is. */
+export interface LeakScene {
+  /** title-bar kicker (the artifact's name: "CAPA-0091", "SCAR tracker.xlsx") */
+  kicker: string;
+  /** title-bar right chip (the clock that hurts: "Day 90", "47 unread") */
+  chip: string;
+  title: string;
+  rows: LeakSceneRow[];
+  /** the layered interruption chip (a question arriving from outside) */
+  float?: { kicker: string; note: string };
+  /** one line under the artifact naming the failure it stages */
+  caption: string;
+}
+
 /** One failure mode from the Pain Points DB. */
 export interface PainRow {
   name: string;
@@ -77,6 +119,30 @@ export interface IndustryRow {
   /** The regulatory frame as mono tags (from the industry's canonical chips). */
   chips: string[];
   href: string;
+}
+
+/** One path of the coexistence answer (the page spec's Path A / B / C).
+ *  Copy rule: every capability named must be canonical (live modules, the
+ *  Part 11 e-signature claim); never author integration mechanics that
+ *  engineering hasn't stated. */
+export interface CoexistPath {
+  id: "have" | "none" | "weak";
+  /** Selector option, in the buyer's words ("We run a dedicated eQMS"). */
+  label: string;
+  /** Vendor names the buyer recognizes (shown as a quiet reassurance line). */
+  vendors?: string[];
+  heading: string;
+  body: ReactNode;
+  diagram: {
+    /** The Unifize band's role line for this path. */
+    role: string;
+    /** Capability chips inside the band. */
+    chips: string[];
+    /** Boxes under the band: kept systems of record, lanes Unifize
+     *  provides, or the gap Unifize fills. */
+    boxes: { name: string; note: string; kind: "sor" | "unifize" | "gap" }[];
+    caption: string;
+  };
 }
 
 /** A named customer reference (real, verifiable — never placeholder people). */
@@ -121,10 +187,12 @@ export interface DomainPageData {
    *  groups with journey ingress links into the live products. */
   work: { heading: string; lede: string; groups: WorkGroup[] };
 
-  /** 02 · The leak: severity-filterable pain register + the honest cost band. */
+  /** 02 · The leak: severity-filterable pain register + the honest cost band.
+   *  `scene` stages the old world as one stylized artifact beside the head. */
   leaks: {
     heading: string;
     lede: string;
+    scene?: LeakScene;
     pains: PainRow[];
     /** Provenance note under the card grid. */
     note: string;
@@ -133,7 +201,10 @@ export interface DomainPageData {
   };
 
   /** 03 · Differentiation: the decision-trace flow (same shape as the
-   *  industry template's difference section). */
+   *  industry template's difference section). When `arcade` is present the
+   *  section renders as the live pinned scroll story — the trail drives the
+   *  camera — and the hero swaps its static shot for the same journey;
+   *  without it, the static ChatShell mock renders (the pre-arcade look). */
   flow: {
     heading: string;
     lede: string;
@@ -144,6 +215,7 @@ export interface DomainPageData {
     shellUrl: string;
     mobileLabel: string;
     mobileId: string;
+    arcade?: DomainArcadeJourney;
   };
 
   /** 04 · L1 fan-out by industry. */
@@ -161,12 +233,20 @@ export interface DomainPageData {
 
   /** 08 · Coexistence — Unifize as the coordination layer over the systems of
    *  record already in place (same section as the industry template; panel
-   *  finding: the integration story was missing from the domain page). */
+   *  finding: the integration story was missing from the domain page).
+   *  `paths` adds the page spec's three-path answer (have a system / have
+   *  none / have one with gaps) with the "where is yours today?" selector —
+   *  the panel's top finding was the page answering replace-vs-coexist both
+   *  ways, so the paths make BOTH true, explicitly, per situation. Without
+   *  `paths` the section renders the single-story fallback. */
   coexistence: {
     heading: string;
     systemsOfRecord: string[];
     body: ReactNode;
     diagramCaption: string;
+    /** Selector label, e.g. "Where is your QMS today?" */
+    selectorLabel?: string;
+    paths?: CoexistPath[];
   } | null;
 
   /** 09 · Proof — REAL evidence only: the customer-attested signed baseline
@@ -177,6 +257,12 @@ export interface DomainPageData {
     heading: string;
     lede: string;
     attested: { label: string; stat: string; statLabel: string; body: string; note: string };
+    /** Module tags into the Website Customer Videos mirror (Notion-governed;
+     *  see products/_shared/customer-films.ts). When present, the section
+     *  renders the real customer-film rail: the attested stat leads, films
+     *  whose tags intersect follow. Governance stays in the adapter — an
+     *  unapproved film simply never renders. */
+    filmTags?: string[];
     references: ProofReference[];
     foot: { label: string; href: string };
   } | null;

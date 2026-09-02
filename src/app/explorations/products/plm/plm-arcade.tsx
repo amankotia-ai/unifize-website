@@ -722,8 +722,114 @@ export const PLM_ARCADE_FLOW_CONFIGS: Record<string, ArcadeStepConfig[]> = {
  * story with the same facts: the spec opens ON its trace, the risk is judged
  * against live controls, the revision routes as one package, and the trace
  * closes itself into the design history file. Labels are the reader's
- * handle on the step. */
+ * handle on the step.
+ *
+ * Two hero-only bookends are lifted from the PLM combined customer video
+ * (Wistia, 4cw8gd4hn1k39x8), same recipe as the DMS and QMS heroes: the
+ * no-code process builder that CONFIGURES the lifecycle the middle steps
+ * ride (demo 0:28-0:40 and 2:42-3:06, the product-development stage list
+ * Product Details through Generate Signed PDF), and the live dashboard the
+ * release rolls into (demo 0:00 poster, the KPI-donut dashboard, restaged
+ * on PF-36's Notion-backed release-readiness reports so the close stays
+ * the SPC-310 story). Both extend PF-34's spec world so the hero stays one
+ * record: the builder opens it (why the record is governed), the dashboard
+ * closes it (what the governance proves). */
+const PLM_HERO_WORLD: ArcadeFlowWorld = {
+  ...SPEC_WORLD,
+  builder: {
+    title: "Product development process",
+    note: "The lifecycle every design record walks, configured, not coded.",
+    tabs: ["Checklist", "Team", "Statuses", "Reminders", "Layout"],
+    fields: [
+      { kind: "Selection", tone: "selection", label: "Product details" },
+      { kind: "Text", tone: "text", label: "Design input(s)" },
+      { kind: "Linked field", tone: "linked", label: "FMEA & control plan" },
+      { kind: "Approval", tone: "approval", label: "Design approval" },
+      { kind: "Revision", tone: "revision", label: "Specification revision(s)" },
+      { kind: "File upload", tone: "upload", label: "Verification & validation" },
+      { kind: "Generate PDF", tone: "pdf", label: "Signed design file" },
+    ],
+    palette: [
+      { label: "Approval", note: "Digital signatures on the record", tone: "approval" },
+      { label: "Linked field", note: "Link to another process", tone: "linked" },
+      { label: "Revision", note: "Managed revisions of the record", tone: "revision" },
+      { label: "Generate PDF", note: "Printable render of the checklist", tone: "pdf" },
+      { label: "Picklist", note: "Drop-down selection of items", tone: "picklist" },
+      { label: "File upload", note: "Attach documents or images", tone: "upload" },
+    ],
+  },
+  reports: {
+    title: "Release readiness · SPC-310 Rev C",
+    kpis: [
+      { label: "Requirements covered", value: "24 of 24", note: "REQ-041 … REQ-064" },
+      { label: "Open verifications", value: "0", note: "VER-131 closed Friday" },
+      { label: "Avg. design review", value: "3.1d", note: "Routed, not chased" },
+    ],
+    panels: [
+      { label: "Requirement coverage", kind: "bars" },
+      { label: "Verification status", kind: "donut" },
+      { label: "Release cycle times", kind: "lines" },
+    ],
+  },
+};
+
+const PLM_HERO_BUILD_STEP: ArcadeStepConfig = {
+  source: "PLM demo 0:28-0:40, 2:42-3:06 · product-development stage list + builder",
+  ghost: "Build",
+  type: "Specification",
+  id: "#310",
+  title: "Seal housing tolerance",
+  status: "In Review",
+  actor: "You",
+  event: "Configured the product development process in the builder",
+  eventDetail: "Stages, approval routing and automations · no code",
+  checklist: "REQUIREMENT TRACE",
+  checklistItems: ["Field list", "Approval routing", "Automations"],
+  focus: "builder",
+  focusTitle: "Design approval",
+  focusRows: [
+    "Signatures set by change classification",
+    "Contingent on risk assessment complete",
+    "On approval · trace and DHF update",
+  ],
+  focusAction: "Add field",
+  ownershipNote: "Process owner · S. Okafor",
+  world: PLM_HERO_WORLD,
+  checklistProgress: { "REQUIREMENT TRACE": 0, "RISK · FMEA": 0, "CHANGE & RELEASE": 0 },
+};
+
+const PLM_HERO_MEASURE_STEP: ArcadeStepConfig = {
+  source: "PLM demo 0:00 · KPI dashboard, restaged on PF-36 release readiness",
+  ghost: "Measure",
+  type: "Specification",
+  id: "#310",
+  title: "Seal housing tolerance",
+  status: "Approved",
+  actor: "automator",
+  event: "Rolled the release into the live dashboards",
+  eventDetail: "Coverage, verification status and cycle times · live from every record",
+  checklist: "CHANGE & RELEASE",
+  checklistItems: ["Requirement coverage", "Verification status", "Release cycle times"],
+  focus: "dashboard",
+  focusTitle: "Requirement coverage",
+  focusRows: [
+    "Covered · 24 of 24 · no orphans",
+    "VER-131 seal fit test · passed",
+    "No export · no reconciliation",
+  ],
+  focusAction: "Open report",
+  ownershipNote: "Live from every record",
+  world: PLM_HERO_WORLD,
+};
+
+/* The hero rail: configuration opens, analytics closes, and the SPC-310
+ * journey (PF-34's five poses) stays intact in the middle - same shape as
+ * the QMS hero's seven steps. */
 export const PLM_HERO_STEPS: HeroArcadeStep[] = [
+  {
+    label: "Build it",
+    config: PLM_HERO_BUILD_STEP,
+  },
   {
     label: "Open the trace",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][0],
@@ -743,5 +849,9 @@ export const PLM_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Close the trace",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][4],
+  },
+  {
+    label: "Measure it",
+    config: PLM_HERO_MEASURE_STEP,
   },
 ];

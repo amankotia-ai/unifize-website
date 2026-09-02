@@ -88,6 +88,28 @@ export function filmsForModules(
     .map((entry) => toFilm(entry.row));
 }
 
+/* One specific film by its Wistia id, governance applied: returns null when
+ * the row is missing, unapproved, or incomplete, so the caller's card simply
+ * does not render. */
+export function filmByWistia(wistia: string): CustomerFilm | null {
+  const row = customerVideos.find((r) => r.wistia === wistia);
+  return row && renderable(row) ? toFilm(row) : null;
+}
+
+/* Distinct companies attested in the mirror's Company column, most-filmed
+ * first. Only names a customer put on the record reach a trust strip. */
+export function attestedCompanies(limit = 6): string[] {
+  const counts = new Map<string, number>();
+  for (const row of customerVideos) {
+    if (!(row.status === "Live" && row.webUseApproved && row.company)) continue;
+    counts.set(row.company, (counts.get(row.company) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([company]) => company);
+}
+
 /* A lead card whose claim the customer states on film. The figure framing is
  * page copy; the attribution and link come from the mirror row, so the card
  * disappears if the film is ever unapproved or unpublished in Notion. */

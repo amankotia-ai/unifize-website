@@ -53,6 +53,79 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
+import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+
+/* ------------------------------------------------------------------------
+ * The live arcade journey: CC-2148 as its owner lives it, one pose per
+ * flow.trail step. Same canonical story as the hero float and the flow
+ * section (the sterilization SOP change, SOP-118 Rev C → D, PLM ECO-441);
+ * names and facts mirror the Medical Devices flagship, retimed to this
+ * page's Day 0 → Day 16 trail. Sections and items never change mid-journey;
+ * steps only open sections and advance counts. */
+const CHANGE_WORLD: ArcadeFlowWorld = {
+  team: "Device Engineering",
+  recordNoun: "Change Control",
+  owner: "L. Martin",
+  ownerInitials: "LM",
+  participants: ["LM", "RK", "+3"],
+  participantsLabel: "L. Martin, R. Kapoor, and three others",
+  recordKicker: "CHANGE CONTROL",
+  context: {
+    initials: "LM",
+    name: "L. Martin",
+    time: "09:06",
+    message: "Opened CC-2148 for the sterilization hold time.",
+    detail: "Linked to SOP-118 Rev C · PLM ECO-441",
+  },
+  inboxNeighbors: [
+    { title: "Sterilization of packaged sets", time: "10:40", detail: "SOP-118 · affected document", kind: "Document" },
+    { title: "Risk file RA-067", time: "09:12", detail: "ISO 14971 · review in scope", kind: "Review" },
+    { title: "Supplier notice · Apex Sterile", time: "Yesterday", detail: "Rev D distribution · acknowledgement due", kind: "Supplier" },
+  ],
+  checklistTitle: "Change Control",
+  checklistSections: [
+    {
+      title: "CHANGE REQUEST",
+      items: [
+        { label: "Reason for change", kind: "field", value: "Supplier material change · update sterilization hold time", note: "Entered on the request" },
+        { label: "Affected document", note: "SOP-118 · Sterilization · Rev C" },
+        { label: "Engineering change", note: "PLM ECO-441 · linked" },
+      ],
+    },
+    {
+      title: "IMPACT ASSESSMENT",
+      items: [
+        { label: "Risk file reviewed", note: "RA-067 · ISO 14971" },
+        { label: "Document redline", kind: "revision", from: "Rev C · effective", to: "Rev D · draft" },
+        { label: "Training impact", note: "Line 2 · 2 roles" },
+      ],
+    },
+    {
+      title: "APPROVAL & EFFECTIVITY",
+      items: [
+        { label: "Cross-functional review", kind: "approval", signer: "R. Kapoor", state: "Approved" },
+        { label: "VP Quality · Part 11", kind: "approval", signer: "P. Ramesh", state: "Signed" },
+        { label: "Effective at the site", note: "Rev D live · Rev C retired · line 2 trained" },
+      ],
+    },
+  ],
+};
+
+/* the same record as its approver sees it: rail avatar, "You" initials and
+ * the Part 11 dialog all follow the viewer */
+const CHANGE_APPROVER_WORLD: ArcadeFlowWorld = {
+  ...CHANGE_WORLD,
+  viewer: "P. Ramesh",
+  viewerInitials: "PR",
+};
+
+/* the constants every pose of the journey shares */
+const CHANGE_REC = {
+  type: "Change Control",
+  id: "CC-2148",
+  title: "Sterilization SOP change",
+  world: CHANGE_WORLD,
+} as const;
 
 export const CHANGE_CONTROL_DATA: DomainPageData = {
   slug: "change-control",
@@ -169,6 +242,22 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
   leaks: {
     heading: "The change is approved. The record cannot replay why.",
     lede: "The failure modes we see inside change control. None of them is a missing feature. All of them are decisions that happened off the record.",
+    /* the old world, staged (section 02's evidence artifact): the approved
+     * change that never quite lands at the site. Furniture is illustrative,
+     * not a claim. */
+    scene: {
+      kicker: "ECO-441 packet",
+      chip: "Rev C still live",
+      title: "The change, waiting to land",
+      rows: [
+        { state: "done", label: "Redline approved", age: "by email" },
+        { state: "wait", label: "Training cascade", age: "list out of date", warn: true },
+        { state: "wait", label: "Supplier notice", age: "unacknowledged" },
+        { state: "idle", label: "Effective date", age: "Slipped twice" },
+      ],
+      float: { kicker: "Line 2", note: "We built 40 units to Rev C this morning." },
+      caption: "Approved upstream, invisible downstream. The line finds out last.",
+    },
     pains: [
       {
         severity: "Critical",
@@ -229,6 +318,112 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
     shellUrl: "app.unifize.com / change-control / CC-2148",
     mobileLabel: "Change decision trace",
     mobileId: "CC-2148 · request → impact → review → approval → effective",
+    /* one pose per trail step; the trail drives the camera (domain-arcade) */
+    arcade: {
+      steps: [
+        {
+          ...CHANGE_REC,
+          source: "DK · CC-2148 · raise",
+          ghost: "Raise",
+          status: "Draft",
+          actor: "You",
+          event: "Raised the change from SOP-118",
+          eventDetail: "Rationale captured on the record · affected documents scoped",
+          checklist: "CHANGE REQUEST",
+          checklistItems: ["Reason for change", "Affected document", "Engineering change"],
+          focus: "print",
+          focusTitle: "Change request",
+          focusRows: ["Supplier material change", "SOP-118 · Rev C", "PLM ECO-441"],
+          focusAction: "Submit for assessment",
+          ownershipNote: "One record from the first decision",
+          checklistOpen: "CHANGE REQUEST",
+          checklistEntry: { section: "CHANGE REQUEST", item: "Reason for change" },
+          checklistProgress: { "CHANGE REQUEST": 2, "IMPACT ASSESSMENT": 0, "APPROVAL & EFFECTIVITY": 0 },
+          checklistFootnote: "Affected documents scoped from SOP-118",
+        },
+        {
+          ...CHANGE_REC,
+          source: "DK · CC-2148 · bind",
+          ghost: "Bind",
+          status: "Open",
+          actor: "automator",
+          event: "Bound the impact assessment to the record",
+          eventDetail: "Documents, risk and training scoped in one pass",
+          checklist: "IMPACT ASSESSMENT",
+          checklistItems: ["SOP-118 · Sterilization · Rev C → D", "Risk file RA-067 · ISO 14971", "Training impact · Line 2 · 2 roles"],
+          focus: "trace",
+          focusTitle: "Impact assessment bound",
+          focusRows: ["Everything the change touches", "3 records linked"],
+          focusAction: "Open evidence chain",
+          ownershipNote: "Scoped by rule, not by memory",
+          checklistOpen: "IMPACT ASSESSMENT",
+          checklistProgress: { "IMPACT ASSESSMENT": 2, "APPROVAL & EFFECTIVITY": 0 },
+          related: 3,
+        },
+        {
+          ...CHANGE_REC,
+          source: "DK · CC-2148 · review",
+          ghost: "Review",
+          status: "In Review",
+          actor: "Unifize Assistant",
+          event: "Assembled the cross-functional review",
+          eventDetail: "Engineering and Manufacturing on one thread · comment resolved inline",
+          checklist: "APPROVAL & EFFECTIVITY",
+          checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Effective at the site"],
+          focus: "review",
+          focusTitle: "Cross-functional review",
+          focusRows: ["Engineering · Approved", "Manufacturing · Approved", "Hold-time comment · Resolved inline"],
+          focusAction: "Approve redline",
+          focusAlts: ["Return with comment"],
+          ownershipNote: "The redline stays on the record",
+          checklistOpen: "APPROVAL & EFFECTIVITY",
+          checklistProgress: { "APPROVAL & EFFECTIVITY": 1 },
+        },
+        {
+          ...CHANGE_REC,
+          source: "DK · CC-2148 · sign",
+          ghost: "Sign",
+          status: "Needs Approval",
+          actor: "You",
+          event: "Re-authenticated for regulated approval",
+          eventDetail: "Signer, meaning and time seal to CC-2148",
+          checklist: "APPROVAL & EFFECTIVITY",
+          checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Effective at the site"],
+          focus: "signature",
+          focusTitle: "Apply your signature",
+          focusRows: [],
+          focusAction: "Confirm and sign",
+          ownershipNote: "Identity re-verified · 21 CFR Part 11",
+          world: CHANGE_APPROVER_WORLD,
+          checklistOpen: "APPROVAL & EFFECTIVITY",
+          checklistProgress: { "APPROVAL & EFFECTIVITY": 1 },
+          signedItems: [
+            { name: "R. Kapoor", initials: "RK", role: "Cross-functional review", approvalId: "4C21B2148A90", time: "Day 5" },
+          ],
+        },
+        {
+          ...CHANGE_REC,
+          source: "DK · CC-2148 · effective",
+          ghost: "Effective",
+          status: "Effective",
+          actor: "automator",
+          event: "Published Rev D, effective at the site",
+          eventDetail: "Rev C retired · training cascade complete · supplier acknowledged",
+          checklist: "APPROVAL & EFFECTIVITY",
+          checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Effective at the site"],
+          focus: "history",
+          focusKicker: "DECISION TRACE",
+          focusTitle: "One sealed decision trace",
+          focusRows: ["CC-2148 · Effective · trace sealed", "SOP-118 Rev D live · Rev C retired", "Training cascade · Line 2 · 14 of 14"],
+          ownershipNote: "Reconstructable at audit",
+          checklistOpen: "APPROVAL & EFFECTIVITY",
+          signedItems: [
+            { name: "P. Ramesh", initials: "PR", role: "VP Quality", approvalId: "9E77C2148D41", time: "Day 9" },
+          ],
+          related: 3,
+        },
+      ],
+    },
   },
 
   /* ------------------------------------------------ 04 · for your industry
@@ -457,6 +652,9 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
       body: MD_PROOF.stat.detail,
       note: "One signed, verifiable customer baseline, measured on non-conformance coordination at a medical-device manufacturer. The figure is anonymized; named references are shown separately.",
     },
+    /* real films from the Website Customer Videos mirror whose Module tags
+     * intersect this domain's work (governance in customer-films.ts) */
+    filmTags: ["Change Control", "Change Requests & Orders", "Document Management", "Training"],
     references: [
       {
         tag: "Named reference",
