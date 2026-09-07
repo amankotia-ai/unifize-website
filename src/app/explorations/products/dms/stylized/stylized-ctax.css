@@ -225,13 +225,16 @@
   gap: 3px;
 }
 
+/* before-metric and after-outcome share one size (2 Sep 2026 sync: the
+ * left read "way bigger" than the right); the metric keeps its tabular
+ * numerals, the outcome its balance */
 .dms .sctx__metric {
   font-family: var(--dms-display);
-  font-size: clamp(1.9rem, 2.6vw, 2.7rem);
+  font-size: clamp(1.3rem, 1.6vw, 1.6rem);
   font-variant-numeric: tabular-nums;
   font-weight: 630;
   letter-spacing: -0.015em;
-  line-height: 0.95;
+  line-height: 1.05;
 }
 
 .dms .sctx__metric-label {
@@ -273,7 +276,8 @@
 
 .dms .sctx__outcome {
   font-family: var(--dms-display);
-  font-size: clamp(1.08rem, 1.4vw, 1.3rem);
+  font-size: clamp(1.3rem, 1.6vw, 1.6rem);
+  letter-spacing: -0.015em;
   font-weight: 630;
   line-height: 1.2;
   text-wrap: balance;

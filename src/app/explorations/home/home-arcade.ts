@@ -5,7 +5,8 @@
  *   HERO - one shell, four worlds, one per audience (the panel's role-coverage
  *   finding kept intact): a quality event thread, CC-2148's approval route
  *   (borrowed verbatim from the platform journey so the universe stays one
- *   continuous story), a WIP hold queue, and SOP-118 at point of use.
+ *   continuous story), a WIP hold record in thread view, and SOP-118 at
+ *   point of use.
  *
  *   MECHANISM - the homepage's four-claim journey (capture, coordinate,
  *   prove, write back) followed on ONE record: NC-204, the same coating
@@ -18,7 +19,7 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../products/_shared/arcade/arcade";
-import { PLATFORM_JOURNEY_CONFIGS } from "../platform/platform-arcade";
+import { PLATFORM_QUEUE_CONFIG, PLATFORM_ROUTE_CONFIG, PLATFORM_SEAL_CONFIG } from "../platform/platform-arcade";
 
 /* ============================================================ the event world
  * NC-204 at platform altitude: not the QMS page's deep investigation, but the
@@ -226,12 +227,12 @@ const CHANGE_RECORD = {
   id: "CC-2148",
   title: "Torque spec update · housing assembly",
 } as const;
-const CHANGE_WORLD = PLATFORM_JOURNEY_CONFIGS[0].world;
+const CHANGE_WORLD = PLATFORM_QUEUE_CONFIG.world;
 
 export const HOME_JOURNEY_CHANGE_CONFIGS: ArcadeStepConfig[] = [
-  PLATFORM_JOURNEY_CONFIGS[0], // capture: the queue, context attached
-  PLATFORM_JOURNEY_CONFIGS[3], // coordinate: the route, owners and one clock
-  PLATFORM_JOURNEY_CONFIGS[4], // prove: the Part 11 seal
+  PLATFORM_QUEUE_CONFIG, // capture: the queue, context attached
+  PLATFORM_ROUTE_CONFIG, // coordinate: the route, owners and one clock
+  PLATFORM_SEAL_CONFIG, // prove: the Part 11 seal
   {
     source: "HOME s4-cc · write back",
     ghost: "Sync",
@@ -280,10 +281,12 @@ export const HOME_JOURNEY_CHANGE_CONFIGS: ArcadeStepConfig[] = [
  * Tab 1 rides the mechanism journey mid-flight (the accountable thread);
  * tab 2 borrows CC-2148's approval route from the platform page. */
 export const HOME_HERO_QUALITY_CONFIG: ArcadeStepConfig = HOME_JOURNEY_CONFIGS[1];
-export const HOME_HERO_CHANGE_CONFIG: ArcadeStepConfig = PLATFORM_JOURNEY_CONFIGS[3];
+export const HOME_HERO_CHANGE_CONFIG: ArcadeStepConfig = PLATFORM_ROUTE_CONFIG;
 
 /* the ops world: WIP hold 118-B, raised by NC-204's containment, waiting on
- * disposition - the queue pose shows aging in the open */
+ * release. Staged as ONE hold record in thread view (2026-09-02 sync, H3:
+ * the old queue pose landed on the home screen and read as a different
+ * product from the other three tabs, which each show a single record). */
 const OPS_HOLD_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Hold",
@@ -345,28 +348,29 @@ const OPS_HOLD_WORLD: ArcadeFlowWorld = {
 
 export const HOME_HERO_OPS_CONFIG: ArcadeStepConfig = {
   source: "HOME hero · holds & release",
-  ghost: "Holds",
+  ghost: "Hold",
   type: "Hold",
   id: "HLD-118",
   title: "Lot 118-B · quarantine hold",
   status: "On Hold",
-  actor: "automator",
-  event: "Held lot 118-B pending disposition",
-  eventDetail: "Hold, scope, and owner visible to every function · nothing waits in an inbox",
-  checklist: "HOLD",
-  checklistItems: ["Reason", "Scope"],
-  focus: "queue",
-  queueTile: "WIP holds",
-  focusTitle: "WIP holds",
+  actor: "You",
+  event: "Entered the disposition and requested release sign-off",
+  eventDetail: "Reason, scope, and owner on one record · the lot stays held until the signature lands",
+  checklist: "DISPOSITION",
+  checklistItems: ["Decision", "Quality concurrence"],
+  focus: "review",
+  focusTitle: "Hold & release",
   focusRows: [
-    "Lot 118-B · 240 units · line 2",
-    "Disposition due today · M. Osei",
-    "Release blocked until signed",
+    "Hold reason · NC-204 · coating thickness · 240 units",
+    "Disposition owner · M. Osei · rework to spec, due today",
+    "Release signature · pending re-inspection",
   ],
-  focusAction: "Open hold",
-  ownershipNote: "Aging is visible, not discovered",
+  focusAction: "Sign release",
+  focusAlts: ["Extend hold"],
+  ownershipNote: "Release is blocked on the record, not in an inbox",
   world: OPS_HOLD_WORLD,
-  checklistProgress: { HOLD: 3, DISPOSITION: 1, RELEASE: 0 },
+  checklistOpen: "DISPOSITION",
+  checklistProgress: { HOLD: 3, DISPOSITION: 2, RELEASE: 0 },
 };
 
 /* SOP-118 at point of use: no world, so the scene rides the shared document

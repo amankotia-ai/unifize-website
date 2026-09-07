@@ -772,6 +772,30 @@
   line-height: 1.6;
   text-wrap: pretty;
 }
+/* the film that answers the card: one square tile, play seal + two lines,
+ * under the fact block (2 Sep 2026 sync: proof inside the problem section) */
+.dms--redesign .dms-spot__film {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  /* the category and fact block indent 52px past the hanging quote mark */
+  margin: 22px 0 0 52px;
+  padding: 9px 14px 9px 9px;
+  border: 1px solid var(--dms-hairline);
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  text-decoration: none;
+  transition: border-color 160ms var(--dms-ease), background-color 160ms var(--dms-ease);
+}
+.dms--redesign .dms-spot__film:hover,
+.dms--redesign .dms-spot__film:focus-visible { border-color: var(--dms-accent); background: var(--dms-surface-alt); }
+.dms--redesign .dms-spot__film-play { display: grid; flex: none; place-items: center; width: 34px; height: 34px; background: var(--dms-accent); color: #fff; }
+.dms--redesign .dms-spot__film-play svg { width: 18px; height: 18px; fill: currentColor; }
+.dms--redesign .dms-spot__film-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dms--redesign .dms-spot__film-text small { color: var(--dms-faint); font-family: var(--dms-mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.dms--redesign .dms-spot__film-text b { font-size: 0.9rem; font-weight: 600; line-height: 1.3; }
+.dms--redesign .dms-spot__film-arrow { margin-left: 2px; color: var(--dms-accent); }
 .dms--redesign .dms-spot__scene {
   position: relative;
   display: grid;
@@ -2975,6 +2999,7 @@
   .dms--redesign .dms-spot__context { min-height: 0; padding: 0; }
   .dms--redesign .dms-spot__category,
   .dms--redesign .dms-spot__fact { padding-left: 0; }
+  .dms--redesign .dms-spot__film { margin-left: 0; }
   .dms--redesign .dms-spot__scene { min-height: 300px; aspect-ratio: auto; padding: 0; }
   .dms--redesign .dms-gfx svg { width: 116%; height: 116%; max-width: none; }
   .dms--redesign .dms-ctax__leak { grid-template-columns: 1fr; gap: 8px; }

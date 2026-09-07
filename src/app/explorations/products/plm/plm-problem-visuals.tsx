@@ -330,6 +330,18 @@ export function PlmProblemSpotlight({ items }: { items: DmsCoordinationProblem[]
                   </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
                 </div>
+                {problem.film ? (
+                  <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">
+                    <span className="dms-spot__film-play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" /></svg>
+                    </span>
+                    <span className="dms-spot__film-text">
+                      <small>On film · {problem.film.duration}</small>
+                      <b>How {problem.film.company ?? problem.film.person} handled it</b>
+                    </span>
+                    <span className="dms-spot__film-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                ) : null}
               </div>
               <div className="dms-spot__scene">
                 <ProblemGraphic

@@ -21,6 +21,7 @@
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 import { NAV, NavGlyph as Glyph, type NavFoot, type NavItem, type NavLink } from "../../_shared/nav-data";
 
@@ -111,6 +112,18 @@ export function DmsHeader() {
   const [theme, setTheme] = useState<Theme>("dark");
   const [frosted, setFrosted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  /* after a route change the pointer is usually still over the panel that
+   * was clicked, so the CSS :hover panel would stay open across the swap
+   * and hide that the page changed (Raj, 2 Sep 2026). Hold the panels shut
+   * and drop focus for a beat; the next pointer move reopens as normal. */
+  const pathname = usePathname();
+  const [settling, setSettling] = useState(false);
+  useEffect(() => {
+    setSettling(true);
+    (document.activeElement as HTMLElement | null)?.blur?.();
+    const timer = window.setTimeout(() => setSettling(false), 700);
+    return () => window.clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
     const detect = () => {
@@ -194,7 +207,7 @@ export function DmsHeader() {
   }, [menuOpen]);
 
   return (
-    <header className={"dms-header is-" + theme + (frosted ? " is-frosted" : "")}>
+    <header className={"dms-header is-" + theme + (frosted ? " is-frosted" : "") + (settling ? " dms-header--settling" : "")}>
       <div className="dms-wrap dms-header__inner">
         <a className="dms-header__brand" href="/explorations/home">
           <img className="dms-header__logo dms-header__logo--light" src="/logo_light.svg" alt="Unifize" />

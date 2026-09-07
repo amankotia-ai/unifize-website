@@ -40,10 +40,6 @@ export type HeroArcadeView = {
   key: string;
   label: string;
   config: ArcadeStepConfig;
-  /* the tab's exit: the L2 page that owns this record's world (2026-09-01
-   * panel: a search-intent visitor should not need two scrolls to reach the
-   * thing the tab names) */
-  door?: { label: string; href: string };
 };
 
 /* the record-swap dip: dim-out finishes on the 160ms panel transition in
@@ -123,14 +119,6 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
           </button>
         ))}
       </div>
-      {/* the active tab's door: same 1040px column as the tabs */}
-      {view.door ? (
-        <div className="hm-heromock__doorrow">
-          <Link className="hm-heromock__door" href={view.door.href}>
-            {view.door.label} <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </div>
-      ) : null}
       {/* one persistent window: the camera pans between worlds, the interior
         * dips for the record swap */}
       <div className="hm-heromock__stage">

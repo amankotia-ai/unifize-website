@@ -66,7 +66,7 @@ export function PlatformProofFilms() {
   return (
     <ProofFilmRail
       idPrefix="pf"
-      eyebrowN={6}
+      eyebrowN={5}
       heading="Real teams, on camera, on the record."
       lede="Quality directors, engineers, and operators on their own before and after: off legacy systems, live in weeks, closing work faster."
       countNoun="customer films"

@@ -43,7 +43,9 @@ import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
 import { HeroArcadeSwitcher, MechanismJourney, ProductSuiteShowcase } from "./home-interactive";
+import { HeroHeadline, HeroHeadlineProvider, HeroHeadlineReview } from "./home-headline";
 import { SymptomVisual } from "./home-symptom-scenes";
+import { SolutionsGrid } from "./home-solutions";
 import {
   HOME_HERO_QUALITY_CONFIG,
   HOME_HERO_CHANGE_CONFIG,
@@ -58,7 +60,6 @@ import { MES_MODULE_ARCADE_CONFIGS } from "../products/mes/mes-arcade";
 import { PLM_MODULE_ARCADE_CONFIGS } from "../products/plm/plm-arcade";
 import { CASE_STUDIES, POSTS } from "../resources/_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
-import { attestedCompanies } from "../products/_shared/customer-films";
 import { HomeProofFilms } from "./home-proof";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
@@ -83,68 +84,80 @@ const HERO_VIEWS = [
     key: "quality",
     label: "Quality event",
     config: HOME_HERO_QUALITY_CONFIG,
-    door: { label: "Explore the Quality solution", href: "/explorations/domains/quality" },
   },
   {
     key: "change",
     label: "Change order",
     config: HOME_HERO_CHANGE_CONFIG,
-    door: { label: "Explore Change Control", href: "/explorations/domains/change-control" },
   },
   {
     key: "ops",
     label: "Holds & release",
     config: HOME_HERO_OPS_CONFIG,
-    door: { label: "Explore MES", href: "/explorations/products/mes" },
   },
   {
     key: "document",
     label: "Controlled document",
     config: HOME_HERO_DOCUMENT_CONFIG,
-    door: { label: "Explore DMS", href: "/explorations/products/dms" },
   },
 ];
 
-/* 03 - the mechanism journey rail: one claim per pose, the scene proves it.
- * Two records, same five claims (2026-09-01 panel: the journey run only on a
- * quality event read as "quality's tool" to engineering and ops; the chase
- * and floor lines answer "visible vs chased" and "what does the operator
- * actually touch"). */
+/* 04 - the mechanism journey rail: one claim per pose, the scene proves it.
+ * Each step carries a stroke glyph on the same 24 grid as the industry set
+ * (7 Sep 2026: the five-claim band that briefly sat above the rail repeated
+ * these headings; the glyphs moved onto the rail and the band went). */
+const MECHANISM_GLYPHS: Record<string, ReactNode> = {
+  capture: <path d="M4 14v5h16v-5M4 14h4l1.5 2.5h5L16 14h4M12 3v9m0 0-3-3m3 3 3-3" />,
+  coordinate: <path d="M3 12h6m6 0h6M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0M12 10.6V12l1 1M5 6.5h3M16 17.5h3" />,
+  prove: <path d="M12 3 5 5.6v6c0 4 2.9 7.4 7 8.4 4.1-1 7-4.4 7-8.4v-6L12 3Zm-3 9 2.2 2.2L15.5 10" />,
+  writeback: <path d="M4 6.5c0-1.4 3.6-2.5 8-2.5s8 1.1 8 2.5S16.4 9 12 9 4 7.9 4 6.5Zm0 0v11C4 18.9 7.6 20 12 20s8-1.1 8-2.5v-11M4 12c0 1.4 3.6 2.5 8 2.5M16 14.5l3-2.5-3-2.5M13 12h6" />,
+  measure: <path d="M4 20h16M6 16V9M11 16v-5M16 16v-2M21 16V4M6 6l5 3 5-4 5-2" />,
+};
+
+/* the journey rail's per-record copy: same five claims, either record */
 const MECHANISM_STEPS_EVENT = [
-  { title: "Capture", body: "The event opens one governed thread with its context attached: the reading, the part, the work order. Logged once, at the station; nothing is re-keyed." },
-  { title: "Coordinate", body: "Every handoff gets an owner and a clock everyone can see. Reminders and escalations chase the overdue ones, so you don't." },
-  { title: "Prove", body: "Evidence and approvals close with the work, so the record is complete at sign-off, not at audit prep." },
-  { title: "Write back", body: "The approved outcome writes back. Unifize keeps the cross-functional trail; your systems of record stay authoritative." },
-  { title: "Measure", body: "Every thread carries its own clock. You watch the coordination tax fall, week by week, against your own baseline." },
+  { title: "Capture", glyph: MECHANISM_GLYPHS["capture"], body: "The event opens one governed thread with its context attached: the reading, the part, the work order. Logged once, at the station; nothing is re-keyed." },
+  { title: "Coordinate", glyph: MECHANISM_GLYPHS["coordinate"], body: "Every handoff gets an owner and a clock everyone can see. Reminders and escalations chase the overdue ones, so you don't." },
+  { title: "Prove", glyph: MECHANISM_GLYPHS["prove"], body: "Evidence and approvals close with the work, so the record is complete at sign-off, not at audit prep." },
+  { title: "Write back", glyph: MECHANISM_GLYPHS["writeback"], body: "The approved outcome writes back. Unifize keeps the cross-functional trail; your systems of record stay authoritative." },
+  { title: "Measure", glyph: MECHANISM_GLYPHS["measure"], body: "Every thread carries its own clock. You watch the coordination tax fall, week by week, against your own baseline." },
 ];
 const MECHANISM_STEPS_CHANGE = [
-  { title: "Capture", body: "The change opens one governed thread with its context attached: the drawing, the risk file, the affected documents. Raised straight from the finding; nothing is re-keyed." },
-  { title: "Coordinate", body: "Quality, engineering, and production see one route: an owner on every approval, one clock. Reminders and escalations chase the overdue ones, so you don't." },
-  { title: "Prove", body: "Approvals are Part 11 signatures with their meaning attached, so the change is defensible at sign-off, not reconstructed at audit prep." },
-  { title: "Write back", body: "The released revision writes back. Your PLM keeps the BOM and the revision; Unifize keeps the decision trail and the effectivity." },
-  { title: "Measure", body: "Every change carries its own clock. You watch review and approval time fall against your own baseline." },
+  { title: "Capture", glyph: MECHANISM_GLYPHS["capture"], body: "The change opens one governed thread with its context attached: the drawing, the risk file, the affected documents. Raised straight from the finding; nothing is re-keyed." },
+  { title: "Coordinate", glyph: MECHANISM_GLYPHS["coordinate"], body: "Quality, engineering, and production see one route: an owner on every approval, one clock. Reminders and escalations chase the overdue ones, so you don't." },
+  { title: "Prove", glyph: MECHANISM_GLYPHS["prove"], body: "Approvals are Part 11 signatures with their meaning attached, so the change is defensible at sign-off, not reconstructed at audit prep." },
+  { title: "Write back", glyph: MECHANISM_GLYPHS["writeback"], body: "The released revision writes back. Your PLM keeps the BOM and the revision; Unifize keeps the decision trail and the effectivity." },
+  { title: "Measure", glyph: MECHANISM_GLYPHS["measure"], body: "Every change carries its own clock. You watch review and approval time fall against your own baseline." },
 ];
 const MECHANISM_RECORDS = [
   { key: "event", label: "Quality event", meta: "NC-204", steps: MECHANISM_STEPS_EVENT, configs: HOME_JOURNEY_CONFIGS },
   { key: "change", label: "Change order", meta: "CC-2148", steps: MECHANISM_STEPS_CHANGE, configs: HOME_JOURNEY_CHANGE_CONFIGS },
 ];
 
-/* Four primary solution doors. The homepage recognizes the symptom; the L2
- * solution page carries the full problem architecture and proof. */
+
+/* Solution doors. The homepage recognizes the symptom; the L2 solution page
+ * carries the full problem architecture and proof. The first four render;
+ * the rest sit behind "See more solutions" (2026-09-02 sync, H6: more than
+ * four reachable, never a carousel). Keep this a data array: Lakshman's
+ * wording pass lands 9 Sep. Every entry past the first four points at a
+ * domain page that exists; Training & Competency waits on its route. */
 const SYMPTOMS = [
+  /* the four in front are Raj's pick (2 Sep 2026): quality, documents,
+   * suppliers, change control; "Operations" read as a product, not a
+   * problem, and moved behind the fold */
   {
     domain: "Quality",
     visual: "cycle",
-    claim: "CAPAs take 90 days to close.",
+    claim: "CAPAs take 90+ days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
     href: "/explorations/domains/quality",
   },
   {
-    domain: "Operations",
-    visual: "wip",
-    claim: "WIP ages while dispositions wait in inboxes.",
-    note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
-    href: "/explorations/domains/operations",
+    domain: "Document & Records Control",
+    visual: "versions",
+    claim: "Three copies of one SOP claim to be current.",
+    note: "The controlled system says v3.2, a file share holds v3.1, and the line runs a laminated v2.8. The current version depends on where you look.",
+    href: "/explorations/domains/document-and-records-control",
   },
   {
     domain: "Supplier Management",
@@ -154,11 +167,47 @@ const SYMPTOMS = [
     href: "/explorations/domains/supplier-management",
   },
   {
+    domain: "Change Control",
+    visual: "approval",
+    claim: "The change gets approved. Nobody can replay why.",
+    note: "Sign-off happens in email threads and design reviews, so the evidence that was seen and the conditions that were accepted never reach the record.",
+    href: "/explorations/domains/change-control",
+  },
+  /* behind "See more solutions"; claims mirror each domain page's hero */
+  {
     domain: "Product Development",
     visual: "trace",
     claim: "The design history is assembled after the fact.",
     note: "Decisions made in reviews and threads get reconstructed into the DHF weeks later, under deadline.",
     href: "/explorations/domains/product-development",
+  },
+  {
+    domain: "Operations",
+    visual: "wip",
+    claim: "WIP ages while dispositions wait in inboxes.",
+    note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
+    href: "/explorations/domains/operations",
+  },
+  {
+    domain: "Regulatory Affairs",
+    visual: "deadline",
+    claim: "The reporting clock starts before the evidence is gathered.",
+    note: "Reportability, submissions, and label approvals close on deadlines someone else set, with the evidence still in five inboxes.",
+    href: "/explorations/domains/regulatory-affairs",
+  },
+  {
+    domain: "Post-Market & Recall",
+    visual: "tracks",
+    claim: "A recall is four workflows, each on its own clock.",
+    note: "Hold, notification, returns, and the submission run under different owners. The decisions holding them together happen on calls nobody records.",
+    href: "/explorations/domains/post-market-and-recall",
+  },
+  {
+    domain: "Compliance",
+    visual: "matrix",
+    claim: "You can prove compliance today. Ask again tomorrow.",
+    note: "Validation, data integrity, and regulatory change are governed in briefs and spreadsheets beside the quality system, so the answer has to be rebuilt each time.",
+    href: "/explorations/domains/compliance",
   },
 ];
 
@@ -220,29 +269,29 @@ const INDUSTRY_GROUPS = [
     name: "Life sciences",
     body: "Decision trails that stand up to inspectors, sponsors, and assessors.",
     industries: [
-      { name: "Medical Devices", standard: "FDA 820 · ISO 13485", href: "/explorations/industry-template-modern", icon: "medical-devices" },
-      { name: "Pharmaceuticals", standard: "cGMP · Annex 11", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals" },
-      { name: "Contract Research Orgs", standard: "GCP · ICH E6", href: "/explorations/industries/cro", icon: "cro" },
-      { name: "Laboratories", standard: "ISO/IEC 17025", href: "/explorations/industries/laboratories", icon: "laboratories" },
+      { name: "Medical Devices", moment: "A complaint turns reportable", href: "/explorations/industry-template-modern", icon: "medical-devices" },
+      { name: "Pharmaceuticals", moment: "A deviation lands on a batch", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals" },
+      { name: "Contract Research Orgs", moment: "A protocol deviation at a site", href: "/explorations/industries/cro", icon: "cro" },
+      { name: "Laboratories", moment: "An out-of-spec result", href: "/explorations/industries/laboratories", icon: "laboratories" },
     ],
   },
   {
     name: "Process & consumer",
     body: "Controlled changes and evidence across formulation, production, and release.",
     industries: [
-      { name: "Chemicals", standard: "REACH · GHS", href: "/explorations/industries/chemicals", icon: "chemicals" },
-      { name: "Cosmetics", standard: "MoCRA · ISO 22716", href: "/explorations/industries/cosmetics", icon: "cosmetics" },
-      { name: "Food Processing", standard: "FSMA · GFSI", href: "/explorations/industries/food-processing", icon: "food-processing" },
-      { name: "Nutritional Supplements", standard: "21 CFR 111", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements" },
+      { name: "Chemicals", moment: "A formulation change", href: "/explorations/industries/chemicals", icon: "chemicals" },
+      { name: "Cosmetics", moment: "A safety substantiation", href: "/explorations/industries/cosmetics", icon: "cosmetics" },
+      { name: "Food Processing", moment: "A hold on a lot", href: "/explorations/industries/food-processing", icon: "food-processing" },
+      { name: "Nutritional Supplements", moment: "A rejected raw material", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements" },
     ],
   },
   {
     name: "Discrete manufacturing",
     body: "Configuration, supplier, and production decisions with the rationale intact.",
     industries: [
-      { name: "Automotive", standard: "IATF 16949", href: "/explorations/industries/automotive", icon: "automotive" },
-      { name: "Aerospace", standard: "AS9100 · NADCAP", href: "/explorations/industries/aerospace", icon: "aerospace" },
-      { name: "Industrial Machinery", standard: "ISO 9001 · CE", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery" },
+      { name: "Automotive", moment: "A PPAP resubmission", href: "/explorations/industries/automotive", icon: "automotive" },
+      { name: "Aerospace", moment: "A nonconformance on a flight part", href: "/explorations/industries/aerospace", icon: "aerospace" },
+      { name: "Industrial Machinery", moment: "A design change after CE marking", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery" },
     ],
   },
 ];
@@ -343,13 +392,13 @@ const ENTRY_PATHS = [
     label: "By industry",
     glyph: "industry",
     title: "Show me my regulated world.",
-    body: "Start with your standards, validated stack, and the moments that begin the clock.",
+    body: "Start with your industry: the systems it runs on and the moments that begin the clock.",
     links: [
       INDUSTRY_GROUPS[0].industries[0],
       INDUSTRY_GROUPS[0].industries[1],
       INDUSTRY_GROUPS[1].industries[0],
       INDUSTRY_GROUPS[2].industries[1],
-    ].map((industry) => ({ name: industry.name, meta: industry.standard, href: industry.href })),
+    ].map((industry) => ({ name: industry.name, meta: industry.moment, href: industry.href })),
     href: "#industries",
     cta: "Explore industries",
   },
@@ -381,7 +430,25 @@ const RESOURCE_ROWS = [
 
 /* trust strip: real companies from the Website Customer Videos mirror - only
  * names a customer attested on the record render here */
-const TRUST_COMPANIES = attestedCompanies(6);
+/* the customer logo set the live site carries (public/customers, pulled
+ * from unifize.com on 7 Sep 2026); rendered as a moving strip (Raj, 2 Sep:
+ * "a moving list of icons of all the customers"). Monochromed by CSS. */
+const CUSTOMER_LOGOS: { name: string; src: string; h?: number }[] = [
+  { name: "Biovation Labs", src: "/customers/biovation-labs.svg" },
+  { name: "Harmonic Bionics", src: "/customers/harmonic-bionics.png" },
+  { name: "Applechem", src: "/customers/applechem.png" },
+  /* EFCO's globe-behind-wordmark lockup collapses to a blob once monochromed;
+   * back in when a flat wordmark file exists */
+  { name: "Adaptive Health", src: "/customers/adaptive-health.png", h: 44 },
+  { name: "Dynamic Blending", src: "/customers/dynamic-blending.svg", h: 46 },
+  { name: "Rastelli", src: "/customers/rastelli.svg" },
+  { name: "Jamco", src: "/customers/jamco.png" },
+  { name: "ATS", src: "/customers/ats.png" },
+  { name: "Yanuvia", src: "/customers/yanuvia.png" },
+  { name: "LeaderBrand Produce", src: "/customers/leaderbrand-produce.png" },
+  { name: "Laundrytec", src: "/customers/laundrytec.png" },
+  { name: "Maia Estates", src: "/customers/maia-estates.svg" },
+];
 
 /* 01 - the three ways in, drawn: converging process lanes, the product mark's
  * module squares, a certificate. One stroke, one weight. */
@@ -418,29 +485,34 @@ export default function HomePage() {
       <DmsHeader />
 
       {/* ============================ HERO =============================
-       * Short tension headline; the concrete nouns carry the sub. The
+       * Regulated-industry outcome headline (variants under review, see
+       * home-headline.tsx); the concrete nouns carry the sub. The
        * coordination tax is NOT named here (third-scroll rule). */}
       <section className="dms-section dms-hero" aria-label="Unifize">
         <div className="dms-wrap dms-hero__inner">
-          <div className="dms-hero__grid">
-            <div className="dms-hero__left">
-              <h1 className="dms-hero__title">
-                Work that crosses teams falls <span className="dms-hero__turn">between systems.</span>
-              </h1>
-            </div>
-            <div className="dms-hero__right">
-              <p className="dms-lede dms-hero__sub">
-                Unifize closes the gap between your systems and your teams, so CAPAs, change orders, and design
-                reviews close faster, and close proven.
-              </p>
-              <div className="dms-hero__ctas">
-                <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-              <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                Take Coordination Tax Assessment
-              </Link>
+          <HeroHeadlineProvider>
+            <div className="dms-hero__grid">
+              <div className="dms-hero__left">
+                {/* five review variants, A revolves the record noun; see
+                  * home-headline.tsx (2026-09-02 sync with Raj) */}
+                <HeroHeadline />
+              </div>
+              <div className="dms-hero__right">
+                <p className="dms-lede dms-hero__sub">
+                  Unifize closes the gap between your systems and your teams, so CAPAs, change orders, and design
+                  reviews close faster, and close proven.
+                </p>
+                <div className="dms-hero__ctas">
+                  <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
+                  <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
+                    Take Coordination Tax Assessment
+                  </Link>
+                </div>
+                {/* review strip for the 5 Sep pick; delete with the unused variants */}
+                <HeroHeadlineReview />
               </div>
             </div>
-          </div>
+          </HeroHeadlineProvider>
         </div>
 
         {/* the hero visual: one arcade window, four worlds - pick yours */}
@@ -454,9 +526,23 @@ export default function HomePage() {
        * is attested on film by its own people. */}
       <section className="dms-section dms-section--dark dms-trust" aria-label="Customers">
         <div className="dms-wrap dms-trust__inner">
-          <div className="hm-wordmarks" role="list" aria-label="Customer companies">
-            {TRUST_COMPANIES.map((c) => (
-              <span key={c} role="listitem" className="hm-wordmark">{c}</span>
+          <div className="hm-logos">
+            {/* two identical tracks; the second is decorative and makes the loop seamless */}
+            {[0, 1].map((copy) => (
+              <ul className="hm-logos__track" key={copy} aria-label={copy === 0 ? "Customer companies" : undefined} aria-hidden={copy === 1}>
+                {CUSTOMER_LOGOS.map((logo) => (
+                  <li key={logo.name}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logo.src}
+                      alt={copy === 0 ? logo.name : ""}
+                      style={logo.h ? { height: logo.h } : undefined}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </li>
+                ))}
+              </ul>
             ))}
           </div>
         </div>
@@ -506,7 +592,8 @@ export default function HomePage() {
       </section>
 
       {/* ============================ 02 · RECOGNITION ==================
-       * Four primary solutions, framed in the buyer's words. */}
+       * Solutions framed in the buyer's words: four visible, the rest one
+       * click away, in place. */}
       <section className="dms-section dms-section--alt hm-recognition hm-recognition--reframed" id="solutions">
         <div className="dms-wrap">
           <div className="hm-recognition__head" data-reveal>
@@ -520,9 +607,11 @@ export default function HomePage() {
             </p>
           </div>
 
-          <ul className="hm-symptoms" data-reveal>
-            {SYMPTOMS.map((symptom) => (
-              <li className="hm-symptom" key={symptom.domain}>
+          <SolutionsGrid
+            initial={4}
+            cards={SYMPTOMS.map((symptom) => ({
+              key: symptom.domain,
+              node: (
                 <Link className="hm-symptom__link" href={symptom.href}>
                   <SymptomVisual type={symptom.visual} />
                   <span className="hm-symptom__body">
@@ -534,37 +623,50 @@ export default function HomePage() {
                     </span>
                   </span>
                 </Link>
-              </li>
-            ))}
-          </ul>
-          <div className="hm-section-tail" data-reveal>
-            <p>Quality, governance, operations, and supply chain all run on the same decision model.</p>
-            <Link href="/explorations/domains">See every solution &rarr;</Link>
+              ),
+            }))}
+            tail={<p>Quality, governance, operations, and supply chain all run on the same decision model.</p>}
+          />
+        </div>
+      </section>
+
+      {/* ============================ 03 · PRODUCTS ===================== */}
+      <section className="dms-section hm-products-section" id="products">
+        <div className="dms-wrap">
+          <div className="hm-split-head" data-reveal>
+            <div>
+              <Eyebrow n={3}>The product suite</Eyebrow>
+              <h2 className="dms-h2">One platform. Four governed records.</h2>
+            </div>
+            <p className="dms-lede">
+              Start with the system your team needs. Every product runs on the same layer, alongside the systems
+              you already trust.
+            </p>
+          </div>
+          {/* the suite, led by the product: one window, four governed
+            * records, each posed in its own product's world */}
+          <div data-reveal>
+            <ProductSuiteShowcase items={PRODUCTS} />
           </div>
         </div>
       </section>
 
-      {/* ============================ 03 · ONE MECHANISM ================ */}
+      {/* ============================ 04 · ONE MECHANISM ================ */}
       <section className="dms-section dms-section--dark hm-mechanism" id="platform">
         <div className="dms-wrap">
-          <div className="hm-mechanism__head" data-reveal>
+          <div className="hm-mechanism__head hm-mechanism__head--center" data-reveal>
             <div>
-              <Eyebrow n={3}>One problem, one mechanism</Eyebrow>
+              <Eyebrow n={4}>One problem, one mechanism</Eyebrow>
               <h2 className="dms-h2">Turn hidden waiting into a governed decision trail.</h2>
             </div>
             <div className="hm-mechanism__copy">
               {/* payoff first; the tax named and defined second (2026-09-01
                 * panel: the concept-first opener is where operators stop) */}
+              {/* one sentence (7 Sep 2026): the tax named, the mechanism implied;
+                * the AI and Part 11 lines live on the platform page */}
               <p className="dms-lede">
-                Every cross-functional record gets one owner, one visible clock, and evidence that closes with
-                the work, so the waiting between teams stops hiding and starts falling.
-              </p>
-              <p className="hm-mechanism__note">
-                That waiting is the coordination tax: the time lost when no system owns the work end to end.
-              </p>
-              <p className="hm-mechanism__note">
-                The AI does the raising, routing, and chasing; your people make the decisions, and every
-                decision carries a Part 11 signature.
+                One owner, one deadline, and evidence that closes with the work: the coordination tax stops
+                hiding and starts falling.
               </p>
               <div className="hm-mechanism__ctas">
                 <Link href="/explorations/platform" className="dms-btn">Explore the platform &rarr;</Link>
@@ -583,38 +685,17 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============================ 04 · PRODUCTS ===================== */}
-      <section className="dms-section hm-products-section" id="products">
-        <div className="dms-wrap">
-          <div className="hm-split-head" data-reveal>
-            <div>
-              <Eyebrow n={4}>The product suite</Eyebrow>
-              <h2 className="dms-h2">One platform. Four governed records.</h2>
-            </div>
-            <p className="dms-lede">
-              Start with the system your team needs. Every product runs on the same layer, alongside the systems
-              you already trust.
-            </p>
-          </div>
-          {/* the suite, led by the product: one window, four governed
-            * records, each posed in its own product's world */}
-          <div data-reveal>
-            <ProductSuiteShowcase items={PRODUCTS} />
-          </div>
-        </div>
-      </section>
-
       {/* ============================ 05 · INDUSTRIES =================== */}
       <section className="dms-section dms-section--alt hm-industries-section" id="industries">
         <div className="dms-wrap">
           <div className="hm-split-head" data-reveal>
             <div>
               <Eyebrow n={5}>Your regulated world</Eyebrow>
-              <h2 className="dms-h2">Built for the standards, and the moments, that govern you.</h2>
+              <h2 className="dms-h2">Start from your industry, and the moment that starts the clock.</h2>
             </div>
             <p className="dms-lede">
-              Find the version of Unifize grounded in your systems, regulatory frame, and the decisions your teams
-              must be able to replay.
+              Each industry page is grounded in the systems you run, the frame you are inspected under, and the
+              decisions your teams must be able to replay.
             </p>
           </div>
           <div className="hm-industry-groups" data-reveal>
@@ -632,7 +713,7 @@ export default function HomePage() {
                           <IndustryIcon type={industry.icon} />
                         </span>
                         <span className="hm-industry__name">{industry.name}</span>
-                        <small>{industry.standard}</small>
+                        <small>{industry.moment}</small>
                       </Link>
                     </li>
                   ))}
@@ -641,8 +722,8 @@ export default function HomePage() {
             ))}
           </div>
           <div className="hm-section-tail" data-reveal>
-            <p>E-signatures, attributable approvals, and a complete audit trail on every governed thread.</p>
-            <Link href="/explorations/platform#compliance">How Unifize stays audit-ready &rarr;</Link>
+            <p>Whichever standard governs you, from 21 CFR Part 11 and ISO 13485 to IATF 16949 and AS9100, the record you show an auditor is the record the work created.</p>
+            <Link href="/explorations/platform#compliance">Every standard we work under &rarr;</Link>
           </div>
         </div>
       </section>

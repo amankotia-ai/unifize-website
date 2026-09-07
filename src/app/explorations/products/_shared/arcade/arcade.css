@@ -202,12 +202,14 @@
 .stx-root .stx-state.is-in-review,
 .stx-root .stx-state.is-needs-approval,
 .stx-root .stx-state.is-change-needed,
+.stx-root .stx-state.is-on-hold,
 .stx-root .stx-state.is-open { background: #fdf0dc; color: #8a5a15; }
 
 .stx-root .stx-state.is-review-due i,
 .stx-root .stx-state.is-in-review i,
 .stx-root .stx-state.is-needs-approval i,
 .stx-root .stx-state.is-change-needed i,
+.stx-root .stx-state.is-on-hold i,
 .stx-root .stx-state.is-open i { background: #c98a2b; }
 
 .stx-root .stx-state.is-overdue { background: #fbe9e5; color: #a03d2e; }
@@ -2222,6 +2224,20 @@
   --stx-checklist-opacity: 0.85;
 }
 
+/* the persona zoom (platform hero s1): the camera closes on the home header
+ * and the first tile (whose home this is, and its first queue), then the
+ * next step's page change carries the reader into the thread */
+.stx-root .stx-arc__camera.is-focus-queue.is-pose-persona {
+  /* window top-left lands ~30px inside the stage at 1.2x: the welcome
+   * header and the first two tiles fill the frame */
+  --stx-camera-x: 80px;
+  --stx-camera-y: 96px;
+  --stx-camera-scale: 1.2;
+  --stx-inbox-opacity: 0.76;
+  --stx-thread-opacity: 0.84;
+  --stx-checklist-opacity: 0.76;
+}
+
 .stx-root .stx-arc__camera.is-focus-signature {
   --stx-camera-x: -16px;
   --stx-camera-y: 6px;
@@ -2342,6 +2358,8 @@
   .stx-root .stx-arc__camera.is-focus-queue { --stx-camera-x: 120px; --stx-camera-y: 30px; --stx-camera-scale: 0.62; }
 
   .stx-root .stx-arc__camera.is-focus-queue.is-pose-route { --stx-camera-x: -4px; --stx-camera-y: -44px; --stx-camera-scale: 0.7; }
+
+  .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona { --stx-camera-x: 150px; --stx-camera-y: 110px; --stx-camera-scale: 1.02; }
 
   .stx-root .stx-arc__camera.is-focus-signature { --stx-camera-x: -8px; --stx-camera-y: 4px; --stx-camera-scale: 0.8; }
 

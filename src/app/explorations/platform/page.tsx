@@ -1,22 +1,26 @@
 /* ============================================================================
- * PLATFORM - revised flow (2026-09-01 panel audit). The coordination tax is
- * still the protagonist, but the page earns the name before it uses it:
- * symptoms first, the tax named after the nod, and the strongest proof (the
- * product itself, then customers on film) pulled up the scroll. Composition:
- *   hero      - the claim + the product, live (symptom language, no jargon)
+ * PLATFORM - revised flow (2026-09-01 panel audit, then the 2026-09-02 sync
+ * with Raj). The coordination tax is still the protagonist, but the page
+ * earns the name before it uses it, and the product now opens the page:
+ * "you come to the platform, you see how it functions, and you scroll down
+ * and see all the other value" (Raj). Composition:
+ *   hero      - the claim + the platform journey, live: six screens in the
+ *                demo order (home built for the persona, inbox thread,
+ *                checklist, process builder, Part 11 seal, dashboard) on the
+ *                persistent arcade camera, with a step rail under the stage
  *   01 problem - the gap and the tax in one breath, three sourced numbers
  *                on small linework charts (the evidence band)
- *   02 platform - one change control followed end to end (arcade journey)
- *   03 coexistence - the three-zone placement diagram: systems of record,
+ *   02 coexistence - the three-zone placement diagram: systems of record,
  *                Unifize, the tools where work happens; five labeled flows
- *   04 stack   - the three customer-facing bands, touchable
- *   05 measured - the fall vs your own baseline (linework, in ink) + a
+ *   03 stack   - the three customer-facing bands, touchable
+ *   04 measured - the fall vs your own baseline (linework, in ink) + a
  *                customer-attested number on film
- *   06 proof   - the customer film rail (real films, real people)
- *   07 compliance - posture statements, then the standards strip
+ *   05 proof   - the customer film rail (real films, real people)
+ *   06 compliance - posture statements, then the standards strip
  *   close     - one ask + the product doors
- * Anchors preserved for inbound links: #platform, #stack, #compliance.
- * Design system: shared Product-page redesign tokens + pf-* compositions.
+ * Anchors preserved for inbound links: #platform (now the hero), #stack,
+ * #compliance. Design system: shared Product-page redesign tokens + pf-*
+ * compositions.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -24,17 +28,13 @@ import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
 import { DmsMotion } from "../products/dms/dms-motion";
-import { ArcadeStepScene } from "../products/_shared/arcade/arcade";
 import { PlatformJourney, PlatformStack } from "./platform-interactive";
 import { PlatformCoexistence } from "./platform-coexistence";
 import { PlatformEvidence } from "./platform-evidence";
 import { PlatformProofFilms } from "./platform-proof";
 import { PlatformMeasured } from "./platform-measured";
 import { filmByWistia } from "../products/_shared/customer-films";
-import {
-  PLATFORM_HERO_CONFIG,
-  PLATFORM_JOURNEY_CONFIGS,
-} from "./platform-arcade";
+import { PLATFORM_JOURNEY_CONFIGS } from "./platform-arcade";
 import "../products/dms/dms.css";
 import "../products/dms/dms-redesign.css";
 import "./platform-kit.css";
@@ -46,13 +46,17 @@ export const metadata: Metadata = {
     "Unifize makes the cross-functional work behind every CAPA, change order, and approval visible, measurable, and faster, without replacing the systems you run.",
 };
 
-/* 02 - the journey rail: one claim per pose, the scene proves it */
+/* hero - the journey rail: six screens in the demo order, one claim per
+ * pose, the scene proves it. Order and screens per Raj (2 Sep 2026): home
+ * built for the persona, the inbox where the work is done, the checklist up
+ * close, the process builder, the seal, and dashboards to close. */
 const JOURNEY_STEPS = [
-  { title: "The queue", body: "Work arrives with its context attached. Triage from the record, not the inbox." },
-  { title: "The thread", body: "One accountable thread: owner, functions, decisions, and evidence in one place." },
-  { title: "The evidence", body: "Data lands on the record as the work happens, not after it." },
-  { title: "The route", body: "Approvals run in an order everyone can see, on a clock someone owns." },
+  { title: "The home screen", body: "Built for the role. A quality manager and a document approver land on different work." },
+  { title: "The inbox", body: "The work is done in the thread: one owner, every function, decisions and evidence in one place." },
+  { title: "The checklist", body: "Up close, the record is a checklist. Data lands on it as the work happens, not after." },
+  { title: "The process builder", body: "The process is configured, not coded: fields, approval order, and reminders, changed by your team." },
   { title: "The seal", body: "Sign-off is a Part 11 signature with its meaning attached." },
+  { title: "The dashboard", body: "Every number reads straight off the records: median closure, time waiting, evidence complete." },
 ];
 
 /* 07 - the standards strip: the names carry the credibility */
@@ -138,8 +142,10 @@ export default function PlatformPage() {
       <DmsHeader />
       <DmsMotion />
 
-      {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="The Unifize platform">
+      {/* ============================ HERO =============================
+       * #platform lives here now: the journey is the hero object, so every
+       * "watch one change close" link lands on it. */}
+      <section className="dms-section dms-hero" id="platform" aria-label="The Unifize platform">
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
@@ -165,16 +171,20 @@ export default function PlatformPage() {
               </p>
               <div className="dms-hero__ctas">
                 <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-                <a href="#platform" className="dms-btn dms-btn-ghost">Watch one change close</a>
+                <a href="#coexistence" className="dms-btn dms-btn-ghost">See where it sits in your stack</a>
               </div>
             </div>
           </div>
 
-          {/* the hero object: one accountable thread, mid-flight */}
+          {/* the hero object: the platform, end to end. ONE app window on
+            * the persistent camera; the rail under it names the six screens
+            * and lets the reader take the wheel. */}
           <div className="dms-hero__frame dms-hero__product-demo">
-            <div className="pf-hero-scene">
-              <ArcadeStepScene config={PLATFORM_HERO_CONFIG} />
-            </div>
+            <PlatformJourney
+              steps={JOURNEY_STEPS}
+              configs={PLATFORM_JOURNEY_CONFIGS}
+              label="The platform, screen by screen"
+            />
           </div>
         </div>
       </section>
@@ -196,28 +206,11 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 02 · THE PLATFORM =================
-       * The argument, shown: one change control followed end to end on
-       * the persistent camera. */}
-      <section className="dms-section dms-section--dark pf-journey-section" id="platform" aria-labelledby="pf-journey-title">
-        <div className="dms-wrap">
-          <header className="pf-centered-head">
-            <Eyebrow n={2}>The platform</Eyebrow>
-            <h2 className="dms-h2" id="pf-journey-title">One change, followed end to end.</h2>
-            <p className="dms-lede">
-              Every cross-functional event becomes one accountable thread. Watch a change control cross
-              quality, engineering, and production without leaving the record.
-            </p>
-          </header>
-          <PlatformJourney steps={JOURNEY_STEPS} configs={PLATFORM_JOURNEY_CONFIGS} />
-        </div>
-      </section>
-
-      {/* ============================ 03 · COEXISTENCE ================== */}
+      {/* ============================ 02 · COEXISTENCE ================== */}
       <section className="dms-section pf-coex-section" id="coexistence" aria-labelledby="pf-coex-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={3}>Coexistence</Eyebrow>
+            <Eyebrow n={2}>Coexistence</Eyebrow>
             <h2 className="dms-h2" id="pf-coex-title">Your systems stay. The gap between them closes.</h2>
             <p className="dms-lede">
               Your systems of record stay authoritative and your team keeps its tools. Unifize is the
@@ -228,11 +221,11 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 04 · THE STACK ==================== */}
+      {/* ============================ 03 · THE STACK ==================== */}
       <section className="dms-section dms-section--alt pf-stack-section" id="stack" aria-labelledby="pf-stack-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={4}>The stack</Eyebrow>
+            <Eyebrow n={3}>The stack</Eyebrow>
             <h2 className="dms-h2" id="pf-stack-title">You come for a product. The platform comes with it.</h2>
             <p className="dms-lede">
               Three bands on one governed foundation. Start with any product and the rest of the platform
@@ -243,14 +236,14 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 05 · MEASURED =====================
+      {/* ============================ 04 · MEASURED =====================
        * The comparison, drawn: closure time falling away from your own
        * baseline, week by week, in the linework idiom turned to ink -
        * then the first number on the page a customer states on film. */}
       <section className="dms-section dms-section--dark pf-measured-section" id="measured" aria-labelledby="pf-measured-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={5}>Measured</Eyebrow>
+            <Eyebrow n={4}>Measured</Eyebrow>
             <h2 className="dms-h2" id="pf-measured-title">You watch the tax fall, week by week.</h2>
             <p className="dms-lede">
               Every thread carries its own clock: time open, time waiting, evidence complete. This is what
@@ -291,14 +284,14 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 06 · CUSTOMER PROOF =============== */}
+      {/* ============================ 05 · CUSTOMER PROOF =============== */}
       <PlatformProofFilms />
 
-      {/* ============================ 07 · COMPLIANCE =================== */}
+      {/* ============================ 06 · COMPLIANCE =================== */}
       <section className="dms-section dms-section--alt pf-compliance-section" id="compliance" aria-labelledby="pf-compliance-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={7}>Compliance</Eyebrow>
+            <Eyebrow n={6}>Compliance</Eyebrow>
             <h2 className="dms-h2" id="pf-compliance-title">Audit-ready, whichever standard governs you.</h2>
             <p className="dms-lede">
               The record you show an auditor is the record the work created.

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DomainPage } from "../_shared/DomainPage";
+import { SolutionPage } from "../_shared/SolutionPage";
 import { CHANGE_CONTROL_DATA } from "./change-control-data";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ChangeControlDomainPage() {
-  return <DomainPage data={CHANGE_CONTROL_DATA} />;
+  return <SolutionPage data={CHANGE_CONTROL_DATA} />;
 }

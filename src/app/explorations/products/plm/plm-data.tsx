@@ -12,6 +12,7 @@ import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/prod
 import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { buildProductFlows } from "../_shared/product-flows";
 import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
+import { filmByWistia, type CustomerFilm } from "../_shared/customer-films";
 
 const HERO_STANDARDS = ["ISO 13485", "21 CFR 820", "ISO 14971", "IATF 16949", "AS 9100", "IEC 62304"];
 
@@ -74,6 +75,7 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Requirements sit in one tool and test results in another, so the requirement-to-result chain cannot be reconstructed.",
     metric: "Broken",
     metricLabel: "No requirement-to-result chain",
+    film: filmByWistia("ue3xmg5nol"),
     work: "Prove the design",
     tax: ["Rebuild the trace matrix", "Chase the test results"],
     outcome: "Input linked to result",
@@ -87,6 +89,7 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Specifications lock at the phase gate before supplier capability is verified, so parts arrive at incoming inspection failing a spec the supplier was never qualified for.",
     metric: "Locked",
     metricLabel: "Before capability is verified",
+    film: filmByWistia("aphymhpqf8"),
     work: "Lock the spec",
     tax: ["Verify capability after the fact", "Negotiate the deviation"],
     outcome: "Capability checked before lock",
@@ -99,6 +102,7 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "A requirement with no linked result passes review silently and becomes a predictable finding at the audit.",
     metric: "Unclosed",
     metricLabel: "Requirement with no linked result",
+    film: filmByWistia("xwv3jvzgzv"),
     work: "Close the requirement",
     tax: ["Search the test archive", "Re-run the test to be sure"],
     outcome: "Result linked, requirement closed",
@@ -112,6 +116,7 @@ export const PLM_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Each programme scores its own DFMEA and PFMEA. Catalogued failure modes and controls do not flow to the next programme, so known risks are rediscovered.",
     metric: "Again",
     metricLabel: "Known failure modes rediscovered",
+    film: filmByWistia("nnlge3r2h0"),
     work: "Score the FMEA",
     tax: ["Recover the last programme's lessons", "Rebuild the controls list"],
     outcome: "Failure modes carried forward",

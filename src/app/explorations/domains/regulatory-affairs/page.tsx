@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DomainPage } from "../_shared/DomainPage";
+import { SolutionPage } from "../_shared/SolutionPage";
 import { REGULATORY_AFFAIRS_DATA } from "./regulatory-affairs-data";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RegulatoryAffairsDomainPage() {
-  return <DomainPage data={REGULATORY_AFFAIRS_DATA} />;
+  return <SolutionPage data={REGULATORY_AFFAIRS_DATA} />;
 }

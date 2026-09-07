@@ -31,6 +31,8 @@ const pad = (n: number) => String(n).padStart(2, "0");
 export type PlatformJourneyStep = {
   title: string;
   body: string;
+  /* optional stroke glyph (a 24-grid SVG path set) drawn in a tile above the index */
+  glyph?: ReactNode;
 };
 
 const AUTO_ADVANCE_MS = 5600;
@@ -38,9 +40,12 @@ const AUTO_ADVANCE_MS = 5600;
 export function PlatformJourney({
   steps,
   configs,
+  label = "One change, followed end to end",
 }: {
   steps: PlatformJourneyStep[];
   configs: ArcadeStepConfig[];
+  /* the rail's accessible name; the platform hero names its own journey */
+  label?: string;
 }) {
   const [active, setActive] = useState(0);
   /* auto-play stops for good the moment the visitor takes over */
@@ -87,7 +92,13 @@ export function PlatformJourney({
         <ArcadeStepScene config={configs[Math.min(active, configs.length - 1)]} />
       </div>
 
-      <div className="pf-journey__rail" role="tablist" aria-label="One change, followed end to end">
+      {/* one column per step: five on the home page, six on the platform hero */}
+      <div
+        className="pf-journey__rail"
+        role="tablist"
+        aria-label={label}
+        style={{ "--pf-journey-count": steps.length } as React.CSSProperties}
+      >
         {steps.map((step, index) => (
           <button
             key={step.title}
@@ -98,6 +109,13 @@ export function PlatformJourney({
             className={cn("pf-journey__step", index === active && "is-active")}
             onClick={() => select(index)}
           >
+            {step.glyph ? (
+              <span className="pf-journey__glyph" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+                  {step.glyph}
+                </svg>
+              </span>
+            ) : null}
             <span className="pf-journey__idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
             <span className="pf-journey__name">{step.title}</span>
             <span className="pf-journey__body">{step.body}</span>

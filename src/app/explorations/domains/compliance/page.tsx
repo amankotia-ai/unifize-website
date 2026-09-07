@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DomainPage } from "../_shared/DomainPage";
+import { SolutionPage } from "../_shared/SolutionPage";
 import { COMPLIANCE_DATA } from "./compliance-data";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ComplianceDomainPage() {
-  return <DomainPage data={COMPLIANCE_DATA} />;
+  return <SolutionPage data={COMPLIANCE_DATA} />;
 }

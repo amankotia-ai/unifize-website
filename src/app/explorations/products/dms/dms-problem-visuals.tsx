@@ -21,6 +21,7 @@ export type DmsProblemItem = {
   detail: string;
   metric: string;
   metricLabel: string;
+  film?: { url: string; duration: string; company?: string; person: string } | null;
 };
 
 type GraphicProps = {
@@ -433,6 +434,18 @@ export function DmsProblemSpotlight({ items }: { items: DmsProblemItem[] }) {
                   </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
                 </div>
+                {problem.film ? (
+                  <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">
+                    <span className="dms-spot__film-play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" /></svg>
+                    </span>
+                    <span className="dms-spot__film-text">
+                      <small>On film · {problem.film.duration}</small>
+                      <b>How {problem.film.company ?? problem.film.person} handled it</b>
+                    </span>
+                    <span className="dms-spot__film-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                ) : null}
               </div>
               <div className="dms-spot__scene">
                 <ProblemGraphic

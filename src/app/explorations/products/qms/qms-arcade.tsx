@@ -1776,12 +1776,14 @@ export const QMS_HERO_STEPS: HeroArcadeStep[] = [
     label: "Fix it",
     config: QMS_FLOW_STEP_SCENES["3"][5],
   },
+  /* Raj, 2 Sep 2026: you do not prove things on a dashboard. Prove it is
+   * the Part 11 close; the effectiveness dashboard is Measure it. */
   {
     label: "Prove it",
-    config: QMS_FLOW_STEP_SCENES["3"][7],
+    config: QMS_HERO_CLOSE_STEP,
   },
   {
-    label: "Close it",
-    config: QMS_HERO_CLOSE_STEP,
+    label: "Measure it",
+    config: QMS_FLOW_STEP_SCENES["3"][7],
   },
 ];

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DomainPage } from "../_shared/DomainPage";
+import { SolutionPage } from "../_shared/SolutionPage";
 import { POST_MARKET_DATA } from "./post-market-and-recall-data";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PostMarketAndRecallDomainPage() {
-  return <DomainPage data={POST_MARKET_DATA} />;
+  return <SolutionPage data={POST_MARKET_DATA} />;
 }

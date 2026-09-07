@@ -194,6 +194,9 @@
 .dms-header__dd:hover .dms-header__pop, .dms-header__dd:focus-within .dms-header__pop {
   opacity:1; visibility:visible; pointer-events:auto; transform:translate(var(--dms-pop-x), 0);
   transition-duration:240ms; }
+/* route just changed: panels held shut until the pointer moves again */
+.dms-header--settling .dms-header__dd { pointer-events:none; }
+.dms-header--settling .dms-header__pop { opacity:0; visibility:hidden; pointer-events:none; transform:translate(var(--dms-pop-x), -8px); }
 .dms-header__pop--products   { width:600px; }
 .dms-header__pop--industries { width:min(840px, calc(100vw - 32px)); }
 .dms-header__pop--domains    { width:min(880px, calc(100vw - 32px)); }

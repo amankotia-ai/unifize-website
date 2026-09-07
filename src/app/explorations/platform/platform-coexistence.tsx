@@ -12,7 +12,7 @@
 
 /* solid glyphs for the tiles, 20-grid, one path each, filled in the accent.
  * Hand-drawn in the Heroicons-mini idiom so no icon package is needed. */
-const TILE_ICONS: Record<string, string> = {
+export const TILE_ICONS: Record<string, string> = {
   /* systems of record */
   ERP: "M10 1.5 18 5.5v9l-8 4-8-4v-9l8-4Zm0 2.2L4.5 6.4 10 9.1l5.5-2.7L10 3.7ZM3.5 7.9v5.9l5.75 2.9V10.8L3.5 7.9Zm13 0-5.75 2.9v5.9l5.75-2.9V7.9Z",
   PLM: "M10 2 18 6.5 10 11 2 6.5 10 2Zm-6.2 7.4L10 13l6.2-3.6 1.8 1-8 4.5-8-4.5 1.8-1Zm0 3.6L10 16.6l6.2-3.6 1.8 1L10 18.5 2 14l1.8-1Z",

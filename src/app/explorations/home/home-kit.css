@@ -106,6 +106,10 @@
 .hm-viz__file { display:inline-flex; align-items:center; gap:5px; padding:4px 8px; background:var(--dms-surface-alt);
   box-shadow:inset 0 0 0 1px var(--dms-hairline); font-family:var(--dms-mono); font-size:0.56rem; color:var(--dms-muted); }
 
+/* the shared-drive listing: base rows, a bottom strip for the float */
+.hm-viz--files .hm-viz__rows { padding-bottom:22px; }
+.hm-viz__rows--files .hm-viz__cell { font-weight:520; }
+
 /* the after-the-fact document */
 .hm-viz__doc { display:flex; flex-direction:column; align-items:stretch; gap:7px; padding:14px 12px 18px; }
 .hm-viz__gap { align-self:flex-start; margin-block:3px; padding:4px 8px;
@@ -119,6 +123,75 @@
 .hm-viz__float--queue { left:-10px; bottom:-14px; flex-direction:column; align-items:flex-start; gap:2px; }
 .hm-viz__float--queue .hm-viz__kicker { color:var(--hm-warn-ink); }
 .hm-viz__float--comment { right:-10px; bottom:-14px; max-width:158px; font-size:0.62rem; line-height:1.4; }
+
+/* ---- the four "see more" artifacts: form, timeline, swimlanes, sheet ----
+ * Each is a different surface from the tracker / inbox / thread / document
+ * above it, so no two cards in the grid share a widget. */
+
+/* the scanned approval form: warm paper, wet-ink signature lines */
+.hm-viz--form { background:oklch(0.985 0.006 85); }
+.hm-viz__formhead { display:flex; flex-direction:column; gap:2px; padding:10px 12px 8px; border-bottom:1px solid var(--dms-hairline); }
+.hm-viz__formhead b { font-family:var(--dms-display); font-size:0.8rem; font-weight:630; letter-spacing:-0.005em; }
+.hm-viz__formhead span { font-family:var(--dms-mono); font-size:0.58rem; color:var(--dms-faint); }
+.hm-viz__sigs { list-style:none; margin:0; padding:6px 12px 4px; }
+.hm-viz__sigs li { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:10px; padding:6px 0 4px; }
+.hm-viz__sigline { display:block; height:22px; border-bottom:1px solid oklch(0.55 0.01 260); }
+.hm-viz__sigline svg { width:64px; height:22px; overflow:visible; }
+.hm-viz__sigline path { fill:none; stroke:oklch(0.32 0.09 262); stroke-width:1.4; stroke-linecap:round; stroke-linejoin:round; }
+.hm-viz__siglabel { display:flex; flex-direction:column; align-items:flex-end; gap:1px; padding-bottom:2px; }
+.hm-viz__siglabel b { font-size:0.62rem; font-weight:600; }
+.hm-viz__siglabel small { font-family:var(--dms-mono); font-size:0.55rem; color:var(--dms-faint); }
+.hm-viz__formfoot { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:6px 12px 0; padding:8px 0 10px; border-top:1px dashed oklch(0.8 0.01 260); font-size:0.62rem; color:var(--dms-muted); }
+.hm-viz__formfoot b { font-weight:650; }
+.hm-viz__formfoot b.is-warn { color:var(--hm-warn-ink); }
+
+/* the reporting clock: five day cells, today ringed, the due cell marked */
+.hm-viz__clock { padding:10px 12px 8px; border-bottom:1px solid var(--dms-hairline); }
+.hm-viz__clock-label { display:block; margin-bottom:9px; font-family:var(--dms-display); font-size:0.8rem; font-weight:630; letter-spacing:-0.005em; }
+.hm-viz__days { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:3px; list-style:none; margin:0; padding:0; }
+.hm-viz__days li { display:flex; flex-direction:column; align-items:center; gap:4px; }
+.hm-viz__days i { display:block; width:100%; height:9px; background:var(--dms-surface-alt); box-shadow:inset 0 0 0 1px var(--dms-hairline); }
+.hm-viz__days .is-past i { background:var(--dms-ok); box-shadow:none; }
+.hm-viz__days .is-today i { background:var(--dms-accent); box-shadow:0 0 0 2px var(--dms-surface), 0 0 0 3px var(--dms-accent); }
+.hm-viz__days .is-due i { background:color-mix(in oklab, var(--dms-warn), #fff 70%); box-shadow:inset 0 0 0 1px var(--dms-warn); }
+.hm-viz__days span { font-family:var(--dms-mono); font-size:0.52rem; letter-spacing:0.04em; color:var(--dms-faint); }
+.hm-viz__days .is-today span { color:var(--dms-accent-text); font-weight:700; }
+.hm-viz__days .is-due span { color:var(--hm-warn-ink); font-weight:700; }
+.hm-viz__owed { display:flex; flex-wrap:wrap; gap:5px; padding:9px 12px 12px; }
+.hm-viz__owed-label { width:100%; font-family:var(--dms-mono); font-size:0.55rem; font-weight:650; letter-spacing:0.08em; text-transform:uppercase; color:var(--dms-faint); }
+.hm-viz__owed-chip { display:inline-flex; align-items:center; gap:5px; padding:4px 7px; background:var(--dms-surface-alt); font-size:0.6rem; font-weight:550; color:var(--dms-muted); }
+.hm-viz__owed-chip.is-wait { color:var(--hm-warn-ink); background:color-mix(in oklab, var(--dms-warn), #fff 88%); }
+.hm-viz__owed-chip .hm-viz__ico { width:11px; height:11px; }
+
+/* the recall swimlanes: four staggered bars, a today line, and the
+ * decision that sits on no lane */
+.hm-viz__lanes { position:relative; display:flex; flex-direction:column; gap:7px; padding:12px 12px 10px; border-bottom:1px solid var(--dms-hairline); }
+.hm-viz__lane { display:grid; grid-template-columns:44px minmax(0,1fr); align-items:center; gap:8px; }
+.hm-viz__lane-label { font-size:0.6rem; font-weight:550; color:var(--dms-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.hm-viz__lane-track { position:relative; display:block; height:16px; background:repeating-linear-gradient(90deg, transparent 0 24px, var(--dms-hairline) 24px 25px); }
+.hm-viz__lane-bar { position:absolute; top:2px; bottom:2px; display:flex; font-style:normal; align-items:center; justify-content:flex-end; padding-right:2px; background:oklch(0.86 0.02 262); }
+.hm-viz__lane-bar.is-warn { background:color-mix(in oklab, var(--dms-warn), #fff 55%); }
+.hm-viz__lane-bar b { display:grid; place-items:center; height:12px; padding:0 3px; background:var(--dms-surface); font-family:var(--dms-mono); font-size:0.48rem; font-weight:700; letter-spacing:0.04em; color:var(--dms-muted); box-shadow:0 0 0 1px var(--dms-hairline); }
+.hm-viz__lane-today { position:absolute; top:8px; bottom:6px; left:calc(12px + 44px + 8px + (100% - 12px - 44px - 8px - 12px) * 0.92); width:0; border-left:1px dashed var(--dms-accent); }
+.hm-viz__lane-foot { display:flex; align-items:center; gap:7px; padding:8px 12px 11px; font-size:0.6rem; color:var(--dms-muted); }
+.hm-viz__lane-foot i { flex:none; width:8px; height:8px; transform:rotate(45deg); box-shadow:inset 0 0 0 1.5px var(--hm-warn-ink); }
+.hm-viz__lane-foot b { font-weight:650; color:var(--hm-warn-ink); }
+
+/* the local-copy spreadsheet: column letters, row numbers, sheet tabs */
+.hm-viz__grid { width:100%; border-collapse:collapse; table-layout:fixed; font-size:0.56rem; line-height:1.25; }
+.hm-viz__grid th,.hm-viz__grid td { padding:4px 5px; border:1px solid var(--dms-hairline); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:left; }
+.hm-viz__grid thead th { background:var(--dms-surface-alt); font-family:var(--dms-mono); font-size:0.5rem; font-weight:600; letter-spacing:0.06em; color:var(--dms-faint); text-align:center; }
+.hm-viz__grid tbody th { padding-inline:2px; background:var(--dms-surface-alt); font-family:var(--dms-mono); font-size:0.5rem; font-weight:600; color:var(--dms-faint); text-align:center; }
+/* fixed layout takes widths from the header row: 18px gutter, A 44%, B 34%, C the rest */
+.hm-viz__grid thead th:first-child { width:18px; padding-inline:2px; }
+.hm-viz__grid thead th:nth-child(2) { width:44%; }
+.hm-viz__grid thead th:nth-child(3) { width:34%; }
+.hm-viz__grid tr.is-head td { font-weight:650; }
+.hm-viz__grid td.is-link { color:var(--dms-accent-text); text-decoration:underline; text-decoration-color:color-mix(in oklab, var(--dms-accent-text), transparent 55%); }
+.hm-viz__grid td.is-warn { color:var(--hm-warn-ink); font-weight:700; }
+.hm-viz__tabs { display:flex; gap:2px; padding:5px 6px 0; border-top:1px solid var(--dms-hairline); background:var(--dms-surface-alt); }
+.hm-viz__tabs span { padding:3px 8px 4px; font-family:var(--dms-mono); font-size:0.5rem; color:var(--dms-faint); }
+.hm-viz__tabs span.is-active { background:var(--dms-surface); color:var(--dms-ink); font-weight:650; box-shadow:0 -1px 0 var(--dms-hairline), 1px 0 0 var(--dms-hairline), -1px 0 0 var(--dms-hairline); }
 
 @media (prefers-reduced-motion: no-preference) {
   .hm-viz { transition:transform 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -153,11 +226,6 @@
 /* the hero mock switcher: mono tabs above the shell frame */
 .hm-heromock__tabs { display:flex; flex-wrap:wrap; gap:var(--dms-s-2); margin-bottom:var(--dms-s-4); }
 /* the active tab's door: a quiet mono exit to the record's own page */
-.hm-heromock__doorrow { display:flex; justify-content:flex-end; margin-bottom:var(--dms-s-3); }
-.hm-heromock__door { font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500;
-  letter-spacing:var(--dms-mono-ls); text-transform:uppercase; color:var(--dms-d-ink-2); text-decoration:none;
-  transition:color var(--dms-dur) var(--dms-ease); }
-.hm-heromock__door:hover { color:#fff; }
 .hm-heromock__tab { position:relative; display:inline-flex; align-items:center; gap:var(--dms-s-2);
   font-family:var(--dms-mono); font-size:var(--dms-mono-size); font-weight:500; letter-spacing:var(--dms-mono-ls);
   text-transform:uppercase; color:var(--dms-d-ink-2); background:none; border:1px solid var(--dms-d-hairline-2);
@@ -305,22 +373,6 @@
   bottom: -1px;
   width: calc(100% - 36px);
   background: #fff;
-}
-
-/* the door rides the tabs' 1040px column, tucked under the active rule */
-.dms--redesign.dms--home .hm-heromock__doorrow {
-  max-width: 1040px;
-  margin: -6px auto 12px;
-  padding-inline: 18px;
-}
-
-.dms--redesign.dms--home .hm-heromock__door {
-  color: var(--dms-d-ink-2);
-  font-size: 0.72rem;
-}
-
-.dms--redesign.dms--home .hm-heromock__door:hover {
-  color: #fff;
 }
 
 .dms--redesign.dms--home .hm-heromock__stage {
@@ -901,8 +953,13 @@
 .dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
   height: 100%;
   min-height: 286px;
-  border-right: 1px solid var(--dms-line-strong);
+  border-right: 1px solid oklch(0.82 0.05 252);
   border-bottom: 0;
+  /* blue-tinted stage for the artifact: a soft brand-blue gradient with a
+   * top-left highlight, kin to the hero's blue stage but never the flat plate */
+  background:
+    radial-gradient(110% 80% at 0% 0%, oklch(0.975 0.015 250 / 0.85), transparent 62%),
+    linear-gradient(160deg, oklch(0.935 0.035 252) 0%, oklch(0.855 0.07 252) 100%);
 }
 
 .dms--redesign.dms--home .hm-section-tail {
@@ -924,7 +981,8 @@
   text-wrap: pretty;
 }
 
-.dms--redesign.dms--home .hm-section-tail a {
+.dms--redesign.dms--home .hm-section-tail a,
+.dms--redesign.dms--home .hm-section-tail .hm-more {
   display: inline-flex;
   min-height: 44px;
   flex: none;
@@ -933,6 +991,40 @@
   font-size: 0.88rem;
   font-weight: 600;
   text-decoration: none;
+}
+
+/* "See more solutions" (H6): a text control in the tail's link slot, not a
+ * carousel. Reveals the remaining doors in place, in the same grid. */
+.dms--redesign.dms--home .hm-more {
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dms--redesign.dms--home .hm-more:hover {
+  color: var(--dms-accent-text);
+}
+
+.dms--redesign.dms--home .hm-more:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--home .hm-symptom--more {
+    animation: hm-more-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  @keyframes hm-more-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
 }
 
 /* The coordination-tax thesis and governed-layer story, in one section */
@@ -972,6 +1064,64 @@
   color: var(--dms-d-ink-2);
   font-size: 0.9375rem;
   line-height: 1.6;
+}
+
+/* 04 · centred head (7 Sep 2026): eyebrow, title, copy and CTAs stacked on
+ * the section's axis, the journey stage full width beneath */
+.dms--redesign.dms--home .hm-mechanism__head--center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+  text-align: center;
+}
+.dms--redesign.dms--home .hm-mechanism__head--center > div:first-child { align-items: center; }
+.dms--redesign.dms--home .hm-mechanism__head--center .dms-eyebrow { align-self: center; }
+.dms--redesign.dms--home .hm-mechanism__head--center .dms-h2 { max-width: 18ch; }
+.dms--redesign.dms--home .hm-mechanism__head--center .hm-mechanism__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dms--redesign.dms--home .hm-mechanism__head--center .hm-mechanism__copy .dms-lede,
+.dms--redesign.dms--home .hm-mechanism__head--center .hm-mechanism__note { max-width: 62ch; }
+.dms--redesign.dms--home .hm-mechanism__head--center .hm-mechanism__ctas { justify-content: center; }
+
+/* the customer logo strip: two identical tracks slide left by their own
+ * width, so the loop is seamless; hover pauses, reduced motion lays the
+ * first track out static and hides the copy */
+.dms--redesign.dms--home .hm-logos {
+  --hm-logo-gap: clamp(44px, 5vw, 76px);
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.dms--redesign.dms--home .hm-logos__track {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--hm-logo-gap);
+  margin: 0;
+  padding: 0 var(--hm-logo-gap) 0 0;
+  list-style: none;
+  animation: hm-marquee 48s linear infinite;
+}
+.dms--redesign.dms--home .hm-logos:hover .hm-logos__track { animation-play-state: paused; }
+.dms--redesign.dms--home .hm-logos__track li { flex: none; }
+.dms--redesign.dms--home .hm-logos__track img {
+  display: block;
+  width: auto;
+  height: 26px;
+  max-width: 150px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.72;
+}
+@keyframes hm-marquee { to { transform: translateX(-100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms--home .hm-logos { mask-image: none; }
+  .dms--redesign.dms--home .hm-logos__track { flex-wrap: wrap; justify-content: center; animation: none; padding: 0; row-gap: 20px; }
+  .dms--redesign.dms--home .hm-logos__track[aria-hidden="true"] { display: none; }
 }
 
 /* 03 · the record toggle above the journey: same five claims, either record */
@@ -1614,4 +1764,119 @@
     grid-column: 2;
     text-align: left;
   }
+}
+
+/* ============================================================================
+ * HERO HEADLINE VARIANTS (2026-09-02 sync with Raj). Variant A revolves the
+ * record noun; the review strip under the CTAs switches variants in place.
+ * Remove .hm-hl-review once a variant is picked.
+ * ========================================================================== */
+.hm-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* the slot: one in-flow sizer (invisible) gives the natural width; the
+ * nouns are absolutely centred over it and the slot width tweens between
+ * measurements so the rest of the line never jumps */
+.hm-rotor {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--dms-d-ink);
+  transition: width 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hm-rotor__sizer {
+  display: inline-block;
+  visibility: hidden;
+}
+.hm-rotor__noun {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: inline-block;
+  width: max-content;
+  opacity: 0;
+  transform: translate(-50%, 0.55em);
+  visibility: hidden;
+  pointer-events: none;
+}
+.hm-rotor__noun.is-in {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+.hm-rotor__noun.is-out {
+  opacity: 0;
+  transform: translate(-50%, -0.55em);
+  visibility: visible;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hm-rotor__noun {
+    transition: opacity 360ms ease-out, transform 460ms cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0s linear 460ms;
+  }
+  .hm-rotor__noun.is-in { transition-delay: 0ms, 0ms, 0ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-rotor { transition: none; }
+  .hm-rotor__noun.is-out { visibility: hidden; }
+}
+
+/* variant-specific measure: the longer two-line variants need the wider column */
+.dms--redesign.dms--home .hm-headline[data-variant="C"],
+.dms--redesign.dms--home .hm-headline[data-variant="E"] {
+  max-width: 1180px;
+}
+
+/* the review strip: quiet, mono, dark-hero tokens; hidden until hydrated so
+ * the stored pick does not flash */
+.hm-hl-review {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding: 6px 8px 6px 12px;
+  border: 1px dashed var(--dms-d-border-2);
+  border-radius: 999px;
+  color: var(--dms-d-ink-2);
+  font-family: var(--dms-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+.hm-hl-review.is-ready { opacity: 1; }
+.hm-hl-review__label { text-transform: uppercase; color: var(--dms-d-ink-3); }
+.hm-hl-review__pills { display: inline-flex; gap: 4px; }
+.hm-hl-review__pill {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dms-d-ink-2);
+  font: inherit;
+  cursor: pointer;
+  transition: background 140ms ease-out, color 140ms ease-out, border-color 140ms ease-out;
+}
+.hm-hl-review__pill:hover { color: #fff; border-color: var(--dms-d-border-2); }
+.hm-hl-review__pill.is-active {
+  color: #fff;
+  border-color: var(--dms-accent);
+  background: color-mix(in srgb, var(--u-primary) 22%, transparent);
+}
+.hm-hl-review__pill:focus-visible { outline: 2px solid #6f8cff; outline-offset: 1px; }
+.hm-hl-review__name { color: var(--dms-d-ink); }
+@media (max-width: 640px) {
+  .hm-hl-review__name { display: none; }
 }

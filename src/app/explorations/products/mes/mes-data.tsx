@@ -13,6 +13,7 @@ import type { DmsCoordinationProblem } from "../dms/dms-data";
 import type { IntegrationData } from "../dms/dms-integrations";
 import { buildProductFlows } from "../_shared/product-flows";
 import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/product-audience";
+import { filmByWistia, type CustomerFilm } from "../_shared/customer-films";
 
 export const PRODUCT = {
   id: "UPD-5",
@@ -39,6 +40,7 @@ export const MES_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Paper travellers on the floor, step completion in MES, consumption in ERP, inspection in QMS. Deviations between them surface at reconciliation, after the run.",
     metric: "4",
     metricLabel: "Parallel records of one batch",
+    film: filmByWistia("2r86zqiwdf"),
     work: "Run the lot",
     tax: ["Reconcile paper against systems", "Rebuild the record after the run"],
     outcome: "One record, built at the operation",
@@ -52,6 +54,7 @@ export const MES_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Forms live in a library, work orders in the planning system, and matching this order to the right checklist at the right revision is operator memory.",
     metric: "Memory",
     metricLabel: "What binds the check to the order",
+    film: filmByWistia("c0rsc1e43v"),
     work: "Inspect the order",
     tax: ["Find the right checklist", "Confirm the revision"],
     outcome: "Checklist bound to the order",
@@ -65,6 +68,7 @@ export const MES_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Which lots shipped where, what inputs, what parameters, what dispositions: assembled in spreadsheets and emailed exports while the regulator waits.",
     metric: "By hand",
     metricLabel: "Genealogy assembled under pressure",
+    film: filmByWistia("2hc3rzljvm"),
     work: "Trace the lot",
     tax: ["Assemble spreadsheets and exports", "Chase the supplier handoff"],
     outcome: "Genealogy already linked",
@@ -78,6 +82,7 @@ export const MES_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "A deviation accepted or a parameter adjusted on one shift arrives at the next as a consequence without a reason. The decision lived in the handoff conversation.",
     metric: "Lost",
     metricLabel: "Decision rationale between shifts",
+    film: filmByWistia("4kbdugixfw"),
     work: "Hand over the shift",
     tax: ["Rebuild the last shift's context", "Chase who decided what"],
     outcome: "Rationale on the record",

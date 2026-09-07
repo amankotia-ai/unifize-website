@@ -1,4 +1,10 @@
 /* ============================================================================
+ * SUPERSEDED 2026-09-02 by SolutionPage.tsx (the same DomainPageData on the
+ * shared DMS design system, blending the homepage, platform and product
+ * pages). No route imports this file any more; it is kept for reference
+ * until the ITM-era kit (domain-kit.css, domain-interactive, domain-arcade,
+ * domain-coexist, domain-proof-films) is retired with it.
+ *
  * DomainPage — the domain (Solutions) template, rendered from one
  * `DomainPageData` object.
  *

@@ -12,7 +12,7 @@
  * source: Pain Points DB (10 linked) -> the leak register, Name / Description /
  *   Severity verbatim-condensed. The cost band carries the qualitative cost
  *   from "Audit-day evidence pull collapses to a manual rebuild" (days of
- *   senior time per audit cycle) — Notion has no per-domain dollar figure, so
+ *   team time per audit) — Notion has no per-domain dollar figure, so
  *   none is stated.
  * source: Customer JTBDs DB (16 linked) -> the CAPA flow (Primary-land JTBD
  *   "CAPA root cause investigation and effectiveness check") and the release /
@@ -229,7 +229,7 @@ export const QUALITY_DATA: DomainPageData = {
       caption: "The work took a week. The record is still open at day 90.",
     },
     pains: [
-      { severity: "Critical", surface: "Audit day", name: "Audit-day evidence pull collapses to a manual rebuild", body: "When an auditor asks for the full record of a deviation, change or CAPA, the team spends hours stitching together exports, screenshots and email forwards. The audit passes; the cost of passing is days of senior time." },
+      { severity: "Critical", surface: "Audit day", name: "Audit-day evidence pull collapses to a manual rebuild", body: "When an auditor asks for the full record of a deviation, change or CAPA, the team spends hours stitching together exports, screenshots and email forwards. The audit passes; passing costs days of team time." },
       { severity: "Critical", surface: "Drives & threads", name: "Evidence not bound to commit points", body: "Disposition, root-cause acceptance, effectiveness verification, closure: the decisions happen at definable commit points, but the supporting evidence lives in attachments and threads that are not bound to them." },
       { severity: "Critical", surface: "The floor", name: "Quality system drift between paper and floor", body: "The QMS as documented passes external audits. The QMS as practised on the floor differs in places operators treat as 'how it really works'. The drift is invisible until a serious finding forces it open." },
       { severity: "High", surface: "Floor walks & email", name: "Disposition decisions live in side channels", body: "Release, rework, scrap or deviate gets argued in floor walks, huddles and emails to QA. The disposition lands in the record; the reasoning, alternatives and who agreed do not." },
@@ -245,7 +245,7 @@ export const QUALITY_DATA: DomainPageData = {
     // band states the canonical cost from the audit-evidence pain instead.
     tax: {
       label: "The recurring bill",
-      value: "Days of senior time, every audit cycle.",
+      value: "Days of team time, every audit.",
       meta: "The audit passes. The cost of passing is the manual rebuild of evidence that was never bound to the record it belongs to.",
     },
   },

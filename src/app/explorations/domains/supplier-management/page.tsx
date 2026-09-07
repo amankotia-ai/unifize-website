@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DomainPage } from "../_shared/DomainPage";
+import { SolutionPage } from "../_shared/SolutionPage";
 import { SUPPLIER_MANAGEMENT_DATA } from "./supplier-management-data";
 
 export const metadata: Metadata = {
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function SupplierManagementDomainPage() {
-  return <DomainPage data={SUPPLIER_MANAGEMENT_DATA} />;
+  return <SolutionPage data={SUPPLIER_MANAGEMENT_DATA} />;
 }

@@ -110,12 +110,15 @@ function CapaGate({
   label,
   detail,
   missing = false,
+  dx = 0,
 }: {
   x: number;
   y: number;
   label: string;
   detail: string;
   missing?: boolean;
+  /* sideways shift for the two text lines, when the loop runs under the gate */
+  dx?: number;
 }) {
   return (
     <g transform={`translate(${x} ${y})`}>
@@ -125,8 +128,8 @@ function CapaGate({
       >
         <circle cx="0" cy="0" r="29" />
         {missing ? <path d="m-8-8 16 16M8-8-8 8" /> : <path d="m-9 0 6 6 13-14" />}
-        <text className="qms-gfx-capa-gate__label" x="0" y="50" textAnchor="middle">{label}</text>
-        <text className="qms-gfx-capa-gate__detail" x="0" y="66" textAnchor="middle">{detail}</text>
+        <text className="qms-gfx-capa-gate__label" x={dx} y="50" textAnchor="middle">{label}</text>
+        <text className="qms-gfx-capa-gate__detail" x={dx} y="66" textAnchor="middle">{detail}</text>
       </motion.g>
     </g>
   );
@@ -150,14 +153,15 @@ function UnprovenCapaGraphic(props: GraphicProps) {
         variants={fade}
       />
 
-      <CapaGate x={183} y={176} label="ROOT CAUSE" detail="APPROVED" />
+      {/* the live loop passes at x≈152 under this gate; the labels sit east of it */}
+      <CapaGate x={183} y={176} label="ROOT CAUSE" detail="APPROVED" dx={18} />
       <CapaGate x={360} y={91} label="ACTIONS" detail="IMPLEMENTED" />
       <CapaGate x={548} y={226} label="EFFECTIVENESS" detail="NOT CHECKED" missing />
 
       <motion.g className="qms-gfx-capa-gap" variants={fade}>
         <path d="M547 274C536 332 487 381 420 400" />
         <path d="M535 282h23M416 388l8 22" />
-        <text x="520" y="353" textAnchor="middle">90-DAY WINDOW</text>
+        <text x="462" y="352" textAnchor="middle">90-DAY WINDOW</text>
       </motion.g>
 
       <motion.g className="qms-gfx-capa-seal" variants={pop}>
@@ -281,8 +285,9 @@ function ScatteredEvidenceGraphic(props: GraphicProps) {
         <circle cx="360" cy="240" r="106" />
         <path d="M360 164 416 186v46c0 36-24 69-56 81-32-12-56-45-56-81v-46l56-22Z" />
         <path className="qms-gfx-record-core__check" d="m334 236 18 18 36-40" />
-        <text className="qms-gfx-record-core__eyebrow" x="360" y="345" textAnchor="middle">AUDIT FINDING</text>
-        <text className="qms-gfx-record-core__title" x="360" y="371" textAnchor="middle">CLOSED?</text>
+        {/* below the circle (r=106 from y=240), not on its rim */}
+        <text className="qms-gfx-record-core__eyebrow" x="360" y="370" textAnchor="middle">AUDIT FINDING</text>
+        <text className="qms-gfx-record-core__title" x="360" y="396" textAnchor="middle">CLOSED?</text>
       </motion.g>
 
       <motion.g className="qms-gfx-missing-link" variants={fade}>
@@ -351,6 +356,18 @@ export function QmsProblemSpotlight({ items }: { items: DmsCoordinationProblem[]
                   </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
                 </div>
+                {problem.film ? (
+                  <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">
+                    <span className="dms-spot__film-play" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M9 6.5v11l9-5.5z" /></svg>
+                    </span>
+                    <span className="dms-spot__film-text">
+                      <small>On film · {problem.film.duration}</small>
+                      <b>How {problem.film.company ?? problem.film.person} handled it</b>
+                    </span>
+                    <span className="dms-spot__film-arrow" aria-hidden="true">&rarr;</span>
+                  </a>
+                ) : null}
               </div>
               <div className="dms-spot__scene">
                 <ProblemGraphic kind={problem.visual} play={play && active === problem.visual} staticMode={staticMode} />

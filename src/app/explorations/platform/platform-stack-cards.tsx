@@ -111,7 +111,7 @@ export function OutcomesCards() {
 
 /* ============================================================ 02 · suite
  * Solid 20-grid glyphs in the coexistence tiles' idiom (one path each). */
-const PRODUCT_GLYPHS: Record<string, string> = {
+export const PRODUCT_GLYPHS: Record<string, string> = {
   QMS: "M10 1.5 17 4v5c0 4.6-3 8.3-7 9.5-4-1.2-7-4.9-7-9.5V4l7-2.5Zm3.3 5.8-1.2-1.2L9 9.2 7.9 8.1 6.7 9.3 9 11.6l4.3-4.3Z",
   DMS: "M5 2h7l4 4v12H5V2Zm6.5 1.5V7H15L11.5 3.5ZM7 10h6v1.5H7V10Zm0 3h6v1.5H7V13Z",
   PLM: "M10 2 18 6.5 10 11 2 6.5 10 2Zm-6.2 7.4L10 13l6.2-3.6 1.8 1-8 4.5-8-4.5 1.8-1Zm0 3.6L10 16.6l6.2-3.6 1.8 1L10 18.5 2 14l1.8-1Z",

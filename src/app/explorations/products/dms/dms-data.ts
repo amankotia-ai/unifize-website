@@ -13,6 +13,7 @@ import personasMirror from "@/content/notion/personas.json";
 import industriesMirror from "@/content/notion/industries.json";
 import standardsMirror from "@/content/notion/standards.json";
 import { dmsCopy } from "./dms-copy";
+import { filmByWistia, type CustomerFilm } from "../_shared/customer-films";
 import {
   buildProductFlows,
   type FlowPresentation,
@@ -44,6 +45,10 @@ export type DmsCoordinationProblem = {
   work: string;
   tax: [string, string];
   outcome: string;
+  /* the customer film that answers this card, resolved server-side from the
+   * Website Customer Videos mirror (Raj, 2 Sep 2026: proof inside the
+   * problem section itself). null when the film is unapproved/unpublished. */
+  film?: CustomerFilm | null;
 };
 
 /* One source for the Problem spotlight and Coordination Tax timeline. Each
@@ -57,9 +62,10 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
     category: "Evidence assembly",
     title: dmsCopy("problem.card1.title", "Days to assemble one audit record"),
     quote: dmsCopy("problem.card1.quote", "When auditors ask for the full record we spend days pulling it together."),
-    detail: dmsCopy("problem.card1.detail", "Evidence is stitched from exports, screenshots, and email forwards. The audit passes; passing costs days of senior time each cycle."),
+    detail: dmsCopy("problem.card1.detail", "Evidence is stitched from exports, screenshots, and email forwards. The audit passes; passing costs days of team time, every audit."),
     metric: "Days",
-    metricLabel: "Senior time per audit cycle",
+    metricLabel: "Of team time to assemble evidence, per audit",
+    film: filmByWistia("czpp4z5i75"),
     work: "Answer the audit",
     tax: ["Collect scattered exports", "Reconcile the signatures"],
     outcome: "Evidence already bound",
@@ -73,6 +79,7 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: dmsCopy("problem.card2.detail", "The controlled system says v3.2, a file share holds a local v3.1, and the workstation runs a laminated v2.8. The current version is a function of where you look."),
     metric: "3",
     metricLabel: "Copies claiming to be current",
+    film: filmByWistia("kwavngw95a"),
     work: "Use the procedure",
     tax: ["Compare competing copies", "Confirm the effective date"],
     outcome: "One effective version",
@@ -86,6 +93,7 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: dmsCopy("problem.card3.detail", "The line builds to the old version because the notification, the training, or the parts on hand lag the effective date. The first sign is a rejected part."),
     metric: "Months",
     metricLabel: "From approval to the floor",
+    film: filmByWistia("8zmhdejn6c"),
     work: "Release the change",
     tax: ["Notify every endpoint", "Chase the effective date"],
     outcome: "Effectivity reaches the line",
@@ -99,6 +107,7 @@ export const DMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: dmsCopy("problem.card4.detail", "People work to the new version without verified training, and the trace between the change and the training is partial when the auditor asks."),
     metric: "Weeks",
     metricLabel: "Untrained on the effective version",
+    film: filmByWistia("qayx823k6h"),
     work: "Train the people",
     tax: ["Track who needs retraining", "Chase the completions"],
     outcome: "Training assigned on release",

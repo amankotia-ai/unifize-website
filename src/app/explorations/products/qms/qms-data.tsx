@@ -13,6 +13,7 @@ import type { DmsCoordinationProblem } from "../dms/dms-data";
 import { buildProductFlows } from "../_shared/product-flows";
 import { buildAudiencePersonas, type PersonaPresentation } from "../_shared/product-audience";
 import { QMS_MODULE_MOCKS, QmsCapaTrace } from "./qms-mocks";
+import { filmByWistia, type CustomerFilm } from "../_shared/customer-films";
 
 /* real short-names of the QMS external standards (Notion External Standards) */
 const HERO_STANDARDS = ["ISO 9001", "ISO 13485", "21 CFR 820", "IATF 16949", "AS 9100", "ICH Q10"];
@@ -84,6 +85,7 @@ export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "The finding sits in the audit report and the action sits in nobody's queue, so converting it into an owned, dated plan routinely stalls.",
     metric: "Unowned",
     metricLabel: "The finding has no accountable clock",
+    film: filmByWistia("uashgnl3ie"),
     work: "Close the finding",
     tax: ["Find the accountable owner", "Chase the action into a queue"],
     outcome: "Named owner and due date",
@@ -97,6 +99,7 @@ export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Effectiveness verification has a target date but no enforced gate, so it slips by weeks and often closes on paperwork instead of a real recurrence test.",
     metric: "Weeks",
     metricLabel: "Verification slips past its target",
+    film: filmByWistia("mn4ooo6r95"),
     work: "Close the CAPA",
     tax: ["Chase the verification date", "Debate whether the fix worked"],
     outcome: "Effectiveness verified on a date",
@@ -110,6 +113,7 @@ export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
     detail: "Closure rests on supplier-submitted paperwork rather than verified behaviour change, so the same failure returns with the next lot.",
     metric: "Repeat",
     metricLabel: "Same failure, next delivery",
+    film: filmByWistia("44wjlgpqqt"),
     work: "Correct the supplier",
     tax: ["Chase the supplier response", "Verify change beyond paperwork"],
     outcome: "Closure on verified change",
@@ -119,10 +123,11 @@ export const QMS_PROBLEMS: DmsCoordinationProblem[] = [
     visual: "audit",
     category: "Audit evidence",
     title: "Passing the audit costs days of rebuild",
-    quote: "We pass audits but the day-to-day reality does not match what we showed the auditor.",
-    detail: "The full record of a deviation, change, or CAPA is stitched from exports, screenshots, and email forwards. The cost of passing is days of senior time per cycle.",
+    quote: "We scrape by and pass audits, but the day-to-day reality differs, and nobody knows how the next one will go.",
+    detail: "The full record of a deviation, change, or CAPA is stitched from exports, screenshots, and email forwards. Passing costs days of team time, every audit.",
     metric: "Days",
-    metricLabel: "Senior time per audit cycle",
+    metricLabel: "Of team time to assemble evidence, per audit",
+    film: filmByWistia("f1hnfv4qc6"),
     work: "Answer the audit",
     tax: ["Collect scattered exports", "Reconcile closure evidence"],
     outcome: "Evidence already bound",
