@@ -45,6 +45,14 @@
   font-family: var(--u-display) !important;
 }
 
+/* ...and their child spans keep the heading's tracking (the reset above would
+   pin a `.dms-hero__turn` or rotor span to normal, so the second line of a
+   two-line H1 read looser than the first). Low specificity: any class-level
+   tracking rule on a span inside a heading still wins. */
+.dms--redesign :where(h1, h2, h3, h4, h5, h6, .dms-h1, .dms-h2, .dms-h3, .dms-hero__title, .dms-close__h) * {
+  letter-spacing: inherit !important;
+}
+
 .dms--redesign :where(h1, h2) {
   letter-spacing: -0.04em !important;
 }

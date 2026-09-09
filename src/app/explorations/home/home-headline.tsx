@@ -7,11 +7,13 @@
  * that ends on "closed faster").
  *
  * Every variant pairs with the SAME sub line in page.tsx. Variant A carries
- * the revolving record noun. <HeroHeadlineReview /> (under the CTAs) lets
- * Raj switch variants in place on the Friday 5 Sep call; the pick persists
- * per browser and `?hl=B` deep-links a variant. Once a variant is chosen,
- * delete the review strip and the unused entries; the H1 markup itself
- * needs no change.
+ * the revolving record noun.
+ *
+ * 2026-09-09: variant D ("Regulated") is the default and the review strip is
+ * no longer rendered on the page. `?hl=B` still deep-links another variant
+ * for review; the per-browser localStorage pick is ignored so a stale choice
+ * from the review round cannot override the default. <HeroHeadlineReview />
+ * is kept (not rendered) in case another round is needed.
  * ========================================================================== */
 import {
   createContext,
@@ -81,16 +83,13 @@ const VARIANTS: Variant[] = [
 ];
 
 const STORAGE_KEY = "hm-hero-variant";
-const DEFAULT_KEY = "A";
+const DEFAULT_KEY = "D";
 
+/* the default wins unless the URL asks for another variant (review only) */
 function readInitialKey(): string {
   if (typeof window === "undefined") return DEFAULT_KEY;
   const fromUrl = new URLSearchParams(window.location.search).get("hl")?.toUpperCase();
   if (fromUrl && VARIANTS.some((v) => v.key === fromUrl)) return fromUrl;
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored && VARIANTS.some((v) => v.key === stored)) return stored;
-  } catch {}
   return DEFAULT_KEY;
 }
 
@@ -223,7 +222,7 @@ export function HeroHeadline() {
 }
 
 /* ================================================== REVIEW STRIP
- * Remove after the 5 Sep pick. */
+ * Not rendered since the 9 Sep pick (D); kept for a future review round. */
 export function HeroHeadlineReview() {
   const { variant, hydrated, pick } = useHeadline();
   return (

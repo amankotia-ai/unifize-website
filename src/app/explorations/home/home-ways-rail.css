@@ -1,0 +1,77 @@
+/* ============================================================================
+ * 01 · CHOOSE YOUR WAY IN · the DMS module rail on the light surface.
+ * Layout comes from products/dms/dms-modules-rail.css; this file only
+ * re-tokens it for light (ink on white, pale colour fields) and styles the
+ * link ledger that replaces the module bullet points.
+ * ========================================================================== */
+.dms-mrail--light {
+  --mrail-line: var(--dms-hairline);
+}
+
+.dms--redesign .hm-ways-section { padding-bottom: 0; }
+.dms--redesign .hm-ways-section .hm-entry__head { padding-bottom: clamp(36px, 4vw, 64px); }
+
+/* ---- rail ------------------------------------------------------------- */
+/* the way-in names carry the section: display face, heading weight, a
+ * larger glyph, and more air between them than the DMS module rail */
+.dms-mrail--light .dms-mrail__rail ul { gap: 10px; }
+.dms-mrail--light .dms-mrail__link {
+  gap: 14px; padding: 10px 12px; margin-left: -12px;
+  font-family: var(--u-display) !important;
+  font-size: clamp(1.125rem, 1.35vw, 1.375rem); font-weight: 600; line-height: 1.15;
+  letter-spacing: -0.02em !important;
+  color: var(--dms-muted);
+}
+.dms-mrail--light .dms-mrail__link svg { width: 22px; height: 22px; color: var(--dms-faint); }
+.dms-mrail--light .dms-mrail__link:hover { color: var(--dms-ink-2); background: rgba(23, 25, 31, 0.04); }
+.dms-mrail--light .dms-mrail__link.is-active { color: var(--dms-ink); }
+.dms-mrail--light .dms-mrail__link.is-active svg { color: var(--dms-accent); }
+.dms-mrail--light .dms-mrail__link:focus-visible { outline-color: var(--dms-accent); }
+
+/* ---- rows ------------------------------------------------------------- */
+.dms-mrail--light .dms-mrail__ledger { border-bottom: 1px solid var(--mrail-line); }
+.dms-mrail--light .dms-mrail__eyebrow { color: var(--dms-faint); display: inline-flex; gap: 8px; }
+.dms-mrail--light .dms-mrail__eyebrow .dms-data { color: var(--dms-accent); }
+.dms-mrail--light .dms-mrail__title { color: var(--dms-ink); font-weight: 620; }
+.dms-mrail--light .dms-mrail__blurb { color: var(--dms-muted); margin-bottom: 18px; }
+
+/* the way-in links: the routing ledger, one hairline row per destination */
+.hm-ways__links { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--mrail-line); }
+.hm-ways__links li + li { border-top: 1px solid var(--mrail-line); }
+.hm-ways__links a {
+  display: flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 16px;
+  color: var(--dms-ink); font-size: 0.9375rem; text-decoration: none;
+  transition: color 150ms ease-out;
+}
+.hm-ways__links a:hover { color: var(--dms-accent); }
+.hm-ways__links small {
+  color: var(--dms-faint); font-family: var(--dms-mono); font-size: 0.68rem; line-height: 1.3; text-align: right;
+  transition: color 150ms ease-out;
+}
+.hm-ways__links a:hover small { color: var(--dms-accent); }
+.hm-ways__all {
+  display: inline-flex; min-height: 44px; align-items: center; gap: 8px; align-self: flex-start;
+  margin-top: auto; padding-top: 22px;
+  color: var(--dms-accent); font-size: 0.88rem; font-weight: 600; text-decoration: none;
+}
+.hm-ways__all:active { transform: scale(0.96); }
+.hm-ways__links a:focus-visible, .hm-ways__all:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: 3px; }
+
+/* ---- colour fields, light --------------------------------------------- */
+/* the DMS rail's navy / teal / rust, as washes on white */
+.dms-mrail--light .dms-mrail__row[data-way="solution"] .dms-mrail__stage { --field: #e3ebf8; }
+.dms-mrail--light .dms-mrail__row[data-way="product"]  .dms-mrail__stage { --field: #e0efeb; }
+.dms-mrail--light .dms-mrail__row[data-way="industry"] .dms-mrail__stage { --field: #f4e8e0; }
+.dms-mrail--light .dms-mrail__tiles i { background: rgba(255, 255, 255, 0.55); }
+
+/* ---- responsive ------------------------------------------------------- */
+@media (max-width: 900px) {
+  .dms-mrail--light .dms-mrail__railcol { background: var(--dms-surface); }
+  .dms-mrail--light .dms-mrail__rail ul { gap: 4px; }
+  .dms-mrail--light .dms-mrail__link { font-size: 1rem; padding: 8px 10px; margin-left: 0; gap: 10px; }
+  .dms-mrail--light .dms-mrail__link svg { width: 18px; height: 18px; }
+  /* phone: the bound trace lives in the thread column, so slide the inbox
+   * off the left edge; the home queue and the builder start at the nav
+   * rail and stay put */
+  .dms-mrail--light .dms-mrail__row[data-focus="trace"] .dms-mrail__scene { --mrail-scene-x: calc(-324px * 0.62); padding-left: 0; }
+}

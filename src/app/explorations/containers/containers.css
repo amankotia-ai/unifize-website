@@ -1,17 +1,11 @@
 /* ============================================================================
  * containers.css - the container lab (explorations/containers). One
- * container per variant (.cx-vis): the field (.cx-field) is painted behind
- * the untouched mock (.cx-mock). The engine's blue plate (.sty-scene.is-arcade
- * background + .stx-arc-field shapes, arcade.css) is neutralised; the mock
- * keeps the engine's geometry (min(980px, 100%) by clamp(420px, 35vw, 500px))
- * and gets one radius and one shadow, the same in every variant.
+ * container per variant (.cx-vis): the ribbon field (.cx-field) is painted
+ * behind the untouched mock (.cx-mock). The engine's blue plate
+ * (.sty-scene.is-arcade background + .stx-arc-field shapes, arcade.css) is
+ * neutralised; the mock keeps the engine's geometry (min(980px, 100%) by
+ * clamp(420px, 35vw, 500px)) and gets one radius and one shadow.
  * ========================================================================== */
-
-@property --cx-a {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
 
 /* ------------------------------------------------------------------ head */
 .dms--cx .cx-head { padding-block: clamp(56px, 6vw, 88px) clamp(20px, 2.5vw, 36px); }
@@ -59,33 +53,42 @@
 .dms--cx .cx-vis {
   --cx-pad: clamp(24px, 6vw, 96px);
   --cx-r: 28px;
-  --cx-bg: #f4f4f2;
-  --cx-mock-shadow:
-    0 0 0 1px oklch(0 0 0 / 0.06),
-    0 2px 6px -2px oklch(0 0 0 / 0.12),
-    0 48px 90px -36px oklch(0.3 0.05 260 / 0.42);
+  --cx-navy: #002553; /* --u-blue-950 */
+  /* the visual sits flat on the field: no ring, no glow, no drop shadow */
+  --cx-mock-shadow: none;
   position: relative;
   overflow: hidden;
   border-radius: var(--cx-r);
-  background: var(--cx-bg);
+  background: radial-gradient(90% 90% at 50% 50%, #04336d 0%, var(--cx-navy) 58%, #00142f 100%);
   isolation: isolate;
 }
 .dms--cx .cx-field { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .dms--cx .cx-field > i,
-.dms--cx .cx-field > svg,
-.dms--cx .cx-field > canvas,
-.dms--cx .cx-field > div { position: absolute; inset: 0; display: block; }
+.dms--cx .cx-field > svg { position: absolute; inset: 0; display: block; }
 .dms--cx .cx-fill { width: 100%; height: 100%; }
 .dms--cx .cx-mock { position: relative; z-index: 2; }
+
+/* a soft darkening behind the record so the product visual is the brightest
+ * object in the container; it fades before it could read as a frame */
+.dms--cx .cx-scrim {
+  z-index: 1;
+  background: radial-gradient(56% 66% at 50% 50%, oklch(0 0 0 / 0.42) 0%, oklch(0 0 0 / 0.2) 45%, transparent 78%);
+}
+
+/* the reference's soft edge and film grain */
+.dms--cx .cx-vignette {
+  z-index: 1;
+  background: radial-gradient(85% 85% at 50% 50%, transparent 55%, oklch(0 0 0 / 0.45) 100%);
+}
 .dms--cx .cx-grain {
   z-index: 1;
   background-image: var(--dms-grain);
   background-size: 180px 180px;
-  opacity: 0.05;
-  mix-blend-mode: multiply;
+  opacity: 0.06;
+  mix-blend-mode: screen;
 }
 
-/* neutralise the engine's plate; one radius, one shadow on the mock */
+/* neutralise the engine's plate; the mock keeps only its own radius */
 .dms--cx .cx-vis .stx-root .sty-scene.is-arcade { background: transparent; }
 .dms--cx .cx-vis .stx-root .stx-arc-field { display: none; }
 .dms--cx .cx-vis .stx-root .sty-scene.is-arcade .sty-scene__inner { padding: var(--cx-pad); }
@@ -96,95 +99,34 @@
   box-shadow: var(--cx-mock-shadow);
 }
 
-/* =========================================================== 01 · guilloche */
-.dms--cx .cx-vis--guilloche { --cx-bg: #f6f4ee; }
-.dms--cx .cx-guilloche { fill: none; stroke: #2c3550; stroke-width: 0.6; stroke-opacity: 0.32; }
-.dms--cx .cx-guilloche path:nth-child(2) { stroke: #7a4a3a; stroke-opacity: 0.22; }
-.dms--cx .cx-guilloche path:nth-child(3) { stroke-opacity: 0.18; }
-
-/* =========================================================== 02 · flowfield */
-.dms--cx .cx-vis--flowfield { --cx-bg: #f8f7f3; }
-
-/* ============================================================ 03 · caustics */
-.dms--cx .cx-vis--caustics { --cx-bg: #e8eeef; }
-
-/* ================================================================ 04 · silk */
-.dms--cx .cx-vis--silk { --cx-bg: #f5f4f1; }
-
-/* ================================================================ 05 · echo */
-.dms--cx .cx-vis--echo { --cx-bg: #ffffff; }
-.dms--cx .cx-echo i {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: calc(min(980px, 100% - 2 * var(--cx-pad)) + var(--k) * 96px);
-  height: calc(clamp(420px, 35vw, 500px) + var(--k) * 96px);
-  border: 1px solid oklch(0.3 0.04 260 / 0.14);
-  border-radius: calc(14px + var(--k) * 14px);
-  transform: translate(-50%, -50%);
-  animation: cx-echo 8s ease-out infinite;
-  animation-delay: calc(var(--k) * -1.3s);
+/* ----------------------------------------------------------- the ribbons
+ * A slow breathe about each composition's vanishing point is the only
+ * motion. transform-box keeps the origin in the SVG's own box. */
+.dms--cx .cx-ribbons__set {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: cx-breathe 18s ease-in-out infinite alternate;
 }
-@keyframes cx-echo {
-  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.985); }
-  20% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1.03); }
-}
+.dms--cx .cx-ribbons__set--fan { transform-origin: 100% 50%; }
+.dms--cx .cx-ribbons__set--beam { transform-origin: 50% 0%; }
+.dms--cx .cx-ribbons__set--twin { transform-origin: 50% 50%; }
+.dms--cx .cx-ribbons__set--diagonal { transform-origin: 80% 25%; }
+.dms--cx .cx-ribbons__set--burst { animation-name: cx-turn-slow; animation-duration: 90s; animation-direction: normal; animation-timing-function: linear; }
+.dms--cx .cx-ribbons__set--curtain { animation-name: cx-sway; animation-duration: 14s; }
+.dms--cx .cx-ribbons__set--bend { transform-origin: 100% 100%; }
+.dms--cx .cx-ribbons__set--arch { transform-origin: 50% 100%; }
+@keyframes cx-breathe { from { transform: scale(1); } to { transform: scale(1.045); } }
+@keyframes cx-turn-slow { to { transform: rotate(360deg); } }
+@keyframes cx-sway { from { transform: translateX(-1.2%); } to { transform: translateX(1.2%); } }
 
-/* ============================================================== 06 · blinds */
-.dms--cx .cx-vis--blinds { --cx-bg: #efe6d8; }
-.dms--cx .cx-blinds__wall {
-  background:
-    radial-gradient(90% 70% at 80% 10%, oklch(0.98 0.03 80 / 0.9), transparent 70%),
-    linear-gradient(200deg, #f5ede0, #e6dac8);
-}
-.dms--cx .cx-blinds__light {
-  inset: -30%;
-  background: repeating-linear-gradient(-22deg, oklch(1 0.05 85 / 0.6) 0 44px, oklch(0.55 0.06 60 / 0.16) 44px 60px, transparent 60px 96px);
-  -webkit-mask-image: radial-gradient(70% 80% at 65% 30%, #000 30%, transparent 100%);
-  mask-image: radial-gradient(70% 80% at 65% 30%, #000 30%, transparent 100%);
-  animation: cx-blinds 60s ease-in-out infinite alternate;
-}
-@keyframes cx-blinds { to { transform: translate(-6%, 4%); } }
-
-/* ============================================================== 07 · turing */
-.dms--cx .cx-vis--turing { --cx-bg: #f6f4ef; }
-.dms--cx .cx-turing { image-rendering: auto; filter: blur(0.6px) contrast(1.05); }
-
-/* ================================================================ 08 · foil */
-.dms--cx .cx-vis--foil { --cx-bg: #d9dbe0; }
-.dms--cx .cx-foil {
-  inset: -20%;
-  background: conic-gradient(
-    from var(--cx-a) at 62% 38%,
-    #ffb8b8, #ffdcae, #e2ffb8, #b4f4ff, #bdb8ff, #ffb8ea, #ffb8b8
-  );
-  animation: cx-turn 40s linear infinite;
-}
-@keyframes cx-turn { to { --cx-a: 360deg; } }
-.dms--cx .cx-foil__stripes {
-  background: repeating-linear-gradient(52deg, oklch(1 0 0 / 0.55) 0 1px, transparent 1px 3px);
-}
-.dms--cx .cx-foil__veil {
-  background: linear-gradient(120deg, oklch(1 0 0 / 0.62), oklch(1 0 0 / 0.4) 50%, oklch(1 0 0 / 0.66));
-}
-
-/* ============================================================ 09 · papercut */
-.dms--cx .cx-vis--papercut { --cx-bg: #f7f2ea; }
-.dms--cx .cx-paper { filter: drop-shadow(0 -8px 12px oklch(0 0 0 / 0.16)); }
-
-/* =========================================================== 10 · botanical */
-.dms--cx .cx-vis--botanical { --cx-bg: #f1ebe2; }
-.dms--cx .cx-botanical__wall {
-  background:
-    radial-gradient(80% 90% at 20% 0%, oklch(0.99 0.02 85 / 0.9), transparent 70%),
-    linear-gradient(160deg, #f4eee5, #e9e0d2);
-}
-.dms--cx .cx-botanical { fill: #2f2c33; fill-opacity: 0.2; transform-origin: 84% 100%; animation: cx-sway 9s ease-in-out infinite alternate; }
-.dms--cx .cx-botanical__stem { fill: none; stroke: #2f2c33; stroke-opacity: 0.2; stroke-width: 6; stroke-linecap: round; }
-@keyframes cx-sway { from { transform: rotate(-1.2deg); } to { transform: rotate(1.4deg); } }
+/* per composition: where the navy shows most, the ground follows */
+.dms--cx .cx-vis--fan { background: linear-gradient(90deg, #04336d, #00142f 70%); }
+.dms--cx .cx-vis--beam { background: linear-gradient(180deg, #00142f, #04336d); }
+.dms--cx .cx-vis--twin { background: radial-gradient(60% 100% at 50% 50%, #00142f, #04336d); }
+.dms--cx .cx-vis--burst { background: radial-gradient(70% 70% at 50% 50%, #063d80, #00142f); }
+.dms--cx .cx-vis--curtain { background: #002553; }
 
 /* ----------------------------------------------------------- reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .dms--cx .cx-field * { animation: none !important; }
+  .dms--cx .cx-ribbons__set { animation: none !important; }
 }

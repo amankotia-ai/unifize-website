@@ -43,7 +43,7 @@ import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
 import { HeroArcadeSwitcher, MechanismJourney, ProductSuiteShowcase } from "./home-interactive";
-import { HeroHeadline, HeroHeadlineProvider, HeroHeadlineReview } from "./home-headline";
+import { HeroHeadline, HeroHeadlineProvider } from "./home-headline";
 import { SymptomVisual } from "./home-symptom-scenes";
 import { SolutionsGrid } from "./home-solutions";
 import {
@@ -61,6 +61,8 @@ import { PLM_MODULE_ARCADE_CONFIGS } from "../products/plm/plm-arcade";
 import { CASE_STUDIES, POSTS } from "../resources/_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
 import { HomeProofFilms } from "./home-proof";
+import { ProcessTiles } from "./home-process-tiles";
+import { HomeWaysRail } from "./home-ways-rail";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
@@ -232,6 +234,7 @@ const PRIMARY_SOLUTIONS = [
 const PRODUCTS = [
   {
     code: "QMS",
+    icon: "qms" as const,
     name: "Quality management",
     body: "CAPA, audits, nonconformances, and change control on one governed quality record.",
     outcome: "Close the finding. Keep the decision.",
@@ -240,6 +243,7 @@ const PRODUCTS = [
   },
   {
     code: "DMS",
+    icon: "dms" as const,
     name: "Document management",
     body: "Controlled documents, versioning, and e-signatures from draft to obsolete. A revision going effective assigns the retraining itself.",
     outcome: "One current version, everywhere.",
@@ -248,6 +252,7 @@ const PRODUCTS = [
   },
   {
     code: "MES",
+    icon: "mes" as const,
     name: "Manufacturing execution",
     body: "Electronic batch records and shop-floor execution with evidence captured as work happens.",
     outcome: "The record builds with the shift.",
@@ -256,6 +261,7 @@ const PRODUCTS = [
   },
   {
     code: "PLM",
+    icon: "plm" as const,
     name: "Product lifecycle",
     body: "Requirements, design controls, BOMs, and change orders on one traceable product record.",
     outcome: "Keep the trace from input to release.",
@@ -369,10 +375,12 @@ function IndustryIcon({ type }: { type: string }) {
   );
 }
 
+/* 01 - the three ways in; the arcade pose each row stages lives with the
+ * rail (home-ways-rail.tsx, keyed by `key`) */
 const ENTRY_PATHS = [
   {
+    key: "solution",
     label: "By solution",
-    glyph: "solution",
     title: "I need to improve a process.",
     body: "Start with the cross-functional work that is slow, unclear, or difficult to prove.",
     links: PRIMARY_SOLUTIONS,
@@ -380,8 +388,8 @@ const ENTRY_PATHS = [
     cta: "Explore solutions",
   },
   {
+    key: "product",
     label: "By product",
-    glyph: "product",
     title: "I am evaluating a system.",
     body: "Start with the governed record your team needs to run and keep current.",
     links: PRODUCTS.map((product) => ({ name: product.name, meta: product.code, href: product.href })),
@@ -389,8 +397,8 @@ const ENTRY_PATHS = [
     cta: "Explore products",
   },
   {
+    key: "industry",
     label: "By industry",
-    glyph: "industry",
     title: "Show me my regulated world.",
     body: "Start with your industry: the systems it runs on and the moments that begin the clock.",
     links: [
@@ -452,49 +460,22 @@ const CUSTOMER_LOGOS: { name: string; src: string; h?: number }[] = [
 
 /* 01 - the three ways in, drawn: converging process lanes, the product mark's
  * module squares, a certificate. One stroke, one weight. */
-function EntryGlyph({ type }: { type: string }) {
-  if (type === "solution") {
-    return (
-      <svg className="hm-entry__glyph" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3.5 5.5h5M3.5 12h5.5M3.5 18.5h5M8.5 5.5c4.5 0 3.5 6.5 8 6.5M8.5 18.5c4.5 0 3.5-6.5 8-6.5M14 12h6.5M17.5 9l3 3-3 3" />
-      </svg>
-    );
-  }
-  if (type === "product") {
-    return (
-      <svg className="hm-entry__glyph" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3.5" y="3.5" width="7" height="7" />
-        <rect x="13.5" y="3.5" width="7" height="7" />
-        <rect x="8.5" y="13.5" width="7" height="7" />
-      </svg>
-    );
-  }
-  return (
-    <svg className="hm-entry__glyph" viewBox="0 0 24 24" aria-hidden="true">
-      <rect x="4" y="3" width="16" height="13.5" />
-      <path d="M7.5 7h9M7.5 10h9M7.5 13h5" />
-      <circle cx="15.5" cy="16.5" r="2.6" />
-      <path d="M14.2 18.8L13.4 22l2.1-1.3 2.1 1.3-.8-3.2" />
-    </svg>
-  );
-}
-
 export default function HomePage() {
   return (
     <main className="dms dms--redesign dms--consistent-eyebrows dms--home">
       <DmsHeader />
 
       {/* ============================ HERO =============================
-       * Regulated-industry outcome headline (variants under review, see
-       * home-headline.tsx); the concrete nouns carry the sub. The
-       * coordination tax is NOT named here (third-scroll rule). */}
+       * Regulated-industry outcome headline (variant D, see home-headline.tsx);
+       * the concrete nouns carry the sub. The coordination tax is NOT named
+       * here (third-scroll rule). */}
       <section className="dms-section dms-hero" aria-label="Unifize">
         <div className="dms-wrap dms-hero__inner">
           <HeroHeadlineProvider>
             <div className="dms-hero__grid">
               <div className="dms-hero__left">
-                {/* five review variants, A revolves the record noun; see
-                  * home-headline.tsx (2026-09-02 sync with Raj) */}
+                {/* variant D by default; `?hl=A..E` previews the others
+                  * (home-headline.tsx) */}
                 <HeroHeadline />
               </div>
               <div className="dms-hero__right">
@@ -508,8 +489,6 @@ export default function HomePage() {
                     Take Coordination Tax Assessment
                   </Link>
                 </div>
-                {/* review strip for the 5 Sep pick; delete with the unused variants */}
-                <HeroHeadlineReview />
               </div>
             </div>
           </HeroHeadlineProvider>
@@ -551,7 +530,7 @@ export default function HomePage() {
       {/* ============================ 01 · PRIMARY ROUTER ===============
        * The homepage is L1. This section hands visitors directly to the L2
        * taxonomy that matches the way they arrived. */}
-      <section className="dms-section hm-entry-section" id="doors">
+      <section className="dms-section hm-ways-section" id="doors">
         <div className="dms-wrap">
           <div className="hm-entry__head" data-reveal>
             <Eyebrow n={1}>Choose your way in</Eyebrow>
@@ -561,34 +540,10 @@ export default function HomePage() {
               the same governed decision trail.
             </p>
           </div>
-
-          <div className="hm-entry-grid" data-reveal>
-            {ENTRY_PATHS.map((path, index) => (
-              <article className="hm-entry" key={path.label}>
-                <div className="hm-entry__intro">
-                  <EntryGlyph type={path.glyph} />
-                  <span className="hm-entry__index dms-data">{String(index + 1).padStart(2, "0")}</span>
-                  <span className="hm-entry__label">{path.label}</span>
-                  <h3>{path.title}</h3>
-                  <p>{path.body}</p>
-                </div>
-                <ul className="hm-entry__links">
-                  {path.links.map((item) => (
-                    <li key={item.name}>
-                      <Link href={item.href}>
-                        <span>{item.name}</span>
-                        <small>{item.meta}</small>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                <Link className="hm-entry__all" href={path.href}>
-                  {path.cta} <span aria-hidden="true">&darr;</span>
-                </Link>
-              </article>
-            ))}
-          </div>
         </div>
+        {/* the sticky rail ledger breaks out of the wrap: names pin on the
+          * left, each row's colour field bleeds to the right edge */}
+        <HomeWaysRail ways={ENTRY_PATHS} />
       </section>
 
       {/* ============================ 02 · RECOGNITION ==================
@@ -764,14 +719,10 @@ export default function HomePage() {
       <section className="dms-section dms-section--dark dms-close hm-close" id="demo" aria-labelledby="hm-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
+            {/* 2026-09-09: the lone convergence mark became a pyramid of the
+              * processes people bring (home-process-tiles.tsx), tapering to
+              * the mark. Same convergence idea, now with the nouns on it. */}
+            <ProcessTiles />
             <div className="dms-close__lead">
               <span className="dms-close__eyebrow">Ready when you are</span>
               <h2 className="dms-close__h" id="hm-close-h">Bring the process that hurts most.</h2>
@@ -784,9 +735,6 @@ export default function HomePage() {
                 <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
                 <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">Take the assessment</Link>
               </div>
-              <Link className="hm-it-link" href="/explorations/platform#platform">
-                For IT: how it fits your architecture &rarr;
-              </Link>
             </div>
           </div>
         </div>

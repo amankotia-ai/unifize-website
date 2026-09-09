@@ -1,0 +1,170 @@
+/* ============================================================================
+ * 02 · MODULES · sticky rail ledger. Scoped to .dms-mrail. Lives on the
+ * dark section (dms-section--dark), so every colour here is a d-token.
+ * ========================================================================== */
+.dms-mrail {
+  --mrail-line: var(--dms-d-border);
+  --mrail-rail-w: clamp(232px, 16.5vw, 268px);
+  --mrail-text-w: clamp(300px, 30vw, 440px);
+  --mrail-row-h: 560px;
+  --tile: clamp(44px, 4.2vw, 64px);
+  --tile-gap: 10px;
+  --mrail-inset: max(var(--dms-gutter), calc((100vw - var(--dms-maxw)) / 2 + var(--dms-gutter)));
+  width: 100%;
+}
+@media (min-width: 768px)  { .dms-mrail { --mrail-inset: max(32px, calc((100vw - var(--dms-maxw)) / 2 + 32px)); } }
+@media (min-width: 1280px) { .dms-mrail { --mrail-inset: max(var(--dms-gutter-xl), calc((100vw - var(--dms-maxw)) / 2 + var(--dms-gutter-xl))); } }
+
+/* header stays inside the wrap; the ledger below breaks out to the edge */
+.dms-mrail__head { display: flex; flex-direction: column; gap: var(--dms-s-5); max-width: 800px; padding-bottom: clamp(36px, 4vw, 64px); }
+.dms-mrail__head .dms-lede { max-width: 56ch; }
+
+.dms-mrail__ledger {
+  display: grid;
+  grid-template-columns: var(--mrail-rail-w) minmax(0, 1fr);
+  align-items: start;
+  border-top: 1px solid var(--mrail-line);
+  padding-left: var(--mrail-inset);
+}
+
+/* ---- rail ------------------------------------------------------------- */
+.dms-mrail__railcol { align-self: stretch; border-right: 1px solid var(--mrail-line); min-width: 0; }
+.dms-mrail__rail {
+  position: sticky;
+  top: calc(var(--dms-header-h) + 8px);
+  padding: clamp(28px, 3vw, 44px) 24px clamp(28px, 3vw, 44px) 0;
+  min-height: 0;
+  min-width: 0;
+}
+.dms-mrail__rail ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.dms-mrail__link {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  display: flex; align-items: center; gap: 10px; width: 100%; text-align: left;
+  padding: 8px 10px; margin-left: -10px; border-radius: 6px;
+  font-family: var(--dms-sans); font-size: 0.9375rem; line-height: 1.2; letter-spacing: -0.006em;
+  white-space: nowrap;
+  color: var(--dms-d-ink-3);
+  transition: color 160ms ease, background-color 160ms ease;
+}
+.dms-mrail__link svg { flex: 0 0 auto; color: var(--dms-d-ink-3); transition: color 160ms ease; }
+.dms-mrail__link:hover { color: var(--dms-d-ink-2); background: rgba(255, 255, 255, 0.03); }
+.dms-mrail__link.is-active { color: var(--dms-d-ink); }
+.dms-mrail__link.is-active svg { color: var(--dms-d-accent); }
+.dms-mrail__link:focus-visible { outline: 2px solid var(--dms-d-accent); outline-offset: 2px; }
+
+/* ---- rows ------------------------------------------------------------- */
+.dms-mrail__rows { min-width: 0; }
+.dms-mrail__row {
+  display: grid;
+  grid-template-columns: var(--mrail-text-w) minmax(0, 1fr);
+  min-height: var(--mrail-row-h);
+  border-bottom: 1px solid var(--mrail-line);
+  scroll-margin-top: calc(var(--dms-header-h) + 1px);
+}
+.dms-mrail__row:last-child { border-bottom: 0; }
+
+.dms-mrail__text {
+  display: flex; flex-direction: column; min-width: 0;
+  padding: clamp(32px, 3.4vw, 52px) clamp(24px, 2.6vw, 40px) clamp(32px, 3.4vw, 52px) clamp(28px, 2.8vw, 44px);
+}
+.dms-mrail__eyebrow {
+  font-family: var(--dms-mono); font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dms-d-ink-3); margin-bottom: 18px;
+}
+.dms-mrail__title {
+  font-family: var(--dms-display); font-size: clamp(1.5rem, 1.9vw, 1.875rem); font-weight: 500;
+  line-height: 1.18; letter-spacing: -0.018em; color: var(--dms-d-ink); margin: 0 0 14px; text-wrap: balance;
+}
+.dms-mrail__blurb { font-size: 0.9375rem; line-height: 1.6; letter-spacing: -0.004em; color: var(--dms-d-ink-2); margin: 0 0 22px; max-width: 40ch; }
+.dms-mrail__points { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.dms-mrail__points li {
+  position: relative; padding-left: 16px; font-size: 0.875rem; line-height: 1.45; color: var(--dms-d-ink-2);
+}
+.dms-mrail__points li::before {
+  content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 1px; background: var(--dms-d-ink-3);
+}
+.dms-mrail__standards { margin-top: auto; padding-top: 28px; display: flex; flex-wrap: wrap; gap: 6px; }
+.dms-mrail__standards span {
+  font-family: var(--dms-mono); font-size: 0.6875rem; letter-spacing: 0.02em; line-height: 1;
+  color: var(--dms-d-ink-2); border: 1px solid var(--mrail-line); border-radius: 4px; padding: 5px 7px;
+}
+
+/* ---- colour field with the arcade scene ------------------------------ */
+/* The approved container: a flat colour field per module that bleeds to
+ * the viewport edge, faint tiles for surface, and the module's arcade
+ * scene sitting on it, flush to the right edge. */
+.dms-mrail__stage {
+  position: relative; overflow: hidden; min-width: 0;
+  display: flex; flex-direction: column;
+  min-height: var(--mrail-row-h);
+  background: var(--field);
+}
+.dms-mrail__row[data-module="document-control"]    .dms-mrail__stage { --field: #26365c; }
+.dms-mrail__row[data-module="change-control"]      .dms-mrail__stage { --field: #1f4a44; }
+.dms-mrail__row[data-module="training-management"] .dms-mrail__stage { --field: #5a3122; }
+
+.dms-mrail__tiles { position: absolute; inset: 0; }
+.dms-mrail__tiles i {
+  position: absolute; display: block; height: var(--tile); border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.dms-mrail__scene {
+  --mrail-scene-scale: 0.8;
+  --mrail-scene-x: 0px;
+  position: relative; z-index: 2; flex: 1; min-height: 0;
+  display: flex; padding: clamp(24px, 2.6vw, 40px) 0 clamp(24px, 2.6vw, 40px) clamp(24px, 2.6vw, 40px);
+}
+/* The arcade scene, presented rather than posed: its own blue field and
+ * geometry are dropped so the module colour is the ground, the camera
+ * offsets from the module poses are zeroed, and the 1150px app window is
+ * anchored to the left edge at one legible scale, vertically centred. The
+ * right edge runs off the viewport on purpose, the way the reference
+ * bleeds its panel. */
+.dms-mrail .dms-mrail__scene .stx-root .sty-scene.is-arcade { width: 100%; height: 100%; border-radius: 0; background: transparent; }
+.dms-mrail .dms-mrail__scene .stx-root .sty-scene.is-arcade .stx-arc-field { display: none; }
+.dms-mrail .dms-mrail__scene .stx-root .sty-scene.is-arcade .stx-stage { flex: 1; height: 100%; min-height: 0; }
+.dms-mrail .dms-mrail__scene .stx-root .stx-arc { height: calc(560px * var(--mrail-scene-scale)); overflow: visible; }
+.dms-mrail .dms-mrail__scene .stx-root .stx-arc__camera {
+  --stx-camera-x: 0px;
+  --stx-camera-y: 0px;
+  --stx-camera-scale: var(--mrail-scene-scale);
+  top: 0; left: 0;
+  transform: translate3d(var(--mrail-scene-x), 0, 0) scale(var(--mrail-scene-scale));
+  transform-origin: 0 0;
+  border-radius: 6px;
+}
+
+/* ---- responsive ------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .dms-mrail { --mrail-text-w: minmax(260px, 42%); --mrail-row-h: 520px; }
+  .dms-mrail__scene { --mrail-scene-scale: 0.72; }
+}
+@media (max-width: 900px) {
+  .dms-mrail__ledger { grid-template-columns: 1fr; padding-left: 0; }
+  /* phone: the column itself sticks (a sticky nav inside a one-row column
+   * would only pin within that row) */
+  .dms-mrail__railcol {
+    position: sticky; top: var(--dms-header-h); z-index: 10;
+    border-right: 0; border-bottom: 1px solid var(--mrail-line);
+    background: var(--dms-d-bg);
+  }
+  .dms-mrail__rail { position: static; padding: 10px var(--dms-gutter); }
+  .dms-mrail__rail ul { flex-direction: row; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+  .dms-mrail__rail ul::-webkit-scrollbar { display: none; }
+  .dms-mrail__link { width: auto; white-space: nowrap; margin-left: 0; font-size: 0.875rem; }
+  .dms-mrail__row { grid-template-columns: 1fr; min-height: 0; scroll-margin-top: calc(var(--dms-header-h) + 52px); }
+  .dms-mrail__text { padding: 28px var(--dms-gutter) 28px; }
+  .dms-mrail__standards { padding-top: 22px; }
+  .dms-mrail__stage { min-height: 0; }
+  .dms-mrail__scene { --mrail-scene-scale: 0.62; padding: 20px 0 20px 12px; }
+  /* phone, record page: show the conversation column, inbox slides off the left edge */
+  .dms-mrail__row[data-focus="viewer"] .dms-mrail__scene,
+  .dms-mrail__row[data-focus="record"] .dms-mrail__scene,
+  .dms-mrail__row[data-focus="history"] .dms-mrail__scene,
+  .dms-mrail__row[data-focus="training"] .dms-mrail__scene { --mrail-scene-x: calc(-324px * 0.62); padding-left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms-mrail__link, .dms-mrail__link svg { transition: none; }
+}

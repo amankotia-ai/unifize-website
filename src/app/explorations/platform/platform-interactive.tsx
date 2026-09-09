@@ -33,6 +33,9 @@ export type PlatformJourneyStep = {
   body: string;
   /* optional stroke glyph (a 24-grid SVG path set) drawn in a tile above the index */
   glyph?: ReactNode;
+  /* optional status chip beside the index ("Live today", "On the roadmap"):
+   * the AI journey dates its claims so nothing reads as shipped that is not */
+  tag?: { label: string; tone: "live" | "next" };
 };
 
 const AUTO_ADVANCE_MS = 5600;
@@ -41,9 +44,15 @@ export function PlatformJourney({
   steps,
   configs,
   label = "One change, followed end to end",
+  stageClassName,
+  stageField,
 }: {
   steps: PlatformJourneyStep[];
   configs: ArcadeStepConfig[];
+  /* an optional field painted behind the scene, and the class that styles
+   * the stage for it (the homepage mounts the ribbon container this way) */
+  stageClassName?: string;
+  stageField?: ReactNode;
   /* the rail's accessible name; the platform hero names its own journey */
   label?: string;
 }) {
@@ -88,7 +97,8 @@ export function PlatformJourney({
   return (
     <div className="pf-journey" ref={hostRef}>
       {/* ONE scene, config swapped in place: the camera pans between poses */}
-      <div className="pf-journey__stage" id="pf-journey-stage" role="tabpanel" aria-live="polite">
+      <div className={cn("pf-journey__stage", stageClassName)} id="pf-journey-stage" role="tabpanel" aria-live="polite">
+        {stageField}
         <ArcadeStepScene config={configs[Math.min(active, configs.length - 1)]} />
       </div>
 
@@ -116,7 +126,10 @@ export function PlatformJourney({
                 </svg>
               </span>
             ) : null}
-            <span className="pf-journey__idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
+            <span className="pf-journey__head">
+              <span className="pf-journey__idx dms-data" aria-hidden="true">{pad(index + 1)}</span>
+              {step.tag ? <span className="pf-journey__tag" data-tone={step.tag.tone}>{step.tag.label}</span> : null}
+            </span>
             <span className="pf-journey__name">{step.title}</span>
             <span className="pf-journey__body">{step.body}</span>
             {auto && index === active ? (
@@ -154,7 +167,7 @@ const BANDS: StackBand[] = [
     name: "Outcomes + AI Assist",
     tag: "What you feel",
     desc: "Work closes faster and arrives provable. AI drafts, chases, and summarizes inside the work; your people approve.",
-    link: { label: "See it measured", href: "#measured" },
+    link: { label: "See the AI at work", href: "#ai" },
     caption: "One change control, as your team meets it",
     cards: OutcomesCards,
   },
@@ -259,10 +272,6 @@ export function PlatformStack() {
       <div className="pf-stack__trust">
         <p className="pf-stack__trust-lead">
           Engineered with security and privacy at its core.
-          <a className="pf-stack__trust-link" href="#compliance">
-            Compliance
-            <Chevron />
-          </a>
         </p>
         <ul className="pf-stack__badges" aria-label="Security and privacy">
           {TRUST_BADGES.map((badge) => (

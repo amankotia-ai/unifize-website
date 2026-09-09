@@ -34,7 +34,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arcade/arcade";
+import { RibbonField } from "../products/_shared/arcade/ribbon-field";
 import { PlatformJourney, type PlatformJourneyStep } from "../platform/platform-interactive";
+import { NavGlyph, type IconName } from "../_shared/nav-data";
 
 export type HeroArcadeView = {
   key: string;
@@ -121,7 +123,8 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
       </div>
       {/* one persistent window: the camera pans between worlds, the interior
         * dips for the record swap */}
-      <div className="hm-heromock__stage">
+      <div className="hm-heromock__stage rf rf--fan">
+        <RibbonField composition="fan" />
         <div className={cn("hm-heromock__scene", scene.dipped && "is-dipped")}>
           <ArcadeStepScene config={scene.shown} />
         </div>
@@ -166,7 +169,12 @@ export function MechanismJourney({ records }: { records: MechanismRecordJourney[
           </button>
         ))}
       </div>
-      <PlatformJourney steps={record.steps} configs={record.configs} />
+      <PlatformJourney
+        steps={record.steps}
+        configs={record.configs}
+        stageClassName="rf rf--twin"
+        stageField={<RibbonField composition="twin" />}
+      />
     </div>
   );
 }
@@ -175,6 +183,8 @@ export function MechanismJourney({ records }: { records: MechanismRecordJourney[
 
 export type ProductSuiteItem = {
   code: string;
+  /* the product's own pictogram, shared with the nav's Products menu */
+  icon: IconName;
   name: string;
   body: string;
   outcome: string;
@@ -227,9 +237,10 @@ export function ProductSuiteShowcase({ items }: { items: ProductSuiteItem[] }) {
   const scene = usePannedConfig(item.config);
   return (
     <div className="hm-suite" ref={hostRef}>
-      <div className="hm-suite__stage" id="hm-suite-stage" role="tabpanel" aria-live="polite">
+      <div className="hm-suite__stage rf rf--arch" id="hm-suite-stage" role="tabpanel" aria-live="polite">
         {/* one persistent window: the camera pans between product worlds, the
           * interior dips for the record swap */}
+        <RibbonField composition="arch" />
         <div className={cn("hm-suite__scene", scene.dipped && "is-dipped")}>
           <ArcadeStepScene config={scene.shown} />
         </div>
@@ -246,7 +257,7 @@ export function ProductSuiteShowcase({ items }: { items: ProductSuiteItem[] }) {
               className="hm-suite__pick"
               onClick={() => select(index)}
             >
-              <span className="hm-suite__code dms-data">{product.code}</span>
+              <span className="hm-suite__glyph" aria-hidden="true"><NavGlyph name={product.icon} /></span>
               <span className="hm-suite__name">{product.name}</span>
               <span className="hm-suite__body">{product.body}</span>
               <strong className="hm-suite__outcome">{product.outcome}</strong>

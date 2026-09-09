@@ -27,7 +27,8 @@ export type ArcadeFocus =
   | "trace"
   | "dashboard"
   | "builder"
-  | "checklist";
+  | "checklist"
+  | "assist";
 
 /* A checklist item is not just a check mark (Ben, Aug 5): plain rows carry
  * facts, `field` rows carry data entry (an input with its entered value),
@@ -37,9 +38,12 @@ export type ArcadeFocus =
 export type ArcadeChecklistItem = {
   label: string;
   note?: string;
-  kind?: "field" | "approval" | "revision";
+  kind?: "field" | "approval" | "revision" | "linked";
   /* field: the entered value shown inside the input */
   value?: string;
+  /* linked: the record ids the linked field holds at rest (a step's
+   * checklistLinks can grow the list, e.g. when Unifize AI links records) */
+  links?: string[];
   /* approval: who signs, and the sealed state ("Signed", "Granted") */
   signer?: string;
   state?: string;
@@ -144,6 +148,35 @@ export type ArcadeStepConfig = {
   /* the checklist field being ENTERED this step (checklist pose): the named
    * item renders as a focused input with a live caret and the target ring */
   checklistEntry?: { section: string; item: string };
+  /* the linked field this step rewrites (the rows AI auto-links land here):
+   * ids beyond the world's resting list render as freshly linked */
+  checklistLinks?: { section: string; item: string; links: string[] };
+  /* the Unifize AI card (assist pose): what it read, what it found, what it
+   * linked. Present fields render; a scan-only step omits finding/linked. */
+  assist?: ArcadeAssist;
+};
+
+/* The Unifize AI card as it lands in the thread (platform AI journey, from
+ * Raj's 7 Sep 2026 brief): the reader asks, the assistant reads across every
+ * record and document by meaning (vectorised), names what a change touches
+ * in a plain text field, and auto-links the records that need revision.
+ * A person approves; the card never closes anything on its own. */
+export type ArcadeAssist = {
+  /* ALL-CAPS kicker; defaults to UNIFIZE AI */
+  kicker?: string;
+  /* the question asked, rendered as the reader's prompt above the answer */
+  prompt?: string;
+  /* one line naming the reach of the read ("every document and record") */
+  scope?: string;
+  /* what was read, in order; `match` tints the verdict chip */
+  scanned?: { id: string; title: string; match: "source" | "impacted" | "clear" | "precedent" }[];
+  /* the plain-language finding, rendered as a text field */
+  finding?: string;
+  /* the records auto-linked from the finding */
+  linked?: { id: string; title: string; state: string }[];
+  /* footer: the primary (a person's call) and the quiet alternative */
+  action?: string;
+  alt?: string;
 };
 
 /* PF-29's document world (the pre-world fallback) lives in ./document-world,
@@ -161,7 +194,7 @@ export { DOCUMENT_WORLD };
 type IconName =
   | "home" | "records" | "reports" | "grid" | "people" | "settings"
   | "search" | "kebab" | "close" | "chevron" | "plus"
-  | "check" | "checks" | "half" | "arrow";
+  | "check" | "checks" | "half" | "arrow" | "spark";
 
 const ICON_PATHS: Record<IconName, string> = {
   home: "M4.2 10.4 12 4.2l7.8 6.2V19.8h-5.3v-5.2H9.5v5.2H4.2V10.4Z",
@@ -181,6 +214,8 @@ const ICON_PATHS: Record<IconName, string> = {
   checks: "m3 12.6 4 4 7.4-8.2M11.4 16.2l.9.9 7.8-8.4",
   half: "M12 4.6a7.4 7.4 0 1 0 0 14.8 7.4 7.4 0 0 0 0-14.8ZM12 7.6a4.4 4.4 0 0 1 0 8.8Z",
   arrow: "M7.6 16.4 16.4 7.6M9.4 7.6h7v7",
+  /* the Unifize AI mark: a four-point star, stroked like every other icon */
+  spark: "M12 3.4l2.2 6.4 6.4 2.2-6.4 2.2L12 20.6l-2.2-6.4L3.4 12l6.4-2.2L12 3.4Z",
 };
 
 function Icon({ name }: { name: IconName }) {
@@ -501,6 +536,56 @@ function ArcadeSignedItem({ item }: { item: NonNullable<ArcadeStepConfig["signed
   );
 }
 
+/* The Unifize AI card in the thread. Three moments share one card: the
+ * question and the read (scan rows appear in order under a moving scan
+ * line), the finding (a plain text field, exactly as Raj described it), and
+ * the auto-linked records with the one action a person takes. */
+function ArcadeAssistCard({ assist, status }: { assist: ArcadeAssist; status: string }) {
+  const scanning = !assist.finding;
+  return (
+    <div className={"stx-arc__assist is-target" + (scanning ? " is-scanning" : " is-found")}>
+      <header>
+        <span className="stx-arc__assist-mark" aria-hidden="true"><Icon name="spark" /></span>
+        <span><small>{assist.kicker ?? "UNIFIZE AI"}</small>{assist.prompt ? <b>{assist.prompt}</b> : null}</span>
+        <StateChip state={scanning ? "Reading" : status} />
+      </header>
+      {assist.scope ? <p className="stx-arc__assist-scope">{assist.scope}</p> : null}
+      {assist.scanned?.length ? (
+        <div className="stx-arc__assist-scan">
+          {scanning ? <i className="stx-arc__assist-beam" aria-hidden="true" /> : null}
+          {assist.scanned.map((row, index) => (
+            <p className={"is-" + row.match} key={row.id} style={{ "--stx-row": index } as React.CSSProperties}>
+              <DocumentGlyph complete={row.match !== "source"} />
+              <span><b>{row.id}</b><small>{row.title}</small></span>
+              <em>{row.match === "source" ? "This change" : row.match === "impacted" ? "Cites the old value" : row.match === "precedent" ? "Same change, before" : "No change needed"}</em>
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {assist.finding ? (
+        <div className="stx-arc__assist-finding">
+          <small>What this change touches</small>
+          <span>{assist.finding}</span>
+        </div>
+      ) : null}
+      {assist.linked?.length ? (
+        <div className="stx-arc__assist-links">
+          {assist.linked.map((row) => (
+            <p key={row.id}>
+              <i aria-hidden="true"><Icon name="arrow" /></i>
+              <span><b>{row.id}</b><small>{row.title}</small></span>
+              <em>{row.state}</em>
+            </p>
+          ))}
+        </div>
+      ) : null}
+      {assist.action ? (
+        <footer><b>{assist.action}</b>{assist.alt ? <span>{assist.alt}</span> : null}</footer>
+      ) : null}
+    </div>
+  );
+}
+
 function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world: ArcadeFlowWorld }) {
   const isRecord = config.focus === "record";
   const isViewer = config.focus === "viewer";
@@ -513,6 +598,7 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
   const isHistory = config.focus === "history";
   const isTraining = config.focus === "training";
   const isRoute = config.focus === "queue" && config.poseVariant === "route";
+  const isAssist = config.focus === "assist";
   const recordComplete = !["Draft", "In Review", "Needs Approval"].includes(config.status);
   const runDone = config.checklistOpen
     ? Math.min(config.checklistProgress?.[config.checklistOpen] ?? config.focusRows.length, config.focusRows.length)
@@ -531,7 +617,7 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
         )}
         {config.signedItems?.map((item) => <ArcadeSignedItem item={item} key={item.approvalId} />)}
         <article>
-          <span className={"stx-arc__actor is-" + stateClass(config.actor)} aria-hidden="true">{config.actor === "You" ? viewerInitials(world) : config.actor === "automator" ? "A" : "U"}</span>
+          <span className={"stx-arc__actor " + stateClass(config.actor)} aria-hidden="true">{config.actor === "You" ? viewerInitials(world) : config.actor === "automator" ? "A" : <Icon name="spark" />}</span>
           <div className={"stx-arc__message" + (isComment ? " is-target" : "")}><header><b>{config.actor}</b><time>Now</time></header><p>{config.event}</p><small>{config.eventDetail}</small>
             {isComment ? <span className="stx-arc__message-link"><Icon name="arrow" />{config.focusRows[0]}</span> : null}
             {isRecord ? <div className="stx-arc__status-row is-target"><DocumentGlyph complete={recordComplete} /><span><small>{world.recordKicker}</small><b>{config.focusRows[0]}</b><em>{config.focusRows[1]}</em></span><StateChip state={config.status} /></div> : null}
@@ -606,6 +692,7 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
                 <footer>{config.eventDetail}</footer>
               </div>
             ) : null}
+            {isAssist && config.assist ? <ArcadeAssistCard assist={config.assist} status={config.status} /> : null}
             {isRoute ? (
               <div className="stx-arc__routecard is-target">
                 <header><small>{config.focusKicker ?? "APPROVAL MATRIX"}</small><b>{config.focusTitle}</b></header>
@@ -625,7 +712,15 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
         </article>
         {isIssue ? <article><span className="stx-arc__actor is-you" aria-hidden="true">{world.ownerInitials}</span><div className="stx-arc__message is-target"><header><b>You</b><time>Now</time></header><p>Section 4.2 does not match the rinse conductivity check on line 2.</p><small>Raised from SOP-118 · document owner notified · revision candidate</small><span className="stx-arc__message-link"><Icon name="arrow" />Related record · SOP-118 Rev D</span></div></article> : null}
       </section>
-      <footer className={"stx-arc__composer" + (isIssue ? " is-target" : "")}><span>{isIssue ? "Add more context…" : `Reply to ${config.id.startsWith(world.recordNoun) ? config.id : `${world.recordNoun} ${config.id}`}…`}</span><i aria-hidden="true"><Icon name="plus" /></i><b>Send</b></footer>
+      <footer className={"stx-arc__composer" + (isIssue ? " is-target" : "")}>
+        <span>{isIssue ? "Add more context…" : `Reply to ${config.id.startsWith(world.recordNoun) ? config.id : `${world.recordNoun} ${config.id}`}…`}</span>
+        {/* the AI button every thread carries; the scan pose clicks it */}
+        <em className={"stx-arc__composer-ai" + (isAssist && config.poseVariant === "scan" ? " is-target" : "")} aria-hidden="true">
+          <Icon name="spark" />
+          {isAssist && config.poseVariant === "scan" ? <b className="stx-arc__click" /> : null}
+        </em>
+        <i aria-hidden="true"><Icon name="plus" /></i><b>Send</b>
+      </footer>
     </main>
   );
 }
@@ -639,11 +734,37 @@ function ArcadeChecklistRow({
   item,
   done,
   entering,
+  links,
 }: {
   item: ArcadeChecklistItem;
   done: boolean;
   entering: boolean;
+  /* linked rows: this step's list when it rewrites the field (ids beyond
+   * the world's resting list render as freshly linked) */
+  links?: string[];
 }) {
+  if (item.kind === "linked") {
+    const resting = item.links ?? [];
+    const shown = links ?? resting;
+    const rewritten = Boolean(links);
+    return (
+      <p className={"stx-arc__check-linkeditem" + (rewritten ? " is-target" : "")}>
+        <i>{done ? <Icon name="check" /> : null}</i>
+        <span>
+          <b>{item.label}</b>
+          <span className="stx-arc__check-links">
+            {shown.map((id) => (
+              <em className={resting.includes(id) ? "" : "is-new"} key={id}>
+                {resting.includes(id) ? null : <Icon name="spark" />}
+                {id}
+              </em>
+            ))}
+          </span>
+          {item.note ? <small>{item.note}</small> : null}
+        </span>
+      </p>
+    );
+  }
   if (item.kind === "field") {
     return (
       <p className={"stx-arc__check-fielditem" + (entering ? " is-entering is-target" : "")}>
@@ -723,6 +844,7 @@ function ArcadeChecklist({ config, world }: { config: ArcadeStepConfig; world: A
                   <ArcadeChecklistRow
                     done={index < done}
                     entering={entryHere && config.checklistEntry?.item === item.label}
+                    links={config.checklistLinks?.section === section.title && config.checklistLinks.item === item.label ? config.checklistLinks.links : undefined}
                     item={item}
                     key={item.label}
                   />

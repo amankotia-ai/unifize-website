@@ -457,6 +457,126 @@ export const STYLIZED_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = 
 };
 
 
+/* ------------------------------------------------- module rail (Sep 2026)
+ * The sticky-rail module section shows all three scenes at once, so each
+ * module gets a DIFFERENT page of the one window instead of a camera pose
+ * on the same thread: Document Control opens the controlled document in
+ * the record, Change Control opens the process builder on its approval
+ * matrix, Training opens the live training dashboard. Same record, same
+ * world, three surfaces. */
+const MODULE_RAIL_WORLD: ArcadeFlowWorld = {
+  ...MODULE_ARCADE_WORLD,
+  builder: {
+    title: "Change control process",
+    note: "Impact assessment, approval matrix and release cascade, configured, not coded.",
+    tabs: ["Checklist", "Privacy", "Reminders", "Layout", "Notifications"],
+    fields: [
+      { kind: "Selection", tone: "selection", label: "Change request" },
+      { kind: "Picklist", tone: "picklist", label: "Change type" },
+      { kind: "Linked field", tone: "linked", label: "Affected documents" },
+      { kind: "File upload", tone: "upload", label: "Impact assessment" },
+      { kind: "Approval", tone: "approval", label: "Approval matrix" },
+      { kind: "Revision", tone: "revision", label: "Revision(s)" },
+      { kind: "Linked field", tone: "linked", label: "Training records" },
+    ],
+    palette: [
+      { label: "Approval", note: "Digital signatures on the record", tone: "approval" },
+      { label: "Linked field", note: "Link to another process", tone: "linked" },
+      { label: "Revision", note: "Managed revisions of the record", tone: "revision" },
+      { label: "Generate PDF", note: "Printable render of the checklist", tone: "pdf" },
+      { label: "Picklist", note: "Drop-down selection of items", tone: "picklist" },
+      { label: "File upload", note: "Attach documents or images", tone: "upload" },
+    ],
+  },
+  reports: {
+    title: "Training",
+    kpis: [
+      { label: "Assigned this release", value: "42", note: "Linked to revision D" },
+      { label: "Completion", value: "96%", note: "40 of 42 signed off" },
+      { label: "Median cycle", value: "2.1d", note: "Assignment to sign-off" },
+      { label: "Overdue", value: "0", note: "Due dates on rule" },
+    ],
+    panels: [
+      { label: "Training cycle times", kind: "bars" },
+      { label: "Completion by role", kind: "donut" },
+      { label: "Assignments aging", kind: "lines" },
+    ],
+  },
+};
+
+export const STYLIZED_MODULE_RAIL_CONFIGS: Record<string, ArcadeStepConfig> = {
+  "document-control": {
+    source: "A4 s5-7 · point of use",
+    ghost: "Control",
+    type: "Document",
+    id: "#118",
+    title: "Cleaning validation",
+    status: "Effective",
+    actor: "You",
+    event: "Opened the controlled document at point of use",
+    eventDetail: "The screen shows the master record, not a downloaded copy",
+    checklist: "SIGNED DOCUMENT",
+    checklistItems: ["Document-118-Cleaning_Validation.pdf", "Revision D", "Effective date"],
+    focus: "viewer",
+    focusTitle: "Controlled document",
+    focusRows: ["SOP-118 · Rev D · Effective"],
+    focusAction: "Live record",
+    ownershipNote: "One true copy",
+    world: MODULE_RAIL_WORLD,
+    checklistOpen: "SIGNED DOCUMENT",
+  },
+  "change-control": {
+    source: "DMS demo 0:14-0:30 · approval routing",
+    ghost: "Change",
+    type: "Document",
+    id: "#118",
+    title: "Cleaning validation",
+    status: "Effective",
+    actor: "You",
+    event: "Configured the change control route",
+    eventDetail: "Impact assessment, approval matrix and release cascade · no code",
+    checklist: "REVISION",
+    checklistItems: ["Impact assessment", "Approval matrix", "Release cascade"],
+    focus: "builder",
+    focusTitle: "Approval matrix",
+    focusRows: [
+      "Signatures of QA lead and Regulatory",
+      "Contingent on impact assessment complete",
+      "On approval · release revision and retrain",
+    ],
+    focusAction: "Add field",
+    ownershipNote: "Process owner · R. Mehta",
+    world: MODULE_RAIL_WORLD,
+    checklistOpen: "REVISION",
+    related: 3,
+  },
+  "training-management": {
+    source: "DMS demo 1:11-1:17 · training dashboard",
+    ghost: "Train",
+    type: "Document",
+    id: "#118",
+    title: "Cleaning validation",
+    status: "Effective",
+    actor: "automator",
+    event: "Rolled the release into the live training dashboard",
+    eventDetail: "42 people · completion, cycle times and aging · live from every record",
+    checklist: "TRAINING RECORD(S)",
+    checklistItems: ["Quality Assurance · 18", "Production · 24", "Next assignment"],
+    focus: "dashboard",
+    focusTitle: "Training cycle times",
+    focusRows: [
+      "Revision D retraining · 40 of 42 complete",
+      "Median cycle · 2.1 days",
+      "No export · no reconciliation",
+    ],
+    focusAction: "Open report",
+    ownershipNote: "Training follows the revision",
+    world: MODULE_RAIL_WORLD,
+    checklistOpen: "TRAINING RECORD(S)",
+    related: 2,
+  },
+};
+
 /* ========================================================= lifecycle scenes
  * One component per lifecycle station, indexed by station so persona flows
  * land on the right scene too. Each is the state's ONE telling artifact,

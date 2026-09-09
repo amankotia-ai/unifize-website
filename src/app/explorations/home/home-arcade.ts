@@ -396,6 +396,44 @@ export const HOME_HERO_DOCUMENT_CONFIG: ArcadeStepConfig = {
   checklistProgress: { "CONTROLLED COPY": 0 },
 };
 
+/* 01 · By solution: the home queue with the four process areas the row
+ * links to as its tiles (quality events, supplier actions, holds, change
+ * orders). The evidence pose it replaces cropped to an empty thread at the
+ * rail's left-anchored scale; the home page renders whole there. Quality
+ * events carries the real rows, the others are skeletonised set dressing
+ * as in the real app. */
+export const HOME_WAY_SOLUTION_CONFIG: ArcadeStepConfig = {
+  source: "HOME ways · by solution",
+  ghost: "Queue",
+  ...EVENT_RECORD,
+  status: "Open",
+  actor: "automator",
+  event: "Raised the quality event from the line",
+  eventDetail: "Reading, part, and work order attached · nothing re-keyed",
+  checklist: "CAPTURE & EVIDENCE",
+  checklistItems: ["Photos and measurements", "Part and order context"],
+  focus: "queue",
+  queueTile: "Quality events",
+  focusTitle: "Quality events",
+  focusRows: [
+    "NC-204 · Coating thickness · line 2 · J. Rivera",
+    "NC-198 · Label misprint · packaging · M. Osei",
+    "NC-191 · Weld porosity · cell 4 · due today",
+  ],
+  focusAction: "Open record",
+  ownershipNote: "Every process area, one queue",
+  world: {
+    ...QUALITY_EVENT_WORLD,
+    homeTiles: [
+      { label: "Quality events", count: 6 },
+      { label: "Supplier actions", count: 3 },
+      { label: "Holds & dispositions", count: 2 },
+      { label: "Change orders", count: 4 },
+    ],
+  },
+  checklistProgress: { "CAPTURE & EVIDENCE": 2, "OWNERS & CONTAINMENT": 0, "DISPOSITION & WRITE-BACK": 0 },
+};
+
 /* The suite's DMS pose (section 04): the revision chain, NOT the viewer the
  * hero's fourth tab already stages - the suite shouldn't repeat the hero's
  * artifact. Versioning is the product's essence claim: "one current version"

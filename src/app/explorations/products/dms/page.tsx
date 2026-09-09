@@ -33,15 +33,15 @@ import { DmsProblemSpotlight } from "./dms-problem-visuals";
 import { DmsIndustryIcon } from "./dms-industry-icons";
 import { DmsProofFilms } from "./dms-proof";
 import {
-  ModuleExplorer,
   LifecycleExplorer,
   FaqAccordion,
 } from "./dms-interactive";
+import { ModuleRail } from "./dms-modules-rail";
 import {
   STYLIZED_ARCADE_FLOW_CONFIGS,
   STYLIZED_HERO_STEPS,
   STYLIZED_LIFECYCLE_MOCKS,
-  STYLIZED_MODULE_ARCADE_CONFIGS,
+  STYLIZED_MODULE_RAIL_CONFIGS,
 } from "./stylized/stylized-mocks";
 import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import { StylizedCoordinationTax } from "./stylized/stylized-ctax";
@@ -150,13 +150,13 @@ export default function DmsProductPage() {
       <StylizedCoordinationTax problems={DMS_PROBLEMS} />
 
       {/* ============================ 02 · MODULES BUNDLED ===============
-       * Stylized: fragment scenes replace the framed workspace mocks. */}
+       * Sticky rail ledger: module names pin on the left while three rows
+       * pass, each with its arcade scene on a stage that bleeds to the edge. */}
       <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
-        <ModuleExplorer
+        <ModuleRail
           heading={dmsCopy("modules.heading", "Three modules. One continuous record.")}
           lede={dmsCopy("modules.lede", "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.")}
-          arcadeConfigsByModule={STYLIZED_MODULE_ARCADE_CONFIGS}
-          frame={false}
+          arcadeConfigsByModule={STYLIZED_MODULE_RAIL_CONFIGS}
         />
       </section>
 

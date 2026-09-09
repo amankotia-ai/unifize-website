@@ -209,11 +209,13 @@ export const PLATFORM_EVIDENCE_CONFIG: ArcadeStepConfig = {
   checklistProgress: { "CHANGE & IMPACT": 2, APPROVALS: 0, CLOSURE: 0 },
 };
 
-/* the process builder: where the route the seal will follow is configured.
- * Carries the route's facts (who signs, in what order) so folding the old
- * approval-matrix step into it loses nothing. */
+/* the process builder: where the route the seal just followed is configured.
+ * Sits after the seal in the journey (Raj, 7 Sep 2026), so the record keeps
+ * the Quality signature it collected there. Carries the route's facts (who
+ * signs, in what order) so folding the old approval-matrix step into it
+ * loses nothing. */
 export const PLATFORM_BUILDER_CONFIG: ArcadeStepConfig = {
-  source: "PLATFORM s4 · the process builder",
+  source: "PLATFORM s5 · the process builder",
   ghost: "Build",
   ...RECORD,
   status: "In Review",
@@ -232,7 +234,7 @@ export const PLATFORM_BUILDER_CONFIG: ArcadeStepConfig = {
   focusAction: "Add field",
   ownershipNote: "The process is configured, not coded",
   world: CHANGE_WORLD,
-  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
+  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 1, CLOSURE: 0 },
 };
 
 /* approval in the open: the route as every approver sees it (the homepage's
@@ -263,7 +265,7 @@ export const PLATFORM_ROUTE_CONFIG: ArcadeStepConfig = {
 };
 
 export const PLATFORM_SEAL_CONFIG: ArcadeStepConfig = {
-  source: "PLATFORM s5 · the seal",
+  source: "PLATFORM s4 · the seal",
   ghost: "Sign",
   ...RECORD,
   status: "Approved",
@@ -307,13 +309,157 @@ export const PLATFORM_DASHBOARD_CONFIG: ArcadeStepConfig = {
 };
 
 /* ============================================================ the journey
- * Six screens in the demo order: home, inbox, checklist, builder, seal,
- * dashboard. Rendered by the platform hero's PlatformJourney. */
+ * Six screens in the demo order: home, inbox, checklist, seal, builder,
+ * dashboard (seal before builder per Raj, 7 Sep 2026). Rendered by the
+ * platform hero's PlatformJourney. */
 export const PLATFORM_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
   PLATFORM_HOME_CONFIG,
   PLATFORM_THREAD_CONFIG,
   PLATFORM_EVIDENCE_CONFIG,
-  PLATFORM_BUILDER_CONFIG,
   PLATFORM_SEAL_CONFIG,
+  PLATFORM_BUILDER_CONFIG,
   PLATFORM_DASHBOARD_CONFIG,
+];
+
+/* ============================================================ Unifize AI
+ * The AI journey (platform section 04, from Raj's 7 Sep 2026 brief). Same
+ * change, same universe, one more document in play: the revised drawing.
+ * Three moments: what Unifize AI reads today (this record: the checklist,
+ * the thread, the linked drawing), what vectorisation lets it read next
+ * (every record and document, by meaning), and what it does with the
+ * finding (links the two documents this change touches; a person opens
+ * revision control). The world adds a linked "Affected documents" field
+ * so the auto-link lands somewhere real; the hero's world is untouched. */
+const AI_WORLD: ArcadeFlowWorld = {
+  ...CHANGE_WORLD,
+  context: {
+    initials: "SO",
+    name: "S. Okafor",
+    time: "09:12",
+    message: "Uploaded DWG-2201 Rev D with the torque called out at 4.8 N·m.",
+    detail: "Was 4.2 N·m on Rev C · drawing linked to this change",
+  },
+  checklistSections: [
+    {
+      title: "CHANGE & IMPACT",
+      items: [
+        { label: "Reason for change", note: "Raised from NC-204 · root cause linked" },
+        { label: "Affected documents", kind: "linked", links: ["SOP-118", "DWG-2201"] },
+        {
+          label: "Impact assessment",
+          kind: "field",
+          value: "No form or fit change. Torque spec 4.2 to 4.8 N·m; risk low.",
+          note: "Drafted by Unifize AI from this record",
+        },
+      ],
+    },
+    CHANGE_WORLD.checklistSections[1],
+    CHANGE_WORLD.checklistSections[2],
+  ],
+};
+
+/* today: the assistant drafts from the record in front of you. The field is
+ * typed live on the checklist, the footer hands the draft to a person. */
+export const PLATFORM_AI_DRAFT_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s1 · reads the record",
+  ghost: "Draft",
+  ...RECORD,
+  status: "In Review",
+  actor: "Unifize Assistant",
+  event: "Drafted the impact assessment from this record",
+  eventDetail: "Read the checklist, the thread, and the linked drawing · nothing outside this change",
+  checklist: "CHANGE & IMPACT",
+  checklistItems: ["Impact assessment"],
+  focus: "checklist",
+  focusTitle: "A draft, on the record",
+  focusRows: ["Drawing DWG-2201 · linked", "Thread · 3 messages read"],
+  focusAction: "Accept draft",
+  ownershipNote: "Drafted by AI, accepted by a person",
+  world: AI_WORLD,
+  checklistOpen: "CHANGE & IMPACT",
+  checklistEntry: { section: "CHANGE & IMPACT", item: "Impact assessment" },
+  checklistFootnote: "Draft from Unifize AI · edit or accept",
+  checklistProgress: { "CHANGE & IMPACT": 2, APPROVALS: 0, CLOSURE: 0 },
+};
+
+/* next: one click on the AI button, and it reads across every record and
+ * document by meaning. The rows land in order under the scan line. */
+export const PLATFORM_AI_SCAN_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s2 · reads across records",
+  ghost: "Read",
+  ...RECORD,
+  status: "In Review",
+  actor: "Unifize Assistant",
+  event: "Reading every document and record this torque change could touch",
+  eventDetail: "By meaning, not by file name · the drawings that cite the value, the changes that moved it before",
+  checklist: "CHANGE & IMPACT",
+  checklistItems: ["Affected documents"],
+  focus: "assist",
+  poseVariant: "scan",
+  focusTitle: "Reading across records",
+  focusRows: ["Every document and record at Engineering Industries"],
+  ownershipNote: "One question, asked once, on the record",
+  world: AI_WORLD,
+  checklistOpen: "CHANGE & IMPACT",
+  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
+  assist: {
+    prompt: "Which other documents does this change touch?",
+    scope: "Reading across every document and record, by meaning",
+    scanned: [
+      { id: "DWG-2201", title: "Housing assembly drawing · Rev D", match: "source" },
+      { id: "WI-092", title: "Line clearance, packaging", match: "impacted" },
+      { id: "FRM-201", title: "Assembly torque check form", match: "impacted" },
+      { id: "SOP-118", title: "Cleaning validation", match: "clear" },
+      { id: "CC-2103", title: "Torque spec update · bracket, 2025", match: "precedent" },
+    ],
+  },
+};
+
+/* the finding, in plain words, and the two records linked from it. The
+ * checklist's linked field grows by two; a person opens revision control. */
+export const PLATFORM_AI_LINK_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s3 · links the work",
+  ghost: "Link",
+  ...RECORD,
+  status: "In Review",
+  actor: "Unifize Assistant",
+  event: "Found two documents that still state the old torque value",
+  eventDetail: "Linked both to this change · revision control ready to open · your call",
+  checklist: "CHANGE & IMPACT",
+  checklistItems: ["Affected documents"],
+  focus: "assist",
+  poseVariant: "linked",
+  focusTitle: "What this change touches",
+  focusRows: ["WI-092 · Line clearance", "FRM-201 · Assembly torque check form"],
+  focusAction: "Open revision control on both",
+  ownershipNote: "Found by AI, linked on the record, opened by a person",
+  world: AI_WORLD,
+  checklistOpen: "CHANGE & IMPACT",
+  checklistLinks: { section: "CHANGE & IMPACT", item: "Affected documents", links: ["SOP-118", "DWG-2201", "WI-092", "FRM-201"] },
+  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
+  assist: {
+    prompt: "Which other documents does this change touch?",
+    scanned: [
+      { id: "DWG-2201", title: "Housing assembly drawing · Rev D", match: "source" },
+      { id: "WI-092", title: "Line clearance, packaging", match: "impacted" },
+      { id: "FRM-201", title: "Assembly torque check form", match: "impacted" },
+      { id: "SOP-118", title: "Cleaning validation", match: "clear" },
+      { id: "CC-2103", title: "Torque spec update · bracket, 2025", match: "precedent" },
+    ],
+    finding:
+      "WI-092 and FRM-201 both state the 4.2 N·m torque this change raises to 4.8 N·m. CC-2103 made the same kind of change in 2025 and revised both.",
+    linked: [
+      { id: "WI-092", title: "Line clearance, packaging · Rev B", state: "Linked · needs revision" },
+      { id: "FRM-201", title: "Assembly torque check form · Rev A", state: "Linked · needs revision" },
+    ],
+    action: "Open revision control on both",
+    alt: "Not now",
+  },
+};
+
+/* the three moments, in the order the section tells them */
+export const PLATFORM_AI_CONFIGS: ArcadeStepConfig[] = [
+  PLATFORM_AI_DRAFT_CONFIG,
+  PLATFORM_AI_SCAN_CONFIG,
+  PLATFORM_AI_LINK_CONFIG,
 ];

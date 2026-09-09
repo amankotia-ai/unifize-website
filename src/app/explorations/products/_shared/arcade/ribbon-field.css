@@ -1,0 +1,71 @@
+/* ============================================================================
+ * ribbon-field.css - the shared container for the product visual engine
+ * (ribbon-field.tsx). A stage element carries `rf rf--<composition>`: it
+ * becomes a rounded brand-navy container, the ribbon field paints behind
+ * the scene, and the engine's own blue plate is neutralised underneath.
+ * Static by design: nothing here animates.
+ * ========================================================================== */
+
+.rf {
+  --rf-pad: clamp(24px, 5vw, 72px);
+  --rf-r: 28px;
+  --rf-navy: #002553; /* --u-blue-950 */
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--rf-r);
+  background: radial-gradient(90% 90% at 50% 50%, #04336d 0%, var(--rf-navy) 58%, #00142f 100%);
+  isolation: isolate;
+}
+@media (max-width: 720px) {
+  .rf { --rf-r: 18px; }
+}
+
+/* where the navy shows most, the ground follows the composition */
+.rf--fan { background: linear-gradient(90deg, #04336d, #00142f 70%); }
+.rf--beam { background: linear-gradient(180deg, #00142f, #04336d); }
+.rf--twin { background: radial-gradient(60% 100% at 50% 50%, #00142f, #04336d); }
+.rf--burst { background: radial-gradient(70% 70% at 50% 50%, #063d80, #00142f); }
+.rf--curtain { background: #002553; }
+
+/* ------------------------------------------------------------ the field */
+.rf__field { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.rf__field > svg,
+.rf__field > i { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+
+/* a soft darkening behind the record so the product visual is the
+ * brightest object in the container; it fades before it reads as a frame */
+.rf__scrim {
+  background: radial-gradient(56% 66% at 50% 50%, oklch(0 0 0 / 0.42) 0%, oklch(0 0 0 / 0.2) 45%, transparent 78%);
+}
+.rf__vignette {
+  background: radial-gradient(85% 85% at 50% 50%, transparent 55%, oklch(0 0 0 / 0.45) 100%);
+}
+.rf__grain {
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.06;
+  mix-blend-mode: screen;
+}
+
+/* ----------------------------------------------- the scene on the field
+ * The engine's plate goes. The container is the viewport: the engine's own
+ * camera keeps panning and zooming the window from pose to pose, and the
+ * only thing that clips it is the rounded container edge. The old inner
+ * viewport box (.stx-arc) becomes an invisible anchor the camera centres on;
+ * the window itself carries the radius, flat, with no ring or shadow. */
+.rf .stx-root .sty-scene { position: relative; z-index: 1; overflow: visible; }
+.rf .stx-root .sty-scene.is-arcade { background: transparent; }
+.rf .stx-root .stx-arc-field { display: none; }
+.rf .stx-root .sty-scene.is-arcade .sty-scene__inner { padding: var(--rf-pad); overflow: visible; }
+.rf .stx-root .sty-scene--life .stx-stage { min-height: 0; justify-content: center; overflow: visible; }
+.rf .stx-root .stx-arc {
+  overflow: visible;
+  background: transparent;
+  outline: 0;
+  box-shadow: none;
+}
+.rf .stx-root .stx-arc__camera {
+  border-radius: 14px;
+  outline: 0;
+  box-shadow: none;
+}

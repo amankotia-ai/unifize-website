@@ -293,12 +293,27 @@
   color:var(--dms-d-accent);
 }
 .pf-page .pf-journey__glyph svg { width:22px; height:22px; }
+.pf-page .pf-journey__head { display:flex; align-items:center; gap:10px; }
 .pf-page .pf-journey__idx {
   color:var(--dms-d-ink-3);
   font-size:.72rem;
   font-variant-numeric:tabular-nums;
   transition:color 180ms ease-out;
 }
+/* the status chip (AI journey): a tint and a label, no edge borders */
+.pf-page .pf-journey__tag {
+  display:inline-flex;
+  align-items:center;
+  padding:3px 8px;
+  font-family:var(--dms-mono);
+  font-size:.66rem;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+  background:oklch(1 0 0 / .08);
+  color:var(--dms-d-ink-2);
+}
+.pf-page .pf-journey__tag[data-tone="live"] { background:color-mix(in oklab, #2c9257 22%, transparent); color:#8fd6a9; }
+.pf-page .pf-journey__tag[data-tone="next"] { background:color-mix(in srgb, var(--u-primary) 22%, transparent); color:var(--dms-d-accent); }
 .pf-page .pf-journey__step.is-active .pf-journey__idx { color:var(--dms-d-accent); }
 .pf-page .pf-journey__name {
   color:var(--dms-d-ink-2);
@@ -1002,9 +1017,11 @@
 .pf-page .pf-blocks__link-kind { margin-top:3px; }
 
 .pf-page .pf-blocks__groups { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
-.pf-page .pf-blocks__group { display:flex; flex-direction:column; gap:8px; }
+.pf-page .pf-blocks__group { display:grid; grid-template-rows:auto 1fr; gap:8px; }
 .pf-page .pf-blocks__group-lab { color:var(--dms-accent-text); font-family:var(--dms-mono); font-size:.66rem; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
-.pf-page .pf-blocks__list { display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none; }
+/* every card in both columns shares one height: the groups sit in one
+ * grid row and each list splits that row into equal tracks */
+.pf-page .pf-blocks__list { display:grid; grid-auto-rows:1fr; gap:8px; margin:0; padding:0; list-style:none; }
 .pf-page .pf-blocks__card {
   display:flex;
   align-items:flex-start;
@@ -1050,18 +1067,6 @@
   background:var(--dms-surface-sunk);
 }
 .pf-page .pf-stack__trust-lead { margin:0; color:var(--dms-muted); font-size:1.02rem; line-height:1.5; }
-.pf-page .pf-stack__trust-link {
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  margin-left:14px;
-  color:var(--dms-ink);
-  font-weight:500;
-  text-decoration:none;
-  white-space:nowrap;
-}
-.pf-page .pf-stack__trust-link svg { width:12px; height:12px; }
-.pf-page .pf-stack__trust-link:hover { color:var(--dms-accent-text); }
 .pf-page .pf-stack__badges { display:flex; gap:clamp(22px, 3vw, 44px); margin:0; padding:0; list-style:none; }
 .pf-page .pf-stack__badge {
   display:flex;
@@ -1463,3 +1468,45 @@
 @media (prefers-reduced-motion: reduce) {
   .pf-page .pf-journey__timer { display:none; }
 }
+
+/* -------------------------------------------------- 04 · Unifize AI
+ * Two objects, kept visually apart so neither reads as the other:
+ *   the journey - the app window with a three-step rail: square numbered
+ *                 nodes (the same square the section eyebrow uses)
+ *   the breadth - the three AI Assist areas from the concept map as a
+ *                 headed LIST beside a short lede, no cells, no numbers
+ * Dark, so the app window reads as the lit object. */
+.pf-page .pf-ai-section .pf-journey { margin-top:clamp(40px, 5vw, 64px); }
+.pf-page .pf-ai-section .pf-journey__stage {
+  box-shadow:
+    0 2px 6px -2px oklch(0 0 0 / .12),
+    0 36px 90px -36px oklch(0 0 0 / .4);
+}
+
+/* the stepper rail */
+.pf-page .pf-ai-section .pf-journey__step {
+  --pf-step-pad: clamp(20px, 2.2vw, 34px);
+  gap:10px;
+  min-height:0;
+  padding:26px var(--pf-step-pad) 34px;
+}
+.pf-page .pf-ai-section .pf-journey__head { margin-bottom:8px; }
+.pf-page .pf-ai-section .pf-journey__idx {
+  position:relative;
+  display:grid;
+  place-items:center;
+  width:32px;
+  height:32px;
+  background:var(--dms-d-bg-3);
+  box-shadow:inset 0 0 0 1px var(--pf-dark-line);
+  color:var(--dms-d-ink-2);
+  font-size:.8rem;
+  font-weight:600;
+}
+.pf-page .pf-ai-section .pf-journey__step.is-active .pf-journey__idx {
+  background:var(--dms-d-accent);
+  box-shadow:none;
+  color:oklch(1 0 0);
+}
+.pf-page .pf-ai-section .pf-journey__name { font-size:1.14rem; }
+.pf-page .pf-ai-section .pf-journey__body { font-size:.9rem; }

@@ -1,0 +1,1 @@
+{"pin": {"x": 0.3298, "y": 0.608}, "links": [{"id": "quality", "role": "Quality engineering", "x": 0.4258, "y": 0.478}, {"id": "prod", "role": "Production", "x": 0.7175, "y": 0.4727}, {"id": "design", "role": "Design", "x": 0.1757, "y": 0.4826}]}

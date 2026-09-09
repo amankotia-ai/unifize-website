@@ -2228,11 +2228,11 @@
  * and the first tile (whose home this is, and its first queue), then the
  * next step's page change carries the reader into the thread */
 .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona {
-  /* window top-left lands ~30px inside the stage at 1.2x: the welcome
-   * header and the first two tiles fill the frame */
-  --stx-camera-x: 80px;
-  --stx-camera-y: 96px;
-  --stx-camera-scale: 1.2;
+  /* a step in from the full-home pose, not a crop: the whole window stays
+   * in frame with the welcome header and the first tile leading */
+  --stx-camera-x: -20px;
+  --stx-camera-y: 44px;
+  --stx-camera-scale: 0.88;
   --stx-inbox-opacity: 0.76;
   --stx-thread-opacity: 0.84;
   --stx-checklist-opacity: 0.76;
@@ -2309,6 +2309,9 @@
   .stx-root .stx-arc__historycard,
   .stx-root .stx-arc__traincard,
   .stx-root .stx-arc__routecard,
+  .stx-root .stx-arc__assist,
+  .stx-root .stx-arc__composer-ai,
+  .stx-root .stx-arc__check-linkeditem,
   .stx-root .stx-arc__home section,
   .stx-root .stx-arc__checklist > section {
     transition: box-shadow 180ms ease-in-out, background-color 180ms ease-in-out;
@@ -2359,7 +2362,7 @@
 
   .stx-root .stx-arc__camera.is-focus-queue.is-pose-route { --stx-camera-x: -4px; --stx-camera-y: -44px; --stx-camera-scale: 0.7; }
 
-  .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona { --stx-camera-x: 150px; --stx-camera-y: 110px; --stx-camera-scale: 1.02; }
+  .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona { --stx-camera-x: 128px; --stx-camera-y: 44px; --stx-camera-scale: 0.74; }
 
   .stx-root .stx-arc__camera.is-focus-signature { --stx-camera-x: -8px; --stx-camera-y: 4px; --stx-camera-scale: 0.8; }
 
@@ -3454,3 +3457,243 @@
 @media (max-width: 600px) {
   .stx-root .stx-arc__camera.is-focus-checklist { --stx-camera-x: -410px; --stx-camera-y: -12px; --stx-camera-scale: 0.98; }
 }
+
+/* ================================================= assist pose
+ * Unifize AI in the thread (platform AI journey, Raj's 7 Sep 2026 brief):
+ * the reader clicks the AI button on the composer, the assistant reads
+ * across every record and document by meaning (vectorised, not just by
+ * name), names what a change touches in a plain text field, and auto-links
+ * the records that need revision. A person takes the one action. Same card
+ * idiom as the decision / route cards; the accent carries the AI identity,
+ * no new hue. */
+
+.stx-root .stx-arc__actor.is-unifize-assistant {
+  background: var(--dms-accent);
+  box-shadow: inset 0 0 0 1.5px oklch(1 0 0 / 0.35);
+}
+.stx-root .stx-arc__actor.is-unifize-assistant .stx-i { width: 15px; height: 15px; }
+
+/* the AI button every composer carries */
+.stx-root .stx-arc__composer { grid-template-columns: minmax(0, 1fr) auto auto auto; }
+.stx-root .stx-arc__composer-ai {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+  font-style: normal;
+}
+.stx-root .stx-arc__composer-ai .stx-i { width: 14px; height: 14px; }
+.stx-root .stx-arc__composer-ai .stx-arc__click { right: -6px; top: -6px; margin: 0; }
+
+/* the card */
+.stx-root .stx-arc__assist {
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+.stx-root .stx-arc__assist > header {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+.stx-root .stx-arc__assist-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--dms-accent);
+  color: #fff;
+}
+.stx-root .stx-arc__assist-mark .stx-i { width: 12px; height: 12px; }
+.stx-root .stx-arc__assist > header > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stx-root .stx-arc__assist > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; text-transform: uppercase; }
+.stx-root .stx-arc__assist > header b { font-size: 9px; }
+.stx-root .stx-arc__assist-scope { margin: 0; padding: 7px 10px; color: var(--dms-muted); font-size: 8px; }
+
+/* the read: rows appear in order under a moving scan line */
+.stx-root .stx-arc__assist-scan { position: relative; overflow: hidden; }
+.stx-root .stx-arc__assist-scan > p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 6px 10px;
+  border-top: 1px solid var(--dms-surface-alt);
+}
+.stx-root .stx-arc__assist-scan > p .stx-ed-docglyph { width: 14px; height: 16px; color: var(--dms-muted); }
+.stx-root .stx-arc__assist-scan > p .stx-ed-docglyph i { display: none; }
+.stx-root .stx-arc__assist-scan > p > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.stx-root .stx-arc__assist-scan > p b { font-family: var(--u-mono); font-size: 8.5px; }
+.stx-root .stx-arc__assist-scan > p small { color: var(--dms-muted); font-size: 7.5px; }
+.stx-root .stx-arc__assist-scan > p > em {
+  padding: 3px 7px;
+  border-radius: 8px;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-muted);
+  font-size: 6.5px;
+  font-style: normal;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.stx-root .stx-arc__assist-scan > p.is-source > em { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.stx-root .stx-arc__assist-scan > p.is-impacted > em { background: #fdf0dc; color: #8a5a15; }
+.stx-root .stx-arc__assist-scan > p.is-clear > em { background: #ddf0e4; color: #185f35; }
+.stx-root .stx-arc__assist-scan > p.is-precedent > em { background: #e7e9fb; color: #3a479e; }
+.stx-root .stx-arc__assist-beam {
+  position: absolute;
+  inset: 0 0 auto 0;
+  z-index: 1;
+  height: 22px;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--dms-accent), transparent 78%) 55%, var(--dms-accent) 100%);
+  opacity: 0.9;
+}
+/* once the finding is in, the read folds away: the finding names what
+ * mattered, the linked rows carry it, and the card stays inside the
+ * thread's frame */
+.stx-root .stx-arc__assist.is-found .stx-arc__assist-scan,
+.stx-root .stx-arc__assist.is-found .stx-arc__assist-scope { display: none; }
+
+/* the finding: a text field, in the assistant's words */
+.stx-root .stx-arc__assist-finding { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); }
+.stx-root .stx-arc__assist-finding small { color: var(--dms-muted); font-size: 7.5px; }
+.stx-root .stx-arc__assist-finding span {
+  padding: 7px 8px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--dms-accent);
+  color: var(--dms-ink);
+  font-size: 8.5px;
+  line-height: 1.45;
+}
+
+/* the auto-linked records */
+.stx-root .stx-arc__assist-links { border-top: 1px solid var(--dms-hairline); }
+.stx-root .stx-arc__assist-links > p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 7px 10px;
+  border-top: 1px solid var(--dms-surface-alt);
+}
+.stx-root .stx-arc__assist-links > p:first-child { border-top: 0; }
+.stx-root .stx-arc__assist-links > p > i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+  font-style: normal;
+}
+.stx-root .stx-arc__assist-links > p > i .stx-i { width: 11px; height: 11px; }
+.stx-root .stx-arc__assist-links > p > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.stx-root .stx-arc__assist-links > p b { font-family: var(--u-mono); font-size: 8.5px; }
+.stx-root .stx-arc__assist-links > p small { color: var(--dms-muted); font-size: 7.5px; }
+.stx-root .stx-arc__assist-links > p > em {
+  padding: 3px 7px;
+  border-radius: 8px;
+  background: #e7e9fb;
+  color: #3a479e;
+  font-size: 6.5px;
+  font-style: normal;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.stx-root .stx-arc__assist > footer { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); font-size: 8px; }
+.stx-root .stx-arc__assist > footer b { padding: 6px 9px; border-radius: 3px; background: var(--dms-accent); color: #fff; }
+.stx-root .stx-arc__assist > footer span { color: var(--dms-muted); }
+
+/* the linked field on the checklist: record chips; the freshly linked ones
+ * carry the AI mark */
+.stx-root .stx-arc__check-links { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.stx-root .stx-arc__check-links em {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background: var(--dms-surface-sunk);
+  color: var(--dms-ink);
+  font-family: var(--u-mono);
+  font-size: 7.5px;
+  font-style: normal;
+  font-weight: 650;
+}
+.stx-root .stx-arc__check-links em.is-new { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.stx-root .stx-arc__check-links em .stx-i { width: 9px; height: 9px; }
+.stx-root .stx-arc__check-linkeditem.is-target {
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--dms-accent), transparent 94%);
+  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+}
+
+/* the assist camera: the thread card in frame (scan), then a half step
+ * toward the checklist so the card and the rewritten linked field share
+ * the frame (linked) */
+.stx-root .stx-arc__camera.is-focus-assist {
+  --stx-camera-x: -10px;
+  --stx-camera-y: -52px;
+  --stx-camera-scale: 0.95;
+  --stx-inbox-opacity: 0.5;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 0.72;
+}
+.stx-root .stx-arc__camera.is-focus-assist.is-pose-linked {
+  --stx-camera-x: -130px;
+  --stx-camera-y: -44px;
+  --stx-camera-scale: 0.9;
+  --stx-inbox-opacity: 0.4;
+  --stx-thread-opacity: 1;
+  --stx-checklist-opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .stx-root .stx-arc__assist.is-scanning .stx-arc__assist-scan > p {
+    animation: stx-arc-rowin 0.5s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+    animation-delay: calc(0.25s + var(--stx-row, 0) * 0.35s);
+  }
+  .stx-root .stx-arc__assist-beam { animation: stx-arc-beam 2.1s ease-in-out infinite; }
+  .stx-root .stx-arc__assist-finding span,
+  .stx-root .stx-arc__assist-links > p,
+  .stx-root .stx-arc__check-links em.is-new {
+    animation: stx-arc-rowin 0.5s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+  }
+  .stx-root .stx-arc__assist-links > p:nth-child(2) { animation-delay: 0.18s; }
+  .stx-root .stx-arc__check-links em.is-new { animation-delay: 0.3s; }
+  .stx-root .stx-arc__check-links em.is-new + em.is-new { animation-delay: 0.48s; }
+}
+@keyframes stx-arc-rowin {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes stx-arc-beam {
+  0% { transform: translateY(-22px); }
+  100% { transform: translateY(100%); }
+}
+
+@media (max-width: 600px) {
+  .stx-root .stx-arc__camera.is-focus-assist { --stx-camera-x: -4px; --stx-camera-y: -48px; --stx-camera-scale: 0.7; }
+  .stx-root .stx-arc__camera.is-focus-assist.is-pose-linked { --stx-camera-x: -30px; --stx-camera-y: -40px; --stx-camera-scale: 0.66; }
+}
+
+/* the assistant's transient state while it reads: same footing as In Review */
+.stx-root .stx-state.is-reading { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.stx-root .stx-state.is-reading i { background: var(--dms-accent); }

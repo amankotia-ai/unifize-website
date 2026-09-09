@@ -6,20 +6,25 @@
  * and see all the other value" (Raj). Composition:
  *   hero      - the claim + the platform journey, live: six screens in the
  *                demo order (home built for the persona, inbox thread,
- *                checklist, process builder, Part 11 seal, dashboard) on the
+ *                checklist, Part 11 seal, process builder, dashboard) on the
  *                persistent arcade camera, with a step rail under the stage
  *   01 problem - the gap and the tax in one breath, three sourced numbers
  *                on small linework charts (the evidence band)
  *   02 coexistence - the three-zone placement diagram: systems of record,
  *                Unifize, the tools where work happens; five labeled flows
  *   03 stack   - the three customer-facing bands, touchable
- *   04 measured - the fall vs your own baseline (linework, in ink) + a
+ *   04 ai      - Unifize AI on the same persistent camera (Raj, 7 Sep 2026):
+ *                what it reads today (this record), what vectorisation lets
+ *                it read next (every record and document, by meaning), and
+ *                the finding auto-linked on the checklist; a person approves.
+ *                Roadmap steps are tagged so nothing reads as shipped early.
+ *   05 measured - the fall vs your own baseline (linework, in ink) + a
  *                customer-attested number on film
- *   05 proof   - the customer film rail (real films, real people)
- *   06 compliance - posture statements, then the standards strip
+ *   06 proof   - the customer film rail (real films, real people)
+ *   07 compliance - posture statements, then the standards strip
  *   close     - one ask + the product doors
  * Anchors preserved for inbound links: #platform (now the hero), #stack,
- * #compliance. Design system: shared Product-page redesign tokens + pf-*
+ * #ai, #compliance. Design system: shared Product-page redesign tokens + pf-*
  * compositions.
  * ========================================================================== */
 import type { Metadata } from "next";
@@ -34,7 +39,7 @@ import { PlatformEvidence } from "./platform-evidence";
 import { PlatformProofFilms } from "./platform-proof";
 import { PlatformMeasured } from "./platform-measured";
 import { filmByWistia } from "../products/_shared/customer-films";
-import { PLATFORM_JOURNEY_CONFIGS } from "./platform-arcade";
+import { PLATFORM_JOURNEY_CONFIGS, PLATFORM_AI_CONFIGS } from "./platform-arcade";
 import "../products/dms/dms.css";
 import "../products/dms/dms-redesign.css";
 import "./platform-kit.css";
@@ -47,16 +52,37 @@ export const metadata: Metadata = {
 };
 
 /* hero - the journey rail: six screens in the demo order, one claim per
- * pose, the scene proves it. Order and screens per Raj (2 Sep 2026): home
- * built for the persona, the inbox where the work is done, the checklist up
- * close, the process builder, the seal, and dashboards to close. */
+ * pose, the scene proves it. Screens per Raj (2 Sep 2026): home built for
+ * the persona, the inbox where the work is done, the checklist up close, the
+ * seal, the process builder, and dashboards to close. Seal moved ahead of
+ * the builder on the 7 Sep 2026 sync. */
 const JOURNEY_STEPS = [
   { title: "The home screen", body: "Built for the role. A quality manager and a document approver land on different work." },
   { title: "The inbox", body: "The work is done in the thread: one owner, every function, decisions and evidence in one place." },
   { title: "The checklist", body: "Up close, the record is a checklist. Data lands on it as the work happens, not after." },
-  { title: "The process builder", body: "The process is configured, not coded: fields, approval order, and reminders, changed by your team." },
   { title: "The seal", body: "Sign-off is a Part 11 signature with its meaning attached." },
+  { title: "The process builder", body: "The process is configured, not coded: fields, approval order, and reminders, changed by your team." },
   { title: "The dashboard", body: "Every number reads straight off the records: median closure, time waiting, evidence complete." },
+];
+
+/* 04 - Unifize AI: three moments on one change. The first is live product;
+ * the second and third are the vectorisation roadmap Raj described on the
+ * 7 Sep 2026 sync ("our AI can read across all records and find the ones
+ * impacted by a change"); the section lede carries the "next on the
+ * roadmap" framing so the rail stays clean. */
+const AI_STEPS = [
+  {
+    title: "Reads the record",
+    body: "Drafts the impact assessment from the checklist, the thread, and the linked drawing. You edit or accept it, on the record.",
+  },
+  {
+    title: "Reads across records",
+    body: "One click, and it reads every document and record you hold by meaning: the work instructions that cite this value, the change that moved it last time.",
+  },
+  {
+    title: "Links the work",
+    body: "Names what the change touches in plain words and links those records to it. Revision control is one click away, and a person takes it.",
+  },
 ];
 
 /* 07 - the standards strip: the names carry the credibility */
@@ -236,14 +262,40 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 04 · MEASURED =====================
+      {/* ============================ 04 · UNIFIZE AI ===================
+       * The same app window the hero journeys on. Three moments on the
+       * change: the assistant drafts from this record (live), reads across
+       * every record by meaning (roadmap), links what it found (roadmap). */}
+      <section className="dms-section dms-section--dark pf-ai-section" id="ai" aria-labelledby="pf-ai-title">
+        <div className="dms-wrap">
+          <header className="pf-centered-head">
+            <Eyebrow n={4}>Unifize AI</Eyebrow>
+            <h2 className="dms-h2" id="pf-ai-title">AI that reads the record. Next, every record.</h2>
+            <p className="dms-lede">
+              Today Unifize AI works inside the record in front of you: it drafts, extracts, and suggests
+              from the checklist and the thread. Next on the roadmap, it reads across every document and
+              record you hold by meaning, finds what a change touches, and links the work. Your people approve.
+            </p>
+          </header>
+          {/* the journey: one app window, three numbered moments on one line */}
+          <div className="pf-journey-host pf-ai-journey" data-reveal>
+            <PlatformJourney
+              steps={AI_STEPS}
+              configs={PLATFORM_AI_CONFIGS}
+              label="Unifize AI, moment by moment"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ============================ 05 · MEASURED =====================
        * The comparison, drawn: closure time falling away from your own
        * baseline, week by week, in the linework idiom turned to ink -
        * then the first number on the page a customer states on film. */}
       <section className="dms-section dms-section--dark pf-measured-section" id="measured" aria-labelledby="pf-measured-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={4}>Measured</Eyebrow>
+            <Eyebrow n={5}>Measured</Eyebrow>
             <h2 className="dms-h2" id="pf-measured-title">You watch the tax fall, week by week.</h2>
             <p className="dms-lede">
               Every thread carries its own clock: time open, time waiting, evidence complete. This is what
@@ -284,14 +336,14 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* ============================ 05 · CUSTOMER PROOF =============== */}
+      {/* ============================ 06 · CUSTOMER PROOF =============== */}
       <PlatformProofFilms />
 
-      {/* ============================ 06 · COMPLIANCE =================== */}
+      {/* ============================ 07 · COMPLIANCE =================== */}
       <section className="dms-section dms-section--alt pf-compliance-section" id="compliance" aria-labelledby="pf-compliance-title">
         <div className="dms-wrap">
           <header className="pf-centered-head">
-            <Eyebrow n={6}>Compliance</Eyebrow>
+            <Eyebrow n={7}>Compliance</Eyebrow>
             <h2 className="dms-h2" id="pf-compliance-title">Audit-ready, whichever standard governs you.</h2>
             <p className="dms-lede">
               The record you show an auditor is the record the work created.
