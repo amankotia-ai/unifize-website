@@ -14,7 +14,7 @@
  * per-event dollar figure is stated (Notion has none for this segment).
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
 
 export const CHEMICALS: IndustryData = {
   slug: "chemicals",
@@ -23,7 +23,7 @@ export const CHEMICALS: IndustryData = {
   meta: {
     title: "Chemicals · Unifize",
     description:
-      "Your ERP records that a change shipped. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, EHS, and the regulatory dossier, so it holds up in a GMP or REACH audit. The industry template, instanced on Chemicals.",
+      "Your ERP records that a change shipped. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, EHS, and the regulatory dossier, so it holds up in a GMP or REACH audit.",
   },
 
   hero: {
@@ -287,4 +287,215 @@ export const CHEMICALS: IndustryData = {
     heading: "Incumbents track the change log. Unifize reconstructs the decision.",
     lede: "Pick a change or deviation you could not replay at the last audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (23 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Chemicals" (Primary Fear Anchor: a substance
+ *   change not tracked through the regulatory dossier; change management
+ *   impact assessment and supplier qualification depth at a GMP inspection;
+ *   OSHA Process Safety Management. Opportunity: REACH / TSCA materials
+ *   documentation managed manually; change control with downstream
+ *   notification implications for pharma customers. Regulatory Vocabulary:
+ *   REACH, TSCA, GHS, CLP, SDS, OSHA PSM, ICH Q7, change control).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The composition shares and component names are an illustrative
+ * formulation, not a product; cursors carry persona titles, not people.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const PLANT = { name: "Plant Manager", tone: "#2563eb" };
+const STEWARD = { name: "Product Stewardship Lead", tone: "#7c3aed" };
+const PSM = { name: "Process Safety Manager", tone: "#0f8f7e" };
+
+export const CHEMICALS_RAILS: IndustryRails = {
+  /* the key element: the formulation's composition, one component's supplier
+   * changing, and the change reaching the SDS, the REACH dossier and the
+   * customer notice (the fear anchor's untracked substance change) */
+  hero: {
+    kind: "formula",
+    id: "Formulation change",
+    title: "Raw material substitution",
+    from: "Supplier change notification · REACH · ICH Q7",
+    stages: { detect: "Change detected", impact: "Impact assessment", review: "Cross-functional review", released: "Approved · dossier current" },
+    parts: [
+      { name: "Active substance", share: 46 },
+      { name: "Solvent", share: 32 },
+      { name: "Additive", share: 14 },
+      { name: "Stabilizer", share: 8 },
+    ],
+    changed: { part: 1, note: "New supplier" },
+    outputs: [
+      { doc: "Safety data sheet", glyph: "ghs", before: "Hazards to re-check", after: "Revised" },
+      { doc: "REACH dossier", glyph: "dossier", before: "Registration to check", after: "Current" },
+      { doc: "Customer notice", glyph: "notice", before: "Pharma customers", after: "Notified" },
+    ],
+    cascadeOutput: 0,
+    sign: { idle: "Sign · e-signature", done: "Signed" },
+    approvers: { label: "Quality · EHS · Regulatory" },
+    frame: { cap: "Checked against", items: ["REACH", "TSCA", "GHS / CLP", "ICH Q7"] },
+    cascade: {
+      cap: "Controlled distribution",
+      off: "SDS revision pending",
+      on: "New SDS to sites and customers",
+      note: "With confirmation of receipt",
+    },
+    clock: { cap: "Process safety · MOC", line: "OSHA PSM · 29 CFR 1910.119" },
+    seal: { cap: "Regulatory dossier", off: "Checking currency", on: "Current with the change" },
+    aria:
+      "A raw material substitution in Unifize: one component of a formulation changes supplier, and the change reaches the safety data sheet, the REACH dossier and the notice to pharma customers before it is approved with the dossier current.",
+  },
+
+  thread: { title: "Formulation change → approval" },
+
+  trust: {
+    label: "Built for specialty and pharma-supply chemical makers",
+    marks: ["REACH", "TSCA", "OSHA PSM", "GHS / CLP", "ICH Q7"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Change control",
+        state: "In review",
+        title: "Formulation change",
+        rows: [
+          { label: "Impact bound · REACH, SDS", meta: "Regulatory" },
+          { label: "Cross-functional review", meta: "Quality · EHS" },
+          { label: "Approval · e-signature", meta: "Quality Head", open: true },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Material", v: "Quarantined" },
+          { k: "Waiting on", v: "Disposition" },
+          { k: "Released by", v: "Quality" },
+        ],
+        note: "Released with the approver chain recorded",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "Regulatory dossier",
+        title: "Substance registration",
+        cite: "REACH · TSCA",
+        state: "Updating",
+        cursor: STEWARD,
+      },
+      go: { label: "Regulatory affairs →", href: "/explorations/domains/regulatory-affairs" },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "signoff",
+        wash: "paper",
+        kicker: "Management of change",
+        title: "Process change · MOC",
+        signers: [
+          { org: "Process development", name: "Process Development Lead", meaning: "Authored", time: "Signed" },
+          { org: "Operations", name: "Plant Manager", meaning: "Reviewed", time: "Signed" },
+          { org: "EHS", name: "Process Safety Manager", meaning: "Approve" },
+        ],
+      },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "Scale-up", title: "Pilot → commercial" },
+        items: [
+          { id: "R&D", label: "Process development" },
+          { id: "QA", label: "Qualification" },
+          { id: "OPS", label: "Commercial batch", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "Change, deviation, suppliers, process safety. One trace.",
+    lede: "Each runs with REACH, GMP and process safety built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the batch record exception to a CAPA that holds at the next audit.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Deviation",
+          title: "Batch record exception",
+          fields: [
+            { label: "Record", value: "Executed batch record", select: true },
+            { label: "CoA", value: "Attached" },
+            { label: "Investigation", value: "Root cause", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      },
+      {
+        domain: "supplier-management",
+        line: "Raw-material changes assessed for spec, SDS and customer impact first.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Supplier change notification",
+          messages: [
+            { org: "Raw-material supplier", text: "Change notification for a qualified material", ext: true },
+            { org: "Supplier Quality", text: "Spec, SDS and customer-notification impact assessed" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/explorations/domains/supplier-management" },
+      },
+      {
+        domain: "compliance",
+        line: "Process safety, incidents and the REACH / TSCA dossier on governed records.",
+        viz: {
+          kind: "decision",
+          wash: "warm",
+          kicker: "Management of change",
+          steps: [
+            { q: "Touches a PSM-covered process?", a: "Yes" },
+            { q: "Hazard analysis still current?", a: "No" },
+          ],
+          outcome: "Process hazard analysis updated",
+          cursor: PSM,
+        },
+      },
+      {
+        domain: "document-records-control",
+        line: "SDS and specifications approved once, then distributed with receipt confirmed.",
+        viz: {
+          kind: "feed",
+          wash: "blue",
+          kicker: "SDS & specifications",
+          items: [
+            { source: "SDS", title: "Revision approved", tag: "Cascade", hot: true },
+            { source: "Sites", title: "Controlled distribution", tag: "Sent" },
+            { source: "Customers", title: "Confirmation of receipt", tag: "Due" },
+          ],
+        },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "GMP Form 483 at a pharma-supply site", viz: "sheet", clock: "15 working days" },
+    {
+      name: "REACH / TSCA finding on an untracked change",
+      viz: "tree",
+      detail: ["Formulation", "Specifications", "!REACH dossier", "Safety data sheet", "Customer notices"],
+    },
+    { name: "OSHA PSM / process safety incident", viz: "alerts" },
+  ],
 };

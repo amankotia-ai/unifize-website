@@ -121,7 +121,7 @@ export function AboutMap({ head, offices }: { head: ReactNode; offices: Office[]
 
   return (
     <div className="ab-map">
-      <header className="pf-centered-head ab-head">{head}</header>
+      <header className="pf-split-head ab-head" data-reveal>{head}</header>
       <div className="ab-map__canvas" ref={canvas} role="region" aria-label="Map of the Unifize offices in Palo Alto and Bengaluru" />
       <ul className="ab-offices">
         {offices.map((o) => {

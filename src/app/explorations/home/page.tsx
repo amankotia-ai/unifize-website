@@ -73,6 +73,7 @@ import { HomeIndustries } from "./home-industries";
 import { HomeStackMark } from "./home-stack-mark";
 import { ENTRY_VIZ } from "./home-entry-viz";
 import { NavGlyph } from "../_shared/nav-data";
+import { PrefetchHeroFilm } from "../_shared/prefetch-hero-film";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
@@ -489,6 +490,8 @@ export default function HomePage() {
   return (
     <main className="dms dms--redesign dms--consistent-eyebrows dms--home dms--rails">
       <DmsHeader />
+      {/* warm the cache with the platform hero film once this page is idle */}
+      <PrefetchHeroFilm />
 
       {/* ============================ HERO =============================
        * Regulated-industry outcome headline (variant D, see home-headline.tsx);

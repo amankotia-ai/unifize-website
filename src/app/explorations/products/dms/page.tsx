@@ -23,6 +23,7 @@
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ProductAudience } from "../_shared/ProductAudience";
 import {
   PRODUCT,
   DMS_PROBLEMS,
@@ -253,54 +254,12 @@ export default function DmsProductPage() {
       <HatchBand />
 
       {/* ============================ 05 · WHO IT IS FOR ================= */}
-      <section className="dms-section dms-audience hm-railed" id="who" aria-labelledby="dms-audience-title">
-        <div className="dms-wrap">
-          <header className="dms-audience__head" data-reveal>
-            <div className="dms-head">
-              <Eyebrow n={5}>Who it is for</Eyebrow>
-              <h2 className="dms-h2" id="dms-audience-title">{dmsCopy("audience.heading", "For the teams that keep every document current.")}</h2>
-            </div>
-            <p className="dms-lede">{dmsCopy("audience.lede", AUDIENCE.lede)}</p>
-          </header>
-
-          <div className="dms-audience__personas">
-            {AUDIENCE.personas.map((persona) => (
-              <article className="dms-owner" key={persona.role} data-reveal>
-                <header className="dms-owner__identity">
-                  <div className="dms-owner__portrait" aria-hidden="true">
-                    <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
-                  </div>
-                  <div className="dms-owner__identity-copy">
-                    <h3 className="dms-owner__role">
-                      {persona.href ? (
-                        <Link href={persona.href}>
-                          {persona.role}<span aria-hidden="true">↗</span>
-                        </Link>
-                      ) : persona.role}
-                    </h3>
-                  </div>
-                </header>
-
-                {persona.owns && (
-                  <dl className="dms-owner__scope">
-                    <dt>Lifecycle ownership</dt>
-                    <dd>{persona.owns}</dd>
-                  </dl>
-                )}
-
-                <div className="dms-owner__work">
-                  <p className="dms-owner__work-label">Day to day</p>
-                  <ul className="dms-owner__daily" aria-label={`${persona.role} responsibilities`}>
-                    {persona.daily.map((responsibility) => (
-                      <li key={responsibility}>{responsibility}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductAudience
+        idPrefix="dms"
+        heading={dmsCopy("audience.heading", "For the teams that keep every document current.")}
+        lede={dmsCopy("audience.lede", AUDIENCE.lede)}
+        personas={AUDIENCE.personas}
+      />
 
       <HatchBand />
 

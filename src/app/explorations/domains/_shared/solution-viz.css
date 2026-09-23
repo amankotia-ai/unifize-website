@@ -696,8 +696,7 @@
 
 /* =========================================== 04 · SEVERAL PRODUCTS (sk-qm)
  * The sibling pages' work spans two or three live products: one column
- * per product (its wash, glyph, promise, live modules, the way in), each
- * dropping a line into one rail under them, the one record they share. */
+ * per product (its wash, glyph, promise, live modules, the way in). */
 .dms--redesign.sk-page.dms--rails .sk-qm { margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0; }
 .dms--redesign.sk-page.dms--rails .sk-qm__grid {
   display: grid;
@@ -707,10 +706,10 @@
   border-top: 1px solid var(--hm-rail);
   list-style: none;
 }
-/* subgrid rows: the heads, module lists, links and drops line up across
+/* subgrid rows: the heads, module lists and links line up across
  * the columns whatever each product's promise runs to */
-.dms--redesign.sk-page.dms--rails .sk-qm__grid { grid-template-rows: auto 1fr auto auto; }
-.dms--redesign.sk-page.dms--rails .sk-qm__cell { position: relative; display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; padding: 12px 12px 0; }
+.dms--redesign.sk-page.dms--rails .sk-qm__grid { grid-template-rows: auto 1fr auto; }
+.dms--redesign.sk-page.dms--rails .sk-qm__cell { position: relative; display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 0; padding: 12px 12px 24px; }
 .dms--redesign.sk-page.dms--rails .sk-qm__cell + .sk-qm__cell { box-shadow: inset 1px 0 0 var(--hm-rail); }
 .dms--redesign.sk-page.dms--rails .sk-qm__head {
   position: relative;
@@ -778,38 +777,11 @@
   text-decoration: none;
 }
 .dms--redesign.sk-page.dms--rails .sk-qm__go:is(:hover, :focus-visible) { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
-/* each column drops a line into the shared rail */
-.dms--redesign.sk-page.dms--rails .sk-qm__drop { display: block; width: 1px; height: 36px; margin: 14px auto 0; background: var(--dms-accent); opacity: 0.5; }
-.dms--redesign.sk-page.dms--rails .sk-qm__join {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0;
-  padding: 18px var(--hm-rail-pad);
-  border-block: 1px solid var(--hm-rail);
-  background: var(--dms-accent-tint);
-  color: var(--dms-ink-2);
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-.dms--redesign.sk-page.dms--rails .sk-qm__join b { color: var(--dms-ink); font-weight: 620; }
-.dms--redesign.sk-page.dms--rails .sk-qm__mark {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  flex: none;
-  place-items: center;
-  background: var(--dms-accent);
-  color: #fff;
-}
-.dms--redesign.sk-page.dms--rails .sk-qm__mark svg { width: 20px; height: 20px; }
 
 @media (max-width: 900px) {
   .dms--redesign.sk-page.dms--rails .sk-qm__grid { grid-template-columns: 1fr; grid-template-rows: none; }
   .dms--redesign.sk-page.dms--rails .sk-qm__cell { display: flex; flex-direction: column; }
   .dms--redesign.sk-page.dms--rails .sk-qm__cell + .sk-qm__cell { box-shadow: inset 0 1px 0 var(--hm-rail); }
-  .dms--redesign.sk-page.dms--rails .sk-qm__drop { display: none; }
   .dms--redesign.sk-page.dms--rails .sk-qm__cell { padding-bottom: 16px; }
 }
 

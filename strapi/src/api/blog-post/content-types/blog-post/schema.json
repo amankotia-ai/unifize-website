@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "blog_posts",
+  "info": {
+    "singularName": "blog-post",
+    "pluralName": "blog-posts",
+    "displayName": "Blog Post",
+    "description": "Editorial posts migrated from the Webflow Blogs collection."
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true, "maxLength": 256 },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "description": { "type": "text", "maxLength": 300 },
+    "body": { "type": "richtext", "required": true },
+    "coverImage": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "readMinutes": { "type": "integer", "min": 1 },
+    "category": {
+      "type": "enumeration",
+      "enum": ["quality-strategy", "compliance", "product", "manufacturing", "how-to"]
+    },
+    "publishedOn": { "type": "date" },
+    "featured": { "type": "boolean", "default": false },
+    "webflowSlug": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "description": "Stable key from Webflow. Makes imports idempotent and drives the 301 map. Never edit."
+    }
+  }
+}

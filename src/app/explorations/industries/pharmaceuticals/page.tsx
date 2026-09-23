@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { PHARMACEUTICALS } from "./pharmaceuticals-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { PHARMACEUTICALS, PHARMACEUTICALS_RAILS } from "./pharmaceuticals-data";
 
 export const metadata: Metadata = {
   title: PHARMACEUTICALS.meta.title,
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PharmaceuticalsPage() {
-  return <IndustryPage data={PHARMACEUTICALS} />;
+  return <IndustryRailsPage data={PHARMACEUTICALS} rails={PHARMACEUTICALS_RAILS} />;
 }

@@ -828,30 +828,37 @@ const PLM_HERO_MEASURE_STEP: ArcadeStepConfig = {
 export const PLM_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Build it",
+    icon: "build",
     config: PLM_HERO_BUILD_STEP,
   },
   {
     label: "Open the trace",
+    icon: "find",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][0],
   },
   {
     label: "Assess the risk",
+    icon: "compare",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][1],
   },
   {
     label: "Revise the spec",
+    icon: "sign",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][2],
   },
   {
     label: "Route the review",
+    icon: "route",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][3],
   },
   {
     label: "Close the trace",
+    icon: "trust",
     config: PLM_ARCADE_FLOW_CONFIGS["34"][4],
   },
   {
     label: "Measure it",
+    icon: "measure",
     config: PLM_HERO_MEASURE_STEP,
   },
 ];

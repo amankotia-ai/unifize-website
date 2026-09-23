@@ -6,9 +6,20 @@
  * rail), with every section driven by the existing PLM content and product
  * mocks. Content is sourced from the Unifize Products database (Notion):
  * PLM (UPD-4).
+ *
+ * 23 Sep 2026, the rails port: same template as the DMS page. Two hairline
+ * rails down the content column, hatched divider bands between sections,
+ * blue-square eyebrows, split heads, cell grids rail to rail, every product
+ * artifact on a soft wash. Opens and closes on one charcoal (hero + trust,
+ * proof, close + footer); the middle goes light. Modules moved from the
+ * click-to-swap explorer to the DMS sticky rail ledger, and proof from the
+ * film rail to the homepage reel. The shared grammar is
+ * _shared/page-rails.css; dms-rails.css carries the DMS page composition
+ * (scoped .dms-page) and plm.css only what PLM does differently.
  * ========================================================================= */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ProductAudience } from "../_shared/ProductAudience";
 import { SiteFooter } from "../../_shared/site-footer";
 import { DmsHeader } from "../dms/dms-header";
 import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
@@ -19,17 +30,22 @@ import { DmsIndustryIcon } from "../dms/dms-industry-icons";
 import { CapGlyph } from "../dms/dms-linework";
 import { Eyebrow } from "../dms/dms-primitives";
 import { HeroArcade } from "../_shared/arcade/hero-arcade";
-import { FaqAccordion, LifecycleExplorer, ModuleExplorer } from "../dms/dms-interactive";
+import { FaqAccordion, LifecycleExplorer } from "../dms/dms-interactive";
+import { ModuleRail } from "../dms/dms-modules-rail";
+import { HatchBand } from "../../_shared/page-rails";
 import { PLM_AUDIENCE, PLM_DATA, PLM_MODULES, PLM_PROBLEMS, PLM_FLOWS } from "./plm-data";
 import { plmCopy } from "./plm-copy";
 import { PLM_ARCADE_FLOW_CONFIGS, PLM_HERO_STEPS, PLM_MODULE_ARCADE_CONFIGS } from "./plm-arcade";
-import { PLM_MODULE_MOCKS, PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
+import { PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
 import { PlmProblemSpotlight } from "./plm-problem-visuals";
-import { PlmProofFilms } from "./plm-proof";
+import { PlmProofReel } from "./plm-proof";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
 import "../dms/dms-redesign.css";
 import "../_shared/product-kit.css";
+import "../dms/stylized/stylized.css";
+import "../../_shared/page-rails.css";
+import "../dms/dms-rails.css";
 import "./plm.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
@@ -38,24 +54,18 @@ export const metadata: Metadata = {
   description: PLM_DATA.metaDescription,
 };
 
-const PLM_MODULE_POINT_ICONS: Record<string, string[]> = {
-  "product-specifications": ["template", "change", "route", "matrix"],
-  "product-risk-management": ["matrix", "route", "assessment", "review"],
-  "design-controls-traceability": ["template", "route", "assessment", "evidence"],
-  "inspection-process-parameters": ["evidence", "matrix", "route", "template"],
-  "fmea-control-plan": ["matrix", "report", "route", "assign"],
-};
-
 /* one staged prototype per lifecycle step (spec → trace → FMEA → trace → spec) */
 const PLM_STAGE_MOCKS = [<PlmSpecRecord key="0" />, <PlmTraceMatrix key="1" />, <PlmFmea key="2" />, <PlmTraceMatrix key="3" />, <PlmSpecRecord key="4" />];
 
 export default function PlmProductPage() {
   return (
-    <main className="dms dms--redesign plm">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page plm">
       <DmsHeader />
 
-      {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="Product Lifecycle Management">
+      {/* ============================ HERO =============================
+        * Charcoal ground, centred head, then the arcade window on the sky
+        * wash running rail to rail with the step rail above it. */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed" aria-label="Product Lifecycle Management">
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
@@ -83,19 +93,18 @@ export default function PlmProductPage() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* The establishing shot is the arcade itself: one app window
-            * walking SPC-310's controlled change from live trace to closed
-            * trace, with a numbered step rail under it. Same treatment as
-            * every product page hero. */}
-          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-            <HeroArcade steps={PLM_HERO_STEPS} />
-          </div>
+        {/* The establishing shot is the arcade itself: one app window
+          * walking SPC-310's controlled change from live trace to closed
+          * trace. The wrap bleeds so the wash runs rail to rail. */}
+        <div className="dms-wrap dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade hm-bleed">
+          <HeroArcade steps={PLM_HERO_STEPS} rail="top" />
         </div>
       </section>
 
       {/* ============================ TRUST STRIP ======================= */}
-      <section className="dms-section dms-section--dark dms-trust" aria-label="Industries served">
+      <section className="dms-section dms-section--dark dms-trust hm-trust--rails hm-railed" aria-label="Industries served">
         <div className="dms-wrap dms-trust__inner">
           <p className="dms-trust__label">One controlled product record across regulated operations</p>
           <ul className="dms-trust__logos" aria-label="Representative industries">
@@ -109,8 +118,11 @@ export default function PlmProductPage() {
         </div>
       </section>
 
+      {/* the first hatched divider: the dark-to-light break */}
+      <HatchBand />
+
       {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems" id="problem" aria-labelledby="plm-problems-title">
+      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="plm-problems-title">
         <div className="dms-wrap dms-problems__inner">
           <header className="dms-problems__intro">
             <div className="dms-problems__head">
@@ -129,31 +141,37 @@ export default function PlmProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ==================== THE COORDINATION TAX =====================
        * The four failure modes roll up into one measurable root cause. */}
       <StylizedCoordinationTax
+        className="hm-railed"
         problems={PLM_PROBLEMS}
         scenes={PLM_CTAX_SCENES}
         afterNotes={PLM_CTAX_AFTER_NOTES}
         copy={PLM_CTAX_COPY}
       />
 
-      {/* ============================ 02 · MODULES BUNDLED =============== */}
-      <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
-        <ModuleExplorer
-          arcadeConfigsByModule={PLM_MODULE_ARCADE_CONFIGS}
+      <HatchBand />
+
+      {/* ============================ 02 · MODULES BUNDLED ===============
+       * The DMS sticky rail ledger: module names pin on the left while the
+       * five rows pass, each with its arcade scene on a wash. */}
+      <section className="dms-section dms-modx-section hm-railed" id="modules">
+        <ModuleRail
           modules={PLM_MODULES}
-          mocks={PLM_MODULE_MOCKS}
           heading={PLM_DATA.modules.heading}
-          lede={PLM_DATA.modules.lede}
+          lede={PLM_DATA.modules.lede ?? ""}
+          arcadeConfigsByModule={PLM_MODULE_ARCADE_CONFIGS}
           ariaLabel="PLM modules"
-          urlBase="plm"
-          pointIcons={PLM_MODULE_POINT_ICONS}
         />
       </section>
 
+      <HatchBand />
+
       {/* ============================ 03 · CAPABILITIES ================== */}
-      <section className="dms-section dms-section--dark pk-caps-ink" id="capabilities">
+      <section className="dms-section dms-caps-section hm-railed" id="capabilities">
         <div className="dms-wrap dms-caps-grid">
           <header className="dms-caps__rail" data-reveal>
             <Eyebrow n={3}>Capabilities</Eyebrow>
@@ -175,7 +193,9 @@ export default function PlmProductPage() {
        * The design-release spine. The live panel stages the product mock for
        * the active step (spec record, trace matrix, FMEA) instead of a chat
        * script, since a design release is record-led, not thread-led. */}
-      <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
+      <HatchBand />
+
+      <section className="dms-section dms-lifex-section--rails hm-railed" id="lifecycle">
         {/* Same treatment as the DMS page: sticky story layout, no map chip;
           * the flow chips are arcade journeys on the persistent camera. */}
         <LifecycleExplorer
@@ -189,6 +209,7 @@ export default function PlmProductPage() {
           liveLabel="Design record staged by lifecycle state"
           stageMocks={PLM_STAGE_MOCKS}
           stageUrl="app.unifize.com / plm"
+          stageFrame={false}
           mobileLabel={PLM_DATA.flow.mobileNote?.label}
           mobileId={PLM_DATA.flow.mobileNote?.id}
           idPrefix="plm-life"
@@ -199,70 +220,43 @@ export default function PlmProductPage() {
         />
       </section>
 
+      <HatchBand />
+
       {/* ==================== INTEGRATIONS (connector layer) =========== */}
       <IntegrationLayer
         data={PLM_DATA.integrations}
         variant="minimal"
+        tone="light"
+        className="hm-railed"
+        minimalEyebrow="Integrations"
         minimalLede="Connect the product record to the tools already holding your parts, drawings, and process data."
         logos={PRODUCT_INTEGRATION_LOGOS.plm}
       />
+
+      <HatchBand />
 
       {/* ============================ 05 · WHO IT IS FOR =================
        * Same treatment as the DMS stylized page: one card per persona on the
        * PLM row (UPD-4) in Notion, portrait + lifecycle span + three daily
        * lines. Membership follows the Target Personas relation on sync. */}
-      <section className="dms-section dms-audience" id="who" aria-labelledby="plm-audience-title">
-        <div className="dms-wrap">
-          <header className="dms-audience__head" data-reveal>
-            <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="plm-audience-title">{plmCopy("audience.heading", PLM_AUDIENCE.heading)}</h2>
-            <p className="dms-lede">{plmCopy("audience.lede", PLM_AUDIENCE.lede)}</p>
-          </header>
+      <ProductAudience
+        idPrefix="plm"
+        heading={plmCopy("audience.heading", PLM_AUDIENCE.heading)}
+        lede={plmCopy("audience.lede", PLM_AUDIENCE.lede)}
+        personas={PLM_AUDIENCE.personas}
+      />
 
-          <div className="dms-audience__personas">
-            {PLM_AUDIENCE.personas.map((persona) => (
-              <article className="dms-owner" key={persona.role} data-reveal>
-                <header className="dms-owner__identity">
-                  <div className="dms-owner__portrait" aria-hidden="true">
-                    <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
-                  </div>
-                  <div className="dms-owner__identity-copy">
-                    <h3 className="dms-owner__role">
-                      {persona.href ? (
-                        <Link href={persona.href}>
-                          {persona.role}<span aria-hidden="true">↗</span>
-                        </Link>
-                      ) : persona.role}
-                    </h3>
-                  </div>
-                </header>
+      <HatchBand />
 
-                {persona.owns && (
-                  <dl className="dms-owner__scope">
-                    <dt>Lifecycle ownership</dt>
-                    <dd>{persona.owns}</dd>
-                  </dl>
-                )}
+      {/* ============================ 06 · PROOF =========================
+        * The homepage's reel of customer stills, on the bookends' charcoal,
+        * with the PLM roster (plm-proof.tsx). */}
+      <PlmProofReel />
 
-                <div className="dms-owner__work">
-                  <p className="dms-owner__work-label">Day to day</p>
-                  <ul className="dms-owner__daily" aria-label={`${persona.role} responsibilities`}>
-                    {persona.daily.map((responsibility) => (
-                      <li key={responsibility}>{responsibility}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ 06 · PROOF ========================= */}
-      <PlmProofFilms />
+      <HatchBand />
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
-      <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="plm-compliance-title">
+      <section className="dms-section dms-compliance hm-railed" id="compliance" aria-labelledby="plm-compliance-title">
         <div className="dms-wrap">
           <header className="dms-compliance__head" data-reveal>
             <div className="dms-head">
@@ -303,8 +297,10 @@ export default function PlmProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ============================ 08 · FAQ =========================== */}
-      <section className="dms-section dms-section--alt" id="faq">
+      <section className="dms-section dms-section--alt dms-faq-section hm-railed" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
             <Eyebrow n={8}>FAQ</Eyebrow>
@@ -317,35 +313,16 @@ export default function PlmProductPage() {
         </div>
       </section>
 
-      {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close" id="demo" aria-labelledby="plm-close-h">
+      {/* the last light-to-dark break: the FAQ hands to the close block */}
+      <HatchBand />
+
+      {/* ============================ CLOSE =============================
+        * On the hero's charcoal so the page opens and closes on the same
+        * ground; the rails run through it and on through the footer. */}
+      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="plm-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
             <div className="dms-close__convergence" aria-hidden="true">
-              <svg className="dms-close__flow" viewBox="0 0 1200 320" fill="none">
-                <defs>
-                  <path id="plm-flow-outer-left" d="M120 0C120 130 190 224 330 270C420 300 498 296 554 280" />
-                  <path id="plm-flow-inner-left" d="M360 0C360 126 380 206 438 244C480 272 520 268 554 252" />
-                  <path id="plm-flow-top-left" d="M520 0C520 120 520 186 564 228" />
-                  <path id="plm-flow-top-center" d="M600 0V228" />
-                  <path id="plm-flow-top-right" d="M680 0C680 120 680 186 636 228" />
-                  <path id="plm-flow-inner-right" d="M840 0C840 126 820 206 762 244C720 272 680 268 646 252" />
-                  <path id="plm-flow-outer-right" d="M1080 0C1080 130 1010 224 870 270C780 300 702 296 646 280" />
-                </defs>
-                <g className="dms-close__flow-lines">
-                  <use href="#plm-flow-outer-left" /><use href="#plm-flow-inner-left" /><use href="#plm-flow-top-left" />
-                  <use href="#plm-flow-top-center" /><use href="#plm-flow-top-right" /><use href="#plm-flow-inner-right" /><use href="#plm-flow-outer-right" />
-                </g>
-                <g className="dms-close__flow-signals">
-                  <use className="dms-close__flow-signal dms-close__flow-signal--1" href="#plm-flow-outer-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--2" href="#plm-flow-inner-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--3" href="#plm-flow-top-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--4" href="#plm-flow-top-center" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--5" href="#plm-flow-top-right" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--6" href="#plm-flow-inner-right" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--7" href="#plm-flow-outer-right" />
-                </g>
-              </svg>
               <div className="dms-close__mark">
                 <svg viewBox="0 2.2 21 22" fill="none">
                   <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
@@ -354,7 +331,7 @@ export default function PlmProductPage() {
               </div>
             </div>
             <div className="dms-close__lead">
-              <span className="dms-close__eyebrow">{PLM_DATA.close.eyebrow}</span>
+              <Eyebrow>{PLM_DATA.close.eyebrow}</Eyebrow>
               <h2 className="dms-close__h" id="plm-close-h">{PLM_DATA.close.heading}</h2>
               <p className="dms-lede">{PLM_DATA.close.lede}</p>
               <div className="dms-close__cta">

@@ -26,7 +26,7 @@ import "./hero-arcade.css";
  * 22 Sep 2026: the DMS rail swapped its 01..06 counters for these
  * (Abhishek: "solid icons instead of numbers"); a step without an icon
  * still shows its number. */
-export type HeroStepIcon = "build" | "find" | "trust" | "sign" | "release" | "measure" | "compare" | "route" | "assist";
+export type HeroStepIcon = "build" | "find" | "trust" | "sign" | "release" | "measure" | "compare" | "route" | "assist" | "capture" | "contain" | "cause";
 
 const STEP_ICONS: Record<HeroStepIcon, React.ReactNode> = {
   /* three blocks, one lifted into place */
@@ -45,6 +45,12 @@ const STEP_ICONS: Record<HeroStepIcon, React.ReactNode> = {
   compare: (<path d="M3 4h8v14H3z M13 6h8v14h-8z" />),
   /* a route: three stations on one line */
   route: (<path d="M2.5 11h19v2h-19z M8 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z M22 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />),
+  /* a flag planted: the event raised */
+  capture: (<path d="M4.5 2.5h2.2v19H4.5z M7.8 3.5h12.4l-3 4.6 3 4.6H7.8z" />),
+  /* padlock, keyhole carved out: the hold */
+  contain: (<path fillRule="evenodd" d="M12 2.5a5 5 0 0 1 5 5V10h1.8v11.5H5.2V10H7V7.5a5 5 0 0 1 5-5zm0 2.3a2.7 2.7 0 0 0-2.7 2.7V10h5.4V7.5A2.7 2.7 0 0 0 12 4.8zm-1.1 9.2v3.8h2.2V14z" />),
+  /* one cause under three effects: a root */
+  cause: (<path d="M2.5 3h5v5h-5z M9.5 3h5v5h-5z M16.5 3h5v5h-5z M4 8h2v3.5h12V8h2v5.5h-7V16h-2v-2.5H4z M8.5 16h7v5.5h-7z" />),
   /* four-point spark */
   assist: (<path d="M12 2.4c.6 4.9 2.7 7 7.6 7.6-4.9.6-7 2.7-7.6 7.6-.6-4.9-2.7-7-7.6-7.6 4.9-.6 7-2.7 7.6-7.6z M18.6 14.6c.3 2.3 1.3 3.3 3.6 3.6-2.3.3-3.3 1.3-3.6 3.6-.3-2.3-1.3-3.3-3.6-3.6 2.3-.3 3.3-1.3 3.6-3.6z" />),
 };

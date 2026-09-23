@@ -1,21 +1,29 @@
 /* ============================================================================
- * ABOUT US. Three plain sections after the kit hero: the journey, what the
+ * ABOUT US. Three plain sections after the hero: the journey, what the
  * product is, where we are (an interactive map driven by the office rows,
  * about-map.tsx). Then the close. No other figures, no employee list (Raj,
  * website sync of 2 Sep 2026), no investor logos, no headcount.
+ *
+ * 23 Sep 2026: moved onto the rails grammar the homepage, platform, DMS,
+ * solutions and industry pages share (_shared/page-rails.css): charcoal
+ * hero and close, split heads, rail-to-rail cells, hatch bands between
+ * sections, the figure on a wash with the frosted plate. Page-local rules
+ * live in about-kit.css; the split head and the close cell grid come from
+ * platform-rails.css (this page is a pf-page too).
  *
  * Copy is front-end authored from Ben's foundational doc "Who We're Building
  * For" (Notion PBD-6) and Positioning Strategy v3.8. Office addresses were
  * confirmed on 2 Sep 2026; whether the London and Milton DE addresses from
  * the old site still apply is with Raj.
- * Inherits the live kit: dark bookends, porcelain working sections, sentence
- * case, no em dashes, no eyebrows, no stat tiles.
+ * Sentence case, no em dashes, no stat tiles.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DmsHeader } from "../products/dms/dms-header";
 import { DmsMotion } from "../products/dms/dms-motion";
 import { SiteFooter } from "../_shared/site-footer";
+import { HatchBand } from "../_shared/page-rails";
+import { Eyebrow } from "../products/dms/dms-primitives";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 import { AboutMap, type Office } from "./about-map";
 import { AboutFigure, ProductGrid, type ProductTile } from "./about-figure";
@@ -23,6 +31,8 @@ import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
 import "../products/dms/dms-redesign.css";
+import "../_shared/page-rails.css";
+import "../platform/platform-rails.css";
 import "./about-kit.css";
 
 export const metadata: Metadata = {
@@ -33,6 +43,7 @@ export const metadata: Metadata = {
 
 const JOURNEY = [
   {
+    label: "Before Unifize",
     title: "Two operators, one problem",
     body: [
       "Ben Merton spent fifteen years running a manufacturing business that supplied life sciences, with plants in the United States, China, South Korea and India, under ISO 13485 and ISO 9001.",
@@ -40,19 +51,36 @@ const JOURNEY = [
     ],
   },
   {
+    label: "On the floor",
     title: "The floor was lean. The handoffs were not.",
     body: [
       "Both had applied lean and TPM to their factory floors with real discipline, and it paid off. But the work between teams, the change, the investigation, the evidence for the audit, still ran on email, meetings and spreadsheets at every site.",
-      "Product launches ran long. Investigations stalled waiting for a decision buried in a thread nobody could find. Audit prep meant days of rebuilding evidence from inboxes and shared drives. The waste had moved off the floor and into the handoffs. That is the coordination tax.",
+      "Product launches ran long. Investigations stalled waiting for a decision buried in a thread nobody could find. Audit prep meant days of rebuilding evidence from inboxes and shared drives.",
     ],
+    tax: "The waste had moved off the floor and into the handoffs. That is the coordination tax.",
   },
   {
+    label: "2018 onward",
     title: "Since 2018",
     body: [
       "They founded Unifize to give cross-functional work a place to live end to end, alongside the systems companies already run. Not a consultancy, not self-serve software: practitioners who built a platform.",
       "We configure Unifize to your process with our team in the room, prove value on one process in ninety days, then expand. The company is built in Palo Alto and Bengaluru for regulated manufacturers in medical devices, pharmaceuticals, food, supplements, chemicals, automotive, aerospace and industrial machinery.",
     ],
   },
+];
+
+/* the hero's floor: the page's three sections as doors */
+const CHAPTERS = [
+  { href: "#journey", label: "The journey", line: "Two operators who paid the coordination tax." },
+  { href: "#product", label: "What Unifize is", line: "One platform for the work between your systems." },
+  { href: "#locations", label: "Where we are", line: "Palo Alto and Bengaluru, one team." },
+];
+
+/* the close: how an engagement starts, from the positioning copy above */
+const START_STEPS = [
+  { title: "Configure it to your process", note: "With our team in the room, on the process that hurts most." },
+  { title: "Prove value in ninety days", note: "On that one process, before anything else." },
+  { title: "Expand when ready", note: "The next process joins the same platform." },
 ];
 
 const PRODUCTS: ProductTile[] = [
@@ -86,15 +114,18 @@ const OFFICES: Office[] = [
 
 export default function AboutPage() {
   return (
-    <main className="dms dms--redesign pf-page dms--about">
+    <main className="dms dms--redesign pf-page dms--about dms--rails">
       <DmsHeader />
       <DmsMotion />
 
-      {/* ------------------------------------------------------------ hero */}
-      <section className="dms-section dms-hero" aria-label="About Unifize">
+      {/* ------------------------------------------------------------ hero
+        * the charcoal bookend: claim left, sub and asks right, the page's
+        * three sections welded to the floor as cells */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed ab-hero" aria-label="About Unifize">
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
+              <Eyebrow>About Unifize</Eyebrow>
               <h1 className="dms-hero__title">
                 <span className="dms-hero__line">Built by operators.</span>
                 <span className="dms-hero__line dms-hero__turn">For regulated industries.</span>
@@ -103,8 +134,8 @@ export default function AboutPage() {
             <div className="dms-hero__right">
               <p className="dms-lede dms-hero__sub">
                 Unifize was founded in 2018 by two people who ran regulated manufacturing across four
-                countries and paid the coordination tax at every handoff. This is the short version: where
-                we came from, what we make, and where to find us.
+                countries and paid the coordination tax at every handoff. Where we came from, what we
+                make, and where to find us.
               </p>
               <div className="dms-hero__ctas">
                 <BookDemoButton className="dms-btn" source="about-hero">Book a demo &rarr;</BookDemoButton>
@@ -113,81 +144,138 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+        <nav className="dms-wrap hm-bleed" aria-label="On this page">
+          <div className="ab-chapters">
+            {CHAPTERS.map((c) => (
+              <a key={c.href} href={c.href} className="ab-chapters__cell">
+                <span className="ab-chapters__label">{c.label}</span>
+                <span className="ab-chapters__line">{c.line}</span>
+              </a>
+            ))}
+          </div>
+        </nav>
       </section>
 
-      {/* --------------------------------------------------------- journey */}
-      <section className="dms-section ab-section" id="journey" aria-labelledby="ab-journey-h">
+      <HatchBand />
+
+      {/* --------------------------------------------------------- journey
+        * three beats as cells rail to rail; the middle one names the tax */}
+      <section className="dms-section ab-section hm-railed" id="journey" aria-labelledby="ab-journey-h">
         <div className="dms-wrap">
-          <header className="pf-centered-head ab-head">
-            <h2 className="dms-h2" id="ab-journey-h">The journey</h2>
-            <p className="dms-lede">Why two operators started a software company.</p>
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>The journey</Eyebrow>
+              <h2 className="dms-h2" id="ab-journey-h">Why two operators started a software company.</h2>
+            </div>
+            <p className="dms-lede">
+              They fixed the factory floor. The work between teams was still running on email,
+              meetings and spreadsheets.
+            </p>
           </header>
-          <ol className="ab-journey">
+          <ol className="ab-journey" data-reveal>
             {JOURNEY.map((step) => (
               <li key={step.title} className="ab-journey__step">
+                <span className="ab-cell-label">{step.label}</span>
                 <h3 className="dms-h3">{step.title}</h3>
                 <div className="ab-journey__body">
                   {step.body.map((p) => <p key={p} className="dms-body">{p}</p>)}
                 </div>
+                {step.tax && <p className="ab-journey__tax">{step.tax}</p>}
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* --------------------------------------------------------- product */}
-      <section className="dms-section dms-section--alt ab-section" id="product" aria-labelledby="ab-product-h">
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* --------------------------------------------------------- product
+        * the figure on the sky wash, then the four products as cells */}
+      <section className="dms-section dms-section--alt ab-section hm-railed" id="product" aria-labelledby="ab-product-h">
         <div className="dms-wrap">
-          <header className="pf-centered-head ab-head">
-            <h2 className="dms-h2" id="ab-product-h">What Unifize is</h2>
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>What Unifize is</Eyebrow>
+              <h2 className="dms-h2" id="ab-product-h">One platform for the work between your systems.</h2>
+            </div>
             <p className="dms-lede">
-              One platform for the cross-functional work that runs through every regulated company:
-              change control, CAPA, deviations, supplier decisions, audit evidence. Your systems of record
-              keep the record. Unifize holds the work that produces it, on one accountable thread per
-              event, with a 21 CFR Part 11 signature on every approval.
+              Change control, CAPA, deviations, supplier decisions, audit evidence. Your systems of
+              record keep the record. Unifize holds the work that produces it, on one accountable thread
+              per event, with a 21 CFR Part 11 signature on every approval.
             </p>
           </header>
-          <div className="ab-product">
+        </div>
+        <div className="dms-wrap hm-bleed" data-reveal>
+          <div className="ab-stage">
             <AboutFigure />
-            <p className="ab-product__kicker">Four products on that one platform. Start with one, add the rest when ready.</p>
-            <ProductGrid products={PRODUCTS} />
-            <p className="ab-product__foot">
-              <Link href="/explorations/platform">How the platform fits your architecture &rarr;</Link>
-            </p>
           </div>
+        </div>
+        <div className="dms-wrap">
+          <div className="ab-prod-head">
+            <span className="ab-cell-label">The products, on one platform</span>
+            <span className="ab-prod-head__note">Start with one, add the rest when ready.</span>
+          </div>
+          <ProductGrid products={PRODUCTS} />
+          <p className="ab-product__foot">
+            <Link href="/explorations/platform">How the platform fits your architecture &rarr;</Link>
+          </p>
         </div>
       </section>
 
+      <HatchBand className="hm-hatch--alt" />
+
       {/* ------------------------------------------------------- locations
         * the office rows drive the map: overview of both, click to fly in */}
-      <section className="dms-section ab-section" id="locations" aria-labelledby="ab-locations-h">
+      <section className="dms-section ab-section hm-railed" id="locations" aria-labelledby="ab-locations-h">
         <div className="dms-wrap">
           <AboutMap
             offices={OFFICES}
             head={
               <>
-                <h2 className="dms-h2" id="ab-locations-h">Where we are</h2>
-                <p className="dms-lede">Two offices, one team. Pick one to see the street.</p>
+                <div>
+                  <Eyebrow>Where we are</Eyebrow>
+                  <h2 className="dms-h2" id="ab-locations-h">Two offices, one team.</h2>
+                </div>
+                <p className="dms-lede">Palo Alto and Bengaluru. Pick one to see the street.</p>
               </>
             }
           />
         </div>
       </section>
 
-      {/* ----------------------------------------------------------- close */}
-      <section className="dms-section dms-section--dark dms-close" id="demo" aria-labelledby="ab-close-h">
+      <HatchBand />
+
+      {/* ----------------------------------------------------------- close
+        * the platform page's close grid: the ask left, how we start right */}
+      <section className="dms-section dms-section--dark pf-close hm-close--rails hm-railed" id="demo" aria-labelledby="ab-close-h">
         <div className="dms-wrap">
-          <div className="dms-close__grid ab-close__grid">
-            <div className="dms-close__lead">
-              <h2 className="dms-close__h" id="ab-close-h">Bring the process that hurts most.</h2>
-              <p className="dms-lede">
-                We configure Unifize to that process with our team in the room, prove value on it in
-                ninety days, then expand.
+          <div className="pf-close__grid">
+            <div className="pf-close__lead">
+              <span className="dms-close__eyebrow">Ready when you are</span>
+              <h2 className="pf-close__h" id="ab-close-h">Bring the process that hurts most.</h2>
+              <p className="pf-close__lede">
+                Practitioners, not a consultancy and not self-serve software. We start where the
+                coordination tax is highest.
               </p>
-              <div className="dms-close__cta">
+              <div className="pf-close__cta">
                 <BookDemoButton className="dms-btn" source="about-close">Book a demo</BookDemoButton>
                 <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">Take the assessment</Link>
               </div>
+            </div>
+            <div className="pf-close__plan">
+              <p className="pf-close__plan-head">
+                <span>How we start</span>
+                <span>90 days</span>
+              </p>
+              <ol className="pf-close__steps">
+                {START_STEPS.map((step, index) => (
+                  <li className="pf-close__step" key={step.title}>
+                    <span className="pf-close__step-n" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="pf-close__step-title">{step.title}</span>
+                    <span className="pf-close__step-note">{step.note}</span>
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
         </div>

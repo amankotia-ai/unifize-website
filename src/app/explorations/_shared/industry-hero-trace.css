@@ -1,0 +1,863 @@
+/* ============================================================================
+ * industry-hero-trace.css - the industry hero visual (industry-hero-trace.tsx),
+ * first drawn for Medical Devices, shared by every industry page on the rails.
+ *
+ * The scene is drawn at one design size (800 x 700) and scaled as a whole
+ * with --mdt-k, so the card and its chips keep their relationships at every
+ * width. Square corners on the record (design system v1), pill chips (the
+ * Sep 22 hero treatment), status carried by icon + label colour, never a
+ * one-sided border. Blue is the answer; nothing glows.
+ * ========================================================================== */
+
+.dms--redesign.md-page .md-hero2__visual .mdt {
+  --mdt-k: 0.86;
+  --mdt-ink: var(--n-800, #1f2329);
+  --mdt-ink-2: var(--n-600, #4b5260);
+  --mdt-muted: var(--n-500, #6b7280);
+  --mdt-line: var(--n-150, #e8eaee);
+  --mdt-blue: var(--u-primary, #005bb7);
+  --mdt-blue-tint: color-mix(in oklch, var(--u-primary, #005bb7) 9%, white);
+  --mdt-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  flex: 1;
+  min-height: calc(700px * var(--mdt-k) + 48px);
+  color: var(--mdt-ink);
+  font-family: var(--dms-sans);
+}
+
+@media (min-width: 1025px) and (max-width: 1439px) { .dms--redesign.md-page .md-hero2__visual .mdt { --mdt-k: 0.8; } }
+@media (min-width: 1025px) and (max-width: 1279px) { .dms--redesign.md-page .md-hero2__visual .mdt { --mdt-k: 0.66; } }
+@media (min-width: 768px) and (max-width: 1024px) { .dms--redesign.md-page .md-hero2__visual .mdt { --mdt-k: 0.92; } }
+@media (max-width: 767px) { .dms--redesign.md-page .md-hero2__visual .mdt { --mdt-k: 0.78; } }
+@media (max-width: 400px) { .dms--redesign.md-page .md-hero2__visual .mdt { --mdt-k: 0.74; } }
+
+/* the paper grain over the wash, as on every rails hero */
+.mdt__grain {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.mdt__scene {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 700px;
+  transform: translate(-50%, -50%) scale(var(--mdt-k));
+}
+
+/* ================================================================ the card */
+.mdt-card {
+  position: absolute;
+  top: 100px;
+  left: 200px;
+  width: 400px;
+  padding: 18px 20px 16px;
+  background: #fff;
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 0 0 8px oklch(1 0 0 / 0.28),
+    0 0 0 9px oklch(1 0 0 / 0.5),
+    0 4px 10px -4px oklch(0 0 0 / 0.1),
+    0 24px 48px -20px oklch(0 0 0 / 0.2),
+    0 48px 96px -32px oklch(0 0 0 / 0.16);
+}
+
+.mdt-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mdt-card__id,
+.mdt-card__label,
+.mdt-chip__cap {
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+}
+
+.mdt-card__stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 7px;
+  border-radius: 999px;
+  background: var(--n-100, #f1f2f4);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--mdt-ink-2);
+  white-space: nowrap;
+  transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease);
+}
+.mdt-card__stage i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--s-warn, #c98a12);
+  transition: background-color 400ms var(--mdt-ease);
+}
+.mdt-card__stage > span { animation: mdt-in 360ms var(--mdt-ease); }
+.mdt-card__stage.is-review i,
+.mdt-card__stage.is-signed i { background: var(--mdt-blue); }
+.mdt-card__stage.is-released { background: var(--mdt-blue-tint); color: var(--mdt-blue); }
+.mdt-card__stage.is-released i { background: var(--mdt-blue); }
+
+.mdt-card__title {
+  margin: 12px 0 2px;
+  font-family: var(--dms-display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  color: var(--mdt-ink);
+}
+
+.mdt-card__from {
+  margin: 0;
+  font-size: 12px;
+  color: var(--mdt-muted);
+}
+
+.mdt-card__label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.mdt-card__count { color: var(--mdt-blue); font-variant-numeric: tabular-nums; }
+
+.mdt-card__bar {
+  height: 3px;
+  margin: 8px 0 6px;
+  background: var(--n-100, #f1f2f4);
+  overflow: hidden;
+}
+.mdt-card__bar span {
+  display: block;
+  height: 100%;
+  background: var(--mdt-blue);
+  transform-origin: left center;
+  transition: transform 600ms var(--mdt-ease);
+}
+
+/* the affected records */
+.mdt-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mdt-row {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto 72px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  margin-inline: -6px;
+  box-shadow: inset 0 -1px 0 var(--mdt-line);
+  transition: background-color 500ms var(--mdt-ease);
+}
+.mdt-row:last-child { box-shadow: none; }
+.mdt-row.is-live { background: var(--mdt-blue-tint); }
+
+.mdt-row__tick {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--n-300, #c4c8cf);
+  color: #fff;
+  transition: background-color 400ms var(--mdt-ease), box-shadow 400ms var(--mdt-ease);
+}
+.mdt-row__tick svg { width: 11px; height: 11px; animation: mdt-pop 420ms var(--mdt-ease); }
+.mdt-row.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+
+.mdt-row__text { display: flex; flex-direction: column; min-width: 0; }
+.mdt-row__text b {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--mdt-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mdt-row__text span {
+  font-size: 11px;
+  color: var(--mdt-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mdt-row__fn {
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--n-100, #f1f2f4);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--mdt-ink-2);
+  white-space: nowrap;
+}
+
+.mdt-row__state {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: right;
+  color: var(--n-400, #9aa0aa);
+  transition: color 400ms var(--mdt-ease);
+}
+.mdt-row.is-on .mdt-row__state { color: var(--mdt-blue); }
+
+.mdt-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 14px;
+  box-shadow: inset 0 1px 0 var(--mdt-line);
+}
+
+.mdt-card__who { display: inline-flex; align-items: center; }
+.mdt-av {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-right: -5px;
+  border-radius: 50%;
+  background: var(--n-600, #4b5260);
+  box-shadow: 0 0 0 2px #fff;
+  font-size: 8.5px;
+  font-weight: 600;
+  color: #fff;
+}
+.mdt-av:nth-child(2) { background: var(--u-blue-800, #004793); }
+.mdt-av:nth-child(3) { background: var(--n-500, #6b7280); }
+.mdt-card__whotext { margin-left: 13px; font-size: 11px; color: var(--mdt-muted); }
+.mdt-card__whotext.is-bare { margin-left: 0; }
+
+.mdt-sign {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--dms-r-control, 4px);
+  background: var(--n-100, #f1f2f4);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--n-400, #9aa0aa);
+  transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease), transform 200ms var(--mdt-ease);
+}
+.mdt-sign svg { width: 12px; height: 12px; }
+.mdt-sign.is-review { background: var(--mdt-blue); color: #fff; }
+.mdt-sign.is-signed { background: var(--u-blue-800, #004793); color: #fff; transform: scale(0.96); }
+.mdt-sign.is-released { background: var(--mdt-blue-tint); color: var(--mdt-blue); }
+
+/* =============================================================== the chips */
+.mdt-chip {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  padding: 11px 14px;
+  background: #fff;
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 2px 6px -2px oklch(0 0 0 / 0.08),
+    0 16px 32px -16px oklch(0 0 0 / 0.2);
+  animation: mdt-bob 8s ease-in-out infinite alternate;
+}
+
+.mdt-chip__stack { display: flex; flex-direction: column; gap: 3px; }
+.mdt-chip__line { font-size: 12.5px; font-weight: 600; color: var(--mdt-ink); white-space: nowrap; }
+
+/* the regulatory frame: rule toggles, all on */
+.mdt-chip--frame {
+  top: 200px;
+  left: 36px;
+  flex-direction: column;
+  gap: 7px;
+  animation-delay: -2s;
+}
+.mdt-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--mdt-ink);
+  white-space: nowrap;
+}
+.mdt-toggle i {
+  position: relative;
+  width: 22px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--mdt-blue);
+}
+.mdt-toggle i::after {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  content: "";
+}
+
+/* the training cascade, woken by the training row */
+.mdt-chip--train {
+  top: 0;
+  right: 0;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 232px;
+  animation-delay: -5s;
+}
+.mdt-chip__big {
+  font-family: var(--dms-display);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--n-400, #9aa0aa);
+  font-variant-numeric: tabular-nums;
+  transition: color 400ms var(--mdt-ease);
+}
+.mdt-chip__big small { font-family: var(--dms-sans); font-size: 12px; font-weight: 500; letter-spacing: 0; color: var(--mdt-muted); }
+.mdt-chip--train.is-on .mdt-chip__big { color: var(--mdt-ink); }
+.mdt-chip__note { font-size: 11px; color: var(--mdt-muted); }
+
+/* the cascade without a figure: a state line with a dot that turns blue */
+.mdt-chip__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mdt-muted);
+  white-space: nowrap;
+  transition: color 400ms var(--mdt-ease);
+}
+.mdt-chip__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--n-300, #c4c8cf);
+  transition: background-color 400ms var(--mdt-ease);
+}
+.mdt-chip--train.is-on .mdt-chip__state { color: var(--mdt-ink); }
+.mdt-chip--train.is-on .mdt-chip__dot { background: var(--mdt-blue); }
+
+/* the MDR clock: a quiet ring, day 6 of 30 */
+.mdt-chip--mdr {
+  bottom: 18px;
+  left: 0;
+  align-items: center;
+  animation-delay: -1s;
+}
+.mdt-ring { position: relative; display: grid; place-items: center; width: 36px; height: 36px; }
+.mdt-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.mdt-ring circle { fill: none; stroke: var(--n-150, #e8eaee); stroke-width: 3; }
+.mdt-ring .mdt-ring__arc {
+  stroke: var(--s-warn, #c98a12);
+  stroke-linecap: round;
+  stroke-dasharray: 94.25;
+}
+.mdt-ring b { font-size: 12px; font-weight: 600; color: var(--mdt-ink); }
+.mdt-ring__glyph { position: relative; width: 16px; height: 16px; color: var(--s-warn, #c98a12); }
+.mdt-ring svg.mdt-ring__glyph { position: relative; inset: auto; transform: none; }
+
+/* the DHF trace, sealed on release */
+.mdt-chip--seal {
+  top: 380px;
+  right: 0;
+  width: 186px;
+  align-items: center;
+  animation-delay: -6s;
+}
+.mdt-seal {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--n-300, #c4c8cf);
+  color: transparent;
+  transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease), box-shadow 400ms var(--mdt-ease);
+}
+.mdt-seal svg { width: 15px; height: 15px; }
+.mdt-chip--seal .mdt-chip__line { white-space: normal; color: var(--mdt-muted); transition: color 400ms var(--mdt-ease); }
+.mdt-chip--seal.is-on .mdt-seal { background: var(--mdt-blue); box-shadow: none; color: #fff; }
+.mdt-chip--seal.is-on .mdt-chip__line { color: var(--mdt-ink); }
+
+@keyframes mdt-bob {
+  from { transform: translate3d(0, -3px, 0); }
+  to { transform: translate3d(0, 4px, 0); }
+}
+@keyframes mdt-pop {
+  from { transform: scale(0.4); }
+  to { transform: scale(1); }
+}
+/* transform only: the label is never invisible, even where a hidden tab
+ * holds the animation at its first frame */
+@keyframes mdt-in {
+  from { transform: translateY(3px); }
+  to { transform: none; }
+}
+
+/* phones: a narrower scene, the card whole and two chips (the training
+ * cascade above it, the MDR clock below); the frame and seal step off */
+@media (max-width: 767px) {
+  .mdt__scene { width: 440px; height: 700px; }
+  .mdt-card { top: 100px; left: 20px; }
+  .mdt-chip--frame,
+  .mdt-chip--seal { display: none; }
+  .mdt-chip--train { top: 0; right: auto; left: 0; }
+  .dms--redesign.md-page .md-hero2__visual .mdt { min-height: calc(700px * var(--mdt-k) + 40px); }
+  .mdt-chip--mdr { bottom: 6px; left: auto; right: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mdt-chip,
+  .mdt-row__tick svg,
+  .mdt-card__stage > span { animation: none; }
+}
+
+/* ============================================================================
+ * THE KINDS (23 Sep 2026, "the hero visuals all look the same"): three more
+ * key elements beside the change record, each its own mini-UI, and the
+ * chips placed per kind so the compositions differ as well.
+ * ========================================================================== */
+.mdt-card__stage.is-exception { background: color-mix(in oklch, var(--s-warn, #c98a12) 12%, white); color: color-mix(in oklch, var(--s-warn, #c98a12) 70%, black); }
+.mdt-card__stage.is-exception i { background: var(--s-warn, #c98a12); }
+
+/* the small step list the three kinds share (deviation, case, actions) */
+.mhb-dev ul,
+.mhs-case ul,
+.mhc-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mhb-dev li,
+.mhs-case li,
+.mhc-steps li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.mhb-dev li b,
+.mhs-case li b,
+.mhc-steps li b { font-weight: 600; color: var(--n-400, #9aa0aa); transition: color 400ms var(--mdt-ease); }
+.mhb-dev li small,
+.mhs-case li small,
+.mhc-steps li small { font-size: 10.5px; color: var(--mdt-muted); white-space: nowrap; }
+.mhb-dev li.is-on b,
+.mhs-case li.is-on b,
+.mhc-steps li.is-on b { color: var(--mdt-ink); }
+.mhb-dev li.is-on .mdt-row__tick,
+.mhs-case li.is-on .mdt-row__tick,
+.mhc-steps li.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+
+/* ------------------------------------------ batch: the executed batch record */
+.mdt-card--batch { top: 96px; }
+
+.mhb-rows {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  box-shadow: inset 0 1px 0 var(--mdt-line);
+}
+
+.mhb-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 6px;
+  margin-inline: -6px;
+  box-shadow: inset 0 -1px 0 var(--mdt-line);
+  transition: background-color 450ms var(--mdt-ease);
+}
+.mhb-row__n { font-family: var(--dms-mono); font-size: 10px; color: var(--n-400, #9aa0aa); }
+.mhb-row__text { display: flex; flex-direction: column; min-width: 0; }
+.mhb-row__text b { font-size: 12.5px; font-weight: 600; color: var(--mdt-ink); }
+.mhb-row__text span { font-size: 11px; color: var(--mdt-muted); }
+.mhb-row__state {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--n-400, #9aa0aa);
+  white-space: nowrap;
+}
+.mhb-row__state svg { width: 12px; height: 12px; }
+.mhb-row.is-on .mhb-row__state { color: var(--mdt-blue); }
+.mhb-row.is-flag { background: color-mix(in oklch, var(--s-warn, #c98a12) 9%, white); }
+.mhb-row.is-flag .mhb-row__state { color: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); }
+.mhb-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--s-warn, #c98a12); }
+
+/* the deviation that opens beside the exception */
+.mhb-dev {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 520ms var(--mdt-ease);
+}
+.mhb-dev.is-open { grid-template-rows: 1fr; }
+.mhb-dev__inner { min-height: 0; overflow: hidden; }
+.mhb-dev.is-open .mhb-dev__inner { margin-top: 12px; }
+.mhb-dev__inner {
+  padding: 0 12px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+}
+.mhb-dev.is-open .mhb-dev__inner { padding: 10px 12px 6px; }
+.mhb-dev__head {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+}
+
+/* the QP release stamp, pressed onto the sheet */
+.mhb-stamp {
+  position: absolute;
+  right: 26px;
+  bottom: 70px;
+  display: grid;
+  gap: 2px;
+  padding: 8px 14px;
+  border: 2px solid var(--mdt-blue);
+  outline: 1px solid var(--mdt-blue);
+  outline-offset: 3px;
+  background: oklch(1 0 0 / 0.86);
+  color: var(--mdt-blue);
+  text-align: center;
+  opacity: 0;
+  transform: rotate(-7deg) scale(1.35);
+  transition: opacity 260ms ease, transform 420ms cubic-bezier(0.3, 1.4, 0.5, 1);
+  pointer-events: none;
+}
+.mhb-stamp.is-on { opacity: 1; transform: rotate(-7deg) scale(1); }
+.mhb-stamp b { font-family: var(--dms-mono); font-size: 15px; font-weight: 700; letter-spacing: 0.12em; }
+.mhb-stamp small { font-size: 10px; font-weight: 500; letter-spacing: 0.02em; }
+
+/* ------------------------------------------- sponsors: the multi-sponsor board */
+.mdt-card--sponsors { top: 104px; left: 180px; width: 440px; }
+
+.mhs-board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mhs-col {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 10px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  transition: opacity 500ms var(--mdt-ease), background-color 500ms var(--mdt-ease), outline-color 500ms var(--mdt-ease);
+}
+.mhs-col__name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--mdt-ink);
+}
+.mhs-col__name svg { width: 13px; height: 13px; color: var(--mdt-muted); }
+.mhs-study {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 7px;
+  background: #fff;
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  font-size: 11px;
+  color: var(--mdt-ink-2);
+  transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease);
+}
+.mhs-study i { width: 6px; height: 6px; border-radius: 50%; background: var(--n-300, #c4c8cf); transition: background-color 400ms var(--mdt-ease); }
+.mhs-study.is-hit { background: color-mix(in oklch, var(--s-warn, #c98a12) 10%, white); color: var(--mdt-ink); }
+.mhs-study.is-hit i { background: var(--s-warn, #c98a12); }
+.mhs-study.is-done { background: var(--mdt-blue-tint); color: var(--mdt-ink); }
+.mhs-study.is-done i { background: var(--mdt-blue); }
+.mhs-col__lock {
+  font-size: 10px;
+  line-height: 1.3;
+  color: var(--mdt-muted);
+  opacity: 0;
+  transition: opacity 400ms var(--mdt-ease);
+}
+.mhs-col.is-locked { opacity: 0.5; }
+.mhs-col.is-locked .mhs-study { color: transparent; }
+.mhs-col.is-locked .mhs-study i { background: var(--n-200, #dcdfe4); }
+.mhs-col.is-locked .mhs-col__lock { opacity: 1; }
+.mhs-col.is-mine { background: #fff; outline: 1.5px solid var(--mdt-blue); outline-offset: -1.5px; }
+
+.mhs-case {
+  margin-top: 12px;
+  padding-top: 10px;
+  box-shadow: inset 0 1px 0 var(--mdt-line);
+  opacity: 0.35;
+  transition: opacity 400ms var(--mdt-ease);
+}
+.mhs-case.is-open { opacity: 1; }
+.mhs-case__head {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+}
+.mhs-req {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 400ms var(--mdt-ease), transform 400ms var(--mdt-ease);
+}
+.mhs-req.is-on { opacity: 1; transform: none; }
+.mhs-req__msg {
+  padding: 6px 10px;
+  background: var(--n-100, #f1f2f4);
+  font-size: 11.5px;
+  color: var(--mdt-ink);
+}
+.mhs-req__packet {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--mdt-blue-tint);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--mdt-blue);
+  opacity: 0;
+  transition: opacity 400ms var(--mdt-ease);
+}
+.mhs-req__packet svg { width: 11px; height: 11px; }
+.mhs-req__packet.is-on { opacity: 1; }
+
+/* --------------------------------------------- control: the QC control chart */
+.mdt-card--control { top: 110px; left: 190px; width: 420px; }
+
+.mhc-chart {
+  margin: 14px -6px 4px;
+  padding: 10px 6px 4px;
+  background: var(--n-50, #f7f8f9);
+}
+.mhc-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mhc-line line { stroke: var(--n-200, #dcdfe4); stroke-width: 1; }
+.mhc-line.is-mid line { stroke: var(--n-300, #c4c8cf); }
+.mhc-line.is-warn line { stroke-dasharray: 3 3; }
+.mhc-line.is-limit line { stroke: color-mix(in oklch, var(--s-warn, #c98a12) 45%, white); }
+.mhc-line text { font-family: var(--dms-mono); font-size: 8px; fill: var(--mdt-muted); }
+.mhc-path { fill: none; stroke: var(--n-400, #9aa0aa); stroke-width: 1.2; stroke-linejoin: round; }
+.mhc-pt { fill: #fff; stroke: var(--mdt-ink-2); stroke-width: 1.4; animation: mdt-pop 380ms var(--mdt-ease); transform-box: fill-box; transform-origin: center; }
+.mhc-pt.is-after { stroke: var(--mdt-blue); }
+.mhc-pt.is-breach { fill: var(--s-warn, #c98a12); stroke: var(--s-warn, #c98a12); }
+.mhc-flag circle { fill: none; stroke: var(--s-warn, #c98a12); stroke-width: 1.2; opacity: 0.7; }
+.mhc-flag rect { fill: var(--s-warn, #c98a12); }
+.mhc-flag text { font-family: var(--dms-mono); font-size: 8.5px; font-weight: 600; fill: #fff; text-anchor: middle; }
+.mhc-flag.is-closed circle { stroke: var(--mdt-blue); }
+.mhc-flag.is-closed rect { fill: var(--mdt-blue); }
+
+.mhc-steps { margin-top: 6px; opacity: 0.35; transition: opacity 400ms var(--mdt-ease); }
+.mhc-steps.is-open { opacity: 1; }
+.mhc-steps li { box-shadow: inset 0 -1px 0 var(--mdt-line); }
+.mhc-steps li:last-child { box-shadow: none; }
+
+/* ------------------------------------------------ the chips, placed per kind
+ * change keeps the Medical Devices composition. */
+.mdt__scene--batch .mdt-chip--train { right: auto; left: 0; }
+.mdt__scene--batch .mdt-chip--frame { left: auto; right: 24px; top: 180px; }
+.mdt__scene--batch .mdt-chip--seal { right: auto; left: 0; top: 410px; }
+.mdt__scene--batch .mdt-chip--mdr { left: auto; right: 0; bottom: 24px; }
+
+.mdt__scene--sponsors .mdt-chip--train { right: auto; left: 0; }
+.mdt__scene--sponsors .mdt-chip--frame { left: 30px; top: 230px; }
+.mdt__scene--sponsors .mdt-chip--seal { top: 300px; width: 176px; }
+.mdt__scene--sponsors .mdt-chip--mdr { left: auto; right: 10px; bottom: 16px; }
+
+.mdt__scene--control .mdt-chip--frame { left: 30px; top: 180px; }
+.mdt__scene--control .mdt-chip--seal { right: auto; left: 0; top: 440px; }
+.mdt__scene--control .mdt-chip--mdr { left: auto; right: 0; bottom: 30px; }
+
+@media (max-width: 767px) {
+  .mdt-card--batch,
+  .mdt-card--control { left: 20px; width: 400px; }
+  .mdt-card--sponsors { left: 0; width: 440px; }
+  .mdt__scene--batch .mdt-chip--mdr,
+  .mdt__scene--sponsors .mdt-chip--mdr,
+  .mdt__scene--control .mdt-chip--mdr { bottom: 0; right: 0; }
+  .mdt__scene--batch .mdt-chip--train,
+  .mdt__scene--sponsors .mdt-chip--train { left: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mhc-pt { animation: none; }
+  .mhb-stamp,
+  .mhb-dev { transition: none; }
+}
+
+/* ------------------------------------------ formula: the composition fan-out */
+.mdt-card--formula { top: 104px; left: 190px; width: 420px; }
+
+.mhf-flagnote {
+  color: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black);
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 400ms var(--mdt-ease), transform 400ms var(--mdt-ease);
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--dms-sans);
+  font-size: 11px;
+  font-weight: 600;
+}
+.mhf-flagnote.is-on { opacity: 1; transform: none; }
+
+.mhf-bar {
+  display: flex;
+  gap: 3px;
+  height: 26px;
+  margin-top: 10px;
+}
+.mhf-seg {
+  flex-grow: 0;
+  flex-shrink: 1;
+  transition: box-shadow 400ms var(--mdt-ease), background-color 400ms var(--mdt-ease);
+}
+/* the four components, tones of the brand blue and the warm neutral, so the
+ * flagged one is the only thing that carries the warn colour */
+.mhf-seg--0 { background: var(--u-blue-700, #005bb7); }
+.mhf-seg--1 { background: var(--u-blue-400, #70aeff); }
+.mhf-seg--2 { background: var(--u-blue-200, #c5deff); }
+.mhf-seg--3 { background: var(--n-300, #c4c8cf); }
+.mhf-seg.is-flag {
+  background: repeating-linear-gradient(135deg, color-mix(in oklch, var(--s-warn, #c98a12) 30%, white) 0 5px, color-mix(in oklch, var(--s-warn, #c98a12) 14%, white) 5px 10px);
+  box-shadow: inset 0 0 0 1.5px var(--s-warn, #c98a12);
+}
+.mhf-seg.is-done { box-shadow: inset 0 0 0 1.5px var(--mdt-blue); }
+
+.mhf-legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 14px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mhf-legend li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--mdt-ink-2);
+  transition: color 400ms var(--mdt-ease);
+}
+.mhf-legend li i { flex: none; width: 9px; height: 9px; }
+.mhf-legend li small { margin-left: auto; font-family: var(--dms-mono); font-size: 10.5px; color: var(--mdt-muted); }
+.mhf-legend li.is-flag { color: var(--mdt-ink); font-weight: 600; }
+.mhf-legend li.is-flag i {
+  background: color-mix(in oklch, var(--s-warn, #c98a12) 30%, white);
+  box-shadow: inset 0 0 0 1.5px var(--s-warn, #c98a12);
+}
+
+.mhf-fan {
+  display: block;
+  width: 100%;
+  height: 44px;
+  margin-top: 8px;
+  overflow: visible;
+}
+.mhf-fan path {
+  fill: none;
+  stroke: var(--n-200, #dcdfe4);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+  transition: stroke 400ms var(--mdt-ease);
+}
+.mhf-fan path.is-on { stroke: var(--mdt-blue); }
+
+.mhf-docs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mhf-doc {
+  display: grid;
+  justify-items: start;
+  gap: 4px;
+  padding: 10px 10px 11px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  transition: background-color 450ms var(--mdt-ease), outline-color 450ms var(--mdt-ease);
+}
+.mhf-doc b { font-size: 12px; font-weight: 600; color: var(--mdt-ink); }
+.mhf-doc small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  line-height: 1.3;
+  color: var(--mdt-muted);
+}
+.mhf-doc small svg { flex: none; width: 11px; height: 11px; color: var(--mdt-blue); }
+.mhf-doc.is-on { background: #fff; outline-color: color-mix(in oklch, var(--u-primary) 35%, white); }
+.mhf-doc.is-on small { color: var(--mdt-blue); font-weight: 600; }
+
+.mhf-glyph { width: 22px; height: 22px; fill: none; stroke: var(--mdt-ink-2); stroke-width: 1.4; }
+/* the GHS diamond keeps its regulatory red frame: the pictogram's own
+ * colour, not a status colour */
+.mhf-glyph--ghs rect { fill: #fff; stroke: #d7261e; stroke-width: 1.8; }
+.mhf-glyph--ghs path { stroke: var(--n-900, #17181a); stroke-width: 1.9; stroke-linecap: round; }
+
+.mdt__scene--formula .mdt-chip--train { right: auto; left: 0; }
+.mdt__scene--formula .mdt-chip--frame { left: auto; right: 20px; top: 150px; }
+.mdt__scene--formula .mdt-chip--seal { right: auto; left: 0; top: 380px; }
+.mdt__scene--formula .mdt-chip--mdr { left: auto; right: 0; bottom: 40px; }
+
+@media (max-width: 767px) {
+  .mdt-card--formula { left: 20px; width: 400px; }
+  .mdt__scene--formula .mdt-chip--mdr { bottom: 0; right: 0; }
+}

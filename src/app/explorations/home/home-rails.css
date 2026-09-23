@@ -36,34 +36,38 @@
 }
 
 .dms--redesign.dms--home .dms-hero.dms-hero--rails {
-  padding-top: clamp(64px, 7.5vw, 112px);
+  padding-top: clamp(96px, 11vw, 168px);
   padding-bottom: 0;
 }
 
+/* one centred column (Abhishek, 23 Sep: "the homepage hero as a center
+ * aligned text"): headline, then the sub, then the CTAs, all on the axis */
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
-  gap: 28px clamp(40px, 6vw, 96px);
-  align-items: end;
-  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__left,
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
-  align-items: flex-start;
+  align-items: center;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
-  gap: 22px;
+  gap: 28px;
   margin-top: 0;
-  padding-bottom: 8px;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__title {
-  max-width: 13ch;
+  max-width: 24ch;
+  margin-inline: auto;
   color: #fff;
   font-size: clamp(2.8rem, 4.9vw, 4.4rem);
   font-weight: 500;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__turn {
@@ -72,14 +76,16 @@
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__sub {
-  max-width: 44ch;
+  max-width: 68ch;
+  margin-inline: auto;
   color: var(--dms-d-ink-2);
   font-size: clamp(1rem, 1.15vw, 1.14rem);
-  text-align: left;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas {
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .dms-btn-ghost {
@@ -433,12 +439,7 @@
 
 @media (max-width: 900px) {
   .dms--redesign.dms--home .dms-hero--rails .dms-hero__grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-
-  .dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
-    padding-bottom: 0;
+    gap: 20px;
   }
 
   .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tabs {
@@ -1726,7 +1727,7 @@
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__inner::before {
   inset: -30% -10% -45% -10%;
   background:
-    radial-gradient(45% 60% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+    radial-gradient(45% 60% at 50% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
   filter: blur(8px);
 }
 
@@ -1737,14 +1738,14 @@
   background-size: 220px 220px;
   opacity: 0.04;
   mix-blend-mode: soft-light;
-  -webkit-mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
-  mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(70% 70% at 50% 50%, #000 30%, transparent 80%);
 }
 
 /* type: tighter by a hair at display size, and lit from above */
 .dms--redesign.dms--home .dms-hero--rails .dms-hero__title {
   font-weight: 500;
-  line-height: 0.98;
+  line-height: 1.04;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -1927,4 +1928,121 @@
 .dms--redesign.dms--home .hm-close .dms-btn-ghost:hover {
   background: oklch(1 0 0 / 0.07);
   border-color: oklch(1 0 0 / 0.28);
+}
+
+/* ====================================================== MOBILE PASS (23 Sep)
+ * Phone and tablet pass over the whole page. */
+
+/* the suite window below the desktop band rode the shared per-pose camera,
+ * so on phones the record ran off the stage's edges with an empty band of
+ * wash under it. Frame it the hero's way (see home-kit's hero note): one
+ * cut, centred with margin, the plate drawn under it on the anchor. Tablets
+ * keep the thread + checklist cut (826 of the 1150 grid, centre 162px
+ * right); phones frame the thread column alone (540 wide, centre 19px
+ * right). */
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc {
+    --hm-zoom: 0.78;
+    --hm-cam-y: 0px;
+    --hm-frame-w: 826px;
+    --hm-frame-dx: 162px;
+    --hm-clip-r: 0px;
+    height: clamp(320px, 56vw, 500px);
+  }
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera {
+    clip-path: inset(0 var(--hm-clip-r) 0 324px);
+    transform: translate3d(calc(-50% - var(--hm-frame-dx) * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
+    box-shadow: none;
+    outline: 0;
+  }
+  .dms--redesign.dms--home .hm-suite__stage.rf .stx-root .stx-arc__camera {
+    box-shadow: none;
+    outline: 0;
+  }
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--hm-frame-w) * var(--hm-zoom) + 2 * var(--rf-plate, 5px));
+    height: calc(560px * var(--hm-zoom) + 2 * var(--rf-plate, 5px));
+    content: "";
+    background: oklch(1 0 0 / 0.24);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.45),
+      0 4px 10px -4px oklch(0 0 0 / 0.12),
+      0 24px 48px -20px oklch(0 0 0 / 0.22);
+    transform: translate(-50%, calc(-50% + var(--hm-cam-y)));
+    pointer-events: none;
+  }
+}
+@media (max-width: 960px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.66; }
+}
+@media (max-width: 820px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.58; }
+}
+@media (max-width: 640px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc {
+    --hm-zoom: 0.74;
+    --hm-frame-w: 540px;
+    --hm-frame-dx: 19px;
+    --hm-clip-r: 286px;
+    height: clamp(300px, 88vw, 440px);
+  }
+  /* the stage padding is the wash's margin; a phone needs less of it */
+  .dms--redesign.dms--home .hm-suite__stage.rf { --rf-pad: 16px; }
+}
+@media (max-width: 480px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.56; }
+}
+@media (max-width: 400px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.52; }
+}
+
+/* way-in ledgers: on a phone the name and its meta shared one row and the
+ * longer industry metas ran over the names. The meta drops under the name. */
+@media (max-width: 560px) {
+  .dms--redesign.dms--home .hm-entry__links a {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      "glyph name go"
+      "glyph meta go";
+    row-gap: 2px;
+    padding-block: 10px;
+  }
+  .dms--redesign.dms--home .hm-entry__glyph { grid-area: glyph; }
+  .dms--redesign.dms--home .hm-entry__name { grid-area: name; }
+  .dms--redesign.dms--home .hm-entry__go { grid-area: go; }
+  .dms--redesign.dms--home .hm-entry__links small {
+    grid-area: meta;
+    text-align: left;
+  }
+}
+
+/* hero tabs: four across ran "Controlled document" past the right rail on
+ * tablets; the 2 x 2 phone grid now starts where the hero goes one column */
+@media (max-width: 900px) {
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tabs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab {
+    border-bottom: 1px solid var(--dms-d-border-2);
+  }
+}
+
+/* industry tabs: home-industries caps the row at 100%, which left its
+ * hairlines a rail-pad short of the right rail once the rails layer pulled
+ * it out to the rails */
+.dms--redesign.dms--home .hm-ind__tabs {
+  max-width: none;
+}
+
+/* hero top: the hero is pulled up under the sticky bar (-header-h) but its
+ * padding was a flat 64px on small screens, so the headline started 8px
+ * under the bar. Below the desktop band the padding clears the bar first,
+ * then adds real air. */
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .dms-section.dms-hero.dms-hero--rails {
+    padding-top: calc(var(--dms-header-h) + clamp(56px, 9vw, 96px));
+  }
 }

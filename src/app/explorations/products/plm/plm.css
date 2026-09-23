@@ -1,20 +1,20 @@
-/* PLM-specific visuals layered on the shared DMS redesign system. The problem
- * spotlight draws its scenes with the shared `.dms-gfx*` illustration classes
- * (dms-redesign.css), so only page-level PLM adjustments live here. */
-
-/* NOTE: the lifecycle live panel is the shared arcade scene (PF-34/35/36);
- * it sizes itself via arcade.css. The old centered-grid + padding stagemock
- * override for the swapped static mocks squeezed and clipped the arcade
- * camera and was removed when the flows went Notion-backed. */
+/* PLM-specific adjustments layered on the DMS page template. Since the
+ * 23 Sep rails port the page wears the DMS page classes (`dms-page
+ * dms--rails`), so dms-rails.css composes it; only what PLM does
+ * differently lives here. The problem spotlight draws its scenes with the
+ * shared `.dms-gfx*` illustration classes (dms-redesign.css). */
 
 /* PLM's FMEA mock flags the high RPN (class from product-kit, restated here
  * so it wins regardless of stylesheet order on this route) */
 .plm.dms--redesign .pk-rpn-hi { color: var(--dms-err) !important; font-weight: 600; }
 
-/* two owning personas, centered, instead of the DMS three-up register */
-.plm.dms--redesign .dms-audience__personas { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 880px; }
+/* module rail washes: five rows cycle the three DMS washes so neighbours
+ * never share a ground (dms-rails.css keys its washes to the DMS modules) */
+.plm.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="product-risk-management"] .dms-mrail__stage,
+.plm.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="fmea-control-plan"] .dms-mrail__stage {
+  background: var(--hm-wash-sky);
+}
 
-
-@media (max-width: 680px) {
-  .plm.dms--redesign .dms-audience__personas { grid-template-columns: 1fr; }
+.plm.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="design-controls-traceability"] .dms-mrail__stage {
+  background: var(--hm-wash-warm);
 }

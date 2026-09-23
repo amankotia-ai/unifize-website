@@ -1,0 +1,137 @@
+[
+  {
+    "source": "/blogs/biovation-labs",
+    "destination": "/resources/blog/biovation-labs",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/cfr-part-11",
+    "destination": "/resources/blog/cfr-part-11",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/collaboration-the-missing-ingredient-in-your-quality-management-system",
+    "destination": "/resources/blog/collaboration-the-missing-ingredient-in-your-quality-management-system",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/from-capa-to-training-a-unified-quality-story",
+    "destination": "/resources/blog/from-capa-to-training-a-unified-quality-story",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/how-to-implement-software-in-less-than-a-day-and-save-up-to-185-000",
+    "destination": "/resources/blog/how-to-implement-software-in-less-than-a-day-and-save-up-to-185-000",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/how-to-reduce-product-design-engineering-cycle-times-by-up-to-75-in-30-days",
+    "destination": "/resources/blog/how-to-reduce-product-design-engineering-cycle-times-by-up-to-75-in-30-days",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/laundrytec",
+    "destination": "/resources/blog/laundrytec",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/the-future-of-quality-management-systems-ding-dong-the-database-is-dead",
+    "destination": "/resources/blog/the-future-of-quality-management-systems-ding-dong-the-database-is-dead",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/the-hidden-tax-of-quality-system-fragmentation-and-3-ways-to-reclaim-efficiency",
+    "destination": "/resources/blog/the-hidden-tax-of-quality-system-fragmentation-and-3-ways-to-reclaim-efficiency",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/the-role-of-data-analytics-in-quality",
+    "destination": "/resources/blog/the-role-of-data-analytics-in-quality",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/understanding-wasted-time-in-quality-processes",
+    "destination": "/resources/blog/understanding-wasted-time-in-quality-processes",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/vans-kitchen",
+    "destination": "/resources/blog/vans-kitchen",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/why-a-whopping-78-of-your-ncs-defects-complaints-dont-get-reported",
+    "destination": "/resources/blog/why-a-whopping-78-of-your-ncs-defects-complaints-dont-get-reported",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/why-is-selling-customized-products-so-hard-and-what-to-do-about-it",
+    "destination": "/resources/blog/why-is-selling-customized-products-so-hard-and-what-to-do-about-it",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/why-quality-5-0-starts-with-people-not-platforms",
+    "destination": "/resources/blog/why-quality-5-0-starts-with-people-not-platforms",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/why-sharepoint-isnt-a-good-automotive-qms",
+    "destination": "/resources/blog/why-sharepoint-isnt-a-good-automotive-qms",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/will-burt",
+    "destination": "/resources/blog/will-burt",
+    "permanent": true
+  },
+  {
+    "source": "/blogs/your-value-stream-isnt-lean",
+    "destination": "/resources/blog/your-value-stream-isnt-lean",
+    "permanent": true
+  },
+  {
+    "source": "/blogs",
+    "destination": "/resources/blog",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/from-complexity-to-clarity-how-harmonic-bionics-transformed-quality-with-unifize",
+    "destination": "/resources/case-studies/from-complexity-to-clarity-how-harmonic-bionics-transformed-quality-with-unifize",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/from-fragmented-specs-to-50-lower-testing-costs-adaptive-healths-connected-quality-journey-with-unifize",
+    "destination": "/resources/case-studies/from-fragmented-specs-to-50-lower-testing-costs-adaptive-healths-connected-quality-journey-with-unifize",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/from-scramble-to-ready-how-applechem-transformed-audit-prep-with-unifize",
+    "destination": "/resources/case-studies/from-scramble-to-ready-how-applechem-transformed-audit-prep-with-unifize",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/inside-a-100-day-turnaround-how-ats-scientific-products-replaced-a-failed-qms-and-raised-the-bar",
+    "destination": "/resources/case-studies/inside-a-100-day-turnaround-how-ats-scientific-products-replaced-a-failed-qms-and-raised-the-bar",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/scaling-with-unifize-how-rf-health-built-a-scalable-qms-and-freed-120-hours-annually",
+    "destination": "/resources/case-studies/scaling-with-unifize-how-rf-health-built-a-scalable-qms-and-freed-120-hours-annually",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/the-will-burt-company-journey-with-unifize",
+    "destination": "/resources/case-studies/the-will-burt-company-journey-with-unifize",
+    "permanent": true
+  },
+  {
+    "source": "/case-study/turning-paper-chaos-into-connected-quality-how-efco-made-decisions-70-faster-with-unifize",
+    "destination": "/resources/case-studies/turning-paper-chaos-into-connected-quality-how-efco-made-decisions-70-faster-with-unifize",
+    "permanent": true
+  },
+  {
+    "source": "/case-study",
+    "destination": "/resources/case-studies",
+    "permanent": true
+  }
+]

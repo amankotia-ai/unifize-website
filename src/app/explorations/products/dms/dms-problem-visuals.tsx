@@ -391,7 +391,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
 /* the cost line reads as one sentence: the figure ("Days", "3") carries the
  * weight, its caption continues it. The caption is authored capitalised for
  * the old stacked treatment, so it is lowered back into the sentence. */
-const continueSentence = (value: string) => {
+export const continueSentence = (value: string) => {
   const trimmed = value.trim();
   if (!trimmed) return trimmed;
   /* keep acronyms and proper nouns (ISO, SOP, FDA) as authored */

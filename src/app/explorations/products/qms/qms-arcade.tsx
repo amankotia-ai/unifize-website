@@ -1848,32 +1848,39 @@ const QMS_HERO_CLOSE_STEP: ArcadeStepConfig = {
 export const QMS_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Build it",
+    icon: "build",
     config: QMS_HERO_BUILD_STEP,
   },
   {
     label: "Capture it",
+    icon: "capture",
     config: QMS_FLOW_STEP_SCENES["5"][0],
   },
   {
     label: "Contain it",
+    icon: "contain",
     config: QMS_FLOW_STEP_SCENES["5"][4],
   },
   {
     label: "Agree the cause",
+    icon: "cause",
     config: QMS_FLOW_STEP_SCENES["6"][3],
   },
   {
     label: "Fix it",
+    icon: "route",
     config: QMS_FLOW_STEP_SCENES["3"][5],
   },
   /* Raj, 2 Sep 2026: you do not prove things on a dashboard. Prove it is
    * the Part 11 close; the effectiveness dashboard is Measure it. */
   {
     label: "Prove it",
+    icon: "sign",
     config: QMS_HERO_CLOSE_STEP,
   },
   {
     label: "Measure it",
+    icon: "measure",
     config: QMS_FLOW_STEP_SCENES["3"][7],
   },
 ];

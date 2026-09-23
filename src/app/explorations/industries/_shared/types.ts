@@ -16,6 +16,8 @@
 
 import type { UrgentKind } from "../../_shared/urgent-board";
 import type { ReactNode } from "react";
+import type { HeroTraceData } from "../../_shared/industry-hero-trace";
+import type { WorkViz } from "../../domains/_shared/types";
 
 /** One module — a door into the platform, grouped under a coordination domain. */
 export interface MapModule {
@@ -200,4 +202,38 @@ export interface IndustryData {
   };
 
   close: { eyebrow: string; heading: string; lede: string };
+}
+
+/* ============================================================================
+ * The rails layer (23 Sep 2026). An industry page on the rails grammar the
+ * Medical Devices page runs (IndustryRailsPage) needs a little more than the
+ * data above: its hero record, one artifact per seat and per coverage cell,
+ * and the three moments that lead the urgent board. Every string traces to
+ * the industry's Notion row or the data above (vocabulary, trail, personas,
+ * modules, trigger clocks); no record numbers, people, or metrics.
+ * ========================================================================== */
+
+export interface RailsCell {
+  viz: WorkViz;
+  go?: { label: string; href: string };
+}
+
+export interface IndustryRails {
+  hero: HeroTraceData;
+  /** 01 · the thread the trail drives: its title (the event it follows) */
+  thread: { title: string };
+  /** the trust strip under the hero: a label and the regulatory frame */
+  trust: { label: string; marks: string[] };
+  /** 02 · one artifact per persona card, keyed by PersonaCard.key */
+  roles: Record<string, RailsCell>;
+  /** 03 · four coverage cells, each one domain of data.coverage.domains */
+  coverage: {
+    title: string;
+    lede: string;
+    cells: (RailsCell & { domain: string; line: string })[];
+  };
+  /** 05 · the three moments that lead the board, by TriggerRow.name, each
+   *  with its drawn surface; `clock` rewords the row's clock for the
+   *  surface when the row's own reads badly there */
+  lead: { name: string; viz: UrgentKind; detail?: string[]; clock?: string }[];
 }

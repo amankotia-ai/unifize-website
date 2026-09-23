@@ -16,6 +16,7 @@ import { motion, useInView, useReducedMotion, type Variants } from "motion/react
 import { useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import type { DmsCoordinationProblem } from "../dms/dms-data";
+import { continueSentence } from "../dms/dms-problem-visuals";
 
 type ProblemKind = DmsCoordinationProblem["visual"];
 
@@ -49,11 +50,15 @@ const graphicDraw = {
   show: { opacity: 1, pathLength: 1, transition: { duration: 0.18, ease: "easeOut" } },
 } satisfies Variants;
 
+/* the frame the drawing is read in (same contract as the DMS spotlight): a
+ * scene whose composition is wide and short passes a tighter box so it fills
+ * the stage; every box stays inside 0 0 720 480 and `meet` never crops. */
 function GraphicCanvas({
   children,
   play,
   staticMode,
-}: GraphicProps & { children: ReactNode }) {
+  viewBox = "0 0 720 480",
+}: GraphicProps & { children: ReactNode; viewBox?: string }) {
   return (
     <div className="dms-gfx" aria-hidden="true">
       <motion.svg
@@ -61,7 +66,7 @@ function GraphicCanvas({
         initial={staticMode ? false : "hidden"}
         preserveAspectRatio="xMidYMid meet"
         variants={graphicSequence}
-        viewBox="0 0 720 480"
+        viewBox={viewBox}
       >
         <rect className="dms-gfx__field" x="0" y="0" width="720" height="480" />
         {children}
@@ -125,7 +130,7 @@ function RecordRebuiltGraphic(props: GraphicProps) {
  * catches it, so the failure surfaces only at final inspection. */
 function HoldAtFinalGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="58 112 624 252">
       <motion.path className="dms-gfx-drift__gap" d="M305 220H620V281C480 265 400 252 305 231Z" variants={graphicFade} />
 
       <motion.path className="dms-gfx-drift__document" d="M115 220H620" variants={graphicDraw} />
@@ -305,21 +310,30 @@ export function MesProblemSpotlight({ items }: { items: DmsCoordinationProblem[]
       </Tabs.List>
 
       <div className="dms-spot__stagewrap">
-        {items.map((problem) => (
+        {items.map((problem, index) => (
           <Tabs.Panel className="dms-spot__panel" key={problem.visual} value={problem.visual}>
             <div className="dms-spot__body">
               <div className="dms-spot__context">
-                <span className="dms-spot__category">{problem.category}</span>
+                <div className="dms-spot__head">
+                  <span className="dms-spot__category">{problem.category}</span>
+                  <span className="dms-spot__pos" aria-hidden="true">
+                    {pad(index + 1)} / {pad(items.length)}
+                  </span>
+                </div>
                 <blockquote className="dms-spot__quote">
                   <span className="dms-spot__quote-mark" aria-hidden="true">“</span>
                   <p>{problem.quote}</p>
                 </blockquote>
                 <div className="dms-spot__fact">
-                  <div className="dms-spot__metric">
-                    <strong>{problem.metric}</strong>
-                    <span>{problem.metricLabel}</span>
-                  </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
+                  {/* the coordination cost of this symptom: one sentence, the
+                    * figure in the tax colour (rust), never the brand blue */}
+                  <p className="dms-spot__cost">
+                    <span className="dms-spot__cost-label">What it costs</span>
+                    <span className="dms-spot__cost-line">
+                      <b>{problem.metric}</b> {continueSentence(problem.metricLabel)}
+                    </span>
+                  </p>
                 </div>
                 {problem.film ? (
                   <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">

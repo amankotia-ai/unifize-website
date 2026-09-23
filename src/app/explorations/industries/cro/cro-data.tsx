@@ -22,7 +22,7 @@
  *   reference in this segment, and the proof section says so plainly.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
 
 export const CRO: IndustryData = {
   slug: "cro",
@@ -31,7 +31,7 @@ export const CRO: IndustryData = {
   meta: {
     title: "Contract research organizations · Unifize",
     description:
-      "Your eTMF records that the study closed. It cannot reconstruct why. Unifize rebuilds the decision trace across clinical quality, operations, and each sponsor, so it holds up at an FDA BIMO inspection and every sponsor audit, per study and per sponsor. The industry template, instanced on CROs.",
+      "Your eTMF records that the study closed. It cannot reconstruct why. Unifize rebuilds the decision trace across clinical quality, operations, and each sponsor, so it holds up at an FDA BIMO inspection and every sponsor audit, per study and per sponsor.",
   },
 
   hero: {
@@ -285,4 +285,220 @@ export const CRO: IndustryData = {
     heading: "Incumbents track the eTMF entry. Unifize reconstructs the decision, per study and per sponsor.",
     lede: "Pick a protocol deviation or CAPA you could not replay at the last BIMO inspection or sponsor audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (23 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Contract Research Organizations (CROs)"
+ *   (Opportunity: protocol deviation, CAPA closure and deviation
+ *   documentation traceable and client-presentable at any time, evidence
+ *   segregated by study and by sponsor. Proof Requirement: per-sponsor data
+ *   segregation, per-study audit-ready presentation. Primary Fear Anchor:
+ *   deviation documentation, CAPA closure evidence, eTMF at inspection-ready
+ *   standard, sponsor audit findings. Regulatory Vocabulary: ICH E6(R2),
+ *   important protocol deviation, monitoring report, eTMF, SAE / SUSAR,
+ *   database lock, 21 CFR Part 11 / 50 / 56, ALCOA+).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * Cursors carry persona titles, not people; no record numbers or metrics.
+ * ========================================================================== */
+const GCPQA = { name: "GCP QA Lead", tone: "#d97706" };
+const CTM = { name: "Clinical Trial Manager", tone: "#2563eb" };
+const LIAISON = { name: "Sponsor Liaison", tone: "#7c3aed" };
+
+export const CRO_RAILS: IndustryRails = {
+  /* the key element: the multi-sponsor board (Notion Opportunity: every
+   * sponsor audits independently; Proof Requirement: per-sponsor data
+   * segregation and per-study audit-ready presentation). Sponsor and study
+   * names are placeholders, not customers. */
+  hero: {
+    kind: "sponsors",
+    id: "Multi-sponsor portfolio",
+    title: "Quality events by sponsor",
+    from: "ICH E6(R2) · per study, per sponsor",
+    stages: { open: "Monitoring", investigation: "Deviation open", audit: "Sponsor audit", released: "Evidence sent" },
+    sponsors: [
+      { name: "Sponsor A", studies: ["Study 01", "Study 02"] },
+      { name: "Sponsor B", studies: ["Study 03", "Study 04"] },
+      { name: "Sponsor C", studies: ["Study 05", "Study 06"] },
+    ],
+    hit: { sponsor: 1, study: 0, label: "Important protocol deviation · Study 03" },
+    steps: [
+      { label: "Root cause analysis", meta: "Clinical QA" },
+      { label: "CAPA with effectiveness check", meta: "Clinical QA" },
+      { label: "Filed to the eTMF", meta: "Study mgmt" },
+    ],
+    cascadeStep: 1,
+    request: "Audit request from Sponsor B",
+    locked: "Not in this audit",
+    packet: "This study only",
+    sign: { idle: "Sign · Part 11", done: "Signed · Part 11" },
+    approvers: { label: "Clinical quality approval" },
+    frame: { cap: "Checked against", items: ["ICH E6(R2)", "21 CFR Part 11", "21 CFR 50 / 56", "ALCOA+"] },
+    cascade: {
+      cap: "GCP training",
+      off: "Retraining pending",
+      on: "Protocol retraining assigned",
+      note: "Evidenced before the effective date",
+    },
+    clock: { cap: "SAE / SUSAR", line: "Expedited safety-reporting window" },
+    seal: { cap: "Trial master file", off: "Completeness building", on: "Inspection ready" },
+    aria:
+      "A multi-sponsor board in Unifize: an important protocol deviation lands in one sponsor's study, root cause, CAPA and the eTMF filing are bound to it, and when that sponsor audits, the other sponsors' studies lock and only this study's evidence is sent.",
+  },
+
+  thread: { title: "Protocol deviation → CAPA" },
+
+  trust: {
+    label: "Built for GCP-regulated clinical research teams",
+    marks: ["ICH E6(R2) GCP", "21 CFR Part 11", "21 CFR 50 / 56", "eTMF", "ALCOA+"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Deviation",
+        state: "In review",
+        title: "Important protocol deviation",
+        rows: [
+          { label: "Investigation & impact bound", meta: "Clinical Ops" },
+          { label: "CAPA cross-functional review", meta: "Clinical Quality" },
+          { label: "Sponsor-ready review", meta: "Sponsor Liaison", open: true },
+        ],
+        cursor: GCPQA,
+      },
+      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HELD",
+        lines: [
+          { k: "Query", v: "Awaiting resolution" },
+          { k: "Waiting on", v: "Monitoring finding" },
+          { k: "Blocks", v: "Data lock" },
+        ],
+        note: "Closed on the thread, across studies",
+        cursor: CTM,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "Sponsor audit",
+        title: "Audit response, this sponsor only",
+        cite: "ICH E6(R2)",
+        state: "Assembling",
+        cursor: LIAISON,
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "impact",
+        wash: "paper",
+        source: { kicker: "Part 11", title: "Validation package" },
+        items: [
+          { id: "IQ", label: "Installation qualification" },
+          { id: "OQ", label: "Operational qualification" },
+          { id: "PQ", label: "Performance qualification", open: true },
+        ],
+      },
+      go: { label: "How it stays validated ↓", href: "#validated" },
+    },
+    engineering: {
+      viz: {
+        kind: "signoff",
+        wash: "sky",
+        kicker: "Study close-out",
+        title: "Database lock",
+        signers: [
+          { org: "Clinical operations", name: "Clinical Trial Manager", meaning: "Queries resolved", time: "Signed" },
+          { org: "Study management", name: "Study Manager", meaning: "Reviewed", time: "Signed" },
+          { org: "Clinical quality", name: "GCP QA Lead", meaning: "Approve" },
+        ],
+      },
+    },
+  },
+
+  coverage: {
+    title: "Deviations, safety, eTMF, sponsors. One decision trace.",
+    lede: "Each runs with GCP built in, segregated per study and per sponsor. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the protocol deviation to CAPA effectiveness, presentable per sponsor.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Protocol deviation",
+          title: "Deviation classification",
+          fields: [
+            { label: "Classification", value: "Important", select: true },
+            { label: "Study", value: "Per sponsor" },
+            { label: "Root cause", value: "Investigation attached", focus: true },
+          ],
+          cursor: GCPQA,
+        },
+        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      },
+      {
+        domain: "pharmacovigilance-safety",
+        line: "Serious adverse events triaged against their expedited-reporting clock.",
+        viz: {
+          kind: "decision",
+          wash: "warm",
+          kicker: "SAE / SUSAR",
+          steps: [
+            { q: "Serious adverse event?", a: "Yes" },
+            { q: "Suspected and unexpected?", a: "Yes" },
+          ],
+          outcome: "SUSAR · expedited report",
+          cursor: LIAISON,
+        },
+      },
+      {
+        domain: "etmf-document-control",
+        line: "The trial master file kept inspection-ready, not assembled the week before.",
+        viz: {
+          kind: "feed",
+          wash: "blue",
+          kicker: "eTMF",
+          items: [
+            { source: "Report", title: "Monitoring report filed", tag: "Filed" },
+            { source: "Deviation", title: "Root cause and CAPA attached", tag: "Filed" },
+            { source: "Training", title: "Record missing before the visit", tag: "Gap", hot: true },
+          ],
+        },
+      },
+      {
+        domain: "sponsor-audit-management",
+        line: "Every sponsor audits you independently. Each sees only its own studies.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Sponsor audit",
+          messages: [
+            { org: "Sponsor", text: "Audit request: deviation and CAPA evidence for this study", ext: true },
+            { org: "Clinical Quality", text: "Evidence for this study only, audit trail attached" },
+          ],
+        },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "FDA Form 483 after a BIMO inspection", viz: "alerts" },
+    {
+      name: "Sponsor audit failure risking MSA termination",
+      viz: "elements",
+      detail: ["Sponsor audit", "Deviation documentation", "!Corrective action effectiveness", "!Audit trail", "eTMF completeness"],
+    },
+    {
+      name: "eTMF inspection-readiness gap before a monitoring visit or data lock",
+      viz: "tree",
+      detail: ["Monitoring reports", "Protocol deviations", "!Training records", "CAPA", "Delegation log"],
+    },
+  ],
 };

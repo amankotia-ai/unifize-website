@@ -388,20 +388,10 @@ export function SolutionPage({
                     ))}
                   </ul>
                   {door ? <Link className="sk-qm__go" href={door}>Explore the product &rarr;</Link> : null}
-                  <span className="sk-qm__drop" aria-hidden="true" />
                 </li>
               );
             })}
           </ul>
-          <p className="sk-qm__join">
-            <span className="sk-qm__mark" aria-hidden="true">
-              <svg viewBox="0 2.2 21 22" fill="currentColor">
-                <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-              </svg>
-            </span>
-            <span><b>One governed record under {live.length === 2 ? "both" : "all of them"}.</b> The decision, its evidence and its signature stay on one thread, whichever product the work starts in.</span>
-          </p>
         </div>
       );
     }

@@ -1,0 +1,593 @@
+{
+  "blogs": [
+    {
+      "slug": "biovation-labs",
+      "dropped": {},
+      "unwrapped": {
+        "div": 4
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": true,
+      "tagsAfter": [
+        "blockquote",
+        "br",
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "cfr-part-11",
+      "dropped": {
+        "head": 1,
+        "script": 1
+      },
+      "unwrapped": {
+        "div": 68,
+        "section": 1,
+        "body": 1,
+        "html": 1
+      },
+      "emptiesRemoved": 1,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "figcaption",
+        "figure",
+        "h2",
+        "h3",
+        "img",
+        "p",
+        "strong"
+      ]
+    },
+    {
+      "slug": "collaboration-the-missing-ingredient-in-your-quality-management-system",
+      "dropped": {
+        "style": 1
+      },
+      "unwrapped": {
+        "div": 18
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "blockquote",
+        "br",
+        "em",
+        "h2",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "from-capa-to-training-a-unified-quality-story",
+      "dropped": {},
+      "unwrapped": {
+        "div": 2
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "h4",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "how-to-implement-software-in-less-than-a-day-and-save-up-to-185-000",
+      "dropped": {},
+      "unwrapped": {
+        "div": 2
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": true,
+      "tagsAfter": [
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "how-to-reduce-product-design-engineering-cycle-times-by-up-to-75-in-30-days",
+      "dropped": {},
+      "unwrapped": {
+        "h5": 8,
+        "h1": 4,
+        "div": 6
+      },
+      "emptiesRemoved": 1,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "br",
+        "em",
+        "figure",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "laundrytec",
+      "dropped": {},
+      "unwrapped": {
+        "h1": 1,
+        "div": 1
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": true,
+      "tagsAfter": [
+        "blockquote",
+        "em",
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "the-future-of-quality-management-systems-ding-dong-the-database-is-dead",
+      "dropped": {},
+      "unwrapped": {
+        "div": 3
+      },
+      "emptiesRemoved": 3,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "h3",
+        "h4",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "the-hidden-tax-of-quality-system-fragmentation-and-3-ways-to-reclaim-efficiency",
+      "dropped": {},
+      "unwrapped": {},
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "p",
+        "strong",
+        "sup"
+      ]
+    },
+    {
+      "slug": "the-role-of-data-analytics-in-quality",
+      "dropped": {
+        "style": 2,
+        "input": 6,
+        "script": 1
+      },
+      "unwrapped": {
+        "div": 25,
+        "span": 22,
+        "label": 6,
+        "summary": 8,
+        "details": 8
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "blockquote",
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "h3",
+        "img",
+        "li",
+        "p",
+        "strong",
+        "table",
+        "tbody",
+        "td",
+        "th",
+        "thead",
+        "tr",
+        "ul"
+      ]
+    },
+    {
+      "slug": "understanding-wasted-time-in-quality-processes",
+      "dropped": {},
+      "unwrapped": {
+        "div": 1
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": true,
+      "tagsAfter": [
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "ol",
+        "p"
+      ]
+    },
+    {
+      "slug": "vans-kitchen",
+      "dropped": {},
+      "unwrapped": {
+        "div": 1
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "blockquote",
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "why-a-whopping-78-of-your-ncs-defects-complaints-dont-get-reported",
+      "dropped": {},
+      "unwrapped": {
+        "div": 6
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "figure",
+        "h2",
+        "h3",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong"
+      ]
+    },
+    {
+      "slug": "why-is-selling-customized-products-so-hard-and-what-to-do-about-it",
+      "dropped": {},
+      "unwrapped": {
+        "h5": 9,
+        "h1": 4,
+        "div": 6
+      },
+      "emptiesRemoved": 3,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "br",
+        "em",
+        "figure",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "why-quality-5-0-starts-with-people-not-platforms",
+      "dropped": {
+        "link": 2,
+        "style": 2
+      },
+      "unwrapped": {
+        "div": 4
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "table",
+        "tbody",
+        "td",
+        "th",
+        "thead",
+        "tr",
+        "ul"
+      ]
+    },
+    {
+      "slug": "why-sharepoint-isnt-a-good-automotive-qms",
+      "dropped": {},
+      "unwrapped": {
+        "div": 3
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "em",
+        "figcaption",
+        "figure",
+        "h2",
+        "img",
+        "p",
+        "strong"
+      ]
+    },
+    {
+      "slug": "will-burt",
+      "dropped": {},
+      "unwrapped": {
+        "h1": 1,
+        "div": 2
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": true,
+      "tagsAfter": [
+        "blockquote",
+        "em",
+        "figure",
+        "h2",
+        "img",
+        "li",
+        "p",
+        "ul"
+      ]
+    },
+    {
+      "slug": "your-value-stream-isnt-lean",
+      "dropped": {},
+      "unwrapped": {
+        "div": 11
+      },
+      "emptiesRemoved": 0,
+      "headingsPromoted": false,
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "figcaption",
+        "figure",
+        "h2",
+        "h3",
+        "h4",
+        "img",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    }
+  ],
+  "caseStudies": [
+    {
+      "slug": "from-complexity-to-clarity-how-harmonic-bionics-transformed-quality-with-unifize",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "from-fragmented-specs-to-50-lower-testing-costs-adaptive-healths-connected-quality-journey-with-unifize",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "a",
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "h4",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "from-scramble-to-ready-how-applechem-transformed-audit-prep-with-unifize",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {
+          "h1": 5
+        },
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "inside-a-100-day-turnaround-how-ats-scientific-products-replaced-a-failed-qms-and-raised-the-bar",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "scaling-with-unifize-how-rf-health-built-a-scalable-qms-and-freed-120-hours-annually",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "li",
+        "ol",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "the-will-burt-company-journey-with-unifize",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {
+          "h1": 6
+        },
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "h3",
+        "h4",
+        "li",
+        "p",
+        "strong",
+        "ul"
+      ]
+    },
+    {
+      "slug": "turning-paper-chaos-into-connected-quality-how-efco-made-decisions-70-faster-with-unifize",
+      "intro": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "body": {
+        "dropped": {},
+        "unwrapped": {},
+        "emptiesRemoved": 0,
+        "headingsPromoted": false
+      },
+      "tagsAfter": [
+        "br",
+        "em",
+        "h2",
+        "p",
+        "strong"
+      ]
+    }
+  ]
+}

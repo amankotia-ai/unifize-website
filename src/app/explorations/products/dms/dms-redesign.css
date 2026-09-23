@@ -3095,9 +3095,17 @@
   }
   .dms--redesign .dms-close__convergence { margin-bottom: 42px; }
   .dms--redesign .dms-close__h { font-size: clamp(2.35rem, 10.25vw, 2.55rem); }
-  .dms--redesign .sft__grid { grid-template-columns: 1fr; gap: 36px; }
-  .dms--redesign .sft__brand { grid-column: auto; }
-  .dms--redesign .sft__col--wide .sft__links { column-count: 1; }
+  /* two columns, not one (23 Sep 2026): a single column ran the footer to
+   * ~1850px on a phone. Dense flow pulls Industries up beside Products;
+   * Solutions spans the row with its links in two columns. */
+  .dms--redesign .sft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 36px 24px; }
+  .dms--redesign .sft__brand,
+  .dms--redesign .sft__col--wide { grid-column: 1 / -1; }
+  .dms--redesign .sft__col--wide .sft__links { column-count: 2; column-gap: 24px; }
+  .dms--redesign .sft a.sft__link { font-size: 0.875rem; }
+  .dms--redesign .sft__grid > div.sft__col { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .dms--redesign .sft__col .sft__col + .sft__col { margin-top: 0; }
+  .dms--redesign .sft__base { margin-top: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

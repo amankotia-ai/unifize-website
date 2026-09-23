@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { CRO } from "./cro-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { CRO, CRO_RAILS } from "./cro-data";
 
 export const metadata: Metadata = {
   title: CRO.meta.title,
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function CroPage() {
-  return <IndustryPage data={CRO} />;
+  return <IndustryRailsPage data={CRO} rails={CRO_RAILS} />;
 }

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "case_studies",
+  "info": {
+    "singularName": "case-study",
+    "pluralName": "case-studies",
+    "displayName": "Case Study",
+    "description": "Customer stories migrated from the Webflow Case Studies collection."
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "title": { "type": "string", "required": true, "maxLength": 256 },
+    "slug": { "type": "uid", "targetField": "title", "required": true },
+    "description": { "type": "text", "maxLength": 300 },
+    "intro": { "type": "richtext" },
+    "body": { "type": "richtext", "required": true },
+    "coverImage": { "type": "media", "multiple": false, "allowedTypes": ["images"] },
+    "company": { "type": "string" },
+    "industry": { "type": "string" },
+    "location": { "type": "string" },
+    "readMinutes": { "type": "integer", "min": 1 },
+    "featured": { "type": "boolean", "default": false },
+    "webflowSlug": {
+      "type": "string",
+      "unique": true,
+      "private": true,
+      "description": "Stable key from Webflow. Makes imports idempotent and drives the 301 map. Never edit."
+    }
+  }
+}

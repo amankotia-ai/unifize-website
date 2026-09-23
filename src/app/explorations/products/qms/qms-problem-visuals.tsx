@@ -308,6 +308,16 @@ function ProblemGraphic({ kind, play, staticMode }: GraphicProps & { kind: Probl
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
+/* the caption continues the figure as one sentence (same rule as the DMS
+ * spotlight): lowered, unless it opens on an acronym */
+const continueSentence = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  const second = trimmed[1] ?? "";
+  if (second && second === second.toUpperCase() && /[A-Z]/.test(second)) return trimmed;
+  return trimmed[0].toLowerCase() + trimmed.slice(1);
+};
+
 export function QmsProblemSpotlight({ items }: { items: DmsCoordinationProblem[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const inView = useInView(rootRef, { amount: 0.25, once: true });
@@ -340,21 +350,30 @@ export function QmsProblemSpotlight({ items }: { items: DmsCoordinationProblem[]
       </Tabs.List>
 
       <div className="dms-spot__stagewrap">
-        {items.map((problem) => (
+        {items.map((problem, index) => (
           <Tabs.Panel className="dms-spot__panel" key={problem.visual} value={problem.visual}>
             <div className="dms-spot__body">
               <div className="dms-spot__context">
-                <span className="dms-spot__category">{problem.category}</span>
+                <div className="dms-spot__head">
+                  <span className="dms-spot__category">{problem.category}</span>
+                  <span className="dms-spot__pos" aria-hidden="true">
+                    {pad(index + 1)} / {pad(items.length)}
+                  </span>
+                </div>
                 <blockquote className="dms-spot__quote">
                   <span className="dms-spot__quote-mark" aria-hidden="true">“</span>
                   <p>{problem.quote}</p>
                 </blockquote>
                 <div className="dms-spot__fact">
-                  <div className="dms-spot__metric">
-                    <strong>{problem.metric}</strong>
-                    <span>{problem.metricLabel}</span>
-                  </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
+                  {/* the DMS cost strip: one sentence, the figure in the tax
+                    * colour (rust), never the brand blue */}
+                  <p className="dms-spot__cost">
+                    <span className="dms-spot__cost-label">What it costs</span>
+                    <span className="dms-spot__cost-line">
+                      <b>{problem.metric}</b> {continueSentence(problem.metricLabel)}
+                    </span>
+                  </p>
                 </div>
                 {problem.film ? (
                   <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">

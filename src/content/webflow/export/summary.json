@@ -1,0 +1,34 @@
+{
+  "scrapedAt": "2026-09-23T07:41:34.752Z",
+  "source": "published pages on unifize.com (no API token available)",
+  "blogs": {
+    "count": 18,
+    "missingBody": [],
+    "withEmbeds": [
+      "cfr-part-11",
+      "collaboration-the-missing-ingredient-in-your-quality-management-system",
+      "the-role-of-data-analytics-in-quality",
+      "why-quality-5-0-starts-with-people-not-platforms"
+    ],
+    "withStyleTags": [
+      "cfr-part-11",
+      "collaboration-the-missing-ingredient-in-your-quality-management-system",
+      "the-role-of-data-analytics-in-quality",
+      "why-quality-5-0-starts-with-people-not-platforms"
+    ],
+    "withTables": [
+      "the-role-of-data-analytics-in-quality",
+      "why-quality-5-0-starts-with-people-not-platforms"
+    ]
+  },
+  "caseStudies": {
+    "count": 7,
+    "notLive": "CMS holds 9; only live ones are visible here",
+    "fullHtmlDocuments": [],
+    "leakRootVars": [],
+    "leakBodyRule": []
+  },
+  "assets": {
+    "distinct": 77
+  }
+}

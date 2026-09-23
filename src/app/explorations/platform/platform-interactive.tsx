@@ -126,6 +126,22 @@ export function PlatformJourney({
     return () => { observer.disconnect(); stage.style.removeProperty("--pf-cam-k"); };
   }, [layout, cut]);
 
+  /* rail layout: publish the window's width (unitless px) so the CSS can fit
+   * each pose's cut of the app window to it on tablets and phones, where a
+   * fixed camera scale either bleeds or leaves the window tiny */
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (layout !== "rail" || !stage) return;
+    const fit = () => {
+      const arc = stage.querySelector<HTMLElement>(".stx-arc");
+      stage.style.setProperty("--pf-arc-w", String(arc?.clientWidth ?? stage.clientWidth));
+    };
+    fit();
+    const observer = new ResizeObserver(fit);
+    observer.observe(stage);
+    return () => { observer.disconnect(); stage.style.removeProperty("--pf-arc-w"); };
+  }, [layout]);
+
   const select = (index: number) => {
     setAuto(false);
     setActive(index);

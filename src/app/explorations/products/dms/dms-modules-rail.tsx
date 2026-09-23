@@ -14,7 +14,8 @@ import { Eyebrow } from "./dms-primitives";
 import { ArcadeStepScene, type ArcadeStepConfig } from "../_shared/arcade/arcade";
 import "./dms-modules-rail.css";
 
-type Module = (typeof MODULES)[number];
+/* a sibling page (QMS) passes its own modules; `visual` is DMS-only */
+type Module = Omit<(typeof MODULES)[number], "visual">;
 
 function RailIcon({ moduleKey }: { moduleKey: string }) {
   const common = { width: 16, height: 16, viewBox: "0 0 16 16", fill: "none", stroke: "currentColor", strokeWidth: 1.4, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
@@ -26,10 +27,84 @@ function RailIcon({ moduleKey }: { moduleKey: string }) {
       </svg>
     );
   }
+  /* MES modules (products/mes) */
+  if (moduleKey === "work-order-management") {
+    return (
+      <svg {...common}>
+        <path d="M4 2.5h8v12H4z" /><path d="M6.2 1.5h3.6v2H6.2z" /><path d="M6 7h4M6 9.5h4M6 12h2.5" />
+      </svg>
+    );
+  }
+  if (moduleKey === "etravellers") {
+    return (
+      <svg {...common}>
+        <circle cx="3.5" cy="4" r="1.5" /><circle cx="12.5" cy="12" r="1.5" />
+        <path d="M5 4h5.5a2 2 0 0 1 0 4h-5a2 2 0 0 0 0 4H11" />
+      </svg>
+    );
+  }
+  if (moduleKey === "fai-control-plan-execution") {
+    return (
+      <svg {...common}>
+        <path d="M1.5 11 11 1.5l3.5 3.5L5 14.5z" /><path d="M4.5 8l1.5 1.5M6.8 5.7l1.5 1.5M9.1 3.4l1.5 1.5" />
+      </svg>
+    );
+  }
+  if (moduleKey === "inspections-forms-checklists") {
+    return (
+      <svg {...common}>
+        <path d="m2 4 1.3 1.3L5.8 2.8M2 9.5l1.3 1.3 2.5-2.5" /><path d="M8 4h6M8 9.5h6M8 13.5h6" />
+      </svg>
+    );
+  }
+  if (moduleKey === "electronic-batch-lot-records") {
+    return (
+      <svg {...common}>
+        <path d="M8 1.5 14 4.5 8 7.5 2 4.5z" /><path d="m2 8 6 3 6-3M2 11.5l6 3 6-3" />
+      </svg>
+    );
+  }
   if (moduleKey === "training-management") {
     return (
       <svg {...common}>
         <path d="M1.5 6 8 3l6.5 3L8 9 1.5 6Z" /><path d="M4 7.2v3.3c0 1 1.8 2 4 2s4-1 4-2V7.2" /><path d="M14.5 6v3.5" />
+      </svg>
+    );
+  }
+  /* PLM modules */
+  if (moduleKey === "product-specifications") {
+    return (
+      <svg {...common}>
+        <path d="M8 1.5 14 5v6l-6 3.5L2 11V5z" /><path d="M8 14.5V8M8 8 2.2 4.8M8 8l5.8-3.2" />
+      </svg>
+    );
+  }
+  if (moduleKey === "product-risk-management") {
+    return (
+      <svg {...common}>
+        <path d="M8 1.8 14.5 13.5h-13z" /><path d="M8 6.2v3.4M8 11.6v.1" />
+      </svg>
+    );
+  }
+  if (moduleKey === "design-controls-traceability") {
+    return (
+      <svg {...common}>
+        <circle cx="3" cy="8" r="1.6" /><circle cx="8" cy="8" r="1.6" /><circle cx="13" cy="8" r="1.6" />
+        <path d="M4.6 8h1.8M9.6 8h1.8" />
+      </svg>
+    );
+  }
+  if (moduleKey === "inspection-process-parameters") {
+    return (
+      <svg {...common}>
+        <circle cx="7" cy="7" r="4.5" /><path d="m10.4 10.4 4.1 4.1M5 7h4" />
+      </svg>
+    );
+  }
+  if (moduleKey === "fmea-control-plan") {
+    return (
+      <svg {...common}>
+        <rect x="1.5" y="2" width="13" height="12" /><path d="M1.5 6h13M1.5 10h13M6 2v12" />
       </svg>
     );
   }
@@ -46,6 +121,11 @@ const TILES: Record<string, Array<[number, number, number]>> = {
   "document-control": [[3, 8, 1], [11, 8, 1], [3, 32, 1], [11, 32, 2], [3, 56, 3], [3, 80, 1]],
   "change-control": [[3, 8, 3], [3, 32, 1], [11, 32, 1], [19, 32, 1], [3, 56, 2], [3, 80, 3]],
   "training-management": [[3, 8, 1], [11, 8, 2], [3, 32, 3], [3, 56, 1], [11, 56, 1], [3, 80, 2]],
+  "work-order-management": [[3, 8, 2], [3, 32, 1], [11, 32, 1], [3, 56, 3], [3, 80, 1]],
+  etravellers: [[3, 8, 1], [11, 8, 1], [19, 8, 1], [3, 32, 2], [3, 56, 1], [3, 80, 3]],
+  "fai-control-plan-execution": [[3, 8, 3], [3, 32, 1], [3, 56, 2], [11, 80, 1], [3, 80, 1]],
+  "inspections-forms-checklists": [[3, 8, 1], [3, 32, 3], [3, 56, 1], [11, 56, 2], [3, 80, 1]],
+  "electronic-batch-lot-records": [[3, 8, 2], [11, 32, 1], [3, 32, 1], [3, 56, 1], [3, 80, 2]],
 };
 
 /* Sticky-rail behaviour, shared with the homepage's way-in rail: the row
@@ -98,10 +178,18 @@ export function ModuleRail({
   heading,
   lede,
   arcadeConfigsByModule,
+  eyebrow = "What is bundled",
+  ariaLabel = "DMS modules",
+  iconPaths,
 }: {
   modules?: Module[];
   heading: string;
   lede: string;
+  eyebrow?: string;
+  ariaLabel?: string;
+  /* rail glyph per module key, as one 16-grid path (plain strings, so a
+   * server page can pass them); keys without one use the built-in set */
+  iconPaths?: Record<string, string>;
   /* one arcade pose per module key; the first config is the fallback */
   arcadeConfigsByModule: Record<string, ArcadeStepConfig>;
 }) {
@@ -111,7 +199,7 @@ export function ModuleRail({
   return (
     <div className="dms-mrail">
       <div className="dms-wrap dms-mrail__head">
-        <Eyebrow n={2}>What is bundled</Eyebrow>
+        <Eyebrow n={2}>{eyebrow}</Eyebrow>
         <h2 className="dms-h2">{heading}</h2>
         <p className="dms-lede">{lede}</p>
       </div>
@@ -120,7 +208,7 @@ export function ModuleRail({
         {/* the column runs the full ledger height (it carries the divider);
           * the nav inside it is what sticks */}
         <div className="dms-mrail__railcol">
-        <nav className="dms-mrail__rail" aria-label="DMS modules">
+        <nav className="dms-mrail__rail" aria-label={ariaLabel}>
           <ul ref={railRef}>
             {modules.map((mod, i) => (
               <li key={mod.key}>
@@ -130,7 +218,11 @@ export function ModuleRail({
                   aria-current={i === active ? "true" : undefined}
                   onClick={() => jumpTo(i)}
                 >
-                  <RailIcon moduleKey={mod.key} />
+                  {iconPaths?.[mod.key] ? (
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d={iconPaths[mod.key]} />
+                    </svg>
+                  ) : <RailIcon moduleKey={mod.key} />}
                   <span>{mod.name}</span>
                 </button>
               </li>

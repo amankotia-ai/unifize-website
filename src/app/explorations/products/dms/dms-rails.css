@@ -330,6 +330,81 @@
   --rf-plate: 8px;
 }
 
+/* the hero window, record only (23 Sep 2026, Abhishek citing Lakshman's
+ * Sep 9 review: "if we're not highlighting the My Conversations view to
+ * show something, we don't need it in the visual"), then the same day:
+ * "keep the same width for all visuals", "the movement is so broken ...
+ * shape shifting", "the windows need to be wider", and "the side borders
+ * and shadows are missing".
+ *   - The nav rail and the inbox are taken OUT of the window's grid (not
+ *     clipped), so the window IS the record: thread 680 + checklist 390 =
+ *     1070 x 560, the homepage hero's wider record, with its own outline,
+ *     plate and shadow intact on all four sides.
+ *   - Page steps (home, builder, dashboard) draw their page across the same
+ *     1070px; the signature dialog centres on it.
+ *   - The camera is fixed: one scale per breakpoint, centred, no per-pose
+ *     zoom, no transition. Only the content inside crossfades.
+ *   - The stage is taller than the window so the plate and shadow have room
+ *     top and bottom, and nothing between the window and the stage clips,
+ *     so the shadow falls onto the wash instead of ending in a hard edge. */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera[class] {
+  --hc-k: 0.72;
+  grid-template-columns: 680px 390px;
+  width: 1070px;
+  transform: translate3d(-50%, -50%, 0) scale(var(--hc-k));
+  transition: none;
+  animation: none;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root :is(.stx-arc__rail, .stx-arc__inbox) {
+  display: none;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+  inset: 0;
+}
+
+/* the search step ("Find it") is the one step where My Conversations IS
+ * the point (Abhishek: "otherwise we're literally not showing anything"):
+ * same 1070px window, the inbox comes back beside the found record and the
+ * checklist steps out for that one step */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera.is-focus-search[class] {
+  grid-template-columns: 300px 770px;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera.is-focus-search .stx-arc__inbox {
+  display: flex;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera.is-focus-search .stx-arc__checklist {
+  display: none;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root :is(.sty-scene, .sty-scene__inner, .stx-stage, .stx-arc) {
+  overflow: visible;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .sty-scene.is-arcade .stx-stage,
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc {
+  min-height: 0;
+  height: clamp(480px, 40vw, 580px);
+}
+
+@media (min-width: 1280px) {
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera[class] { --hc-k: 0.84; }
+}
+
+/* phones: the same frame at the scale that fits it side to side, and the
+ * stage shortens to the window instead of floating it in a tall wash */
+@media (max-width: 600px) {
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .sty-scene.is-arcade .stx-stage,
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc {
+    height: 250px;
+  }
+
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .stx-arc__camera[class] { --hc-k: 0.29; }
+}
+
 /* the step rail: above the wash on a hairline, inside the rails, solid
  * glyphs instead of counters (Abhishek, 22 Sep: "move this to the top and
  * use solid icons instead of numbers"; the homepage's tabs idiom) */
@@ -426,6 +501,9 @@
 }
 
 .dms--redesign.dms-page .hm-railed .dms-spot {
+  /* rail to rail at every width: the pre-rails 860px cap under 1024px left
+   * the spotlight short of the right rail */
+  max-width: none;
   margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
   border: 0;
   border-top: 1px solid var(--hm-rail);
@@ -855,6 +933,46 @@
     0 48px 96px -32px oklch(0 0 0 / 0.18);
 }
 
+/* ============================================ 02 · MODULES, record only
+ * Same as the hero (Lakshman's Sep 9 review via Abhishek, 23 Sep): the
+ * nav rail and the "My Conversations" inbox come out of the window's grid,
+ * so each row shows only the record (thread 540 + checklist 286 = 826)
+ * with its own outline and shadow on every side, and page poses (home,
+ * builder, dashboard) draw their page across the same 826px. Every row is
+ * the same window, left-anchored at the scene's padding and running off
+ * the right edge as before. */
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera {
+  grid-template-columns: 540px 286px;
+  width: 826px;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root :is(.stx-arc__rail, .stx-arc__inbox) {
+  display: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+  inset: 0;
+}
+
+/* the checklist pose (MES batch records) lands its highlight in the
+ * checklist column, which the left-anchored window pushes off the stage;
+ * that one row anchors the window to the right edge instead */
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-focus="checklist"] .dms-mrail__scene .stx-root .stx-arc__camera {
+  left: auto;
+  right: clamp(24px, 2.6vw, 40px);
+  transform-origin: 100% 0;
+}
+
+/* phones: the DMS rule zeroes the left padding for record poses because
+ * it slid the inbox off the edge itself; the inbox is gone now, so every
+ * row keeps the same small left margin */
+@media (max-width: 900px) {
+  .dms--redesign.dms-page .hm-railed .dms-mrail__row .dms-mrail__scene {
+    --mrail-scene-x: 0px;
+    padding-left: 12px;
+  }
+}
+
 /* =================================================== 03 · CAPABILITIES
  * Header rail left, the eight controls as hairline cells right. */
 .dms--redesign.dms-page .dms-caps-section {
@@ -911,37 +1029,122 @@
   color: var(--dms-ink);
 }
 
+/* flow tabs: the spotlight-tab idiom of the rails. The row runs rail to
+ * rail between two hairlines, cells split by hairline rules, each actor
+ * reads as a rails eyebrow (7px square), and the active cell takes the
+ * n-50 wash with the accent underline, exactly like .dms-spot__it. */
+.dms--redesign.dms-page .hm-railed .dms-lifex__head {
+  margin-bottom: clamp(44px, 5vw, 72px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flows {
+  gap: 16px;
+  margin-top: clamp(28px, 4vh, 44px);
+}
+
 .dms--redesign.dms-page .hm-railed .dms-lifex__flows-label {
   color: var(--dms-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchips {
-  background: var(--hm-rail);
+  display: grid;
+  grid-auto-columns: minmax(200px, 1fr);
+  grid-auto-flow: column;
+  gap: 0;
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  padding: 0;
+  /* the row sits exactly on the rails, but the stage panel paints over the
+   * rail pseudo-lines, so the active first cell's wash hid the left rail;
+   * the row draws its own end hairlines on the same pixels */
+  border: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
   box-shadow: none;
-  scrollbar-color: var(--hm-rail) transparent;
+  scrollbar-width: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchips::-webkit-scrollbar {
+  display: none;
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip {
-  background: var(--dms-surface);
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 0;
+  padding: 20px var(--hm-rail-pad) 22px;
+  border: 0;
+  border-right: 1px solid var(--hm-rail);
+  background: transparent;
   color: var(--dms-muted);
+  transition: background-color 160ms ease-out, color 160ms ease-out;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip:last-child {
+  border-right: 0;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip-actor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dms-faint);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip-actor::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip-title {
+  color: var(--dms-ink-2);
+  font-size: 1rem;
+  line-height: 1.3;
+  text-wrap: wrap;
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip:hover {
   background: var(--n-50);
-  color: var(--dms-ink-2);
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip:focus-visible {
-  outline-color: var(--dms-accent);
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -2px;
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip.is-active {
   background: var(--n-50);
   color: var(--dms-ink);
+  box-shadow: inset 0 -2px 0 var(--dms-accent);
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip.is-active .dms-lifex__flowchip-actor {
   color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip.is-active .dms-lifex__flowchip-title {
+  color: var(--dms-ink);
+}
+
+@media (max-width: 720px) {
+  .dms--redesign.dms-page .hm-railed .dms-lifex__flowchips {
+    grid-auto-columns: minmax(78%, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms-page .hm-railed .dms-lifex__flowchip {
+    transition: none;
+  }
 }
 
 /* the flow lede loses its one-sided accent bar (design rule) */
@@ -1081,32 +1284,204 @@
 }
 
 /* ================================================== 05 · WHO IT IS FOR
- * White ground; the owner cards become cells rail to rail, their ledgers
- * on dashed rules. */
+ * White ground; a roster ledger rail to rail (ProductAudience). A caption
+ * row names the columns once, then one hairline row per persona: portrait +
+ * role, the lifecycle span drawn as two state cells on a rule, and the three
+ * day-to-day lines. Replaces the owner cards (repeated labels, dashed
+ * ledgers, small round avatars). */
 .dms--redesign.dms-page .dms-audience.hm-railed {
-  --dms-audience-divider: var(--hm-rail);
-  --dms-audience-card: var(--dms-surface);
   border-bottom: 0;
   background: var(--dms-surface);
 }
 
-.dms--redesign.dms-page .hm-railed .dms-audience__personas {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  max-width: none;
+.dms--redesign.dms-page .hm-railed .pa-roster {
   margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
-  border: 0;
   border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: center;
   border-bottom: 1px solid var(--hm-rail);
+  transition: background-color 160ms ease-out;
 }
 
-.dms--redesign.dms-page .hm-railed .dms-owner {
-  min-height: 0;
-  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+.dms--redesign.dms-page .hm-railed .pa-row > * {
+  min-width: 0;
+  padding: 20px var(--hm-rail-pad);
 }
 
-.dms--redesign.dms-page .hm-railed .dms-owner__daily li + li {
-  border-top: 0;
-  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) top / 100% 1px no-repeat;
+.dms--redesign.dms-page .hm-railed .pa-row:not(.pa-row--caption):hover {
+  background: var(--n-50);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-row--caption {
+  background: var(--n-50);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-row--caption > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-block: 14px;
+  color: var(--dms-faint);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-row--caption > span::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+/* role: a square-cut portrait beside the role name */
+.dms--redesign.dms-page .hm-railed .pa-who {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-who__photo {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  background: var(--n-100);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-who__role {
+  margin: 0;
+  color: var(--dms-ink);
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-who__role a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-who__go {
+  margin-left: 6px;
+  color: var(--dms-accent);
+  font-size: 0.9em;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-who__role a:hover {
+  color: var(--dms-accent);
+}
+
+/* owns: two rounded status pills (the record-view status idiom, dot +
+ * label) joined by an arrow; the span ends on the accent pill */
+.dms--redesign.dms-page .hm-railed .pa-mlabel {
+  display: none;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span__state,
+.dms--redesign.dms-page .hm-railed .pa-span__solo {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px 5px 10px;
+  border: 1px solid var(--hm-rail);
+  border-radius: 999px;
+  background: var(--n-50);
+  color: var(--dms-ink-2);
+  font-size: 0.82rem;
+  font-weight: 560;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span__state::before,
+.dms--redesign.dms-page .hm-railed .pa-span__solo::before {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  content: "";
+  border-radius: 50%;
+  background: var(--n-400, #8a929e);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span__state--to {
+  border-color: color-mix(in srgb, var(--dms-accent) 28%, transparent);
+  background: var(--u-blue-50);
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span__state--to::before {
+  background: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .pa-span__arrow {
+  flex: none;
+  width: 28px;
+  height: 10px;
+  color: var(--n-400, #8a929e);
+}
+
+/* day to day: three short lines, no bullets */
+.dms--redesign.dms-page .hm-railed .pa-daily {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  list-style: none;
+  color: var(--dms-muted);
+  font-size: 0.94rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 960px) {
+  .dms--redesign.dms-page .hm-railed .pa-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding: 22px var(--hm-rail-pad);
+    gap: 16px;
+  }
+
+  .dms--redesign.dms-page .hm-railed .pa-row > * {
+    padding: 0;
+  }
+
+  .dms--redesign.dms-page .hm-railed .pa-row--caption {
+    display: none;
+  }
+
+  .dms--redesign.dms-page .hm-railed .pa-who__photo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .dms--redesign.dms-page .hm-railed .pa-owns {
+    display: grid;
+    gap: 8px;
+  }
+
+  .dms--redesign.dms-page .hm-railed .pa-mlabel {
+    display: block;
+    flex: none;
+    color: var(--dms-faint);
+    font-size: 0.7rem;
+    font-weight: 620;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 }
 
 /* ===================================================== 06 · CUSTOMER PROOF

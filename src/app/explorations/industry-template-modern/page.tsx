@@ -33,7 +33,8 @@ import { RoleCells, SolutionCells } from "./ways-in";
 import { UrgentBoard } from "../_shared/urgent-board";
 import "../domains/_shared/solution-rails.css";
 import "../domains/_shared/solution-viz.css";
-import { MdHeroArcade, DecisionTraceArcade } from "./itm-arcade";
+import { DecisionTraceArcade } from "./itm-arcade";
+import { MdHeroTrace } from "./md-hero-trace";
 import "./itm.css";
 import "../products/dms/dms.css";
 import "../products/dms/dms-redesign.css";
@@ -130,8 +131,11 @@ export default function MedicalDevicesIndustryPage() {
               <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
             </div>
           </div>
-          <div className="md-hero2__visual dms-hero__product-demo dms-hero__product-demo--arcade">
-            <MdHeroArcade />
+          {/* 23 Sep 2026, after luthor.ai: one animated record (CC-2148
+            * binding every record it touches, then signed and released) with
+            * four use-case chips around it, on the same moving wash */}
+          <div className="md-hero2__visual">
+            <MdHeroTrace />
           </div>
         </div>
       </section>
@@ -204,42 +208,13 @@ export default function MedicalDevicesIndustryPage() {
         </div>
       </section>
 
-      <HatchBand className="hm-hatch--dark" />
-
-      {/* 04 · WHAT'S BREAKING: the quality page's urgent board, on the
-        * charcoal, the three sharpest clocks with one surface each */}
-      <section className="dms-section dms-section--dark md-sec md-trigs md-trigs--dark hm-railed" id="whats-breaking">
-        <div className="dms-wrap">
-          <SplitHead
-            n={4}
-            eyebrow="What's breaking"
-            title="The moments that start a clock you don't control."
-            lede="Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response."
-          />
-          <UrgentBoard rows={LEAD_TRIGGERS} />
-        </div>
-      </section>
-
-      <HatchBand className="hm-hatch--dark" />
-
-      {/* ============================ 05 · COST OF INACTION ============= */}
-      <section className="dms-section dms-section--alt md-sec md-cost hm-railed" id="cost">
-        <div className="dms-wrap">
-          <SplitHead
-            n={5}
-            eyebrow="Cost of inaction"
-            title="The cost is real. It just never lands on a line you can see."
-          />
-          <CostLedger />
-        </div>
-      </section>
-
       <HatchBand className="hm-hatch--alt" />
 
-      {/* ============================ 06 · VALIDATED STATE ============== */}
+      {/* ============================ 04 · VALIDATED STATE ==============
+        * Moved above what's breaking (Abhishek, 23 Sep) */}
       <section className="dms-section md-sec md-val hm-railed" id="validated">
         <div className="dms-wrap">
-          <SplitHead n={6} eyebrow={VALIDATED.eyebrow} title={VALIDATED.headline} />
+          <SplitHead n={4} eyebrow={VALIDATED.eyebrow} title={VALIDATED.headline} />
           <ul className="md-val__grid">
             {VALIDATED.points.map((pt) => (
               <li key={pt.label} className="md-val__cell">
@@ -256,6 +231,36 @@ export default function MedicalDevicesIndustryPage() {
       </section>
 
       <HatchBand />
+
+      {/* 05 · WHAT'S BREAKING: the quality page's urgent board, on the
+        * charcoal, the three sharpest clocks with one surface each */}
+      <section className="dms-section dms-section--dark md-sec md-trigs md-trigs--dark hm-railed" id="whats-breaking">
+        <div className="dms-wrap">
+          <SplitHead
+            n={5}
+            eyebrow="What's breaking"
+            title="The moments that start a clock you don't control."
+            lede="Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response."
+          />
+          <UrgentBoard rows={LEAD_TRIGGERS} />
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--dark" />
+
+      {/* ============================ 06 · COST OF INACTION ============= */}
+      <section className="dms-section dms-section--dark md-sec md-cost md-cost--dark hm-railed" id="cost">
+        <div className="dms-wrap">
+          <SplitHead
+            n={6}
+            eyebrow="Cost of inaction"
+            title="The cost is real. It just never lands on a line you can see."
+          />
+          <CostLedger />
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--dark" />
 
       {/* ============================ 07 · PROOF ========================
         * The homepage reel of customer stills on the bookends' charcoal,

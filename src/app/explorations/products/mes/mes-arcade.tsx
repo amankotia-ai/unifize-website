@@ -816,30 +816,37 @@ const MES_HERO_DASH_STEP: ArcadeStepConfig = {
 export const MES_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Build the process",
+    icon: "build",
     config: MES_HERO_BUILD_STEP,
   },
   {
     label: "Pick up the order",
+    icon: "find",
     config: MES_ARCADE_FLOW_CONFIGS["31"][0],
   },
   {
     label: "Open the traveller",
+    icon: "route",
     config: MES_ARCADE_FLOW_CONFIGS["31"][1],
   },
   {
     label: "Run the checks",
+    icon: "capture",
     config: MES_ARCADE_FLOW_CONFIGS["31"][2],
   },
   {
     label: "Seal the entry",
+    icon: "sign",
     config: MES_ARCADE_FLOW_CONFIGS["31"][3],
   },
   {
     label: "Watch the floor",
+    icon: "measure",
     config: MES_HERO_DASH_STEP,
   },
   {
     label: "Release the lot",
+    icon: "release",
     config: MES_ARCADE_FLOW_CONFIGS["33"][3],
   },
 ];

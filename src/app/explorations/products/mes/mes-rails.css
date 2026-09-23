@@ -1,0 +1,27 @@
+/* ============================================================================
+ * mes-rails.css - what the MES page composes differently on the rails
+ * grammar. Everything else comes from dms-rails.css (the page carries the
+ * same `dms--redesign dms-page` scope), loaded just before this file.
+ * ========================================================================== */
+
+/* five module rows, so the washes rotate blue / sky / warm instead of the
+ * DMS keys (dms-rails.css paints the unkeyed default blue) */
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="etravellers"] .dms-mrail__stage,
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="electronic-batch-lot-records"] .dms-mrail__stage {
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="fai-control-plan-execution"] .dms-mrail__stage {
+  background: var(--hm-wash-warm);
+}
+
+/* hero head: the DMS 18ch cap is sized for its two short lines; the MES
+ * lines are longer, so "What happened on the floor." broke in two while the
+ * blue line held, leaving a ragged three-line stack. Each authored line holds
+ * on one line instead, so the head reads as two even lines like DMS. On
+ * phones the lines wrap again. */
+.dms--redesign.dms-page.mes .dms-hero--rails .dms-hero__title { max-width: none; }
+
+@media (min-width: 720px) {
+  .dms--redesign.dms-page.mes .dms-hero--rails .dms-hero__line { white-space: nowrap; }
+}

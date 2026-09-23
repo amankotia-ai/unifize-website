@@ -75,7 +75,13 @@
   .sft__grid { grid-template-columns: 1fr 2fr 1fr; }
   .sft__brand { grid-column: 1 / -1; }
 }
+/* phones (23 Sep 2026): one column ran the footer to ~1850px on a 375
+ * screen. Two columns instead; dense flow pulls Industries up beside
+ * Products, and Solutions spans the row with its links in two columns. */
 @media (max-width: 767px) {
-  .sft__grid { grid-template-columns: 1fr; gap: 32px; }
-  .sft__col--wide .sft__links { column-count: 1; }
+  .sft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 36px 24px; }
+  .sft__brand, .sft__col--wide { grid-column: 1 / -1; }
+  .sft__col--wide .sft__links { column-gap: 24px; }
+  .sft a.sft__link { font-size: 0.875rem; }
+  .sft__base { margin-top: 40px; }
 }

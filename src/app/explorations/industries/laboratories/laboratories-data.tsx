@@ -16,7 +16,7 @@
  *   (Notion has none for this segment); framing / headlines are authored.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
 
 export const LABORATORIES: IndustryData = {
   slug: "laboratories",
@@ -25,7 +25,7 @@ export const LABORATORIES: IndustryData = {
   meta: {
     title: "Laboratories · Unifize",
     description:
-      "Your LIMS records the result. It cannot reconstruct why. Unifize rebuilds the decision trace around it: the nonconformance, the corrective action, and the effectiveness check that survives the ISO/IEC 17025 surveillance audit. The industry template, instanced on Laboratories.",
+      "Your LIMS records the result. It cannot reconstruct why. Unifize rebuilds the decision trace around it: the nonconformance, the corrective action, and the effectiveness check that survives the ISO/IEC 17025 surveillance audit.",
   },
 
   hero: {
@@ -277,4 +277,206 @@ export const LABORATORIES: IndustryData = {
     heading: "Incumbents track the result. Unifize reconstructs the decision.",
     lede: "Pick a nonconformance or corrective action you could not replay at the last surveillance audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (23 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Laboratories" (Primary Fear Anchor: a single
+ *   non-conformance can suspend the scope within 90 days unless closed with
+ *   documented corrective action and an effectiveness check; biennial
+ *   surveillance; analyst training records, equipment calibration history,
+ *   method validation traceability. Opportunity: procedures, calibration,
+ *   analyst competency and nonconforming results managed and traceable.
+ *   Regulatory Vocabulary: ISO/IEC 17025, technical signatory, proficiency
+ *   testing, technical record, ALCOA+, GLP (21 CFR Part 58), 21 CFR Part 11).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * Cursors carry persona titles, not people; no record numbers or metrics.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const LABOPS = { name: "Lab Supervisor", tone: "#2563eb" };
+const SIGNATORY = { name: "Technical Signatory", tone: "#7c3aed" };
+
+export const LABORATORIES_RAILS: IndustryRails = {
+  /* the key element: the QC control chart (Notion Regulatory Vocabulary:
+   * control limits, control chart, Westgard rules, non-conformance,
+   * corrective action, effectiveness check; the plotted results are an
+   * illustrative run, not data). */
+  hero: {
+    kind: "control",
+    id: "QC · control chart",
+    title: "Daily QC on the method",
+    from: "ISO/IEC 17025 · Westgard rules",
+    stages: { run: "In control", breach: "Rule violated", action: "Nonconformance", released: "Back in control" },
+    points: [0.4, -0.7, 1.1, -0.3, 0.8, -1.2, 3.4, 0.6, -0.4, 0.2, -0.5],
+    breach: 6,
+    rule: "1-3s",
+    steps: [
+      { label: "Nonconformance raised", meta: "Analyst" },
+      { label: "Affected results held", meta: "Lab ops" },
+      { label: "Root cause · calibration", meta: "Metrology" },
+      { label: "Corrective action", meta: "Technical signatory" },
+    ],
+    cascadeStep: 1,
+    effective: "Effectiveness check",
+    sign: { idle: "Technical sign-off", done: "Signed off" },
+    approvers: { label: "Technical signatory" },
+    frame: { cap: "Checked against", items: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58", "ALCOA+"] },
+    cascade: {
+      cap: "Issued reports",
+      off: "Checking what already went out",
+      on: "Amendments tied to the NC",
+      note: "Reason and approver recorded",
+    },
+    clock: { cap: "Accreditation scope", line: "90 days to close, or it suspends" },
+    seal: { cap: "Accreditation file", off: "Evidence building", on: "Surveillance ready" },
+    aria:
+      "A QC control chart in Unifize: a result breaks the 1-3s Westgard rule, a nonconformance opens, affected results are held, the root cause and corrective action are bound to it, and the next results plot back in control with the effectiveness check on the record.",
+  },
+
+  thread: { title: "Nonconformance → corrective action" },
+
+  trust: {
+    label: "Built for ISO/IEC 17025-accredited labs",
+    marks: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58", "ALCOA+", "CLIA / CAP"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Nonconformance",
+        state: "In review",
+        title: "Nonconforming test result",
+        rows: [
+          { label: "Investigation & root cause bound", meta: "Quality" },
+          { label: "Corrective action review", meta: "Technical Signatory" },
+          { label: "Effectiveness check", meta: "Quality Manager", open: true },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Result", v: "Held" },
+          { k: "Waiting on", v: "Calibration disposition" },
+          { k: "Report", v: "Not yet issued" },
+        ],
+        note: "Released when the disposition is on the record",
+        cursor: LABOPS,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "Method validation",
+        title: "Validation evidence and uncertainty",
+        cite: "ISO/IEC 17025",
+        state: "Assembling",
+        cursor: SIGNATORY,
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "impact",
+        wash: "paper",
+        source: { kicker: "GLP work", title: "Validated state" },
+        items: [
+          { id: "IQ", label: "Installation qualification" },
+          { id: "OQ", label: "Operational qualification" },
+          { id: "PQ", label: "Performance qualification", open: true },
+        ],
+      },
+      go: { label: "How it stays validated ↓", href: "#validated" },
+    },
+    engineering: {
+      viz: {
+        kind: "signoff",
+        wash: "sky",
+        kicker: "Method change",
+        title: "Analyst authorization",
+        signers: [
+          { org: "Training", name: "Competency Lead", meaning: "Assessed", time: "Signed" },
+          { org: "Technical", name: "Technical Signatory", meaning: "Authorize" },
+        ],
+      },
+    },
+  },
+
+  coverage: {
+    title: "Nonconformance, methods, calibration, competency. One trace.",
+    lede: "Each runs with ISO/IEC 17025 built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the nonconforming result to an effectiveness check inside the scope clock.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Nonconformance",
+          title: "NC report",
+          fields: [
+            { label: "Type", value: "Nonconforming test result", select: true },
+            { label: "Scope", value: "Accreditation scope" },
+            { label: "Root cause", value: "Investigation attached", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      },
+      {
+        domain: "method-development",
+        line: "Validation evidence and proficiency testing held with the scope they support.",
+        viz: {
+          kind: "decision",
+          wash: "blue",
+          kicker: "Proficiency testing",
+          steps: [
+            { q: "PT result within limits?", a: "No" },
+            { q: "Inside the accreditation scope?", a: "Yes" },
+          ],
+          outcome: "Corrective action opened",
+          cursor: SIGNATORY,
+        },
+      },
+      {
+        domain: "equipment-calibration",
+        line: "Out-of-tolerance found, affected results traced and held on one record.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Calibration",
+          messages: [
+            { org: "Metrology", text: "Out of tolerance at calibration" },
+            { org: "Quality", text: "Affected results traced and held on the record" },
+          ],
+        },
+      },
+      {
+        domain: "training-competency",
+        line: "Every method change reaches the analysts it touches, before the effective date.",
+        viz: {
+          kind: "feed",
+          wash: "warm",
+          kicker: "Method changes",
+          items: [
+            { source: "Method", title: "New revision approved", tag: "Cascade", hot: true },
+            { source: "Analysts", title: "Scoped for re-authorization", tag: "Assigned" },
+            { source: "Proof", title: "Completion before the effective date", tag: "Due" },
+          ],
+        },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "ISO/IEC 17025 nonconformance at surveillance", viz: "sheet", clock: "90 days, or the scope suspends" },
+    { name: "Data integrity finding", viz: "elements", detail: ["ALCOA+", "Attributable", "Legible", "!Contemporaneous", "Original", "Complete"] },
+    { name: "Customer audit removes lab from an approved list", viz: "alerts" },
+  ],
 };

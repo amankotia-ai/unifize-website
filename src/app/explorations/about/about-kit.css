@@ -1,43 +1,148 @@
 /* ============================================================================
- * about-kit.css. Extends the DMS redesign system for the About page: three
- * plain two-column sections (heading left, content right) between the kit's
- * dark hero and close. ab-* namespace, scoped under .dms--about. Hairline
- * rows only; no colored edges, no figures.
+ * about-kit.css. The About page on the rails grammar (23 Sep 2026): the
+ * shared rails, bands and eyebrows come from _shared/page-rails.css, the
+ * charcoal hero, split head and close grid from platform-rails.css (this
+ * page is a pf-page); this file is what the About page composes itself.
+ * ab-* namespace, scoped under .dms--about. Cells rail to rail on the 1px
+ * gap trick; no colored edges.
  * ========================================================================== */
 
-/* every section: the kit's centered head, then the content stacked
- * beneath it at a reading width */
-.dms--about .ab-head { margin-bottom: clamp(36px, 4vw, 56px); }
-.dms--about .ab-head .dms-h2 { max-width: 16ch; }
-.dms--about .ab-head .dms-lede { max-width: 66ch; }
-.dms--about .ab-section .dms-wrap { max-width: 1160px; }
+/* the uppercase cell label the rails pages use over a cell's heading */
+.dms--about .ab-cell-label {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
 
-/* journey: three beats side by side, each under its own hairline */
+/* ================================================================ HERO
+ * the platform hero's charcoal and split head (platform-rails.css), with
+ * the page's three sections welded to its floor as cells on the charcoal,
+ * hairlines between, the hatch band under them the dark-to-light break */
+.dms--about .ab-hero .dms-hero__left { gap: 26px; }
+.dms--about .ab-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: clamp(56px, 6vw, 88px);
+  border-top: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+.dms--about .ab-chapters__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px var(--hm-rail-pad) 26px;
+  background: var(--dms-d-bg);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.18s cubic-bezier(0.2, 0, 0, 1);
+}
+.dms--about .ab-chapters__cell:hover { background: var(--dms-d-bg-2); }
+.dms--about .ab-chapters__cell:focus-visible { outline: 2px solid var(--u-blue-400); outline-offset: -2px; }
+.dms--about .ab-chapters__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--u-blue-400);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.dms--about .ab-chapters__label::after {
+  content: "\2193";
+  color: var(--dms-d-ink-3, #737a86);
+  font-weight: 400;
+  letter-spacing: 0;
+  transition: transform 0.18s cubic-bezier(0.2, 0, 0, 1);
+}
+.dms--about .ab-chapters__cell:hover .ab-chapters__label::after { transform: translateY(2px); }
+.dms--about .ab-chapters__line { color: var(--dms-d-ink-2); font-size: 0.95rem; line-height: 1.5; }
+
+/* every railed section: the split head, then content rail to rail */
+.dms--about .ab-section .pf-split-head { margin-bottom: clamp(36px, 4vw, 56px); }
+
+/* ============================================================= JOURNEY
+ * three beats as white cells rail to rail; the middle beat closes on a
+ * rust strip that names the tax (rust is the tax's colour, never blue) */
 .dms--about .ab-journey {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(28px, 3.5vw, 48px);
-  margin: 0;
+  gap: 1px;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
 }
 .dms--about .ab-journey__step {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding-top: 22px;
-  border-top: 1px solid var(--dms-hairline);
+  padding: clamp(26px, 2.6vw, 36px) var(--hm-rail-pad) clamp(28px, 3vw, 40px);
+  background: var(--dms-surface);
 }
-.dms--about .ab-journey__step .dms-h3 { max-width: 18ch; text-wrap: balance; }
+.dms--about .ab-journey__step:nth-child(2) { background: var(--hm-wash-paper); }
+.dms--about .ab-journey__step .dms-h3 { max-width: 18ch; margin: 0; text-wrap: balance; }
 .dms--about .ab-journey__body { display: flex; flex-direction: column; gap: 12px; }
-.dms--about .ab-journey__body .dms-body { text-wrap: pretty; }
+.dms--about .ab-journey__body .dms-body { margin: 0; text-wrap: pretty; }
+.dms--about .ab-journey__tax {
+  margin: auto 0 0;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in oklab, var(--dms-tax, #b4532a) 28%, transparent);
+  background: color-mix(in oklab, var(--dms-tax, #b4532a) 8%, transparent);
+  color: var(--dms-tax-text, var(--dms-tax, #9a4320));
+  font-size: 0.95rem;
+  font-weight: 560;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
 
-/* product: the figure, then the four products */
-.dms--about .ab-product { display: flex; flex-direction: column; gap: 20px; }
-.dms--about .ab-product__kicker { margin: 20px 0 0; color: var(--dms-ink-2); font-size: 0.95rem; text-align: center; }
-.dms--about .ab-product__foot { margin: 8px 0 0; font-size: 0.95rem; text-align: center; }
-.dms--about .ab-product__foot a { color: var(--dms-ink-2); text-decoration: none; }
-.dms--about .ab-product__foot a:hover { color: var(--dms-ink); }
+/* ============================================================= PRODUCT
+ * the figure on the sky wash rail to rail with the frosted plate, then a
+ * cell label row and the four products as cells */
+.dms--about .ab-stage {
+  position: relative;
+  padding: clamp(40px, 5vw, 72px) var(--hm-rail-pad);
+  background: var(--hm-wash-sky);
+  border-block: 1px solid var(--hm-rail);
+  isolation: isolate;
+}
+.dms--about .ab-stage::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 16%,
+    rgba(255, 255, 255, 0.38) 16% 28%,
+    transparent 28% 42%,
+    rgba(255, 255, 255, 0.24) 42% 50%,
+    transparent 50%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+.dms--about .ab-product__foot { margin: 22px 0 0; font-size: 0.95rem; }
+.dms--about .ab-product__foot a { color: var(--dms-accent); font-weight: 560; text-decoration: none; }
+.dms--about .ab-product__foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.dms--about .ab-prod-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: clamp(40px, 4.5vw, 64px);
+  padding-bottom: 16px;
+}
+.dms--about .ab-prod-head__note { color: var(--dms-ink-2); font-size: 0.95rem; }
 
 /* ---- the figure: systems of record, two flows, one thread */
 .dms--about .ab-fig {
@@ -48,7 +153,14 @@
   margin: 0 auto;
   padding: 20px 22px 22px;
   background: var(--dms-surface);
-  border: 1px solid var(--dms-hairline);
+  /* the frosted plate every product visual on the rails pages wears */
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 0 0 8px oklch(1 0 0 / 0.24),
+    0 0 0 9px oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
 }
 .dms--about .ab-fig__band { display: flex; flex-direction: column; gap: 10px; }
 .dms--about .ab-fig__lab {
@@ -193,24 +305,27 @@
 .dms--about .ab-prod {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-  margin: 0;
+  gap: 1px;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
 }
 .dms--about .ab-prod__tile {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   height: 100%;
-  padding: 16px 18px 14px;
-  border: 1px solid var(--dms-hairline);
+  padding: 26px var(--hm-rail-pad) 24px;
   background: var(--dms-surface);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.18s cubic-bezier(0.2, 0, 0, 1), transform 0.18s cubic-bezier(0.2, 0, 0, 1);
+  transition: background-color 0.18s cubic-bezier(0.2, 0, 0, 1);
 }
-.dms--about .ab-prod__tile:hover { border-color: var(--dms-line-strong); transform: translateY(-1px); }
+.dms--about .ab-prod__tile:hover { background: var(--n-50, #f7f7f5); }
+.dms--about .ab-prod__tile:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: -2px; }
 .dms--about .ab-prod__top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
 .dms--about .ab-prod__glyph {
   display: inline-flex;
@@ -225,20 +340,20 @@
 .dms--about .ab-prod__code { color: var(--dms-accent-text, var(--dms-accent)); font-family: var(--dms-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; }
 .dms--about .ab-prod__name { color: var(--dms-ink); font-family: var(--dms-display); font-size: 1rem; font-weight: 600; letter-spacing: -0.012em; line-height: 1.25; }
 .dms--about .ab-prod__body { color: var(--dms-ink-2); font-size: 0.88rem; line-height: 1.5; text-wrap: pretty; }
-.dms--about .ab-prod__more { margin-top: auto; padding-top: 6px; color: var(--dms-muted); font-size: 0.82rem; transition: color 0.18s cubic-bezier(0.2, 0, 0, 1); }
-.dms--about .ab-prod__tile:hover .ab-prod__more { color: var(--dms-accent); }
+.dms--about .ab-prod__more { margin-top: auto; padding-top: 12px; color: var(--dms-accent); font-weight: 560; font-size: 0.82rem; transition: color 0.18s cubic-bezier(0.2, 0, 0, 1); }
+.dms--about .ab-prod__tile:hover .ab-prod__more { text-decoration: underline; text-underline-offset: 3px; }
 
 /* locations: the map, then the two office tiles that drive it */
-.dms--about .ab-map { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-.dms--about .ab-map .ab-head { align-self: stretch; }
+.dms--about .ab-map { display: flex; flex-direction: column; }
 .dms--about .ab-offices {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  width: 100%;
-  margin: 0;
+  gap: 1px;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
   padding: 0;
   list-style: none;
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
 }
 .dms--about .ab-offices__btn {
   display: grid;
@@ -247,18 +362,29 @@
   align-items: start;
   width: 100%;
   margin: 0;
-  padding: 18px 20px;
+  height: 100%;
+  padding: 24px var(--hm-rail-pad) 26px;
   background: var(--dms-surface);
-  border: 1px solid var(--dms-hairline);
+  border: 0;
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: border-color 0.18s cubic-bezier(0.2, 0, 0, 1);
+  transition: background-color 0.18s cubic-bezier(0.2, 0, 0, 1);
 }
-.dms--about .ab-offices__btn:hover { border-color: var(--dms-line-strong); }
-.dms--about .ab-offices__row.is-active .ab-offices__btn { border-color: var(--dms-accent); }
-.dms--about .ab-offices__btn:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: 4px; }
+.dms--about .ab-offices__btn:hover { background: var(--n-50, #f7f7f5); }
+/* the active office: a filled blue square before the city, never an edge */
+.dms--about .ab-offices__row.is-active .ab-offices__btn { background: var(--n-50, #f7f7f5); }
+.dms--about .ab-offices__row.is-active .ab-offices__name::before {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 10px;
+  vertical-align: 0.14em;
+  content: "";
+  background: var(--dms-accent);
+}
+.dms--about .ab-offices__btn:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: -2px; }
 .dms--about .ab-offices__city { display: flex; flex-direction: column; gap: 4px; }
 .dms--about .ab-offices__name {
   font-family: var(--dms-display);
@@ -274,7 +400,8 @@
 .dms--about .ab-offices__row.is-active .ab-offices__name { color: var(--dms-accent); }
 .dms--about .ab-offices address { display: flex; flex-direction: column; font-style: normal; }
 .dms--about .ab-map__all {
-  margin: 6px 0 0;
+  align-self: flex-start;
+  margin: 18px 0 0;
   padding: 0;
   background: none;
   border: 0;
@@ -283,16 +410,16 @@
   font-size: 0.95rem;
   cursor: pointer;
 }
-.dms--about .ab-map__all:hover { color: var(--dms-ink); }
+.dms--about .ab-map__all:hover { color: var(--dms-accent); }
 
 /* the map itself: square, hairline-framed, on the kit's alt surface while
  * the style loads */
 .dms--about .ab-map__canvas {
-  width: 100%;
-  height: clamp(360px, 38vw, 520px);
+  height: clamp(380px, 40vw, 560px);
   min-width: 0;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
   background: var(--dms-surface-alt);
-  border: 1px solid var(--dms-hairline);
+  border-block: 1px solid var(--hm-rail);
   isolation: isolate;
 }
 .dms--about .ab-map__canvas .maplibregl-map { font-family: var(--u-font); }
@@ -340,30 +467,20 @@
 }
 .dms--about .ab-map__canvas .maplibregl-ctrl-attrib a { color: var(--dms-ink-2); }
 
-/* close: the kit's close without the convergence mark, so no reserved
- * height for it; the section is as tall as its copy plus section padding */
-.dms--about.dms--redesign .dms-close {
-  min-height: 0;
-  padding: var(--dms-section-y) 0;
-  place-items: center;
-}
-.dms--about .ab-close__grid { grid-template-columns: minmax(0, 1fr); }
-.dms--about .dms-close .dms-close__h { max-width: 16ch; }
-
 /* ------------------------------------------------------------ responsive */
 @media (max-width: 1000px) {
   .dms--about .ab-prod { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 900px) {
-  .dms--about .ab-journey { grid-template-columns: 1fr; gap: 0; }
-  .dms--about .ab-journey__step { padding: 22px 0; }
-  .dms--about .ab-journey__step:last-child { border-bottom: 1px solid var(--dms-hairline); }
+  .dms--about .ab-journey { grid-template-columns: 1fr; }
+  .dms--about .ab-chapters { grid-template-columns: 1fr; }
+  .dms--about .ab-chapters__cell { padding-block: 16px 18px; }
   .dms--about .ab-offices { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .dms--about .ab-offices__btn { grid-template-columns: 1fr; }
   .dms--about .ab-map__canvas { height: 320px; }
-  .dms--about .ab-fig { padding: 16px; }
+  .dms--about .ab-fig { padding: 16px; box-shadow: 0 0 0 5px oklch(1 0 0 / 0.24), 0 0 0 6px oklch(1 0 0 / 0.45), 0 24px 48px -20px oklch(0 0 0 / 0.22); }
   .dms--about .ab-fig__tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   /* the two flows stay side by side so the arrows never meet tip to tip */
   .dms--about .ab-fig__flows { gap: 12px; }

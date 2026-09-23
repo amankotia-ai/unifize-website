@@ -7,9 +7,20 @@
  * FAQ → close), driven by MES content. Product visuals are coded prototypes
  * (mes-mocks) awaiting real screenshots. Content is sourced from the Unifize
  * Products database (Notion): MES (UPD-5).
+ *
+ * 23 Sep 2026, the rails port: the page moved onto the same template as the
+ * DMS page (../dms/page.tsx, 22 Sep rails wave): two hairline rails down the
+ * content column, hatched divider bands between sections, the arcade hero on
+ * a wash with the glyph step rail on top, a light middle (sticky module rail,
+ * capabilities, lifecycle, integrations, owners), the homepage reel of
+ * customer stills for proof, and the charcoal close + footer. The page carries
+ * the DMS scope classes (`dms--stylized dms--rails dms-page`) so
+ * stylized.css and dms-rails.css apply as-is; mes-rails.css holds the few
+ * MES-only differences. Section content, data and arcade journeys are MES.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ProductAudience } from "../_shared/ProductAudience";
 import { MES_ARCADE_FLOW_CONFIGS, MES_HERO_STEPS, MES_MODULE_ARCADE_CONFIGS } from "./mes-arcade";
 import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import {
@@ -17,7 +28,6 @@ import {
   MES_PROBLEMS,
   MES_FLOWS,
   MODULES,
-  MODULE_POINT_ICONS,
   LIFECYCLE,
   INTEGRATIONS,
   INTEGRATIONS_MINIMAL_LEDE,
@@ -43,21 +53,22 @@ import {
   MesInspection,
   MesControlPlan,
   MesBatchRecord,
-  MES_MODULE_MOCKS,
 } from "./mes-mocks";
 import { MesProblemSpotlight } from "./mes-problem-visuals";
 import { mesCopy } from "./mes-copy";
-import { MesProofFilms } from "./mes-proof";
-import {
-  ModuleExplorer,
-  LifecycleExplorer,
-  FaqAccordion,
-} from "../dms/dms-interactive";
+import { MesProofReel } from "./mes-proof";
+import { LifecycleExplorer, FaqAccordion } from "../dms/dms-interactive";
+import { ModuleRail } from "../dms/dms-modules-rail";
+import { HatchBand } from "../../_shared/page-rails";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
 import "../_shared/product-kit.css";
 import "../dms/dms-redesign.css";
+import "../dms/stylized/stylized.css";
 import "./mes.css";
+import "../../_shared/page-rails.css";
+import "../dms/dms-rails.css";
+import "./mes-rails.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
@@ -85,11 +96,13 @@ const MES_TRUST_INDUSTRIES =
 
 export default function MesProductPage() {
   return (
-    <main className="dms dms--redesign mes">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page mes">
       <DmsHeader />
 
-      {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="Manufacturing Execution System">
+      {/* ============================ HERO =============================
+        * Dark grey ground: the centred head, then the arcade window on the
+        * wash running rail to rail with the glyph step rail on top. */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed" aria-label="Manufacturing Execution System">
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
@@ -117,21 +130,20 @@ export default function MesProductPage() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* The establishing shot is the arcade itself: one app window
-            * walking WO-9021 from the no-code builder that configures its
-            * traveller, through the release queue and the live floor
-            * dashboard, to the sealed lot, with a numbered step rail under
-            * it. Same treatment as every product page hero. */}
-          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-            <HeroArcade steps={MES_HERO_STEPS} />
-          </div>
-
+        {/* The establishing shot is the arcade itself: one app window walking
+          * WO-9021 from the no-code builder that configures its traveller,
+          * through the release queue and the live floor dashboard, to the
+          * sealed lot. The wrap bleeds so the wash runs rail to rail. */}
+        <div className="dms-wrap dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade hm-bleed">
+          <HeroArcade steps={MES_HERO_STEPS} rail="top" />
         </div>
       </section>
 
-      {/* ============================ TRUST STRIP ======================= */}
-      <section className="dms-section dms-section--dark dms-trust" aria-label="Industries served">
+      {/* ============================ TRUST STRIP =======================
+        * Same charcoal, inside the rails, straight under the arcade. */}
+      <section className="dms-section dms-section--dark dms-trust hm-trust--rails hm-railed" aria-label="Industries served">
         <div className="dms-wrap dms-trust__inner">
           <p className="dms-trust__label">One governed record across regulated production</p>
           <ul className="dms-trust__logos" aria-label="Representative industries">
@@ -145,8 +157,11 @@ export default function MesProductPage() {
         </div>
       </section>
 
+      {/* the first hatched divider: the dark-to-light break */}
+      <HatchBand />
+
       {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems" id="problem" aria-labelledby="mes-problems-title">
+      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="mes-problems-title">
         <div className="dms-wrap dms-problems__inner">
           <header className="dms-problems__intro">
             <div className="dms-problems__head">
@@ -170,33 +185,39 @@ export default function MesProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ==================== THE COORDINATION TAX =====================
-       * The four daily symptoms roll up into one measurable root cause. */}
+       * The four daily symptoms roll up into one measurable root cause, read
+       * as a BEFORE / AFTER ledger with a drawn scene per stage. */}
       <StylizedCoordinationTax
         problems={MES_PROBLEMS}
         scenes={MES_CTAX_SCENES}
         afterNotes={MES_CTAX_AFTER_NOTES}
         copy={MES_CTAX_COPY}
+        className="hm-railed"
       />
 
+      <HatchBand />
+
       {/* ============================ 02 · MODULES BUNDLED ===============
-       * The Unifize product story begins after the problem is fully framed. */}
-      <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
-        <ModuleExplorer
-          arcadeConfigsByModule={MES_MODULE_ARCADE_CONFIGS}
+       * Sticky rail ledger: module names pin on the left while the five
+       * rows pass, each with its arcade scene on a wash between the rails. */}
+      <section className="dms-section dms-modx-section hm-railed" id="modules">
+        <ModuleRail
           modules={MODULES}
-          mocks={MES_MODULE_MOCKS}
           heading="Five disciplines, one shop floor."
           lede="The work order, the traveller, the inspection, and the batch record stay connected from release to a sealed, traceable lot."
+          arcadeConfigsByModule={MES_MODULE_ARCADE_CONFIGS}
           ariaLabel="MES modules"
-          urlBase="mes"
-          pointIcons={MODULE_POINT_ICONS}
         />
       </section>
 
+      <HatchBand />
+
       {/* ============================ 03 · CAPABILITIES ==================
-       * Composition: sticky header rail left, indexed ledger right. On ink. */}
-      <section className="dms-section dms-section--dark pk-caps-ink" id="capabilities">
+       * Composition: header rail left, hairline cell ledger right. */}
+      <section className="dms-section dms-caps-section hm-railed" id="capabilities">
         <div className="dms-wrap dms-caps-grid">
           <header className="dms-caps__rail" data-reveal>
             <Eyebrow n={3}>Capabilities</Eyebrow>
@@ -214,10 +235,13 @@ export default function MesProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ============================ 04 · LIFECYCLE =====================
-       * The lot's path from released work order to sealed record. The live
-       * panel stages the product prototype for the active step. On ink. */}
-      <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
+       * The lot's path from released work order to sealed record. On the
+       * rails the section is light (the dark lifex classes are dropped so
+       * the header samples it as light). */}
+      <section className="dms-section dms-lifex-section--rails hm-railed" id="lifecycle">
         {/* Same treatment as the DMS page: sticky story layout, no map chip;
           * the flow chips are arcade journeys on the persistent camera. */}
         <LifecycleExplorer
@@ -240,6 +264,7 @@ export default function MesProductPage() {
             <MesControlPlan key="fai" />,
             <MesBatchRecord key="sealed" />,
           ]}
+          stageFrame={false}
           stageUrl="app.unifize.com / mes / lot L-2271"
           mobileLabel="Batch record"
           mobileId="L-2271 · released → executed → inspected → FAI → sealed"
@@ -247,73 +272,43 @@ export default function MesProductPage() {
         />
       </section>
 
-      {/* ==================== INTEGRATIONS (connector layer) ===========
-       * Connective beat after the lifecycle: the batch record does not stop
-       * at Unifize's edge. Unnumbered interstitial, on ink, so it continues
-       * the dark block (02-04) one section longer before the light 05. */}
+      <HatchBand />
+
+      {/* ==================== INTEGRATIONS (connector layer) =========== */}
       <IntegrationLayer
         data={INTEGRATIONS}
         variant="minimal"
+        tone="light"
+        className="hm-railed"
+        minimalEyebrow="Integrations"
         minimalLede={INTEGRATIONS_MINIMAL_LEDE}
         logos={PRODUCT_INTEGRATION_LOGOS.mes}
       />
+
+      <HatchBand />
 
       {/* ============================ 05 · WHO IT IS FOR =================
        * Same treatment as the DMS stylized page: one card per persona on the
        * MES row (UPD-5) in Notion, portrait + lifecycle span + three daily
        * lines. Membership follows the Target Personas relation on sync. */}
-      <section className="dms-section dms-audience" id="who" aria-labelledby="mes-audience-title">
-        <div className="dms-wrap">
-          <header className="dms-audience__head" data-reveal>
-            <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="mes-audience-title">{mesCopy("audience.heading", AUDIENCE.heading)}</h2>
-            <p className="dms-lede">{mesCopy("audience.lede", AUDIENCE.lede)}</p>
-          </header>
+      <ProductAudience
+        idPrefix="mes"
+        heading={mesCopy("audience.heading", AUDIENCE.heading)}
+        lede={mesCopy("audience.lede", AUDIENCE.lede)}
+        personas={AUDIENCE.personas}
+      />
 
-          <div className="dms-audience__personas">
-            {AUDIENCE.personas.map((persona) => (
-              <article className="dms-owner" key={persona.role} data-reveal>
-                <header className="dms-owner__identity">
-                  <div className="dms-owner__portrait" aria-hidden="true">
-                    <img className="dms-owner__photo" src={persona.img} alt="" loading="lazy" />
-                  </div>
-                  <div className="dms-owner__identity-copy">
-                    <h3 className="dms-owner__role">
-                      {persona.href ? (
-                        <Link href={persona.href}>
-                          {persona.role}<span aria-hidden="true">↗</span>
-                        </Link>
-                      ) : persona.role}
-                    </h3>
-                  </div>
-                </header>
+      <HatchBand />
 
-                {persona.owns && (
-                  <dl className="dms-owner__scope">
-                    <dt>Lifecycle ownership</dt>
-                    <dd>{persona.owns}</dd>
-                  </dl>
-                )}
+      {/* ============================ 06 · PROOF =========================
+        * The homepage's reel of customer stills, on the bookends' charcoal,
+        * with the MES roster (mes-proof.tsx). */}
+      <MesProofReel />
 
-                <div className="dms-owner__work">
-                  <p className="dms-owner__work-label">Day to day</p>
-                  <ul className="dms-owner__daily" aria-label={`${persona.role} responsibilities`}>
-                    {persona.daily.map((responsibility) => (
-                      <li key={responsibility}>{responsibility}</li>
-                    ))}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============================ 06 · PROOF ========================= */}
-      <MesProofFilms />
+      <HatchBand />
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
-      <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="mes-compliance-title">
+      <section className="dms-section dms-compliance hm-railed" id="compliance" aria-labelledby="mes-compliance-title">
         <div className="dms-wrap">
           <header className="dms-compliance__head" data-reveal>
             <div className="dms-head">
@@ -354,8 +349,10 @@ export default function MesProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ============================ 08 · FAQ =========================== */}
-      <section className="dms-section dms-section--alt" id="faq">
+      <section className="dms-section dms-section--alt dms-faq-section hm-railed" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
             <Eyebrow n={8}>FAQ</Eyebrow>
@@ -370,40 +367,16 @@ export default function MesProductPage() {
         </div>
       </section>
 
-      {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close" id="demo" aria-labelledby="mes-close-h">
+      {/* the last light-to-dark break: the FAQ hands to the close block */}
+      <HatchBand />
+
+      {/* ============================ CLOSE =============================
+        * On the hero's charcoal so the page opens and closes on the same
+        * ground; the rails run through it and on through the footer. */}
+      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="mes-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
             <div className="dms-close__convergence" aria-hidden="true">
-              <svg className="dms-close__flow" viewBox="0 0 1200 320" fill="none">
-                <defs>
-                  <path id="mes-flow-outer-left" d="M120 0C120 130 190 224 330 270C420 300 498 296 554 280" />
-                  <path id="mes-flow-inner-left" d="M360 0C360 126 380 206 438 244C480 272 520 268 554 252" />
-                  <path id="mes-flow-top-left" d="M520 0C520 120 520 186 564 228" />
-                  <path id="mes-flow-top-center" d="M600 0V228" />
-                  <path id="mes-flow-top-right" d="M680 0C680 120 680 186 636 228" />
-                  <path id="mes-flow-inner-right" d="M840 0C840 126 820 206 762 244C720 272 680 268 646 252" />
-                  <path id="mes-flow-outer-right" d="M1080 0C1080 130 1010 224 870 270C780 300 702 296 646 280" />
-                </defs>
-                <g className="dms-close__flow-lines">
-                  <use href="#mes-flow-outer-left" />
-                  <use href="#mes-flow-inner-left" />
-                  <use href="#mes-flow-top-left" />
-                  <use href="#mes-flow-top-center" />
-                  <use href="#mes-flow-top-right" />
-                  <use href="#mes-flow-inner-right" />
-                  <use href="#mes-flow-outer-right" />
-                </g>
-                <g className="dms-close__flow-signals">
-                  <use className="dms-close__flow-signal dms-close__flow-signal--1" href="#mes-flow-outer-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--2" href="#mes-flow-inner-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--3" href="#mes-flow-top-left" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--4" href="#mes-flow-top-center" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--5" href="#mes-flow-top-right" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--6" href="#mes-flow-inner-right" />
-                  <use className="dms-close__flow-signal dms-close__flow-signal--7" href="#mes-flow-outer-right" />
-                </g>
-              </svg>
               <div className="dms-close__mark">
                 <svg viewBox="0 2.2 21 22" fill="none">
                   <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
@@ -412,7 +385,7 @@ export default function MesProductPage() {
               </div>
             </div>
             <div className="dms-close__lead">
-              <span className="dms-close__eyebrow">Ready when you are</span>
+              <Eyebrow>Ready when you are</Eyebrow>
               <h2 className="dms-close__h" id="mes-close-h">Bring the batch record you rebuild by hand.</h2>
               <p className="dms-lede">We will run a lot live, from a released work order to a sealed, traceable record, signed at every step.</p>
               <div className="dms-close__cta">
@@ -423,7 +396,8 @@ export default function MesProductPage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------- footer */}
+      {/* ------------------------------------------------------- footer
+        * the footer closes the page on the same charcoal as the close */}
       <SiteFooter tagline="One governed record for every lot on the floor." note="Manufacturing Execution System · UPD-5" />
     </main>
   );

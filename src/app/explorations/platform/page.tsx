@@ -58,6 +58,8 @@ import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
 import { DmsMotion } from "../products/dms/dms-motion";
 import { PlatformJourney, PlatformStack } from "./platform-interactive";
+import { PlatformHeroFilm } from "./platform-hero-film";
+import { HERO_FILM as HERO_FILM_ASSETS } from "./hero-film-assets";
 import { PlatformCoexistence } from "./platform-coexistence";
 import { PlatformGap } from "./platform-gap";
 import { PlatformEvidence } from "./platform-evidence";
@@ -101,6 +103,9 @@ const JOURNEY_ICONS = {
   builder: "M3 5h9v2H3V5Zm11 0h3v2h-3V5Zm-1.5-1.5h-2v5h2v-5ZM3 13h3v2H3v-2Zm5 0h9v2H8v-2Zm-1.5-1.5h-2v5h2v-5Z",
   dashboard: "M3 11h3.5v6H3v-6Zm5.25-5h3.5v11h-3.5V6Zm5.25-3H17v14h-3.5V3Z",
 };
+
+/* the hero: the pre-rendered film (true) or the live arcade journey (false) */
+const HERO_FILM = true;
 
 const JOURNEY_STEPS = [
   { title: "The home screen", icon: JOURNEY_ICONS.home, body: "Built for the role. Quality managers and approvers land on different work." },
@@ -275,7 +280,14 @@ const STANDARD_GROUPS = [
 /* 05 measured is parked, not deleted (22 Sep 2026) */
 const SHOW_MEASURED = false;
 
-export default function PlatformPage() {
+export default async function PlatformPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ hero?: string }>;
+}) {
+  /* ?hero=arcade shows the live arcade journey (the film's source screens,
+   * captured by scripts/platform-render/capture.mjs) */
+  const heroFilm = HERO_FILM && (await searchParams).hero !== "arcade";
   /* customer-attested figures; each card disappears if its film is ever
    * unapproved or unpublished in Notion (governance lives in the adapter) */
   const measuredFilm = filmByWistia("qp7129voyy"); /* Tedd Carr · Will-Burt · NC closure down 75% */
@@ -320,17 +332,28 @@ export default function PlatformPage() {
           </div>
         </div>
 
-        {/* the hero object: the platform, end to end. ONE app window on
-          * the persistent camera, on the wash running rail to rail; the
-          * rail under it names the six screens and lets the reader take
-          * the wheel. */}
+        {/* the hero object: the platform, end to end. Since 23 Sep 2026 a
+          * pre-rendered film (one change, one take; scripts/platform-render)
+          * flush on the charcoal, the rail under it seeking its six
+          * chapters. HERO_FILM = false restores the live arcade journey on
+          * the wash. */}
         <div className="dms-wrap dms-hero__frame dms-hero__product-demo pf-hero-demo hm-bleed">
-          <PlatformJourney
-            steps={JOURNEY_STEPS}
-            configs={PLATFORM_JOURNEY_CONFIGS}
-            label="The platform, screen by screen"
-            ribbon="twin"
-          />
+          {heroFilm ? (
+            <PlatformHeroFilm
+              steps={JOURNEY_STEPS}
+              label="The platform, screen by screen"
+              poster={HERO_FILM_ASSETS.poster}
+              sources={[{ src: HERO_FILM_ASSETS.src, type: HERO_FILM_ASSETS.type }]}
+              description="One change control, CC-2148, followed across six Unifize screens: the home queue, the inbox thread, the checklist, the Part 11 signature, the process builder, and the dashboard."
+            />
+          ) : (
+            <PlatformJourney
+              steps={JOURNEY_STEPS}
+              configs={PLATFORM_JOURNEY_CONFIGS}
+              label="The platform, screen by screen"
+              ribbon="twin"
+            />
+          )}
         </div>
       </section>
 
@@ -377,27 +400,7 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* the gap hands to coexistence across a hatched band */}
-      <HatchBand />
-
-      {/* ============================ 03 · YOUR SYSTEMS STAY ============
-       * The second message, on its own and small: nothing is ripped out. */}
-      <section className="dms-section pf-coex-section hm-railed" id="coexistence" aria-labelledby="pf-coex-title">
-        <div className="dms-wrap">
-          <header className="pf-split-head" data-reveal>
-            <div>
-              <Eyebrow>Coexistence</Eyebrow>
-              <h2 className="dms-h2" id="pf-coex-title">Your systems stay.</h2>
-            </div>
-            <p className="dms-lede">
-              Unifize runs alongside the systems of record and the tools your teams already use. Nothing is
-              ripped out, and only what you agree flows back.
-            </p>
-          </header>
-          <PlatformCoexistence />
-        </div>
-      </section>
-
+      {/* the gap hands to the stack across a hatched band */}
       <HatchBand />
 
       {/* ============================ 03 · THE STACK ====================
@@ -420,7 +423,28 @@ export default function PlatformPage() {
         </div>
       </section>
 
-      {/* the light-to-dark break before Unifize AI, on the stack's white */}
+      {/* the stack hands to coexistence across a hatched band */}
+      <HatchBand />
+
+      {/* ============================ 03 · YOUR SYSTEMS STAY ============
+       * The second message, on its own and small: nothing is ripped out. */}
+      <section className="dms-section pf-coex-section hm-railed" id="coexistence" aria-labelledby="pf-coex-title">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Coexistence</Eyebrow>
+              <h2 className="dms-h2" id="pf-coex-title">Your systems stay.</h2>
+            </div>
+            <p className="dms-lede">
+              Unifize runs alongside the systems of record and the tools your teams already use. Nothing is
+              ripped out, and only what you agree flows back.
+            </p>
+          </header>
+          <PlatformCoexistence />
+        </div>
+      </section>
+
+      {/* the light-to-dark break before Unifize AI, on the coexistence white */}
       <HatchBand />
 
       {/* ============================ 04 · UNIFIZE AI ===================

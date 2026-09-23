@@ -15,7 +15,7 @@
  * for this segment) — the canonical per-company coordination tax carries it.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
 
 export const PHARMACEUTICALS: IndustryData = {
   slug: "pharmaceuticals",
@@ -24,7 +24,7 @@ export const PHARMACEUTICALS: IndustryData = {
   meta: {
     title: "Pharmaceuticals · Unifize",
     description:
-      "Your QMS records that a batch was released. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, regulatory, and operations, so it holds up at an FDA inspection. The industry template, instanced on Pharmaceuticals.",
+      "Your QMS records that a batch was released. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, regulatory, and operations, so it holds up at an FDA inspection.",
   },
 
   hero: {
@@ -311,4 +311,216 @@ export const PHARMACEUTICALS: IndustryData = {
     heading: "Incumbents track batch records. Unifize reconstructs the decision.",
     lede: "Pick a deviation or change you could not replay at the last inspection. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (23 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row (Primary Fear Anchor: change impact across
+ *   validated equipment, qualified suppliers and registered specifications;
+ *   a change approved verbally that never landed in the change control
+ *   record; Quality unit oversight. Opportunity: training cascade as the
+ *   highest-priority entry, APR / PQR, supplier change notification, CMC
+ *   change notifications to FDA and EMA. Regulatory Vocabulary: change
+ *   classification, QP release, batch record, ALCOA+).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * Cursors carry persona titles, not people; no record numbers or metrics.
+ * ========================================================================== */
+const QA = { name: "QA Director", tone: "#d97706" };
+const SITE = { name: "Site Head", tone: "#2563eb" };
+const RA = { name: "RA Director", tone: "#7c3aed" };
+
+export const PHARMACEUTICALS_RAILS: IndustryRails = {
+  /* the key element: the executed batch record under review (Notion
+   * vocabulary: executed batch record, OOS, deviation classification, CAPA,
+   * QP release; Opportunity: batch record review). Section names are the
+   * generic parts of any executed record, not a claim about a product. */
+  hero: {
+    kind: "batch",
+    id: "Executed batch record",
+    title: "Batch record review",
+    from: "Master → executed · 21 CFR 210/211",
+    stages: { review: "Under review", exception: "Exception open", investigation: "Deviation open", qp: "QP review", released: "Released" },
+    rows: [
+      { label: "Bill of materials", ref: "Dispensed against the master" },
+      { label: "Line clearance", ref: "Equipment and area verified" },
+      { label: "In-process controls", ref: "Results against specification" },
+      { label: "Yield reconciliation", ref: "Within the master's limits" },
+      { label: "Labeling", ref: "Label version checked" },
+    ],
+    exception: { row: 2, label: "OOS result", closed: "Closed on deviation" },
+    deviation: {
+      head: "Deviation · classified major",
+      steps: [
+        { label: "OOS investigation", meta: "Quality" },
+        { label: "Root cause bound", meta: "Quality · RA" },
+        { label: "CAPA linked", meta: "Effectiveness check" },
+      ],
+    },
+    stamp: { main: "QP RELEASED", sub: "Reason on the record" },
+    sign: { idle: "Sign · Part 11", done: "Signed · Part 11" },
+    approvers: { label: "Qualified Person" },
+    frame: { cap: "Checked against", items: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10", "EU Annex 11"] },
+    cascade: {
+      cap: "CAPA effectiveness",
+      off: "Awaiting root cause",
+      on: "Effectiveness check scheduled",
+      note: "Closed before it ages into a 483",
+    },
+    clock: { cap: "APR / PQR", line: "Fixed annual deadline · 211.180(e)" },
+    seal: { cap: "Batch disposition", off: "On hold", on: "Released, reason on record" },
+    aria:
+      "An executed batch record under review in Unifize: an out-of-specification result opens a deviation, the investigation, root cause and CAPA are bound to it, the section closes, and the Qualified Person releases the batch with the reason on the record.",
+  },
+
+  thread: { title: "Deviation → CAPA" },
+
+  trust: {
+    label: "Built for GxP-regulated pharma teams",
+    marks: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10", "EU GMP Annex 11", "EU Annex 1"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Deviation",
+        state: "In review",
+        title: "Deviation → CAPA",
+        rows: [
+          { label: "Investigation & impact bound", meta: "Quality" },
+          { label: "CAPA cross-functional review", meta: "Quality · RA" },
+          { label: "QP release", meta: "Qualified Person", open: true },
+        ],
+        cursor: QA,
+      },
+      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Batch", v: "Awaiting disposition" },
+          { k: "Waiting on", v: "Deviation closure" },
+          { k: "Released by", v: "QP release" },
+        ],
+        note: "Moves on the thread, not on an email",
+        cursor: SITE,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "Post-approval change",
+        title: "CMC change notification",
+        cite: "FDA · EMA",
+        state: "Drafting",
+        cursor: RA,
+      },
+      go: { label: "Regulatory affairs →", href: "/explorations/domains/regulatory-affairs" },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "impact",
+        wash: "paper",
+        source: { kicker: "System", title: "Validated state" },
+        items: [
+          { id: "IQ", label: "Installation qualification" },
+          { id: "OQ", label: "Operational qualification" },
+          { id: "PQ", label: "Performance qualification", open: true },
+        ],
+      },
+      go: { label: "How it stays validated ↓", href: "#validated" },
+    },
+    engineering: {
+      viz: {
+        kind: "signoff",
+        wash: "sky",
+        kicker: "Tech transfer",
+        title: "Process change",
+        signers: [
+          { org: "Process development", name: "Process Development", meaning: "Authored", time: "Signed" },
+          { org: "MSAT", name: "Tech Transfer Lead", meaning: "Reviewed", time: "Signed" },
+          { org: "Quality", name: "QA Director", meaning: "Approve" },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "Deviation, change, suppliers, training. One decision trace.",
+    lede: "Each runs with the GxP regulations built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the deviation on the floor to CAPA effectiveness and QP release.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Deviation",
+          title: "Unplanned deviation",
+          fields: [
+            { label: "Classification", value: "Major", select: true },
+            { label: "Batch record", value: "Executed batch record" },
+            { label: "Investigation", value: "OOS / OOT", focus: true },
+          ],
+          cursor: QA,
+        },
+        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      },
+      {
+        domain: "product-development",
+        line: "CMC and process changes classified, with post-approval impact assessed.",
+        viz: {
+          kind: "decision",
+          wash: "blue",
+          kicker: "Change classification",
+          steps: [
+            { q: "Like-for-like?", a: "No" },
+            { q: "Touches a registered specification?", a: "Yes" },
+          ],
+          outcome: "Major · notification impact assessed",
+          cursor: RA,
+        },
+        go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+      },
+      {
+        domain: "supplier-management",
+        line: "API, excipient and CMO changes worked across the boundary, not an inbox.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Supplier change notification",
+          messages: [
+            { org: "API supplier", text: "Change notification received for a qualified material", ext: true },
+            { org: "Quality", text: "Post-approval change impact assessed on the record" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/explorations/domains/supplier-management" },
+      },
+      {
+        domain: "training-competency",
+        line: "Every SOP revision fans out to the roles it touches, before the effective date.",
+        viz: {
+          kind: "feed",
+          wash: "warm",
+          kicker: "SOP revisions",
+          items: [
+            { source: "SOP", title: "New revision approved", tag: "Cascade", hot: true },
+            { source: "Roles", title: "Scoped for retraining", tag: "Assigned" },
+            { source: "Proof", title: "Completion before effectivity", tag: "Due" },
+          ],
+        },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "FDA Warning Letter received", viz: "letter", detail: ["Department of Health and Human Services", "WARNING LETTER"], clock: "15 working days" },
+    { name: "Data integrity finding", viz: "elements", detail: ["ALCOA+", "Attributable", "Legible", "!Contemporaneous", "Original", "Accurate"] },
+    { name: "Recall scope definition required", viz: "alerts" },
+  ],
 };

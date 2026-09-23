@@ -49,11 +49,15 @@ const graphicDraw = {
   show: { opacity: 1, pathLength: 1, transition: { duration: 0.18, ease: "easeOut" } },
 } satisfies Variants;
 
+/* the frame the drawing is read in (as on the DMS spotlight): a wide-and-
+ * short composition passes a tighter box so it fills the stage; `meet`
+ * keeps the whole drawing in frame, never cropped */
 function GraphicCanvas({
   children,
   play,
   staticMode,
-}: GraphicProps & { children: ReactNode }) {
+  viewBox = "0 0 720 480",
+}: GraphicProps & { children: ReactNode; viewBox?: string }) {
   return (
     <div className="dms-gfx" aria-hidden="true">
       <motion.svg
@@ -61,7 +65,7 @@ function GraphicCanvas({
         initial={staticMode ? false : "hidden"}
         preserveAspectRatio="xMidYMid meet"
         variants={graphicSequence}
-        viewBox="0 0 720 480"
+        viewBox={viewBox}
       >
         <rect className="dms-gfx__field" x="0" y="0" width="720" height="480" />
         {children}
@@ -74,7 +78,7 @@ function GraphicCanvas({
  * hold a piece; the lens goes looking for the chain and cannot assemble it. */
 function TraceGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="62 60 608 375">
       <motion.circle className="dms-gfx__halo" cx="500" cy="240" r="154" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M144 112C244 112 331 151 421 205" variants={graphicDraw} />
@@ -134,7 +138,7 @@ function TraceGraphic(props: GraphicProps) {
  * record, the rest of what it touches is a question mark. */
 function BlastRadiusGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="94 34 596 410">
       <motion.circle className="dms-gfx__halo" cx="545" cy="300" r="128" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M300 170C365 140 405 112 468 98" variants={graphicDraw} />
@@ -175,7 +179,7 @@ function BlastRadiusGraphic(props: GraphicProps) {
  * nothing points back, so the requirement never closes. */
 function UnverifiedGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="56 56 606 396">
       <motion.circle className="dms-gfx__halo" cx="345" cy="240" r="110" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M162 198C222 172 262 192 314 226" variants={graphicDraw} />
@@ -233,7 +237,7 @@ function UnverifiedGraphic(props: GraphicProps) {
  * plan dossier, so the riskiest mode ships with no control against it. */
 function DetachedFmeaGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="69 86 606 308">
       <motion.circle className="dms-gfx__halo" cx="520" cy="240" r="150" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M270 238C300 238 320 239 341 240" variants={graphicDraw} />
@@ -279,6 +283,18 @@ function ProblemGraphic({ kind, play, staticMode }: GraphicProps & { kind: Probl
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
+/* the cost line reads as one sentence (same as the DMS spotlight): the
+ * figure carries the weight, its caption, authored capitalised for the old
+ * stacked treatment, is lowered back into the sentence */
+const continueSentence = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  /* keep acronyms and proper nouns (ISO, FMEA, RPN) as authored */
+  const [first = "", second = ""] = [trimmed[0], trimmed[1] ?? ""];
+  if (second && second === second.toUpperCase() && /[A-Z]/.test(second)) return trimmed;
+  return first.toLowerCase() + trimmed.slice(1);
+};
+
 export function PlmProblemSpotlight({ items }: { items: DmsCoordinationProblem[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const inView = useInView(rootRef, { amount: 0.25, once: true });
@@ -314,21 +330,30 @@ export function PlmProblemSpotlight({ items }: { items: DmsCoordinationProblem[]
       </Tabs.List>
 
       <div className="dms-spot__stagewrap">
-        {items.map((problem) => (
+        {items.map((problem, index) => (
           <Tabs.Panel className="dms-spot__panel" key={problem.visual} value={problem.visual}>
             <div className="dms-spot__body">
               <div className="dms-spot__context">
-                <span className="dms-spot__category">{problem.category}</span>
+                <div className="dms-spot__head">
+                  <span className="dms-spot__category">{problem.category}</span>
+                  <span className="dms-spot__pos" aria-hidden="true">
+                    {pad(index + 1)} / {pad(items.length)}
+                  </span>
+                </div>
                 <blockquote className="dms-spot__quote">
                   <span className="dms-spot__quote-mark" aria-hidden="true">“</span>
                   <p>{problem.quote}</p>
                 </blockquote>
                 <div className="dms-spot__fact">
-                  <div className="dms-spot__metric">
-                    <strong>{problem.metric}</strong>
-                    <span>{problem.metricLabel}</span>
-                  </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
+                  {/* the coordination cost of this failure mode: one sentence,
+                    * the figure in the tax colour (rust), never the brand blue */}
+                  <p className="dms-spot__cost">
+                    <span className="dms-spot__cost-label">What it costs</span>
+                    <span className="dms-spot__cost-line">
+                      <b>{problem.metric}</b> {continueSentence(problem.metricLabel)}
+                    </span>
+                  </p>
                 </div>
                 {problem.film ? (
                   <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">

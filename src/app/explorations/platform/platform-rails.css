@@ -55,7 +55,7 @@
   --hm-rail: rgba(255, 255, 255, 0.12);
   --pf-dark-line: var(--hm-rail);
   padding-top: clamp(64px, 7.5vw, 112px);
-  padding-bottom: 0;
+  padding-bottom: clamp(56px, 6vw, 88px);
   background: var(--dms-d-bg);
   color: var(--dms-d-ink);
 }
@@ -184,14 +184,139 @@
 }
 
 
+/* each step shows only what its claim needs (Lakshman, Sep 9 review: the
+ * in-app nav and the "My Conversations" list are noise to a new visitor;
+ * zoom on the nuance per pose). The record steps (thread, checklist, seal)
+ * cut both away, the first 324px of the engine's 1150 grid, and keep the
+ * 826-wide record and checklist. The full-page screens (home, builder,
+ * dashboard) already cover the list, so they cut only the 54px nav. The
+ * camera re-centres on whatever is left (the -cut/2 term), and the plate
+ * moves off the camera onto a layer under it on .stx-arc, because the
+ * clip would cut a box-shadow plate away. Cut, drift and scale live on
+ * .stx-arc (:has) so the camera and its plate read the same values.
+ * --pf-hk is the camera's scale: the pose's own on desktop, and on tablets
+ * and phones the cut fitted to the window's width (--pf-arc-w, published by
+ * PlatformJourney), with the window's height following it. */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc {
+  --pf-hc: 54px;
+  --pf-hcn: 54;
+  --pf-hx: 0px;
+  --pf-hy: 0px;
+  --pf-hs: 0.9;
+  --pf-hk: calc(var(--pf-hs) * var(--pf-cam-k, 1));
+  --rf-plate: 8px;
+}
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-queue.is-pose-persona) { --pf-hc: 54px; --pf-hcn: 54; --pf-hx: 10px; --pf-hy: 6px; --pf-hs: 0.9; }
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-record) { --pf-hc: 324px; --pf-hcn: 324; --pf-hx: -8px; --pf-hy: -6px; --pf-hs: 0.93; }
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-checklist) { --pf-hc: 324px; --pf-hcn: 324; --pf-hx: -24px; --pf-hy: 0px; --pf-hs: 0.96; }
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-signature) { --pf-hc: 324px; --pf-hcn: 324; --pf-hx: -6px; --pf-hy: 4px; --pf-hs: 0.95; }
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-builder) { --pf-hc: 54px; --pf-hcn: 54; --pf-hx: 8px; --pf-hy: 0px; --pf-hs: 0.92; }
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-dashboard) { --pf-hc: 54px; --pf-hcn: 54; --pf-hx: 0px; --pf-hy: 6px; --pf-hs: 0.92; }
+
+/* tablets and phones: no drift (it would push a fitted window off centre);
+ * the cut fills the width less the plate, capped at the desktop scale, and
+ * the window is as tall as the scaled record plus its plate */
+@media (max-width: 1024px) {
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc {
+    --pf-hx: 0px !important;
+    --pf-hy: 0px !important;
+    --pf-hk: min(var(--pf-hs), calc((var(--pf-arc-w, 700) - 2 * var(--pf-plate-n, 8) - 4) / (1150 - var(--pf-hcn))));
+    /* sized for the tallest cut (the 826-wide record) so the height holds
+     * still while the steps change; the full-page screens sit inside it */
+    height: calc(560px * min(0.96, calc((var(--pf-arc-w, 700) - 2 * var(--pf-plate-n, 8) - 4) / 826)) + 2 * var(--rf-plate) + 8px);
+  }
+}
+@media (max-width: 720px) {
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc {
+    --rf-plate: 5px;
+    --pf-plate-n: 5;
+  }
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__camera {
+  --stx-camera-scale: var(--pf-hk);
+  clip-path: inset(0 0 0 var(--pf-hc));
+  outline: 0;
+  box-shadow: none;
+  transform: translate3d(
+      calc(-50% - var(--pf-hc) / 2 * var(--pf-hk) + var(--pf-hx)),
+      calc(-50% + var(--pf-hy)),
+      0)
+    scale(var(--pf-hk));
+}
+
+/* the sign dialog centres over the visible cut, not the clipped window */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__signwrap {
+  left: var(--pf-hc);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc::before {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: calc((1150px - var(--pf-hc)) * var(--pf-hk) + 2 * var(--rf-plate));
+  height: calc(560px * var(--pf-hk) + 2 * var(--rf-plate));
+  content: "";
+  background: oklch(1 0 0 / 0.24);
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+  transform: translate(calc(-50% + var(--pf-hx)), calc(-50% + var(--pf-hy)));
+  pointer-events: none;
+}
+
+/* the switch between steps (23 Sep, "better and more snappy"): one short
+ * ease-out for the camera, its cut and its plate, so the window lands in
+ * well under half a second and they all arrive together; the page swaps
+ * (home, builder, reports) and panel fades finish inside that move instead
+ * of trailing it, and highlights settle as the camera stops */
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc {
+    --pf-snap: 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    transition: transform var(--pf-snap), clip-path var(--pf-snap);
+  }
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc::before {
+    transition: transform var(--pf-snap), width var(--pf-snap), height var(--pf-snap);
+  }
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root :is(.stx-arc__home, .stx-arc__builder, .stx-arc__reports, .stx-arc__inbox, .stx-arc__conversation, .stx-arc__checklist) {
+    transition: opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__checklist > section > .stx-arc__check-items {
+    transition: grid-template-rows 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__step {
+    transition: background-color 120ms ease-out;
+  }
+}
+
 /* the step rail: six cells rail to rail on the charcoal, hairlines
  * between, welded to the bottom of the hero (the hatch band under it is
  * the dark-to-light break, as the trust strip is on the homepage) */
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf + .pf-journey__rail {
   margin-top: 0;
   border: 0;
+  position: relative;
   border-top: 1px solid var(--hm-rail);
   background: var(--hm-rail);
+}
+
+/* a hairline under the steps running the full width of the page, past the
+ * rails, so the cells close before the empty charcoal below (23 Sep) */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf + .pf-journey__rail::after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  content: "";
+  background: var(--hm-rail);
+  transform: translateX(-50%);
+  pointer-events: none;
 }
 
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__step {
@@ -248,6 +373,127 @@
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__timer i {
   background: var(--u-blue-400);
 }
+
+/* the hero film (23 Sep 2026): the pre-rendered take sits flush on the
+ * charcoal, no wash, no plate, no frame. Its own edges already fade to
+ * #1f2126; the mask makes that true on any crop too. The rail welds to its
+ * bottom like the arcade stage's. The timer follows the playhead (JS sets
+ * scaleX), so the kit's keyframe clock is switched off. */
+.dms--redesign.pf-page .dms-hero--rails .pf-film {
+  /* eased (smootherstep-shaped) ramps, not linear: the film thins into the
+   * charcoal beside the rails with no visible start or end to the fade.
+   * The frames carry their own wide fade too (post.py); this guarantees it
+   * on any crop, e.g. the 4:3 phone cut. */
+  --pf-film-mask-x: linear-gradient(90deg,
+    transparent 0%, rgb(0 0 0 / 0.03) 2%, rgb(0 0 0 / 0.16) 4.5%, rgb(0 0 0 / 0.42) 7%,
+    rgb(0 0 0 / 0.72) 9.5%, rgb(0 0 0 / 0.92) 12%, #000 14%,
+    #000 86%, rgb(0 0 0 / 0.92) 88%, rgb(0 0 0 / 0.72) 90.5%, rgb(0 0 0 / 0.42) 93%,
+    rgb(0 0 0 / 0.16) 95.5%, rgb(0 0 0 / 0.03) 98%, transparent 100%);
+  --pf-film-mask-y: linear-gradient(180deg,
+    transparent 0%, rgb(0 0 0 / 0.06) 3%, rgb(0 0 0 / 0.3) 6%, rgb(0 0 0 / 0.66) 9%,
+    rgb(0 0 0 / 0.9) 12%, #000 15%,
+    #000 85%, rgb(0 0 0 / 0.9) 88%, rgb(0 0 0 / 0.66) 91%, rgb(0 0 0 / 0.3) 94%,
+    rgb(0 0 0 / 0.06) 97%, transparent 100%);
+  position: relative;
+  /* 20:9 is the 16:9 film at 80% of its height (Abhishek, 23 Sep: "reduce
+   * the overall height by 20%"): the video covers it and crops evenly top
+   * and bottom, where the frames are mostly faded charcoal already */
+  aspect-ratio: 20 / 9;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  background: var(--dms-d-bg);
+  /* the arcade stage's drop shadow drew a box round the film, and its 1px
+   * white outline doubled the hero's rails (brighter at the sides, a 2px
+   * white line at the bottom where it met the step rail's border) */
+  box-shadow: none;
+  outline: 0;
+  /* the one horizontal rail between the hero copy and the film (the outline
+   * used to draw it; the sides are the hero's own rails, the bottom is the
+   * step rail's hairline) */
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-film__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--dms-d-bg);
+  -webkit-mask-image: var(--pf-film-mask-x), var(--pf-film-mask-y);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--pf-film-mask-x), var(--pf-film-mask-y);
+  mask-composite: intersect;
+}
+
+/* the film's grain lives here, not in the video (animated grain defeats
+ * compression): the site's paper grain, jittered in steps. It fills the
+ * stage edge to edge, UNMASKED: overlay grain lifts the charcoal by a level
+ * or two, and a faded mask turned that lift into a soft box inside the
+ * rails. Unmasked, it stops exactly on lines already there (the two rails,
+ * the hairline above, the step rail below). */
+.dms--redesign.pf-page .dms-hero--rails .pf-film::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  animation: pf-film-grain 0.5s steps(4) infinite;
+}
+
+@keyframes pf-film-grain {
+  0% { background-position: 0 0; }
+  25% { background-position: -37px 21px; }
+  50% { background-position: 53px -44px; }
+  75% { background-position: -18px 67px; }
+  100% { background-position: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.pf-page .dms-hero--rails .pf-film::after { animation: none; }
+}
+
+/* the line under the film is 1px of the rail's own hairline background
+ * showing through, not a border: a rail-tinted border painted over that
+ * rail-tinted background stacked to a brighter line than the hero rails */
+.dms--redesign.pf-page .dms-hero--rails .pf-film + .pf-journey__rail {
+  margin-top: 0;
+  border: 0;
+  position: relative;
+  padding-top: 1px;
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-film + .pf-journey__rail::after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  width: 100vw;
+  height: 1px;
+  content: "";
+  background: var(--hm-rail);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* steps past the end of a partial film (the test cut) */
+.dms--redesign.pf-page .dms-hero--rails .pf-film + .pf-journey__rail .pf-journey__step:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-film__timer i {
+  animation: none;
+  transform: scaleX(0);
+  will-change: transform;
+}
+
+/* phones keep the same 20:9 box: the close-ups are composed for the full
+ * width, and a narrower 4:3 crop cut the lifted pieces off at the sides (a
+ * phone-composed cut of the film is the fix if they read too small) */
 
 /* ================================================ 01 · COORDINATION TAX
  * Split head; the evidence ledger becomes cells rail to rail drawn with

@@ -1,0 +1,35 @@
+/* ============================================================================
+ * qms-rails.css - the QMS product page on the rails (23 Sep 2026)
+ *
+ * The page borrows the DMS rails template whole (dms/dms-rails.css, scope
+ * .dms--redesign.dms-page); this file is only what QMS has that DMS does
+ * not. DMS washes its three module stages by module key; QMS has six, so
+ * the three washes alternate down the ledger (blue, sky, warm, blue...).
+ * ========================================================================== */
+
+.dms--redesign.dms-page.qms .hm-railed .dms-mrail__row:nth-child(3n + 2) .dms-mrail__stage {
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.dms-page.qms .hm-railed .dms-mrail__row:nth-child(3n) .dms-mrail__stage {
+  background: var(--hm-wash-warm);
+}
+
+/* Eight personas on the QMS row (DMS has three): auto-fit left a blank
+ * cell on the last row, so the ledger runs 4 / 2 / 1 columns and always
+ * closes full. */
+.dms--redesign.dms-page.qms .hm-railed .dms-audience__personas {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1180px) {
+  .dms--redesign.dms-page.qms .hm-railed .dms-audience__personas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .dms--redesign.dms-page.qms .hm-railed .dms-audience__personas {
+    grid-template-columns: 1fr;
+  }
+}
