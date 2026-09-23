@@ -1,79 +1,76 @@
 /* ============================================================================
- * home-proof.tsx - the homepage Customer proof section: the shared film rail
- * (products/_shared/proof-films.tsx) over the Website Customer Videos mirror,
- * the same carousel treatment the product pages use. The lead card carries
- * the one figure a customer states on film; the curated head of the rail
- * keeps the quality, operations, and engineering voices the panel asked for
- * (role-coverage finding); the rest fills by module relevance across the
- * suite. Governance lives in customer-films.ts: an unapproved or unpublished
- * row simply stops rendering.
+ * home-proof.tsx - the homepage Customer proof section, 2026-09-22 (late):
+ * a reel of customer stills, replacing the stage-and-playlist of earlier the
+ * same day (Abhishek: "I don't want a video player and playlist kind of
+ * section here"; the reference is Rox's customer reel).
+ *
+ *   - One row of stills at the poster's native 16:9, scrolling edge to edge,
+ *     arrows in the head. Nothing plays inline; each still links to the
+ *     customer's story page on unifize.com.
+ *   - Under each still: the company, the speaker, and the one fact that
+ *     customer attests on film, taken from the film's title or transcript
+ *     (src/content/webflow/video-transcripts.json).
+ *   - The roster is one film per speaker, cross-functional on purpose:
+ *     quality control (manufacturing), quality (supplements), engineering
+ *     (medical devices), implementation, executive review, a small cosmetics
+ *     manufacturer, and the shop floor.
+ *
+ * Governance is unchanged: every film goes through customer-films.ts, so an
+ * unapproved or unpublished row simply stops rendering, and its fact with it.
+ * No inventory counts are rendered (locked site rule).
  * ========================================================================== */
 
-import { ProofFilmRail } from "../products/_shared/proof-films";
-import {
-  attestedLead,
-  filmByWistia,
-  filmsForModules,
-  type CustomerFilm,
-} from "../products/_shared/customer-films";
+import { HomeProofReel, type ProofStill } from "./home-proof-reel";
+import { filmByWistia } from "../products/_shared/customer-films";
 
-/* Tedd Carr, The Will-Burt Company: NC closure down 75% in the first month */
-const LEAD_WISTIA = "qp7129voyy";
-
-/* the curated head of the rail: operations and engineering voices first */
-const CURATED_WISTIAS = [
-  "rsqybjoajw", /* Jesse Kolstad, Biovation Labs: mock recall down to 18 minutes */
-  "xwv3jvzgzv", /* Michael Hogan, Harmonic Bionics: engineering system of record */
-];
-
-/* cross-functional module spread so the rail reads as the whole suite */
-const HOME_FILM_MODULES = [
-  "CAPAs",
-  "NCs / Defects",
-  "Change Control",
-  "Change Requests & Orders",
-  "Document Management",
-  "Design History File",
-  "Work Orders & Routing",
-  "Supplier Quality",
-  "Training",
+/* Facts keyed by Wistia id. Each is what the customer says or the film is
+ * titled, in a few words; nothing here is a claim the film does not make. */
+const STILLS: Array<{ wistia: string; fact: string }> = [
+  {
+    wistia: "qp7129voyy", /* Tedd Carr, The Will-Burt Company */
+    fact: "NC closure 75% faster in the first month",
+  },
+  {
+    wistia: "rsqybjoajw", /* Jesse Kolstad, Biovation Labs */
+    fact: "Mock recall done in 18 minutes",
+  },
+  {
+    wistia: "ml5sr2nkgy", /* Michael Hogan, Harmonic Bionics */
+    fact: "Everyone on the same files and the same history",
+  },
+  {
+    wistia: "pu02wkm0a4", /* Clarissa Archer, Harmonic Bionics */
+    fact: "Configured in house, no IT tickets",
+  },
+  {
+    wistia: "1dqmvmlupm", /* Denis Machoka */
+    fact: "Management review straight from dashboards",
+  },
+  {
+    wistia: "zrvex9chm8", /* Wilson Lin, Applechem */
+    fact: "Supplier documents without the chasing",
+  },
+  {
+    wistia: "1g31maaxtb", /* Dave Anderson */
+    fact: "Smaller groups, 70% faster actions",
+  },
 ];
 
 export function HomeProofFilms() {
-  const lead = attestedLead(LEAD_WISTIA, {
-    stat: "75%",
-    statLabel: "faster NC closure",
-    body: (film) =>
-      `Non-conformance closure time down 75% within the first month on Unifize, attested on film by ${film.person} of ${film.company}.`,
-  });
-
-  const curated = CURATED_WISTIAS
-    .map((wistia) => filmByWistia(wistia))
-    .filter((film): film is CustomerFilm => film !== null);
-
-  /* fill by module relevance, one film per speaker so the rail reads as
-   * many voices rather than one customer's back catalogue */
-  const seen = new Set(curated.map((film) => film.person));
-  const fill = filmsForModules(HOME_FILM_MODULES, {
-    limit: 24,
-    exclude: [LEAD_WISTIA, ...CURATED_WISTIAS],
-  }).filter((film) => {
-    if (seen.has(film.person)) return false;
-    seen.add(film.person);
-    return true;
-  });
-
-  const films = [...curated, ...fill.slice(0, 6)];
+  const stills: ProofStill[] = [];
+  for (const still of STILLS) {
+    const film = filmByWistia(still.wistia);
+    if (film) stills.push({ ...film, fact: still.fact });
+  }
+  if (stills.length === 0) return null;
 
   return (
-    <ProofFilmRail
-      idPrefix="hm"
+    <HomeProofReel
       eyebrowN={6}
       heading="From the people who stopped paying the coordination tax."
-      lede="Real customers, on film. Quality directors, operators, and engineers on their own before and after: off legacy systems, live in weeks, closing work faster."
-      countNoun="customer films"
-      films={films}
-      lead={lead}
+      lede="Real customers, on film. Quality directors, engineers, and operators on their own before and after: off legacy systems, live in weeks, closing work faster."
+      stills={stills}
+      allHref="/explorations/resources/testimonials"
     />
   );
 }

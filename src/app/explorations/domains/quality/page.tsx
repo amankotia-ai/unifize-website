@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function QualityDomainPage() {
-  return <SolutionPage data={QUALITY_DATA} />;
+  return <SolutionPage data={QUALITY_DATA} rails compact />;
 }

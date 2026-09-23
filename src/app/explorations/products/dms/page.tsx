@@ -9,6 +9,17 @@
  * process builder and the live document-control dashboard (both lifted from
  * the DMS demo video, Aug 2026). The previous primary lives on at ./classic.
  * Content is sourced from the Unifize Products database (Notion): DMS (UPD-2).
+ *
+ * 22 Sep 2026, the rails wave: the page moved onto the homepage's reference
+ * grammar (PaperStack / meinGPT / Klea / Respan): two hairline rails down the
+ * content column, hatched divider bands between sections, blue-square
+ * eyebrows, split heads, cell grids drawn rail to rail, and every product
+ * artifact on a soft wash with grain. The page opens and closes on one
+ * charcoal (hero + trust, proof, close + footer); the middle goes light. The
+ * shared grammar is _shared/page-rails.css (`dms--rails` on <main>,
+ * `hm-railed` per section, <HatchBand /> between); dms-rails.css loads last
+ * with what this page composes differently. Section content, data and the
+ * arcade journeys are untouched.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -31,7 +42,7 @@ import { Eyebrow } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
 import { DmsProblemSpotlight } from "./dms-problem-visuals";
 import { DmsIndustryIcon } from "./dms-industry-icons";
-import { DmsProofFilms } from "./dms-proof";
+import { DmsProofReel } from "./dms-proof";
 import {
   LifecycleExplorer,
   FaqAccordion,
@@ -45,10 +56,13 @@ import {
 } from "./stylized/stylized-mocks";
 import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import { StylizedCoordinationTax } from "./stylized/stylized-ctax";
+import { HatchBand } from "../../_shared/page-rails";
 import "../../industry-template-modern/itm.css";
 import "./dms.css";
 import "./dms-redesign.css";
 import "./stylized/stylized.css";
+import "../../_shared/page-rails.css";
+import "./dms-rails.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
@@ -59,11 +73,14 @@ export const metadata: Metadata = {
 
 export default function DmsProductPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page">
       <DmsHeader />
 
-      {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero" aria-label="Document Management System">
+      {/* ============================ HERO =============================
+        * Dark grey ground: headline left, sub + CTAs right on one baseline,
+        * then the arcade window on the sky wash running rail to rail with
+        * the six-step rail under it. */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed" aria-label="Document Management System">
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
@@ -91,19 +108,20 @@ export default function DmsProductPage() {
               </div>
             </div>
           </div>
+        </div>
 
-          {/* The establishing shot is the arcade itself: one app window walking
-            * six moments of SOP-118 (build → find → trust → sign → release →
-            * measure), with a numbered step rail under it. */}
-          <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-            <HeroArcade steps={STYLIZED_HERO_STEPS} />
-          </div>
-
+        {/* The establishing shot is the arcade itself: one app window walking
+          * six moments of SOP-118 (build → find → trust → sign → release →
+          * measure), with a numbered step rail under it. The wrap bleeds so
+          * the wash runs rail to rail. */}
+        <div className="dms-wrap dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade hm-bleed">
+          <HeroArcade steps={STYLIZED_HERO_STEPS} rail="top" />
         </div>
       </section>
 
-      {/* ============================ TRUST STRIP ======================= */}
-      <section className="dms-section dms-section--dark dms-trust" aria-label="Industries served">
+      {/* ============================ TRUST STRIP =======================
+        * Same charcoal, inside the rails, straight under the step rail. */}
+      <section className="dms-section dms-section--dark dms-trust hm-trust--rails hm-railed" aria-label="Industries served">
         <div className="dms-wrap dms-trust__inner">
           <p className="dms-trust__label">{dmsCopy("trust.label", "One controlled record across regulated operations")}</p>
           <ul className="dms-trust__logos" aria-label="Representative industries">
@@ -117,8 +135,11 @@ export default function DmsProductPage() {
         </div>
       </section>
 
+      {/* the first hatched divider: the dark-to-light break */}
+      <HatchBand />
+
       {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems" id="problem" aria-labelledby="dms-problems-title">
+      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="dms-problems-title">
         <div className="dms-wrap dms-problems__inner">
           <header className="dms-problems__intro">
             <div className="dms-problems__head">
@@ -135,7 +156,9 @@ export default function DmsProductPage() {
             </p>
           </header>
 
-          {/* Spotlight: index rail left, one symptom on stage at a time. */}
+          {/* Spotlight: index rail left, one symptom on stage at a time. The
+            * old world sits on the paper wash (problems are paper, the
+            * product is blue). */}
           <DmsProblemSpotlight items={DMS_PROBLEMS} />
 
           <div className="dms-problems__bridge">
@@ -144,15 +167,19 @@ export default function DmsProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ==================== THE COORDINATION TAX =====================
        * The four daily symptoms roll up into one measurable root cause, read
        * as a BEFORE / AFTER ledger with a drawn scene per stage. */}
-      <StylizedCoordinationTax problems={DMS_PROBLEMS} />
+      <StylizedCoordinationTax problems={DMS_PROBLEMS} className="hm-railed" />
+
+      <HatchBand />
 
       {/* ============================ 02 · MODULES BUNDLED ===============
        * Sticky rail ledger: module names pin on the left while three rows
-       * pass, each with its arcade scene on a stage that bleeds to the edge. */}
-      <section className="dms-section dms-section--dark dms-modx-section pk-modx-ink" id="modules">
+       * pass, each with its arcade scene on a wash between the rails. */}
+      <section className="dms-section dms-modx-section hm-railed" id="modules">
         <ModuleRail
           heading={dmsCopy("modules.heading", "Three modules. One continuous record.")}
           lede={dmsCopy("modules.lede", "The change, the controlled revision, and the training obligation stay connected from the first decision to the final signature.")}
@@ -160,9 +187,11 @@ export default function DmsProductPage() {
         />
       </section>
 
+      <HatchBand />
+
       {/* ============================ 03 · CAPABILITIES ==================
-       * Composition: sticky header rail left, indexed ledger right. On ink. */}
-      <section className="dms-section dms-section--dark pk-caps-ink" id="capabilities">
+       * Composition: header rail left, hairline cell ledger right. */}
+      <section className="dms-section dms-caps-section hm-railed" id="capabilities">
         <div className="dms-wrap dms-caps-grid">
           <header className="dms-caps__rail" data-reveal>
             <Eyebrow n={3}>Capabilities</Eyebrow>
@@ -180,12 +209,16 @@ export default function DmsProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ============================ 04 · LIFECYCLE =====================
        * Stylized: one fragment scene per lifecycle station in the sticky
        * live panel, indexed by station so persona flows land right too.
        * mapChip=false: only the Notion-backed flows render as journeys;
-       * the page-owned lifecycle map chip is held back. */}
-      <section className="dms-section dms-lifex-section pk-lifex-ink" id="lifecycle">
+       * the page-owned lifecycle map chip is held back. On the rails the
+       * section is light (the dms-lifex-section dark class is dropped so
+       * the header samples it as light). */}
+      <section className="dms-section dms-lifex-section--rails hm-railed" id="lifecycle">
         <LifecycleExplorer
           layout="sticky-visual"
           heading={dmsCopy("lifecycle.heading", "Every state has a gate. Every gate has an owner.")}
@@ -200,10 +233,14 @@ export default function DmsProductPage() {
         />
       </section>
 
+      <HatchBand />
+
       {/* ==================== INTEGRATIONS (connector layer) =========== */}
       <IntegrationLayer
         data={INTEGRATIONS}
         variant="minimal"
+        tone="light"
+        className="hm-railed"
         minimalEyebrow="Integrations"
         minimalHeading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
         minimalLede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
@@ -213,12 +250,16 @@ export default function DmsProductPage() {
         ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}
       />
 
+      <HatchBand />
+
       {/* ============================ 05 · WHO IT IS FOR ================= */}
-      <section className="dms-section dms-audience" id="who" aria-labelledby="dms-audience-title">
+      <section className="dms-section dms-audience hm-railed" id="who" aria-labelledby="dms-audience-title">
         <div className="dms-wrap">
           <header className="dms-audience__head" data-reveal>
-            <Eyebrow n={5}>Who it is for</Eyebrow>
-            <h2 className="dms-h2" id="dms-audience-title">{dmsCopy("audience.heading", "For the teams that keep every document current.")}</h2>
+            <div className="dms-head">
+              <Eyebrow n={5}>Who it is for</Eyebrow>
+              <h2 className="dms-h2" id="dms-audience-title">{dmsCopy("audience.heading", "For the teams that keep every document current.")}</h2>
+            </div>
             <p className="dms-lede">{dmsCopy("audience.lede", AUDIENCE.lede)}</p>
           </header>
 
@@ -261,13 +302,17 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ 06 · PROOF ========================= */}
-      <div className="itm dms-proof-reference">
-        <DmsProofFilms />
-      </div>
+      <HatchBand />
+
+      {/* ============================ 06 · PROOF =========================
+        * The homepage's reel of customer stills, on the bookends' charcoal,
+        * with the DMS roster (dms-proof.tsx). */}
+      <DmsProofReel />
+
+      <HatchBand />
 
       {/* ============================ 07 · COMPLIANCE + INDUSTRIES ======= */}
-      <section className="dms-section dms-section--alt dms-compliance" id="compliance" aria-labelledby="dms-compliance-title">
+      <section className="dms-section dms-compliance hm-railed" id="compliance" aria-labelledby="dms-compliance-title">
         <div className="dms-wrap">
           <header className="dms-compliance__head" data-reveal>
             <div className="dms-head">
@@ -308,8 +353,10 @@ export default function DmsProductPage() {
         </div>
       </section>
 
+      <HatchBand />
+
       {/* ============================ 08 · FAQ =========================== */}
-      <section className="dms-section dms-section--alt" id="faq">
+      <section className="dms-section dms-section--alt dms-faq-section hm-railed" id="faq">
         <div className="dms-wrap dms-faq-grid">
           <div className="dms-head" data-reveal>
             <Eyebrow n={8}>FAQ</Eyebrow>
@@ -324,8 +371,13 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close" id="demo" aria-labelledby="dms-close-h">
+      {/* the last light-to-dark break: the FAQ hands to the close block */}
+      <HatchBand />
+
+      {/* ============================ CLOSE =============================
+        * On the hero's charcoal so the page opens and closes on the same
+        * ground; the rails run through it and on through the footer. */}
+      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="dms-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
             <div className="dms-close__convergence" aria-hidden="true">
@@ -348,7 +400,8 @@ export default function DmsProductPage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------- footer */}
+      {/* ------------------------------------------------------- footer
+        * the footer closes the page on the same charcoal as the close */}
       <SiteFooter tagline={dmsCopy("footer.tagline", "One governed home for every controlled document.")} note="Document Management System · UPD-2" />
     </main>
   );

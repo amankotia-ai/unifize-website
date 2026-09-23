@@ -19,7 +19,12 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../products/_shared/arcade/arcade";
-import { PLATFORM_QUEUE_CONFIG, PLATFORM_ROUTE_CONFIG, PLATFORM_SEAL_CONFIG } from "../platform/platform-arcade";
+import {
+  PLATFORM_AI_CONFIRM_CONFIG,
+  PLATFORM_QUEUE_CONFIG,
+  PLATFORM_ROUTE_CONFIG,
+  PLATFORM_SEAL_CONFIG,
+} from "../platform/platform-arcade";
 
 /* ============================================================ the event world
  * NC-204 at platform altitude: not the QMS page's deep investigation, but the
@@ -88,11 +93,11 @@ const QUALITY_EVENT_WORLD: ArcadeFlowWorld = {
       ],
     },
     {
-      title: "DISPOSITION & WRITE-BACK",
+      title: "DISPOSITION & CLOSURE",
       items: [
         { label: "Disposition", note: "Rework to spec · line 2" },
         { label: "Quality approval", kind: "approval", signer: "D. Fontaine", state: "Signed" },
-        { label: "ERP write-back", note: "Stock status · synced on close" },
+        { label: "ERP status update", note: "Stock status · synced on close" },
       ],
     },
   ],
@@ -129,7 +134,7 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     focusAction: "Open record",
     ownershipNote: "The event arrives with its context",
     world: QUALITY_EVENT_WORLD,
-    checklistProgress: { "CAPTURE & EVIDENCE": 2, "OWNERS & CONTAINMENT": 0, "DISPOSITION & WRITE-BACK": 0 },
+    checklistProgress: { "CAPTURE & EVIDENCE": 2, "OWNERS & CONTAINMENT": 0, "DISPOSITION & CLOSURE": 0 },
   },
   {
     source: "HOME s2 · coordinate",
@@ -138,17 +143,17 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     status: "In Progress",
     actor: "You",
     event: "Assigned containment with owners and due dates",
-    eventDetail: "Quality, production, and engineering in one thread · one visible clock",
+    eventDetail: "Quality, production, and engineering in one thread · one visible due date",
     checklist: "OWNERS & CONTAINMENT",
     checklistItems: ["Quarantine lot 118-B", "Sort remaining WIP"],
     focus: "record",
     focusTitle: "One accountable thread",
-    focusRows: ["One owner · every handoff on a clock", "Decisions and evidence stay attached"],
+    focusRows: ["One owner · a due date on every handoff", "Decisions and evidence stay attached"],
     focusAction: "Open live record",
     ownershipNote: "The record and the conversation are the same place",
     world: QUALITY_EVENT_WORLD,
     checklistOpen: "OWNERS & CONTAINMENT",
-    checklistProgress: { "CAPTURE & EVIDENCE": 3, "OWNERS & CONTAINMENT": 1, "DISPOSITION & WRITE-BACK": 0 },
+    checklistProgress: { "CAPTURE & EVIDENCE": 3, "OWNERS & CONTAINMENT": 1, "DISPOSITION & CLOSURE": 0 },
   },
   {
     source: "HOME s3 · prove",
@@ -158,7 +163,7 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     actor: "You",
     event: "Approved the disposition with a Part 11 signature",
     eventDetail: "Evidence checked complete before the record can close",
-    checklist: "DISPOSITION & WRITE-BACK",
+    checklist: "DISPOSITION & CLOSURE",
     checklistItems: ["Quality approval"],
     focus: "signature",
     focusTitle: "Sign this approval",
@@ -169,8 +174,8 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     signedItems: [
       { name: "D. Fontaine", initials: "DF", role: "Quality Manager", approvalId: "AP-0864", time: "15:47" },
     ],
-    checklistOpen: "DISPOSITION & WRITE-BACK",
-    checklistProgress: { "CAPTURE & EVIDENCE": 3, "OWNERS & CONTAINMENT": 3, "DISPOSITION & WRITE-BACK": 1 },
+    checklistOpen: "DISPOSITION & CLOSURE",
+    checklistProgress: { "CAPTURE & EVIDENCE": 3, "OWNERS & CONTAINMENT": 3, "DISPOSITION & CLOSURE": 1 },
   },
   {
     source: "HOME s4 · write back",
@@ -180,8 +185,8 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     actor: "automator",
     event: "Wrote the approved outcome back to your systems",
     eventDetail: "Unifize keeps the trail · your systems of record keep the final state",
-    checklist: "DISPOSITION & WRITE-BACK",
-    checklistItems: ["ERP write-back"],
+    checklist: "DISPOSITION & CLOSURE",
+    checklistItems: ["ERP status update"],
     focus: "history",
     focusKicker: "SYSTEMS OF RECORD",
     focusTitle: "The outcome, written back",
@@ -193,7 +198,7 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     focusAction: "Open audit trail",
     ownershipNote: "Your systems of record stay authoritative",
     world: QUALITY_EVENT_WORLD,
-    checklistOpen: "DISPOSITION & WRITE-BACK",
+    checklistOpen: "DISPOSITION & CLOSURE",
     checklistProgress: { "CAPTURE & EVIDENCE": 3, "OWNERS & CONTAINMENT": 3 },
   },
   {
@@ -203,9 +208,9 @@ export const HOME_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
     status: "Closed",
     actor: "automator",
     event: "Updated the closure metrics from the record",
-    eventDetail: "Every thread carries its own clock · no export, no reconciliation",
-    checklist: "DISPOSITION & WRITE-BACK",
-    checklistItems: ["ERP write-back"],
+    eventDetail: "Every thread is timed open to close · no export, no reconciliation",
+    checklist: "DISPOSITION & CLOSURE",
+    checklistItems: ["ERP status update"],
     focus: "dashboard",
     focusTitle: "Closure time, month by month",
     focusRows: ["Median closure · 11 days", "Baseline · 34 days", "Waiting share · 9%"],
@@ -264,7 +269,7 @@ export const HOME_JOURNEY_CHANGE_CONFIGS: ArcadeStepConfig[] = [
     status: "Closed",
     actor: "automator",
     event: "Updated the closure metrics from the record",
-    eventDetail: "Every thread carries its own clock · no export, no reconciliation",
+    eventDetail: "Every thread is timed open to close · no export, no reconciliation",
     checklist: "CLOSURE",
     checklistItems: ["Effectiveness check"],
     focus: "dashboard",
@@ -279,9 +284,12 @@ export const HOME_JOURNEY_CHANGE_CONFIGS: ArcadeStepConfig[] = [
 
 /* ================================================================= hero views
  * Tab 1 rides the mechanism journey mid-flight (the accountable thread);
- * tab 2 borrows CC-2148's approval route from the platform page. */
+ * tab 2 borrows CC-2148's AI impact moment from the platform page: the
+ * suggestion ticked, the at-risk documents linked as records (9 Sep review,
+ * Lakshman: the change order should show AI naming the risks of the change,
+ * and no two tabs should be the same screen with the text changed). */
 export const HOME_HERO_QUALITY_CONFIG: ArcadeStepConfig = HOME_JOURNEY_CONFIGS[1];
-export const HOME_HERO_CHANGE_CONFIG: ArcadeStepConfig = PLATFORM_ROUTE_CONFIG;
+export const HOME_HERO_CHANGE_CONFIG: ArcadeStepConfig = PLATFORM_AI_CONFIRM_CONFIG;
 
 /* the ops world: WIP hold 118-B, raised by NC-204's containment, waiting on
  * release. Staged as ONE hold record in thread view (2026-09-02 sync, H3:
@@ -431,7 +439,7 @@ export const HOME_WAY_SOLUTION_CONFIG: ArcadeStepConfig = {
       { label: "Change orders", count: 4 },
     ],
   },
-  checklistProgress: { "CAPTURE & EVIDENCE": 2, "OWNERS & CONTAINMENT": 0, "DISPOSITION & WRITE-BACK": 0 },
+  checklistProgress: { "CAPTURE & EVIDENCE": 2, "OWNERS & CONTAINMENT": 0, "DISPOSITION & CLOSURE": 0 },
 };
 
 /* The suite's DMS pose (section 04): the revision chain, NOT the viewer the

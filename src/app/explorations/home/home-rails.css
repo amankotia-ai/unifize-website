@@ -1,0 +1,1930 @@
+/* ============================================================================
+ * home-rails.css - the homepage rails wave (22 Sep 2026)
+ *
+ * The reference grammar Abhishek brought (PaperStack, meinGPT, Klea, Respan):
+ * a light page with two hairline rails down the content column, hatched
+ * divider bands between sections, blue-square eyebrows, soft gradient washes
+ * with grain under every product artifact, and three-up feature cards that
+ * lead with a wash panel. Layered on the existing homepage, section by
+ * section, starting with the hero and "Choose your way in". Loaded after
+ * home-kit.css, so equal-specificity rules here win by order.
+ *
+ * The grammar every page shares (tokens, the rails, the hatch band, the
+ * blue-square eyebrow, the header rail) moved to _shared/page-rails.css the
+ * same night the platform page joined; this file keeps what is the
+ * homepage's own: the dark hero on the wash, the way-in cells, the tax row,
+ * the suite, industries, proof, resources, close and footer.
+ * ========================================================================== */
+
+/* ============================================================== HERO
+ * Dark grey ground (Abhishek, 22 Sep: "the hero and the logo section need
+ * to be a darkish grey section, and below that we can go light"). Headline
+ * left, sub and CTAs right on the same baseline (the PaperStack split);
+ * under it the four-view tabs on a hairline and the product window on a
+ * soft blue-to-paper wash that runs rail to rail, the one light object on
+ * the charcoal. Rails and hairlines go to white at low alpha here. */
+.dms--redesign.dms--home .dms-hero.dms-hero--rails,
+.dms--redesign.dms--home .dms-trust.hm-trust--rails {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms--home .dms-hero.dms-hero--rails {
+  padding-top: clamp(64px, 7.5vw, 112px);
+  padding-bottom: 0;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 28px clamp(40px, 6vw, 96px);
+  align-items: end;
+  text-align: left;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__left,
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
+  align-items: flex-start;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
+  gap: 22px;
+  margin-top: 0;
+  padding-bottom: 8px;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__title {
+  max-width: 13ch;
+  color: #fff;
+  font-size: clamp(2.8rem, 4.9vw, 4.4rem);
+  font-weight: 500;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__turn {
+  /* blue-400: the brand blue lifted two steps so it holds on charcoal */
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__sub {
+  max-width: 44ch;
+  color: var(--dms-d-ink-2);
+  font-size: clamp(1rem, 1.15vw, 1.14rem);
+  text-align: left;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas {
+  justify-content: flex-start;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-btn-ghost {
+  border-color: var(--dms-d-border-2);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-btn-ghost:hover {
+  background: var(--dms-d-bg-3);
+  border-color: var(--dms-d-ink-3);
+}
+
+/* the stage: tabs on a hairline, then the wash */
+.dms--redesign.dms--home .dms-hero--rails .hm-hero-demo {
+  margin-top: clamp(40px, 4.5vw, 64px);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tabs {
+  max-width: none;
+  margin: 0;
+  padding-inline: var(--hm-rail-pad);
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 0;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab {
+  min-height: 60px;
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab::before {
+  color: var(--dms-d-ink-3);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab:hover {
+  color: #fff;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab.is-active {
+  color: var(--dms-d-ink);
+  background: var(--dms-d-bg-2);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab.is-active::before {
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab.is-active::after {
+  background: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab:focus-visible {
+  outline-color: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__timer {
+  background: var(--u-blue-400);
+}
+
+/* the wash: the ribbon container keeps its geometry and camera, but the
+ * navy ground, the ribbons, the scrim and the vignette give way to a light
+ * gradient with two soft bands of light and a paper grain */
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf {
+  --rf-r: 0px;
+  border-radius: 0;
+  background: var(--hm-wash-sky);
+}
+
+/* the wash moves (Abhishek, 22 Sep: "the hero bg colors in a transitioning
+ * animation, flowy, same two shades, slowly and subtly moving"): the ground
+ * is the mid tone, and two soft radial blobs, one blue and one peach, drift
+ * on long eased loops under the grain. Transform only, so it stays cheap;
+ * reduced motion leaves them still. */
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf {
+  background: #e7eef8;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::before,
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::after {
+  position: absolute;
+  z-index: -1;
+  width: 90%;
+  aspect-ratio: 1;
+  content: "";
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::before {
+  top: -35%;
+  left: -20%;
+  background: radial-gradient(closest-side, #c2dbff 0%, rgba(194, 219, 255, 0.55) 45%, rgba(194, 219, 255, 0) 100%);
+  animation: hm-wash-a 26s ease-in-out infinite alternate;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::after {
+  right: -25%;
+  bottom: -40%;
+  background: radial-gradient(closest-side, #fbe0cc 0%, rgba(251, 224, 204, 0.55) 45%, rgba(251, 224, 204, 0) 100%);
+  animation: hm-wash-b 32s ease-in-out infinite alternate;
+}
+
+@keyframes hm-wash-a {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(14%, 10%, 0) scale(1.08); }
+  100% { transform: translate3d(28%, -4%, 0) scale(0.96); }
+}
+
+@keyframes hm-wash-b {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-16%, -12%, 0) scale(1.1); }
+  100% { transform: translate3d(-30%, 6%, 0) scale(0.98); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::before,
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::after {
+    animation: none;
+  }
+}
+
+.dms--redesign.dms--home .dms-hero--rails .rf__field > .rf__ribbons {
+  display: none;
+}
+
+/* texture on the wash (23 Sep 2026): a fine dot grid that shows toward the
+ * edges, a soft edge light and burn, and a finer, higher-contrast film grain
+ * in overlay so it reads as texture on the light ground instead of a flat
+ * grey veil. Defined once as tokens; the grain is worn by every wash
+ * container on the page (hero stage, symptom cards, way-in cells, suite
+ * stage, resources), the dots and edge by the hero alone.
+ * All static; product windows and marks sit above the texture. */
+.dms--redesign.dms--home {
+  --hm-tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  --hm-tex-dots: radial-gradient(circle at center, oklch(0.42 0.06 252 / 0.28) 0.9px, transparent 1.3px);
+  --hm-tex-dots-mask: radial-gradient(120% 95% at 50% 30%, transparent 30%, #000 85%);
+  --hm-tex-edge:
+    linear-gradient(180deg, oklch(1 0 0 / 0.35), transparent 18%),
+    radial-gradient(110% 90% at 50% 45%, transparent 60%, oklch(0.36 0.05 250 / 0.14) 100%);
+  --hm-tex-edge-ring: inset 0 1px 0 oklch(1 0 0 / 0.7), inset 0 0 0 1px oklch(0.3 0.03 250 / 0.06);
+}
+
+/* the hero carries the dots and edge as field children; the other wash
+ * containers take the grain only (Abhishek, 23 Sep: "not the dots, just the
+ * noise bit") */
+.dms--redesign.dms--home .dms-hero--rails .rf__field > .rf__scrim {
+  display: block;
+  background: var(--hm-tex-dots);
+  background-size: 16px 16px;
+  background-position: 8px 8px;
+  -webkit-mask-image: var(--hm-tex-dots-mask);
+  mask-image: var(--hm-tex-dots-mask);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .rf__field > .rf__vignette {
+  display: block;
+  background: var(--hm-tex-edge);
+  box-shadow: var(--hm-tex-edge-ring);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .rf__field > .rf__grain,
+.dms--redesign.dms--home .hm-suite__stage .rf__field > .rf__grain {
+  background-image: var(--hm-tex-grain);
+  background-size: 220px 220px;
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+}
+
+/* the plate under the window, now frosted white on the wash */
+.dms--redesign.dms--home .dms-hero--rails .rf.rf--plate .stx-root .stx-arc__camera {
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+/* the customer strip: same charcoal, inside the rails, straight under the
+ * wash; the logos stay white (home-kit) */
+.dms--redesign.dms--home .dms-trust.hm-trust--rails {
+  padding: 0;
+}
+
+.dms--redesign.dms--home .hm-trust--rails .hm-logos {
+  padding: 28px var(--hm-rail-pad);
+}
+
+/* ================================================== CHOOSE YOUR WAY IN
+ * Three cells between the rails, hairlines between them. Each cell leads
+ * with a wash panel holding its isometric mark, then the label, the claim,
+ * the body, the ledger of four doors, and a blue text link. */
+.dms--redesign.dms--home .hm-entry-section {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.dms--home .hm-entry-grid {
+  gap: 0;
+  /* the cells run rail to rail (the head above keeps the inset) */
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-entry {
+  --hm-entry-rule: var(--hm-rail);
+  /* 12px around the wash (Abhishek: "too much padding around the bg
+   * container boxes"), so the panel runs nearly hairline to hairline; the
+   * copy below aligns to the panel's edge */
+  padding: 12px 12px 24px;
+  background: transparent;
+}
+
+.dms--redesign.dms--home .hm-entry + .hm-entry {
+  border-left: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-entry__wash {
+  position: relative;
+  display: grid;
+  aspect-ratio: 5 / 4;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.dms--home .hm-entry__wash::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms--home .hm-entry__wash--product { background: var(--hm-wash-blue); }
+.dms--redesign.dms--home .hm-entry__wash--industry { background: var(--hm-wash-warm); }
+
+.dms--redesign.dms--home .hm-entry__mark {
+  width: 58%;
+  max-width: 260px;
+  margin: 0;
+  filter: drop-shadow(0 18px 22px rgba(23, 24, 26, 0.16));
+}
+
+.dms--redesign.dms--home .hm-entry__intro {
+  margin-top: clamp(20px, 2.2vw, 28px);
+  padding-inline: 8px;
+}
+
+.dms--redesign.dms--home .hm-entry__links,
+.dms--redesign.dms--home .hm-entry__all {
+  margin-inline: 8px;
+}
+
+.dms--redesign.dms--home .hm-entry__label {
+  color: var(--dms-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-entry__intro h3 {
+  margin-top: 12px;
+  font-weight: 560;
+  line-height: 1.18;
+}
+
+.dms--redesign.dms--home .hm-entry__intro p {
+  font-size: 0.9375rem;
+}
+
+.dms--redesign.dms--home .hm-entry__links {
+  margin-top: 20px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.dms--redesign.dms--home .hm-entry__links li + li {
+  /* dashed and lighter than the cell hairlines (Abhishek, 22 Sep): 4px
+   * dash, 4px gap, drawn as a gradient so the ratio is ours */
+  border-top: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) top / 100% 1px no-repeat;
+}
+
+/* the same rule under the industry tiles' ledger rows */
+.dms--redesign.dms--home .hm-ind__row + .hm-ind__row {
+  border-top: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) top / 100% 1px no-repeat;
+}
+
+.dms--redesign.dms--home .hm-entry__links a {
+  min-height: 50px;
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+.dms--redesign.dms--home .hm-entry__links a:is(:hover, :focus-visible) {
+  background: var(--dms-accent-tint);
+  border-radius: 0;
+}
+
+.dms--redesign.dms--home .hm-entry__all,
+.dms--redesign.dms--home .hm-entry__links + .hm-entry__all {
+  min-height: 44px;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-top: auto;
+  padding: 24px 0 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dms-accent);
+  font-size: 0.92rem;
+}
+
+.dms--redesign.dms--home .hm-entry__all:hover {
+  background: transparent;
+  color: var(--dms-accent-hover);
+}
+
+/* Visible feedback stays inside the ledger, without moving its rails. */
+.dms--redesign.dms--home .hm-entry__links a:focus-visible,
+.dms--redesign.dms--home .hm-entry__links a:focus-visible :is(.hm-entry__glyph, .hm-entry__go) {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms--home .hm-entry__links a:focus-visible {
+  outline-offset: -2px;
+}
+
+.dms--redesign.dms--home .hm-entry__all:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-entry + .hm-entry {
+    border-top: 1px solid var(--hm-rail);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .dms--redesign.dms--home .dms-hero--rails .dms-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .dms--redesign.dms--home .dms-hero--rails .dms-hero__right {
+    padding-bottom: 0;
+  }
+
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tabs {
+    padding-inline: 0;
+  }
+}
+
+/* phones: home-kit bleeds the stage to the viewport edge under 720px; with
+ * rails the wash stays inside them */
+@media (max-width: 720px) {
+  .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage {
+    margin-inline: 0;
+  }
+}
+
+/* ================================================= 02 · COORDINATION TAX
+ * Second pass of the rails wave. The head goes back to the split grammar
+ * (eyebrow + claim left, lede right); the hatch band above now does the
+ * connecting the dashed trace used to. The symptom cards become cells in a
+ * rail-to-rail grid, the old-world artifact on a paper wash, and the tax
+ * block becomes a two-cell row: claim + assessment left, the 75-step figure
+ * right in a stat cell (the Klea case-study grid). */
+.dms--redesign.dms--home .hm-recognition--reframed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head {
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 22px clamp(48px, 8vw, 120px);
+  align-items: end;
+  justify-items: start;
+  padding-top: 0;
+  padding-bottom: clamp(36px, 4vw, 52px);
+  text-align: left;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::before,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::after {
+  display: none;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head > div {
+  align-items: flex-start;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-eyebrow {
+  align-self: flex-start;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-h2,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-lede {
+  margin-inline: 0;
+}
+
+/* the symptom cells: hairlines drawn by the 1px gap over a hairline ground */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptoms {
+  gap: 1px;
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link {
+  --hm-entry-rule: var(--hm-rail);
+  grid-template-columns: minmax(200px, 0.8fr) minmax(0, 1.2fr);
+  padding: 0;
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
+  /* Old-world friction: aged amber, slate files, mauve correspondence,
+   * clay evidence. Color groups the artifacts; rust still names the tax. */
+  --hm-scene-hue: 80;
+  --hm-scene-chroma: 0.065;
+  --hm-scene-lightness: 0.9;
+  --hm-warn-ink: var(--dms-tax-text);
+  min-height: 300px;
+  padding: 28px 20px;
+  background: linear-gradient(
+    150deg,
+    oklch(0.96 0.018 var(--hm-scene-hue)),
+    oklch(var(--hm-scene-lightness) var(--hm-scene-chroma) var(--hm-scene-hue))
+  );
+  isolation: isolate;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz:is([data-viz="versions"], [data-viz="matrix"]) {
+  --hm-scene-hue: 250;
+  --hm-scene-chroma: 0.045;
+  --hm-scene-lightness: 0.87;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz:is([data-viz="handoffs"], [data-viz="tracks"]) {
+  --hm-scene-hue: 330;
+  --hm-scene-chroma: 0.04;
+  --hm-scene-lightness: 0.87;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz:is([data-viz="approval"], [data-viz="trace"], [data-viz="deadline"]) {
+  --hm-scene-hue: 45;
+  --hm-scene-chroma: 0.065;
+  --hm-scene-lightness: 0.88;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-viz__bar {
+  background: oklch(0.96 0.018 var(--hm-scene-hue));
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-viz__bar :is(.hm-viz__kicker, .hm-viz__meta) {
+  color: oklch(0.43 0.025 var(--hm-scene-hue));
+}
+
+/* The stalled step, conflicting copy or absent evidence is the focal point.
+ * Existing labels and status glyphs keep that meaning independent of hue. */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz :is(
+  .hm-viz__chip.is-warn,
+  .hm-viz__rows li:has(.hm-viz__age.is-warn),
+  .hm-viz__collapsed span,
+  .hm-viz__formfoot,
+  .hm-viz__gap,
+  .hm-viz__owed-chip.is-wait,
+  .hm-viz__grid td.is-warn,
+  .hm-viz__lane-foot
+) {
+  background: var(--dms-tax-tint);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-viz__collapsed span {
+  color: var(--dms-tax-text);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* the old-world artifacts wear the plate too, at the smallest step */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz .hm-viz {
+  --rf-plate: 4px;
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 1px 2px -1px oklch(0 0 0 / 0.07),
+    0 16px 32px -20px oklch(0.24 0.02 263 / 0.42);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__body {
+  padding: clamp(24px, 2.4vw, 32px);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__domain {
+  color: var(--dms-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__tax {
+  padding-top: 16px;
+  border-top: 1px solid var(--hm-rail);
+  background: none;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__cta {
+  min-height: 0;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dms-accent);
+  font-size: 0.92rem;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:hover .hm-symptom__cta,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:focus-visible .hm-symptom__cta {
+  background: transparent;
+  color: var(--dms-accent-hover);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__claim {
+  font-family: var(--u-display) !important;
+  font-weight: 560;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__note {
+  font-size: 0.9375rem;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -2px;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:is(:hover, :focus-visible) .hm-symptom__cta {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-taxviz :is(.dms-data, .hm-taxviz__total, .hm-taxviz__key i) {
+  font-variant-numeric: tabular-nums;
+}
+
+/* the peek copies inherit the cell grammar; keep them inside the rails */
+.dms--redesign.dms--home .hm-peek {
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptoms {
+  margin: 0;
+  border: 0;
+}
+
+/* the tax row: two cells between the rails */
+.dms--redesign.dms--home .hm-taxcta {
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+  gap: 0;
+  margin: clamp(48px, 5vw, 72px) calc(-1 * var(--hm-rail-pad)) 0;
+  padding: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: transparent;
+}
+
+.dms--redesign.dms--home .hm-taxcta__lead {
+  padding: clamp(36px, 4vw, 56px) var(--hm-rail-pad);
+}
+
+.dms--redesign.dms--home .hm-taxviz {
+  height: 100%;
+  margin: 0;
+  padding: clamp(28px, 3vw, 40px) var(--hm-rail-pad);
+  border-left: 1px solid var(--hm-rail);
+  background: var(--n-50);
+  box-shadow: none;
+}
+
+
+.dms--redesign.dms--home .hm-taxviz__head {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-taxviz__v {
+  margin-top: 18px;
+}
+
+.dms--redesign.dms--home .hm-taxviz__v .dms-data {
+  font-size: clamp(2.6rem, 2rem + 1.6vw, 3.6rem);
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells {
+  margin-top: 22px;
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i.is-work {
+  --hm-tile-color: var(--dms-line-strong);
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i.is-tax {
+  --hm-tile-color: var(--dms-tax);
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i:is(.is-work, .is-tax) {
+  /* flat tiles with a quiet tonal shift, no bevel or shadow (23 Sep 2026:
+   * the lit-edge version read as 3D) */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--hm-tile-color), white 8%),
+    color-mix(in oklab, var(--hm-tile-color), black 4%)
+  );
+}
+
+/* Preserve home-kit's single-column mobile layout after the Rails layer. */
+@media (max-width: 960px) {
+  .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head,
+  .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
+    min-height: 176px;
+  }
+
+  .dms--redesign.dms--home .hm-taxcta {
+    grid-template-columns: 1fr;
+  }
+
+  .dms--redesign.dms--home .hm-taxviz {
+    border-top: 1px solid var(--hm-rail);
+    border-left: 0;
+  }
+}
+
+/* ===================================================== 03 · PRODUCT SUITE
+ * Split head with the stack mark above the eyebrow; the product window on
+ * the blue wash rail to rail (the product is the answer, so it keeps the
+ * brand blue); the four product cells under it as one hairline rail. */
+.dms--redesign.dms--home .hm-products-section {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.dms--home .hm-products-section .hm-stackmark {
+  width: 84px;
+  margin: 0 0 10px;
+}
+
+.dms--redesign.dms--home .hm-suite {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+}
+
+.dms--redesign.dms--home .hm-suite__stage.rf {
+  --rf-r: 0px;
+  border-radius: 0;
+  background: var(--hm-wash-blue);
+  box-shadow: none;
+}
+
+.dms--redesign.dms--home .hm-suite__stage.rf::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 14%,
+    rgba(255, 255, 255, 0.4) 14% 26%,
+    transparent 26% 40%,
+    rgba(255, 255, 255, 0.26) 40% 48%,
+    transparent 48%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+
+/* the grain wears the shared wash texture (see the hero); no dots */
+.dms--redesign.dms--home .hm-suite__stage .rf__field > .rf__ribbons,
+.dms--redesign.dms--home .hm-suite__stage .rf__field > .rf__scrim,
+.dms--redesign.dms--home .hm-suite__stage .rf__field > .rf__vignette {
+  display: none;
+}
+
+/* the window carries the hero's translucent plate (Abhishek, 22 Sep: "for
+ * all product visuals, the same translucent border as the hero"), full
+ * size here because the window is full size */
+.dms--redesign.dms--home .hm-suite__stage.rf .stx-root .stx-arc__camera {
+  --rf-plate: 8px;
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+@media (max-width: 720px) {
+  .dms--redesign.dms--home .hm-suite__stage.rf .stx-root .stx-arc__camera { --rf-plate: 5px; }
+}
+
+.dms--redesign.dms--home .hm-suite__rail {
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+  box-shadow: none;
+}
+
+.dms--redesign.dms--home .hm-suite__pick {
+  padding: 24px var(--hm-rail-pad) 6px;
+}
+
+.dms--redesign.dms--home .hm-suite__link {
+  margin-bottom: 10px;
+  padding: 0 var(--hm-rail-pad);
+}
+
+.dms--redesign.dms--home .hm-suite__cell:hover,
+.dms--redesign.dms--home .hm-suite__cell.is-active {
+  background: var(--n-50);
+}
+
+.dms--redesign.dms--home .hm-suite__name {
+  font-size: 1.1rem;
+}
+
+/* the hero is pulled up under the sticky bar (margin-top: -header); its
+ * rails start at the bar's bottom edge, not the top of the page */
+.dms--redesign.dms--home .dms-hero.dms-hero--rails::before,
+.dms--redesign.dms--home .dms-hero.dms-hero--rails::after {
+  top: var(--dms-header-h);
+}
+
+/* ========================================================= 05 · INDUSTRIES
+ * Third pass. White ground on the rails; the group tabs sit on a hairline
+ * with an accent underline (the hero-tab idiom); the tiles become white
+ * cells rail to rail, each with an uppercase label, the claim, a ledger of
+ * hairline rows, and a blue text link. */
+.dms--redesign.dms--home .hm-industries-section {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms--home .hm-ind {
+  margin-top: clamp(32px, 3.5vw, 48px);
+}
+
+.dms--redesign.dms--home .hm-ind__tabs {
+  display: flex;
+  gap: 0;
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  padding: 0 var(--hm-rail-pad);
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: transparent;
+  box-shadow: none;
+}
+
+.dms--redesign.dms--home .hm-ind__tab {
+  position: relative;
+  min-height: 56px;
+  padding: 0 clamp(16px, 1.8vw, 26px);
+  color: var(--dms-muted);
+  font-size: 0.9rem;
+  font-weight: 560;
+}
+
+.dms--redesign.dms--home .hm-ind__tab::after {
+  position: absolute;
+  right: clamp(16px, 1.8vw, 26px);
+  bottom: -1px;
+  left: clamp(16px, 1.8vw, 26px);
+  height: 2px;
+  content: "";
+  background: transparent;
+}
+
+/* the first label starts on the head's text edge, not a tab pad in from it */
+.dms--redesign.dms--home .hm-ind__tab:first-child {
+  padding-left: 0;
+}
+
+.dms--redesign.dms--home .hm-ind__tab:first-child::after {
+  left: 0;
+}
+
+.dms--redesign.dms--home .hm-ind__tab.is-active {
+  background: transparent;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--home .hm-ind__tab.is-active::after {
+  background: var(--dms-accent);
+}
+
+.dms--redesign.dms--home .hm-ind__lede {
+  margin-top: 24px;
+}
+
+.dms--redesign.dms--home .hm-ind__tiles,
+.dms--redesign.dms--home .hm-ind__tiles--3 {
+  gap: 1px;
+  margin: 24px calc(-1 * var(--hm-rail-pad)) 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-ind__tile {
+  --hm-entry-rule: var(--hm-rail);
+  padding: clamp(22px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms--home .hm-ind__label {
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-ind__plate {
+  margin: 20px 0 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.dms--redesign.dms--home .hm-ind__row {
+  padding: 14px 0;
+}
+
+.dms--redesign.dms--home .hm-ind__row + .hm-ind__row {
+  border-top: 1px solid var(--hm-rail);
+  background: none;
+}
+
+.dms--redesign.dms--home .hm-ind__row dt {
+  color: var(--dms-muted);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-ind__standards i {
+  background: var(--n-50);
+}
+
+.dms--redesign.dms--home .hm-ind__go {
+  min-height: 0;
+  justify-content: flex-start;
+  gap: 8px;
+  /* margin-top stays auto (home-industries.css) so the link sits on the
+   * cell floor whatever the ledger's height; the air is padding */
+  margin-top: auto;
+  padding: 24px 0 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dms-accent);
+  font-size: 0.92rem;
+}
+
+.dms--redesign.dms--home .hm-ind__go:hover {
+  background: transparent;
+  color: var(--dms-accent-hover);
+}
+
+.dms--redesign.dms--home .hm-industries-section .hm-section-tail {
+  margin-top: 24px;
+}
+
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-ind__tabs {
+    overflow-x: auto;
+  }
+}
+
+/* ====================================================== 06 · CUSTOMER PROOF
+ * The reel: its rules live with the component in home-proof.css (dark
+ * ground on the bookends' charcoal, stills at their native 16:9, arrows in
+ * the head). Nothing to override here. */
+
+/* ============================================================= RESOURCES
+ * Fourth pass. The grey box goes; the band is a split head (label + claim
+ * left, body + link right) over three white cells rail to rail, one per
+ * collection. */
+.dms--redesign.dms--home .hm-resources-section {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.dms--home .hm-resources {
+  display: block;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dms--redesign.dms--home .hm-resources__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 0 clamp(48px, 8vw, 120px);
+  align-items: end;
+}
+
+.dms--redesign.dms--home .hm-resources__intro > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  grid-column: 1;
+  color: var(--dms-accent);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-resources__intro > span::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.dms--home .hm-resources__intro h3 {
+  grid-column: 1;
+  max-width: 16ch;
+  margin-top: 22px;
+  font-size: var(--dms-h2-size);
+  font-weight: 500;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+}
+
+.dms--redesign.dms--home .hm-resources__intro p {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: end;
+  max-width: 48ch;
+  margin: 0;
+  font-size: var(--dms-lede-size);
+  line-height: 1.6;
+}
+
+.dms--redesign.dms--home .hm-resources__all {
+  grid-column: 2;
+  grid-row: 3;
+  min-height: 0;
+  margin-top: 16px;
+}
+
+.dms--redesign.dms--home .hm-resources__rows {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-resrow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms--home .hm-resrow + .hm-resrow {
+  border-top: 0;
+}
+
+.dms--redesign.dms--home .hm-resrow__col strong {
+  font-size: clamp(1.2rem, 1.08rem + 0.32vw, 1.48rem);
+  font-weight: 620;
+  line-height: 1.2;
+}
+
+.dms--redesign.dms--home .hm-resrow__col small {
+  max-width: 34ch;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.dms--redesign.dms--home .hm-resrow__go {
+  justify-self: start;
+  margin-top: auto;
+  padding-top: 24px;
+  font-size: 0.92rem;
+}
+
+@media (max-width: 960px) {
+  .dms--redesign.dms--home .hm-resources__intro {
+    grid-template-columns: 1fr;
+    gap: 16px 0;
+  }
+
+  .dms--redesign.dms--home .hm-resources__intro p,
+  .dms--redesign.dms--home .hm-resources__all {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .dms--redesign.dms--home .hm-resources__rows {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* home-kit spans each row across its old two-column box; in the three-cell
+ * grid every row is one cell */
+.dms--redesign.dms--home .hm-resources__rows > .hm-resrow {
+  grid-column: auto;
+  align-items: stretch;
+}
+
+/* ================================================ WAY-IN ARTIFACTS (hm-ev)
+ * A small product surface on each wash (home-entry-viz.tsx): white card,
+ * hairlines, square corners, 11px type, and the reference's "You" cursor
+ * pill sitting just off the card's corner. */
+.dms--redesign.dms--home .hm-ev {
+  position: relative;
+  width: 74%;
+  max-width: 320px;
+  color: var(--dms-ink);
+  font-family: var(--dms-sans);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.dms--redesign.dms--home .hm-ev__card {
+  /* the hero plate at artifact scale: 5px ring, same alphas */
+  --rf-plate: 5px;
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  background: var(--dms-surface);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 1px 2px -1px oklch(0 0 0 / 0.08),
+    0 18px 36px -20px oklch(0.24 0.02 263 / 0.45);
+}
+
+.dms--redesign.dms--home .hm-ev__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 14px 0;
+}
+
+.dms--redesign.dms--home .hm-ev__kicker {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-ev__meta {
+  color: var(--dms-faint);
+  font-size: 0.62rem;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-ev__state {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent-text);
+  font-size: 0.58rem;
+  font-weight: 650;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-ev__title {
+  margin: 8px 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+  color: var(--dms-ink);
+  font-size: 0.8rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* step tracker and audit trail: one row per step */
+.dms--redesign.dms--home .hm-ev__steps,
+.dms--redesign.dms--home .hm-ev__trail {
+  margin: 0;
+  padding: 4px 14px 8px;
+  list-style: none;
+}
+
+.dms--redesign.dms--home .hm-ev__steps li,
+.dms--redesign.dms--home .hm-ev__trail li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 3px 0;
+  color: var(--dms-ink-2);
+  font-weight: 500;
+}
+
+.dms--redesign.dms--home .hm-ev__steps li + li,
+.dms--redesign.dms--home .hm-ev__trail li + li {
+  border-top: 1px solid var(--dms-hairline);
+}
+
+.dms--redesign.dms--home .hm-ev__steps li small,
+.dms--redesign.dms--home .hm-ev__trail li small {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.58rem;
+}
+
+.dms--redesign.dms--home .hm-ev__steps li.is-target,
+.dms--redesign.dms--home .hm-ev__trail li.is-target {
+  color: var(--dms-ink);
+  font-weight: 650;
+}
+
+.dms--redesign.dms--home .hm-ev__steps li.is-target small,
+.dms--redesign.dms--home .hm-ev__trail li.is-target small {
+  color: var(--dms-accent-text);
+}
+
+.dms--redesign.dms--home .hm-ev__ico {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dms--redesign.dms--home .hm-ev__ico.is-done { color: var(--dms-ok); }
+.dms--redesign.dms--home .hm-ev__ico.is-open { color: var(--dms-accent); }
+.dms--redesign.dms--home .hm-ev__ico .hm-ev__dot { fill: currentColor; stroke: none; }
+
+/* the module picker: four tiles, one selected */
+.dms--redesign.dms--home .hm-ev__modules {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  margin: 10px 0 0;
+  padding: 0 12px 12px;
+  list-style: none;
+}
+
+.dms--redesign.dms--home .hm-ev__modules li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  row-gap: 1px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid var(--dms-hairline);
+  background: var(--dms-surface);
+  color: var(--dms-ink-2);
+}
+
+.dms--redesign.dms--home .hm-ev__modules li.is-on {
+  border-color: var(--dms-accent);
+  background: var(--dms-accent-tint);
+  color: var(--dms-ink);
+  box-shadow: 0 0 0 1px var(--dms-accent);
+}
+
+.dms--redesign.dms--home .hm-ev__glyph {
+  display: grid;
+  grid-row: 1 / 3;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--home .hm-ev__modules li.is-on .hm-ev__glyph { color: var(--dms-accent); }
+
+.dms--redesign.dms--home .hm-ev__glyph svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.dms--redesign.dms--home .hm-ev__code {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.dms--redesign.dms--home .hm-ev__name {
+  color: var(--dms-faint);
+  font-size: 0.6rem;
+  line-height: 1.2;
+}
+
+.dms--redesign.dms--home .hm-ev__modules li.is-on .hm-ev__name { color: var(--dms-accent-text); }
+
+/* the standards chips on the audit-trail card */
+.dms--redesign.dms--home .hm-ev__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px 14px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+
+.dms--redesign.dms--home .hm-ev__chips i {
+  padding: 3px 7px;
+  background: var(--n-50);
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.56rem;
+  font-style: normal;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* the cursor: an arrow and a dark pill, off the card's corner */
+.dms--redesign.dms--home .hm-ev__you {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0;
+  pointer-events: none;
+}
+
+/* multiplayer cursors: the arrow is filled in the person's colour with a
+ * white edge, the name pill is the same colour */
+.dms--redesign.dms--home .hm-ev__you svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--cursor, #17181a);
+  stroke: #fff;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.22));
+}
+
+.dms--redesign.dms--home .hm-ev__you b {
+  margin: 14px 0 0 -4px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--cursor, #17181a);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.35);
+}
+
+.dms--redesign.dms--home .hm-ev__you--solution { right: -14px; bottom: -14px; }
+.dms--redesign.dms--home .hm-ev__you--product { right: 30%; bottom: -4px; }
+.dms--redesign.dms--home .hm-ev__you--industry { right: -12px; bottom: -14px; }
+
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-ev { width: 60%; }
+}
+
+/* the suite window on desktop is clip-pathed to its cut (home-kit), which
+ * clips a box-shadow plate away; draw it the hero's way instead, as a
+ * layer under the window sized to the visible cut (1070 x 560 in camera
+ * space) at the zoom. The zoom moves up to .stx-arc so the layer can read
+ * it; the camera inherits it. */
+@media (min-width: 1121px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.78; --hm-cam-y: 0px; }
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera { --hm-zoom: inherit; --hm-cam-y: inherit; }
+
+  .dms--redesign.dms--home .hm-suite__stage.rf .stx-root .stx-arc__camera {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(1070px * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    height: calc(560px * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    content: "";
+    border-radius: 0;
+    background: oklch(1 0 0 / 0.24);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.45),
+      0 4px 10px -4px oklch(0 0 0 / 0.12),
+      0 24px 48px -20px oklch(0 0 0 / 0.22),
+      0 48px 96px -32px oklch(0 0 0 / 0.18);
+    transform: translate(-50%, calc(-50% + var(--hm-cam-y)));
+    pointer-events: none;
+  }
+}
+@media (min-width: 1280px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.88; }
+}
+@media (min-width: 1536px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc { --hm-zoom: 0.92; }
+}
+
+/* hero tabs: a solid glyph in place of the 01..04 counter (Abhishek, 22 Sep:
+ * "instead of numbers, a little bigger solid icons") */
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab::before {
+  content: none;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__ico {
+  display: grid;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  color: var(--dms-d-ink-3);
+  transition: color 160ms ease-out;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__ico svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab:hover .hm-heromock__ico {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab.is-active .hm-heromock__ico {
+  color: var(--u-blue-400);
+}
+
+/* 05 · quieter tiles (Abhishek, 22 Sep: "this section looks too busy"):
+ * the group lede under the tabs goes, the ledger captions go visually
+ * hidden, the hairline between rows goes, and the standards run as one
+ * muted mono line instead of chips. Label, claim, two quiet lines, link. */
+.dms--redesign.dms--home .hm-ind__lede {
+  display: none;
+}
+
+.dms--redesign.dms--home .hm-ind__plate {
+  margin-top: 18px;
+}
+
+.dms--redesign.dms--home .hm-ind__row {
+  gap: 0;
+  padding: 0;
+}
+
+.dms--redesign.dms--home .hm-ind__row + .hm-ind__row {
+  margin-top: 8px;
+  border-top: 0;
+  background: none;
+}
+
+.dms--redesign.dms--home .hm-ind__row dt {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-ind__row dd {
+  color: var(--dms-ink-2);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.dms--redesign.dms--home .hm-ind__standards {
+  gap: 0;
+}
+
+.dms--redesign.dms--home .hm-ind__standards i {
+  padding: 0;
+  background: none;
+  color: var(--dms-faint);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+/* separator after each item but the last, so a wrapped line starts clean */
+.dms--redesign.dms--home .hm-ind__standards i:not(:last-child)::after {
+  margin: 0 7px;
+  content: "·";
+}
+
+.dms--redesign.dms--home .hm-ind__customer {
+  margin-top: 4px;
+}
+
+/* 05 · bigger industry glyph on the tile label (Abhishek, 22 Sep) */
+.dms--redesign.dms--home .hm-ind__label {
+  gap: 10px;
+}
+
+.dms--redesign.dms--home .hm-ind__glyph {
+  width: 26px;
+  height: 26px;
+}
+
+.dms--redesign.dms--home .hm-ind__glyph svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* 05 · standards back in pills, grey and quiet (Abhishek, 22 Sep: "put the
+ * standards in grey pills") */
+.dms--redesign.dms--home .hm-ind__standards {
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.dms--redesign.dms--home .hm-ind__standards i {
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--n-100);
+  color: var(--dms-muted);
+  font-size: 0.68rem;
+  line-height: 1.2;
+}
+
+.dms--redesign.dms--home .hm-ind__standards i:not(:last-child)::after {
+  content: none;
+}
+
+/* resources cells on the way-in grammar (Abhishek, 22 Sep: "bg container and
+ * large icons for the content type"): 12px around a wash panel carrying the
+ * content type's solid glyph, then the copy aligned to the panel's edge */
+.dms--redesign.dms--home .hm-resrow {
+  padding: 12px 12px 24px;
+}
+
+.dms--redesign.dms--home .hm-resrow__wash {
+  position: relative;
+  display: grid;
+  aspect-ratio: 16 / 10;
+  place-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  margin-bottom: clamp(20px, 2.2vw, 28px);
+  background: var(--hm-wash-sky);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--home .hm-resrow__wash::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms--home .hm-resrow__wash--case { background: var(--hm-wash-blue); }
+.dms--redesign.dms--home .hm-resrow__wash--blog { background: var(--hm-wash-warm); }
+
+/* white, translucent glyphs (Abhishek, 22 Sep), a soft shadow keeps
+ * them legible on the palest part of the wash */
+.dms--redesign.dms--home .hm-resrow__wash svg {
+  position: relative;
+  z-index: 1;
+  width: clamp(104px, 11.5vw, 160px);
+  height: clamp(104px, 11.5vw, 160px);
+  overflow: visible;
+  fill: rgba(255, 255, 255, 0.92);
+  /* the visuals' translucent plate, on a glyph: a wide white stroke at low
+   * alpha painted under the fill reads as a 6px frosted ring around the
+   * shape; the two-layer shadow blends it into the wash */
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  paint-order: stroke fill;
+  filter:
+    drop-shadow(0 2px 4px rgba(23, 24, 26, 0.08))
+    drop-shadow(0 18px 30px rgba(23, 24, 26, 0.2));
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--home .hm-resrow:hover .hm-resrow__wash svg { transform: translateY(-3px); }
+}
+
+.dms--redesign.dms--home .hm-resrow__col,
+.dms--redesign.dms--home .hm-resrow__go {
+  margin-inline: 8px;
+}
+
+/* ====================================================== RESOURCES, DARK
+ * The band sits on the bookends' charcoal between the proof reel and the
+ * close (Abhishek, 22 Sep), so the page's last three sections are one dark
+ * run. The wash panels stay light, the one bright object per cell, as on
+ * the hero. */
+.dms--redesign.dms--home .hm-resources--dark {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-bg-3: var(--hm-charcoal-3, #2b2f36);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --dms-d-border-2: var(--hm-charcoal-border-2, #41464f);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__intro > span {
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__intro h3 {
+  color: #fff;
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__intro p {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__all,
+.dms--redesign.dms--home .hm-resources--dark .hm-resrow__go {
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__rows {
+  border-color: var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resrow {
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resrow__col strong {
+  color: #fff;
+}
+
+.dms--redesign.dms--home .hm-resources--dark .hm-resrow__col small {
+  color: var(--dms-d-ink-2);
+}
+
+/* the glyph's shadow reads against the wash, not the charcoal, so it stays */
+
+/* ============================================ WASH TEXTURE, SMALL PANELS
+ * The hero's film grain on the wash panels that paint their own ground: the
+ * symptom cards, the way-in cells and the resources cells. Grain only, no
+ * dots (Abhishek, 23 Sep). ::after keeps its job as the grain, now the finer
+ * overlay film. Placed last so it wins over the earlier per-panel rules. */
+.dms--redesign.dms--home .hm-entry__wash::after,
+.dms--redesign.dms--home .hm-resrow__wash::after,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz::after {
+  background-image: var(--hm-tex-grain);
+  background-size: 220px 220px;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+}
+
+/* ============================================== HERO FINISH (23 Sep 2026)
+ * Abhishek: "a little bit of shine to the hero, make the text stand out".
+ * A polish layer, placed last so it wins by order:
+ *   1. light: a cool key light behind the headline and a faint fill on the
+ *      right column, over film grain, all on the copy block only (the
+ *      section's ::before/::after are the rails, so the inner carries it);
+ *   2. type: the white lines lit top to bottom (white to a faint cool
+ *      grey), the blue turn the same way; no bloom, no sheen (Abhishek,
+ *      23 Sep: the first pass "looks glowy... needs to be very subtle");
+ *   3. an entry: lines rise out of a short blur, then the sub and CTAs;
+ *   4. the sub's record nouns in white; CTAs with an inset top highlight.
+ * Variant A (the rotor) keeps its flat fill: its absolutely placed nouns do
+ * not share one text box. Reduced motion: no entry, no sheen. */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__inner {
+  position: relative;
+  isolation: isolate;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__inner::before,
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__inner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* the key light: wide, low, cool; the fill: smaller and fainter, right */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__inner::before {
+  inset: -30% -10% -45% -10%;
+  background:
+    radial-gradient(45% 60% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+  filter: blur(8px);
+}
+
+/* the grain, faded out toward the rails so the charcoal stays clean */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__inner::after {
+  inset: -20% 0 -30% 0;
+  background-image: var(--hm-tex-grain);
+  background-size: 220px 220px;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  -webkit-mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
+}
+
+/* type: tighter by a hair at display size, and lit from above */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__title {
+  font-weight: 500;
+  line-height: 0.98;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-headline:not([data-variant="A"]) .dms-hero__line {
+  /* room for descenders and the comma under the clip */
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  /* one gradient per visual row (1lh tiles), so a wrapped line is lit the
+   * same on both rows instead of greying out toward the bottom */
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .hm-headline:not([data-variant="A"]) .dms-hero__turn {
+  display: inline-block;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #82b8ff 30%, var(--u-blue-400) 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
+}
+
+/* the parent line's grey fill must not show through the blue turn */
+.dms--redesign.dms--home .dms-hero--rails .hm-headline:not([data-variant="A"]) .dms-hero__line:has(> .dms-hero__turn) {
+  background-image: none;
+  filter: none;
+}
+
+/* the sub: brighter by a step, the record nouns carry white */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__sub {
+  color: #c3c8d1;
+  line-height: 1.62;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__sub strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+/* CTAs: the primary lit from its top edge with a soft blue bloom; the
+ * ghost a faint glass */
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas .dms-btn:not(.dms-btn-ghost) {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+  transition: box-shadow 220ms ease-out, background-color 160ms ease-out, transform 220ms ease-out;
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas .dms-btn:not(.dms-btn-ghost):hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-btn-ghost {
+  background: oklch(1 0 0 / 0.03);
+  border-color: oklch(1 0 0 / 0.16);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+}
+
+.dms--redesign.dms--home .dms-hero--rails .dms-btn-ghost:hover {
+  background: oklch(1 0 0 / 0.07);
+  border-color: oklch(1 0 0 / 0.28);
+}
+
+/* entry: once, on load */
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--home .dms-hero--rails .hm-headline .dms-hero__line {
+    animation: hm-hero-rise 900ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  }
+  .dms--redesign.dms--home .dms-hero--rails .hm-headline .dms-hero__line + .dms-hero__line {
+    animation-delay: 110ms;
+  }
+  .dms--redesign.dms--home .dms-hero--rails .dms-hero__sub,
+  .dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas {
+    animation: hm-hero-fade 800ms cubic-bezier(0.2, 0.7, 0.1, 1) 260ms both;
+  }
+  .dms--redesign.dms--home .dms-hero--rails .dms-hero__ctas {
+    animation-delay: 360ms;
+  }
+}
+
+@keyframes hm-hero-rise {
+  from { opacity: 0; transform: translateY(0.18em); filter: blur(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes hm-hero-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ======================================== LIGHT SECTION FINISH (23 Sep 2026)
+ * The hero finish carried onto the light sections (Abhishek, 23 Sep: "can
+ * we also have something similar for light sections"), at the same very
+ * subtle strength: each H2 row lit from above (ink with a faint lift at the
+ * top, 1lh tiles so wrapped rows match), the lede one step darker for
+ * contrast, and the tax CTA with the hero's inset top highlight. No glow,
+ * no sheen; the sections' existing reveals are untouched. No light behind
+ * the heads: at the alpha that reads as subtle on white, a radial bands
+ * into visible rings. */
+.dms--redesign.dms--home :is(.hm-entry-section, .hm-recognition, .hm-products-section, .hm-industries-section) .dms-h2 {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.dms--home :is(.hm-entry-section, .hm-recognition, .hm-products-section, .hm-industries-section) .dms-lede {
+  color: #555c68;
+}
+
+.dms--redesign.dms--home .hm-recognition .hm-taxcta__btn {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0.2 0.02 250 / 0.18);
+}
+
+.dms--redesign.dms--home .hm-recognition .hm-taxcta__btn:hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+}
+
+/* ========================================= DARK SECTION FINISH (23 Sep 2026)
+ * The hero finish on the homepage's dark sections (Abhishek, 23 Sep: "and
+ * also the dark sections"): proof, resources and the close. Same strength
+ * as the hero: each heading row lit from above (white to a faint cool grey,
+ * 1lh tiles), the ledes a step brighter, the close CTAs flat with the
+ * hero's inset top highlight and faint glass ghost. No glow, no sheen, no
+ * light behind the heads (a low-alpha radial bands). The logo band has no
+ * heading and is left alone. */
+.dms--redesign.dms--home :is(.hm-proof .dms-h2, .hm-resources__intro h3, .hm-close .dms-close__h) {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.dms--home :is(.hm-proof .dms-lede, .hm-close .dms-lede),
+.dms--redesign.dms--home .hm-resources--dark .hm-resources__intro p {
+  color: #c3c8d1;
+}
+
+.dms--redesign.dms--home .hm-close .dms-btn:not(.dms-btn-ghost) {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.dms--home .hm-close .dms-btn:not(.dms-btn-ghost):hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.dms--home .hm-close .dms-btn-ghost {
+  background: oklch(1 0 0 / 0.03);
+  border-color: oklch(1 0 0 / 0.16);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+}
+
+.dms--redesign.dms--home .hm-close .dms-btn-ghost:hover {
+  background: oklch(1 0 0 / 0.07);
+  border-color: oklch(1 0 0 / 0.28);
+}

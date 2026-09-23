@@ -10,7 +10,8 @@ export type IconName =
   | "qms" | "dms" | "mes" | "plm"
   | "flask" | "droplet" | "cube"
   | "stories" | "case" | "blog"
-  | "shield" | "ledger" | "truck";
+  | "shield" | "ledger" | "truck"
+  | "seal" | "pallet" | "compass";
 export type NavLink = { label: string; href: string; desc?: string; code?: string; icon?: IconName };
 export type NavCol = { heading: string; icon: IconName; items: NavLink[] };
 export type NavFoot = { title: string; desc: string; href: string; cta: string };
@@ -49,6 +50,14 @@ export const NAV_ICONS: Record<IconName, React.ReactNode> = {
   /* clipboard: board + clip union, entry lines carved by opposite winding */
   ledger: (<path d="M5.6 4h12.8v17H5.6z M9 2.4h6v3.2H9z M8.4 9.2v1.4h7.2V9.2z M8.4 12.4v1.4h7.2v-1.4z M8.4 15.6v1.4H13v-1.4z" />),
   truck: (<><path d="M2.8 6h11.6v9.4H2.8z M14.4 9H18l3.2 3.2v3.2h-6.8z" /><circle cx="7" cy="17.3" r="1.9" /><circle cx="17.3" cy="17.3" r="1.9" /></>),
+  /* rosette seal (quality): twelve-point scalloped disc, check carved out,
+   * so it does not rhyme with the QMS shield in the next row */
+  seal: (<path fillRule="evenodd" d="M12.00 2.30L14.15 3.98L16.85 3.60L17.87 6.13L20.40 7.15L20.02 9.85L21.70 12.00L20.02 14.15L20.40 16.85L17.87 17.87L16.85 20.40L14.15 20.02L12.00 21.70L9.85 20.02L7.15 20.40L6.13 17.87L3.60 16.85L3.98 14.15L2.30 12.00L3.98 9.85L3.60 7.15L6.13 6.13L7.15 3.60L9.85 3.98zM10.75 15.35l5.35-5.45-1.6-1.55-3.75 3.85-1.9-1.9-1.55 1.55z" />),
+  /* pallet (operations): two crates on a base, a third stacked, gaps carved
+   * so the stack reads as separate lots on hold */
+  pallet: (<path d="M8.4 3.6h7.2v6.4H8.4z M3.4 11.4h7.6v6.4H3.4z M13 11.4h7.6v6.4H13z M2.6 19.2h18.8v2.2H2.6z" />),
+  /* drafting compass (product development): nub, hinge, two open legs */
+  compass: (<path d="M11.2 1.4h1.6v2.4h-1.6z M14.9 5.2A2.9 2.9 0 1 1 9.1 5.2A2.9 2.9 0 1 1 14.9 5.2z M10.8 7.4h2.4L19.6 21h-2.4L12 10.4 6.8 21H4.4z" />),
 };
 
 export function NavGlyph({ name }: { name: IconName }) {

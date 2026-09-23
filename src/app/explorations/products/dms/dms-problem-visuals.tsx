@@ -54,11 +54,16 @@ const graphicDraw = {
   show: { opacity: 1, pathLength: 1, transition: { duration: 0.18, ease: "easeOut" } },
 } satisfies Variants;
 
+/* the frame the drawing is read in. Default is the full board; a scene whose
+ * composition is wide and short passes a tighter box so the drawing fills the
+ * stage instead of floating in it. Every box stays inside 0 0 720 480, and
+ * `meet` keeps the whole drawing in frame, never cropped. */
 function GraphicCanvas({
   children,
   play,
   staticMode,
-}: GraphicProps & { children: ReactNode }) {
+  viewBox = "0 0 720 480",
+}: GraphicProps & { children: ReactNode; viewBox?: string }) {
   return (
     <div className="dms-gfx" aria-hidden="true">
       <motion.svg
@@ -66,7 +71,7 @@ function GraphicCanvas({
         initial={staticMode ? false : "hidden"}
         preserveAspectRatio="xMidYMid meet"
         variants={graphicSequence}
-        viewBox="0 0 720 480"
+        viewBox={viewBox}
       >
         <rect className="dms-gfx__field" x="0" y="0" width="720" height="480" />
         {children}
@@ -135,7 +140,7 @@ function RetrievalGraphic(props: GraphicProps) {
 
 function VersionsGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="58 44 612 392">
       <motion.circle className="dms-gfx__halo" cx="350" cy="240" r="178" variants={graphicPop} />
       <motion.path className="dms-gfx__route" d="M282 238C396 222 454 218 526 231" variants={graphicDraw} />
       <motion.path className="dms-gfx__route" d="M354 245C430 245 476 246 524 250" variants={graphicDraw} />
@@ -181,7 +186,7 @@ function VersionsGraphic(props: GraphicProps) {
 
 function DriftGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="58 116 640 306">
       <motion.path className="dms-gfx-drift__gap" d="M155 190H620V340C560 340 520 340 470 325C410 306 380 282 315 260C250 238 215 238 155 238Z" variants={graphicFade} />
 
       <motion.path className="dms-gfx-drift__document" d="M115 190H620" variants={graphicDraw} />
@@ -221,7 +226,7 @@ function DriftGraphic(props: GraphicProps) {
 
 function AuditGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="46 46 630 388">
       <motion.circle className="dms-gfx__halo" cx="360" cy="240" r="172" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M204 138C238 154 258 177 274 205" variants={graphicDraw} />
@@ -284,7 +289,7 @@ function AuditGraphic(props: GraphicProps) {
  * floor keeps building to the old one; the gap between them is the lag. */
 function ChangeGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="58 116 640 306">
       <motion.path className="dms-gfx-drift__gap" d="M155 190H620V340C560 340 520 340 470 325C410 306 380 282 315 260C250 238 215 238 155 238Z" variants={graphicFade} />
 
       <motion.path className="dms-gfx-drift__document" d="M115 190H620" variants={graphicDraw} />
@@ -326,7 +331,7 @@ function ChangeGraphic(props: GraphicProps) {
  * it; two are verified, one is still working to the old version. */
 function TrainingGraphic(props: GraphicProps) {
   return (
-    <GraphicCanvas {...props}>
+    <GraphicCanvas {...props} viewBox="54 50 596 422">
       <motion.circle className="dms-gfx__halo" cx="560" cy="360" r="104" variants={graphicPop} />
 
       <motion.path className="dms-gfx__route" d="M268 214C346 186 420 152 500 130" variants={graphicDraw} />
@@ -383,6 +388,18 @@ function ProblemGraphic({ kind, play, staticMode }: GraphicProps & { kind: DmsPr
 
 const pad = (value: number) => String(value).padStart(2, "0");
 
+/* the cost line reads as one sentence: the figure ("Days", "3") carries the
+ * weight, its caption continues it. The caption is authored capitalised for
+ * the old stacked treatment, so it is lowered back into the sentence. */
+const continueSentence = (value: string) => {
+  const trimmed = value.trim();
+  if (!trimmed) return trimmed;
+  /* keep acronyms and proper nouns (ISO, SOP, FDA) as authored */
+  const [first = "", second = ""] = [trimmed[0], trimmed[1] ?? ""];
+  if (second && second === second.toUpperCase() && /[A-Z]/.test(second)) return trimmed;
+  return first.toLowerCase() + trimmed.slice(1);
+};
+
 export function DmsProblemSpotlight({ items }: { items: DmsProblemItem[] }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const inView = useInView(rootRef, { amount: 0.25, once: true });
@@ -418,21 +435,30 @@ export function DmsProblemSpotlight({ items }: { items: DmsProblemItem[] }) {
       </Tabs.List>
 
       <div className="dms-spot__stagewrap">
-        {items.map((problem) => (
+        {items.map((problem, index) => (
           <Tabs.Panel className="dms-spot__panel" key={problem.visual} value={problem.visual}>
             <div className="dms-spot__body">
               <div className="dms-spot__context">
-                <span className="dms-spot__category">{problem.category}</span>
+                <div className="dms-spot__head">
+                  <span className="dms-spot__category">{problem.category}</span>
+                  <span className="dms-spot__pos" aria-hidden="true">
+                    {pad(index + 1)} / {pad(items.length)}
+                  </span>
+                </div>
                 <blockquote className="dms-spot__quote">
                   <span className="dms-spot__quote-mark" aria-hidden="true">“</span>
                   <p>{problem.quote}</p>
                 </blockquote>
                 <div className="dms-spot__fact">
-                  <div className="dms-spot__metric">
-                    <strong>{problem.metric}</strong>
-                    <span>{problem.metricLabel}</span>
-                  </div>
                   <p className="dms-spot__detail">{problem.detail}</p>
+                  {/* the coordination cost of this symptom: one sentence, the
+                    * figure in the tax colour (rust), never the brand blue */}
+                  <p className="dms-spot__cost">
+                    <span className="dms-spot__cost-label">What it costs</span>
+                    <span className="dms-spot__cost-line">
+                      <b>{problem.metric}</b> {continueSentence(problem.metricLabel)}
+                    </span>
+                  </p>
                 </div>
                 {problem.film ? (
                   <a className="dms-spot__film" href={problem.film.url} target="_blank" rel="noreferrer">

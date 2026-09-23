@@ -179,7 +179,18 @@ export const POST_MARKET_DATA: DomainPageData = {
         glyph: "chat",
         name: "Complaints and the signal underneath",
         line: "What customers report, and what the pattern across reports is telling you.",
-        runsIn: { label: "Complaint handling runs in the QMS product →", href: "/explorations/products/qms" },
+        /* complaints per week, the spike flagged */
+        viz: {
+          kind: "signal",
+          kicker: "Complaint trend · VYN-12",
+          title: "Cap seal complaints, by week",
+          weeks: [2, 1, 3, 2, 2, 1, 2, 3, 9],
+          spike: 8,
+          note: "Spike traced to lot 22-303",
+          cursor: { name: "T. Nakamura", tone: "#7c3aed" },
+          wash: "sky",
+        },
+        runsIn: { label: "Complaints run in the QMS →", href: "/explorations/products/qms" },
         items: [
           { name: "Customer Complaint Investigation and Resolution", line: "Intake normalised across channels, then triaged, investigated and closed back with the customer." },
           { name: "Complaint and Event Trending and Signal Detection", line: "Complaints, deviations and field events read together, so a real signal separates from noise." },
@@ -190,7 +201,20 @@ export const POST_MARKET_DATA: DomainPageData = {
         glyph: "pulse",
         name: "Reportability and the authority's clock",
         line: "Deciding what has to be reported, to whom, and filing it before the clock runs out.",
-        runsIn: { label: "Reportability assessment runs in the QMS product →", href: "/explorations/products/qms" },
+        /* the reportability call, question by question */
+        viz: {
+          kind: "decision",
+          kicker: "C-4471 · reportability",
+          steps: [
+            { q: "Death or serious injury?", a: "No" },
+            { q: "Device malfunction?", a: "Yes" },
+            { q: "Likely to cause harm if it recurs?", a: "Yes" },
+          ],
+          outcome: "Reportable · FDA MDR within 30 days",
+          cursor: { name: "G. Ellison", tone: "#0f8f7e" },
+          wash: "blue",
+        },
+        runsIn: { label: "Reportability runs in the QMS →", href: "/explorations/products/qms" },
         items: [
           { name: "Adverse Event Reporting and Regulatory Notification", line: "Causality evaluated and reportability classified per jurisdiction, then filed against the tightest clock that applies." },
           { name: "Post-Market Surveillance and Vigilance Reporting", line: "Field performance monitored on a cadence, with signal management provable to a notified body." },
@@ -200,6 +224,19 @@ export const POST_MARKET_DATA: DomainPageData = {
         glyph: "loop",
         name: "Field action, start to close",
         line: "Getting product corrected or back, and proving to the regulator that it worked.",
+        /* four tracks, one record */
+        viz: {
+          kind: "lanes",
+          kicker: "FSCA-0417 · four tracks",
+          lanes: [
+            { name: "Stock hold", owner: "Operations", pct: 100 },
+            { name: "Notification", owner: "Customer Service", pct: 72 },
+            { name: "Returns", owner: "Distribution", pct: 46 },
+            { name: "Submission", owner: "Regulatory", pct: 88 },
+          ],
+          cursor: { name: "V. Adeyemi", tone: "#d97706" },
+          wash: "warm",
+        },
         items: [
           { name: "Field Safety Corrective Action and Recall Execution", line: "Severity classified, every affected lot and customer identified, field communication executed on the regulator's timeline." },
           { name: "Field Action Effectiveness Monitoring and Close-Out", line: "Non-responding customers chased, returns reconciled against the affected population, close-out evidenced." },
@@ -211,6 +248,20 @@ export const POST_MARKET_DATA: DomainPageData = {
         glyph: "box",
         name: "The installed base",
         line: "Product already in the field: serviced, supplied and eventually retired.",
+        /* one installed unit and its service history */
+        viz: {
+          kind: "asset",
+          serial: "SN AX2-11873",
+          model: "AX-2 analyzer · installed Mar 2023",
+          visits: [
+            { label: "Installed", when: "2023" },
+            { label: "PM visit", when: "2024" },
+            { label: "Field fix", when: "2025" },
+            { label: "Service due", when: "Oct", now: true },
+          ],
+          cursor: { name: "L. Brandt", tone: "#db2777" },
+          wash: "paper",
+        },
         items: [
           { name: "Field Service and Maintenance", line: "Technicians, parts and customer access coordinated, with service records that meet regulatory expectations." },
           { name: "Installation Qualification and Field Commissioning", line: "Equipment qualified in the customer's environment and handed into a compliant service program." },
@@ -242,26 +293,40 @@ export const POST_MARKET_DATA: DomainPageData = {
         { state: "wait", label: "Stock hold confirmations", age: "2 of 6 sites" },
         { state: "idle", label: "Consignee list", age: "3 versions" },
       ],
-      float: { kicker: "Regulatory", note: "Which lot list is the current one?" },
+      float: { kicker: "Recall coordinator", note: "Please confirm the distribution list for the affected lots." },
       caption: "Four workflows, four owners, four clocks. No one thread.",
+      /* the rails window: the recall argued in a channel */
+      chat: {
+        channel: "recall-vyn12",
+        meta: "Day 6",
+        messages: [
+          { who: "G. Ellison", initials: "GE", tone: "#2f6fdc", text: "Which lot list is the current one?", time: "09:02" },
+          { who: "R. Park", initials: "RP", tone: "#0f8f7e", text: "Use v3. Or v3_final, whichever has 22-305 on it.", time: "09:14", file: "Lot_list_v3_final (2).xlsx" },
+          { who: "S. Diaz", initials: "SD", tone: "#b7791f", text: "Stock hold confirmed at 2 of 6 sites so far.", time: "09:31" },
+          { who: "M. Keane", initials: "MK", tone: "#7c3aed", text: "Regulatory needs the scope by noon for the filing.", time: "09:40" },
+        ],
+      },
     },
     pains: [
       {
         severity: "Critical",
         surface: "Spreadsheets & exports",
         name: "Recall traceability assembled in spreadsheets under regulator pressure",
+        short: "Which lot went where, rebuilt from exports under the clock.",
         body: "Which lots shipped to which customers, what supplier inputs went in, what processing parameters applied, what was dispositioned: no single system holds the full chain, so it is rebuilt from exports and emailed workbooks while the field action waits. The recall is executed. The traceability cost is enormous.",
       },
       {
         severity: "High",
         surface: "Off-workflow analysis",
         name: "Complaint trend signals lost in case-by-case triage",
+        short: "Each complaint triaged alone. The cluster stays invisible.",
         body: "Every complaint is triaged on its own merits. The same product code accumulating complaints, the same failure mode across sites, a cluster that starts right after a process change: those become visible only when somebody runs an analysis that is not part of the standard workflow.",
       },
       {
         severity: "Medium",
         surface: "Service reports",
         name: "Field service feedback never reaches the design loop",
+        short: "The technician knows how it fails. Engineering never hears.",
         body: "Field service knows exactly how products fail and how customers really use them. Engineering does not see most of it, so the next revision repeats failure modes the technicians have been working around for years.",
       },
     ],
@@ -270,7 +335,8 @@ export const POST_MARKET_DATA: DomainPageData = {
     // band states the canonical cost from the recall-traceability pain instead.
     tax: {
       label: "The recurring bill",
-      value: "The traceability rebuild, done again under the regulator's clock.",
+      value: "Traceability, rebuilt under the clock.",
+      tail: "That rebuild is the coordination tax.",
       meta: "The field action goes out. What it costs is a chain no single system held, reassembled from exports while the hold, the notifications and the submission all wait on the answer.",
     },
   },
@@ -294,6 +360,14 @@ export const POST_MARKET_DATA: DomainPageData = {
       { t: "Recall scope and hazard class set", who: "VP Quality · Regulatory", when: "Day 6" },
       { t: "Hold, notifications, returns and submission run in parallel", who: "Operations · Customer Service · Regulatory", when: "Day 7" },
       { t: "Effectiveness verified · trace sealed", who: "Recall Coordinator", when: "Day 62" },
+    ],
+    /* the rails rail: each line is what the arcade pose above it shows */
+    steps: [
+      { icon: "complaint", title: "Take the complaint", body: "C-4471 lands: a cap seal breach on VYN-12, lot 22-303." },
+      { icon: "clock", title: "File inside the clock", body: "The MDR is filed on day 4, from the same evidence." },
+      { icon: "scope", title: "Set the scope", body: "Lot 22-303, two sister lots, 1,840 consignees, Class II." },
+      { icon: "tracks", title: "Run four tracks", body: "Hold, notification, returns and submission, each with an owner." },
+      { icon: "seal", title: "Verify and seal", body: "Three check waves, 96% response, and V. Adeyemi signs." },
     ],
     trailFoot: "The relation runs back to the complaint that raised it and forward into the corrective action and design change it triggers. Four parallel tracks, one thread, one trace.",
     chatVariant: "capa",
@@ -438,8 +512,8 @@ export const POST_MARKET_DATA: DomainPageData = {
    * Customer JTBDs and carry an in-development label rather than a standards
    * list they cannot yet evidence. */
   coverage: {
-    heading: "The products that do the post-market work.",
-    lede: "Complaint handling and lot traceability ship today inside the Quality Management System and the Manufacturing Execution System. Recall execution and vigilance reporting are in development, and labelled as such below.",
+    heading: "Complaint to lot, on one record.",
+    lede: "Complaints and the corrective actions they raise run in the Quality Management System; lot records and the genealogy a recall depends on run in the Manufacturing Execution System. One record under both.",
     standardFilters: ["ISO 13485", "21 CFR 820", "EU MDR", "21 CFR 11", "21 CFR 211", "EU GMP"],
     groups: [
       {
@@ -570,10 +644,11 @@ export const POST_MARKET_DATA: DomainPageData = {
     heading: "When the field becomes the headline.",
     lede: "Each of these starts a clock the authority is counting, and each routes into a governed workflow, so the response is coordinated on the record it will be judged by.",
     rows: [
-      { name: "Recall scope definition required", clock: "Regulator's stated timeline · scope decided in parallel", severity: "Urgent", routesTo: "Complaint Handling · Field action", owner: "VP Quality · Chief Medical Officer" },
-      { name: "MDR or vigilance reporting deadline", clock: "30 days routine · 5 working days when urgent action is needed", severity: "Urgent", routesTo: "Complaint Handling", owner: "Vigilance · Regulatory Affairs" },
-      { name: "Production hold pending disposition", clock: "Every hour compounds", severity: "Urgent", routesTo: "Non-conformance", owner: "Plant Manager · QA" },
+      { name: "Recall scope definition required", clock: "Regulator's stated timeline · scope decided in parallel", severity: "Urgent", routesTo: "Complaint Handling · Field action", owner: "VP Quality · Chief Medical Officer", viz: "genealogy", detail: ["22-303", "22-301", "22-305"] },
+      { name: "MDR or vigilance reporting deadline", clock: "30 days routine · 5 working days when urgent action is needed", severity: "Urgent", routesTo: "Complaint Handling", owner: "Vigilance · Regulatory Affairs", viz: "rings", detail: ["5-day report", "30-day report"] },
+      { name: "Production hold pending disposition", clock: "Every hour compounds", severity: "Urgent", routesTo: "Non-conformance", owner: "Plant Manager · QA", viz: "bins", detail: ["Warehouse · DC East"] },
     ],
+    featured: ["Recall scope definition required", "MDR or vigilance reporting deadline", "Production hold pending disposition"],
   },
 
   /* ------------------------------------------------ 08 · coexistence
@@ -582,10 +657,22 @@ export const POST_MARKET_DATA: DomainPageData = {
    * touches: the complaint file in the QMS, shipment and customer data in ERP
    * and CRM, lot genealogy in MES. */
   coexistence: {
-    heading: "It sits on the stack you already run.",
+    heading: "Your systems stay. The recall runs between them.",
     systemsOfRecord: ["QMS", "ERP", "CRM", "MES"],
     body: "A field action already reads from four systems: the complaint file, the shipment and customer records, the lot genealogy. Unifize replaces the ungoverned channels between them (email, escalation calls, shared workbooks), not the systems of record that already passed your audits. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your QMS, ERP, CRM and MES.",
+    bands: {
+      lede: "The complaint file, the shipment records and the lot genealogy stay where they are. Unifize runs the field action between them, and the approved outcome goes back with a 21 CFR Part 11 signature. No rip-and-replace, no revalidation.",
+      note: "No system for complaints yet? The quality module above runs it, on the same layer.",
+      tools: {
+        title: "Escalation channels",
+        sub: "Stop being the record",
+        names: ["Calls", "Email", "Workbooks", "Chat"],
+        label: "Where the scope used to be decided",
+        body: "The escalation call, the lot-list workbook and the recall channel stop being where scope gets decided. The hold, the notification, the returns and the submission read from one record.",
+      },
+      flows: { contextIn: "LOT DATA IN", back: "PART 11 SIGNED", captured: "SCOPE CALLS CAPTURED", linked: "FOUR TRACKS, LINKED" },
+    },
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -605,12 +692,24 @@ export const POST_MARKET_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["Mock Recall", "Complaints", "Traceability Matrix", "Electronic Lot Records"],
+    /* the reel roster: recall readiness, complaints, lot traceability,
+     * returns. Each fact is the film's own title; no film is shared with
+     * another Solutions page. */
+    stills: [
+      { wistia: "rsqybjoajw", fact: "Mock recall time down to 18 minutes" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "g7ex57ax0a", fact: "Customer complaints managed on Unifize" }, /* Erica Bennerman */
+      { wistia: "796xicgn20", fact: "Time to resolve complaints reduced" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "wmltnu3t49", fact: "Traceability and lot tracking, loop closed" }, /* Denis Machoka */
+      { wistia: "2hc3rzljvm", fact: "Raw materials linked to lots and finished product" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "2f9gz5d6pv", fact: "Returned goods, before and after" }, /* Carol Wilson */
+      { wistia: "gfvxn6h9v5", fact: "Resolutions for repeating issues" }, /* Dave Anderson */
+    ],
     references: [
       {
         tag: "Named reference",
         name: MD_PROOF.customers[0].name,
         desc: MD_PROOF.customers[0].desc,
-        link: { label: "Complaint handling runs in the QMS product →", href: "/explorations/products/qms" },
+        link: { label: "Complaints run in the QMS →", href: "/explorations/products/qms" },
       },
       { tag: "Named reference", name: MD_PROOF.customers[1].name, desc: MD_PROOF.customers[1].desc },
     ],

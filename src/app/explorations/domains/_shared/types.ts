@@ -70,7 +70,67 @@ export interface WorkGroup {
   items: WorkItem[];
   /** The journey ingress: where this cluster runs today (live page only). */
   runsIn?: { label: string; href: string };
+  /** The rails cell's artifact (SolutionPage `rails`): one small product
+   *  surface of this cluster's own record on a wash, with a named cursor on
+   *  the step the visitor would touch (the homepage way-in grammar).
+   *  Illustrative furniture from the page's arcade world, not a claim. */
+  viz?: WorkViz;
 }
+
+/** The rails journey rail's solid icons. The first five are quality's
+ *  CAPA; the rest give every sibling page its own verbs (23 Sep 2026: no
+ *  two pages share a rail, only the closing seal repeats). */
+export type JourneyIcon =
+  | "escalate" | "cause" | "actions" | "verify" | "seal"
+  | "finding" | "impact" | "lock" | "clipcheck"
+  | "tray" | "globe" | "link" | "submit"
+  | "reject" | "weigh" | "sendout" | "accept"
+  | "complaint" | "clock" | "scope" | "tracks";
+
+/** A named multiplayer cursor on the step the visitor would touch. */
+export interface VizCursor { name: string; tone: string }
+
+type VizWash = "sky" | "blue" | "warm" | "paper";
+
+/** The rails "work inside" cell artifact. `record` (the default, quality's
+ *  four cells) is a record card with its steps; every other kind is its own
+ *  precise mini-UI, one per cluster, so no two cells on the sibling pages
+ *  draw the same widget (23 Sep 2026). Illustrative furniture from each
+ *  page's arcade world, never a claim. Rendered by solution-work-viz.tsx. */
+export type WorkViz =
+  | { kind?: "record"; wash: VizWash; cursor: VizCursor; kicker: string; state: string; title: string; rows: { label: string; meta: string; open?: boolean }[] }
+  /** systems down, checks across: the validated estate at a glance */
+  | { kind: "matrix"; wash: VizWash; cursor?: VizCursor; kicker: string; cols: string[]; rows: { name: string; cells: ("ok" | "due" | "gap")[] }[] }
+  /** one source (a rule) fanning out to what it touches */
+  | { kind: "impact"; wash: VizWash; cursor?: VizCursor; source: { kicker: string; title: string }; items: { id: string; label: string; open?: boolean }[] }
+  /** a report form being filled on the floor */
+  | { kind: "form"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; fields: { label: string; value: string; select?: boolean; focus?: boolean }[] }
+  /** a signature block across two organisations */
+  | { kind: "signoff"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; signers: { org: string; name: string; meaning: string; time?: string }[] }
+  /** a submission as a fanned stack of sheets, its citation checked live */
+  | { kind: "dossier"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; cite: string; state: string }
+  /** a statutory clock as one day axis, today and the deadlines marked */
+  | { kind: "clock"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; day: number; span: number; marks: { day: number; label: string }[] }
+  /** a product label with its UDI, and where the approved change has landed */
+  | { kind: "label"; wash: VizWash; cursor?: VizCursor; product: string; lines: string[]; version: string; endpoints: { name: string; done: boolean }[] }
+  /** a regulatory-intelligence feed, the binding item routed */
+  | { kind: "feed"; wash: VizWash; cursor?: VizCursor; kicker: string; items: { source: string; title: string; tag: string; hot?: boolean }[] }
+  /** a supplier scorecard with its approval status */
+  | { kind: "scorecard"; wash: VizWash; cursor?: VizCursor; name: string; status: string; metrics: { label: string; value: number }[] }
+  /** the part-approval package as a grid of elements */
+  | { kind: "tiles"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; total: number; open: number[]; foot: string }
+  /** the hold tag on the lot at the dock */
+  | { kind: "tag"; wash: VizWash; cursor?: VizCursor; stamp: string; lines: { k: string; v: string }[]; note: string }
+  /** one thread, two companies */
+  | { kind: "thread"; wash: VizWash; cursor?: VizCursor; kicker: string; messages: { org: string; text: string; ext?: boolean }[] }
+  /** complaints per week, the spike flagged */
+  | { kind: "signal"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; weeks: number[]; spike: number; note: string }
+  /** the reportability decision, question by question */
+  | { kind: "decision"; wash: VizWash; cursor?: VizCursor; kicker: string; steps: { q: string; a: string }[]; outcome: string }
+  /** four tracks running in parallel against one record */
+  | { kind: "lanes"; wash: VizWash; cursor?: VizCursor; kicker: string; lanes: { name: string; owner: string; pct: number }[] }
+  /** one installed unit and its service history */
+  | { kind: "asset"; wash: VizWash; cursor?: VizCursor; serial: string; model: string; visits: { label: string; when: string; now?: boolean }[] };
 
 /** One row of the section-02 "old world" artifact (see LeakScene). */
 export interface LeakSceneRow {
@@ -97,6 +157,48 @@ export interface LeakScene {
   float?: { kicker: string; note: string };
   /** one line under the artifact naming the failure it stages */
   caption: string;
+  /** The rails visual (SolutionPage `rails`): the old world as an inbox,
+   *  the homepage symptom-card widget none of the page's other visuals use
+   *  (Abhishek, 23 Sep 2026: the card read like every other visual, a chart
+   *  was the wrong style). The float arrives on top as the audit request. */
+  inbox?: {
+    label: string;
+    meta: string;
+    rows: { subject: string; from: string; age: string; unread?: boolean; warn?: boolean }[];
+  };
+  /** The sibling pages' old worlds (23 Sep 2026), one widget each so no two
+   *  Solutions pages stage the leak the same way. Compliance: the
+   *  validation folder nobody has opened since the last audit. */
+  files?: {
+    path: string[];
+    rows: { name: string; kind: "pdf" | "doc" | "sheet" | "folder"; meta: string; warn?: boolean }[];
+  };
+  /** Regulatory affairs: the filed submission, its citation stale against
+   *  the register (the page's worst-rated pain). */
+  citation?: {
+    doc: string;
+    section: string;
+    before: string;
+    cited: string;
+    after: string;
+    lines: number;
+    register: { label: string; value: string };
+  };
+  /** Supplier management: the SCAR tracker, gone quiet. */
+  sheet?: {
+    file: string;
+    meta: string;
+    cols: string[];
+    rows: { cells: string[]; warn?: number }[];
+    active: string;
+  };
+  /** Post-market: the recall run from a chat channel, four trackers
+   *  arguing about which list is current. */
+  chat?: {
+    channel: string;
+    meta: string;
+    messages: { who: string; initials: string; tone: string; text: string; time: string; file?: string }[];
+  };
 }
 
 /** One failure mode from the Pain Points DB. */
@@ -108,6 +210,9 @@ export interface PainRow {
    *  (Email, Spreadsheets, Floor walks, Audit day…), condensed from the
    *  pain's Description. */
   surface: string;
+  /** The rails list's one line under the failure named (SolutionPage
+   *  `rails`), condensed from the body; the body renders off the rails. */
+  short?: string;
 }
 
 /** One row of the by-industry fan-out (the L1 ingress Ben described:
@@ -197,7 +302,9 @@ export interface DomainPageData {
     /** Provenance note under the card grid. */
     note: string;
     /** Qualitative cost from the pain map; null when nothing canonical. */
-    tax: { label: string; value: string; meta: string } | null;
+    /** `tail` finishes the rails cost line after the value (default: "That
+     *  waiting is the coordination tax."), so each page names its own cost */
+    tax: { label: string; value: string; meta: string; tail?: string } | null;
   };
 
   /** 03 · Differentiation: the decision-trace flow (same shape as the
@@ -210,6 +317,10 @@ export interface DomainPageData {
     lede: string;
     trailLabel: string;
     trail: { t: string; who: string; when: string }[];
+    /** The rails journey rail (SolutionPage `rails`): per step a short
+     *  title, one ~10-word line grounded in the arcade pose it drives, and a
+     *  solid icon in place of the number. Falls back to the trail. */
+    steps?: { title: string; body: string; icon: JourneyIcon }[];
     trailFoot: string;
     chatVariant: "capa" | "change-control";
     shellUrl: string;
@@ -228,8 +339,10 @@ export interface DomainPageData {
   /** 06 · Who owns it. */
   personas: { heading: string; lede: string; cards: PersonaCard[] };
 
-  /** 07 · The moments it turns urgent. */
-  triggers: { heading: string; lede: string; rows: TriggerRow[] };
+  /** 07 · The moments it turns urgent. `featured` (names, in order) picks
+   *  the three the compact rails board shows; without it the board takes
+   *  the first rows, Urgent before High. */
+  triggers: { heading: string; lede: string; rows: TriggerRow[]; featured?: string[] };
 
   /** 08 · Coexistence — Unifize as the coordination layer over the systems of
    *  record already in place (same section as the industry template; panel
@@ -247,6 +360,25 @@ export interface DomainPageData {
     /** Selector label, e.g. "Where is your QMS today?" */
     selectorLabel?: string;
     paths?: CoexistPath[];
+    /** The rails section (SolutionPage `rails`): the platform page's three
+     *  bands, flat. Systems of record left, Unifize between, the channels
+     *  where decisions leaked right; one lede and one note, no selector. */
+    bands?: {
+      lede: string;
+      /** vendors named under the systems-of-record band */
+      vendors?: string[];
+      /** the no-system case, one line under the bands */
+      note: string;
+      /** the page's own right-hand band (23 Sep 2026): where decisions leak
+       *  for THIS work (the supplier side, escalation calls, binders), so
+       *  the drawing tells the page's boundary story, not quality's */
+      tools?: { title: string; sub: string; names: string[]; label: string; body: string };
+      /** the four arrow labels, in drawing order: records -> Unifize,
+       *  Unifize -> records, tools -> Unifize, Unifize -> tools */
+      flows?: { contextIn: string; back: string; captured: string; linked: string };
+      /** what flows back, the centre band's note */
+      back?: string;
+    };
   } | null;
 
   /** 09 · Proof — REAL evidence only: the customer-attested signed baseline
@@ -263,6 +395,12 @@ export interface DomainPageData {
      *  whose tags intersect follow. Governance stays in the adapter — an
      *  unapproved film simply never renders. */
     filmTags?: string[];
+    /** The rails reel (SolutionPage `rails`): a curated roster of customer
+     *  stills by Wistia id, each with the one thing that customer attests,
+     *  taken from the film's own title. Films outside governance drop out
+     *  in the adapter; without a roster the reel falls back to filmTags with
+     *  each film's title as its fact. */
+    stills?: { wistia: string; fact: string }[];
     references: ProofReference[];
     foot: { label: string; href: string };
   } | null;

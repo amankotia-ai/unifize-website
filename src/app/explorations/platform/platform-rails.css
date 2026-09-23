@@ -1,0 +1,1626 @@
+/* ============================================================================
+ * platform-rails.css - the platform page on the rails (22 Sep 2026)
+ *
+ * The homepage's rails wave (home-rails.css), carried onto the platform
+ * page section by section: the shared grammar comes from
+ * _shared/page-rails.css (`dms--rails` on <main>, `hm-railed` per section,
+ * <HatchBand /> between them); this file is only what the platform page
+ * composes differently. First pass = the hero, 01 the coordination tax,
+ * 02 the gap. Loaded after platform-kit.css, so equal-specificity rules
+ * here win by order.
+ * ========================================================================== */
+
+/* ------------------------------------------------------ the split head
+ * Eyebrow + claim left, lede right on the same baseline (the PaperStack
+ * split the homepage heads use), replacing the centred stack. */
+.dms--redesign.pf-page .pf-split-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 22px clamp(48px, 8vw, 120px);
+  align-items: end;
+  text-align: left;
+}
+
+.dms--redesign.pf-page .pf-split-head > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.dms--redesign.pf-page .pf-split-head .dms-h2 {
+  max-width: 20ch;
+  margin: 0;
+}
+
+.dms--redesign.pf-page .pf-split-head .dms-lede {
+  max-width: 48ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ============================================================== HERO
+ * The homepage's dark-grey hero: headline left, sub and CTAs right on one
+ * baseline, then the product window on the sky wash running rail to rail.
+ * On this page the hero object is the six-screen journey, so the wash
+ * carries the persistent camera and the step rail sits under it as six
+ * cells on the charcoal, hairlines between. The plate stays OFF this
+ * window (22 Sep ruling: platform hero, no plate); it lifts by shadow. */
+.dms--redesign.pf-page .dms-hero.dms-hero--rails {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  --pf-dark-line: var(--hm-rail);
+  padding-top: clamp(64px, 7.5vw, 112px);
+  padding-bottom: 0;
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+/* the hero is pulled up under the sticky bar; its rails start at the
+ * bar's bottom edge, not the top of the page. They sit above the frame
+ * (z-index 3 in dms.css), or the step cells' charcoal would paint over
+ * the rails beside the first and last step. */
+.dms--redesign.pf-page .dms-hero.dms-hero--rails::before,
+.dms--redesign.pf-page .dms-hero.dms-hero--rails::after {
+  z-index: 4;
+  top: var(--dms-header-h);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: 28px clamp(40px, 6vw, 96px);
+  align-items: end;
+  text-align: left;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__left,
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__right {
+  align-items: flex-start;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__right {
+  gap: 22px;
+  margin-top: 0;
+  padding-bottom: 8px;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__title {
+  max-width: 13ch;
+  color: #fff;
+  font-size: clamp(2.8rem, 4.9vw, 4.4rem);
+  font-weight: 500;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__turn {
+  /* blue-400: the brand blue lifted two steps so it holds on charcoal */
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__sub {
+  max-width: 44ch;
+  color: var(--dms-d-ink-2);
+  font-size: clamp(1rem, 1.15vw, 1.14rem);
+  text-align: left;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__ctas {
+  justify-content: flex-start;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-btn-ghost {
+  border-color: var(--dms-d-border-2);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-btn-ghost:hover {
+  background: var(--dms-d-bg-3);
+  border-color: var(--dms-d-ink-3);
+}
+
+/* the frame runs rail to rail (the wrap is hm-bleed), not the DMS page's
+ * 1280 product-demo cap */
+.dms--redesign.pf-page .dms-hero--rails .pf-hero-demo {
+  max-width: none;
+  margin-top: clamp(40px, 4.5vw, 64px);
+}
+
+/* the wash: the ribbon container keeps its geometry and camera, but the
+ * navy ground, the ribbons, the scrim and the vignette give way to a light
+ * gradient with two soft bands of light and a paper grain */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf {
+  --rf-r: 0px;
+  border-radius: 0;
+  background: var(--hm-wash-sky);
+  box-shadow: none;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 16%,
+    rgba(255, 255, 255, 0.38) 16% 28%,
+    transparent 28% 42%,
+    rgba(255, 255, 255, 0.24) 42% 50%,
+    transparent 50%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .rf__field > .rf__ribbons,
+.dms--redesign.pf-page .dms-hero--rails .rf__field > .rf__scrim,
+.dms--redesign.pf-page .dms-hero--rails .rf__field > .rf__vignette {
+  display: none;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .rf__field > .rf__grain {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+/* the window sits on the homepage hero's frosted plate (23 Sep 2026,
+ * "bring over the homepage visuals frosted translucent borders"): the same
+ * 8px white rim, hairline edge and soft drop as home-rails.css. The camera
+ * is not clip-pathed here, so the plate stays a spread shadow on it and
+ * tracks every pose. Rim steps to 5px on phones (end of file). */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__camera {
+  --rf-plate: 8px;
+  outline: 1px solid oklch(0 0 0 / 0.06);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+
+/* the step rail: six cells rail to rail on the charcoal, hairlines
+ * between, welded to the bottom of the hero (the hatch band under it is
+ * the dark-to-light break, as the trust strip is on the homepage) */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf + .pf-journey__rail {
+  margin-top: 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__step {
+  min-height: 0;
+  /* tighter than the rail inset (Abhishek, 22 Sep: "reduce internal
+   * padding around the text"): 16px sides, 18px top, 20px floor */
+  gap: 6px;
+  padding: 18px clamp(14px, 1.4vw, 20px) 20px;
+  background: var(--dms-d-bg);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__step:hover,
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__step.is-active {
+  background: var(--dms-d-bg-2);
+}
+
+/* the solid icon where the index stood (the AI rail's idiom): a 32px
+ * tile on the charcoal, blue when the step is live */
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__head {
+  margin-bottom: 4px;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__icon {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  background: var(--dms-d-bg-3);
+  box-shadow: inset 0 0 0 1px var(--hm-rail);
+  color: var(--dms-d-ink-2);
+  transition: background-color 0.18s ease-out, color 0.18s ease-out;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__icon svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__step.is-active .pf-journey__icon {
+  background: var(--dms-accent);
+  box-shadow: none;
+  color: #fff;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__body {
+  text-wrap: pretty;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__timer {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .pf-journey__timer i {
+  background: var(--u-blue-400);
+}
+
+/* ================================================ 01 · COORDINATION TAX
+ * Split head; the evidence ledger becomes cells rail to rail drawn with
+ * the 1px-gap-over-hairline trick. The tax lead is the Klea case-study
+ * row: claim in a white cell, the 75-step figure in a grey stat cell with
+ * a mono uppercase label. The tax keeps its rust. */
+.dms--redesign.pf-page .pf-tax-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-ledger {
+  gap: 1px;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-taxlead {
+  align-items: stretch;
+  column-gap: 1px;
+  row-gap: 1px;
+  padding: 0;
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-taxlead__claim {
+  justify-content: center;
+  padding: clamp(36px, 4vw, 56px) var(--hm-rail-pad);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-taxlead__fig {
+  padding: clamp(28px, 3vw, 40px) var(--hm-rail-pad);
+  background: var(--n-50);
+}
+
+/* the stat cell's head: what is counted, and the total, in mono */
+.dms--redesign.pf-page .pf-taxlead__figlab {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .pf-taxlead__figlab b {
+  color: var(--dms-ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-stats__kicker {
+  padding: 16px var(--hm-rail-pad);
+  background: var(--n-50);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-evi {
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+}
+
+/* the outcome label leads the cell in the uppercase register the cells
+ * share across the site */
+.dms--redesign.pf-page .hm-railed .pf-evi .pf-evi__tag {
+  color: var(--dms-muted);
+  font-family: var(--dms-sans);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-evi__src {
+  border-top: 1px solid var(--hm-rail);
+}
+
+/* the accrual staircase fills its cell like the bar and the week do
+ * (platform-kit pins it to 148px tall, which left it at two thirds of the
+ * cell width on the rails) */
+.dms--redesign.pf-page .hm-railed .pf-evi__fig {
+  height: 232px;
+  min-height: 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-evi .pf-accrual__svg {
+  width: 100%;
+  height: auto;
+  max-width: none;
+  max-height: 186px;
+}
+
+@media (max-width: 900px) {
+  .dms--redesign.pf-page .hm-railed .pf-evi__fig { height: auto; }
+  .dms--redesign.pf-page .hm-railed .pf-evi .pf-accrual__svg { max-width: 420px; }
+}
+
+/* ====================================================== 02 · THE GAP
+ * Split head. The stepper becomes text tabs on a rail-to-rail hairline
+ * with an accent underline (the hero-tab idiom); the two panes become
+ * cells rail to rail: today on the paper wash (problems are paper), the
+ * product on the blue wash, on the plate. */
+.dms--redesign.pf-page .pf-gap-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  /* white (Abhishek, 22 Sep): the two washes carry the contrast */
+  background: var(--dms-surface);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__control {
+  justify-content: flex-start;
+  margin-bottom: 0;
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__track {
+  display: flex;
+  gap: 0;
+  width: 100%;
+  max-width: none;
+  padding: 0 var(--hm-rail-pad);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__track::-webkit-scrollbar { display: none; }
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step {
+  --pf-tab-x: clamp(16px, 1.8vw, 26px);
+  min-height: 56px;
+  padding: 0 var(--pf-tab-x);
+  background: transparent;
+  color: var(--dms-muted);
+  font-size: 0.9rem;
+  font-weight: 560;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step:hover {
+  background: transparent;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step.is-active,
+.dms--redesign.pf-page .hm-railed .pf-gap__step.is-active:hover {
+  background: transparent;
+  color: var(--dms-ink);
+}
+
+/* the first tab starts on the head's text edge, not a tab-pad in from it */
+.dms--redesign.pf-page .hm-railed .pf-gap__step:first-child {
+  padding-left: 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step:first-child::after,
+.dms--redesign.pf-page .hm-railed .pf-gap__step:first-child .pf-gap__timer {
+  left: 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step::after {
+  position: absolute;
+  right: var(--pf-tab-x);
+  bottom: -1px;
+  left: var(--pf-tab-x);
+  height: 2px;
+  content: "";
+  background: transparent;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step.is-active::after {
+  background: var(--dms-accent);
+}
+
+/* while the page is driving, the underline is the timer's track */
+.dms--redesign.pf-page .hm-railed .pf-gap__step.is-active:has(.pf-gap__timer)::after {
+  background: var(--hm-rail-dash);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__timer {
+  right: var(--pf-tab-x);
+  bottom: -1px;
+  left: var(--pf-tab-x);
+  z-index: 1;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__step {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* the panes: two cells on the hairline ground */
+.dms--redesign.pf-page .hm-railed .pf-gap__panels {
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel {
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+}
+
+/* today: the old world on paper, with grain */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--today {
+  position: relative;
+  isolation: isolate;
+  background: var(--hm-wash-paper);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--today::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--today > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* the pane head: the name as the heading, the verdict as one readable
+ * line under it (no mono sub-caption) */
+.dms--redesign.pf-page .hm-railed .pf-gap__head {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__lab {
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: 1.3rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after .pf-gap__lab {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__sub {
+  color: var(--dms-ink-2);
+  font-family: var(--dms-sans);
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+/* the narration: the sentence alone, on a dashed rule */
+.dms--redesign.pf-page .hm-railed .pf-gap__say {
+  min-height: 4.6em;
+  border-top: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) top / 100% 1px no-repeat;
+  font-size: 1rem;
+}
+
+/* the tool nodes carry the tool alone; the wires carry the sequence */
+.dms--redesign.pf-page .hm-railed .pf-gap__node {
+  padding: 9px 14px 9px 11px;
+  gap: 9px;
+}
+
+/* the path has to read on the paper wash (Abhishek, 22 Sep: "the path is
+ * not properly visible"): pending hops in ink at a third, a longer dash;
+ * travelled hops solid and heavier */
+.dms--redesign.pf-page .hm-railed .pf-gap__wire {
+  stroke: rgba(23, 24, 26, 0.34);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__wire.is-done {
+  stroke: var(--dms-warn);
+  stroke-width: 2.25;
+  stroke-dasharray: none;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__wire.is-live {
+  stroke-width: 3;
+}
+
+/* on Unifize: the whole cell is the blue wash (Abhishek, 22 Sep: "make the
+ * blue bg full container as you have done for the left"), with the light
+ * bands and grain the hero wash carries; the stage inside is clear */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after {
+  position: relative;
+  isolation: isolate;
+  background: var(--hm-wash-blue);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 14%,
+    rgba(255, 255, 255, 0.4) 14% 26%,
+    transparent 26% 40%,
+    rgba(255, 255, 255, 0.26) 40% 48%,
+    transparent 48%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage.rf {
+  --rf-r: 0px;
+  --rf-pad: 0px;
+  border-radius: 0;
+  background: transparent;
+  /* the stage box hugs the window now, so the plate and its shadow must
+   * fall outside it onto the wash (the container's overflow clip cut them
+   * off in a rectangle); phones keep the clip, they clip the window itself */
+  overflow: visible;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage.rf.is-clipped {
+  overflow: hidden;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .rf__field > .rf__ribbons,
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .rf__field > .rf__scrim,
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .rf__field > .rf__vignette {
+  display: none;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .rf__field > .rf__grain {
+  display: none;
+}
+
+/* the plate under the record window ("for all product visuals, the same
+ * translucent border as the hero"). The camera is clip-pathed to its cut,
+ * which clips a box-shadow plate away, so the plate is a layer under the
+ * window on .stx-arc, sized to the visible cut (826 x 560 in camera space)
+ * at the measured zoom and following the pose drift. The poses set their
+ * drift on the camera; :has() lifts the same values to .stx-arc so the
+ * layer can read them. */
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc {
+  --pf-gap-cam-x: 0px;
+  --pf-gap-cam-y: 0px;
+  --pf-gap-cam-k: 1;
+  --rf-plate: 8px;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-trace) { --pf-gap-cam-x: 6px; --pf-gap-cam-y: 10px; --pf-gap-cam-k: 1; }
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-queue.is-pose-route) { --pf-gap-cam-x: 0px; --pf-gap-cam-y: -8px; --pf-gap-cam-k: 1.02; }
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist) { --pf-gap-cam-x: 8px; --pf-gap-cam-y: -16px; --pf-gap-cam-k: 0.97; }
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-signature) { --pf-gap-cam-x: 0px; --pf-gap-cam-y: 0px; --pf-gap-cam-k: 1.03; }
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-comment) { --pf-gap-cam-x: -22px; --pf-gap-cam-y: -6px; --pf-gap-cam-k: 1.02; }
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-history) { --pf-gap-cam-x: 6px; --pf-gap-cam-y: -10px; --pf-gap-cam-k: 0.98; }
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc::before {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: calc(826px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + 2 * var(--rf-plate));
+  height: calc(560px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + 2 * var(--rf-plate));
+  content: "";
+  background: oklch(1 0 0 / 0.24);
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+  transform: translate(calc(-50% + var(--pf-gap-cam-x)), calc(-50% + var(--pf-gap-cam-y)));
+  pointer-events: none;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__stage.is-fit .stx-root .stx-arc::before {
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* phones: the container clips the window (component floors the zoom); the
+ * plate is clipped with it, no drift */
+.dms--redesign.pf-page .hm-railed .pf-gap__stage.is-clipped .stx-root .stx-arc::before {
+  display: none;
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 900px) {
+  .dms--redesign.pf-page .pf-split-head {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__right {
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 960px) {
+  .dms--redesign.pf-page .hm-railed .pf-taxlead {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc::before { transition: none; }
+}
+
+/* ================================================== 03 · YOUR SYSTEMS STAY
+ * Second pass. Split head; the diagram block runs rail to rail: the
+ * instruction and the ground line become mono strips on hairlines, the
+ * drawing and the annotation strip sit between rail hairlines instead of
+ * their own box. */
+.dms--redesign.pf-page .pf-coex-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-cx {
+  --cx-line: var(--hm-rail);
+  max-width: none;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-cx__scene {
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  /* no side padding: the SVG must span the same width as the three-column
+     strip below, so the plate centres and guide drops (W/6, W/2, 5W/6) land
+     on the column centres and their dots */
+  padding: clamp(16px, 2vw, 32px) 0 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-cx__bands {
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-cx__annotation {
+  padding: 20px var(--hm-rail-pad) 22px;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-cx__detail {
+  padding: 24px var(--hm-rail-pad) 28px;
+}
+
+/* ======================================================= 03 · THE STACK
+ * The graphite reference ground goes: the exploded stack is drawn in the
+ * coexistence diagram's light palette, and the composition runs rail to
+ * rail with hairlines instead of its own border. The section sits on white
+ * (Abhishek, 22 Sep: "keep the stack section's bg white"), so the drawing
+ * carries the section on its own rather than a grey ground. */
+.dms--redesign.pf-page .dms-section.pf-stack-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .dms-h2 { color: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .dms-lede { color: var(--dms-ink-2); }
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack {
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso {
+  --iso-line: var(--hm-rail);
+  --iso-muted: var(--dms-muted);
+  max-width: none;
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  color: var(--dms-ink);
+}
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__composition {
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__scene {
+  border-inline-color: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__scene-note { color: var(--dms-faint); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__guides { stroke: var(--hm-rail-dash); }
+
+/* the plates, in the coexistence drawing's light palette */
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer {
+  --plate-top: #f7f7f5;
+  --plate-side: #e3e3e0;
+  --plate-rim: #8f9195;
+  --plate-chip: #ffffff;
+}
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer[data-selected="true"] { --plate-rim: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer[data-hover="true"] { --plate-top: #ffffff; --plate-rim: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__surface { stroke-width: 0.9; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__underside { fill: #ececea; stroke: #8f9195; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__side { fill: #e3e3e0; stroke: #e3e3e0; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__side--right { fill: #d8d8d4; stroke: #d8d8d4; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__inset { fill: #f0f0ee; stroke: #a9abae; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__chip { stroke: #a9abae; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__pin { fill: #8f9195; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__edge { stroke: #b4b6b9; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer[data-selected="true"] > g > .pf-iso__plate > g > .pf-iso__rim { stroke: var(--dms-ink); stroke-width: 1.4; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer[data-band="outcomes"] .pf-iso__chip { fill: var(--dms-accent-tint); stroke: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module { --plate-rim: #a2a4a8; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module-core { fill: #ffffff; stroke: #9a9ca0; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module-label { fill: var(--dms-ink-2); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module[data-selected="true"] .pf-iso__module-core { fill: var(--dms-accent-tint); stroke: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module[data-selected="true"] .pf-iso__module-label { fill: var(--dms-accent-text); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module:hover .pf-iso__module-core { fill: #f7f7f5; stroke: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__module:focus-visible .pf-iso__module-core { stroke: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__layer:focus-visible { --plate-rim: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__drawing [role="button"]:focus-visible > .pf-iso__plate > .pf-iso__surface { stroke: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__component-icon { stroke: var(--dms-ink-2); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso button:focus-visible,
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso a:focus-visible { outline-color: var(--dms-accent); }
+
+/* the annotations */
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation {
+  padding: 22px var(--hm-rail-pad) 26px;
+  border-color: var(--hm-rail);
+}
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation::after { background: #9a9ca0; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation[data-selected="true"]::after { background: var(--dms-accent); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation-button { color: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation-title { font-weight: 640; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation-index { color: var(--dms-muted); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation-copy { color: var(--dms-ink-2); font-size: 0.92rem; letter-spacing: 0; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation[data-selected="true"] .pf-iso__annotation-title,
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__annotation[data-hover="true"] .pf-iso__annotation-title { color: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__choices button { padding: 5px 12px; border-color: var(--hm-rail-dash); border-radius: 999px; color: var(--dms-ink-2); cursor: pointer; transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__choices button:hover { border-color: var(--dms-ink); color: var(--dms-ink); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__choices button[aria-pressed="true"] { background: var(--dms-accent); border-color: var(--dms-accent); color: #fff; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__choices button:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: 2px; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail p { color: var(--dms-ink-2); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail a { color: var(--dms-accent); text-decoration-color: currentColor; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail a:hover { color: var(--dms-accent-hover); text-decoration-color: currentColor; }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail small { color: var(--dms-faint); }
+
+/* the trust strip: one row on hairlines, rail to rail */
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack__trust {
+  max-width: none;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
+  padding: 22px var(--hm-rail-pad);
+  border-bottom: 1px solid var(--hm-rail);
+  background: transparent;
+}
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack__trust-lead,
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack__badge { color: var(--dms-muted); }
+.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack__badge-seal { color: var(--dms-faint); }
+
+/* ====================================================== 04 · UNIFIZE AI
+ * The hero's charcoal, rails white at 12%; split head; the side frame runs
+ * rail to rail: the step list on the charcoal, the product window on the
+ * sky wash with the plate (not the hero, so the plate applies). */
+.dms--redesign.pf-page .pf-ai-section.hm-railed {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  --pf-dark-line: var(--hm-rail);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  background: var(--dms-d-bg);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__rail {
+  border-color: var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__step {
+  padding-inline: var(--hm-rail-pad);
+  background: var(--dms-d-bg);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__step:hover,
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__step.is-active {
+  background: var(--dms-d-bg-2);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__icon {
+  box-shadow: inset 0 0 0 1px var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__step.is-active .pf-journey__icon {
+  background: var(--dms-accent);
+  color: #fff;
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__timer { background: rgba(255, 255, 255, 0.1); }
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__timer i { background: var(--u-blue-400); }
+
+/* the window on the wash */
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__stage.rf {
+  --rf-r: 0px;
+  border-radius: 0;
+  background: var(--hm-wash-sky);
+  box-shadow: none;
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__stage.rf::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 16%,
+    rgba(255, 255, 255, 0.38) 16% 28%,
+    transparent 28% 42%,
+    rgba(255, 255, 255, 0.24) 42% 50%,
+    transparent 50%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .rf__field > .rf__ribbons,
+.dms--redesign.pf-page .pf-ai-section.hm-railed .rf__field > .rf__scrim,
+.dms--redesign.pf-page .pf-ai-section.hm-railed .rf__field > .rf__vignette {
+  display: none;
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .rf__field > .rf__grain {
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__stage.rf .stx-root .stx-arc__camera {
+  --rf-plate: 8px;
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+@media (min-width: 1025px) {
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__rail {
+    border-right-color: var(--hm-rail);
+  }
+}
+
+@media (max-width: 1024px) {
+  /* stacked: the rail sits under the wash, cells on the charcoal */
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__stage.rf + .pf-journey__rail {
+    margin-top: 0;
+    border: 0;
+    border-top: 1px solid var(--hm-rail);
+  }
+}
+
+/* ======================================================== 05 · MEASURED
+ * Third pass. The section turns light so Unifize AI is the one dark
+ * island between the hero and the close: the fall and the three ledgers
+ * keep every rule they have (platform-kit draws them in the dark tokens),
+ * and this block re-points those tokens to their light counterparts. Then
+ * the cells run rail to rail on hairlines. */
+.dms--redesign.pf-page .pf-measured-section.hm-railed {
+  --dms-d-bg: var(--dms-surface);
+  --dms-d-bg-2: var(--dms-surface);
+  --dms-d-bg-3: var(--n-50);
+  --dms-d-border: var(--hm-rail);
+  --dms-d-border-2: var(--hm-rail-dash);
+  --dms-d-ink: var(--dms-ink);
+  --dms-d-ink-2: var(--dms-ink-2);
+  --dms-d-ink-3: var(--dms-muted);
+  --dms-d-accent: var(--dms-accent);
+  --pf-dark-line: var(--hm-rail);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-meas {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-fall {
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-kpi {
+  padding: clamp(20px, 2vw, 26px) var(--hm-rail-pad);
+}
+
+/* the fall's figure marker fills read against white now */
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-fall__pt { fill: var(--dms-surface); }
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-fall__wk.is-key .pf-fall__pt { fill: var(--dms-accent); }
+
+/* labels in the cell register the page shares */
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-meas__tag,
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-proofstep__lab {
+  color: var(--dms-muted);
+  font-family: var(--dms-sans);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-proofsteps {
+  margin: 1px calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-proofstep {
+  min-height: 0;
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-proofstep--film:hover {
+  background: var(--n-50);
+}
+
+.dms--redesign.pf-page .pf-measured-section.hm-railed .pf-proofstep__go {
+  color: var(--dms-accent);
+  font-family: var(--dms-sans);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+/* ==================================================== 06 · CUSTOMER PROOF
+ * The shared film rail (products/_shared/proof-films) on the rails: the
+ * head keeps its split (claim left, count + arrows right); the track runs
+ * rail to rail as one row of cells on a hairline ground instead of a
+ * viewport-wide bleed of shadowed cards; the attested figure is a brand-blue
+ * cell (the answer wears the blue), square arrows. */
+.dms--redesign.pf-page .dms-films.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  border-block: 0;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-films__count {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-films__arrow {
+  border-radius: 0;
+  box-shadow: 0 0 0 1px var(--hm-rail);
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-films__arrow:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px var(--dms-ink);
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-films__track {
+  width: auto;
+  gap: 1px;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  padding: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+  scroll-padding-inline: 0;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film {
+  box-shadow: none;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film__media {
+  outline: 0;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film--stat {
+  background: var(--dms-accent);
+  color: #fff;
+  box-shadow: none;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film--stat .dms-film__brand {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film__stat { color: #fff; }
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film__stat-lab { color: #fff; }
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film--stat .dms-film__quote { color: rgba(255, 255, 255, 0.8); }
+.dms--redesign.pf-page .dms-films.hm-railed .dms-film--stat .dms-film__meta {
+  border-top-color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.72);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dms--redesign.pf-page .dms-films.hm-railed .dms-film:hover { box-shadow: none; }
+  .dms--redesign.pf-page .dms-films.hm-railed a.dms-film--stat:hover { background: var(--dms-accent-hover); }
+}
+
+/* ======================================================= 07 · COMPLIANCE
+ * The standards ledger rail to rail on hairlines; group labels in the
+ * shared cell register. */
+.dms--redesign.pf-page .pf-compliance-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+/* ============================================================ 08 · FAQ
+ * Mirrors the DMS page's FAQ on the rails: head left, the accordion right,
+ * hairline on top and dashed ledger rules between the questions. */
+.dms--redesign.pf-page .pf-faq-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.pf-page .pf-faq-section.hm-railed > .dms-wrap { max-width: var(--dms-maxw); }
+
+.dms--redesign.pf-page .hm-railed .dms-faq { border-top: 1px solid var(--hm-rail); }
+
+.dms--redesign.pf-page .hm-railed .dms-faq__item {
+  border-bottom: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) bottom / 100% 1px no-repeat;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-stds-ledger {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-stds-group + .pf-stds-group { border-top-color: var(--hm-rail); }
+
+.dms--redesign.pf-page .hm-railed .pf-stds-group__head {
+  padding: 24px var(--hm-rail-pad);
+  border-right-color: var(--hm-rail);
+  background: var(--n-50);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-stds-group__lab {
+  color: var(--dms-ink);
+  font-family: var(--dms-sans);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-stds {
+  margin: 0 0 -1px 0;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-std {
+  padding: 18px var(--hm-rail-pad);
+  border-right-color: var(--hm-rail);
+  border-bottom-color: var(--hm-rail);
+}
+
+.dms--redesign.pf-page .hm-railed .pf-std:nth-child(4n) { border-right: 0; }
+
+@media (max-width: 1100px) {
+  .dms--redesign.pf-page .hm-railed .pf-std:nth-child(4n) { border-right: 1px solid var(--hm-rail); }
+  .dms--redesign.pf-page .hm-railed .pf-std:nth-child(3n) { border-right: 0; }
+}
+
+@media (max-width: 900px) {
+  .dms--redesign.pf-page .hm-railed .pf-std:nth-child(3n) { border-right: 1px solid var(--hm-rail); }
+  .dms--redesign.pf-page .hm-railed .pf-std:nth-child(2n) { border-right: 0; }
+  .dms--redesign.pf-page .hm-railed .pf-stds-group__head { border-bottom-color: var(--hm-rail); }
+}
+
+/* ============================================================== CLOSE
+ * 23 Sep 2026: a cell grid on the rails instead of the centred convergence
+ * mark (Abhishek: "too much padding and it looks boring"). Claim + ask on
+ * the left, the walkthrough as three steps on one thread on the right. Same charcoal as the hero and the
+ * footer, with the blue glow pulled into the plan's corner. */
+.dms--redesign.pf-page .pf-close {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  padding-block: clamp(56px, 6vw, 88px);
+  background:
+    radial-gradient(48% 70% at 82% 38%, rgba(0, 91, 183, 0.22), transparent 70%),
+    var(--dms-d-bg);
+}
+
+.dms--redesign.pf-page .pf-close__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-close__lead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  padding: clamp(36px, 4vw, 56px) var(--hm-rail-pad);
+}
+
+.dms--redesign.pf-page .pf-close__h {
+  max-width: 14ch;
+  margin: 0;
+  color: var(--dms-d-ink);
+  font-size: clamp(2.4rem, 4.4vw, 3.9rem);
+  font-weight: 520;
+  letter-spacing: -0.05em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.dms--redesign.pf-page .pf-close__lede {
+  max-width: 44ch;
+  margin: 0;
+  color: #9ea4af;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.dms--redesign.pf-page .pf-close__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+
+/* the plan: a panel on the right cell, three steps threaded on one line */
+.dms--redesign.pf-page .pf-close__plan {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(36px, 4vw, 56px) var(--hm-rail-pad);
+  border-left: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.pf-page .pf-close__plan-head {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hm-rail);
+  color: var(--u-blue-400);
+  font-family: var(--dms-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .pf-close__plan-head span:last-child { color: #737a86; }
+
+.dms--redesign.pf-page .pf-close__steps {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* the thread through the three step numbers */
+.dms--redesign.pf-page .pf-close__steps::before {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 15px;
+  width: 1px;
+  content: "";
+  background: linear-gradient(var(--dms-accent), rgba(0, 91, 183, 0.25));
+}
+
+.dms--redesign.pf-page .pf-close__step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 18px;
+  row-gap: 4px;
+}
+
+.dms--redesign.pf-page .pf-close__step-n {
+  display: grid;
+  grid-row: span 2;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid var(--dms-accent);
+  border-radius: 999px;
+  background: var(--dms-d-bg);
+  color: #fff;
+  font-family: var(--dms-mono);
+  font-size: .7rem;
+}
+
+.dms--redesign.pf-page .pf-close__step:last-child .pf-close__step-n { background: var(--dms-accent); }
+
+.dms--redesign.pf-page .pf-close__step-title {
+  padding-top: 5px;
+  color: var(--dms-d-ink);
+  font-size: 1rem;
+  font-weight: 620;
+  line-height: 1.35;
+}
+
+.dms--redesign.pf-page .pf-close__step-note { color: #8d94a0; font-size: .88rem; line-height: 1.55; text-wrap: pretty; }
+
+@media (max-width: 900px) {
+  .dms--redesign.pf-page .pf-close__grid { grid-template-columns: 1fr; }
+  .dms--redesign.pf-page .pf-close__plan { border-left: 0; border-top: 1px solid var(--hm-rail); }
+}
+
+
+/* the AI side list, re-set (Abhishek, 22 Sep: "the padding on the tabs is
+ * just weird, the tabs don't sit well"): every row is one cell grid, icon
+ * tile left, title beside it, the live step's line under the title; rows
+ * share the frame's height equally and centre their content. */
+@media (min-width: 1025px) {
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__rail {
+    grid-auto-rows: minmax(0, 1fr);
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__step {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 14px;
+    row-gap: 6px;
+    align-content: center;
+    align-items: center;
+    min-height: 0;
+    padding: 18px clamp(20px, 2vw, 28px);
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__head {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__name {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 1.04rem;
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__body {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 0.88rem;
+  }
+}
+
+/* the AI window, cut to the record (Abhishek, 22 Sep: "on none of the tabs
+ * we need the my conversation list elements, we can make the chat wider
+ * as we have done on the homepage hero"): the camera is clip-pathed past
+ * the 54px nav rail and the 270px conversation list and re-centred on the
+ * 826-wide cut (the -162px term), the component fits --pf-cam-k to that
+ * width, and the plate moves to a layer under the window on .stx-arc
+ * because the clip cuts a box-shadow plate away. The per-pose drift the
+ * kit sets on the camera is mirrored onto .stx-arc with :has() so the
+ * plate follows. */
+@media (min-width: 1025px) {
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    clip-path: inset(0 0 0 324px);
+    outline: 0;
+    box-shadow: none;
+    transform: translate3d(calc(-50% - 162px * var(--stx-camera-scale) + var(--stx-camera-x)), calc(-50% + var(--stx-camera-y)), 0) scale(var(--stx-camera-scale));
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc__signwrap {
+    left: 324px;
+  }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc {
+    --pf-ai-x: 0px;
+    --pf-ai-y: 0px;
+    --pf-ai-s: 0.9;
+    --rf-plate: 8px;
+  }
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-checklist) { --pf-ai-x: -34px; --pf-ai-y: 0px; --pf-ai-s: 0.96; }
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist) { --pf-ai-x: -12px; --pf-ai-y: -4px; --pf-ai-s: 0.94; }
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist.is-pose-linked) { --pf-ai-x: -26px; --pf-ai-y: 2px; --pf-ai-s: 0.96; }
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-history) { --pf-ai-x: 6px; --pf-ai-y: -8px; --pf-ai-s: 0.94; }
+
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc::before {
+    position: absolute;
+    z-index: 0;
+    top: 50%;
+    left: 50%;
+    width: calc(826px * var(--pf-ai-s) * var(--pf-cam-k, 1) + 2 * var(--rf-plate));
+    height: calc(560px * var(--pf-ai-s) * var(--pf-cam-k, 1) + 2 * var(--rf-plate));
+    content: "";
+    background: oklch(1 0 0 / 0.24);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.45),
+      0 4px 10px -4px oklch(0 0 0 / 0.12),
+      0 24px 48px -20px oklch(0 0 0 / 0.22),
+      0 48px 96px -32px oklch(0 0 0 / 0.18);
+    transform: translate(calc(-50% + var(--pf-ai-x)), calc(-50% + var(--pf-ai-y)));
+    transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc::before { transition: none; }
+}
+
+/* ==================================================== 06 · CUSTOMER PROOF
+ * (later on 22 Sep, Abhishek: "use the new testimonial section we have
+ * used on the homepage") The shared film rail is gone; the section is the
+ * homepage's reel (home/home-proof-reel.tsx): a charcoal band, claim and
+ * arrows in the head, one row of customer stills scrolling past the rails.
+ * The reel's own rules (home-proof.css) are unscoped except the section
+ * block, which the homepage keys on `dms--home`; this is that block for the
+ * platform page. */
+.dms--redesign.pf-page .hm-proof.hm-proof--reel {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  --hm-reel-lead: calc(var(--hm-rail-x) + var(--hm-rail-pad));
+  --hm-reel-gap: clamp(14px, 1.6vw, 24px);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  overflow: hidden;
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+/* ============================================== HERO FINISH (23 Sep 2026)
+ * The homepage hero's finish, ported (Abhishek, 23 Sep: "apply the same
+ * finish to the platform hero"; see the HERO FINISH block at the end of
+ * home-rails.css). Kept very subtle by ruling: no bloom, no sheen, no
+ * glowing shadows. A faint cool light and grain behind the copy (on the
+ * inner; the section's ::before/::after are the rails), each headline row
+ * lit top to bottom, the sub's outcome words in white, flat CTAs with an
+ * inset top highlight, and a short rise on load. */
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__inner {
+  position: relative;
+  isolation: isolate;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__inner::before,
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__inner::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__inner::before {
+  inset: -30% -10% -45% -10%;
+  background: radial-gradient(45% 60% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+  filter: blur(8px);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__inner::after {
+  inset: -20% 0 -30% 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  -webkit-mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(70% 70% at 40% 50%, #000 30%, transparent 80%);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__title {
+  line-height: 0.98;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* one gradient per visual row (1lh tiles), so a wrapped line is lit the
+ * same on every row; descender room under the clip */
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__line {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__line.dms-hero__turn {
+  background-image: linear-gradient(180deg, #82b8ff 30%, var(--u-blue-400) 100%);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__sub {
+  color: #c3c8d1;
+  line-height: 1.62;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__sub strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__ctas .dms-btn:not(.dms-btn-ghost) {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-hero__ctas .dms-btn:not(.dms-btn-ghost):hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-btn-ghost {
+  background: oklch(1 0 0 / 0.03);
+  border-color: oklch(1 0 0 / 0.16);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+}
+
+.dms--redesign.pf-page .dms-hero--rails .dms-btn-ghost:hover {
+  background: oklch(1 0 0 / 0.07);
+  border-color: oklch(1 0 0 / 0.28);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__line {
+    animation: pf-hero-rise 900ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  }
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__line + .dms-hero__line {
+    animation-delay: 110ms;
+  }
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__sub,
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__ctas {
+    animation: pf-hero-fade 800ms cubic-bezier(0.2, 0.7, 0.1, 1) 260ms both;
+  }
+  .dms--redesign.pf-page .dms-hero--rails .dms-hero__ctas {
+    animation-delay: 360ms;
+  }
+}
+
+@keyframes pf-hero-rise {
+  from { opacity: 0; transform: translateY(0.18em); filter: blur(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pf-hero-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ================================ LIGHT + DARK SECTION FINISH (23 Sep 2026)
+ * The homepage's section finish on the platform page (Abhishek, 23 Sep:
+ * "apply the same to the platform page sections"). Same very subtle
+ * strength: section H2 rows lit from above (1lh tiles, so wrapped rows
+ * match), ledes one step toward the heading, and the close CTAs flat with
+ * an inset top highlight and a faint glass ghost. No glow, no sheen, no
+ * light behind the heads (a low-alpha radial bands into rings on white).
+ * The stack section's lede is already darker by design and is left. */
+.dms--redesign.pf-page .dms-section:not(.dms-section--dark):not(.dms-hero) .dms-h2 {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.pf-page :is(.dms-section--dark .dms-h2, .pf-close .pf-close__h) {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.pf-page .dms-section:not(.dms-section--dark):not(.dms-hero):not(.pf-stack-section) .dms-lede {
+  color: #555c68;
+}
+
+.dms--redesign.pf-page :is(.dms-section--dark .dms-lede, .pf-close .pf-close__lede) {
+  color: #c3c8d1;
+}
+
+.dms--redesign.pf-page .pf-close .dms-btn:not(.dms-btn-ghost) {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.pf-page .pf-close .dms-btn:not(.dms-btn-ghost):hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.pf-page .pf-close .dms-btn-ghost {
+  background: oklch(1 0 0 / 0.03);
+  border-color: oklch(1 0 0 / 0.16);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+}
+
+.dms--redesign.pf-page .pf-close .dms-btn-ghost:hover {
+  background: oklch(1 0 0 / 0.07);
+  border-color: oklch(1 0 0 / 0.28);
+}
+
+/* the frosted plate's rim on phones, as on home (after every plate rule) */
+@media (max-width: 720px) {
+  .dms--redesign.pf-page .dms-hero--rails .pf-journey__stage.rf .stx-root .stx-arc__camera,
+  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    --rf-plate: 5px;
+  }
+}

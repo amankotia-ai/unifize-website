@@ -1,0 +1,239 @@
+/* "Your systems stay", drawn: the stack diagram's exploded-isometric language
+   (platform-stack-diagram.css) in a light variant. Fine linework, rounded
+   extrusions, editorial annotations under the bands. */
+.pf-page .pf-cx {
+  --cx-line: #c9cac7;
+  --cx-muted: var(--dms-muted);
+  --cx-plate-top: #f7f7f5;
+  --cx-plate-top-lit: #ffffff;
+  --cx-plate-side: #e3e3e0;
+  --cx-plate-side-2: #d8d8d4;
+  --cx-plate-under: #ececea;
+  --cx-plate-rim: #8f9195;
+  --cx-plate-rim-lit: var(--dms-ink);
+  --cx-edge: #b4b6b9;
+  max-width: 1240px;
+  margin: clamp(48px, 5.4vw, 76px) auto 0;
+}
+.pf-page .pf-cx__instruction {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  color: var(--cx-muted);
+  font-size: .8rem;
+}
+
+/* ------------------------------------------------------------ the drawing */
+.pf-page .pf-cx__scene { border: 1px solid var(--cx-line); border-bottom: 0; }
+.pf-page .pf-cx__drawing { display: block; width: 100%; height: auto; overflow: visible; }
+.pf-page .pf-cx__guides { fill: none; stroke: var(--cx-line); stroke-width: .8; stroke-dasharray: 4 6; }
+
+/* the plates take the stack's classes; only the palette changes */
+.pf-page .pf-cx__band {
+  --plate-top: var(--cx-plate-top);
+  --plate-rim: var(--cx-plate-rim);
+  --plate-chip: #ffffff;
+  cursor: pointer;
+  outline: none;
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1), opacity .25s ease-out;
+}
+/* one band open: the other plates fade back with the arrows that don't touch
+   it (hovering a faded plate still previews it) */
+.pf-page .pf-cx[data-active] .pf-cx__band:not([data-lit="true"]) { opacity: .28; }
+.pf-page .pf-cx__band[data-lit="true"] { --plate-top: var(--cx-plate-top-lit); --plate-rim: var(--cx-plate-rim-lit); transform: translateY(-4px); }
+.pf-page .pf-cx .pf-iso__surface { fill: var(--plate-top); stroke: var(--plate-rim); stroke-width: .9; }
+.pf-page .pf-cx .pf-iso__underside { fill: var(--cx-plate-under); stroke: var(--cx-plate-rim); stroke-width: .8; }
+.pf-page .pf-cx .pf-iso__side { fill: var(--cx-plate-side); stroke: var(--cx-plate-side); stroke-width: .3; }
+.pf-page .pf-cx .pf-iso__side--right { fill: var(--cx-plate-side-2); stroke: var(--cx-plate-side-2); }
+.pf-page .pf-cx .pf-iso__rim { fill: none; stroke: var(--plate-rim); stroke-width: .8; }
+.pf-page .pf-cx .pf-iso__inset { fill: #f0f0ee; stroke: #a9abae; stroke-width: .8; }
+.pf-page .pf-cx .pf-iso__chip { fill: var(--plate-chip); stroke: #a9abae; stroke-width: .8; }
+.pf-page .pf-cx .pf-iso__pin { fill: #8f9195; }
+.pf-page .pf-cx .pf-iso__edge { fill: none; stroke: var(--cx-edge); stroke-width: .7; }
+.pf-page .pf-cx__band[data-band="unifize"] .pf-iso__chip { stroke: var(--dms-accent); }
+.pf-page .pf-cx__band[data-band="unifize"][data-lit="true"] .pf-iso__rim { stroke: var(--dms-accent); }
+.pf-page .pf-cx__band:focus-visible > .pf-iso__plate > .pf-iso__surface { stroke: var(--dms-accent); stroke-width: 2; }
+
+/* the modules on the outer plates */
+.pf-page .pf-cx__node { --plate-top: #fbfbfa; --plate-rim: #a2a4a8; transition: transform .3s cubic-bezier(.2, .8, .2, 1); }
+.pf-page .pf-cx__node-core { fill: #ffffff; stroke: #9a9ca0; stroke-width: .6; transition: stroke .15s ease-out, fill .15s ease-out; }
+.pf-page .pf-cx__node-icon { fill: var(--dms-accent); pointer-events: none; }
+.pf-page .pf-cx__node[data-lit="true"] { transform: translateY(-3px); }
+.pf-page .pf-cx__node[data-lit="true"] .pf-cx__node-core { fill: var(--dms-accent-tint); stroke: var(--dms-accent); stroke-width: 1.4; }
+
+/* the flows */
+.pf-page .pf-cx__flow { transition: opacity .25s ease-out; }
+.pf-page .pf-cx__flow[data-dim="true"] { opacity: .28; }
+.pf-page .pf-cx__flow path { fill: none; stroke: var(--dms-ink-2); stroke-width: .9; }
+.pf-page .pf-cx__flow-head { stroke-linejoin: round; }
+.pf-page .pf-cx__flow text {
+  fill: var(--cx-muted);
+  font-family: var(--dms-mono);
+  font-size: 9.5px;
+  letter-spacing: .07em;
+}
+
+/* --------------------------------------------------------- the annotations */
+.pf-page .pf-cx__bands { border: 1px solid var(--cx-line); }
+.pf-page .pf-cx__strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.pf-page .pf-cx__annotation {
+  position: relative;
+  padding: 18px clamp(16px, 2vw, 26px) 20px;
+  border-left: 1px solid var(--cx-line);
+  transition: background-color .15s ease-out;
+}
+.pf-page .pf-cx__annotation[data-open="true"] { background: var(--dms-surface-alt); }
+/* the marker under the open title, pointing into the detail panel */
+.pf-page .pf-cx__annotation[data-open="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: calc(50% - 7px);
+  z-index: 1;
+  width: 14px;
+  height: 14px;
+  background: var(--dms-surface-alt);
+  border-right: 1px solid var(--cx-line);
+  border-bottom: 1px solid var(--cx-line);
+  transform: translateY(50%) rotate(45deg);
+}
+.pf-page .pf-cx__annotation-button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pf-page .pf-cx__annotation-button:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: 4px; }
+.pf-page .pf-cx__index {
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  box-shadow: inset 0 0 0 1px var(--cx-line);
+  color: var(--cx-muted);
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: color .15s ease-out, background-color .15s ease-out, box-shadow .15s ease-out;
+}
+.pf-page .pf-cx__annotation[data-lit="true"] .pf-cx__index { color: var(--dms-ink); box-shadow: inset 0 0 0 1px var(--dms-ink); }
+.pf-page .pf-cx__annotation[data-open="true"] .pf-cx__index { background: var(--dms-ink); box-shadow: none; color: oklch(1 0 0); }
+.pf-page .pf-cx__detail {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.4fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  padding: 22px clamp(16px, 2vw, 26px) 26px;
+  border-top: 1px solid var(--cx-line);
+}
+.pf-page .pf-cx__detail[hidden] { display: none; }
+.pf-page .pf-cx__detail .pf-cx__names { margin: 0; }
+.pf-page .pf-cx__detail .pf-cx__note { margin: 0; }
+.pf-page .pf-cx__annotation:first-child { border-left: 0; }
+/* the dot where the guide meets the annotation */
+.pf-page .pf-cx__annotation::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: calc(50% - 3.5px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9a9ca0;
+  transition: background-color .15s ease-out;
+}
+.pf-page .pf-cx__annotation[data-lit="true"]::before { background: var(--dms-accent); }
+.pf-page .pf-cx__title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: 1.08rem;
+  font-weight: 640;
+  line-height: 1.3;
+}
+.pf-page .pf-cx__title small {
+  color: var(--dms-accent-text);
+  font-family: var(--dms-mono);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.pf-page .pf-cx__names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.pf-page .pf-cx__names--one { color: var(--cx-muted); font-size: .78rem; line-height: 1.5; min-height: 32px; align-items: center; }
+.pf-page .pf-cx__name {
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid var(--cx-line);
+  background: transparent;
+  color: var(--dms-ink-2);
+  font: inherit;
+  font-size: .76rem;
+  line-height: 1.3;
+  cursor: default;
+  transition: color .15s ease-out, border-color .15s ease-out, background-color .15s ease-out;
+}
+.pf-page .pf-cx__name[data-lit="true"] { background: var(--dms-accent-tint); border-color: var(--dms-accent); color: var(--dms-accent-text); }
+.pf-page .pf-cx__name:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: 2px; }
+.pf-page .pf-cx__name--link { display: inline-flex; align-items: center; gap: 4px; color: var(--dms-ink); text-decoration: none; cursor: pointer; }
+.pf-page .pf-cx__name--link:hover { border-color: var(--dms-ink); }
+.pf-page .pf-cx__note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 18px 0 0;
+  color: var(--dms-ink-2);
+  font-size: .92rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+.pf-page .pf-cx__note-lab {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: .66rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.pf-page .pf-cx__annotation[data-lit="true"] .pf-cx__note-lab { color: var(--dms-accent-text); }
+
+@media (max-width: 900px) {
+  .pf-page .pf-cx__instruction { flex-direction: column; gap: 4px; }
+  .pf-page .pf-cx__flow text { font-size: 12px; }
+  .pf-page .pf-cx__strip { grid-template-columns: 1fr; }
+  .pf-page .pf-cx__detail { grid-template-columns: 1fr; gap: 16px; }
+  .pf-page .pf-cx__annotation { border-left: 0; border-top: 1px solid var(--cx-line); }
+  .pf-page .pf-cx__annotation[data-open="true"]::after { display: none; }
+  .pf-page .pf-cx__annotation:first-child { border-top: 0; }
+  .pf-page .pf-cx__annotation::before { display: none; }
+}
+@media (max-width: 640px) {
+  /* the drawing is wider than a phone: let it scroll rather than shrink to
+     linework nobody can read */
+  .pf-page .pf-cx__scene { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .pf-page .pf-cx__drawing { width: 960px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-page .pf-cx * { transition: none !important; }
+}

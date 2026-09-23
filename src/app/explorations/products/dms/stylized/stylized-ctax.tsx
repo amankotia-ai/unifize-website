@@ -362,15 +362,18 @@ export function StylizedCoordinationTax({
   scenes = SCENES,
   afterNotes = AFTER_NOTES,
   copy: copyOverrides,
+  className,
 }: {
   problems: DmsCoordinationProblem[];
   scenes?: CtaxScenes;
   afterNotes?: Record<string, string>;
   copy?: Partial<CtaxCopy>;
+  /* extra section classes (the DMS page passes `hm-railed` for the rails grammar) */
+  className?: string;
 }) {
   const copy: CtaxCopy = { ...DMS_COPY, ...copyOverrides };
   return (
-    <section className="dms-section sctx" id="coordination" aria-labelledby="sctx-title">
+    <section className={"dms-section sctx" + (className ? " " + className : "")} id="coordination" aria-labelledby="sctx-title">
       <div className="dms-wrap">
         <header className="sctx__head" data-reveal>
           <Eyebrow>{copy.eyebrow}</Eyebrow>

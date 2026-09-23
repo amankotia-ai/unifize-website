@@ -1,24 +1,32 @@
 /* ============================================================================
- * book-demo.css — the demo-request dialog, drawn as a miniature Unifize
- * record window.
+ * book-demo.css: the demo-request dialog, drawn in the rails grammar the home,
+ * platform and DMS pages share (22 Sep 2026).
  *
  * Skin-neutral on purpose: the dialog portals onto <body>, outside .itm and
- * .dms--redesign, so it aliases only the global --u / --n / --d tokens that
- * every local system builds on. Enterprise language: square panel, 4px
- * controls, hairlines as the structural device, a chrome bar with a mono code
- * and live status chip, dark rail carrying the activity thread beside a white
- * form, brand blue reserved for the submit and the live thread node.
+ * .dms--redesign, so it aliases only the global --u / --n tokens that every
+ * local system builds on.
+ *
+ * The grammar, at card size, same rules as page-rails.css:
+ *   - two hairline rails run the full height of the card, at --uzd-rail-x
+ *   - every block is inset inside them by --uzd-rail-pad, so head, form and
+ *     footer share one pair of lines
+ *   - the divider is one hairline, with a crosshair at each rail crossing
+ *   - blue-square eyebrow, display face on the heading, house pill button
  * ========================================================================== */
 
 .uzd {
-  --uzd-d-bg: #17191f;
-  --uzd-d-bg-2: #1c1f26;
-  --uzd-d-border: #30343d;
-  --uzd-d-ink: #f7f8fa;
-  --uzd-d-ink-2: #b9bec8;
-  --uzd-d-ink-3: #949aa7;
-  --uzd-d-accent: oklch(0.72 0.15 263);
-  --uzd-r-control: 4px;
+  --uzd-line: var(--n-150);
+  --uzd-rail: var(--n-200);
+  --uzd-cross: var(--n-500);
+  --uzd-line-strong: var(--n-200);
+  --uzd-ink: #17191f;
+  --uzd-ink-2: #3f4550;
+  --uzd-muted: #606773;
+  --uzd-alt: #f5f6f8;
+  --uzd-accent: var(--u-primary);
+  --uzd-rail-x: clamp(18px, 2.4vw, 30px);
+  --uzd-rail-pad: clamp(16px, 2vw, 26px);
+  --uzd-inset: calc(var(--uzd-rail-x) + var(--uzd-rail-pad));
 
   position: fixed;
   inset: 0;
@@ -27,15 +35,14 @@
   place-items: center;
   padding: 24px;
   font-family: var(--u-font);
-  color: var(--n-800);
-  letter-spacing: -0.005em;
+  color: var(--uzd-ink);
 }
 
 .uzd__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(10, 11, 15, 0.64);
-  backdrop-filter: blur(3px);
+  background: rgba(15, 17, 22, 0.52);
+  backdrop-filter: blur(2px);
   animation: uzd-fade 180ms ease-out both;
 }
 
@@ -43,301 +50,237 @@
 
 .uzd__panel {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  width: min(960px, 100%);
+  width: min(1060px, 100%);
   max-height: calc(100dvh - 48px);
   overflow: auto;
   overscroll-behavior: contain;
   background: var(--n-0);
+  border: 1px solid var(--uzd-line);
   border-radius: 0;
   box-shadow:
-    0 1px 2px rgba(11, 13, 17, 0.08),
-    0 24px 64px -16px rgba(11, 13, 17, 0.42),
-    0 0 0 1px rgba(11, 13, 17, 0.09);
+    0 1px 2px rgba(11, 13, 17, 0.06),
+    0 28px 70px -20px rgba(11, 13, 17, 0.4);
   animation: uzd-rise 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
 /* the panel takes focus on mobile so the dialog is announced; it is a
  * container, not a control, so it never draws a ring */
 .uzd__panel:focus {
   outline: none;
 }
 
+/* ----------------------------------------------------------------- split ---
+ * Two panes: the product visual on the left, the railed form column on the
+ * right. Under 980px the visual pane drops and the dialog is the form. */
+
 .uzd__split {
   display: grid;
-  grid-template-columns: 348px 1fr;
-  flex: 1;
-  min-height: 0;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  /* the card holds its height between the form and the confirmation, so the
+   * product visual stays composed and the panel does not jump on submit */
+  min-height: min(700px, calc(100dvh - 50px));
 }
 
-/* ------------------------------------------------------------ record bar --- */
+/* ------------------------------------------------------------- the visual ---
+ * The stylized record window the home, platform and product heroes stage,
+ * on the pages' own wash ground. The dialog portals onto <body>, outside
+ * .dms--redesign, so the handful of --dms-* tokens the arcade reads are
+ * declared here rather than inherited. */
 
-.uzd__bar {
+.uzd__viz {
+  --dms-surface: #ffffff;
+  --dms-surface-alt: #f5f6f8;
+  --dms-surface-quiet: #fafbfc;
+  --dms-surface-sunk: #eceef2;
+  --dms-ink: #17191f;
+  --dms-ink-2: #3f4550;
+  --dms-muted: #606773;
+  --dms-faint: #69717d;
+  --dms-hairline: #dfe2e7;
+  --dms-line-strong: #cfd4dc;
+  --dms-accent: var(--u-primary);
+  --dms-accent-text: #ffffff;
+  --dms-accent-tint: #f0f6ff;
+  --dms-header-h: 72px;
+  --dms-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--uzd-line);
+}
+
+/* square, on the light wash the rails pages use; the ribbon container's
+ * navy ground and radius are overridden the same way the homepage hero
+ * overrides them */
+.uzd__stage.rf {
+  --rf-r: 0px;
+  --rf-pad: clamp(14px, 2vw, 26px);
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  background: linear-gradient(150deg, #cfe2ff 0%, #e2eeff 36%, #f1f0ec 66%, #fbe3d2 100%);
+}
+
+/* the pane is narrower than a page stage, so the scene is pulled back a
+ * step: the window still crops at the pane edge, as it does in every
+ * narrow container on the site */
+.uzd__stage .sty-scene {
+  transform: scale(0.95);
+  transform-origin: 50% 50%;
+}
+
+/* ----------------------------------------------------------------- rails ---
+ * Drawn on the form column, not the panel: the panel is the scroller, so
+ * rails pinned to it would stop at the fold. */
+.uzd__inner {
+  position: relative;
+  min-height: 100%;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 0 12px 0 16px;
-  height: 44px;
-  flex: none;
-  background: var(--n-0);
-  border-bottom: 1px solid var(--n-150);
+  flex-direction: column;
 }
 
-.uzd__bar-code {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--u-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--n-600);
-}
-.uzd__bar-glyph {
-  width: 12px;
-  height: 12px;
-  color: var(--u-primary);
+.uzd__inner::before,
+.uzd__inner::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  content: "";
+  background: var(--uzd-rail);
+  pointer-events: none;
 }
 
-.uzd__chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 3px 8px;
-  font-family: var(--u-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: 2px;
-}
-.uzd__chip-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 2px;
-  background: currentColor;
-}
-.uzd__chip--draft {
-  color: var(--n-600);
-  background: var(--n-100);
-}
-.uzd__chip--draft .uzd__chip-dot {
-  color: var(--n-400);
-}
-.uzd__chip--sending {
-  color: var(--u-primary-hover);
-  background: var(--u-primary-tint);
-}
-.uzd__chip--sending .uzd__chip-dot {
-  animation: uzd-pulse 900ms ease-in-out infinite;
-}
-.uzd__chip--submitted {
-  color: var(--s-ok);
-  background: var(--s-ok-tint);
-}
-
-.uzd__bar-gap {
-  flex: 1;
-}
-
-.uzd__esc {
-  font-family: var(--u-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--n-500);
-  padding: 3px 7px 4px;
-  border: 1px solid var(--n-200);
-  border-bottom-width: 2px;
-  border-radius: 3px;
-  background: var(--n-25);
-}
+.uzd__inner::before { left: var(--uzd-rail-x); }
+.uzd__inner::after { right: var(--uzd-rail-x); }
 
 .uzd__close {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: calc(var(--uzd-rail-x) + 8px);
   display: grid;
   place-items: center;
   width: 30px;
   height: 30px;
   padding: 0;
-  color: var(--n-500);
+  border: 0;
   background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--uzd-r-control);
+  color: var(--n-400);
   cursor: pointer;
-  transition:
-    color 120ms ease,
-    background 120ms ease;
+  transition: color 140ms ease-out;
 }
+
 .uzd__close svg {
   width: 16px;
   height: 16px;
 }
+
 .uzd__close:hover {
-  color: var(--n-800);
-  background: var(--n-100);
+  color: var(--uzd-ink);
 }
 
-/* ----------------------------------------------------------------- rail --- */
+/* ---------------------------------------------------------------- blocks ---
+ * Head, form and footer are the card's three sections: each inset inside the
+ * rails, in the page's own proportions. */
 
-.uzd__rail {
+.uzd__head {
+  padding: clamp(28px, 3.4vw, 40px) var(--uzd-inset) clamp(24px, 2.6vw, 30px);
+}
+
+.uzd__block {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 32px 28px 28px;
-  background: var(--uzd-d-bg);
-  color: var(--uzd-d-ink-2);
+  gap: 18px;
+  padding: clamp(24px, 2.8vw, 32px) var(--uzd-inset);
+}
+
+/* the confirmation is short and the card keeps the form's height, so it sits
+ * in the middle of the column rather than stranded at the top */
+.uzd__block--done {
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.uzd__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  color: var(--uzd-accent);
+  font-size: 0.74rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.uzd__eyebrow::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
 }
 
 .uzd__title {
   margin: 0;
+  max-width: 20ch;
   font-family: var(--u-display);
-  font-size: 1.75rem;
+  font-size: clamp(1.55rem, 2.8vw, 1.95rem);
   font-weight: 600;
-  line-height: 1.1;
-  letter-spacing: -0.022em;
-  color: var(--uzd-d-ink);
-  text-wrap: balance;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
 }
 
 .uzd__lede {
-  margin: 0;
-  font-size: 0.9375rem;
-  line-height: 1.55;
-  color: var(--uzd-d-ink-2);
-}
-
-/* the activity thread — the product's stations-on-a-line motif, standing in
- * for "what happens next". The live station carries the only blue on the
- * dark side; a completed station flips to the ok green with its check. */
-.uzd__thread {
-  display: flex;
-  flex-direction: column;
-  margin: 8px 0 0;
-  padding: 20px 0 0;
-  list-style: none;
-  border-top: 1px solid var(--uzd-d-border);
-}
-
-.uzd__ev {
-  position: relative;
-  display: grid;
-  grid-template-columns: 14px 1fr;
-  gap: 12px;
-  padding-bottom: 18px;
-}
-.uzd__ev:last-child {
-  padding-bottom: 0;
-}
-/* the spine: a hairline dropping from each node to the next */
-.uzd__ev::before {
-  content: "";
-  position: absolute;
-  left: 6.5px;
-  top: 16px;
-  bottom: 2px;
-  width: 1px;
-  background: var(--uzd-d-border);
-}
-.uzd__ev:last-child::before {
-  display: none;
-}
-
-.uzd__ev-node {
-  position: relative;
-  display: grid;
-  place-items: center;
-  width: 14px;
-  height: 14px;
-  margin-top: 1px;
-  border: 1px solid var(--uzd-d-border);
-  border-radius: 2px;
-  background: var(--uzd-d-bg-2);
-  color: transparent;
-}
-.uzd__ev-node svg {
-  width: 9px;
-  height: 9px;
-}
-.uzd__ev.is-now .uzd__ev-node {
-  border-color: var(--uzd-d-accent);
-  background: color-mix(in srgb, var(--uzd-d-accent) 22%, var(--uzd-d-bg));
-}
-.uzd__ev.is-now .uzd__ev-node::after {
-  content: "";
-  position: absolute;
-  inset: 3px;
-  border-radius: 1px;
-  background: var(--uzd-d-accent);
-}
-.uzd__ev.is-done .uzd__ev-node {
-  border-color: color-mix(in srgb, var(--s-ok) 60%, var(--uzd-d-bg));
-  background: color-mix(in srgb, var(--s-ok) 22%, var(--uzd-d-bg));
-  color: oklch(0.78 0.13 160.7);
-}
-
-.uzd__ev-body {
-  display: block;
-  min-width: 0;
-}
-.uzd__ev-title {
-  display: block;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--uzd-d-ink);
-}
-.uzd__ev.is-now .uzd__ev-title {
-  color: var(--uzd-d-ink);
-}
-.uzd__ev-sub {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.75rem;
-  line-height: 1.45;
-  color: var(--uzd-d-ink-3);
-}
-
-.uzd__foot {
-  margin: auto 0 0;
-  padding-top: 18px;
-  border-top: 1px solid var(--uzd-d-border);
-  font-size: 0.75rem;
+  margin: 12px 0 0;
+  max-width: 46ch;
+  color: var(--uzd-muted);
+  font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--uzd-d-ink-3);
-}
-.uzd__foot-stds {
-  display: block;
-  margin-top: 8px;
-  font-family: var(--u-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--uzd-d-ink-3);
 }
 
-/* ----------------------------------------------------------------- form --- */
+/* --------------------------------------------------------------- divider ---
+ * One hairline edge to edge between two blocks of the card, with a crosshair
+ * where it crosses each rail. */
 
-.uzd__body {
-  padding: 32px;
-  min-width: 0;
+.uzd__div {
+  position: relative;
+  flex: none;
+  height: 1px;
+  background: var(--uzd-rail);
 }
 
-.uzd__form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.uzd__cross {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  transform: translate(-50%, -50%);
 }
+
+.uzd__cross::before,
+.uzd__cross::after {
+  position: absolute;
+  content: "";
+  background: var(--uzd-cross);
+}
+
+.uzd__cross::before { top: 6px; right: 0; left: 0; height: 1px; }
+.uzd__cross::after { top: 0; bottom: 0; left: 6px; width: 1px; }
+
+.uzd__cross--l { left: var(--uzd-rail-x); }
+.uzd__cross--r { left: calc(100% - var(--uzd-rail-x)); }
+
+/* ---------------------------------------------------------------- fields --- */
 
 .uzd__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 16px;
-}
-.uzd__field--wide {
-  grid-column: 1 / -1;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 18px;
 }
 
 .uzd__field {
@@ -347,393 +290,295 @@
   min-width: 0;
 }
 
+.uzd__field--wide {
+  grid-column: 1 / -1;
+}
+
 .uzd__label {
   display: flex;
   align-items: baseline;
-  gap: 6px;
-  font-size: 0.8125rem;
-  font-weight: 550;
-  color: var(--n-700);
+  gap: 8px;
+  color: var(--uzd-ink-2);
+  font-size: 0.8rem;
+  font-weight: 560;
+  letter-spacing: -0.005em;
 }
-.uzd__label span[aria-hidden] {
-  color: var(--u-primary);
-  font-weight: 600;
-}
+
 .uzd__optional {
   margin-left: auto;
-  font-family: var(--u-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  color: var(--n-400);
+  font-size: 0.68rem;
+  font-weight: 560;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--n-500);
 }
 
 .uzd__input,
 .uzd__select,
 .uzd__textarea {
   width: 100%;
-  padding: 10px 12px;
+  border: 1px solid var(--uzd-line-strong);
+  border-radius: 4px;
+  background: var(--n-0);
+  color: var(--uzd-ink);
   font-family: inherit;
-  font-size: 0.9375rem;
-  line-height: 1.4;
-  color: var(--n-800);
-  background: var(--n-25);
-  border: 1px solid var(--n-200);
-  border-radius: var(--uzd-r-control);
-  outline: none;
+  font-size: 0.95rem;
   transition:
-    border-color 120ms ease,
-    background 120ms ease,
-    box-shadow 120ms ease;
+    border-color 140ms ease-out,
+    box-shadow 140ms ease-out;
 }
+
+.uzd__input,
+.uzd__select {
+  height: 44px;
+  padding: 0 13px;
+}
+
 .uzd__textarea {
+  padding: 11px 13px;
+  line-height: 1.5;
   resize: vertical;
-  min-height: 84px;
 }
+
 .uzd__input::placeholder,
 .uzd__textarea::placeholder {
-  color: var(--n-500);
+  color: var(--n-400);
 }
+
 .uzd__input:hover,
 .uzd__select:hover,
 .uzd__textarea:hover {
   border-color: var(--n-300);
 }
+
 .uzd__input:focus,
 .uzd__select:focus,
 .uzd__textarea:focus {
-  background: var(--n-0);
-  border-color: var(--u-primary);
-  box-shadow: 0 0 0 3px var(--u-primary-tint);
-}
-/* invalid reads from the error line plus a full border, never a single
- * coloured edge */
-.uzd__input[aria-invalid="true"],
-.uzd__select[aria-invalid="true"],
-.uzd__textarea[aria-invalid="true"] {
-  border-color: var(--s-err);
-}
-.uzd__input[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 3px var(--s-err-tint);
+  outline: none;
+  border-color: var(--uzd-accent);
+  box-shadow: 0 0 0 3px rgba(0, 91, 183, 0.12);
 }
 
+.uzd__input[aria-invalid="true"] {
+  border-color: #b4342c;
+}
+
+.uzd__input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(180, 52, 44, 0.14);
+}
+
+/* the select keeps the house chevron, not the platform's */
 .uzd__select-wrap {
   position: relative;
 }
+
 .uzd__select {
   appearance: none;
-  padding-right: 36px;
+  padding-right: 38px;
   cursor: pointer;
 }
-.uzd__select-chev {
+
+.uzd__select.is-empty {
+  color: var(--n-400);
+}
+
+.uzd__chev {
   position: absolute;
   top: 50%;
   right: 12px;
   width: 16px;
   height: 16px;
+  color: var(--uzd-muted);
   transform: translateY(-50%);
-  color: var(--n-500);
   pointer-events: none;
 }
 
 .uzd__err {
   margin: 0;
-  font-size: 0.75rem;
-  line-height: 1.4;
-  color: var(--s-err);
+  color: #b4342c;
+  font-size: 0.8rem;
+  line-height: 1.35;
 }
 
 .uzd__form-err {
   margin: 0;
   padding: 10px 12px;
-  font-size: 0.8125rem;
-  color: var(--n-700);
-  background: var(--s-err-tint);
-  border: 1px solid color-mix(in srgb, var(--s-err) 22%, transparent);
-  border-radius: var(--uzd-r-control);
+  background: #fdf3f2;
+  border: 1px solid #f0d3d0;
+  border-radius: 4px;
+  color: #8f2820;
+  font-size: 0.85rem;
+  line-height: 1.45;
 }
+
 .uzd__form-err a {
-  color: var(--u-primary-hover);
-  text-decoration: underline;
+  color: inherit;
   text-underline-offset: 2px;
 }
 
-/* the honeypot: out of flow, out of the a11y tree, out of sight */
+/* honeypot: present in the DOM, absent from the page */
 .uzd__trap {
   position: absolute;
-  left: -9999px;
   width: 1px;
   height: 1px;
-  opacity: 0;
-  pointer-events: none;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
-.uzd__actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 20px;
-  border-top: 1px solid var(--n-150);
-}
+/* -------------------------------------------------------------- actions --- */
 
 .uzd__submit {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
-  font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  color: #fff;
-  background: var(--u-primary);
+  justify-content: center;
+  gap: 9px;
+  align-self: flex-start;
+  min-height: 46px;
+  padding: 12px 26px;
   border: 1px solid transparent;
-  border-radius: var(--uzd-r-control);
+  border-radius: 999px;
+  background: var(--uzd-accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1;
   cursor: pointer;
-  transition:
-    background 120ms ease,
-    transform 120ms ease;
+  transition: background-color 160ms ease-out;
 }
+
 .uzd__submit:hover:not(:disabled) {
   background: var(--u-primary-hover);
-  transform: translateY(-1px);
 }
-.uzd__submit:active:not(:disabled) {
-  transform: translateY(0);
-}
+
 .uzd__submit:disabled {
-  opacity: 0.6;
-  cursor: progress;
+  opacity: 0.68;
+  cursor: default;
 }
+
 .uzd__arr {
-  transition: transform 140ms ease;
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 .uzd__submit:hover:not(:disabled) .uzd__arr {
-  transform: translateX(2px);
-}
-
-.uzd__consent {
-  margin: 0;
-  font-size: 0.75rem;
-  line-height: 1.5;
-  text-align: right;
-  color: var(--n-500);
-}
-
-/* --------------------------------------------------------------- success --- */
-
-.uzd__done {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  justify-content: center;
-  min-height: 360px;
-  max-width: 400px;
-}
-.uzd__done-mark {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  margin-bottom: 4px;
-  color: var(--s-ok);
-  background: var(--s-ok-tint);
-  border: 1px solid color-mix(in srgb, var(--s-ok) 24%, transparent);
-  border-radius: var(--uzd-r-control);
-}
-.uzd__done-mark svg {
-  width: 24px;
-  height: 24px;
-}
-/* the commit: the check draws itself once, then rests */
-.uzd__done-tick {
-  stroke-dasharray: 24;
-  stroke-dashoffset: 24;
-  animation: uzd-draw 420ms 120ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-.uzd__done-title {
-  margin: 0;
-  font-family: var(--u-display);
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--n-800);
-}
-.uzd__done-stamp {
-  margin: 0;
-  font-family: var(--u-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--n-500);
-}
-.uzd__done-copy {
-  margin: 4px 0 0;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: var(--n-600);
+  transform: translateX(3px);
 }
 
 .uzd__ghost {
-  margin-top: 8px;
-  display: inline-flex;
-  align-items: center;
-  padding: 11px 18px;
+  min-height: 42px;
+  padding: 11px 20px;
+  border: 1px solid var(--uzd-line-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--uzd-ink);
   font-family: inherit;
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--n-800);
-  background: var(--n-0);
-  border: 1px solid var(--n-200);
-  border-radius: var(--uzd-r-control);
+  font-size: 0.9rem;
+  font-weight: 560;
   cursor: pointer;
   transition:
-    border-color 120ms ease,
-    background 120ms ease;
-}
-.uzd__ghost:hover {
-  border-color: var(--n-300);
-  background: var(--n-25);
+    background-color 140ms ease-out,
+    border-color 140ms ease-out;
 }
 
-/* ------------------------------------------------------------- focus ring --- */
+.uzd__ghost:hover {
+  background: var(--uzd-alt);
+  border-color: var(--n-300);
+}
+
+/* the last section of the card, on the alt grey the pages use */
+.uzd__foot {
+  margin: 0;
+  margin-top: auto;
+  padding: 14px var(--uzd-inset);
+  border-top: 1px solid var(--uzd-line);
+  background: var(--uzd-alt);
+  color: var(--uzd-muted);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------- focus --- */
 
 .uzd :where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #6f8cff;
+  outline-offset: 3px;
+}
+
+.uzd :where(.uzd__input, .uzd__select, .uzd__textarea):focus-visible {
   outline: none;
-  box-shadow:
-    0 0 0 2px var(--n-0),
-    0 0 0 4px var(--u-primary);
-}
-.uzd__rail :where(a, button):focus-visible {
-  box-shadow:
-    0 0 0 2px var(--uzd-d-bg),
-    0 0 0 4px var(--uzd-d-accent);
 }
 
-/* -------------------------------------------------------------- responsive --- */
+/* --------------------------------------------------------------- phone --- */
 
-@media (max-width: 880px) {
-  .uzd {
-    padding: 0;
-    place-items: end stretch;
-  }
-  .uzd__panel {
-    width: 100%;
-    max-height: 94dvh;
-    animation-name: uzd-sheet;
-  }
-  .uzd__bar {
-    position: sticky;
-    top: 0;
-    z-index: 2;
-  }
-  .uzd__esc {
+@media (max-width: 980px) {
+  .uzd__viz {
     display: none;
   }
+
   .uzd__split {
-    grid-template-columns: 1fr;
-  }
-  .uzd__rail {
-    padding: 24px 20px 22px;
-    gap: 10px;
-  }
-  .uzd__title {
-    font-size: 1.4rem;
-  }
-  .uzd__lede {
-    font-size: 0.875rem;
-  }
-  /* on a phone the rail is a header, not a column: keep the promise, fold the
-   * thread and standards so the form is reachable without a scroll */
-  .uzd__thread,
-  .uzd__foot {
-    display: none;
-  }
-  .uzd__body {
-    padding: 24px 20px 28px;
-  }
-  .uzd__grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .uzd__actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .uzd__submit {
-    justify-content: center;
-    padding: 14px 18px;
-  }
-  .uzd__consent {
-    text-align: center;
-  }
-  .uzd__consent br {
-    display: none;
-  }
-  .uzd__done {
+    grid-template-columns: minmax(0, 1fr);
     min-height: 0;
   }
+
+  .uzd__panel {
+    width: min(660px, 100%);
+  }
 }
 
+@media (max-width: 720px) {
+  .uzd {
+    place-items: end stretch;
+    padding: 0;
+  }
+
+  .uzd__panel {
+    width: 100%;
+    max-height: 92dvh;
+    border-width: 1px 0 0;
+    animation: uzd-sheet 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .uzd__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .uzd__title {
+    max-width: none;
+  }
+}
+
+/* -------------------------------------------------------------- motion --- */
+
 @keyframes uzd-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
+
 @keyframes uzd-rise {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.985);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
 }
+
 @keyframes uzd-sheet {
-  from {
-    opacity: 0;
-    transform: translateY(28px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-@keyframes uzd-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
-  }
-}
-@keyframes uzd-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
+  from { transform: translateY(100%); }
+  to { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .uzd__scrim,
-  .uzd__panel,
-  .uzd__chip-dot,
-  .uzd__done-tick {
+  .uzd__panel {
     animation: none;
   }
-  .uzd__done-tick {
-    stroke-dashoffset: 0;
-  }
-  .uzd__submit:hover:not(:disabled) {
-    transform: none;
+
+  .uzd__arr,
+  .uzd__input,
+  .uzd__select,
+  .uzd__textarea,
+  .uzd__submit {
+    transition: none;
   }
 }

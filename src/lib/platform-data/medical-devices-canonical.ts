@@ -220,7 +220,7 @@ export const MD_PROOF = {
     baseline: 198_150, // signed baseline $/yr
     metric: "non-conformance coordination cost",
     detail:
-      "A medical-device manufacturer recovered $81,350 a year — about 41% — against a signed $198,150 baseline, in the first year.",
+      "A medical-device manufacturer recovered $81,350 a year (about 41%) against a signed $198,150 baseline, in the first year.",
     attribution: "Customer-attested · medical devices",
   },
   customers: [

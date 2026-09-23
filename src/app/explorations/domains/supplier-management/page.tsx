@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function SupplierManagementDomainPage() {
-  return <SolutionPage data={SUPPLIER_MANAGEMENT_DATA} />;
+  return <SolutionPage data={SUPPLIER_MANAGEMENT_DATA} rails compact />;
 }

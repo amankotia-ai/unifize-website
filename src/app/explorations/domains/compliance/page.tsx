@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function ComplianceDomainPage() {
-  return <SolutionPage data={COMPLIANCE_DATA} />;
+  return <SolutionPage data={COMPLIANCE_DATA} rails compact />;
 }

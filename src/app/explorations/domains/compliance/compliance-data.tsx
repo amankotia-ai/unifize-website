@@ -176,6 +176,20 @@ export const COMPLIANCE_DATA: DomainPageData = {
         glyph: "scale",
         name: "Systems, data and the validated state",
         line: "Prove the systems and the data behind every record you sign.",
+        /* the validated estate: systems down, the checks across */
+        viz: {
+          kind: "matrix",
+          kicker: "GxP systems · validated state",
+          cols: ["IQ/OQ", "Access", "Trail", "Review"],
+          rows: [
+            { name: "LIMS v7.2", cells: ["ok", "due", "gap", "due"] },
+            { name: "MES", cells: ["ok", "ok", "ok", "ok"] },
+            { name: "eDMS", cells: ["ok", "ok", "ok", "due"] },
+            { name: "ERP", cells: ["ok", "ok", "ok", "ok"] },
+          ],
+          cursor: { name: "A. Novak", tone: "#7c3aed" },
+          wash: "sky",
+        },
         items: [
           {
             name: "Validation and Qualification",
@@ -191,6 +205,18 @@ export const COMPLIANCE_DATA: DomainPageData = {
         glyph: "doc",
         name: "Inspections and changing rules",
         line: "Getting inspected, answering findings, and keeping up as the rules move.",
+        /* one revised rule, fanned out to what it touches */
+        viz: {
+          kind: "impact",
+          source: { kicker: "Rule revised", title: "Audit trails on GxP systems" },
+          items: [
+            { id: "SOP-201", label: "E-signature governance" },
+            { id: "VAL-22", label: "LIMS validation plan", open: true },
+            { id: "TRN-09", label: "Data integrity training" },
+          ],
+          cursor: { name: "R. Iyer", tone: "#0f8f7e" },
+          wash: "blue",
+        },
         runsIn: { label: "Audits run in the QMS product →", href: "/explorations/products/qms" },
         items: [
           {
@@ -215,6 +241,20 @@ export const COMPLIANCE_DATA: DomainPageData = {
         glyph: "pulse",
         name: "Safety, environment and waste",
         line: "Keeping people safe and the site inside its permits.",
+        /* the near miss, reported where it happened */
+        viz: {
+          kind: "form",
+          kicker: "EHS-0418",
+          title: "Near-miss report",
+          fields: [
+            { label: "Location", value: "Solvent store B" },
+            { label: "Shift", value: "Night · 2", select: true },
+            { label: "Classification", value: "Near miss", select: true },
+            { label: "Immediate action", value: "Area cordoned", focus: true },
+          ],
+          cursor: { name: "K. Lund", tone: "#d97706" },
+          wash: "warm",
+        },
         items: [
           {
             name: "Environmental Health and Safety Compliance",
@@ -234,6 +274,18 @@ export const COMPLIANCE_DATA: DomainPageData = {
         glyph: "box",
         name: "Once product leaves the site",
         line: "Obligations that follow the product past your own walls.",
+        /* one release, signed on both sides of the contract */
+        viz: {
+          kind: "signoff",
+          kicker: "Batch 22-114 · CMO release",
+          title: "One release, two quality systems",
+          signers: [
+            { org: "Contract manufacturer QA", name: "K. Laine", meaning: "Released", time: "Day 3" },
+            { org: "Sponsor QA", name: "T. Osei", meaning: "Final disposition" },
+          ],
+          cursor: { name: "T. Osei", tone: "#db2777" },
+          wash: "paper",
+        },
         runsIn: { label: "Batch records run in the MES product →", href: "/explorations/products/mes" },
         items: [
           {
@@ -262,7 +314,7 @@ export const COMPLIANCE_DATA: DomainPageData = {
    * bodies condensed from Description, Severity verbatim. The Low-rated PPE
    * row is not carried here (see the header note). */
   leaks: {
-    heading: "The obligation gets met. The record can't answer for it.",
+    heading: "The obligation gets met. The proof goes stale.",
     lede: "The failure modes we see inside compliance and EHS functions. None of them is a missing feature. All of them are obligations governed outside the record.",
     // `surface` = where the answer actually lives today, condensed from each
     // pain's Description.
@@ -281,24 +333,38 @@ export const COMPLIANCE_DATA: DomainPageData = {
       ],
       float: { kicker: "Inspector", note: "Show me who amended this result, and when." },
       caption: "Provable at the last audit. Nobody can say whether it still is.",
+      /* the rails window: the validation folder, untouched since the audit */
+      files: {
+        path: ["Validation", "GxP systems", "LIMS v7.2"],
+        rows: [
+          { name: "IQ_OQ_Report_2023_FINAL.pdf", kind: "pdf", meta: "Mar 2023" },
+          { name: "Periodic_Review_2025_DRAFT.docx", kind: "doc", meta: "9 mo overdue", warn: true },
+          { name: "Access_Review_Q3 (2).xlsx", kind: "sheet", meta: "Jul 2025" },
+          { name: "Audit trail configuration", kind: "folder", meta: "Empty" },
+          { name: "Change_log_v7.2_old.xlsx", kind: "sheet", meta: "Owner left" },
+        ],
+      },
     },
     pains: [
       {
         severity: "High",
         surface: "Documents & spreadsheets",
         name: "Compliance posture answer assembled per question, never queryable",
+        short: "Right for the question asked. Stale by the next one.",
         body: "Asked for the status of computer system validation, the change controls in scope for financial reporting, the data flows behind a privacy request or a control mapping, the team assembles the answer from documents, spreadsheets and email. It is correct for that question and stale for the next.",
       },
       {
         severity: "High",
         surface: "The scanning brief",
         name: "Regulatory change horizon scanning not linked to operating documents",
+        short: "The rule changed in the brief. The procedures never heard.",
         body: "Teams scan for what is coming: a new standard revision, a new agency guidance, a new ruling. The scan output lives in a separate brief, and the link from the rule that changed to the procedures and forms that need review is drawn by hand every time.",
       },
       {
         severity: "Medium",
         surface: "Parallel spreadsheets",
         name: "EHS audit findings tracked in spreadsheets parallel to QMS",
+        short: "Two trackers, two audits, and nobody sees the repeat.",
         body: "EHS audits produce findings, action plans and closure evidence, tracked by the EHS function in its own spreadsheets, separate from the quality system's audit records. Asking whether an EHS finding repeats a quality finding takes a manual reconciliation nobody has time for.",
       },
     ],
@@ -307,7 +373,8 @@ export const COMPLIANCE_DATA: DomainPageData = {
     // band states the canonical cost from the worst-rated pain instead.
     tax: {
       label: "The recurring bill",
-      value: "The posture gets rebuilt for every question asked.",
+      value: "The posture, rebuilt for every question asked.",
+      tail: "That rebuild is the coordination tax.",
       meta: "Each answer is assembled by hand from documents, spreadsheets and email. It is right for the question that prompted it, and out of date by the next one.",
     },
   },
@@ -331,6 +398,14 @@ export const COMPLIANCE_DATA: DomainPageData = {
       { t: "Access remediation committed", who: "Quality Compliance", when: "Day 11" },
       { t: "Revalidation executed and reviewed", who: "Validation Lead · QA", when: "Day 29" },
       { t: "Closed · trace sealed", who: "Director of Quality Compliance", when: "Day 30" },
+    ],
+    /* the rails rail: each line is what the arcade pose above it shows */
+    steps: [
+      { icon: "finding", title: "Cite the finding", body: "The LIMS audit-trail gap, logged against 214 amended results." },
+      { icon: "impact", title: "Scope the impact", body: "Adjacent GxP systems checked; MES and eDMS come back clear." },
+      { icon: "lock", title: "Commit the remediation", body: "Admin roles narrowed, the trail switched on, a QA second check." },
+      { icon: "clipcheck", title: "Revalidate", body: "IQ/OQ on v7.2.1 passes, and T. Osei approves the review." },
+      { icon: "seal", title: "Seal the trace", body: "L. Duarte signs, and the validated state is restored." },
     ],
     trailFoot: "The relation runs back to the system that raised the finding, and forward into the documents, training and revalidation it changes. The thread is the trace.",
     chatVariant: "capa",
@@ -474,8 +549,8 @@ export const COMPLIANCE_DATA: DomainPageData = {
    * APQP & PPAP ship as Enhancements with no page yet, so their cards carry an
    * honest status label. */
   coverage: {
-    heading: "The products that carry the compliance record.",
-    lede: "The modules below serve this domain across the document, quality and safety products. Filter by the standard you are audited against.",
+    heading: "Documents and findings, on one record.",
+    lede: "Controlled documents, changes and training run in the Document Management System; audits and corrective actions run in the Quality Management System. Both write to one governed record.",
     standardFilters: [
       "ISO 9001",
       "ISO 13485",
@@ -616,12 +691,15 @@ export const COMPLIANCE_DATA: DomainPageData = {
     lede: "Each of these starts a clock, and each routes into a governed workflow, so the response is coordinated on the record it will be judged by.",
     rows: [
       { name: "FDA Form 483 observation issued", clock: "15 working days to respond", severity: "Urgent", routesTo: "Audit Management · Corrective Actions", owner: "Director of Quality Compliance", href: "/explorations/triggers/fda-483" },
-      { name: "Data integrity finding", clock: "Treated as systemic · ALCOA+ review", severity: "Urgent", routesTo: "Document Control · Corrective Actions", owner: "Quality Compliance · IT", },
+      { name: "Data integrity finding", clock: "Treated as systemic · ALCOA+ review", severity: "Urgent", routesTo: "Document Control · Corrective Actions", owner: "Quality Compliance · IT", viz: "trail", detail: ["LIMS v7.2 · audit trail"] },
       { name: "FDA Warning Letter received", clock: "15 working days · follow-on inspection", severity: "Urgent", routesTo: "Corrective Actions", owner: "VP Quality · Executive team" },
       { name: "Failed FDA inspection", clock: "Official Action Indicated · import-alert risk", severity: "Urgent", routesTo: "Audit Management", owner: "Executive team" },
-      { name: "CSV audit finding", clock: "Audit-response clock · weeks", severity: "High", routesTo: "Change Control · Audit Management", owner: "Validation Manager · CSV Lead" },
-      { name: "OSHA Process Safety Management gap", clock: "29 CFR 1910.119 · remediate before escalation", severity: "High", routesTo: "EHS Audit Management", owner: "EHS Director · Engineering" },
+      { name: "CSV audit finding", clock: "Audit-response clock · weeks", severity: "High", routesTo: "Change Control · Audit Management", owner: "Validation Manager · CSV Lead", viz: "state", detail: ["GxP system", "LIMS v7.2", "Since 2023"] },
+      { name: "OSHA Process Safety Management gap", clock: "29 CFR 1910.119 · remediate before escalation", severity: "High", routesTo: "EHS Audit Management", owner: "EHS Director · Engineering", viz: "elements", detail: ["29 CFR 1910.119", "Process hazard analysis", "Operating procedures", "!Management of change", "Mechanical integrity", "!Incident investigation"] },
     ],
+    /* the rails board: the three moments only compliance owns (the 483 and
+     * the warning letter lead the quality page) */
+    featured: ["Data integrity finding", "CSV audit finding", "OSHA Process Safety Management gap"],
   },
 
   /* ------------------------------------------------ 08 · coexistence
@@ -634,6 +712,18 @@ export const COMPLIANCE_DATA: DomainPageData = {
     systemsOfRecord: ["QMS", "ERP", "PLM", "LIMS"],
     body: "Unifize replaces the ungoverned channels (email, spreadsheets, the compliance tracker kept beside the QMS) where the decision trace goes missing, not the validated systems that already passed inspection. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your QMS, ERP, PLM and LIMS.",
+    bands: {
+      lede: "Keep the systems that already passed inspection. Unifize runs the obligations around them, and the approved outcome goes back with a 21 CFR Part 11 signature. No rip-and-replace, and no revalidation of a system that already passed.",
+      note: "No system for an obligation yet? The document and quality modules above run it, on the same layer.",
+      tools: {
+        title: "Trackers and binders",
+        sub: "Stop being the record",
+        names: ["Email", "Sheets", "Binders", "Drives"],
+        label: "Where the posture used to live",
+        body: "The validation binder, the access-review spreadsheet and the scanning brief stop being where the answer lives. The decision and its evidence move onto the record.",
+      },
+      flows: { contextIn: "CONTEXT IN", back: "PART 11 SIGNED", captured: "OBLIGATIONS CAPTURED", linked: "THE ANSWER, LINKED" },
+    },
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -656,6 +746,18 @@ export const COMPLIANCE_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["Audit Management", "Approval Workflows", "Document Management", "Training"],
+    /* the reel roster: compliance in the everyday, validation, inspections,
+     * audits. Each fact is the film's own title; no film is shared with
+     * another Solutions page. */
+    stills: [
+      { wistia: "mprqh8jc7u", fact: "Compliance made part of the everyday workflow" }, /* Wilson Lin, Applechem */
+      { wistia: "06ydncz5i9", fact: "A validated QMS" }, /* Denis Machoka */
+      { wistia: "de8le15g7a", fact: "FDA audits made easy" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "6lp5j555dy", fact: "95% of internal audits done remotely" }, /* Tedd Carr, The Will-Burt Company */
+      { wistia: "f1hnfv4qc6", fact: "Audits made simple" }, /* Wilson Lin, Applechem */
+      { wistia: "aijs0vn4ta", fact: "Accountability and compliance brought into the system" }, /* Natalie Jones */
+      { wistia: "xttkxfj4d8", fact: "The compliance standards they work to" }, /* Mikala Hukka */
+    ],
     references: [
       {
         tag: "Named reference",

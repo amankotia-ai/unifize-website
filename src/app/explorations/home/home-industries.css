@@ -1,0 +1,226 @@
+/* ============================================================================
+ * home-industries.css - 05 · industries as tabs over large tiles
+ * (home-industries.tsx). The tiles follow the way-in card grammar in
+ * home-kit.css (.hm-entry): grey tint card with no ring or shadow, a paler
+ * white plate for the ledger, a white pill door. DMS tokens.
+ * ========================================================================== */
+.dms--redesign.dms--home .hm-ind {
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+/* the tabs: a segmented row, the active one inked */
+.dms--redesign.dms--home .hm-ind__tabs {
+  display: inline-flex;
+  max-width: 100%;
+  gap: 4px;
+  padding: 4px;
+  overflow-x: auto;
+  background: var(--dms-surface);
+  box-shadow: 0 0 0 1px var(--dms-line-strong);
+}
+.dms--redesign.dms--home .hm-ind__tab {
+  flex: none;
+  min-height: 44px;
+  padding: 0 clamp(16px, 1.6vw, 24px);
+  border: 0;
+  background: none;
+  color: var(--dms-muted);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 150ms ease-out, background-color 150ms ease-out;
+}
+.dms--redesign.dms--home .hm-ind__tab:hover { color: var(--dms-ink); }
+.dms--redesign.dms--home .hm-ind__tab.is-active {
+  background: var(--dms-ink);
+  color: var(--dms-surface);
+}
+.dms--redesign.dms--home .hm-ind__tab:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: 2px;
+}
+
+.dms--redesign.dms--home .hm-ind__lede {
+  max-width: 60ch;
+  margin: 20px 0 0;
+  color: var(--dms-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+/* the tiles: three or four across, one row, equal height; the same air as
+ * the way-in grid */
+.dms--redesign.dms--home .hm-ind__tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(20px, 2vw, 28px);
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  animation: hm-ind-in 260ms ease-out both;
+}
+.dms--redesign.dms--home .hm-ind__tiles--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.dms--redesign.dms--home .hm-ind__tiles > li { display: flex; min-width: 0; }
+
+@keyframes hm-ind-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms--home .hm-ind__tiles { animation: none; }
+}
+
+/* ---- the tile: the way-in card ----------------------------------------- */
+.dms--redesign.dms--home .hm-ind__tile {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(22px, 2vw, 28px);
+  /* the same grey tint as .hm-entry: ink at 6%, no border, no shadow */
+  background: #17181a0f;
+  --hm-entry-rule: rgba(23, 24, 26, 0.1);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--home .hm-ind__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+  font-weight: 560;
+  letter-spacing: 0.02em;
+}
+.dms--redesign.dms--home .hm-ind__glyph {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  color: var(--dms-ink);
+}
+.dms--redesign.dms--home .hm-ind__glyph svg {
+  width: 15px;
+  height: 15px;
+  fill: currentColor;
+}
+
+.dms--redesign.dms--home .hm-ind__claim {
+  margin: 14px 0 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.2rem, 1.02rem + 0.5vw, 1.5rem);
+  font-weight: 620;
+  line-height: 1.16;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.dms--redesign.dms--home .hm-ind__claim em {
+  color: var(--dms-accent-text, var(--dms-accent));
+  font-style: normal;
+}
+
+/* the plate: white at 60% over the tint, rounded, dashed rules between
+ * rows, exactly as the way-in ledger */
+.dms--redesign.dms--home .hm-ind__plate {
+  margin: 22px 0 22px;
+  padding: 4px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.dms--redesign.dms--home .hm-ind__row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 0;
+}
+.dms--redesign.dms--home .hm-ind__row + .hm-ind__row {
+  background: repeating-linear-gradient(
+      90deg,
+      var(--hm-entry-rule) 0 6px,
+      transparent 6px 9px
+    )
+    top / 100% 1px no-repeat;
+}
+.dms--redesign.dms--home .hm-ind__row dt {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+.dms--redesign.dms--home .hm-ind__row dd {
+  margin: 0;
+  color: var(--dms-ink);
+  font-size: 0.92rem;
+  font-weight: 560;
+  line-height: 1.4;
+}
+
+.dms--redesign.dms--home .hm-ind__standards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.dms--redesign.dms--home .hm-ind__standards i {
+  padding: 4px 8px;
+  background: #17181a0f;
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-ind__customer img {
+  width: auto;
+  max-width: 120px;
+  height: 24px;
+  object-fit: contain;
+  object-position: left center;
+  filter: grayscale(1);
+  opacity: 0.8;
+}
+
+/* the tile's own door: a white pill on the grey card, brand blue on hover */
+.dms--redesign.dms--home .hm-ind__go {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding: 0 18px 0 20px;
+  border-radius: 999px;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition-property: background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+.dms--redesign.dms--home .hm-ind__go:hover {
+  background: var(--dms-accent);
+  color: #fff;
+}
+.dms--redesign.dms--home .hm-ind__go span { transition: transform 150ms ease-out; }
+.dms--redesign.dms--home .hm-ind__go:hover span { transform: translateX(3px); }
+.dms--redesign.dms--home .hm-ind__go:active { transform: scale(0.98); }
+.dms--redesign.dms--home .hm-ind__go:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: 3px;
+}
+
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-ind__tiles,
+  .dms--redesign.dms--home .hm-ind__tiles--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .dms--redesign.dms--home .hm-ind__tiles,
+  .dms--redesign.dms--home .hm-ind__tiles--3 { grid-template-columns: 1fr; }
+}

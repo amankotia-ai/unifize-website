@@ -61,6 +61,31 @@
   cursor: pointer;
   transition: color 160ms ease-out;
 }
+/* a solid glyph in place of the counter (steps that carry an icon) */
+.dms-hero__product-demo--arcade .dms-heroarc__ico {
+  display: grid;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+  align-self: center;
+  transition: color 160ms ease-out;
+}
+.dms-hero__product-demo--arcade .dms-heroarc__ico svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.dms-hero__product-demo--arcade .dms-heroarc__ico + .dms-heroarc__label { align-self: center; }
+/* the rail above the stage (rail="top"): the hairline sits on top of the
+ * row, the active rule and the timer move to the row's base, where it
+ * meets the stage */
+.dms-hero__product-demo--arcade .dms-heroarc__rail--top { margin-top: 0; }
+.dms-hero__product-demo--arcade .dms-heroarc__rail--top .dms-heroarc__step.is-active .dms-heroarc__btn::before,
+.dms-hero__product-demo--arcade .dms-heroarc__rail--top .dms-heroarc__tick {
+  top: auto;
+  bottom: -1px;
+}
 .dms-hero__product-demo--arcade .dms-heroarc__n {
   font-family: var(--dms-mono);
   font-size: 11px;

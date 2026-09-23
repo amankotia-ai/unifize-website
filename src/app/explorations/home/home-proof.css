@@ -1,0 +1,245 @@
+/* ============================================================================
+ * home-proof.css - homepage Customer proof: the reel (2026-09-22, late).
+ * A dark band on the bookends' charcoal. Head on the rails (claim left,
+ * arrows right), then one row of customer stills at their native 16:9 that
+ * scrolls edge to edge past the rails; the first still aligns with the head
+ * text. Square corners; hairlines, never a one-sided colored border.
+ * ========================================================================== */
+
+.dms--redesign.dms--home .hm-proof.hm-proof--reel {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-bg-3: var(--hm-charcoal-3, #2b2f36);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --dms-d-border-2: var(--hm-charcoal-border-2, #41464f);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  /* where the first still starts: the head's own text edge */
+  --hm-reel-lead: calc(var(--hm-rail-x) + var(--hm-rail-pad));
+  --hm-reel-gap: clamp(14px, 1.6vw, 24px);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  overflow: hidden;
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+/* ---------------------------------------------------------------- head */
+.hm-reel__head {
+  display: grid;
+  grid-template-columns: minmax(0, 920px) auto;
+  align-items: end;
+  justify-content: space-between;
+  gap: clamp(32px, 5vw, 80px);
+}
+.hm-reel__head .dms-head { gap: 20px; }
+.hm-reel__head .dms-h2 {
+  max-width: 19ch;
+  color: #fff;
+  font-size: clamp(2.35rem, 1.75rem + 2vw, 3rem);
+  text-wrap: balance;
+}
+.hm-reel__head .dms-lede {
+  max-width: 58ch;
+  color: var(--dms-d-ink-2);
+  font-size: 1rem;
+}
+
+.hm-reel__nav {
+  display: flex;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+.hm-reel__arrow {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--dms-d-border-2);
+  background: transparent;
+  color: var(--dms-d-ink);
+  cursor: pointer;
+  transition:
+    background-color var(--dms-dur) var(--dms-ease),
+    border-color var(--dms-dur) var(--dms-ease),
+    color var(--dms-dur) var(--dms-ease),
+    opacity var(--dms-dur) var(--dms-ease);
+}
+.hm-reel__arrow svg { width: 20px; height: 20px; }
+.hm-reel__arrow:hover:not(:disabled) {
+  background: var(--dms-d-bg-3);
+  border-color: var(--dms-d-ink-3);
+}
+.hm-reel__arrow:focus-visible { outline: none; box-shadow: var(--dms-ring-dark); }
+.hm-reel__arrow:disabled { opacity: 0.32; cursor: default; }
+
+/* --------------------------------------------------------------- track */
+.hm-reel__track {
+  /* the stills float above the page rails (which sit at z-index 2) */
+  position: relative;
+  z-index: 3;
+  display: flex;
+  margin: clamp(40px, 4.5vw, 64px) 0 0;
+  padding: 0 var(--hm-reel-lead);
+  column-gap: var(--hm-reel-gap);
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--hm-reel-lead);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.hm-reel__track::-webkit-scrollbar { display: none; }
+
+.hm-reel__item {
+  flex: none;
+  width: clamp(300px, 39vw, 640px);
+  scroll-snap-align: start;
+}
+
+.hm-reel__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: inherit;
+  text-decoration: none;
+}
+.hm-reel__card:focus-visible { outline: none; }
+.hm-reel__card:focus-visible .hm-reel__still { box-shadow: var(--dms-ring-dark); }
+
+/* the still at the poster's own 16:9; nothing is cropped or zoomed */
+.hm-reel__still {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--dms-d-bg-3);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.hm-reel__still img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms var(--dms-ease), filter var(--dms-dur) var(--dms-ease);
+}
+.hm-reel__card:hover .hm-reel__still img { transform: scale(1.02); }
+
+/* caption row: who on the left, the attested fact on the right */
+.hm-reel__caption {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hm-reel__who { display: flex; min-width: 0; flex-direction: column; gap: 3px; }
+.hm-reel__who strong {
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 620;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.hm-reel__who small {
+  color: var(--dms-d-ink-3);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.hm-reel__fact {
+  flex: none;
+  max-width: 24ch;
+  color: var(--dms-d-ink-2);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-align: right;
+  text-wrap: pretty;
+}
+
+/* the optional lead: one attested figure as a brand-blue cell at the
+ * stills' 16:9, its body and provenance on the caption row */
+.hm-reel__lead {
+  display: flex;
+  aspect-ratio: 16 / 9;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: clamp(20px, 2.4vw, 32px);
+  background: var(--dms-accent);
+  color: #fff;
+}
+.hm-reel__lead-lab {
+  margin-bottom: auto;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.hm-reel__lead-stat {
+  font-family: var(--dms-display);
+  font-size: clamp(3.2rem, 2.2rem + 3vw, 5.4rem);
+  font-weight: 520;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+}
+.hm-reel__lead-statlab {
+  max-width: 30ch;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+.hm-reel__item--lead .hm-reel__who small {
+  color: var(--dms-d-ink-2);
+  font-size: 0.86rem;
+  text-wrap: pretty;
+}
+.hm-reel__item--lead .hm-reel__fact {
+  color: var(--dms-d-ink-3);
+  font-size: 0.8rem;
+}
+
+/* ---------------------------------------------------------------- foot */
+.hm-reel__foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: clamp(28px, 3vw, 40px);
+}
+.hm-reel__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--u-blue-400);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color var(--dms-dur) var(--dms-ease);
+}
+.hm-reel__all svg { width: 16px; height: 16px; transition: transform var(--dms-dur) var(--dms-ease); }
+.hm-reel__all:hover { color: #fff; }
+.hm-reel__all:hover svg { transform: translateX(3px); }
+
+/* ----------------------------------------------------------- responsive */
+@media (max-width: 900px) {
+  .hm-reel__head { grid-template-columns: 1fr; align-items: start; gap: 20px; }
+  .hm-reel__nav { padding-bottom: 0; }
+  .hm-reel__item { width: min(78vw, 520px); }
+}
+
+@media (max-width: 600px) {
+  .hm-reel__head .dms-h2 { max-width: 15ch; }
+  .hm-reel__track { margin-top: 32px; }
+  .hm-reel__item { width: 82vw; }
+  .hm-reel__caption { flex-direction: column; gap: 8px; }
+  .hm-reel__fact { max-width: none; text-align: left; }
+  .hm-reel__foot { justify-content: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm-reel__still img,
+  .hm-reel__arrow,
+  .hm-reel__all svg { transition: none; }
+  .hm-reel__card:hover .hm-reel__still img { transform: none; }
+}

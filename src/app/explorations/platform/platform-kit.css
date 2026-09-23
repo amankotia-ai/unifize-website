@@ -38,8 +38,8 @@
   color:oklch(1 0 0);
   place-items:center;
 }
-.pf-page .pf-centered-head .dms-h2 { max-width:20ch; }
-.pf-page .pf-centered-head .dms-lede { max-width:62ch; }
+.pf-page .pf-centered-head .dms-h2 { max-width:28ch; }
+.pf-page .pf-centered-head .dms-lede { max-width:74ch; text-wrap:balance; }
 .pf-page .dms-section--dark .pf-centered-head .dms-eyebrow { color:var(--dms-d-ink-2); }
 .pf-page .dms-section--dark .pf-centered-head .dms-eyebrow__num { color:oklch(1 0 0); }
 
@@ -62,18 +62,21 @@
  * in the product's linework idiom (hairline baselines, square markers,
  * mono labels, one accent). */
 .pf-page .pf-tax-section { background:var(--dms-surface); }
-.pf-page .pf-stats {
+/* one ledger under the section head: the tax on one record (full row), a
+ * strip naming what follows, then the three effects side by side. Hairlines
+ * do the separating; nothing is boxed inside a box. */
+.pf-page .pf-ledger {
   display:grid;
   grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:1px;
-  margin-top:clamp(52px, 6vw, 84px);
+  margin-top:clamp(40px, 4.4vw, 60px);
   border:1px solid var(--dms-hairline);
   background:var(--dms-hairline);
 }
 .pf-page .pf-evi {
   display:flex;
   flex-direction:column;
-  padding:clamp(26px, 3vw, 40px);
+  padding:clamp(24px, 2.6vw, 34px);
   background:var(--dms-surface);
 }
 .pf-page .pf-evi__head { display:flex; flex-direction:column; gap:12px; }
@@ -102,12 +105,14 @@
   text-wrap:pretty;
 }
 .pf-page .pf-evi__fig {
-  flex:1;
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
-  margin-top:clamp(24px, 2.4vw, 36px);
+  min-height:182px;
+  margin-top:clamp(22px, 2.2vw, 30px);
 }
+/* every figure fits the same slot; the accrual chart no longer sets the row */
+.pf-page .pf-evi .pf-accrual__svg { display:block; width:auto; height:148px; max-width:100%; }
 .pf-page .pf-evi__cap {
   margin:14px 0 0;
   color:var(--dms-faint);
@@ -134,7 +139,7 @@
   outline:1px solid var(--dms-hairline);
   outline-offset:-1px;
 }
-.pf-page .pf-leak__seg.is-leak { width:30%; background:var(--dms-accent); }
+.pf-page .pf-leak__seg.is-leak { width:30%; background:var(--dms-tax); }
 .pf-page .pf-leak__seg.is-keep { flex:1; background:var(--dms-surface-sunk); }
 .pf-page .pf-leak__rule {
   display:flex;
@@ -163,7 +168,7 @@
   letter-spacing:.02em;
 }
 .pf-page .pf-leak__legend i { width:10px; height:10px; }
-.pf-page .pf-leak__legend i.is-leak { background:var(--dms-accent); }
+.pf-page .pf-leak__legend i.is-leak { background:var(--dms-tax); }
 .pf-page .pf-leak__legend i.is-keep { background:var(--dms-surface-sunk); box-shadow:inset 0 0 0 1px var(--dms-line-strong); }
 
 /* one recall week: an event-square per recall, stacked into daily bars */
@@ -304,13 +309,24 @@
 .pf-page .pf-journey__tag {
   display:inline-flex;
   align-items:center;
-  padding:3px 8px;
+  gap:5px;
+  padding:2px 8px 2px 6px;
+  border-radius:999px;
   font-family:var(--dms-mono);
-  font-size:.66rem;
+  font-size:.58rem;
+  line-height:1.5;
   letter-spacing:.03em;
   text-transform:uppercase;
   background:oklch(1 0 0 / .08);
   color:var(--dms-d-ink-2);
+}
+/* a status dot leads the label */
+.pf-page .pf-journey__tag::before {
+  content:"";
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:currentColor;
 }
 .pf-page .pf-journey__tag[data-tone="live"] { background:color-mix(in oklab, #2c9257 22%, transparent); color:#8fd6a9; }
 .pf-page .pf-journey__tag[data-tone="next"] { background:color-mix(in srgb, var(--u-primary) 22%, transparent); color:var(--dms-d-accent); }
@@ -1460,8 +1476,9 @@
   .pf-page .pf-meas__side { grid-template-columns:1fr; }
   .pf-page .pf-meas__l { max-width:none; }
   .pf-page .pf-coex__notes { grid-template-columns:1fr; }
-  .pf-page .pf-stats { grid-template-columns:1fr; }
-  .pf-page .pf-evi__fig { margin-top:24px; }
+  .pf-page .pf-ledger { grid-template-columns:1fr; }
+  .pf-page .pf-evi__fig { min-height:0; margin-top:24px; }
+  .pf-page .pf-evi__link + .pf-evi__src { margin-top:22px; }
   .pf-page .pf-accrual__svg { max-width:420px; }
 }
 
@@ -1508,5 +1525,626 @@
   box-shadow:none;
   color:oklch(1 0 0);
 }
+/* the solid icon that stands where the index stood */
+.pf-page .pf-ai-section .pf-journey__icon {
+  display:grid;
+  width:32px;
+  height:32px;
+  place-items:center;
+  background:var(--dms-d-bg-3);
+  box-shadow:inset 0 0 0 1px var(--pf-dark-line);
+  color:var(--dms-d-ink-2);
+  transition:background-color .18s ease-out, color .18s ease-out;
+}
+.pf-page .pf-ai-section .pf-journey__icon svg { width:18px; height:18px; fill:currentColor; }
+.pf-page .pf-ai-section .pf-journey__step.is-active .pf-journey__icon {
+  background:var(--dms-d-accent);
+  box-shadow:none;
+  color:oklch(1 0 0);
+}
 .pf-page .pf-ai-section .pf-journey__name { font-size:1.14rem; }
 .pf-page .pf-ai-section .pf-journey__body { font-size:.9rem; }
+
+/* ------------------------------------------- the journeys on the ribbon container
+ * 18 Sep 2026: both product stages (hero + Unifize AI) take the homepage's
+ * container (products/_shared/arcade/ribbon-field, quiet tone, "twin"
+ * composition): rounded navy stage, tonal ribbons, the window floating on it
+ * with the container edge as the only clip. The rail stands under the stage
+ * instead of being welded to it. */
+.pf-page .pf-journey__stage.rf { outline:0; }
+
+/* Framing inside the container: the WHOLE window stays in view on every
+ * step, the way the homepage stages it. The engine's own poses were drawn
+ * for a clipping viewport (the checklist pose pans the window half out of
+ * frame, the seal fills it edge to edge, the builder and dashboard sit
+ * small), so on this page each pose is re-framed: near full size, centred,
+ * with only a small drift toward its subject so consecutive steps still
+ * read as camera movement. --pf-cam-k scales the lot for narrower stages. */
+.pf-page .pf-journey__stage.rf { --pf-cam-k:1; }
+@media (min-width: 1025px) and (max-width: 1279px) {
+  .pf-page .pf-journey__stage.rf { --pf-cam-k:.8; }
+}
+@media (min-width: 1025px) {
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    --stx-camera-x: 0px;
+    --stx-camera-y: 0px;
+    --stx-camera-scale: calc(.9 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona {
+    --stx-camera-x: 14px;
+    --stx-camera-y: 8px;
+    --stx-camera-scale: calc(.9 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-record {
+    --stx-camera-x: -10px;
+    --stx-camera-y: -6px;
+    --stx-camera-scale: calc(.93 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-checklist {
+    --stx-camera-x: -34px;
+    --stx-camera-y: 0px;
+    --stx-camera-scale: calc(.96 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-signature {
+    --stx-camera-x: -8px;
+    --stx-camera-y: 4px;
+    --stx-camera-scale: calc(.95 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-builder {
+    --stx-camera-x: 8px;
+    --stx-camera-y: 0px;
+    --stx-camera-scale: calc(.92 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-dashboard {
+    --stx-camera-x: 0px;
+    --stx-camera-y: 6px;
+    --stx-camera-scale: calc(.92 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-assist {
+    --stx-camera-x: -12px;
+    --stx-camera-y: -4px;
+    --stx-camera-scale: calc(.94 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-assist.is-pose-linked {
+    --stx-camera-x: -26px;
+    --stx-camera-y: 2px;
+    --stx-camera-scale: calc(.96 * var(--pf-cam-k));
+  }
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-history {
+    --stx-camera-x: 6px;
+    --stx-camera-y: -8px;
+    --stx-camera-scale: calc(.94 * var(--pf-cam-k));
+  }
+}
+.pf-page .pf-journey__stage.rf + .pf-journey__rail {
+  margin-top:16px;
+  border-top:1px solid var(--pf-dark-line);
+}
+
+/* --------------------------------------------- the side layout (AI section)
+ * One frame: the steps as a vertical list on the left, the product window on
+ * the right. The container loses its radius and its gap so the steps and
+ * the visual read as one panel, not a stage with a rail parked under it. */
+@media (min-width: 1025px) {
+  .pf-page .pf-journey--side {
+    display:grid;
+    grid-template-columns:minmax(300px, .36fr) minmax(0, 1fr);
+    border:1px solid var(--pf-dark-line);
+  }
+  .pf-page .pf-journey--side .pf-journey__rail {
+    order:-1;
+    grid-template-columns:1fr;
+    /* rows size to their content and share only the leftover height, so
+     * the frame is as tall as the window, not five copies of the tallest
+     * step */
+    grid-auto-rows:auto;
+    align-content:stretch;
+    border:0;
+    border-right:1px solid var(--pf-dark-line);
+  }
+  /* the list stays compact: every step shows its icon, tag and title; only
+   * the live step opens its line */
+  .pf-page .pf-journey--side .pf-journey__step:not(.is-active) .pf-journey__body { display:none; }
+  .pf-page .pf-journey--side .pf-journey__step { justify-content:center; }
+  .pf-page .pf-journey--side .pf-journey__stage.rf + .pf-journey__rail { margin-top:0; border-top:0; }
+  .pf-page .pf-journey--side .pf-journey__stage.rf {
+    --rf-r:0;
+    --rf-pad:32px;
+    --pf-cam-k:.82;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:none;
+  }
+  .pf-page .pf-journey--side .pf-journey__stage.rf > .stx-root { display:contents; }
+  /* the scene keeps its own height (window + padding) and sits centred; the
+   * frame takes that height and the step list shares it out evenly */
+  .pf-page .pf-journey--side .pf-journey__stage.rf .sty-scene { width:100%; height:auto; align-self:center; flex:none; }
+  .pf-page .pf-journey--side .pf-journey__stage.rf .sty-scene.is-arcade .stx-stage { height:auto; }
+  .pf-page .pf-ai-section .pf-journey--side .pf-journey__step {
+    min-height:0;
+    padding:16px 22px;
+    gap:6px;
+  }
+  .pf-page .pf-ai-section .pf-journey--side .pf-journey__head { margin-bottom:4px; }
+  .pf-page .pf-ai-section .pf-journey--side .pf-journey__name { font-size:1.06rem; }
+  .pf-page .pf-ai-section .pf-journey--side .pf-journey__body { font-size:.88rem; }
+}
+/* the poses drift left toward the thread; nudge the anchor so the window
+ * sits balanced in the column */
+@media (min-width: 1025px) {
+  .pf-page .pf-journey--side .pf-journey__stage.rf .stx-arc { transform:translateX(8px); }
+}
+
+/* ---------------------------------------------- 01 · the tax, then its effects
+ * (9 Sep 2026 review) the lead tile is the tax itself on one record; the
+ * three sourced numbers follow as what it turns into. */
+.pf-page .pf-taxlead {
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:minmax(0, .95fr) minmax(0, 1.05fr);
+  column-gap:clamp(32px, 5vw, 80px);
+  row-gap:clamp(22px, 2.4vw, 32px);
+  align-items:center;
+  padding:clamp(26px, 3vw, 40px);
+  background:var(--dms-surface);
+}
+.pf-page .pf-taxlead__claim { display:flex; flex-direction:column; gap:14px; }
+.pf-page .pf-taxlead__v {
+  margin:0;
+  color:var(--dms-ink);
+  font-family:var(--dms-display);
+  font-size:clamp(1.6rem, 2.2vw, 2.1rem);
+  font-weight:560;
+  letter-spacing:-0.02em;
+  line-height:1.05;
+}
+.pf-page .pf-taxlead__v .dms-data {
+  margin-right:.12em;
+  color:var(--dms-tax-text); /* the tax is rust, never brand blue */
+  font-size:clamp(3rem, 5vw, 4.4rem);
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-0.03em;
+}
+.pf-page .pf-taxlead__l {
+  max-width:46ch;
+  margin:0;
+  color:var(--dms-muted);
+  font-size:1rem;
+  line-height:1.6;
+  text-wrap:pretty;
+}
+.pf-page .pf-taxlead__l strong { color:var(--dms-ink); font-weight:620; }
+/* 75 steps as a 15 x 5 block, so the tax reads as a mass, not a strip */
+.pf-page .pf-taxlead__cells {
+  display:grid;
+  grid-template-columns:repeat(15, minmax(0, 1fr));
+  gap:6px;
+}
+.pf-page .pf-taxlead__cells i { display:block; aspect-ratio:1; }
+.pf-page .pf-taxlead__cells i.is-work { background:var(--dms-line-strong); }
+.pf-page .pf-taxlead__cells i.is-tax { background:var(--dms-tax); }
+.pf-page .pf-taxlead .pf-leak__legend { margin-top:18px; }
+.pf-page .pf-taxlead .pf-evi__src { grid-column:1 / -1; margin-top:0; }
+.dms[data-motion] .pf-taxlead .pf-taxlead__cells i { transition:opacity .5s var(--dms-ease, ease-out); }
+.dms[data-motion] .pf-taxlead.dms-will-reveal:not(.is-in) .pf-taxlead__cells i.is-tax { opacity:.15; }
+
+/* the strip between the two rows: names what follows, sits on the rule */
+.pf-page .pf-stats__kicker {
+  grid-column:1 / -1;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:24px;
+  margin:0;
+  padding:16px clamp(24px, 2.6vw, 34px);
+  background:var(--dms-surface-alt);
+  color:var(--dms-ink);
+  font-family:var(--dms-display);
+  font-size:1rem;
+  font-weight:620;
+  letter-spacing:-0.005em;
+}
+.pf-page .pf-stats__kicker span {
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  font-weight:500;
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+
+/* the outcome labels were too small to carry the tile (Lakshman) */
+.pf-page .pf-evi .pf-evi__tag {
+  font-family:var(--dms-display);
+  font-size:1.02rem;
+  font-weight:640;
+  letter-spacing:-0.005em;
+  text-transform:none;
+}
+.pf-page .pf-evi__link {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin:clamp(22px, 2.2vw, 30px) 0 0;
+  padding-top:0;
+  color:var(--dms-ink-2);
+  font-size:.9rem;
+  line-height:1.5;
+  text-wrap:pretty;
+}
+.pf-page .pf-evi__link small {
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+/* tie-back + source sit on the tile floor, so all three floors align */
+.pf-page .pf-evi__link + .pf-evi__src { margin-top:auto; padding-top:14px; }
+.pf-page .pf-evi .pf-evi__link { margin-bottom:18px; }
+
+@media (max-width: 900px) {
+  .pf-page .pf-taxlead { grid-template-columns:1fr; }
+  .pf-page .pf-stats__kicker { flex-direction:column; gap:6px; }
+}
+
+/* ---------------------------------------------------- 02 · the gap (one defect)
+ * platform-gap.tsx: today on the left (six tools, one defect hopping between
+ * them), Unifize on the right (the same six moments on one record), one
+ * stepper under both. Linework idiom: hairline tiles, mono labels, the
+ * accent for Unifize, the warn tone for the detached hops. */
+.pf-page .pf-gap { margin-top:clamp(44px, 5vw, 72px); }
+.pf-page .pf-gap__panels {
+  display:grid;
+  /* the product pane takes the larger share: the tool map reads at any
+   * width, the record window needs the room */
+  grid-template-columns:minmax(0, .88fr) minmax(0, 1.12fr);
+  gap:1px;
+  border:1px solid var(--dms-hairline);
+  background:var(--dms-hairline);
+}
+.pf-page .pf-gap__panel {
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  padding:clamp(22px, 2.4vw, 34px);
+  background:var(--dms-surface);
+}
+.pf-page .pf-gap__panel--today { background:var(--dms-surface-alt); }
+.pf-page .pf-gap__head { display:flex; align-items:baseline; justify-content:space-between; gap:16px; }
+.pf-page .pf-gap__lab {
+  font-family:var(--dms-display);
+  font-size:1.15rem;
+  font-weight:650;
+  letter-spacing:-0.01em;
+  color:var(--dms-ink);
+}
+.pf-page .pf-gap__panel--after .pf-gap__lab { color:var(--dms-accent-text); }
+.pf-page .pf-gap__sub {
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.7rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+/* today: the map */
+.pf-page .pf-gap__map {
+  position:relative;
+  flex:1;
+  min-height:clamp(280px, 26vw, 360px);
+  margin-top:20px;
+}
+.pf-page .pf-gap__wires { position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+.pf-page .pf-gap__wire {
+  stroke:var(--dms-line-strong);
+  stroke-width:1.5;
+  stroke-dasharray:4 5;
+  transition:stroke .3s ease-out;
+}
+.pf-page .pf-gap__wire.is-done { stroke:var(--dms-warn); stroke-dasharray:none; }
+.pf-page .pf-gap__wire.is-live { stroke-width:2.5; }
+.pf-page .pf-gap__node {
+  position:absolute;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px 8px 8px;
+  background:var(--dms-surface);
+  color:var(--dms-muted);
+  font-size:.84rem;
+  font-weight:600;
+  white-space:nowrap;
+  box-shadow:0 0 0 1px var(--dms-line-strong), 0 6px 16px -10px oklch(0 0 0 / .3);
+  transform:translate(-50%, -50%);
+  transition:color .25s ease-out, box-shadow .25s ease-out, transform .25s ease-out;
+}
+.pf-page .pf-gap__node svg { width:16px; height:16px; fill:currentColor; }
+.pf-page .pf-gap__node b {
+  display:grid;
+  width:20px;
+  height:20px;
+  place-items:center;
+  background:var(--dms-surface-alt);
+  color:var(--dms-faint);
+  font-size:.68rem;
+  font-weight:600;
+}
+.pf-page .pf-gap__node.is-done { color:var(--dms-ink-2); }
+.pf-page .pf-gap__node.is-done b { background:var(--dms-warn); color:#fff; }
+.pf-page .pf-gap__node.is-active {
+  color:var(--dms-ink);
+  box-shadow:0 0 0 2px var(--dms-warn), 0 12px 26px -12px oklch(0 0 0 / .4);
+  transform:translate(-50%, -50%) scale(1.06);
+  z-index:1;
+}
+.pf-page .pf-gap__node.is-active b { background:var(--dms-warn); color:#fff; }
+.pf-page .pf-gap__say {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-height:5.2em;
+  margin:20px 0 0;
+  padding-top:16px;
+  border-top:1px dashed var(--dms-line-strong);
+  color:var(--dms-ink-2);
+  font-size:.95rem;
+  line-height:1.5;
+  text-wrap:pretty;
+}
+.pf-page .pf-gap__say small {
+  color:var(--dms-faint);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+
+/* on Unifize: the product, on the ribbon container. The stage keeps the
+ * homepage's cut of the app window: the in-app nav rail and "My
+ * Conversations" list (the first 324px of the engine's 1150 grid) are
+ * clipped away and the camera centres on the 826-wide record. The zoom is
+ * measured off the pane by the component (--pf-gap-zoom), so the WHOLE
+ * record window stays in frame with margin at every width; each pose only
+ * drifts a little toward its subject so consecutive steps read as camera
+ * movement (product-visual framing rule, 18 Sep 2026). */
+.pf-page .pf-gap__stage {
+  --rf-pad: 18px;
+  --rf-r: 18px;
+  --pf-gap-zoom: .8;
+  --pf-gap-window-h: 504px;
+  --pf-gap-cam-x: 0px;
+  --pf-gap-cam-y: 0px;
+  --pf-gap-cam-k: 1;
+  position:relative;
+  flex:1;
+  margin-top:20px;
+  outline:0;
+}
+.pf-page .pf-gap__stage .stx-root .stx-arc { height:var(--pf-gap-window-h); }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera {
+  clip-path:inset(0 0 0 324px);
+  transform:
+    translate3d(
+      calc(-50% - 162px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + var(--pf-gap-cam-x)),
+      calc(-50% + var(--pf-gap-cam-y)),
+      0)
+    scale(calc(var(--pf-gap-zoom) * var(--pf-gap-cam-k)));
+}
+.pf-page .pf-gap__stage.is-fit .stx-root .stx-arc__camera { transition:transform .9s cubic-bezier(.2, .7, .2, 1); }
+/* the sign dialog centres over the visible cut, not the clipped window */
+.pf-page .pf-gap__stage .stx-root .stx-arc__signwrap { left:324px; }
+/* the poses: where each moment happens on the record */
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-trace { --pf-gap-cam-x:6px; --pf-gap-cam-y:10px; --pf-gap-cam-k:1; }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-queue.is-pose-route { --pf-gap-cam-x:0px; --pf-gap-cam-y:-8px; --pf-gap-cam-k:1.02; }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-assist { --pf-gap-cam-x:8px; --pf-gap-cam-y:-16px; --pf-gap-cam-k:.97; }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-signature { --pf-gap-cam-x:0px; --pf-gap-cam-y:0px; --pf-gap-cam-k:1.03; }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-comment { --pf-gap-cam-x:-22px; --pf-gap-cam-y:-6px; --pf-gap-cam-k:1.02; }
+.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-history { --pf-gap-cam-x:6px; --pf-gap-cam-y:-10px; --pf-gap-cam-k:.98; }
+.pf-page .pf-gap__say--after small { color:var(--dms-accent-text); }
+
+/* the control: a segmented stepper standing on its own above the panes.
+ * Welded under the panels it read as a third row of content; here it is
+ * a track of buttons with a live timer, unmistakably the thing that drives
+ * both panes. */
+.pf-page .pf-gap__control {
+  display:flex;
+  justify-content:center;
+  margin-bottom:clamp(20px, 2.2vw, 30px);
+}
+.pf-page .pf-gap__track {
+  display:inline-grid;
+  grid-auto-flow:column;
+  grid-auto-columns:max-content;
+  gap:4px;
+  max-width:100%;
+  padding:4px;
+  background:var(--dms-surface);
+  box-shadow:inset 0 0 0 1px var(--dms-line-strong), 0 1px 2px oklch(0 0 0 / .05);
+}
+.pf-page .pf-gap__step {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:40px;
+  padding:0 16px 0 8px;
+  border:0;
+  background:transparent;
+  color:var(--dms-muted);
+  font:inherit;
+  font-size:.86rem;
+  font-weight:600;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:color .15s ease-out, background-color .15s ease-out;
+}
+.pf-page .pf-gap__step-idx {
+  display:grid;
+  width:24px;
+  height:24px;
+  place-items:center;
+  background:var(--dms-surface-alt);
+  color:var(--dms-faint);
+  font-size:.7rem;
+  font-weight:600;
+  transition:background-color .15s ease-out, color .15s ease-out;
+}
+.pf-page .pf-gap__step:hover { color:var(--dms-ink); background:var(--dms-surface-alt); }
+.pf-page .pf-gap__step.is-done .pf-gap__step-idx { background:var(--dms-accent-tint); color:var(--dms-accent-text); }
+.pf-page .pf-gap__step.is-active { color:oklch(1 0 0); background:var(--dms-ink); }
+.pf-page .pf-gap__step.is-active:hover { background:var(--dms-ink); }
+.pf-page .pf-gap__step.is-active .pf-gap__step-idx { background:var(--dms-accent); color:oklch(1 0 0); }
+.pf-page .pf-gap__step:focus-visible { outline:2px solid var(--dms-accent); outline-offset:2px; }
+.pf-page .pf-gap__timer {
+  position:absolute;
+  inset:auto 0 0 0;
+  height:2px;
+  background:var(--dms-accent);
+  transform:scaleX(0);
+  transform-origin:left;
+  animation:pf-timer linear forwards;
+}
+
+/* below 1080 the two panes stack: side by side, neither the tool map nor
+ * the record window has room to read */
+@media (max-width: 1080px) {
+  .pf-page .pf-gap__panels { grid-template-columns:1fr; }
+}
+@media (max-width: 900px) {
+  .pf-page .pf-gap__control { justify-content:flex-start; }
+  .pf-page .pf-gap__track {
+    display:grid;
+    overflow-x:auto;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .pf-page .pf-gap__track::-webkit-scrollbar { display:none; }
+  .pf-page .pf-gap__node { font-size:.74rem; padding:6px 9px 6px 6px; }
+  /* phones: the zoom floors at .52 (component), the container clips the
+   * window's edges, and the camera aims at the thread column where each
+   * moment's card sits */
+  .pf-page .pf-gap__stage { --rf-pad:12px; --rf-r:14px; }
+  .pf-page .pf-gap__stage.is-clipped .stx-root .stx-arc__camera { --pf-gap-cam-x:36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pf-page .pf-gap__timer { display:none; }
+  .pf-page .pf-gap__stage .stx-root .stx-arc__camera { transition:none; }
+}
+
+/* 03 · your systems stay: drawn in platform-coexistence.css */
+
+/* ------------------------------------------------ 04 · the stack, drawn
+ * (9 Sep 2026 review) the left column is the diagram: three layers on one
+ * foundation, each layer a button. The pick fills with the accent tint and
+ * opens to its line and link; the panel beside it explains it. These rules
+ * sit after the originals and override them. */
+.pf-page .pf-stack__tabs {
+  gap:8px;
+  padding:clamp(18px, 2vw, 28px);
+  background:var(--dms-surface-alt);
+}
+.pf-page .pf-stack__tab {
+  flex:0 0 auto;
+  align-items:stretch;
+  justify-content:flex-start;
+  padding:0;
+  border:0;
+  background:var(--dms-surface);
+  text-align:left;
+  box-shadow:0 0 0 1px var(--dms-line-strong), 0 6px 14px -10px oklch(0 0 0 / .28);
+  transition:box-shadow .2s ease-out, background-color .2s ease-out, transform .2s ease-out;
+}
+.pf-page .pf-stack__tab:last-child { border-bottom:0; }
+.pf-page .pf-stack__tab:not(.is-active):hover { transform:translateX(3px); box-shadow:0 0 0 1px var(--dms-accent), 0 8px 18px -10px oklch(0 0 0 / .3); }
+.pf-page .pf-stack__tab.is-active {
+  background:var(--dms-accent-tint);
+  box-shadow:0 0 0 2px var(--dms-accent), 0 14px 28px -16px oklch(0 0 0 / .35);
+}
+.pf-page .pf-stack__tab-btn {
+  display:grid;
+  grid-template-columns:1fr auto;
+  grid-template-areas:"tag chev" "name chev";
+  align-items:center;
+  gap:4px 16px;
+  width:100%;
+  padding:clamp(16px, 1.7vw, 22px) clamp(18px, 2vw, 26px);
+  color:var(--dms-ink-2);
+  font-size:clamp(1.1rem, 1.35vw, 1.3rem);
+  font-weight:620;
+  text-align:left;
+}
+.pf-page .pf-stack__tab.is-active .pf-stack__tab-btn { color:var(--dms-ink); cursor:default; }
+.pf-page .pf-stack__tab-btn:focus-visible { outline-offset:-4px; }
+.pf-page .pf-stack__tab-tag {
+  grid-area:tag;
+  color:var(--dms-accent-text);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  font-weight:500;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.pf-page .pf-stack__tab-name { grid-area:name; }
+.pf-page .pf-stack__tab-chev {
+  grid-area:chev;
+  display:grid;
+  width:28px;
+  height:28px;
+  place-items:center;
+  background:var(--dms-surface-alt);
+  color:var(--dms-muted);
+  transition:transform .25s ease-out, background-color .2s ease-out, color .2s ease-out;
+}
+.pf-page .pf-stack__tab-chev svg { width:12px; height:12px; }
+.pf-page .pf-stack__tab.is-active .pf-stack__tab-chev { background:var(--dms-accent); color:#fff; transform:rotate(90deg); }
+/* no block padding on the collapsing box: padding cannot shrink to 0 */
+.pf-page .pf-stack__tab-open-inner { align-items:flex-start; padding:0 clamp(18px, 2vw, 26px); text-align:left; }
+.pf-page .pf-stack__tab-open-inner .pf-stack__tab-link { margin-bottom:clamp(16px, 1.7vw, 22px); }
+.pf-page .pf-stack__tab-desc { max-width:none; margin:0; text-align:left; }
+.pf-page .pf-stack__base {
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  margin-top:auto;
+  padding:14px clamp(18px, 2vw, 26px);
+  background:var(--dms-ink);
+  color:color-mix(in oklab, var(--dms-surface), transparent 35%);
+  font-family:var(--dms-mono);
+  font-size:.68rem;
+  letter-spacing:.03em;
+  line-height:1.5;
+}
+.pf-page .pf-stack__base span {
+  color:var(--dms-surface);
+  font-family:var(--dms-display);
+  font-size:.92rem;
+  font-weight:620;
+  letter-spacing:-0.005em;
+}
+
+@media (max-width: 640px) {
+  .pf-page .pf-gap__record-head {
+    grid-template-columns:1fr auto;
+    grid-template-areas:"id owner" "title title";
+    gap:6px 12px;
+  }
+  .pf-page .pf-gap__record-id { grid-area:id; }
+  .pf-page .pf-gap__record-owner { grid-area:owner; }
+  .pf-page .pf-gap__record-head strong { grid-area:title; }
+}
+
+/* phones and tablets: the engine's small-screen poses close in on the subject
+ * (a whole window would be unreadable at 375px) but were drawn for its own
+ * clipping viewport; inside the ribbon container they landed a step too
+ * tight and cut the subject's left edge. Same poses, one step back. */
+@media (max-width: 1024px) {
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    transform:translate3d(calc(-50% + var(--stx-camera-x)), calc(-50% + var(--stx-camera-y)), 0) scale(calc(var(--stx-camera-scale) * .86));
+  }
+}
+@media (max-width: 600px) {
+  /* the home pose leads with its header: keep "Welcome back" whole */
+  .pf-page .pf-journey__stage.rf .stx-root .stx-arc__camera.is-focus-queue.is-pose-persona { --stx-camera-x: 162px; }
+}

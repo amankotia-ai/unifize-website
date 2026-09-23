@@ -42,6 +42,19 @@ const STOPS: Record<Kind, [number, string][]> = {
   /* blue-100 → blue-200 → blue-300 */
   light: [[0, "#deecff"], [0.6, "#c5deff"], [1, "#a3caff"]],
 };
+/* the quiet tone (Sep 2026 review: the full palette read as "a blue flag"
+ * behind the product). Same geometry, but every ribbon sits inside the navy
+ * family, a step or two off the ground, so the field is a tonal texture and
+ * the product window is the only bright object. */
+const QUIET_STOPS: Record<Kind, [number, string][]> = {
+  blue: [[0, "#0a4a94"], [0.5, "#063d80"], [1, "#04336d"]],
+  blue2: [[0, "#0d55a6"], [0.6, "#0a4a94"], [1, "#063d80"]],
+  pale: [[0, "#1560b8"], [0.6, "#0d55a6"], [1, "#0a4a94"]],
+  warm: [[0, "#06407f"], [0.55, "#04336d"], [1, "#032a5c"]],
+  light: [[0, "#0b4f9e"], [0.6, "#084488"], [1, "#063a78"]],
+};
+export type RibbonTone = "quiet" | "bold";
+
 const SEQ: Kind[] = ["blue", "pale", "blue2", "warm", "blue", "light", "blue2", "warm", "pale", "blue", "warm", "blue2", "light", "blue"];
 
 const W = 1400;
@@ -155,7 +168,15 @@ const COMPOSITIONS: Record<RibbonComposition, () => Ribbon[]> = {
   arch: () => bundle([[-120, H + 120], [W * 0.28, -H * 0.55], [W * 0.72, -H * 0.55], [W + 120, H + 120]], [0, 1], H * 0.95, 1),
 };
 
-export function RibbonField({ composition = "fan" }: { composition?: RibbonComposition }) {
+export function RibbonField({
+  composition = "fan",
+  tone = "quiet",
+}: {
+  composition?: RibbonComposition;
+  /* quiet (default): tonal navy ribbons. bold: the full blue/pale/beige palette. */
+  tone?: RibbonTone;
+}) {
+  const stops = tone === "bold" ? STOPS : QUIET_STOPS;
   /* the SVG is thousands of numeric attributes; it mounts after hydration */
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -163,13 +184,13 @@ export function RibbonField({ composition = "fan" }: { composition?: RibbonCompo
   const gid = (i: number) => `rf${uid}-${composition}-${i}`;
   const ribbons = mounted ? COMPOSITIONS[composition]() : [];
   return (
-    <div className="rf__field" aria-hidden="true">
+    <div className={"rf__field rf__field--" + tone} aria-hidden="true">
       {mounted ? (
         <svg className="rf__ribbons" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none">
           <defs>
             {ribbons.map((r, i) => (
               <linearGradient key={i} id={gid(i)} gradientUnits="userSpaceOnUse" x1={f(r.from[0])} y1={f(r.from[1])} x2={f(r.to[0])} y2={f(r.to[1])}>
-                {STOPS[r.kind].map(([o, c]) => <stop key={o} offset={o} stopColor={c} />)}
+                {stops[r.kind].map(([o, c]) => <stop key={o} offset={o} stopColor={c} />)}
               </linearGradient>
             ))}
             <filter id={`rf${uid}-glow`} x="-20%" y="-20%" width="140%" height="140%">

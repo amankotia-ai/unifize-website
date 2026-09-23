@@ -184,6 +184,19 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
         glyph: "scale",
         name: "Bringing a supplier on",
         line: "Everything between a shortlist and a supplier you are allowed to buy from.",
+        /* the supplier's scorecard, and the status it earns */
+        viz: {
+          kind: "scorecard",
+          name: "Apex Metals",
+          status: "Approved",
+          metrics: [
+            { label: "Incoming quality", value: 96 },
+            { label: "On-time delivery", value: 91 },
+            { label: "SCAR response", value: 72 },
+          ],
+          cursor: { name: "J. Barnes", tone: "#7c3aed" },
+          wash: "sky",
+        },
         runsIn: { label: "Runs in the QMS product →", href: "/explorations/products/qms" },
         items: [
           { name: "Supplier selection and qualification", line: "Certificates, financials, on-site audits and sample evaluation gathered into one approval, with the approved supplier list and every dependent record aligned behind it." },
@@ -195,7 +208,18 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
         glyph: "doc",
         name: "Proving the part",
         line: "The evidence that says this component can be made to spec, at volume, by this supplier.",
-        runsIn: { label: "Specifications and revisions run in the DMS product →", href: "/explorations/products/dms" },
+        /* the part-approval package: one tile per element */
+        viz: {
+          kind: "tiles",
+          kicker: "PPAP · Level 3",
+          title: "Bracket 7731 · rev C",
+          total: 18,
+          open: [7, 8, 18],
+          foot: "Control plan, MSA and the warrant still open",
+          cursor: { name: "R. Whitfield", tone: "#0f8f7e" },
+          wash: "blue",
+        },
+        runsIn: { label: "Specifications run in the DMS →", href: "/explorations/products/dms" },
         items: [
           { name: "PPAP and APQP", line: "The full submission package assembled across program managers, engineering, manufacturing and the supplier, with FMEAs and control plans synchronised to the current drawing revision." },
           { name: "New part approval and first article inspection", line: "Production gated on clean FAI evidence, with inspection plans and measurement methods reconciled across two companies." },
@@ -206,6 +230,20 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
         glyph: "box",
         name: "At the receiving dock",
         line: "What happens between the truck arriving and the lot being available to production.",
+        /* the hold tag on the lot */
+        viz: {
+          kind: "tag",
+          stamp: "HOLD",
+          lines: [
+            { k: "Lot", v: "4471" },
+            { k: "Supplier", v: "Apex Metals" },
+            { k: "Receipt", v: "R-8874" },
+            { k: "Sampled", v: "3 of 20 fail" },
+          ],
+          note: "Do not use · MRB pending",
+          cursor: { name: "P. Musa", tone: "#d97706" },
+          wash: "warm",
+        },
         runsIn: { label: "Runs in the QMS product →", href: "/explorations/products/qms" },
         items: [
           { name: "Inbound inspection and quarantine", line: "Sampling to plan, material held correctly while disposition is decided, and accepted lots released in time to feed the line." },
@@ -216,6 +254,17 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
         glyph: "loop",
         name: "When the supplier is the root cause",
         line: "The loop that has to change behaviour at another company, not just collect a document.",
+        /* one thread, both companies on it */
+        viz: {
+          kind: "thread",
+          kicker: "CAPA-2148 · shared with Apex Metals",
+          messages: [
+            { org: "Supplier Quality", text: "Root cause and interim control, please." },
+            { org: "Apex Metals", text: "Bath temperature drift on shift 2. Controller replaced.", ext: true },
+          ],
+          cursor: { name: "C. Mbeki", tone: "#db2777" },
+          wash: "paper",
+        },
         runsIn: { label: "Runs in the QMS product →", href: "/explorations/products/qms" },
         items: [
           { name: "Supplier corrective action and SCAR", line: "Clear requirements out, supplier investigation back, effectiveness verified at incoming material, and closure linked to the scorecard and the approved supplier list." },
@@ -230,7 +279,7 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
    * verbatim-ish; bodies condensed from Description; Severity verbatim.
    * `surface` = where the decision leaks to, condensed from each Description. */
   leaks: {
-    heading: "The work gets done. The boundary eats the record.",
+    heading: "The work crosses over. The record stays behind.",
     lede: "The failure modes we see across the supplier boundary. Every one of them is a decision that landed in somebody's inbox, on one side of the relationship or the other.",
     /* the old world, staged (section 02's evidence artifact): the SCAR
      * spreadsheet going quiet while the supplier investigates by email.
@@ -247,12 +296,26 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
       ],
       float: { kicker: "supplier@apexmetals.com", note: "Which template do you want this on?" },
       caption: "The investigation crosses two companies. The record crosses none.",
+      /* the rails window: the tracker itself */
+      sheet: {
+        file: "SCAR_tracker_2026.xlsx",
+        meta: "Last edit 11d ago",
+        cols: ["SCAR", "Supplier", "Issued", "Root cause", "Status"],
+        rows: [
+          { cells: ["SCAR-118", "Apex Metals", "Mar 04", "Waiting 17d", "Open"], warn: 3 },
+          { cells: ["SCAR-117", "Brandt Forge", "Feb 21", "8D v3, by email", "Open"] },
+          { cells: ["SCAR-114", "Apex Metals", "Jan 09", "Accepted", "Closed"] },
+          { cells: ["SCAR-109", "Kessel Polymers", "Dec 12", "Not received", "Open"] },
+          { cells: ["SCAR-106", "Brandt Forge", "Nov 28", "Accepted", "Closed"] },
+        ],
+        active: "D2  Waiting on supplier since Mar 04",
+      },
     },
     pains: [
-      { severity: "Critical", surface: "POs & shipping records", name: "Lot genealogy breaks at the supplier handoff", body: "Internal lot genealogy is clean. The genealogy back into the supplier's lots is partial, so when a recall, complaint or supplier issue forces traceability, the supplier side is rebuilt by hand from purchase orders, shipping records and whatever batch data the supplier can send." },
-      { severity: "High", surface: "Inbox handoffs", name: "Supplier change notifications drop between supplier, sourcing and quality", body: "The supplier notifies sourcing of a process, sub-supplier or material change. Sourcing acknowledges. Quality and engineering hear about it weeks later, often after parts arrive carrying the change. The notification crossed the boundary and lost its addressee." },
-      { severity: "High", surface: "Supplier paperwork", name: "SCAR loops close on paperwork, not on behaviour", body: "Supplier corrective actions get raised, accepted and closed on supplier-submitted documentation rather than verified change at the supplier's process. The same defect type returns from the same supplier two months later." },
-      { severity: "High", surface: "The qualification folder", name: "Qualification evidence cannot be reconstructed at requalification", body: "When a supplier comes up for requalification, the original audit findings, capability data, samples and certifications are hard to assemble. The folder is partial and the rest left with the people who ran the qualification. Requalification becomes a paperwork exercise." },
+      { severity: "Critical", surface: "POs & shipping records", name: "Lot genealogy breaks at the supplier handoff", short: "Your genealogy holds. The supplier's half is rebuilt by hand.", body: "Internal lot genealogy is clean. The genealogy back into the supplier's lots is partial, so when a recall, complaint or supplier issue forces traceability, the supplier side is rebuilt by hand from purchase orders, shipping records and whatever batch data the supplier can send." },
+      { severity: "High", surface: "Inbox handoffs", name: "Supplier change notifications drop between supplier, sourcing and quality", short: "Sourcing heard. Quality heard weeks later, from the parts.", body: "The supplier notifies sourcing of a process, sub-supplier or material change. Sourcing acknowledges. Quality and engineering hear about it weeks later, often after parts arrive carrying the change. The notification crossed the boundary and lost its addressee." },
+      { severity: "High", surface: "Supplier paperwork", name: "SCAR loops close on paperwork, not on behaviour", short: "Closed on the 8D. The defect is back two months later.", body: "Supplier corrective actions get raised, accepted and closed on supplier-submitted documentation rather than verified change at the supplier's process. The same defect type returns from the same supplier two months later." },
+      { severity: "High", surface: "The qualification folder", name: "Qualification evidence cannot be reconstructed at requalification", short: "The qualification folder left with the people who built it.", body: "When a supplier comes up for requalification, the original audit findings, capability data, samples and certifications are hard to assemble. The folder is partial and the rest left with the people who ran the qualification. Requalification becomes a paperwork exercise." },
       { severity: "High", surface: "The receiving dock", name: "Incoming inspection acts as the supplier's process control", body: "Inspection is meant to verify what the supplier already controls. In practice it catches defects that supplier's process should never have shipped, so inspection becomes the filter and real process capability stays masked." },
       { severity: "Medium", surface: "Scorecards & spreadsheets", name: "Scorecard data does not reach the sourcing decision", body: "Quality maintains scorecards on defect rate, on-time delivery and SCAR responsiveness. Sourcing decides on unit price and lead time. The scorecard is informational rather than consequential." },
       { severity: "Medium", surface: "The vendor portal", name: "The vendor portal is read-only where the work is collaborative", body: "Portals expose scorecards, purchase orders and inspection reports for the supplier to view. They do not support joint root cause, joint corrective action or joint capability planning, so that work happens in email and the portal only holds the artefacts." },
@@ -262,7 +325,8 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
     // band states the canonical cost from the one Critical pain instead.
     tax: {
       label: "The recurring bill",
-      value: "A manual rebuild of the supplier side, in the middle of a traceability event.",
+      value: "The supplier side, rebuilt by hand mid-recall.",
+      tail: "That rebuild is the coordination tax.",
       meta: "Your own genealogy holds. The supplier's half gets reconstructed from purchase orders and shipping records while the clock on the recall or complaint is already running.",
     },
   },
@@ -288,6 +352,14 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
       { t: "SCAR issued with stated requirements", who: "Supplier Quality Engineer", when: "Day 4" },
       { t: "Supplier root cause accepted", who: "Supplier Quality · Engineering", when: "Day 21" },
       { t: "Verified at re-inspection · trace sealed", who: "Supplier Quality Director", when: "Day 47" },
+    ],
+    /* the rails rail: each line is what the arcade pose above it shows */
+    steps: [
+      { icon: "reject", title: "Fail the lot", body: "Lot 4471 fails incoming: 3 of 20 below the plating minimum." },
+      { icon: "weigh", title: "Disposition it", body: "The board rejects and returns it, the reasoning on the record." },
+      { icon: "sendout", title: "Request the fix", body: "Apex Metals gets stated requirements on a checklist it shares." },
+      { icon: "accept", title: "Accept the cause", body: "Bath temperature drift, a new controller, 100% interim inspection." },
+      { icon: "seal", title: "Verify and seal", body: "Three clean lots, the scorecard updated, C. Mbeki signs." },
     ],
     trailFoot: "The relation runs back to the receipt and the non-conformance that raised it, and forward into the scorecard and the approved supplier list. The thread is the trace.",
     chatVariant: "capa",
@@ -438,8 +510,8 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
    * to their live product pages; APQP & PPAP has no page yet, so every card
    * there is labelled rather than left silently unlinked. */
   coverage: {
-    heading: "The products that do the supplier work.",
-    lede: "The modules below serve this domain across the Quality Management System, the Document Management System, the Manufacturing Execution System and the APQP & PPAP product. Filter by the standard you are audited against.",
+    heading: "Receipt to supplier fix, on one record.",
+    lede: "Supplier corrective action and qualification run in the Quality Management System, specifications and their changes in the Document Management System, and receiving inspection and lot records in the Manufacturing Execution System.",
     standardFilters: ["ISO 9001", "ISO 13485", "21 CFR 820", "21 CFR 211", "21 CFR Part 11", "IATF 16949", "AS 9100", "EU GMP", "ICH Q10"],
     groups: [
       {
@@ -576,12 +648,14 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
     heading: "When the supply base becomes the emergency.",
     lede: "Each of these starts a clock on the far side of an org boundary, and each routes into a governed workflow so the response is coordinated on the record it will be judged by.",
     rows: [
-      { name: "Supplier-caused line stop", clock: "Immediate · every hour of line stop has a cost", severity: "Urgent", routesTo: "Supplier Quality · Non-conformance", owner: "Supplier Quality Director · Procurement" },
-      { name: "Incoming inspection backlog", clock: "Days · production downstream is starving", severity: "High", routesTo: "Supplier Quality · Inspections", owner: "Supplier Quality Manager · Materials" },
+      { name: "Supplier-caused line stop", clock: "Immediate · every hour of line stop has a cost", severity: "Urgent", routesTo: "Supplier Quality · Non-conformance", owner: "Supplier Quality Director · Procurement", viz: "andon", detail: ["Line 2", "Waiting on Apex Metals parts"] },
+      { name: "Incoming inspection backlog", clock: "Days · production downstream is starving", severity: "High", routesTo: "Supplier Quality · Inspections", owner: "Supplier Quality Manager · Materials", viz: "dock", detail: ["Receiving · dock 3"] },
       { name: "Audit finding on supplier controls", clock: "The auditor's stated remediation window", severity: "High", routesTo: "Supplier Quality · Corrective Actions", owner: "VP Quality · Supplier Quality Director" },
       { name: "Customer audit notification", clock: "Fixed external date", severity: "High", routesTo: "Supplier Quality · Change Control", owner: "Quality Manager" },
-      { name: "Supplier capacity crisis", clock: "The supplier's stated recovery window", severity: "High", routesTo: "Supplier Quality", owner: "CPO · VP Supply Chain" },
+      { name: "Supplier capacity crisis", clock: "The supplier's stated recovery window", severity: "High", routesTo: "Supplier Quality", owner: "CPO · VP Supply Chain", viz: "capacity", detail: ["Apex Metals · plating"] },
     ],
+    /* the rails board: the line, the dock, the supplier's capacity */
+    featured: ["Supplier-caused line stop", "Incoming inspection backlog", "Supplier capacity crisis"],
   },
 
   /* ------------------------------------------------ 08 · coexistence
@@ -592,10 +666,22 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
    * records in MES. The read-only vendor portal is named from the Pain Points
    * row of the same name. */
   coexistence: {
-    heading: "It sits on the stack you already run.",
+    heading: "Your stack stays. The supplier joins the record.",
     systemsOfRecord: ["ERP", "QMS", "PLM", "MES"],
     body: "Purchase orders stay in the ERP, the approved supplier list stays in the QMS, specifications stay in the PLM and lot records stay in the MES. What Unifize replaces is the ungoverned traffic between them and the supplier: the email chains, the meetings and the read-only vendor portal that holds artefacts but not the work. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your ERP, QMS, PLM and MES, and across the supplier boundary.",
+    bands: {
+      lede: "Purchase orders stay in the ERP, specifications in the PLM, lot records in the MES. Unifize runs the work that crosses to the supplier, and only the approved outcome goes back, with a 21 CFR Part 11 signature.",
+      note: "No system for supplier quality yet? The quality module above runs it, on the same layer.",
+      tools: {
+        title: "The supplier side",
+        sub: "Answers on the record",
+        names: ["Email", "Portal", "Sheets", "Calls"],
+        label: "Where the supplier's answers used to land",
+        body: "The corrective action request, the supplier's root cause and the re-inspection evidence stop crossing by email and read-only portal. Both companies answer on the same record.",
+      },
+      flows: { contextIn: "PO AND SPEC IN", back: "PART 11 SIGNED", captured: "SUPPLIER EVIDENCE IN", linked: "REQUIREMENTS OUT" },
+    },
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -616,6 +702,18 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["Supplier Quality", "Supplier Corrective Actions (SCAR)", "Raw Material Validation"],
+    /* the reel roster: supplier quality, vendors on the record, incoming
+     * material, approvals across companies. Each fact is the film's own
+     * title; no film is shared with another Solutions page. */
+    stills: [
+      { wistia: "44wjlgpqqt", fact: "Supplier quality enabled on Unifize" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "aphymhpqf8", fact: "Collaborating with vendors on Unifize" }, /* Michael Hogan, Harmonic Bionics */
+      { wistia: "vh4sj0ytie", fact: "Incoming material and lots tracked" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "2g4cnhj076", fact: "Raw material validation" }, /* Wilson Lin, Applechem */
+      { wistia: "0k4vsl880f", fact: "Approvals turned around across organizations" }, /* Mikala Hukka */
+      { wistia: "9yt9buua6q", fact: "Traceability, visibility and accountability improved" }, /* Wilson Lin, Applechem */
+      { wistia: "r4bntjyesx", fact: "Preventive controls in place of CCPs" }, /* Jesse Kolstad, Biovation Labs */
+    ],
     references: [
       {
         tag: "Named reference",

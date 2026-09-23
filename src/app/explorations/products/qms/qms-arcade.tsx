@@ -81,8 +81,25 @@ const NC_CAPTURE_WORLD: ArcadeFlowWorld = {
 };
 
 /* ============================================================ PF-6 world
- * The same record NC-204 a day later: the root cause analysis convened in
- * the record's thread instead of a meeting room. */
+ * The same record NC-204 a day later: the root cause analysis run in the
+ * record's thread instead of a meeting room. Restaged 22 Sep 2026 from the
+ * 16 Sep product recording of the AI investigation: the problem statement
+ * is generated from the record, each Why is generated from the last and an
+ * investigator picks one (a linked Why record per level), and Build with
+ * AI drafts the root cause, the risk and the corrective actions as
+ * suggestions a person accepts. Every AI button is Beta in the product. */
+const WHY_CHAIN = [
+  { id: "WHY-1", title: "Coating fell below 45 µm on the housing face", state: "Picked" },
+  { id: "WHY-2", title: "Spray nozzle delivered low flow on line 2", state: "Picked" },
+  { id: "WHY-3", title: "Nozzle wear past its service interval", state: "Picked" },
+  { id: "WHY-4", title: "Service interval not on the maintenance plan after the line 2 rebuild", state: "Picked" },
+  { id: "WHY-5", title: "Rebuild change control did not update the maintenance plan", state: "Picked" },
+];
+const RCA_ACTIONS = [
+  { id: "CA-1072", title: "Containment · sort and re-coat lot 118-B", state: "M. Osei · due Fri" },
+  { id: "CA-1073", title: "Add nozzle service to the line 2 maintenance plan", state: "L. Danes · due 30 Sep" },
+];
+
 const NC_RCA_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Non-conformance",
@@ -99,39 +116,46 @@ const NC_RCA_WORLD: ArcadeFlowWorld = {
     detail: "Maintenance log attached · contributed asynchronously",
   },
   inboxNeighbors: [
-    { title: "Incoming inspection", time: "11:02", detail: "Lot 224-A · passed", kind: "Quality event" },
-    { title: "Deviation triage", time: "09:15", detail: "Disposition pending", kind: "Quality event" },
+    { title: "Nozzle wear past its service interval", time: "11:02", detail: "Why (Level 3) #1 · picked by J. Rivera", kind: "Why" },
+    { title: "Spray nozzle delivered low flow on line 2", time: "10:58", detail: "Why (Level 2) #1 · picked by J. Rivera", kind: "Why" },
     { title: "Supplier corrective action", time: "Yesterday", detail: "SCAR-31 · response received", kind: "Quality event" },
   ],
   checklistTitle: "Root Cause Analysis",
   checklistSections: [
     {
-      title: "PARTICIPANTS",
+      title: "PROBLEM & PARTICIPANTS",
       items: [
-        { label: "S. Okafor", note: "Process Engineering · required" },
-        { label: "M. Osei", note: "Production · required" },
-        { label: "L. Danes", note: "Maintenance · optional" },
+        { label: "S. Okafor · M. Osei · L. Danes", note: "Process, Production, Maintenance · in the thread" },
+        { label: "Generate problem description", kind: "ask", value: "Generate Problem Description", note: "Beta" },
+        {
+          label: "Problem description",
+          kind: "field",
+          value: "Coating 38.1 µm on PRT-4412 housing face, spec 45-55, WO-8817, line 2. Repeat of two events in 12 months.",
+          note: "Drafted by Unifize AI from the record · accepted by J. Rivera",
+        },
       ],
     },
     {
       title: "ANALYSIS · 5-WHY",
       items: [
-        { label: "Contributions in thread", note: "Against the attached evidence" },
-        { label: "Maintenance log", note: "Nozzle service interval gap" },
-        { label: "Sync session", note: "Not needed · analysis held" },
+        { label: "Generate the next Why", kind: "ask", value: "Generate Why 3", note: "Beta" },
+        { label: "Why 1 (choose only one)", kind: "linked", links: ["WHY-1"] },
+        { label: "Why 2 (choose only one)", kind: "linked", links: ["WHY-2"] },
+        { label: "Why 3 (choose only one)", kind: "linked", links: [] },
+        { label: "Why 4 · Why 5", kind: "linked", links: [] },
       ],
     },
     {
       title: "ROOT CAUSE STATEMENT",
       items: [
+        { label: "Build with AI", kind: "ask", value: "Generate root cause, risk and corrective actions", note: "Beta" },
         {
-          label: "Agreed cause",
+          label: "Root cause analysis",
           kind: "field",
-          value: "Nozzle wear past service interval · maintenance log confirms",
-          note: "Entered on the record",
+          value: "Nozzle wear past service interval; the line 2 rebuild change did not carry the service interval onto the maintenance plan.",
+          note: "Drafted from Why 1 to Why 5 · accepted by J. Rivera",
         },
-        { label: "Consensus", kind: "approval", signer: "S. Okafor", state: "3 confirmed" },
-        { label: "Analysis trail", note: "Attached · no minutes" },
+        { label: "Corrective actions", kind: "linked", links: [] },
       ],
     },
   ],
@@ -586,7 +610,8 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
     },
   ],
 
-  /* PF-6 · Quality Engineer drives root cause analysis in the record thread. */
+  /* PF-6 · Quality Engineer drives root cause analysis in the record thread.
+   * Beats from the 16 Sep 2026 product recording; the record is NC-204. */
   "6": [
     {
       source: "PF-6 s1 · participants pulled in",
@@ -598,7 +623,7 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       actor: "You",
       event: "Pulled cross-functional participants into the thread",
       eventDetail: "No calendar negotiation, no meeting invite · full record context in each notification",
-      checklist: "PARTICIPANTS",
+      checklist: "PROBLEM & PARTICIPANTS",
       checklistItems: ["S. Okafor", "M. Osei", "L. Danes"],
       focus: "queue",
       poseVariant: "route",
@@ -608,49 +633,75 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       focusAction: "Add to record thread",
       ownershipNote: "Contribute when they can, in context",
       world: NC_RCA_WORLD,
-      checklistProgress: { PARTICIPANTS: 2, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 1, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      source: "PF-6 s2 · context reviewed asynchronously",
-      ghost: "Review",
+      /* the problem statement written from what is already on the record:
+       * "everyone downstream is working off the same version" */
+      source: "PF-6 s2 · problem description generated from the record",
+      ghost: "Describe",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Investigation",
       actor: "Unifize Assistant",
-      event: "Assembled the evidence, history, and problem statement",
-      eventDetail: "Reviewed asynchronously · nobody rebuilds context from printed packets",
-      checklist: "PARTICIPANTS",
-      checklistItems: ["Evidence", "History", "Problem statement"],
-      focus: "record",
-      focusTitle: "The assembled context",
-      focusRows: ["Evidence, history, statement · one record", "Complete enough to start the analysis"],
-      focusAction: "Start the analysis",
-      ownershipNote: "Each participant reads in their own time",
+      event: "Drafted the problem description from the record",
+      eventDetail: "Evidence, part context and history already captured · nobody retypes it · accepted by J. Rivera",
+      checklist: "PROBLEM & PARTICIPANTS",
+      checklistItems: ["Problem description"],
+      focus: "checklist",
+      poseVariant: "ask",
+      focusTitle: "Problem description",
+      focusRows: ["Photos and measurements", "Part and order context", "Prior events"],
+      ownershipNote: "Drafted by AI, accepted by a person",
       world: NC_RCA_WORLD,
-      checklistOpen: "PARTICIPANTS",
-      checklistProgress: { PARTICIPANTS: 3, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
+      checklistOpen: "PROBLEM & PARTICIPANTS",
+      checklistAsk: { section: "PROBLEM & PARTICIPANTS", item: "Generate problem description" },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      source: "PF-6 s3 · structured 5-Why in thread",
+      /* each Why is generated from the last; the investigator picks one and
+       * it lands as a linked Why record: "the chain builds instead of
+       * starting from a blank box" */
+      source: "PF-6 s3 · the Why chain, one pick per level",
       ghost: "Analyse",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Investigation",
-      actor: "You",
-      event: "Ran the 5-Why in the record thread",
-      eventDetail: "Contributions land against the evidence · a sync session only if the analysis stalls",
+      actor: "Unifize Assistant",
+      event: "Why 3, asked from Why 2",
+      eventDetail: "Three candidates against the evidence · only an investigator picks the one that fits",
       checklist: "ANALYSIS · 5-WHY",
-      checklistItems: ["Contributions in thread", "Maintenance log"],
-      focus: "comment",
-      focusTitle: "Analysis against evidence",
-      focusRows: ["5-Why analysis · anchored to the maintenance log"],
-      focusAction: "Contribute in thread",
-      ownershipNote: "When to stop digging is the analyst's call",
+      checklistItems: ["Why 3 (choose only one)"],
+      focus: "assist",
+      poseVariant: "linked",
+      focusTitle: "Why 3",
+      focusRows: WHY_CHAIN.slice(0, 3).map((row) => `${row.id} · ${row.title}`),
+      ownershipNote: "The chain builds, level by level",
       world: NC_RCA_WORLD,
       checklistOpen: "ANALYSIS · 5-WHY",
-      checklistProgress: { PARTICIPANTS: 3, "ANALYSIS · 5-WHY": 2, "ROOT CAUSE STATEMENT": 0 },
+      checklistLinks: {
+        section: "ANALYSIS · 5-WHY",
+        item: "Why 3 (choose only one)",
+        links: ["WHY-3"],
+        records: [WHY_CHAIN[2]],
+      },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 4, "ROOT CAUSE STATEMENT": 0 },
+      assist: {
+        kicker: "UNIFIZE AI · BETA",
+        prompt: "Why did the nozzle deliver low flow?",
+        note: "Asked from Why 2 · answered against the maintenance log and the thickness trend",
+        pick: "one",
+        suggested: [
+          { id: "A", title: "Nozzle wear past its service interval", why: "Log confirms", picked: true },
+          { id: "B", title: "Coating viscosity drifted between batches", why: "No batch change" },
+          { id: "C", title: "Operator ran a shortened spray pass", why: "Unsupported" },
+        ],
+        action: "Add to checklist",
+        alt: "Ask again",
+        pressed: true,
+      },
     },
     {
       source: "PF-6 s4 · root cause agreed",
@@ -661,48 +712,90 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       status: "In Review",
       actor: "You",
       event: "Put the root cause to the participants",
-      eventDetail: "Confirm or challenge in the thread, against the evidence · disputes resolve in context",
+      eventDetail: "Confirm or challenge in the thread, against the evidence and the Why chain · disputes resolve in context",
       checklist: "ANALYSIS · 5-WHY",
-      checklistItems: ["Consensus"],
+      checklistItems: ["Why 4 · Why 5"],
       focus: "review",
       focusTitle: "Root cause consensus",
       focusRows: [
-        "Proposed cause · Nozzle wear past service interval",
-        "Evidence · thickness trend + maintenance log",
+        "Proposed cause · Why 5: rebuild change did not update the maintenance plan",
+        "Evidence · thickness trend + maintenance log + five linked Whys",
         "Participants · 3 confirmed in thread",
       ],
       focusAction: "Confirm root cause",
       focusAlts: ["Challenge in thread"],
       ownershipNote: "No second scheduled meeting",
-      world: NC_RCA_WORLD,
+      world: {
+        ...NC_RCA_WORLD,
+        checklistSections: NC_RCA_WORLD.checklistSections.map((section) =>
+          section.title === "ANALYSIS · 5-WHY"
+            ? {
+                ...section,
+                items: section.items.map((item) =>
+                  item.label === "Why 3 (choose only one)"
+                    ? { ...item, links: ["WHY-3"] }
+                    : item.label === "Why 4 · Why 5"
+                      ? { ...item, links: ["WHY-4", "WHY-5"] }
+                      : item,
+                ),
+              }
+            : section,
+        ),
+      },
       checklistOpen: "ANALYSIS · 5-WHY",
-      checklistProgress: { PARTICIPANTS: 3, "ANALYSIS · 5-WHY": 3, "ROOT CAUSE STATEMENT": 0 },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 5, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      source: "PF-6 s5 · statement carries its justification",
+      /* one click drafts the root cause, the risk and the corrective actions
+       * from what the record already holds; "nothing is saved until the
+       * investigator accepts it", and what is accepted becomes records
+       * with owners and due dates, tracked like everything else */
+      source: "PF-6 s5 · Build with AI, accepted into records",
       ghost: "Record",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Cause Agreed",
-      actor: "You",
-      event: "Documented the agreed root cause statement",
-      eventDetail: "The analysis trail stays attached · no minutes to write or distribute",
+      actor: "Unifize Assistant",
+      event: "Drafted the root cause, the risk and two corrective actions",
+      eventDetail: "From the Why chain and the evidence · accepted by J. Rivera · two actions now have owners and due dates",
       checklist: "ROOT CAUSE STATEMENT",
-      checklistItems: ["Agreed cause", "Analysis trail"],
-      focus: "diff",
-      focusKicker: "ROOT CAUSE STATEMENT",
-      focusTitle: "The agreed statement",
-      focusRows: [
-        "First guess · operator error, unsupported",
-        "Agreed · nozzle wear past service interval, log confirms",
-        "Specific enough to drive corrective action definition",
-      ],
-      focusAction: "Root cause recorded",
-      ownershipNote: "The statement carries its own justification",
-      world: NC_RCA_WORLD,
+      checklistItems: ["Root cause analysis", "Corrective actions"],
+      focus: "assist",
+      poseVariant: "linked",
+      focusTitle: "Build with AI",
+      focusRows: RCA_ACTIONS.map((row) => `${row.id} · ${row.title}`),
+      ownershipNote: "Drafted by AI, accepted by a person, tracked as records",
+      world: {
+        ...NC_RCA_WORLD,
+        checklistSections: NC_RCA_WORLD.checklistSections.map((section) =>
+          section.title === "ANALYSIS · 5-WHY"
+            ? { ...section, items: section.items.map((item) => (item.kind === "linked" && !item.links?.length ? { ...item, links: item.label.startsWith("Why 3") ? ["WHY-3"] : ["WHY-4", "WHY-5"] } : item)) }
+            : section,
+        ),
+      },
       checklistOpen: "ROOT CAUSE STATEMENT",
-      checklistProgress: { PARTICIPANTS: 3, "ANALYSIS · 5-WHY": 3, "ROOT CAUSE STATEMENT": 3 },
+      checklistLinks: {
+        section: "ROOT CAUSE STATEMENT",
+        item: "Corrective actions",
+        links: RCA_ACTIONS.map((row) => row.id),
+        records: RCA_ACTIONS,
+      },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 5, "ROOT CAUSE STATEMENT": 3 },
+      assist: {
+        kicker: "UNIFIZE AI · BETA",
+        prompt: "Generate root cause, risk and corrective actions",
+        note: "Drafted from Why 1 to Why 5, the maintenance log and the severity · a suggestion until accepted",
+        fields: [
+          { label: "Root cause", value: "Nozzle wear past service interval; the line 2 rebuild change did not carry the service interval onto the maintenance plan.", picked: true },
+          { label: "Risk", value: "Repeat under-thickness on any line rebuilt without a maintenance plan review · Major", picked: true },
+          { label: "Corrective action", value: "Containment · sort and re-coat lot 118-B · Corrective", picked: true },
+          { label: "Corrective action", value: "Add nozzle service to the line 2 maintenance plan · Preventive", picked: true },
+        ],
+        action: "Accept into the record",
+        alt: "Edit first",
+        pressed: true,
+      },
     },
   ],
 
@@ -778,25 +871,22 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       checklistProgress: { "DISPOSITION DECISION": 3, "ENGINEERING CONCESSION": 2, EXECUTION: 0 },
     },
     {
-      source: "PF-7 s4 · submitted for approval",
+      /* on request approval the assistant tags the signatory on the record
+       * (16 Sep 2026 recording): the package is the record itself */
+      source: "PF-7 s4 · submitted for approval, the assistant tags the approver",
       ghost: "Submit",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Needs Approval",
-      actor: "You",
-      event: "Submitted the disposition for approval",
-      eventDetail: "The record shows where the approval stands · no status-chasing",
+      actor: "Unifize Assistant",
+      event: "@D. Fontaine the disposition is ready. Need your approval to proceed.",
+      eventDetail: "Posted when J. Rivera requested approval · recommendation, evidence and concession CON-88 on the record",
       checklist: "ENGINEERING CONCESSION",
       checklistItems: ["Approval route"],
-      focus: "queue",
-      poseVariant: "route",
+      focus: "comment",
       focusTitle: "One notification, whole package",
-      focusRows: [
-        "D. Fontaine · Quality Manager · required",
-        "Recommendation + evidence · one place",
-        "Concession CON-88 · attached",
-      ],
+      focusRows: ["Quality Manager approval · waiting on D. Fontaine"],
       focusAction: "Submit for approval",
       ownershipNote: "Complete enough for first-time approval",
       world: NC_DISPO_WORLD,

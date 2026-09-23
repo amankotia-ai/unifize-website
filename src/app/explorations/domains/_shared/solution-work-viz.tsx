@@ -1,0 +1,410 @@
+/* ----------------------------------------------------------------------------
+ * solution-work-viz.tsx - the artifact in each "work inside" cell's wash
+ * panel on the rails (23 Sep 2026). The homepage way-in grammar
+ * (home/home-entry-viz.tsx): one small, precise product surface floating on
+ * the wash, a named cursor on the step the visitor would touch. One card
+ * per cluster, built from the cluster's `viz` data (the page's own arcade
+ * world: records, people, dates), so each domain stages its own record.
+ *
+ * Kinds (second wave, 23 Sep 2026, the sibling Solutions pages): quality's
+ * four cells are `record` cards. Every other page draws a different widget
+ * per cluster (a validation matrix, a rule fanning out to documents, a
+ * carton label, a supplier scorecard, a hold tag, four parallel lanes...),
+ * so no two cells on the Solutions pages share a picture.
+ *
+ * Presentational (aria-hidden at the call site). Status is carried by
+ * glyph + label colour, never a coloured edge. Styles: solution-rails.css
+ * (sk-wv, the record card) and solution-viz.css (every other kind).
+ * Server module.
+ * -------------------------------------------------------------------------- */
+import type { CSSProperties } from "react";
+import type { VizCursor, WorkViz } from "./types";
+
+function Done() {
+  return (
+    <svg className="sk-wv__ico is-done" viewBox="0 0 14 14" aria-hidden="true">
+      <circle cx="7" cy="7" r="6.4" />
+      <path d="m4.4 7.2 1.9 1.9 3.4-4" />
+    </svg>
+  );
+}
+
+function Open() {
+  return (
+    <svg className="sk-wv__ico is-open" viewBox="0 0 14 14" aria-hidden="true">
+      <circle cx="7" cy="7" r="6.4" />
+      <circle cx="7" cy="7" r="2.2" className="sk-wv__dot" />
+    </svg>
+  );
+}
+
+function Gap() {
+  return (
+    <svg className="sk-wv__ico is-gap" viewBox="0 0 14 14" aria-hidden="true">
+      <path d="M7 1.6 12.8 12H1.2L7 1.6Z" />
+      <path d="M7 5.6v2.8M7 10.1v.1" />
+    </svg>
+  );
+}
+
+function Cursor({ cursor }: { cursor?: VizCursor }) {
+  if (!cursor) return null;
+  return (
+    <span className="sk-wv__you" style={{ "--cursor": cursor.tone } as CSSProperties}>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5.5 3.5 19 11.2l-6.1 1.5-3.4 5.4z" />
+      </svg>
+      <b>{cursor.name}</b>
+    </span>
+  );
+}
+
+function Surface({ viz }: { viz: WorkViz }) {
+  switch (viz.kind) {
+    case "matrix":
+      /* the validated estate: systems down, checks across */
+      return (
+        <div className="sk-wv__card sk-vz-mx">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <table>
+            <thead>
+              <tr><th />{viz.cols.map((c) => <th key={c}>{c}</th>)}</tr>
+            </thead>
+            <tbody>
+              {viz.rows.map((r) => (
+                <tr key={r.name}>
+                  <th>{r.name}</th>
+                  {r.cells.map((c, i) => (
+                    <td key={i} className={"is-" + c}>{c === "ok" ? <Done /> : c === "due" ? <Open /> : <Gap />}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+    case "impact":
+      /* one rule, fanning out to what it touches */
+      return (
+        <div className="sk-vz-im">
+          <div className="sk-wv__card sk-vz-im__src">
+            <span className="sk-wv__kicker">{viz.source.kicker}</span>
+            <b>{viz.source.title}</b>
+          </div>
+          <svg className="sk-vz-im__wires" viewBox="0 0 40 120" preserveAspectRatio="none" aria-hidden="true">
+            {viz.items.map((_, i) => {
+              const y = ((i + 0.5) / viz.items.length) * 120;
+              return <path key={i} d={`M0 60 C 22 60, 18 ${y}, 40 ${y}`} />;
+            })}
+          </svg>
+          <ul className="sk-vz-im__items">
+            {viz.items.map((it) => (
+              <li key={it.id} className={it.open ? "is-open" : undefined}>
+                <span>{it.id}</span>
+                {it.label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "form":
+      /* the report being filled where it happened */
+      return (
+        <div className="sk-wv__card sk-vz-fm">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <div className="sk-vz-fm__fields">
+            {viz.fields.map((f) => (
+              <label key={f.label} className={f.focus ? "is-focus" : undefined}>
+                <small>{f.label}</small>
+                <span>
+                  {f.value}
+                  {f.select ? <svg viewBox="0 0 10 10" aria-hidden="true"><path d="m2.5 4 2.5 2.5L7.5 4" /></svg> : null}
+                  {f.focus ? <i aria-hidden="true" /> : null}
+                </span>
+              </label>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "signoff":
+      /* a release signed across two organisations */
+      return (
+        <div className="sk-wv__card sk-vz-so">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <ol>
+            {viz.signers.map((s) => (
+              <li key={s.org} className={s.time ? "is-signed" : "is-pending"}>
+                <small>{s.org}</small>
+                <span className="sk-vz-so__line">{s.time ? <em>{s.name}</em> : <i>Awaiting signature</i>}</span>
+                <span className="sk-vz-so__meta">{s.time ? `${s.meaning} · ${s.time}` : `${s.name} · ${s.meaning}`}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+
+    case "dossier":
+      /* the filing as a stack of sheets; the citation checked against the
+       * register on the front one */
+      return (
+        <div className="sk-vz-ds">
+          <span className="sk-vz-ds__sheet is-back2" />
+          <span className="sk-vz-ds__sheet is-back1" />
+          <div className="sk-vz-ds__sheet is-front">
+            <span className="sk-wv__kicker">{viz.kicker}</span>
+            <b>{viz.title}</b>
+            <i /><i /><i className="is-short" />
+            <p className="sk-vz-ds__cite"><Done /><span>{viz.cite}</span><small>{viz.state}</small></p>
+            <i /><i className="is-short" />
+          </div>
+        </div>
+      );
+
+    case "clock": {
+      /* one day axis: gone days filled, today ringed, the deadlines marked */
+      const pct = (n: number) => `${(n / viz.span) * 100}%`;
+      return (
+        <div className="sk-wv__card sk-vz-ck">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.kicker}</span>
+            <span className="sk-wv__state">Day {viz.day}</span>
+          </header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <div className="sk-vz-ck__axis" style={{ "--today": pct(viz.day) } as CSSProperties}>
+            <span className="sk-vz-ck__gone" />
+            <span className="sk-vz-ck__today" />
+            {viz.marks.map((m) => (
+              <span key={m.label} className="sk-vz-ck__mark" style={{ left: pct(m.day) }}>
+                <b>{m.label}</b>
+                <small>Day {m.day}</small>
+              </span>
+            ))}
+          </div>
+          <div className="sk-vz-ck__ticks"><span>Day 0</span><span>Day {viz.span}</span></div>
+        </div>
+      );
+    }
+
+    case "label":
+      /* the carton label, and where the approved change has landed */
+      return (
+        <div className="sk-vz-lb">
+          <div className="sk-vz-lb__label">
+            <div className="sk-vz-lb__top">
+              <b>{viz.product}</b>
+              <span>{viz.version}</span>
+            </div>
+            {viz.lines.map((l) => <small key={l}>{l}</small>)}
+            <div className="sk-vz-lb__udi" aria-hidden="true">
+              {Array.from({ length: 34 }, (_, i) => (
+                <i key={i} style={{ width: [1, 2, 1, 3, 1, 1, 2][i % 7] }} />
+              ))}
+            </div>
+            <div className="sk-vz-lb__syms" aria-hidden="true"><span>REF</span><span>LOT</span><span>MD</span></div>
+          </div>
+          <ul className="sk-vz-lb__ends">
+            {viz.endpoints.map((e) => (
+              <li key={e.name} className={e.done ? "is-done" : "is-open"}>{e.done ? <Done /> : <Open />}{e.name}</li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "feed":
+      /* the regulatory-intelligence feed; the binding item routed */
+      return (
+        <div className="sk-wv__card sk-vz-fd">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ul>
+            {viz.items.map((it) => (
+              <li key={it.title} className={it.hot ? "is-hot" : undefined}>
+                <span className="sk-vz-fd__src">{it.source}</span>
+                <span className="sk-vz-fd__t">{it.title}</span>
+                <span className="sk-vz-fd__tag">{it.tag}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "scorecard":
+      return (
+        <div className="sk-wv__card sk-vz-sc">
+          <header className="sk-vz-sc__head">
+            <span className="sk-vz-sc__logo" aria-hidden="true">{viz.name.slice(0, 2)}</span>
+            <b>{viz.name}</b>
+            <span className="sk-wv__state">{viz.status}</span>
+          </header>
+          <ul>
+            {viz.metrics.map((m) => (
+              <li key={m.label}>
+                <small>{m.label}</small>
+                <span className="sk-vz-sc__bar"><i style={{ width: `${m.value}%` }} className={m.value < 80 ? "is-low" : undefined} /></span>
+                <b>{m.value}</b>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "tiles":
+      /* the part-approval package: one tile per element, the open ones ringed */
+      return (
+        <div className="sk-wv__card sk-vz-tl">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.kicker}</span>
+            <span className="sk-wv__state">{viz.total - viz.open.length} of {viz.total}</span>
+          </header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <div className="sk-vz-tl__grid">
+            {Array.from({ length: viz.total }, (_, i) => (
+              <span key={i} className={viz.open.includes(i + 1) ? "is-open" : "is-done"}>{i + 1}</span>
+            ))}
+          </div>
+          <p className="sk-vz-tl__foot">{viz.foot}</p>
+        </div>
+      );
+
+    case "tag":
+      /* the hold tag on the lot at the dock */
+      return (
+        <div className="sk-vz-tg">
+          <span className="sk-vz-tg__hole" aria-hidden="true" />
+          <b className="sk-vz-tg__stamp">{viz.stamp}</b>
+          <dl>
+            {viz.lines.map((l) => (
+              <div key={l.k}><dt>{l.k}</dt><dd>{l.v}</dd></div>
+            ))}
+          </dl>
+          <p>{viz.note}</p>
+        </div>
+      );
+
+    case "thread":
+      /* one thread, both companies on it */
+      return (
+        <div className="sk-wv__card sk-vz-th">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ul>
+            {viz.messages.map((m) => (
+              <li key={m.text} className={m.ext ? "is-ext" : undefined}>
+                <small>{m.org}</small>
+                <span>{m.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "signal": {
+      const max = Math.max(...viz.weeks);
+      return (
+        <div className="sk-wv__card sk-vz-sg">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.kicker}</span>
+          </header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <div className="sk-vz-sg__bars">
+            {viz.weeks.map((w, i) => (
+              <span key={i} className={i === viz.spike ? "is-spike" : undefined} style={{ height: `${(w / max) * 100}%` }} />
+            ))}
+          </div>
+          <p className="sk-vz-sg__note"><i aria-hidden="true" />{viz.note}</p>
+        </div>
+      );
+    }
+
+    case "decision":
+      /* the reportability call, one question at a time */
+      return (
+        <div className="sk-wv__card sk-vz-dc">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ol>
+            {viz.steps.map((s) => (
+              <li key={s.q}>
+                <span>{s.q}</span>
+                <b className={s.a === "Yes" ? "is-yes" : "is-no"}>{s.a}</b>
+              </li>
+            ))}
+          </ol>
+          <p className="sk-vz-dc__out">{viz.outcome}</p>
+        </div>
+      );
+
+    case "lanes":
+      /* four tracks, one record */
+      return (
+        <div className="sk-wv__card sk-vz-ln">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ul>
+            {viz.lanes.map((l) => (
+              <li key={l.name}>
+                <span className="sk-vz-ln__name">{l.name}<small>{l.owner}</small></span>
+                <span className="sk-vz-ln__track"><i style={{ width: `${l.pct}%` }} /></span>
+              </li>
+            ))}
+          </ul>
+          <span className="sk-vz-ln__spine" aria-hidden="true" />
+        </div>
+      );
+
+    case "asset":
+      /* one installed unit and its service history on a line */
+      return (
+        <div className="sk-wv__card sk-vz-as">
+          <header className="sk-vz-as__head">
+            <span className="sk-vz-as__qr" aria-hidden="true">
+              {Array.from({ length: 25 }, (_, i) => <i key={i} className={[0, 2, 4, 6, 7, 10, 12, 13, 16, 18, 20, 21, 24].includes(i) ? "is-on" : undefined} />)}
+            </span>
+            <span>
+              <b>{viz.serial}</b>
+              <small>{viz.model}</small>
+            </span>
+          </header>
+          <ol className="sk-vz-as__line">
+            {viz.visits.map((v) => (
+              <li key={v.label} className={v.now ? "is-now" : undefined}>
+                <i aria-hidden="true" />
+                <span>{v.label}</span>
+                <small>{v.when}</small>
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+
+    default:
+      return (
+        <div className="sk-wv__card">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.kicker}</span>
+            <span className="sk-wv__state">{viz.state}</span>
+          </header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <ul className="sk-wv__steps">
+            {viz.rows.map((row) => (
+              <li key={row.label} className={row.open ? "is-target" : undefined}>
+                {row.open ? <Open /> : <Done />}
+                <span>{row.label}</span>
+                <small>{row.meta}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+  }
+}
+
+export function WorkArtifact({ viz }: { viz: WorkViz }) {
+  return (
+    <div className={"sk-wv sk-wv--" + (viz.kind ?? "record")}>
+      <Surface viz={viz} />
+      <Cursor cursor={viz.cursor} />
+    </div>
+  );
+}

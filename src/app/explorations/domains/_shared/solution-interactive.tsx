@@ -70,7 +70,7 @@ export function SolutionSubnav({
   };
 
   return (
-    <div className="sk-subnav">
+    <div className="sk-subnav" data-header-theme="light">
       <div className="dms-wrap sk-subnav__inner">
         <span className="sk-subnav__lab">On this page</span>
         <nav className="sk-subnav__tabs" aria-label={`Explore Unifize for ${domainName.toLowerCase()}`}>

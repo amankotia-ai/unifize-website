@@ -374,7 +374,7 @@ const SCENES: Record<string, React.ReactNode> = {
 
 export function SymptomVisual({ type }: { type: string }) {
   return (
-    <div className="hm-cardviz hm-cardviz--ui" aria-hidden="true">
+    <div className="hm-cardviz hm-cardviz--ui" data-viz={type} aria-hidden="true">
       {SCENES[type]}
     </div>
   );

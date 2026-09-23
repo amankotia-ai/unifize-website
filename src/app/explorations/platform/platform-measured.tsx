@@ -110,14 +110,14 @@ export function PlatformMeasured() {
           </svg>
         </div>
         <p className="pf-meas__cap">
-          One quarter at Engineering Industries · read off each thread&rsquo;s own clock · no export, no
+          One quarter at Engineering Industries · read off each thread&rsquo;s own timestamps · no export, no
           reconciliation
         </p>
       </figure>
 
       {/* the other clocks the lede promises, one ledger each */}
       <div className="pf-meas__side">
-        <MeasureTile tag="Open threads" value="24" label="open across six teams, each on its own clock">
+        <MeasureTile tag="Open threads" value="24" label="open across six teams, each timed from open to close">
           <div className="pf-th__grid">
             {THREAD_TEAMS.map((team) => (
               <div className="pf-th__team" key={team.code}>

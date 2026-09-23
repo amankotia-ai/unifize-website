@@ -1,0 +1,990 @@
+/* ============================================================================
+ * md-rails.css - the Medical Devices industry page on the rails (23 Sep 2026)
+ *
+ * The page now wears the standard the homepage, platform and DMS pages
+ * share: _shared/page-rails.css draws the rails, bands, eyebrows, header
+ * rail, close and footer; dms-rails.css brings the DMS hero, trust strip
+ * and dot-grid bands (the page runs the DMS shell, `dms-page` on <main>).
+ * This file is only what the industry page composes differently:
+ *
+ *   - the split head (eyebrow + claim left, lede right);
+ *   - the decision trail + arcade as two cells rail to rail, the stage on
+ *     the sky wash with the frosted plate;
+ *   - the three ways in turned light: the page's dark --itm-d-* tokens are
+ *     re-pointed to the light ink scale on the ingress block, so the
+ *     persona explorer and coverage ledger keep their own rules; the
+ *     sub-nav is a frosted bar on the rails;
+ *   - statutory moments, the cost ledger and the validation answers as
+ *     cells rail to rail. Cells draw their dividers with inset shadow lines
+ *     (right + bottom), so a short last row leaves white, never a grey hole.
+ *
+ * Tax stays rust (--dms-tax*); blue is the answer. Scope: .md-page.
+ * ========================================================================== */
+
+.dms--redesign.md-page {
+  --md-cell-line: 1px 0 0 var(--hm-rail), 0 1px 0 var(--hm-rail);
+}
+
+/* ---------------------------------------------------------- the rhythm */
+.dms--redesign.md-page .md-sec {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+/* ------------------------------------------------------- the split head */
+.dms--redesign.md-page .md-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 22px clamp(48px, 8vw, 120px);
+  align-items: end;
+  margin: 0 0 clamp(36px, 4vw, 56px);
+}
+
+.dms--redesign.md-page .md-head__lead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.dms--redesign.md-page .md-head .dms-h2 {
+  max-width: 22ch;
+  margin: 0;
+}
+
+.dms--redesign.md-page .md-head > .dms-lede {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--dms-muted);
+  text-wrap: pretty;
+}
+
+/* cells run rail to rail: the grid steps out by the rail inset */
+.dms--redesign.md-page .md-bleed,
+.dms--redesign.md-page .md-diff .itm-diff__grid--arcade,
+.dms--redesign.md-page .md-trigs__grid,
+.dms--redesign.md-page .md-val__grid,
+.dms--redesign.md-page .md-cost .itm-ledger,
+.dms--redesign.md-page .md-cost .itm-conseq {
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+}
+
+/* ================================================================ HERO
+ * The DMS hero, as is, with the industry tag and the regulatory frame. */
+.dms--redesign.md-page .dms-hero--rails .dms-hero__title {
+  max-width: 22ch;
+}
+
+.dms--redesign.md-page .md-hero__mark .dms-trust__icon {
+  width: 15px;
+  height: 15px;
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.md-page .md-hero__stds {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dms--redesign.md-page .md-hero__stds li {
+  padding: 5px 11px;
+  border: 1px solid var(--dms-d-border-2);
+  border-radius: 999px;
+  color: var(--dms-d-ink-2);
+  font-family: var(--dms-mono, var(--u-mono));
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* the trust strip names the device teams on the record */
+.dms--redesign.md-page .md-trust__names .dms-trust__mark {
+  color: var(--dms-d-ink);
+  font-family: var(--dms-display, var(--u-display));
+  font-size: 1.02rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+}
+
+/* ======================================================= 01 · DIFFERENCE
+ * Trail cell (white) | stage cell (sky wash), hairlines on the rails. */
+.dms--redesign.md-page .md-diff .itm-diff__grid--arcade {
+  grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+  gap: 0;
+  margin-top: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.md-page .md-diff .itm-trail {
+  padding: clamp(28px, 3vw, 44px) var(--hm-rail-pad);
+  border-right: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-diff .itm-trail__lab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  color: var(--dms-muted);
+  font-family: var(--dms-sans);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.md-page .md-diff .itm-trail__steps::before {
+  width: 1px;
+  background: var(--hm-rail-dash);
+}
+
+.dms--redesign.md-page .md-diff .itm-trail__t {
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-diff .itm-trail__foot {
+  margin-top: 32px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--hm-ledger-rule);
+  font-size: 0.94rem;
+}
+
+/* the stage: the engine's navy field gives way to the wash + grain; the
+ * window wears the frosted plate every product artifact wears */
+.dms--redesign.md-page .md-diff .itm-arcstage {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  padding: clamp(20px, 2.6vw, 40px);
+  overflow: hidden;
+  background: var(--hm-wash-sky);
+  box-shadow: none;
+}
+
+.dms--redesign.md-page .md-diff .itm-arcstage::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.md-page .md-diff .itm-arcstage .itm-arcade {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.dms--redesign.md-page .md-diff .itm-arcstage .sty-scene.is-arcade {
+  background: transparent;
+}
+
+.dms--redesign.md-page .md-diff .itm-arcstage .stx-arc-field {
+  display: none;
+}
+
+.dms--redesign.md-page .md-diff .itm-arcstage .stx-arc__camera {
+  --rf-plate: 6px;
+  border-radius: 0;
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22);
+}
+
+/* pinned under the 72px bar, not the old 68px one */
+@media (min-width: 1025px) {
+  .dms--redesign.md-page .itm-tracepin__inner {
+    top: calc(var(--dms-header-h) + 24px);
+  }
+}
+
+/* ================================================== THE THREE WAYS IN
+ * The ink block goes light. The explorer + ledger style against the
+ * page's --itm-d-* tokens, so the tokens move, not the rules. */
+.dms--redesign.md-page .md-ingress {
+  --itm-d-bg: var(--dms-surface);
+  --itm-d-bg-2: var(--n-50);
+  --itm-d-bg-3: var(--n-100);
+  --itm-d-border: var(--n-150);
+  --itm-d-border-2: var(--n-200);
+  --itm-d-ink: var(--n-800);
+  --itm-d-ink-2: var(--n-600);
+  --itm-d-ink-3: var(--n-500);
+  --itm-d-accent: var(--dms-accent);
+  --itm-ring-dark: var(--itm-ring);
+  background: transparent;
+}
+
+/* the sub-nav: a frosted bar on the rails, pinned under the header */
+.dms--redesign.md-page .itm-subnav {
+  position: sticky;
+  top: var(--dms-header-h);
+  padding-block: 0;
+  background: rgba(255, 255, 255, 0.86);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.md-page .itm-subnav::before,
+.dms--redesign.md-page .itm-subnav::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  content: "";
+  background: var(--hm-rail);
+  pointer-events: none;
+}
+
+.dms--redesign.md-page .itm-subnav::before { left: var(--hm-rail-x); }
+.dms--redesign.md-page .itm-subnav::after { right: var(--hm-rail-x); }
+
+.dms--redesign.md-page .itm-subnav__inner {
+  max-width: var(--dms-maxw);
+  padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+}
+
+.dms--redesign.md-page .itm-subnav__lab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dms-accent);
+  font-family: var(--dms-sans);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.md-page .itm-subnav__lab::before {
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.md-page .itm-subnav__tab-idx {
+  display: none;
+}
+
+.dms--redesign.md-page .itm-subnav__tab.is-active {
+  box-shadow: inset 0 -2px 0 var(--dms-accent);
+}
+
+/* ---- 02 personas: the spread keeps its composition on white */
+.dms--redesign.md-page .md-roles .itm-pex {
+  margin-top: 0;
+}
+
+.dms--redesign.md-page .md-roles .itm-pex__role-name,
+.dms--redesign.md-page .md-roles .itm-pex__owns {
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-roles .itm-pex__role-idx,
+.dms--redesign.md-page .md-roles .itm-pex__role-tag,
+.dms--redesign.md-page .md-roles .itm-pex__seat-lab,
+.dms--redesign.md-page .md-roles .itm-pex__fact-lab {
+  font-family: var(--dms-sans);
+  font-weight: 620;
+}
+
+.dms--redesign.md-page .md-roles .itm-pex__list li + li {
+  border-top-color: var(--hm-ledger-rule);
+}
+
+/* ---- 03 coverage: the ledger on the alt grey, the filter as pills */
+.dms--redesign.md-page .md-cov .itm-cov {
+  margin-top: 0;
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__filter-lab,
+.dms--redesign.md-page .md-cov .itm-cov__count-lab {
+  font-family: var(--dms-sans);
+  font-weight: 620;
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__chip {
+  border-radius: 999px;
+  border-color: var(--n-200);
+  background: var(--dms-surface);
+  color: var(--n-700);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__chip:hover {
+  border-color: var(--n-400);
+  color: var(--n-900);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__chip.is-active {
+  border-color: var(--dms-accent);
+  background: var(--dms-accent);
+  color: #fff;
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__chip.is-active .itm-cov__chip-n {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__ledger {
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__row {
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__head {
+  padding-inline: var(--hm-rail-pad);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__head:hover {
+  background: var(--n-50);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__name,
+.dms--redesign.md-page .md-cov .itm-cov__count .itm-data,
+.dms--redesign.md-page .md-cov .itm-cov__mod-name {
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__mods {
+  padding: 0 var(--hm-rail-pad) 28px calc(var(--hm-rail-pad) + 76px);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__mod {
+  border-bottom-color: var(--hm-ledger-rule);
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__tag {
+  border: 0;
+  border-radius: 999px;
+  background: var(--n-100);
+  color: var(--n-600);
+  padding: 3px 8px;
+}
+
+.dms--redesign.md-page .md-cov .itm-cov__tag.is-hit {
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent-text);
+}
+
+/* ---- 04 what's breaking: cells rail to rail, grouped by severity */
+.dms--redesign.md-page .md-trigs__bands {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 3.5vw, 48px);
+}
+
+.dms--redesign.md-page .md-trigs__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 14px;
+}
+
+.dms--redesign.md-page .md-trigs__head .itm-sev {
+  width: 18px;
+  height: 18px;
+}
+
+.dms--redesign.md-page .md-trigs__lab {
+  font-size: 0.74rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.md-page .md-trigs__band.is-urgent .md-trigs__lab { color: var(--s-err); }
+.dms--redesign.md-page .md-trigs__band.is-high .md-trigs__lab { color: var(--s-warn); }
+
+.dms--redesign.md-page .md-trigs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.md-page .md-trig {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 220px;
+  padding: clamp(22px, 2.2vw, 30px) var(--hm-rail-pad);
+  box-shadow: var(--md-cell-line);
+}
+
+.dms--redesign.md-page .md-trig__name {
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display, var(--u-display));
+  font-size: clamp(1.15rem, 1rem + 0.5vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: -0.016em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.dms--redesign.md-page .md-trig__clock {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--n-100);
+  color: var(--dms-ink);
+  font-family: var(--dms-mono, var(--u-mono));
+  font-size: 0.82rem;
+}
+
+.dms--redesign.md-page .md-trig__clock::before {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  content: "";
+  background: currentColor;
+  opacity: 0.7;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5V12l3 1.8'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5V12l3 1.8'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+
+.dms--redesign.md-page .md-trig__foot {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--hm-ledger-rule);
+}
+
+.dms--redesign.md-page .md-trig__mod {
+  color: var(--dms-ink-2);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.md-page .md-trig__owner {
+  color: var(--dms-muted);
+  font-size: 0.84rem;
+}
+
+/* ================================================== 05 · COST OF INACTION
+ * On the alt grey: the toggle as text tabs on a hairline, the ledger and
+ * consequences as white cells rail to rail, the stakes as a stat cell
+ * with the figure in rust. */
+.dms--redesign.md-page .md-cost .itm-cost {
+  margin-top: 0;
+}
+
+.dms--redesign.md-page .md-cost .itm-seg {
+  display: flex;
+  gap: clamp(20px, 2.4vw, 36px);
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--hm-rail);
+  border-radius: 0;
+  background: transparent;
+}
+
+.dms--redesign.md-page .md-cost .itm-seg__btn {
+  padding: 0 0 14px;
+  border-radius: 0;
+  background: transparent;
+  color: var(--dms-muted);
+  font-size: 0.95rem;
+  box-shadow: inset 0 -2px 0 transparent;
+}
+
+.dms--redesign.md-page .md-cost .itm-seg__btn:hover { color: var(--dms-ink); }
+
+.dms--redesign.md-page .md-cost .itm-seg__btn.is-active {
+  background: transparent;
+  color: var(--dms-ink);
+  box-shadow: inset 0 -2px 0 var(--dms-accent);
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger {
+  margin-top: 28px;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  box-shadow: none;
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger__head,
+.dms--redesign.md-page .md-cost .itm-ledger__row {
+  padding-inline: var(--hm-rail-pad);
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger__head {
+  background: var(--n-50);
+  border-bottom-color: var(--hm-rail);
+  color: var(--dms-muted);
+  font-family: var(--dms-sans);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger__row + .itm-ledger__row {
+  border-top-color: var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger__ev {
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-cost .itm-ledger__amt .itm-data {
+  color: var(--dms-tax-text);
+  font-weight: 600;
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq {
+  margin-top: 28px;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq__card,
+.dms--redesign.md-page .md-cost .itm-conseq__card:first-child,
+.dms--redesign.md-page .md-cost .itm-conseq__card:last-child {
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad);
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq__card + .itm-conseq__card {
+  border-left: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq__card h3 {
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq__tag {
+  color: var(--dms-tax-text);
+  font-family: var(--dms-sans);
+  font-weight: 620;
+}
+
+.dms--redesign.md-page .md-cost .itm-conseq__tag .itm-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 0;
+  background: var(--dms-tax);
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes {
+  margin: 28px calc(-1 * var(--hm-rail-pad)) 0;
+  padding: clamp(28px, 3vw, 44px) var(--hm-rail-pad);
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes__lab {
+  color: var(--dms-ink);
+  font-family: var(--dms-sans);
+  font-size: 0.74rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes__meta {
+  color: var(--dms-muted);
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes__val .itm-data {
+  color: var(--dms-tax-text);
+  font-family: var(--dms-display, var(--u-display));
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes__to {
+  color: var(--dms-muted);
+}
+
+/* ================================================= 06 · VALIDATED STATE */
+.dms--redesign.md-page .md-val__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-val__cell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(26px, 2.6vw, 36px) var(--hm-rail-pad);
+  box-shadow: var(--md-cell-line);
+}
+
+.dms--redesign.md-page .md-val__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 10px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+}
+
+.dms--redesign.md-page .md-val__icon svg { width: 22px; height: 22px; }
+
+.dms--redesign.md-page .md-val__cell h3 {
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display, var(--u-display));
+  font-size: 1.12rem;
+  font-weight: 560;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+}
+
+.dms--redesign.md-page .md-val__cell p {
+  margin: 0;
+  color: var(--dms-muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.dms--redesign.md-page .md-val__cta {
+  margin-top: 28px;
+}
+
+.dms--redesign.md-page .md-textlink {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dms-accent);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dms--redesign.md-page .md-textlink:hover {
+  color: var(--dms-accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============================================================ responsive */
+@media (max-width: 1080px) {
+  .dms--redesign.md-page .md-trigs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 1024px) {
+  .dms--redesign.md-page .md-diff .itm-diff__grid--arcade { grid-template-columns: 1fr; }
+  .dms--redesign.md-page .md-diff .itm-trail {
+    border-right: 0;
+    border-top: 1px solid var(--hm-rail);
+  }
+}
+
+@media (max-width: 960px) {
+  .dms--redesign.md-page .md-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 920px) {
+  .dms--redesign.md-page .md-cost .itm-conseq__card + .itm-conseq__card {
+    border-left: 0;
+    border-top: 1px solid var(--hm-rail);
+  }
+}
+
+@media (max-width: 820px) {
+  .dms--redesign.md-page .md-val__grid { grid-template-columns: 1fr; }
+  .dms--redesign.md-page .md-cov .itm-cov__mods { padding-left: var(--hm-rail-pad); }
+}
+
+@media (max-width: 680px) {
+  .dms--redesign.md-page .md-trigs__grid { grid-template-columns: 1fr; }
+  .dms--redesign.md-page .md-trig { min-height: 0; }
+}
+
+/* the last column's right line would sit 1px past the rail: clip it */
+.dms--redesign.md-page .md-trigs__grid,
+.dms--redesign.md-page .md-val__grid {
+  overflow: hidden;
+}
+
+.dms--redesign.md-page .md-cost .itm-stakes__text {
+  max-width: 44ch;
+}
+
+@media (max-width: 480px) {
+  .dms--redesign.md-page .md-cost .itm-stakes__val .itm-data { font-size: 2.6rem; }
+}
+
+/* ================================================ PRODUCT WINDOWS, record only
+ * 23 Sep 2026, carried over from the quality Solutions page (homepage
+ * framing): the in-app nav rail and the "My Conversations" inbox mean
+ * nothing to a new visitor, so both arcades (decision trail here; the hero is the two-pane cut below) show
+ * the record only. Same wider grid as the home hero (54 rail + 270 inbox +
+ * 680 thread + 390 checklist = 1394), the first 324px clipped away, the
+ * camera centred on the remaining 1070 x 560 and held still; the plate the
+ * clip cuts from the camera is drawn under the cut on the anchor. Every
+ * pose on both journeys is a record pose. */
+.dms--redesign.md-page { --md-cam-diff: 0.56; }
+
+@media (min-width: 1280px) {
+  .dms--redesign.md-page { --md-cam-diff: 0.74; }
+}
+
+@media (min-width: 1025px) {
+  .dms--redesign.md-page .md-diff .itm-arcstage .stx-root .stx-arc { --md-cam: var(--md-cam-diff); }
+
+  .dms--redesign.md-page .md-diff .itm-arcstage .stx-root .stx-arc__camera {
+    grid-template-columns: 54px 270px 680px 390px;
+    width: 1394px;
+    clip-path: inset(0 0 0 324px);
+    transform: translate3d(calc(-50% - 162px * var(--md-cam)), -50%, 0) scale(var(--md-cam));
+    outline: 0;
+    box-shadow: none;
+  }
+
+  .dms--redesign.md-page .md-diff .itm-arcstage .stx-root .stx-arc::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(1070px * var(--md-cam) + 2 * var(--rf-plate, 7px));
+    height: calc(560px * var(--md-cam) + 2 * var(--rf-plate, 7px));
+    transform: translate(-50%, -50%);
+    background: oklch(1 0 0 / 0.24);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.45),
+      0 4px 10px -4px oklch(0 0 0 / 0.12),
+      0 24px 48px -20px oklch(0 0 0 / 0.22),
+      0 48px 96px -32px oklch(0 0 0 / 0.18);
+    pointer-events: none;
+  }
+
+  /* the Part 11 dialog centres on the visible record, not the clipped grid */
+  .dms--redesign.md-page .dms-heroarc__stage .stx-root .stx-arc__signwrap,
+  .dms--redesign.md-page .md-diff .itm-arcstage .stx-root .stx-arc__signwrap {
+    left: 324px;
+  }
+}
+
+/* ======================================================= TWO-PANE HERO
+ * Ported from the quality Solutions page (solution-rails.css) on 23 Sep
+ * 2026 (Abhishek: "the hero needs to be like the quality solutions page").
+ * Original note follows.
+ * 23 Sep 2026 (Abhishek: "I want the hero to be a 2 pane horizontal
+ * layout"): the copy on the charcoal left, the product window on the wash
+ * right, both panes between the rails for the full height of the hero, a
+ * hairline between them. The window is cut to the record and checklist
+ * (the conversation list is noise at this size) and shown whole, centred,
+ * with the frosted plate drawn on the arc because the clip would eat a
+ * box-shadow plate (the homepage hero's recipe). */
+.dms--redesign.md-page .dms-hero.md-hero--split {
+  padding-top: var(--dms-header-h);
+  padding-bottom: 0;
+}
+
+.dms--redesign.md-page .md-hero2 {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  align-items: stretch;
+  /* a little taller than the window needs (Abhishek, 23 Sep) */
+  min-height: clamp(560px, 46vw, 700px);
+  max-width: var(--dms-maxw);
+  margin-inline: auto;
+}
+
+.dms--redesign.md-page .md-hero2__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 22px;
+  padding: clamp(48px, 5vw, 88px) var(--hm-rail-pad);
+  text-align: left;
+}
+
+.dms--redesign.md-page .md-hero2__copy .dms-hero__title {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2.3rem, 3.5vw, 3.5rem);
+  text-align: left;
+}
+
+.dms--redesign.md-page .md-hero2__copy .dms-hero__sub {
+  max-width: 44ch;
+  margin: 0;
+  font-size: clamp(0.98rem, 1.05vw, 1.08rem);
+  text-align: left;
+}
+
+.dms--redesign.md-page .md-hero2__copy .dms-hero__ctas {
+  justify-content: flex-start;
+  margin-top: 4px;
+}
+
+/* the one signed figure, on a hairline under the CTAs */
+.dms--redesign.md-page .md-hero2__copy .sk-hero__proof {
+  align-self: stretch;
+  max-width: 46ch;
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hm-rail);
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.dms--redesign.md-page .dms-hero--rails .md-hero2__visual {
+  display: flex;
+  min-width: 0;
+  max-width: none;
+  flex-direction: column;
+  margin: 0;
+  box-shadow: inset 1px 0 0 var(--hm-rail);
+}
+
+.dms--redesign.md-page .md-hero2__visual .dms-heroarc {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.dms--redesign.md-page .md-hero2__visual .dms-heroarc__stage { flex: 1; }
+.dms--redesign.md-page .md-hero2__visual .dms-heroarc__stage .sty-scene,
+.dms--redesign.md-page .md-hero2__visual .dms-heroarc__stage .sty-scene__inner,
+.dms--redesign.md-page .md-hero2__visual .dms-heroarc__stage .stx-stage { height: 100%; }
+
+.dms--redesign.md-page .md-hero2 .stx-root .stx-arc {
+  --md-hk: 0.84;
+  position: relative;
+  height: 100%;
+  min-height: calc(560px * var(--md-hk) + 96px);
+}
+
+@media (min-width: 1025px) and (max-width: 1439px) { .dms--redesign.md-page .md-hero2 .stx-root .stx-arc { --md-hk: 0.74; } }
+@media (min-width: 1025px) and (max-width: 1279px) { .dms--redesign.md-page .md-hero2 .stx-root .stx-arc { --md-hk: 0.62; } }
+@media (min-width: 768px) and (max-width: 1024px) { .dms--redesign.md-page .md-hero2 .stx-root .stx-arc { --md-hk: 0.8; } }
+@media (max-width: 767px) { .dms--redesign.md-page .md-hero2 .stx-root .stx-arc { --md-hk: 0.62; } }
+
+/* every pose: the record + checklist (x 324..1150 of the 1150 grid),
+ * centred, no drift */
+.dms--redesign.md-page .md-hero2 .stx-root .stx-arc .stx-arc__camera {
+  --md-cut-l: 324px;
+  --md-cut-r: 0px;
+  z-index: 1;
+  --stx-camera-x: calc((var(--md-cut-r) - var(--md-cut-l)) / 2 * var(--md-hk));
+  --stx-camera-y: 0px;
+  --stx-camera-scale: var(--md-hk);
+  clip-path: inset(0 var(--md-cut-r) 0 var(--md-cut-l));
+  outline: 0;
+  box-shadow: none;
+}
+
+/* the plate, sized to the visible cut */
+.dms--redesign.md-page .md-hero2 .stx-root .stx-arc::before {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  width: calc((1150px - 324px) * var(--md-hk));
+  height: calc(560px * var(--md-hk));
+  content: "";
+  transform: translate(-50%, -50%);
+  outline: 1px solid oklch(0 0 0 / 0.05);
+  box-shadow:
+    0 0 0 8px oklch(1 0 0 / 0.24),
+    0 0 0 9px oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+  pointer-events: none;
+}
+
+/* phones: the thread column only (x 324..864) */
+@media (max-width: 767px) {
+  .dms--redesign.md-page .md-hero2 .stx-root .stx-arc .stx-arc__camera { --md-cut-r: 286px; }
+  .dms--redesign.md-page .md-hero2 .stx-root .stx-arc::before {
+    width: calc(540px * var(--md-hk));
+    box-shadow:
+      0 0 0 5px oklch(1 0 0 / 0.24),
+      0 0 0 6px oklch(1 0 0 / 0.45),
+      0 18px 36px -18px oklch(0 0 0 / 0.22);
+  }
+}
+
+/* no step rail (Abhishek, 23 Sep: "hide the steps and keep the visual on
+ * loop"): with nothing to take the wheel, the arcade's timer never stops */
+.dms--redesign.md-page .md-hero2 .dms-heroarc__rail { display: none; }
+
+@media (max-width: 1024px) {
+  .dms--redesign.md-page .md-hero2 { grid-template-columns: 1fr; min-height: 0; }
+  .dms--redesign.md-page .md-hero2__copy { padding-block: clamp(40px, 7vw, 64px); }
+  .dms--redesign.md-page .dms-hero--rails .md-hero2__visual { box-shadow: inset 0 1px 0 var(--hm-rail); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.md-page .md-hero2 .stx-root .stx-arc::before { transition: none; }
+}
+
+/* the hero eyebrow: the railed blue-square label, lifted to blue-400 on
+ * the charcoal by the shared rule; a little air before the headline */
+.dms--redesign.md-page .md-hero2__copy .dms-eyebrow { margin-bottom: 2px; }
+
+
+/* =========================================== THE THREE WAYS IN, rebuilt
+ * 23 Sep 2026, on the quality Solutions page's grammar (ways-in.tsx): the
+ * way-in cells (sk-wk, solution-rails.css) for roles and coverage, the
+ * shared urgent board on the charcoal for what's breaking. */
+
+/* five seats in one row: tighter wash, the artifact scaled to fit */
+@media (min-width: 1025px) {
+  .dms--redesign.md-page .md-wk--roles .sk-wk__wash { aspect-ratio: 4 / 4.7; }
+  .dms--redesign.md-page .md-wk--roles .sk-wk__intro h3 { font-size: 1.12rem; }
+}
+
+@media (max-width: 1280px) and (min-width: 1025px) {
+  .dms--redesign.md-page .md-wk--roles .sk-wk__wash > * { zoom: 0.86; }
+}
+
+/* 04 on the charcoal, the quality page's tones */
+.dms--redesign.md-page .md-trigs--dark.hm-railed { background: var(--hm-charcoal, #17191f); }
+.dms--redesign.md-page .md-trigs--dark .sk-urg {
+  --urg-ink: #fff;
+  --urg-muted: var(--dms-d-ink-3, #8b929f);
+  --urg-hover: var(--dms-d-bg-2, #1c1f26);
+  --urg-link: var(--u-blue-400, #5b9bff);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+}
+.dms--redesign.md-page .md-trigs--dark .dms-lede { color: var(--dms-d-ink-2, #b9bec8); }
+.dms--redesign.md-page .md-trigs--dark .dms-h2 { color: #fff; }

@@ -35,6 +35,9 @@ export type ProofLead = {
   body: string;
   footnote: string;
   href?: string;
+  /* optional: who attested it. When set, the reel captions the lead like
+   * every still (who in bold, one line under it, a short fact right) */
+  who?: string;
 };
 
 type MirrorRow = (typeof customerVideos)[number];

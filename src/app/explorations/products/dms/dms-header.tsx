@@ -132,20 +132,39 @@ export function DmsHeader() {
       const x = Math.max(0, Math.min(window.innerWidth - 1, Math.round(window.innerWidth / 2)));
       const el = document.elementFromPoint(x, probeY);
       const overProductFrame = Boolean(el?.closest(".dms-appframe"));
-      const surface = el?.closest(".dms-section, .dms-footer, .sft") as HTMLElement | null;
+      /* a sticky bar that parks under the header (the Solutions sub-nav)
+       * declares its own surface with data-header-theme, so the header
+       * matches it instead of keeping whatever the hero set (23 Sep 2026) */
+      const surface = el?.closest(".dms-section, .dms-footer, .sft, [data-header-theme]") as HTMLElement | null;
       if (!surface) return;
       const cl = surface.classList;
-      const next: Theme = overProductFrame
+      const declared = surface.dataset.headerTheme as Theme | undefined;
+      const bg = getComputedStyle(surface).backgroundColor;
+      /* a section can keep the --alt class while a page layer repaints it
+       * white (the rails pages, 23 Sep 2026), so the grey theme only applies
+       * when the surface actually paints grey */
+      const paintsWhite = /^rgba?\(255,\s*255,\s*255(,\s*1)?\)$/.test(bg);
+      const next: Theme = declared
+        ? declared
+        : overProductFrame
         ? "light"
         : DARK_SURFACES.some((c) => cl.contains(c))
         ? "dark"
-        : cl.contains("dms-section--alt")
+        : cl.contains("dms-section--alt") && !paintsWhite
           ? "alt"
           : "light";
       /* transparent only while the page sits at the very top of the hero;
        * once scrolled, hero content slides under the bar, so frost it too */
       setFrosted(overProductFrame || window.scrollY > 8 || !cl.contains("dms-hero"));
       setTheme((prev) => (prev === next ? prev : next));
+      /* hand the surface's own ground to the frosted bar (home lifts its hero
+       * above the base dark); only an opaque colour is trusted, gradients and
+       * transparent surfaces fall back to the token */
+      if (bar) {
+        const opaque = /^rgb\(/.test(bg) || (/^rgba\(/.test(bg) && !/,\s*0\)$/.test(bg));
+        if (next === "dark" && opaque) bar.style.setProperty("--dms-header-surface", bg);
+        else bar.style.removeProperty("--dms-header-surface");
+      }
     };
 
     let raf: number | null = null;

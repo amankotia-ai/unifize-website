@@ -246,7 +246,7 @@ export const PLATFORM_ROUTE_CONFIG: ArcadeStepConfig = {
   status: "Needs Approval",
   actor: "automator",
   event: "Routed for approval in role order",
-  eventDetail: "Every approver sees the same sequence and the same clock",
+  eventDetail: "Every approver sees the same sequence and the same due date",
   checklist: "APPROVALS",
   checklistItems: ["Quality approval", "Engineering approval"],
   focus: "queue",
@@ -259,7 +259,7 @@ export const PLATFORM_ROUTE_CONFIG: ArcadeStepConfig = {
     "M. Osei · Production · readiness",
   ],
   focusAction: "Request approvals",
-  ownershipNote: "An order everyone can see, on a clock someone owns",
+  ownershipNote: "An order everyone can see, with a due date someone owns",
   world: CHANGE_WORLD,
   checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
 };
@@ -296,7 +296,7 @@ export const PLATFORM_DASHBOARD_CONFIG: ArcadeStepConfig = {
   status: "Approved",
   actor: "automator",
   event: "Updated the closure metrics from the record",
-  eventDetail: "Every thread carries its own clock · no export, no reconciliation",
+  eventDetail: "Every thread is timed open to close · no export, no reconciliation",
   checklist: "CLOSURE",
   checklistItems: ["Effectiveness check"],
   focus: "dashboard",
@@ -321,15 +321,25 @@ export const PLATFORM_JOURNEY_CONFIGS: ArcadeStepConfig[] = [
   PLATFORM_DASHBOARD_CONFIG,
 ];
 
-/* ============================================================ Unifize AI
- * The AI journey (platform section 04, from Raj's 7 Sep 2026 brief). Same
- * change, same universe, one more document in play: the revised drawing.
- * Three moments: what Unifize AI reads today (this record: the checklist,
- * the thread, the linked drawing), what vectorisation lets it read next
- * (every record and document, by meaning), and what it does with the
- * finding (links the two documents this change touches; a person opens
- * revision control). The world adds a linked "Affected documents" field
- * so the auto-link lands somewhere real; the hero's world is untouched. */
+/* ===================================================== the AI journey
+ * Platform section 04, restaged 21 Sep 2026 from the product recording of
+ * cross-record impact ("What else does this change affect? (Beta)", shared
+ * 16 Sep). Same change, same universe. Four moments, each one a beat the
+ * recording shows:
+ *   ask     - the AI button sits IN the checklist; it reads the reason for
+ *             change and the impact answers already on the record
+ *   suggest - it replies in the thread with the documents the change puts
+ *             at risk (nobody went through the document register)
+ *   confirm - a person ticks the rows and adds them to the checklist; what
+ *             lands in Affected documents is records, not a list
+ *   nudge   - approval requested, the assistant tags the approver
+ * The mocked draft / scan-everything / auto-link poses (Raj's 7 Sep verbal
+ * brief) are gone: the product reads two fields and a person links. */
+const AI_SUGGESTED = [
+  { id: "WI-092", title: "Line clearance, packaging · Rev B", why: "States 4.2 N·m" },
+  { id: "FRM-201", title: "Assembly torque check form · Rev A", why: "States 4.2 N·m" },
+];
+
 const AI_WORLD: ArcadeFlowWorld = {
   ...CHANGE_WORLD,
   context: {
@@ -343,14 +353,18 @@ const AI_WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE & IMPACT",
       items: [
-        { label: "Reason for change", note: "Raised from NC-204 · root cause linked" },
-        { label: "Affected documents", kind: "linked", links: ["SOP-118", "DWG-2201"] },
+        {
+          label: "Reason for change",
+          kind: "field",
+          value: "Housing fastener torque raised from 4.2 to 4.8 N·m. Raised from NC-204.",
+        },
         {
           label: "Impact assessment",
           kind: "field",
-          value: "No form or fit change. Torque spec 4.2 to 4.8 N·m; risk low.",
-          note: "Drafted by Unifize AI from this record",
+          value: "No policy or system change. Line 2 operators need retraining.",
         },
+        { label: "Affected documents", kind: "linked", links: ["SOP-118", "DWG-2201"] },
+        { label: "Assess impacted documents", kind: "ask", value: "What else does this change affect?", note: "Beta" },
       ],
     },
     CHANGE_WORLD.checklistSections[1],
@@ -358,108 +372,161 @@ const AI_WORLD: ArcadeFlowWorld = {
   ],
 };
 
-/* today: the assistant drafts from the record in front of you. The field is
- * typed live on the checklist, the footer hands the draft to a person. */
-export const PLATFORM_AI_DRAFT_CONFIG: ArcadeStepConfig = {
-  source: "PLATFORM AI s1 · reads the record",
-  ghost: "Draft",
+const AI_BASE = {
   ...RECORD,
   status: "In Review",
-  actor: "Unifize Assistant",
-  event: "Drafted the impact assessment from this record",
-  eventDetail: "Read the checklist, the thread, and the linked drawing · nothing outside this change",
   checklist: "CHANGE & IMPACT",
-  checklistItems: ["Impact assessment"],
-  focus: "checklist",
-  focusTitle: "A draft, on the record",
-  focusRows: ["Drawing DWG-2201 · linked", "Thread · 3 messages read"],
-  focusAction: "Accept draft",
-  ownershipNote: "Drafted by AI, accepted by a person",
   world: AI_WORLD,
   checklistOpen: "CHANGE & IMPACT",
-  checklistEntry: { section: "CHANGE & IMPACT", item: "Impact assessment" },
-  checklistFootnote: "Draft from Unifize AI · edit or accept",
-  checklistProgress: { "CHANGE & IMPACT": 2, APPROVALS: 0, CLOSURE: 0 },
+} as const;
+
+/* ask: the button is a row in the checklist, at the stage where impact gets
+ * assessed. The two fields it reads are tagged; the button takes the click. */
+export const PLATFORM_AI_ASK_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s1 · the button in the checklist",
+  ghost: "Ask",
+  ...AI_BASE,
+  actor: "You",
+  event: "Asked Unifize AI what else this change affects",
+  eventDetail: "From the checklist · it reads the reason for change and the impact answers",
+  checklistItems: ["Assess impacted documents"],
+  focus: "checklist",
+  poseVariant: "ask",
+  focusTitle: "Assess impacted documents",
+  focusRows: ["Reason for change", "Impact assessment"],
+  ownershipNote: "Asked by a person, on the record",
+  checklistReads: { section: "CHANGE & IMPACT", items: ["Reason for change", "Impact assessment"] },
+  checklistAsk: { section: "CHANGE & IMPACT", item: "Assess impacted documents" },
+  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
 };
 
-/* next: one click on the AI button, and it reads across every record and
- * document by meaning. The rows land in order under the scan line. */
-export const PLATFORM_AI_SCAN_CONFIG: ArcadeStepConfig = {
-  source: "PLATFORM AI s2 · reads across records",
-  ghost: "Read",
-  ...RECORD,
-  status: "In Review",
+/* suggest: the reply lands in the thread. What it read, the documents at
+ * risk and why, boxes unticked: a proposal, nothing linked yet. */
+export const PLATFORM_AI_SUGGEST_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s2 · the suggestion in the thread",
+  ghost: "Suggest",
+  ...AI_BASE,
   actor: "Unifize Assistant",
-  event: "Reading every document and record this torque change could touch",
-  eventDetail: "By meaning, not by file name · the drawings that cite the value, the changes that moved it before",
-  checklist: "CHANGE & IMPACT",
+  event: "Two documents still state the torque this change replaces",
+  eventDetail: "A suggestion · nothing is linked until a person adds it",
   checklistItems: ["Affected documents"],
   focus: "assist",
-  poseVariant: "scan",
-  focusTitle: "Reading across records",
-  focusRows: ["Every document and record at Engineering Industries"],
-  ownershipNote: "One question, asked once, on the record",
-  world: AI_WORLD,
-  checklistOpen: "CHANGE & IMPACT",
-  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
+  poseVariant: "suggest",
+  focusTitle: "AI impact summary",
+  focusRows: AI_SUGGESTED.map((row) => `${row.id} · ${row.title}`),
+  ownershipNote: "Suggested by AI",
+  checklistProgress: { "CHANGE & IMPACT": 4, APPROVALS: 0, CLOSURE: 0 },
   assist: {
-    prompt: "Which other documents does this change touch?",
-    scope: "Reading across every document and record, by meaning",
-    scanned: [
-      { id: "DWG-2201", title: "Housing assembly drawing · Rev D", match: "source" },
-      { id: "WI-092", title: "Line clearance, packaging", match: "impacted" },
-      { id: "FRM-201", title: "Assembly torque check form", match: "impacted" },
-      { id: "SOP-118", title: "Cleaning validation", match: "clear" },
-      { id: "CC-2103", title: "Torque spec update · bracket, 2025", match: "precedent" },
-    ],
+    kicker: "UNIFIZE AI · BETA",
+    prompt: "What else does this change affect?",
+    read: ["Reason for change", "Impact assessment"],
+    suggested: AI_SUGGESTED,
+    action: "Add to checklist",
+    alt: "Dismiss",
   },
 };
 
-/* the finding, in plain words, and the two records linked from it. The
- * checklist's linked field grows by two; a person opens revision control. */
-export const PLATFORM_AI_LINK_CONFIG: ArcadeStepConfig = {
-  source: "PLATFORM AI s3 · links the work",
-  ghost: "Link",
-  ...RECORD,
-  status: "In Review",
+/* confirm: a person ticks both and adds them. The linked field grows by two
+ * RECORDS (id, revision, state), which is the point: not a list. */
+export const PLATFORM_AI_CONFIRM_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s3 · a person adds them",
+  ghost: "Confirm",
+  ...AI_BASE,
   actor: "Unifize Assistant",
-  event: "Found two documents that still state the old torque value",
-  eventDetail: "Linked both to this change · revision control ready to open · your call",
-  checklist: "CHANGE & IMPACT",
+  event: "Two documents still state the torque this change replaces",
+  eventDetail: "Ticked and added by D. Fontaine · linked to this change as records",
   checklistItems: ["Affected documents"],
   focus: "assist",
   poseVariant: "linked",
-  focusTitle: "What this change touches",
-  focusRows: ["WI-092 · Line clearance", "FRM-201 · Assembly torque check form"],
-  focusAction: "Open revision control on both",
-  ownershipNote: "Found by AI, linked on the record, opened by a person",
-  world: AI_WORLD,
-  checklistOpen: "CHANGE & IMPACT",
-  checklistLinks: { section: "CHANGE & IMPACT", item: "Affected documents", links: ["SOP-118", "DWG-2201", "WI-092", "FRM-201"] },
-  checklistProgress: { "CHANGE & IMPACT": 3, APPROVALS: 0, CLOSURE: 0 },
+  focusTitle: "AI impact summary",
+  focusRows: AI_SUGGESTED.map((row) => `${row.id} · ${row.title}`),
+  ownershipNote: "Suggested by AI, added by a person",
+  checklistLinks: {
+    section: "CHANGE & IMPACT",
+    item: "Affected documents",
+    links: ["SOP-118", "DWG-2201", "WI-092", "FRM-201"],
+    records: AI_SUGGESTED.map((row) => ({ id: row.id, title: row.title, state: "Effective" })),
+  },
+  checklistProgress: { "CHANGE & IMPACT": 4, APPROVALS: 0, CLOSURE: 0 },
   assist: {
-    prompt: "Which other documents does this change touch?",
-    scanned: [
-      { id: "DWG-2201", title: "Housing assembly drawing · Rev D", match: "source" },
-      { id: "WI-092", title: "Line clearance, packaging", match: "impacted" },
-      { id: "FRM-201", title: "Assembly torque check form", match: "impacted" },
-      { id: "SOP-118", title: "Cleaning validation", match: "clear" },
-      { id: "CC-2103", title: "Torque spec update · bracket, 2025", match: "precedent" },
-    ],
-    finding:
-      "WI-092 and FRM-201 both state the 4.2 N·m torque this change raises to 4.8 N·m. CC-2103 made the same kind of change in 2025 and revised both.",
-    linked: [
-      { id: "WI-092", title: "Line clearance, packaging · Rev B", state: "Linked · needs revision" },
-      { id: "FRM-201", title: "Assembly torque check form · Rev A", state: "Linked · needs revision" },
-    ],
-    action: "Open revision control on both",
-    alt: "Not now",
+    kicker: "UNIFIZE AI · BETA",
+    prompt: "What else does this change affect?",
+    read: ["Reason for change", "Impact assessment"],
+    suggested: AI_SUGGESTED.map((row) => ({ ...row, picked: true })),
+    action: "Add to checklist",
+    alt: "Dismiss",
+    pressed: true,
   },
 };
 
-/* the three moments, in the order the section tells them */
+/* nudge: approval requested, and the assistant tags the approver on the
+ * record. The owner never writes the chasing message. */
+export const PLATFORM_AI_NUDGE_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s4 · the assistant tags the approver",
+  ghost: "Nudge",
+  ...AI_BASE,
+  status: "Needs Approval",
+  actor: "Unifize Assistant",
+  event: "@S. Okafor this change is ready for your approval",
+  eventDetail: "Posted when D. Fontaine requested approval · four affected documents on the record",
+  checklist: "APPROVALS",
+  checklistItems: ["Engineering approval"],
+  focus: "comment",
+  focusTitle: "Approval requested",
+  focusRows: ["Engineering approval · waiting on S. Okafor"],
+  ownershipNote: "Nobody chased",
+  world: {
+    ...AI_WORLD,
+    checklistSections: AI_WORLD.checklistSections.map((section) =>
+      section.title === "CHANGE & IMPACT"
+        ? {
+            ...section,
+            items: section.items.map((item) =>
+              item.kind === "linked" ? { ...item, links: ["SOP-118", "DWG-2201", "WI-092", "FRM-201"] } : item,
+            ),
+          }
+        : section,
+    ),
+  },
+  checklistOpen: "APPROVALS",
+  checklistProgress: { "CHANGE & IMPACT": 4, APPROVALS: 1, CLOSURE: 0 },
+};
+
+/* trail: what the record kept of the AI step (Intelligence Posture PLT-8):
+ * who asked, what it read, what it proposed, what a person decided. The
+ * thread already holds all of it; the history card reads it back in order,
+ * so the governance claim is a beat the record shows, not a paragraph. */
+export const PLATFORM_AI_TRAIL_CONFIG: ArcadeStepConfig = {
+  source: "PLATFORM AI s5 · the trail on the record",
+  ghost: "Trail",
+  ...AI_BASE,
+  status: "Needs Approval",
+  actor: "You",
+  event: "Opened the record history",
+  eventDetail: "Every AI step sits in the thread with who asked, what it read, and what a person did with it",
+  checklist: "CHANGE & IMPACT",
+  checklistItems: ["Affected documents"],
+  focus: "history",
+  focusKicker: "AI ON THIS RECORD",
+  focusTitle: "One step, replayable",
+  focusRows: [
+    "Approval requested · S. Okafor tagged · 16:04",
+    "Added by D. Fontaine · WI-092, FRM-201 linked · 16:02",
+    "Proposed · WI-092, FRM-201 still state 4.2 N·m · 15:49",
+    "Read · Reason for change, Impact assessment · 15:49",
+    "Asked · D. Fontaine · What else does this change affect? · 15:48",
+  ],
+  ownershipNote: "Who asked, what it read, who decided",
+  world: PLATFORM_AI_NUDGE_CONFIG.world,
+  checklistOpen: "CHANGE & IMPACT",
+  checklistProgress: { "CHANGE & IMPACT": 4, APPROVALS: 1, CLOSURE: 0 },
+};
+
+/* the five moments, in the order the section tells them */
 export const PLATFORM_AI_CONFIGS: ArcadeStepConfig[] = [
-  PLATFORM_AI_DRAFT_CONFIG,
-  PLATFORM_AI_SCAN_CONFIG,
-  PLATFORM_AI_LINK_CONFIG,
+  PLATFORM_AI_ASK_CONFIG,
+  PLATFORM_AI_SUGGEST_CONFIG,
+  PLATFORM_AI_CONFIRM_CONFIG,
+  PLATFORM_AI_NUDGE_CONFIG,
+  PLATFORM_AI_TRAIL_CONFIG,
 ];

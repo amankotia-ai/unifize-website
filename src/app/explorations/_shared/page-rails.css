@@ -1,0 +1,258 @@
+/* ============================================================================
+ * page-rails.css - the page rails grammar, shared (22 Sep 2026).
+ *
+ * The reference grammar Abhishek brought (PaperStack, meinGPT, Klea, Respan):
+ * two hairline rails down the content column, hatched divider bands between
+ * sections, blue-square eyebrows, soft gradient washes with grain under
+ * every product artifact. Built on the homepage first (home-rails.css);
+ * the part every page shares lives here so the platform page (and the pages
+ * after it) draw the same lines from the same rules.
+ *
+ * A page opts in with `dms--rails` on its <main>; a section opts in with
+ * `hm-railed`; `<HatchBand />` (page-rails.tsx) draws a divider band.
+ *
+ * Rail geometry: the rails sit exactly on the .dms-wrap padding edge, so
+ * every railed section shares one pair of lines. Content inside a railed
+ * section is inset by --hm-rail-pad; a wrap marked `hm-bleed` keeps the bare
+ * gutter so a wash or a logo strip runs rail to rail.
+ * ========================================================================== */
+
+.dms--redesign.dms--rails {
+  --hm-rail: var(--n-150);
+  --hm-rail-dash: var(--n-300);
+  --hm-hatch-ink: var(--n-200);
+  --hm-cross: var(--n-500);
+  --hm-ledger-rule: rgba(23, 24, 26, 0.09);
+  --hm-rail-x: calc(max(0px, (100% - var(--dms-maxw)) / 2) + var(--dms-gutter));
+  --hm-rail-pad: clamp(20px, 3vw, 48px);
+  /* the washes: brand blue family into a warm paper tone, never saturated.
+   * Product artifacts sit on sky / blue; the old world (problems) on paper. */
+  --hm-wash-sky: linear-gradient(150deg, #cfe2ff 0%, #e2eeff 36%, #f1f0ec 66%, #fbe3d2 100%);
+  --hm-wash-blue: linear-gradient(180deg, #cfe3ff 0%, #e3eeff 55%, #f1f6ff 100%);
+  --hm-wash-warm: linear-gradient(150deg, #fbe7d6 0%, #f5efe6 45%, #e4eeff 100%);
+  --hm-wash-paper: linear-gradient(150deg, #f3f0ea 0%, #ece9e2 55%, #f8e6d8 100%);
+  /* the dark bookends (hero, close, footer) share one charcoal */
+  --hm-charcoal: #1f2126;
+  --hm-charcoal-2: #24272d;
+  --hm-charcoal-3: #2b2f36;
+  --hm-charcoal-border: #353941;
+  --hm-charcoal-border-2: #41464f;
+}
+
+/* ------------------------------------------------------------ the rails */
+.dms--redesign.dms--rails .hm-railed {
+  position: relative;
+}
+
+.dms--redesign.dms--rails .hm-railed::before,
+.dms--redesign.dms--rails .hm-railed::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  content: "";
+  background: var(--hm-rail);
+  pointer-events: none;
+}
+
+.dms--redesign.dms--rails .hm-railed::before { left: var(--hm-rail-x); }
+.dms--redesign.dms--rails .hm-railed::after { right: var(--hm-rail-x); }
+
+.dms--redesign.dms--rails .hm-railed > .dms-wrap {
+  padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+}
+
+.dms--redesign.dms--rails .hm-railed > .dms-wrap.hm-bleed {
+  padding-inline: var(--dms-gutter);
+}
+
+/* ------------------------------------------------------ the hatch band
+ * Dashed rules top and bottom, a diagonal hatch between the rails, and a
+ * crosshair where each rule meets a rail. */
+.dms--redesign.dms--rails .hm-hatch {
+  height: clamp(44px, 5.5vw, 72px);
+}
+
+.dms--redesign.dms--rails .hm-hatch__rule {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--hm-rail-dash) 0 4px, transparent 4px 9px);
+}
+
+.dms--redesign.dms--rails .hm-hatch__rule--t { top: 0; }
+.dms--redesign.dms--rails .hm-hatch__rule--b { bottom: 0; }
+
+.dms--redesign.dms--rails .hm-hatch__fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--hm-rail-x);
+  right: var(--hm-rail-x);
+  background: repeating-linear-gradient(-45deg, var(--hm-hatch-ink) 0 1px, transparent 1px 10px);
+}
+
+.dms--redesign.dms--rails .hm-cross {
+  position: absolute;
+  z-index: 3;
+  width: 13px;
+  height: 13px;
+  transform: translate(-50%, -50%);
+}
+
+.dms--redesign.dms--rails .hm-cross::before,
+.dms--redesign.dms--rails .hm-cross::after {
+  position: absolute;
+  content: "";
+  background: var(--hm-cross);
+}
+
+.dms--redesign.dms--rails .hm-cross::before { top: 6px; right: 0; left: 0; height: 1px; }
+.dms--redesign.dms--rails .hm-cross::after { top: 0; bottom: 0; left: 6px; width: 1px; }
+
+.dms--redesign.dms--rails .hm-cross--tl { top: 0; left: var(--hm-rail-x); }
+.dms--redesign.dms--rails .hm-cross--tr { top: 0; left: calc(100% - var(--hm-rail-x)); }
+.dms--redesign.dms--rails .hm-cross--bl { top: 100%; left: var(--hm-rail-x); }
+.dms--redesign.dms--rails .hm-cross--br { top: 100%; left: calc(100% - var(--hm-rail-x)); }
+
+/* the alt band: after a section on the alt grey the band keeps that grey
+ * (Abhishek, 22 Sep: "keep the divider section the same grey as the
+ * section above") */
+.dms--redesign.dms--rails .hm-hatch.hm-hatch--alt {
+  background: var(--dms-surface-alt);
+}
+
+/* the dark band: between two charcoal sections (platform page, Unifize AI
+ * into the proof reel) the band keeps the grammar on the bookends' ground,
+ * hatch and rules in white at low alpha */
+.dms--redesign.dms--rails .hm-hatch.hm-hatch--dark {
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  --hm-rail-dash: rgba(255, 255, 255, 0.3);
+  --hm-hatch-ink: rgba(255, 255, 255, 0.1);
+  --hm-cross: rgba(255, 255, 255, 0.55);
+  background: var(--hm-charcoal);
+}
+
+/* -------------------------------------------------------- the eyebrow
+ * Blue square, uppercase, tracked: the reference label. Scoped to railed
+ * sections so it lands one section at a time. Chapter numbers stay off. */
+.dms--redesign.dms--rails .hm-railed .dms-eyebrow {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dms-accent);
+  font-family: var(--dms-sans);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--rails .hm-railed .dms-eyebrow::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.dms--rails .hm-railed .dms-eyebrow__num {
+  display: none;
+}
+
+/* on the charcoal the square lifts to blue-400 so it holds */
+.dms--redesign.dms--rails .hm-railed.dms-hero--rails .dms-eyebrow,
+.dms--redesign.dms--rails .hm-railed.dms-section--dark .dms-eyebrow {
+  color: var(--u-blue-400);
+}
+
+/* -------------------------------------------------------- the header
+ * The bar's bottom edge is a full-width rail, drawn even while the bar is
+ * transparent at the top of a dark hero (Abhishek, 22 Sep); over the light
+ * sections the frosted bar keeps its own hairline. */
+.dms--redesign.dms--rails .dms-header.is-dark {
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ========================================================= CLOSE + FOOTER
+ * The dark bookend, on the hero's charcoal so a page opens and closes on
+ * the same ground (built on the homepage, shared since the platform page
+ * joined). A page's close takes `dms-close hm-close--rails hm-railed`; the
+ * rails run white at 12% through it and on through the footer. */
+.dms--redesign.dms--rails .dms-close.hm-close--rails,
+.dms--redesign.dms--rails .sft {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+}
+
+.dms--redesign.dms--rails .dms-close.hm-close--rails {
+  background:
+    radial-gradient(60% 42% at 50% 34%, rgba(0, 91, 183, 0.2), transparent 70%),
+    var(--dms-d-bg);
+}
+
+.dms--redesign.dms--rails .hm-close--rails .dms-close__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--u-blue-400);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--rails .hm-close--rails .dms-close__eyebrow::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+/* the footer on the rails: same geometry as .hm-railed, drawn here because
+ * the shared footer carries no rails class */
+.dms--redesign.dms--rails .sft {
+  --sft-bg: var(--dms-d-bg);
+  position: relative;
+  border-top-color: var(--hm-rail);
+  background: var(--sft-bg);
+}
+
+.dms--redesign.dms--rails .sft::before,
+.dms--redesign.dms--rails .sft::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  content: "";
+  background: var(--hm-rail);
+  pointer-events: none;
+}
+
+.dms--redesign.dms--rails .sft::before { left: var(--hm-rail-x); }
+.dms--redesign.dms--rails .sft::after { right: var(--hm-rail-x); }
+
+.dms--redesign.dms--rails .sft__wrap {
+  padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+}
+
+.dms--redesign.dms--rails .sft__base {
+  border-top: 1px solid var(--hm-rail);
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 720px) {
+  .dms--redesign.dms--rails .hm-cross { display: none; }
+  .dms--redesign.dms--rails .hm-hatch { height: 36px; }
+}

@@ -184,7 +184,10 @@
 }
 .dms--redesign .dms-header__inner { height: var(--dms-header-h); }
 .dms--redesign .dms-header.is-frosted { backdrop-filter: none; -webkit-backdrop-filter: none; }
-.dms--redesign .dms-header.is-frosted.is-dark { background: var(--dms-d-bg); border-color: var(--dms-d-border); }
+/* --dms-header-surface is set by dms-header.tsx to the opaque background of
+ * the section under the bar, so a page that lifts a dark section (home hero)
+ * gets a matching frost instead of the base dark */
+.dms--redesign .dms-header.is-frosted.is-dark { background: var(--dms-header-surface, var(--dms-d-bg)); border-color: var(--dms-d-border); }
 .dms--redesign .dms-header.is-frosted.is-light { background: #fff; border-color: var(--dms-hairline); }
 .dms--redesign .dms-header.is-frosted.is-alt { background: var(--dms-surface-alt); border-color: var(--dms-hairline); }
 .dms--redesign .dms-header__brand,
@@ -768,17 +771,46 @@
   line-height: 1.32;
   text-wrap: balance;
 }
+.dms--redesign .dms-spot__head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-left: 52px; }
+.dms--redesign .dms-spot__pos { flex: none; color: var(--dms-faint); font-family: var(--dms-mono); font-size: 0.68rem; letter-spacing: 0.08em; }
 .dms--redesign .dms-spot__fact { min-width: 0; padding-left: 52px; }
-.dms--redesign .dms-spot__metric { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 0; }
-.dms--redesign .dms-spot__metric strong { flex: none; color: var(--dms-ink); font-size: clamp(1.8rem, 2.4vw, 2.35rem); font-variant-numeric: tabular-nums; font-weight: 560; line-height: 1; white-space: nowrap; }
-.dms--redesign .dms-spot__metric > span { max-width: 28ch; color: var(--dms-faint); font-size: 0.8rem; line-height: 1.4; }
 .dms--redesign .dms-spot__detail {
-  max-width: 36ch;
-  margin: 14px 0 0;
+  max-width: 40ch;
+  margin: 0;
   color: var(--dms-muted);
   font-size: 0.86rem;
   line-height: 1.6;
   text-wrap: pretty;
+}
+/* the cost of the symptom, in the coordination-tax colour (rust) */
+.dms--redesign .dms-spot__cost {
+  display: grid;
+  gap: 6px;
+  max-width: 34rem;
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in oklch, var(--dms-tax) 26%, transparent);
+  background: var(--dms-tax-tint);
+}
+.dms--redesign .dms-spot__cost-label {
+  color: var(--dms-tax-text);
+  font-family: var(--dms-mono);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.dms--redesign .dms-spot__cost-line {
+  color: var(--dms-ink-2);
+  font-size: 0.95rem;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.dms--redesign .dms-spot__cost-line b {
+  color: var(--dms-tax-text);
+  font-size: 1.12em;
+  font-variant-numeric: tabular-nums;
+  font-weight: 640;
 }
 /* the film that answers the card: one square tile, play seal + two lines,
  * under the fact block (2 Sep 2026 sync: proof inside the problem section) */
@@ -814,7 +846,9 @@
   background: transparent;
 }
 .dms--redesign .dms-gfx { position: relative; display: grid; width: 100%; height: 100%; min-height: inherit; place-items: center; overflow: hidden; }
-.dms--redesign .dms-gfx svg { display: block; width: 112%; height: 112%; min-height: inherit; max-width: none; }
+/* the whole drawing stays in frame: fit, never fill-and-crop
+ * (Abhishek, 22 Sep: "make sure the visuals are not cut off") */
+.dms--redesign .dms-gfx svg { display: block; width: 100%; height: 100%; min-height: inherit; max-width: none; }
 .dms--redesign .dms-gfx text { font-family: var(--u-font) !important; }
 .dms--redesign .dms-gfx-source,
 .dms--redesign .dms-gfx-paper,
@@ -3009,7 +3043,7 @@
   .dms--redesign .dms-spot__fact { padding-left: 0; }
   .dms--redesign .dms-spot__film { margin-left: 0; }
   .dms--redesign .dms-spot__scene { min-height: 300px; aspect-ratio: auto; padding: 0; }
-  .dms--redesign .dms-gfx svg { width: 116%; height: 116%; max-width: none; }
+  .dms--redesign .dms-gfx svg { width: 100%; height: 100%; max-width: none; }
   .dms--redesign .dms-ctax__leak { grid-template-columns: 1fr; gap: 8px; }
   .dms--redesign .dms-ctax__leak-title { align-items: flex-start; flex-direction: column; gap: 4px; }
   .dms--redesign .dms-governance-map__record { grid-template-columns: auto 1fr; }
@@ -3435,4 +3469,20 @@
 .dms--redesign.dms--consistent-eyebrows .dms-intg__minimal-head .dms-eyebrow,
 .dms--redesign.dms--consistent-eyebrows .dms-close__lead .dms-eyebrow {
   align-self: center;
+}
+
+/* nav CTA finish (23 Sep 2026, Abhishek: "the cta button finish treatment
+ * should also be on the navbar cta button"): the hero CTA's flat fill with
+ * a faint top-lit gradient and inset top highlight, no glow. On every page
+ * that wears the shared header; the shadow is lighter on the light bar. */
+.dms--redesign .dms-header .dms-btn.dms-header__cta {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+.dms--redesign .dms-header.is-light .dms-btn.dms-header__cta {
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0.2 0.02 250 / 0.18);
+}
+.dms--redesign .dms-header .dms-btn.dms-header__cta:hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
 }

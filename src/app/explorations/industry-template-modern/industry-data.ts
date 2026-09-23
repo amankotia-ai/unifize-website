@@ -30,9 +30,19 @@ const TRIGGER_PAGES: Record<string, string> = {
 export const PERSONAS = BASE_PERSONAS.map((p) =>
   PERSONA_PAGES[p.key] ? { ...p, href: PERSONA_PAGES[p.key] } : p,
 );
-export const TRIGGERS = BASE_TRIGGERS.map((t) =>
-  TRIGGER_PAGES[t.name] ? { ...t, href: TRIGGER_PAGES[t.name] } : t,
-);
+/* the urgent board's drawn surface per moment (_shared/urgent-board.tsx);
+ * the three that lead the board, one picture each */
+const TRIGGER_VIZ: Record<string, "sheet" | "calendar" | "scale" | "alerts"> = {
+  "FDA Form 483 observation issued": "sheet",
+  "Recall scope to be defined": "scale",
+  "Supplier-caused line stop": "alerts",
+};
+
+export const TRIGGERS = BASE_TRIGGERS.map((t) => ({
+  ...t,
+  ...(TRIGGER_PAGES[t.name] ? { href: TRIGGER_PAGES[t.name] } : {}),
+  ...(TRIGGER_VIZ[t.name] ? { viz: TRIGGER_VIZ[t.name] } : {}),
+}));
 
 /* ============================================================================
  * PROOF FILMS — real Medical Devices customer videos, from the Notion

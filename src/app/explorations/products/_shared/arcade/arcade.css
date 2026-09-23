@@ -169,22 +169,26 @@
 
 .stx-root small .stx-skel { height: 8px; }
 
-/* state chips: dot + label, color on the chip, never a border edge */
+/* state chips: dot + label, color on the chip, never a border edge.
+ * Small rounded pills (22 Sep 2026: the square chips read too heavy in
+ * the product visuals). */
 
 .stx-root .stx-state {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 11px;
-  font-size: 11.5px;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
   font-weight: 650;
   letter-spacing: 0.015em;
+  line-height: 1.4;
   white-space: nowrap;
   background: var(--dms-surface-sunk);
   color: var(--dms-ink-2);
 }
 
-.stx-root .stx-state i { width: 6px; height: 6px; background: var(--dms-faint); }
+.stx-root .stx-state i { width: 5px; height: 5px; border-radius: 50%; background: var(--dms-faint); }
 
 .stx-root .stx-state.is-effective,
 .stx-root .stx-state.is-completed { background: #ddf0e4; color: #185f35; }
@@ -873,7 +877,8 @@
 }
 
 .stx-root .stx-arc__bar .stx-state {
-  font-size: 9px;
+  padding: 2px 7px;
+  font-size: 8.5px;
 }
 
 .stx-root .stx-arc__inbox,
@@ -923,8 +928,8 @@
 .stx-root .stx-arc__inbox .stx-state {
   align-self: flex-start;
   margin-top: 3px;
-  padding: 2px 7px;
-  font-size: 8px;
+  padding: 1px 6px;
+  font-size: 7.5px;
 }
 
 .stx-root .stx-arc__thread {
@@ -1552,13 +1557,13 @@
 .stx-root .stx-arc__document-card > header .stx-state,
 .stx-root .stx-arc__decision > header .stx-state,
 .stx-root .stx-arc__trace > header .stx-state,
-.stx-root .stx-arc__diffcard > header .stx-state { padding: 3px 8px; font-size: 8.5px; }
+.stx-root .stx-arc__diffcard > header .stx-state { padding: 1px 6px; font-size: 8px; }
 
 .stx-root .stx-arc__status-row .stx-state i,
 .stx-root .stx-arc__document-card > header .stx-state i,
 .stx-root .stx-arc__decision > header .stx-state i,
 .stx-root .stx-arc__trace > header .stx-state i,
-.stx-root .stx-arc__diffcard > header .stx-state i { width: 5px; height: 5px; }
+.stx-root .stx-arc__diffcard > header .stx-state i { width: 4px; height: 4px; }
 
 .stx-root .stx-arc__status-row em { color: var(--dms-muted); font-size: 8px; font-style: normal; }
 
@@ -2093,23 +2098,25 @@
 
 .stx-root .stx-arc__checklist > footer b { display: block; padding: 9px 10px; border-radius: 3px; background: var(--dms-accent); color: #fff; font-size: 9px; text-align: center; }
 
-/* Highlight: a solid accent ring thick enough to survive the camera's
- * down-scale, a wide soft halo, and a colored lift shadow. Box-shadow only,
- * so layout never shifts when the highlight moves between elements. Full ring
+/* Highlight: a slim accent ring with a wide, faint halo that blends into
+ * the surface rather than framing it (22 Sep 2026: the old 2.5px ring and
+ * hard 8px halo read as a box drawn around the card). Box-shadow only, so
+ * layout never shifts when the highlight moves between elements. Full ring
  * on all four edges; full-bleed elements (inbox rows, checklist sections)
  * flip to an inset ring + tint so the region's overflow crop can't eat it. */
 
 .stx-root .stx-arc .is-target {
   box-shadow:
-    0 0 0 2.5px var(--dms-accent),
-    0 0 0 8px color-mix(in oklab, var(--dms-accent), transparent 86%),
-    0 16px 36px -14px color-mix(in oklab, var(--dms-accent), transparent 40%);
+    0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%),
+    0 0 0 6px color-mix(in oklab, var(--dms-accent), transparent 92%),
+    0 0 24px 4px color-mix(in oklab, var(--dms-accent), transparent 90%),
+    0 12px 32px -16px color-mix(in oklab, var(--dms-accent), transparent 50%);
 }
 
 .stx-root .stx-arc__inbox-list article.is-target,
 .stx-root .stx-arc__checklist > section.is-target {
-  background: color-mix(in oklab, var(--dms-accent), transparent 94%);
-  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+  background: color-mix(in oklab, var(--dms-accent), transparent 95%);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%);
 }
 
 .stx-root .stx-arc__camera.is-focus-search {
@@ -2310,7 +2317,7 @@
   .stx-root .stx-arc__traincard,
   .stx-root .stx-arc__routecard,
   .stx-root .stx-arc__assist,
-  .stx-root .stx-arc__composer-ai,
+  .stx-root .stx-arc__check-askitem,
   .stx-root .stx-arc__check-linkeditem,
   .stx-root .stx-arc__home section,
   .stx-root .stx-arc__checklist > section {
@@ -3161,7 +3168,7 @@
 }
 .stx-root .stx-arc__reports-grid > section.is-target {
   background: color-mix(in oklab, var(--dms-accent), transparent 94%);
-  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%);
 }
 .stx-root .stx-arc__reports-grid > section > header b { font-size: 10.5px; }
 
@@ -3377,7 +3384,7 @@
 .stx-root .stx-arc__check-fielditem.is-entering.is-target {
   border-radius: 4px;
   background: color-mix(in oklab, var(--dms-accent), transparent 94%);
-  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%);
 }
 .stx-root .stx-arc__check-caret {
   display: inline-block;
@@ -3459,11 +3466,11 @@
 }
 
 /* ================================================= assist pose
- * Unifize AI in the thread (platform AI journey, Raj's 7 Sep 2026 brief):
- * the reader clicks the AI button on the composer, the assistant reads
- * across every record and document by meaning (vectorised, not just by
- * name), names what a change touches in a plain text field, and auto-links
- * the records that need revision. A person takes the one action. Same card
+ * Unifize AI on a change, restaged 21 Sep 2026 from the product recording of
+ * "What else does this change affect? (Beta)": the button sits in the
+ * checklist, the assistant reads the fields already on the record, and the
+ * thread card suggests the records the change puts at risk. A person ticks
+ * the rows and adds them to the checklist; only then do they link. Same card
  * idiom as the decision / route cards; the accent carries the AI identity,
  * no new hue. */
 
@@ -3472,23 +3479,6 @@
   box-shadow: inset 0 0 0 1.5px oklch(1 0 0 / 0.35);
 }
 .stx-root .stx-arc__actor.is-unifize-assistant .stx-i { width: 15px; height: 15px; }
-
-/* the AI button every composer carries */
-.stx-root .stx-arc__composer { grid-template-columns: minmax(0, 1fr) auto auto auto; }
-.stx-root .stx-arc__composer-ai {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 3px;
-  background: var(--dms-accent-tint);
-  color: var(--dms-accent);
-  font-style: normal;
-}
-.stx-root .stx-arc__composer-ai .stx-i { width: 14px; height: 14px; }
-.stx-root .stx-arc__composer-ai .stx-arc__click { right: -6px; top: -6px; margin: 0; }
 
 /* the card */
 .stx-root .stx-arc__assist {
@@ -3517,109 +3507,156 @@
   color: #fff;
 }
 .stx-root .stx-arc__assist-mark .stx-i { width: 12px; height: 12px; }
-.stx-root .stx-arc__assist > header > span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.stx-root .stx-arc__assist > header > span:not(.stx-state) { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .stx-root .stx-arc__assist > header small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; text-transform: uppercase; }
 .stx-root .stx-arc__assist > header b { font-size: 9px; }
-.stx-root .stx-arc__assist-scope { margin: 0; padding: 7px 10px; color: var(--dms-muted); font-size: 8px; }
 
-/* the read: rows appear in order under a moving scan line */
-.stx-root .stx-arc__assist-scan { position: relative; overflow: hidden; }
-.stx-root .stx-arc__assist-scan > p {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+/* what it read: the record's own field labels, as chips */
+.stx-root .stx-arc__assist-read {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 9px;
+  gap: 5px;
   margin: 0;
-  padding: 6px 10px;
-  border-top: 1px solid var(--dms-surface-alt);
+  padding: 5px 10px;
+  background: var(--dms-surface-alt);
 }
-.stx-root .stx-arc__assist-scan > p .stx-ed-docglyph { width: 14px; height: 16px; color: var(--dms-muted); }
-.stx-root .stx-arc__assist-scan > p .stx-ed-docglyph i { display: none; }
-.stx-root .stx-arc__assist-scan > p > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.stx-root .stx-arc__assist-scan > p b { font-family: var(--u-mono); font-size: 8.5px; }
-.stx-root .stx-arc__assist-scan > p small { color: var(--dms-muted); font-size: 7.5px; }
-.stx-root .stx-arc__assist-scan > p > em {
-  padding: 3px 7px;
-  border-radius: 8px;
-  background: var(--dms-surface-sunk);
-  color: var(--dms-muted);
-  font-size: 6.5px;
-  font-style: normal;
-  font-weight: 650;
-  white-space: nowrap;
-}
-.stx-root .stx-arc__assist-scan > p.is-source > em { background: var(--dms-accent-tint); color: var(--dms-accent); }
-.stx-root .stx-arc__assist-scan > p.is-impacted > em { background: #fdf0dc; color: #8a5a15; }
-.stx-root .stx-arc__assist-scan > p.is-clear > em { background: #ddf0e4; color: #185f35; }
-.stx-root .stx-arc__assist-scan > p.is-precedent > em { background: #e7e9fb; color: #3a479e; }
-.stx-root .stx-arc__assist-beam {
-  position: absolute;
-  inset: 0 0 auto 0;
-  z-index: 1;
-  height: 22px;
-  pointer-events: none;
-  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--dms-accent), transparent 78%) 55%, var(--dms-accent) 100%);
-  opacity: 0.9;
-}
-/* once the finding is in, the read folds away: the finding names what
- * mattered, the linked rows carry it, and the card stays inside the
- * thread's frame */
-.stx-root .stx-arc__assist.is-found .stx-arc__assist-scan,
-.stx-root .stx-arc__assist.is-found .stx-arc__assist-scope { display: none; }
-
-/* the finding: a text field, in the assistant's words */
-.stx-root .stx-arc__assist-finding { display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); }
-.stx-root .stx-arc__assist-finding small { color: var(--dms-muted); font-size: 7.5px; }
-.stx-root .stx-arc__assist-finding span {
-  padding: 7px 8px;
-  border-radius: 3px;
-  background: #fff;
-  box-shadow: inset 0 0 0 1.5px var(--dms-accent);
-  color: var(--dms-ink);
-  font-size: 8.5px;
-  line-height: 1.45;
-}
-
-/* the auto-linked records */
-.stx-root .stx-arc__assist-links { border-top: 1px solid var(--dms-hairline); }
-.stx-root .stx-arc__assist-links > p {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 9px;
-  margin: 0;
-  padding: 7px 10px;
-  border-top: 1px solid var(--dms-surface-alt);
-}
-.stx-root .stx-arc__assist-links > p:first-child { border-top: 0; }
-.stx-root .stx-arc__assist-links > p > i {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
+.stx-root .stx-arc__assist-read small { margin-right: 2px; color: var(--dms-muted); font-size: 7.5px; }
+.stx-root .stx-arc__assist-read em {
+  padding: 3px 6px;
   border-radius: 3px;
   background: var(--dms-accent-tint);
   color: var(--dms-accent);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 650;
+}
+
+.stx-root .stx-arc__assist-note { margin: 0; padding: 6px 10px; color: var(--dms-muted); font-size: 7.5px; border-top: 1px solid var(--dms-surface-alt); }
+
+/* the embedded-fields table (Build with AI): a box, the field, its value */
+.stx-root .stx-arc__assist-fields { border-top: 1px solid var(--dms-hairline); }
+.stx-root .stx-arc__assist-fields > p {
+  display: grid;
+  grid-template-columns: auto 64px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  margin: 0;
+  padding: 5px 10px;
+  border-top: 1px solid var(--dms-surface-alt);
+  font-size: 7.5px;
+  line-height: 1.4;
+}
+.stx-root .stx-arc__assist-fields > p.is-head { padding: 4px 10px; color: var(--dms-muted); font-size: 6.5px; text-transform: uppercase; letter-spacing: 0.04em; border-top: 0; }
+.stx-root .stx-arc__assist-fields > p.is-head > i { width: 13px; }
+.stx-root .stx-arc__assist-fields > p > span:nth-child(2) { color: var(--dms-ink); font-weight: 650; }
+.stx-root .stx-arc__assist-fields > p > span:nth-child(3) { color: var(--dms-ink); }
+.stx-root .stx-arc__assist-fields > p.is-picked { background: color-mix(in oklab, var(--dms-accent), transparent 95%); }
+.stx-root .stx-arc__assist-fields > p.is-picked .stx-arc__assist-box { background: var(--dms-accent); box-shadow: none; }
+
+/* radio marks: the product's "choose only one" */
+.stx-root .stx-arc__assist-box.is-radio { border-radius: 50%; }
+.stx-root .stx-arc__assist-box.is-radio > b { width: 5px; height: 5px; border-radius: 50%; background: #fff; }
+
+/* the suggested records: a box a person ticks, the record, why it is at risk */
+.stx-root .stx-arc__assist-rows > p {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 5px 10px;
+  border-top: 1px solid var(--dms-surface-alt);
+}
+.stx-root .stx-arc__assist-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 2px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--dms-faint);
+  color: #fff;
   font-style: normal;
 }
-.stx-root .stx-arc__assist-links > p > i .stx-i { width: 11px; height: 11px; }
-.stx-root .stx-arc__assist-links > p > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.stx-root .stx-arc__assist-links > p b { font-family: var(--u-mono); font-size: 8.5px; }
-.stx-root .stx-arc__assist-links > p small { color: var(--dms-muted); font-size: 7.5px; }
-.stx-root .stx-arc__assist-links > p > em {
+.stx-root .stx-arc__assist-box .stx-i { width: 10px; height: 10px; stroke-width: 2.6; }
+.stx-root .stx-arc__assist-rows > p.is-picked { background: color-mix(in oklab, var(--dms-accent), transparent 95%); }
+.stx-root .stx-arc__assist-rows > p.is-picked .stx-arc__assist-box { background: var(--dms-accent); box-shadow: none; }
+.stx-root .stx-arc__assist-rows > p > span { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.stx-root .stx-arc__assist-rows > p b { font-family: var(--u-mono); font-size: 8.5px; }
+.stx-root .stx-arc__assist-rows > p small { color: var(--dms-muted); font-size: 7.5px; }
+.stx-root .stx-arc__assist-rows > p > em {
   padding: 3px 7px;
   border-radius: 8px;
-  background: #e7e9fb;
-  color: #3a479e;
+  background: #fdf0dc;
+  color: #8a5a15;
   font-size: 6.5px;
   font-style: normal;
   font-weight: 650;
   white-space: nowrap;
 }
-.stx-root .stx-arc__assist > footer { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); font-size: 8px; }
-.stx-root .stx-arc__assist > footer b { padding: 6px 9px; border-radius: 3px; background: var(--dms-accent); color: #fff; }
+.stx-root .stx-arc__assist > footer { display: flex; align-items: center; gap: 10px; padding: 6px 10px; border-top: 1px solid var(--dms-hairline); font-size: 8px; }
+.stx-root .stx-arc__assist > footer b { position: relative; padding: 6px 9px; border-radius: 3px; background: var(--dms-accent); color: #fff; }
+.stx-root .stx-arc__assist.is-suggesting > footer b { background: var(--dms-surface-sunk); color: var(--dms-muted); }
+.stx-root .stx-arc__assist > footer b .stx-arc__click { right: -6px; top: -6px; margin: 0; }
 .stx-root .stx-arc__assist > footer span { color: var(--dms-muted); }
+
+/* the AI button, where the product puts it: a row IN the checklist */
+.stx-root .stx-arc__check-askitem span { min-width: 0; }
+.stx-root .stx-arc__check-ask {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+  padding: 6px 8px;
+  border-radius: 3px;
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent);
+  font-size: 8px;
+  font-weight: 650;
+}
+.stx-root .stx-arc__check-ask .stx-i { flex: none; width: 11px; height: 11px; }
+.stx-root .stx-arc__check-ask > span { flex: 1; min-width: 0; }
+.stx-root .stx-arc__check-ask > em {
+  padding: 2px 5px;
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--u-mono);
+  font-size: 6.5px;
+  font-style: normal;
+  text-transform: uppercase;
+}
+.stx-root .stx-arc__check-ask .stx-arc__click { right: -5px; top: -5px; margin: 0; }
+/* the row's ring is inset, like the entered field's: the items container
+ * clips, so an outer ring loses its bottom edge */
+.stx-root .stx-arc__check-askitem.is-target {
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--dms-accent), transparent 94%);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%);
+}
+.stx-root .stx-arc__check-askitem.is-target .stx-arc__check-ask { background: var(--dms-accent); color: #fff; }
+.stx-root .stx-arc__check-askitem.is-target .stx-arc__check-ask > em { color: var(--dms-accent); }
+
+/* the fields it reads: tagged on the row, washed, never ringed (the ring is
+ * the button's this step) */
+.stx-root .stx-arc__check-readtag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: 6px;
+  color: var(--dms-accent);
+  font-size: 6.5px;
+  font-style: normal;
+  font-weight: 650;
+  vertical-align: 1px;
+}
+.stx-root .stx-arc__check-readtag .stx-i { width: 8px; height: 8px; }
+.stx-root .stx-arc__check-fielditem.is-read .stx-arc__check-input {
+  background: color-mix(in oklab, var(--dms-accent), transparent 94%);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 55%);
+}
 
 /* the linked field on the checklist: record chips; the freshly linked ones
  * carry the AI mark */
@@ -3639,10 +3676,27 @@
 }
 .stx-root .stx-arc__check-links em.is-new { background: var(--dms-accent-tint); color: var(--dms-accent); }
 .stx-root .stx-arc__check-links em .stx-i { width: 9px; height: 9px; }
+/* a freshly linked record: not a chip, a record (id, title, state) */
+.stx-root .stx-arc__check-linkrec {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  margin-top: 4px;
+  padding: 5px 7px;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 60%);
+}
+.stx-root .stx-arc__check-linkrec .stx-ed-docglyph { width: 12px; height: 14px; color: var(--dms-accent); }
+.stx-root .stx-arc__check-linkrec > span:not(.stx-state) { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.stx-root .stx-arc__check-linkrec b { font-family: var(--u-mono); font-size: 8px; }
+.stx-root .stx-arc__check-linkrec small { overflow: hidden; color: var(--dms-muted); font-size: 7px; text-overflow: ellipsis; white-space: nowrap; }
+.stx-root .stx-arc__check-linkrec .stx-state { font-size: 6.5px; }
 .stx-root .stx-arc__check-linkeditem.is-target {
   border-radius: 4px;
   background: color-mix(in oklab, var(--dms-accent), transparent 94%);
-  box-shadow: inset 0 0 0 2.5px var(--dms-accent);
+  box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--dms-accent), transparent 10%);
 }
 
 /* the assist camera: the thread card in frame (scan), then a half step
@@ -3666,27 +3720,19 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .stx-root .stx-arc__assist.is-scanning .stx-arc__assist-scan > p {
-    animation: stx-arc-rowin 0.5s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
-    animation-delay: calc(0.25s + var(--stx-row, 0) * 0.35s);
-  }
-  .stx-root .stx-arc__assist-beam { animation: stx-arc-beam 2.1s ease-in-out infinite; }
-  .stx-root .stx-arc__assist-finding span,
-  .stx-root .stx-arc__assist-links > p,
+  .stx-root .stx-arc__assist.is-suggesting .stx-arc__assist-rows > p,
+  .stx-root .stx-arc__assist.is-suggesting .stx-arc__assist-fields > p,
+  .stx-root .stx-arc__check-linkrec,
   .stx-root .stx-arc__check-links em.is-new {
     animation: stx-arc-rowin 0.5s cubic-bezier(0.22, 0.8, 0.3, 1) backwards;
+    animation-delay: calc(0.25s + var(--stx-row, 0) * 0.3s);
   }
-  .stx-root .stx-arc__assist-links > p:nth-child(2) { animation-delay: 0.18s; }
-  .stx-root .stx-arc__check-links em.is-new { animation-delay: 0.3s; }
-  .stx-root .stx-arc__check-links em.is-new + em.is-new { animation-delay: 0.48s; }
+  .stx-root .stx-arc__check-linkrec { animation-delay: 0.3s; }
+  .stx-root .stx-arc__check-linkrec + .stx-arc__check-linkrec { animation-delay: 0.48s; }
 }
 @keyframes stx-arc-rowin {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: none; }
-}
-@keyframes stx-arc-beam {
-  0% { transform: translateY(-22px); }
-  100% { transform: translateY(100%); }
 }
 
 @media (max-width: 600px) {
@@ -3694,6 +3740,194 @@
   .stx-root .stx-arc__camera.is-focus-assist.is-pose-linked { --stx-camera-x: -30px; --stx-camera-y: -40px; --stx-camera-scale: 0.66; }
 }
 
-/* the assistant's transient state while it reads: same footing as In Review */
-.stx-root .stx-state.is-reading { background: var(--dms-accent-tint); color: var(--dms-accent); }
-.stx-root .stx-state.is-reading i { background: var(--dms-accent); }
+/* the card's two states: a suggestion is a proposal (accent), a link is done */
+.stx-root .stx-state.is-suggested { background: var(--dms-accent-tint); color: var(--dms-accent); }
+.stx-root .stx-state.is-suggested i { background: var(--dms-accent); }
+.stx-root .stx-state.is-linked,
+.stx-root .stx-state.is-accepted { background: #ddf0e4; color: #185f35; }
+.stx-root .stx-state.is-linked i,
+.stx-root .stx-state.is-accepted i { background: #2c9257; }
+
+
+/* ============================================================================
+ * Polish layer (22 Sep 2026, homepage hero review: "same stuff, done in a
+ * more polished manner"). One pass over the shared window the four hero
+ * scenes and every product/platform journey render: quieter, softer depth,
+ * one kicker idiom, one control idiom. Every rule here refines a rule above
+ * at the same specificity, so it wins by order alone; nothing structural.
+ * ========================================================================== */
+
+/* ---- the window: a hair of tint under everything so white cards lift */
+.stx-root .stx-arc__conversation { background: #f4f6f9; }
+.stx-root .stx-arc__conversation > .stx-arc__thread { background: #f4f6f9; }
+
+/* ---- header bar: the title carries the line; the menu recedes */
+.stx-root .stx-arc__conversation > .stx-arc__bar { gap: 5px; }
+.stx-root .stx-arc__conversation > .stx-arc__bar > span { gap: 9px; }
+.stx-root .stx-arc__conversation > .stx-arc__bar > span i { color: var(--dms-faint); letter-spacing: 0.01em; }
+.stx-root .stx-arc__conversation > .stx-arc__bar > b { letter-spacing: -0.012em; }
+.stx-root .stx-arc__conversation > .stx-arc__bar > em { opacity: 0.7; }
+
+/* ---- ownership strip: labels tracked, avatars ringed, note quieter */
+.stx-root .stx-arc__meta-label { font-size: 7.5px; letter-spacing: 0.08em; }
+.stx-root .stx-arc__ownership .stx-av { box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px oklch(0 0 0 / 0.06); }
+.stx-root .stx-arc__participants i { border-width: 1.5px; box-shadow: 0 0 0 1px oklch(0 0 0 / 0.06); background: #eef1f5; color: var(--dms-ink-2); }
+.stx-root .stx-arc__ownership-note { color: var(--dms-faint); }
+
+/* ---- thread: avatars with a little material, cards with a little air */
+.stx-root .stx-arc__actor {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--dms-ink-2), #fff 14%), var(--dms-ink-2));
+  box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.16), 0 1px 2px oklch(0 0 0 / 0.14);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+}
+.stx-root .stx-arc__actor.is-automator {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--dms-ink-2), #fff 14%), var(--dms-ink-2));
+}
+.stx-root .stx-arc__actor.is-you {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--dms-accent), #fff 14%), var(--dms-accent));
+}
+.stx-root .stx-arc__actor.is-unifize-assistant {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--dms-accent), #fff 14%), var(--dms-accent));
+  box-shadow: inset 0 0 0 1.5px oklch(1 0 0 / 0.35), 0 1px 2px oklch(0 0 0 / 0.14);
+}
+.stx-root .stx-arc__conversation .stx-arc__today {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: #e9edf2;
+  color: var(--dms-muted);
+  letter-spacing: 0.02em;
+}
+.stx-root .stx-arc__message {
+  padding: 12px 14px;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.06),
+    0 1px 2px oklch(0 0 0 / 0.04),
+    0 10px 24px -16px oklch(0 0 0 / 0.18);
+}
+.stx-root .stx-arc__message > header { margin-bottom: 6px; }
+.stx-root .stx-arc__message > header b { font-weight: 650; letter-spacing: 0.005em; }
+.stx-root .stx-arc__message > p { font-weight: 600; }
+.stx-root .stx-arc__message > small { margin-top: 5px; }
+
+/* ---- attached cards: one surface, one kicker, one button */
+.stx-root .stx-arc__status-row,
+.stx-root .stx-arc__document-card,
+.stx-root .stx-arc__decision,
+.stx-root .stx-arc__taskrun,
+.stx-root .stx-arc__diffcard,
+.stx-root .stx-arc__historycard,
+.stx-root .stx-arc__traincard,
+.stx-root .stx-arc__routecard,
+.stx-root .stx-arc__assist {
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.07),
+    0 6px 18px -14px oklch(0 0 0 / 0.16);
+}
+.stx-root .stx-arc__status-row,
+.stx-root .stx-arc__trace {
+  box-shadow:
+    inset 0 0 0 1px oklch(0.69 0.08 148 / 0.28),
+    0 6px 18px -14px oklch(0 0 0 / 0.16);
+}
+.stx-root .stx-arc__document-card > header,
+.stx-root .stx-arc__decision > header,
+.stx-root .stx-arc__taskrun > header,
+.stx-root .stx-arc__diffcard > header,
+.stx-root .stx-arc__assist > header { padding: 10px 12px; }
+.stx-root .stx-arc__decision > header small,
+.stx-root .stx-arc__taskrun > header small,
+.stx-root .stx-arc__diffcard > header small,
+.stx-root .stx-arc__assist > header small,
+.stx-root .stx-arc__status-row small { letter-spacing: 0.08em; text-transform: uppercase; }
+.stx-root .stx-arc__decision > div,
+.stx-root .stx-arc__trace > div { padding: 0 12px; }
+.stx-root .stx-arc__decision > div p { padding: 8px 0; }
+.stx-root .stx-arc__decision > footer,
+.stx-root .stx-arc__assist > footer,
+.stx-root .stx-arc__document-card > footer { padding: 9px 12px; }
+.stx-root .stx-arc__decision > footer b,
+.stx-root .stx-arc__assist > footer b,
+.stx-root .stx-arc__composer b,
+.stx-root .stx-arc__checklist > footer b,
+.stx-root .stx-arc__signdialog > footer b {
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.18),
+    0 1px 2px oklch(0 0 0 / 0.18),
+    0 4px 10px -6px color-mix(in oklab, var(--dms-accent), transparent 40%);
+}
+.stx-root .stx-arc__assist.is-suggesting > footer b { box-shadow: none; }
+.stx-root .stx-arc__document-preview { background: #edf0f4; }
+.stx-root .stx-arc__document-preview .stx-sheet,
+.stx-root .stx-arc__document-preview > span { box-shadow: 0 0 0 1px oklch(0 0 0 / 0.05), 0 2px 6px -3px oklch(0 0 0 / 0.16); }
+
+/* ---- composer: a field, not a card */
+.stx-root .stx-arc__composer {
+  box-shadow:
+    0 0 0 1px oklch(0 0 0 / 0.09),
+    0 1px 2px oklch(0 0 0 / 0.04);
+}
+
+/* ---- checklist: tracked kickers, a rounder progress bar, softer controls */
+.stx-root .stx-arc__checklist > header small { letter-spacing: 0.08em; }
+.stx-root .stx-arc__checklist > header b { font-size: 11.5px; font-weight: 650; letter-spacing: -0.005em; }
+.stx-root .stx-arc__check-progress { gap: 7px; }
+.stx-root .stx-arc__check-progress > i { height: 5px; border-radius: 999px; background: #e9edf2; box-shadow: none; }
+.stx-root .stx-arc__check-progress > i em {
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--dms-accent), color-mix(in oklab, var(--dms-accent), #fff 22%));
+}
+.stx-root .stx-arc__checklist > section > header { gap: 9px; }
+.stx-root .stx-arc__checklist > section > header > span { width: 7px; height: 7px; background: #c4cbd4; }
+.stx-root .stx-arc__checklist > section > header > span.is-done { background: #2c9257; box-shadow: 0 0 0 3px oklch(0.69 0.08 148 / 0.16); }
+.stx-root .stx-arc__checklist > section > header > span.is-progress { box-shadow: 0 0 0 3px color-mix(in oklab, var(--dms-accent), transparent 82%); }
+.stx-root .stx-arc__checklist > section > header b { font-weight: 650; letter-spacing: 0.05em; }
+.stx-root .stx-arc__checklist > section > header em { color: var(--dms-faint); }
+.stx-root .stx-arc__check-items p > i {
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.2), 0 1px 1px oklch(0 0 0 / 0.08);
+}
+.stx-root .stx-arc__check-items p > i:empty { box-shadow: inset 0 0 0 1.5px oklch(0 0 0 / 0.14); }
+.stx-root .stx-arc__check-items p b { font-weight: 650; }
+.stx-root .stx-arc__check-input {
+  background: #fbfcfd;
+  box-shadow: inset 0 0 0 1px oklch(0 0 0 / 0.11), 0 1px 1px oklch(0 0 0 / 0.03);
+}
+.stx-root .stx-arc__check-approvalitem > em,
+.stx-root .stx-arc__assist-rows > p > em,
+.stx-root .stx-arc__check-links em { border-radius: 999px; }
+.stx-root .stx-arc__check-items p > i.stx-arc__check-signer { box-shadow: 0 0 0 1px oklch(0 0 0 / 0.06); background: #eef1f5; color: var(--dms-ink-2); }
+.stx-root .stx-arc__checklist > footer b { text-align: center; }
+
+/* ---- a ringed checklist row gets a gutter (22 Sep 2026, homepage hero:
+ * "spillovers"). The items column carries the padding and the row carries
+ * none, so the inset ring drawn on a targeted row ran straight through the
+ * check box on the left and the linked records on the right. The ringed row
+ * now takes its own gutter, pulled out of the column's padding with a
+ * matching negative margin, so the content stays exactly where it was and
+ * only the ring moves out. Its own hairline and its follower's go quiet:
+ * the ring is the only edge. Inline padding only, so the page-level
+ * padding-block overrides (home, suite) still apply. */
+.stx-root .stx-arc__check-items p.is-target {
+  margin-inline: -10px;
+  padding-inline: 10px;
+  border-top-color: transparent;
+}
+.stx-root .stx-arc__check-items p.is-target + p { border-top-color: transparent; }
+/* the record chips and linked-record cards inside the ring keep clear of it */
+.stx-root .stx-arc__check-items p.is-target > span { min-width: 0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .stx-root .stx-arc__check-fielditem,
+  .stx-root .stx-arc__check-askitem,
+  .stx-root .stx-arc__check-linkeditem {
+    transition:
+      box-shadow 180ms ease-in-out,
+      background-color 180ms ease-in-out,
+      margin 180ms ease-in-out,
+      padding 180ms ease-in-out;
+  }
+}

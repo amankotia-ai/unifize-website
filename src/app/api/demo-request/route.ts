@@ -44,6 +44,7 @@ export async function POST(req: Request) {
     company: clean(body.company, 160),
     role: clean(body.role, 120),
     industry: clean(body.industry, 80),
+    interest: clean(body.interest, 80),
     notes: typeof body.notes === "string" ? body.notes.trim().slice(0, 2000) : "",
     source: clean(body.source, 60) || "unknown",
     page: clean(body.page, 200),

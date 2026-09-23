@@ -282,6 +282,20 @@
   max-width: 1080px;
 }
 
+/* 9 Sep 2026: the hero ground sits one step lighter than the DMS dark
+ * (#17191f) so the opener reads as warm charcoal rather than near-black. The
+ * customer band directly below is lifted with it so the two stay one block;
+ * the mechanism and close bookends keep the base dark. The dark tokens are
+ * re-pointed here so hairlines and ghost hovers inside move in step. */
+.dms--redesign.dms--home .dms-hero,
+.dms--redesign.dms--home .dms-trust {
+  --dms-d-bg: #22252d;
+  --dms-d-bg-2: #272a32;
+  --dms-d-bg-3: #2e323c;
+  --dms-d-border: #3a3e48;
+  --dms-d-border-2: #454a55;
+}
+
 .dms--redesign.dms--home .hm-hero-demo {
   margin-top: clamp(40px, 4vw, 60px);
   /* 9 Sep 2026: the visual fills the page wrap (1560) instead of the DMS
@@ -290,13 +304,210 @@
   max-width: none;
 }
 
+/* Below the desktop bands (22 Sep 2026, "spillovers"): the hero used to ride
+ * the shared per-pose camera below 1025px, so each tab framed the window
+ * differently and the record's title and thread ran off the stage's left
+ * edge. Same idea as desktop: one frame for all four tabs, cut out of the
+ * window and centred with margin, the plate drawn under it. Tablets keep
+ * the desktop cut (thread + checklist, 826 of the 1150 grid, centre 162px
+ * right of the window's); phones frame the thread column alone (540 wide,
+ * centre 19px right), where every tab's highlighted card lives. Zoom is
+ * stepped by band so the cut always fits the stage with air. */
+@media (max-width: 1024px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
+    --hm-zoom: 0.7;
+    --hm-cam-y: 0px;
+    --hm-frame-w: 826px;
+    --hm-frame-dx: 162px;
+    --hm-clip-r: 0px;
+    height: clamp(320px, 60vw, 440px);
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__camera {
+    clip-path: inset(0 var(--hm-clip-r) 0 324px);
+    transform: translate3d(calc(-50% - var(--hm-frame-dx) * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
+    box-shadow: none;
+    outline: 0;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(var(--hm-frame-w) * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    height: calc(560px * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    transform: translate(-50%, calc(-50% + var(--hm-cam-y)));
+    border-radius: 0;
+    background: oklch(1 0 0 / 0.1);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.2),
+      0 4px 10px -4px oklch(0 0 0 / 0.28),
+      0 24px 48px -20px oklch(0 0 0 / 0.5),
+      0 48px 96px -32px oklch(0 0 0 / 0.55);
+    pointer-events: none;
+  }
+}
+@media (max-width: 820px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc { --hm-zoom: 0.62; }
+}
+@media (max-width: 640px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
+    --hm-zoom: 0.74;
+    --hm-frame-w: 540px;
+    --hm-frame-dx: 19px;
+    --hm-clip-r: 286px;
+    height: clamp(320px, 92vw, 440px);
+  }
+}
+@media (max-width: 480px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc { --hm-zoom: 0.56; }
+}
+@media (max-width: 400px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc { --hm-zoom: 0.54; }
+}
+
 @media (min-width: 1025px) {
   .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
     height: clamp(450px, 40vw, 624px);
   }
 
+  /* 9 Sep 2026 review (Lakshman + Raj): every hero view was the same app
+   * shell with the text swapped, and the in-app nav rail and "My
+   * Conversations" list mean nothing to a new visitor. So the hero camera
+   * pushes in on what changes between views: the record's thread and its
+   * checklist. The window is a fixed grid (54 rail + 270 inbox + 540 thread
+   * + 286 checklist = 1150); the first 324px are clipped away and the camera
+   * centres on the remaining 826 (their centre sits 162px right of the
+   * window's).
+   * 18 Sep 2026, user correction ("too zoomed in"): the first pass scaled
+   * the record up until it bled off the bottom of the container. Now the
+   * WHOLE record window (560 tall) stays inside the stage, vertically
+   * centred, at a zoom stepped by viewport band so it always fits the
+   * stage height with margin. */
+  /* 22 Sep 2026 ("these windows look very narrow"): the home window is a
+   * wider cut of the same grid. The thread and checklist columns grow (54
+   * rail + 270 inbox + 680 thread + 390 checklist = 1394), the same 324px
+   * are clipped away, so the visible record is 1070 wide instead of 826 and
+   * its centre still sits 162px right of the window's. The zoom steps are
+   * retuned per band so the whole window keeps fitting with margin. */
+  /* the zoom lives on the anchor so the camera and the plate under it read
+   * the same value */
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
+    --hm-zoom: 0.82;
+    --hm-cam-y: 0px;
+  }
   .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__camera {
-    transform: translate3d(calc(-50% + var(--stx-camera-x)), calc(-50% + var(--stx-camera-y)), 0) scale(calc(var(--stx-camera-scale) * 1.12));
+    grid-template-columns: 54px 270px 680px 390px;
+    width: 1394px;
+    clip-path: inset(0 0 0 324px);
+    transform: translate3d(calc(-50% - 162px * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
+  }
+
+  /* the translucent bounding plate (22 Sep 2026). The clip-path above cuts
+   * away the camera's own box-shadow, so on the home hero the plate is drawn
+   * under the window on its anchor instead: the visible cut is 1070 x 560
+   * in camera space, centred on the anchor, so the plate is that box at
+   * the current zoom plus the rim. */
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: calc(1070px * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    height: calc(560px * var(--hm-zoom) + 2 * var(--rf-plate, 8px));
+    transform: translate(-50%, calc(-50% + var(--hm-cam-y)));
+    border-radius: 0;
+    background: oklch(1 0 0 / 0.1);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 0.2),
+      0 4px 10px -4px oklch(0 0 0 / 0.28),
+      0 24px 48px -20px oklch(0 0 0 / 0.5),
+      0 48px 96px -32px oklch(0 0 0 / 0.55);
+    pointer-events: none;
+  }
+  /* the window's own edge: a hairline instead of the clipped rim */
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__camera {
+    box-shadow: none;
+    outline: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
+    --hm-zoom: 0.96;
+    --hm-cam-y: 0px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc {
+    --hm-zoom: 1.16;
+    --hm-cam-y: 0px;
+  }
+}
+
+/* breathing room inside the wider window (both home stages): the record's
+ * bar, ownership strip, thread and checklist all get roomier padding, so the
+ * extra width goes to air around the content rather than longer lines */
+@media (min-width: 1025px) {
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__conversation > .stx-arc__bar,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__conversation > .stx-arc__bar {
+    min-height: 76px;
+    padding: 14px 24px 12px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__conversation > .stx-arc__bar > em,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__conversation > .stx-arc__bar > em {
+    right: 24px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__conversation > .stx-arc__ownership,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__conversation > .stx-arc__ownership {
+    min-height: 50px;
+    padding: 8px 24px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__conversation > .stx-arc__thread,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__conversation > .stx-arc__thread {
+    padding: 32px 28px 26px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__thread article,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__thread article {
+    gap: 12px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__thread article + article,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__thread article + article {
+    margin-top: 12px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__thread article > p,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__thread article > p {
+    gap: 5px;
+    padding: 14px 16px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__checklist > header,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__checklist > header {
+    padding: 12px 18px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__check-progress,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__check-progress {
+    padding: 14px 18px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__checklist > section > header,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__checklist > section > header {
+    gap: 10px;
+    min-height: 50px;
+    padding: 10px 18px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__check-items > div,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__check-items > div {
+    padding: 0 18px 0 36px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__check-items p,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__check-items p {
+    gap: 10px;
+    min-height: 52px;
+    /* block only: a ringed row owns its inline gutter (arcade.css) */
+    padding-block: 10px;
+  }
+  .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__checklist > footer,
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__checklist > footer {
+    padding: 14px 18px;
   }
 }
 
@@ -807,31 +1018,498 @@
   margin: 0;
 }
 
-.dms--redesign.dms--home :is(.hm-industry-group a, .hm-resrow, .hm-resources__all):focus-visible {
+/* the three ways in: cards side by side (restored 18 Sep 2026 from the
+ * 7 Sep layout after the 9 Sep review; the pinned rail cost too much scroll).
+ * Every row and every card ends in an arrow: the affordance is explicit. */
+.dms--redesign.dms--home .hm-entry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* same air as the coordination-tax grid below, so the two read as one rhythm */
+  gap: clamp(24px, 2.2vw, 32px);
+  margin-top: clamp(40px, 4.4vw, 60px);
+}
+
+.dms--redesign.dms--home .hm-entry {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(24px, 2.2vw, 32px);
+  /* Grey tint (#17181a at 6%) so the three cards lift off the white
+   * section; no border or shadow, the fill alone defines the card.
+   * Content inside stays monochrome (ink / muted / faint): the blue is
+   * reserved for hover so the three cards read as one quiet block. */
+  background: #17181a0f;
+  --hm-entry-rule: rgba(23, 24, 26, 0.1);
+}
+
+/* the isometric mark above each card's eyebrow: same face / side / accent
+ * recipe as the stack mark above the suite, so the page keeps one drawing
+ * hand. Faces are white so they lift off the card's grey tint; the plate
+ * casts a soft shadow onto the card. */
+.dms--redesign.dms--home .hm-entry__mark {
+  width: 140px;
+  margin: -8px 0 16px -6px;
+}
+
+.dms--redesign.dms--home .hm-isomark {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.dms--redesign.dms--home .hm-isomark__shadow { fill: rgba(23, 24, 26, 0.09); transform: translateY(7px); filter: blur(3px); }
+.dms--redesign.dms--home .hm-isomark__face { fill: #fff; stroke: #c3cad3; stroke-width: 1; stroke-linejoin: round; }
+.dms--redesign.dms--home .hm-isomark__side { fill: #e6eaef; stroke: #c3cad3; stroke-width: 1; stroke-linejoin: round; }
+.dms--redesign.dms--home .hm-isomark__side--r { fill: #d7dde3; }
+.dms--redesign.dms--home .hm-isomark__route { fill: none; stroke: #aeb6c0; stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.dms--redesign.dms--home .hm-isomark__door { fill: #c3cad3; stroke: #aeb6c0; stroke-width: 1; stroke-linejoin: round; }
+.dms--redesign.dms--home .hm-isomark__box--accent .hm-isomark__face { fill: color-mix(in oklab, var(--dms-accent), #fff 88%); stroke: color-mix(in oklab, var(--dms-accent), #fff 36%); }
+.dms--redesign.dms--home .hm-isomark__box--accent .hm-isomark__side { fill: color-mix(in oklab, var(--dms-accent), #fff 74%); stroke: color-mix(in oklab, var(--dms-accent), #fff 36%); }
+.dms--redesign.dms--home .hm-isomark__box--accent .hm-isomark__side--r { fill: color-mix(in oklab, var(--dms-accent), #fff 62%); }
+
+.dms--redesign.dms--home .hm-entry__label {
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+  font-weight: 560;
+  letter-spacing: 0.02em;
+}
+
+.dms--redesign.dms--home .hm-entry__intro h3 {
+  max-width: 15ch;
+  margin: 14px 0 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.45rem, 1.2rem + 0.6vw, 1.85rem);
+  font-weight: 620;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.dms--redesign.dms--home .hm-entry__intro p {
+  max-width: 38ch;
+  margin: 12px 0 0;
+  color: var(--dms-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.dms--redesign.dms--home .hm-entry__links {
+  margin: 24px 0 0;
+  /* the four destinations sit on their own plate inside the card: a
+   * paler grey than the card fill (white at 60% over the tint), rounded,
+   * so the ledger reads as one clickable block */
+  padding: 4px 14px;
+  list-style: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.dms--redesign.dms--home .hm-entry__links li + li {
+  /* dashed rule drawn as a gradient so the dash/gap ratio is ours:
+   * 6px dash, 3px gap (border-style: dashed gives 1:1, too airy). */
+  background: repeating-linear-gradient(
+      90deg,
+      var(--hm-entry-rule) 0 6px,
+      transparent 6px 9px
+    )
+    top / 100% 1px no-repeat;
+}
+
+.dms--redesign.dms--home .hm-entry__links a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  min-height: 52px;
+  align-items: center;
+  gap: 12px;
+  margin-inline: -10px;
+  padding-inline: 10px;
+  color: var(--dms-ink);
+  font-size: 0.95rem;
+  font-weight: 560;
+  text-decoration: none;
+  transition-property: color, background-color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.dms--redesign.dms--home .hm-entry__glyph {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  /* ink, not muted: the glyph carries the row's identity and should read
+   * as solidly as the name beside it (22 Sep) */
+  color: var(--dms-ink);
+  transition: color 150ms ease-out;
+}
+
+.dms--redesign.dms--home .hm-entry__glyph svg {
+  width: 16px;
+  height: 16px;
+  /* every glyph set follows the span's colour, including the industry
+   * paths that carry no fill attribute of their own */
+  fill: currentColor;
+}
+
+.dms--redesign.dms--home .hm-entry__links small {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.68rem;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: right;
+}
+
+.dms--redesign.dms--home .hm-entry__go {
+  color: var(--dms-faint);
+  font-style: normal;
+  transition-property: color, transform;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.dms--redesign.dms--home .hm-entry__links a:hover {
+  color: var(--dms-accent);
+  /* full white on the pale plate, rounded to sit inside its corners */
+  background: var(--dms-surface);
+  border-radius: 8px;
+}
+
+.dms--redesign.dms--home .hm-entry__links a:hover .hm-entry__go {
+  color: var(--dms-accent);
+  transform: translateX(3px);
+}
+
+.dms--redesign.dms--home .hm-entry__links a:hover .hm-entry__glyph {
+  color: var(--dms-accent);
+}
+
+/* the card's own door: a white pill on the grey card, brand blue on hover */
+.dms--redesign.dms--home .hm-entry__all {
+  display: flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: auto;
+  padding: 0 18px 0 20px;
+  border-radius: 999px;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition-property: background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.dms--redesign.dms--home .hm-entry__links + .hm-entry__all {
+  margin-top: 24px;
+}
+
+.dms--redesign.dms--home .hm-entry__all:hover {
+  background: var(--dms-accent);
+  color: #fff;
+}
+
+.dms--redesign.dms--home .hm-entry__all span {
+  transition: transform 150ms ease-out;
+}
+
+.dms--redesign.dms--home .hm-entry__all:hover span {
+  transform: translateX(3px);
+}
+
+.dms--redesign.dms--home .hm-entry__all:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 1120px) {
+  .dms--redesign.dms--home .hm-entry-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 9 Sep 2026 review: section labels were too small to read as labels, and
+ * the chapter numbers are gone (page.tsx passes no `n`) */
+.dms--redesign.dms--home.dms--consistent-eyebrows .dms-eyebrow {
+  font-size: 0.95rem;
+  letter-spacing: -0.005em;
+}
+
+.dms--redesign.dms--home :is(.hm-entry__links a, .hm-entry__all, .hm-industry-group a, .hm-resrow, .hm-resources__all):focus-visible {
   outline: 2px solid var(--dms-accent);
   outline-offset: 3px;
 }
 
-/* A shorter, four-door recognition field */
+/* A shorter, four-door recognition field. The band stays white; the
+ * cards carry the same grey as the router cards above. The section sits
+ * closer to the router than the default rhythm: the two are one thought
+ * (you chose a door, here is the tax behind it). */
+.dms--redesign.dms--home .hm-recognition--reframed {
+  padding-top: 32px;
+  background: var(--dms-surface);
+}
+
+/* the router hands straight into the trace, so it gives up most of its
+ * bottom rhythm; the trace itself is the spacing */
+.dms--redesign.dms--home .hm-entry-section {
+  padding-bottom: clamp(40px, 4.5vw, 64px);
+}
+
+/* 05 · industries: the tail sits close under the tiles with no rule
+ * between them (22 Sep 2026) */
+.dms--redesign.dms--home .hm-industries-section .hm-section-tail {
+  margin-top: 20px;
+  padding-top: 0;
+  border-top: 0;
+}
+
+/* centered head: eyebrow, claim and lede stacked on one axis. A dashed
+ * trace drops from the router into the eyebrow and draws itself as the
+ * head scrolls into view, so the gap is a connector, not dead air. */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 20px;
+  padding-top: calc(var(--hm-trace-h) + 22px);
+  padding-bottom: clamp(36px, 4vw, 52px);
+  text-align: center;
+  --hm-trace-h: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: var(--hm-trace-h);
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(23, 24, 26, 0.32) 0 6px,
+    transparent 6px 9px
+  );
+  /* fades in from the top (22 Sep 2026): the trace emerges out of the
+   * section above rather than starting on a hard first dash */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 62%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 62%);
+  transform-origin: top;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--hm-trace-h) - 3px);
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: var(--dms-accent);
+}
+
+/* scroll-driven motion: the trace draws, the head rises, the cards
+ * stagger in, all bound to scroll position rather than a timer. Native
+ * scroll timelines only; browsers without them see the finished state. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::before {
+      animation: hm-trace-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head::after {
+      animation: hm-trace-dot linear both;
+      animation-timeline: view();
+      animation-range: entry 55% entry 85%;
+    }
+
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-eyebrow,
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-h2,
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-lede {
+      animation: hm-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom {
+      animation: hm-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+
+    /* the second card in each row lands a beat after the first */
+    .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom:nth-child(2n) {
+      animation-range: entry 10% entry 60%;
+    }
+  }
+}
+
+@keyframes hm-trace-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@keyframes hm-trace-dot {
+  from { transform: scale(0); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes hm-rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: none; }
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head > div {
+  align-items: center;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-eyebrow {
+  align-self: center;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-h2 {
+  max-width: 16ch;
+  margin-inline: auto;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head .dms-lede {
+  max-width: 54ch;
+  margin-inline: auto;
+}
+
 .dms--redesign.dms--home .hm-recognition--reframed .hm-symptoms {
+  /* two wide panels per row, artifact left and copy right. Borrows the
+   * router cards' grammar (Choose your way in): grey fill, muted eyebrow,
+   * monochrome body, dashed rule, white pill. */
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 2.2vw, 32px);
 }
 
 .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link {
   display: grid;
   grid-template-columns: minmax(190px, 0.82fr) minmax(0, 1.18fr);
+  /* 6px inset so the lighter stage reads as a panel nested in the card */
+  padding: 6px;
+  border: 0;
+  background: #17181a0f;
+  box-shadow: none;
+  --hm-entry-rule: rgba(23, 24, 26, 0.1);
 }
 
 .dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
   height: 100%;
   min-height: 286px;
-  border-right: 1px solid oklch(0.82 0.05 252);
-  border-bottom: 0;
-  /* blue-tinted stage for the artifact: a soft brand-blue gradient with a
-   * top-left highlight, kin to the hero's blue stage but never the flat plate */
-  background:
-    radial-gradient(110% 80% at 0% 0%, oklch(0.975 0.015 250 / 0.85), transparent 62%),
-    linear-gradient(160deg, oklch(0.935 0.035 252) 0%, oklch(0.855 0.07 252) 100%);
+  padding: 24px 16px;
+  border: 0;
+  /* a lighter grey than the card, so the stage sits inside it rather
+   * than fusing with it; the white artifact still does the lifting */
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__body {
+  padding: 22px clamp(24px, 2.2vw, 32px) 22px;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__domain {
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+  font-weight: 560;
+  letter-spacing: 0.02em;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:hover .hm-symptom__claim,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:focus-visible .hm-symptom__claim {
+  color: var(--dms-ink);
+}
+
+/* the tax figure sits under a dashed rule as one running sentence:
+ * the figure bold in ink, the rest muted, no stat-tile pairing */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__tax {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 18px;
+  color: var(--dms-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  text-wrap: pretty;
+  background: repeating-linear-gradient(
+      90deg,
+      var(--hm-entry-rule) 0 6px,
+      transparent 6px 9px
+    )
+    top / 100% 1px no-repeat;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__tax strong {
+  display: inline;
+  margin-right: 0.3em;
+  /* the one warm mark on the card: rust is the tax colour site-wide */
+  color: var(--dms-tax-text);
+  font-family: var(--dms-display);
+  font-size: 1.05rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: inherit;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__tax span {
+  display: inline;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* whatever sits above the pill (tax figure or note) carries the gap, so
+ * the pill keeps its auto top margin and every card's pill shares a baseline */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__body > :nth-last-child(2) {
+  margin-bottom: 24px;
+}
+
+/* the door: the router's white pill, brand blue when the card is hovered */
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__cta {
+  min-height: 46px;
+  margin-top: auto;
+  padding: 0 18px 0 20px;
+  border-radius: 999px;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition-property: background-color, color;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__cta span {
+  transition: transform 150ms ease-out;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:hover .hm-symptom__cta,
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:focus-visible .hm-symptom__cta {
+  background: var(--dms-accent);
+  color: #fff;
+}
+
+.dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link:hover .hm-symptom__cta span {
+  transform: translateX(3px);
+}
+
+@media (max-width: 960px) {
+  .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link {
+    grid-template-columns: 1fr;
+  }
+
+  .dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
+    min-height: 176px;
+  }
 }
 
 .dms--redesign.dms--home .hm-section-tail {
@@ -865,22 +1543,101 @@
   text-decoration: none;
 }
 
-/* "See more solutions" (H6): a text control in the tail's link slot, not a
- * carousel. Reveals the remaining doors in place, in the same grid. */
-.dms--redesign.dms--home .hm-more {
-  gap: 8px;
+/* "See more solutions" (H6): not a carousel. The next row shows through a
+ * blurred, fading preview (.hm-peek) and one centred pill reveals the rest
+ * in place, in the same grid. */
+/* Just the top of the next row shows. Three copies of it are stacked and
+ * masked to bands (sharp at the top, soft in the middle, heavy below) while
+ * the whole strip dissolves into the white: a progressive blur. */
+.dms--redesign.dms--home .hm-peek {
+  position: relative;
+  height: clamp(88px, 9vw, 120px);
+  margin-top: clamp(24px, 2.2vw, 32px);
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 18%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 18%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 100%
+  );
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptoms {
+  position: absolute;
+  inset: 0;
   margin: 0;
-  padding: 0;
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptoms[data-layer="0"] {
+  mask-image: linear-gradient(to bottom, #000 25%, transparent 55%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent 55%);
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptoms[data-layer="1"] {
+  filter: blur(3px);
+  mask-image: linear-gradient(to bottom, transparent 20%, #000 45%, #000 60%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 20%, #000 45%, #000 60%, transparent 85%);
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptoms[data-layer="2"] {
+  filter: blur(9px);
+  mask-image: linear-gradient(to bottom, transparent 50%, #000 80%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 50%, #000 80%);
+}
+
+.dms--redesign.dms--home .hm-peek .hm-symptom {
+  animation: none;
+}
+
+.dms--redesign.dms--home .hm-more-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: -30px;
+}
+
+.dms--redesign.dms--home .hm-more-row.is-expanded {
+  margin-top: clamp(28px, 3vw, 40px);
+}
+
+.dms--redesign.dms--home .hm-more {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0 20px 0 22px;
   border: 0;
-  background: none;
+  border-radius: 999px;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
   font: inherit;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  box-shadow:
+    0 0 0 1px rgba(23, 24, 26, 0.12),
+    0 8px 24px -12px rgba(23, 24, 26, 0.35);
   cursor: pointer;
+  transition-property: background-color, color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
 }
 
 .dms--redesign.dms--home .hm-more:hover {
-  color: var(--dms-accent-text);
+  background: var(--dms-accent);
+  color: #fff;
+  box-shadow: 0 8px 24px -12px rgba(0, 91, 183, 0.5);
 }
 
 .dms--redesign.dms--home .hm-more:focus-visible {
@@ -976,7 +1733,7 @@
   margin: 0;
   padding: 0 var(--hm-logo-gap) 0 0;
   list-style: none;
-  animation: hm-marquee 48s linear infinite;
+  animation: hm-marquee 84s linear infinite;
 }
 .dms--redesign.dms--home .hm-logos:hover .hm-logos__track { animation-play-state: paused; }
 .dms--redesign.dms--home .hm-logos__track li { flex: none; }
@@ -1093,6 +1850,58 @@
 .dms--redesign.dms--home .hm-split-head .dms-lede {
   max-width: 52ch;
   margin: 0;
+}
+
+/* --center: the product suite head (22 Sep 2026) stacks eyebrow, claim and
+ * lede on one centred axis, like the recognition head above it, instead of
+ * splitting the claim left and the lede right */
+.dms--redesign.dms--home .hm-split-head--center {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+.dms--redesign.dms--home .hm-split-head--center > div {
+  align-items: center;
+}
+
+.dms--redesign.dms--home .hm-split-head--center .dms-eyebrow {
+  align-self: center;
+}
+
+.dms--redesign.dms--home .hm-split-head--center .dms-h2,
+.dms--redesign.dms--home .hm-split-head--center .dms-lede {
+  margin-inline: auto;
+}
+
+/* the claim breaks where the copy says (after "One platform."), not where
+ * the 17ch measure happens to fall */
+.dms--redesign.dms--home .hm-split-head--center .dms-h2 {
+  max-width: none;
+  text-wrap: balance;
+}
+
+/* the stack mark above the eyebrow (22 Sep 2026, "very little break in
+ * visual pacing"; then "much simpler, smaller, more minimal"): three plain
+ * slabs on the platform drawing's isometric axis, nothing on them. The top
+ * slab carries the accent; the two under it are the layer everything runs
+ * on. Small enough to read as punctuation between the customer band and
+ * the head, not as a diagram. */
+.dms--redesign.dms--home .hm-stackmark {
+  display: block;
+  width: 108px;
+  height: auto;
+  margin: 0 auto 6px;
+  overflow: visible;
+}
+.dms--redesign.dms--home .hm-stackmark__face { fill: #fff; stroke: #c3cad3; stroke-width: 0.9; stroke-linejoin: round; }
+.dms--redesign.dms--home .hm-stackmark__side { fill: #e6eaef; stroke: #c3cad3; stroke-width: 0.9; stroke-linejoin: round; }
+.dms--redesign.dms--home .hm-stackmark__slab--top .hm-stackmark__face { fill: color-mix(in oklab, var(--dms-accent), #fff 92%); stroke: color-mix(in oklab, var(--dms-accent), #fff 40%); }
+.dms--redesign.dms--home .hm-stackmark__slab--top .hm-stackmark__side { fill: color-mix(in oklab, var(--dms-accent), #fff 78%); stroke: color-mix(in oklab, var(--dms-accent), #fff 40%); }
+
+@media (max-width: 640px) {
+  .dms--redesign.dms--home .hm-stackmark { width: 92px; }
 }
 
 /* 04 · the suite, led by the product: the platform journey's stage-and-rail
@@ -1524,14 +2333,9 @@
     align-items: start;
   }
 
-  .dms--redesign.dms--home .hm-recognition--reframed .hm-symptom__link {
-    grid-template-columns: 1fr;
-  }
-
-  .dms--redesign.dms--home .hm-recognition--reframed .hm-cardviz {
-    min-height: 176px;
-    border-right: 0;
-    border-bottom: 1px solid var(--dms-line-strong);
+  .dms--redesign.dms--home .hm-split-head--center {
+    gap: 20px;
+    justify-items: center;
   }
 
   .dms--redesign.dms--home .hm-industry-groups {
@@ -1941,4 +2745,317 @@
 @media (prefers-reduced-motion: reduce) {
   .dms--redesign.dms--home .hm-ptiles__item { transition: none; }
   .dms--redesign.dms--home .hm-ptiles__tile--apex::before { animation: none; }
+}
+
+/* ------------------------------------------------ 02 · the tax, per example
+ * One figure per card in the accent (9 Sep 2026 review), then the named tax
+ * and the assessment CTA under the grid. */
+.dms--redesign.dms--home .hm-symptom__tax {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: var(--dms-s-5);
+  color: var(--dms-tax-text);
+}
+.dms--redesign.dms--home .hm-symptom__tax strong {
+  flex: none;
+  font-family: var(--dms-display);
+  font-size: 1.5rem;
+  font-weight: 640;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.dms--redesign.dms--home .hm-symptom__tax span {
+  font-size: 0.84rem;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+/* The section's close: the same grey panel as the cards, but at section
+ * scale, so the assessment reads as the destination of everything above
+ * rather than a footnote under it. */
+.dms--redesign.dms--home .hm-taxcta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  align-items: center;
+  gap: 32px clamp(40px, 5vw, 80px);
+  margin-top: clamp(56px, 6vw, 88px);
+  padding: clamp(36px, 4vw, 56px) clamp(28px, 3.4vw, 56px);
+  background: #17181a0f;
+  box-shadow: none;
+}
+
+.dms--redesign.dms--home .hm-taxcta__lead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.dms--redesign.dms--home .hm-taxcta__lead .hm-taxcta__btn {
+  margin-top: 10px;
+}
+
+/* the explainer, on the platform page's TaxLead idiom: 75 steps as a
+ * 15 x 5 block so the tax reads as a mass, not a strip. Work cells are
+ * grey, tax cells are the one accent; they fill in as the banner scrolls
+ * into view. */
+.dms--redesign.dms--home .hm-taxviz {
+  margin: 0;
+  padding: 22px 24px 20px;
+  background: var(--dms-surface);
+  /* a long, soft, downward shadow, pulled in with negative spread so it
+   * blends into the grey rather than drawing a halo */
+  box-shadow:
+    0 1px 2px rgba(23, 24, 26, 0.04),
+    0 12px 24px -16px rgba(23, 24, 26, 0.18),
+    0 36px 64px -32px rgba(23, 24, 26, 0.32);
+}
+
+.dms--redesign.dms--home .hm-taxviz__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+  font-weight: 560;
+  letter-spacing: 0.02em;
+}
+
+.dms--redesign.dms--home .hm-taxviz__total {
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms--home .hm-taxviz__v {
+  margin: 14px 0 0;
+  color: var(--dms-ink);
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  font-weight: 520;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.dms--redesign.dms--home .hm-taxviz__v,
+.dms--redesign.dms--home .hm-taxviz__v * {
+  font-family: var(--u-display) !important;
+  letter-spacing: -0.03em !important;
+}
+
+.dms--redesign.dms--home .hm-taxviz__v .dms-data {
+  margin-right: 0.1em;
+  /* the tax wears the rust, never the brand blue (see --u-tax) */
+  color: var(--dms-tax-text);
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.8rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells {
+  display: grid;
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 18px;
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i {
+  display: block;
+  aspect-ratio: 1;
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i.is-work {
+  background: var(--dms-line-strong);
+}
+
+.dms--redesign.dms--home .hm-taxviz__cells i.is-tax {
+  background: var(--dms-tax);
+}
+
+.dms--redesign.dms--home .hm-taxviz__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 18px;
+}
+
+/* Each key is a two-line block: swatch, name and count on the first line,
+ * the verbs under the name on the second. The name is set in the swatch's
+ * colour and at weight, so each row reads as its category before the verbs
+ * are read; the count is a tabular figure on the right in the same colour. */
+.dms--redesign.dms--home .hm-taxviz__key {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  column-gap: 10px;
+  row-gap: 1px;
+  padding: 7px 10px 8px 8px;
+  color: var(--dms-muted);
+  font-size: 0.8rem;
+  line-height: 1.3;
+}
+
+.dms--redesign.dms--home .hm-taxviz__key::before {
+  content: "";
+  grid-row: 1;
+  align-self: center;
+  width: 12px;
+  height: 12px;
+}
+
+.dms--redesign.dms--home .hm-taxviz__key b {
+  grid-column: 2;
+  grid-row: 1;
+  font-weight: 620;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--home .hm-taxviz__key em {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  font-style: normal;
+  font-size: 0.76rem;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--home .hm-taxviz__key i {
+  grid-column: 3;
+  grid-row: 1;
+  font-family: var(--dms-mono);
+  font-style: normal;
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.dms--redesign.dms--home .hm-taxviz__key.is-work::before { background: var(--dms-line-strong); }
+.dms--redesign.dms--home .hm-taxviz__key.is-work b,
+.dms--redesign.dms--home .hm-taxviz__key.is-work i { color: var(--dms-ink); }
+
+/* the tax row sits on its own tint so it reads as the highlighted half */
+.dms--redesign.dms--home .hm-taxviz__key.is-tax { background: var(--dms-tax-tint); }
+.dms--redesign.dms--home .hm-taxviz__key.is-tax::before { background: var(--dms-tax); }
+.dms--redesign.dms--home .hm-taxviz__key.is-tax b,
+.dms--redesign.dms--home .hm-taxviz__key.is-tax i { color: var(--dms-tax-text, var(--dms-tax)); }
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .dms--redesign.dms--home .hm-taxviz__cells i.is-tax {
+      animation: hm-cell-in linear both;
+      animation-timeline: view();
+      animation-range: entry calc(8% + var(--i) * 0.45%) entry calc(30% + var(--i) * 0.45%);
+    }
+  }
+}
+
+@keyframes hm-cell-in {
+  from { opacity: 0.15; }
+  to { opacity: 1; }
+}
+
+.dms--redesign.dms--home .hm-taxcta__claim {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.6rem, 1.15rem + 1.5vw, 2.6rem);
+  font-weight: 520;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* The claim is a <p>, so the redesign's universal reset pins it to Inter
+ * with normal tracking (dms-redesign.css, top). It is set as a heading, so
+ * it takes the heading face and the h2's tracking, with the same
+ * !important the reset uses. */
+.dms--redesign.dms--home .hm-taxcta__claim,
+.dms--redesign.dms--home .hm-taxcta__claim * {
+  font-family: var(--u-display) !important;
+  letter-spacing: -0.04em !important;
+}
+
+.dms--redesign.dms--home .hm-taxcta__claim span {
+  color: var(--dms-muted);
+  font-weight: 450;
+}
+
+.dms--redesign.dms--home .hm-taxcta__btn {
+  /* standard button size, same as the hero CTAs (23 Sep 2026: the
+   * oversized 56px pill outweighed the claim beside it) */
+  justify-self: start;
+  align-self: flex-start;
+}
+
+@media (max-width: 860px) {
+  .dms--redesign.dms--home .hm-taxcta {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 04 · the platform band, without the journey under it */
+
+/* 9 Sep 2026 review (Raj): "you have to come down to select and go back up
+ * to view". On desktop the stage is capped so stage + selector rail fit one
+ * viewport under the sticky header; the window bleeds off the bottom edge of
+ * the container the way the hero's does. */
+@media (min-width: 1121px) and (min-height: 700px) {
+  .dms--redesign.dms--home .hm-suite__stage {
+    /* floor 540: the whole record window must fit even on a short screen */
+    max-height: max(540px, calc(100svh - 78px - 262px - 28px));
+  }
+}
+
+/* the product suite stage takes the same push-in as the hero (see the hero
+ * camera note): nav rail and conversation list clipped, camera centred on
+ * the record's thread + checklist. The stage is height-capped, so the zoom
+ * is a step smaller than the hero's, and (18 Sep correction) the whole
+ * record stays in frame, centred. */
+@media (min-width: 1121px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera {
+    --hm-zoom: 0.78;
+    --hm-cam-y: 0px;
+    /* the same wider cut as the hero window (22 Sep 2026), see the hero note */
+    grid-template-columns: 54px 270px 680px 390px;
+    width: 1394px;
+    clip-path: inset(0 0 0 324px);
+    transform: translate3d(calc(-50% - 162px * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
+  }
+}
+@media (min-width: 1280px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera { --hm-zoom: 0.88; --hm-cam-y: 0px; }
+}
+@media (min-width: 1536px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera { --hm-zoom: 0.92; --hm-cam-y: 0px; }
+}
+
+@media (max-width: 640px) {
+  .dms--redesign.dms--home .hm-taxcta .dms-btn {
+    width: 100%;
+    min-height: 48px;
+    height: auto;
+    padding-block: 10px;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
+  }
+}
+
+/* the suite's height cap, done properly: cropping the stage (max-height)
+ * trimmed only the bottom, so the centred record sat low. Size the camera's
+ * anchor instead, so stage = anchor + padding and the record stays centred. */
+@media (min-width: 1121px) and (min-height: 700px) {
+  .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc {
+    height: min(
+      clamp(420px, 35vw, 500px),
+      calc(max(540px, 100svh - 78px - 262px - 28px) - 2 * var(--rf-pad))
+    );
+  }
 }

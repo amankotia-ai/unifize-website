@@ -1,22 +1,22 @@
 "use client";
 
 /* ----------------------------------------------------------------------------
- * BookDemoButton / BookDemoModal — the single demo-request surface.
+ * BookDemoButton / BookDemoModal: the single demo-request surface.
  *
  * One component serves every CTA on the site: the header (desktop nav + mobile
  * sheet) and every on-page "Book a demo" button in a hero or close band. The
  * caller supplies the button's own design-system class ("itm-btn", "dms-btn",
  * "btn btn-primary"), so the trigger keeps the skin of whatever page it sits on
  * while the dialog itself is skin-neutral: it renders in a portal on <body> and
- * styles itself from the global --u / --n / --d tokens, which every local system
+ * styles itself from the global --u / --n tokens, which every local system
  * (itm, dms, the atoms kit) aliases rather than redefines.
  *
- * Concept: the request is itself a Unifize record being raised. The dialog is a
- * miniature record window — a chrome bar carrying a mono code and a live status
- * chip (DRAFT → SENDING → SUBMITTED), a dark rail whose "what happens next" is
- * drawn as the product's activity-thread motif, and a submit that commits the
- * record: the chip flips, the first thread event completes, and the confirmation
- * carries the real receipt time. The form is the first taste of the product.
+ * Rebuilt 22 Sep 2026 in the rails grammar the home, platform and DMS pages
+ * share, drawn properly at card size: two hairline rails run the full height
+ * of the card, every block is inset inside them, a hairline divides the
+ * head from the form with a crosshair at each rail crossing, and the footer
+ * strip sits on the alt grey. The old record chrome (mono code, status chip,
+ * four-step thread, standards strip, receipt stamp) stays gone.
  * -------------------------------------------------------------------------- */
 
 import {
@@ -31,6 +31,9 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
+import { ArcadeStepScene } from "@/app/explorations/products/_shared/arcade/arcade";
+import { RibbonField } from "@/app/explorations/products/_shared/arcade/ribbon-field";
+import { HOME_HERO_QUALITY_CONFIG } from "@/app/explorations/home/home-arcade";
 import "./book-demo.css";
 
 /* Industries mirror the nav roster so a lead lands in a bucket the site
@@ -48,6 +51,17 @@ const INDUSTRIES = [
   "Aerospace",
   "Industrial Machinery",
   "Other",
+] as const;
+
+/* What the visitor wants to see: routes the call to the right person and
+ * tells us which product page to open on. */
+const INTERESTS = [
+  "Quality events and CAPA",
+  "Change control",
+  "Document control",
+  "Supplier quality",
+  "Production and release",
+  "Not sure yet",
 ] as const;
 
 /* Consumer mailboxes: a demo request from one is almost never a qualified
@@ -81,40 +95,52 @@ const UTM_KEYS = [
   "gclid",
 ] as const;
 
-/* The activity thread on the rail: what actually happens after the submit,
- * in the order it happens — the same stations-on-a-line motif the product
- * pages use for lifecycle. */
-const THREAD = [
-  {
-    title: "You raise the request",
-    sub: "Takes a minute. Nothing is scheduled yet.",
-  },
-  {
-    title: "A product person replies",
-    sub: "Within one business day, with times. No SDR queue.",
-  },
-  {
-    title: "30 minutes on your process, live",
-    sub: "We walk your CAPA, change or document flow as it runs today.",
-  },
-  {
-    title: "A written read-out lands",
-    sub: "What Unifize would take off the process, and what it would not.",
-  },
-] as const;
-
-type FieldName = "name" | "email" | "company" | "role" | "industry" | "notes";
+type FieldName =
+  | "name"
+  | "email"
+  | "company"
+  | "role"
+  | "industry"
+  | "interest"
+  | "notes";
 type Errors = Partial<Record<FieldName, string>>;
 type Status = "idle" | "submitting" | "done" | "error";
 
-const EMPTY = {
+const EMPTY: Record<FieldName, string> = {
   name: "",
   email: "",
   company: "",
   role: "",
   industry: "",
+  interest: "",
   notes: "",
 };
+
+/* The four text fields, in the order they are asked: the two that qualify a
+ * lead first, then the two that route it. */
+const TEXT_FIELDS: {
+  name: FieldName;
+  label: string;
+  type?: string;
+  autoComplete: string;
+  required?: boolean;
+}[] = [
+  { name: "name", label: "Full name", autoComplete: "name", required: true },
+  {
+    name: "email",
+    label: "Work email",
+    type: "email",
+    autoComplete: "email",
+    required: true,
+  },
+  {
+    name: "company",
+    label: "Company",
+    autoComplete: "organization",
+    required: true,
+  },
+  { name: "role", label: "Job title", autoComplete: "organization-title" },
+];
 
 function validate(values: Record<FieldName, string>): Errors {
   const errors: Errors = {};
@@ -123,7 +149,7 @@ function validate(values: Record<FieldName, string>): Errors {
 
   const email = values.email.trim();
   if (!email) {
-    errors.email = "We need an email to send the invite.";
+    errors.email = "We need an email to reply to.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
     errors.email = "That email address looks incomplete.";
   } else if (FREE_EMAIL_DOMAINS.has(email.split("@")[1].toLowerCase())) {
@@ -153,7 +179,6 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
-  const [stamp, setStamp] = useState("");
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const firstFieldRef = useRef<HTMLInputElement | null>(null);
@@ -170,7 +195,6 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
     setErrors({});
     setSubmitted(false);
     setStatus("idle");
-    setStamp("");
     openedAt.current = Date.now();
   }, [open]);
 
@@ -198,7 +222,7 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
     if (!open) return;
     const opener = document.activeElement as HTMLElement | null;
     const t = window.setTimeout(() => {
-      const wide = window.matchMedia("(min-width: 881px)").matches;
+      const wide = window.matchMedia("(min-width: 721px)").matches;
       if (wide) firstFieldRef.current?.focus();
       else panelRef.current?.focus();
     }, 60);
@@ -267,8 +291,7 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
       return;
     }
     if (trapRef.current?.value) {
-      /* honeypot tripped — pretend it worked, drop it on the floor */
-      setStamp(formatStamp(new Date()));
+      /* honeypot tripped: pretend it worked, drop it on the floor */
       setStatus("done");
       return;
     }
@@ -298,7 +321,6 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
         }),
       });
       if (!res.ok) throw new Error(`demo-request failed: ${res.status}`);
-      setStamp(formatStamp(new Date()));
       setStatus("done");
     } catch {
       setStatus("error");
@@ -311,13 +333,6 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
   const describe = (f: FieldName) =>
     submitted && errors[f] ? fid(`${f}-err`) : undefined;
 
-  const chip =
-    status === "done"
-      ? { key: "submitted", label: "Submitted" }
-      : status === "submitting"
-        ? { key: "sending", label: "Sending" }
-        : { key: "draft", label: "Draft" };
-
   return createPortal(
     <div className="uzd" role="presentation">
       <div className="uzd__scrim" onClick={onClose} aria-hidden="true" />
@@ -329,27 +344,20 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
         ref={panelRef}
         tabIndex={-1}
       >
-        {/* record chrome — the dialog is a miniature Unifize record window */}
-        <div className="uzd__bar">
-          <span className="uzd__bar-code">
-            <svg className="uzd__bar-glyph" viewBox="0 0 12 12" aria-hidden="true">
-              <rect x="1" y="1" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.4" />
-              <path d="M3.5 6h5M6 3.5v5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-            </svg>
-            Demo request
-          </span>
-          <span
-            className={`uzd__chip uzd__chip--${chip.key}`}
-            role="status"
-            aria-live="polite"
-          >
-            <span className="uzd__chip-dot" aria-hidden="true" />
-            {chip.label}
-          </span>
-          <span className="uzd__bar-gap" aria-hidden="true" />
-          <kbd className="uzd__esc" aria-hidden="true">
-            esc
-          </kbd>
+        <div className="uzd__split">
+          {/* left pane: the product visual, the same stylized record window
+            * the home, platform and product heroes stage, on the pages' own
+            * wash ground. Decorative: the dialog is the form beside it. */}
+          <aside className="uzd__viz" aria-hidden="true">
+            <div className="uzd__stage rf rf--twin">
+              <RibbonField composition="twin" tone="quiet" />
+              <ArcadeStepScene config={HOME_HERO_QUALITY_CONFIG} />
+            </div>
+          </aside>
+
+          {/* right pane: the rails run its full height, so every block below
+            * is drawn between the same pair of lines */}
+          <div className="uzd__inner">
           <button
             type="button"
             className="uzd__close"
@@ -361,217 +369,100 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
                 d="M5.5 5.5l9 9M14.5 5.5l-9 9"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth={1.6}
+                strokeWidth={1.5}
                 strokeLinecap="round"
               />
             </svg>
           </button>
-        </div>
 
-        <div className="uzd__split">
-          <aside className="uzd__rail">
-            <h2 className="uzd__title" id={fid("title")}>
-              See it on your own&nbsp;process.
-            </h2>
-            <p className="uzd__lede">
-              Bring the process that hurts most. We map it live and show you
-              where the coordination goes.
-            </p>
-
-            <ol className="uzd__thread" aria-label="What happens next">
-              {THREAD.map((ev, i) => (
-                <li
-                  key={ev.title}
-                  className={cn(
-                    "uzd__ev",
-                    i === 0 && (status === "done" ? "is-done" : "is-now"),
-                  )}
-                >
-                  <span className="uzd__ev-node" aria-hidden="true">
-                    <svg viewBox="0 0 10 10">
-                      <path
-                        d="M2 5.2l2.1 2.1L8 3.2"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                  <span className="uzd__ev-body">
-                    <span className="uzd__ev-title">{ev.title}</span>
-                    <span className="uzd__ev-sub">{ev.sub}</span>
-                  </span>
-                </li>
-              ))}
-            </ol>
-
-            <p className="uzd__foot">
-              Regulated manufacturers run quality, documents and production on
-              Unifize.
-              <span className="uzd__foot-stds">
-                ISO 13485&ensp;·&ensp;21 CFR Part 11&ensp;·&ensp;IATF 16949
-              </span>
-            </p>
-          </aside>
-
-          <div className="uzd__body">
-            {status === "done" ? (
-              <div className="uzd__done" role="status">
-                <span className="uzd__done-mark" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <path
-                      className="uzd__done-tick"
-                      d="M5 12.5l4.5 4.5L19 7.5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-                <h3 className="uzd__done-title">Request received.</h3>
-                <p className="uzd__done-stamp">Received {stamp}</p>
-                <p className="uzd__done-copy">
-                  A product person replies within one business day with times
-                  that fit your calendar. If it is urgent, say so in your reply
-                  and we will pull it forward.
+          {status === "done" ? (
+            <>
+              <div className="uzd__head">
+                <p className="uzd__eyebrow">Request received</p>
+                <h2 className="uzd__title" id={fid("title")}>
+                  We will be in touch.
+                </h2>
+                <p className="uzd__lede">
+                  Someone from our team replies within one business day with
+                  times that fit your calendar.
                 </p>
-                <button
-                  type="button"
-                  className="uzd__ghost"
-                  onClick={onClose}
-                >
+              </div>
+
+              <Divider />
+
+              <div className="uzd__block uzd__block--done" role="status">
+                <button type="button" className="uzd__ghost" onClick={onClose}>
                   Back to the page
                 </button>
               </div>
-            ) : (
-              <form className="uzd__form" onSubmit={onSubmit} noValidate>
+            </>
+          ) : (
+            <>
+              <div className="uzd__head">
+                <p className="uzd__eyebrow">Book a demo</p>
+                <h2 className="uzd__title" id={fid("title")}>
+                  See it on your own process.
+                </h2>
+                <p className="uzd__lede">
+                  Thirty minutes, live, on the process that hurts most.
+                </p>
+              </div>
+
+              <Divider />
+
+              <form className="uzd__block" onSubmit={onSubmit} noValidate>
                 <div className="uzd__grid">
-                  <div className="uzd__field">
-                    <label className="uzd__label" htmlFor={fid("name")}>
-                      Full name <span aria-hidden="true">*</span>
-                    </label>
-                    <input
-                      id={fid("name")}
-                      ref={firstFieldRef}
-                      className="uzd__input"
-                      name="name"
-                      autoComplete="name"
-                      required
-                      value={values.name}
-                      aria-invalid={invalid("name")}
-                      aria-describedby={describe("name")}
-                      onChange={(e) => set("name", e.target.value)}
-                    />
-                    {submitted && errors.name ? (
-                      <p className="uzd__err" id={fid("name-err")}>
-                        {errors.name}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div className="uzd__field">
-                    <label className="uzd__label" htmlFor={fid("email")}>
-                      Work email <span aria-hidden="true">*</span>
-                    </label>
-                    <input
-                      id={fid("email")}
-                      className="uzd__input"
-                      name="email"
-                      type="email"
-                      inputMode="email"
-                      autoComplete="email"
-                      required
-                      value={values.email}
-                      aria-invalid={invalid("email")}
-                      aria-describedby={describe("email")}
-                      onChange={(e) => set("email", e.target.value)}
-                    />
-                    {submitted && errors.email ? (
-                      <p className="uzd__err" id={fid("email-err")}>
-                        {errors.email}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div className="uzd__field">
-                    <label className="uzd__label" htmlFor={fid("company")}>
-                      Company <span aria-hidden="true">*</span>
-                    </label>
-                    <input
-                      id={fid("company")}
-                      className="uzd__input"
-                      name="company"
-                      autoComplete="organization"
-                      required
-                      value={values.company}
-                      aria-invalid={invalid("company")}
-                      aria-describedby={describe("company")}
-                      onChange={(e) => set("company", e.target.value)}
-                    />
-                    {submitted && errors.company ? (
-                      <p className="uzd__err" id={fid("company-err")}>
-                        {errors.company}
-                      </p>
-                    ) : null}
-                  </div>
-
-                  <div className="uzd__field">
-                    <label className="uzd__label" htmlFor={fid("role")}>
-                      Job title
-                    </label>
-                    <input
-                      id={fid("role")}
-                      className="uzd__input"
-                      name="role"
-                      autoComplete="organization-title"
-                      value={values.role}
-                      onChange={(e) => set("role", e.target.value)}
-                    />
-                  </div>
-
-                  <div className="uzd__field uzd__field--wide">
-                    <label className="uzd__label" htmlFor={fid("industry")}>
-                      Industry
-                    </label>
-                    <div className="uzd__select-wrap">
-                      <select
-                        id={fid("industry")}
-                        className="uzd__select"
-                        name="industry"
-                        value={values.industry}
-                        onChange={(e) => set("industry", e.target.value)}
-                      >
-                        <option value="">Select an industry</option>
-                        {INDUSTRIES.map((i) => (
-                          <option key={i} value={i}>
-                            {i}
-                          </option>
-                        ))}
-                      </select>
-                      <svg
-                        className="uzd__select-chev"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="M6 8l4 4 4-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={1.6}
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                  {TEXT_FIELDS.map((f, i) => (
+                    <div className="uzd__field" key={f.name}>
+                      <label className="uzd__label" htmlFor={fid(f.name)}>
+                        {f.label}
+                        {f.required ? null : (
+                          <span className="uzd__optional">Optional</span>
+                        )}
+                      </label>
+                      <input
+                        id={fid(f.name)}
+                        ref={i === 0 ? firstFieldRef : undefined}
+                        className="uzd__input"
+                        name={f.name}
+                        type={f.type ?? "text"}
+                        inputMode={f.type === "email" ? "email" : undefined}
+                        autoComplete={f.autoComplete}
+                        required={f.required}
+                        value={values[f.name]}
+                        aria-invalid={invalid(f.name)}
+                        aria-describedby={describe(f.name)}
+                        onChange={(e) => set(f.name, e.target.value)}
+                      />
+                      {submitted && errors[f.name] ? (
+                        <p className="uzd__err" id={fid(`${f.name}-err`)}>
+                          {errors[f.name]}
+                        </p>
+                      ) : null}
                     </div>
-                  </div>
+                  ))}
+
+                  <Select
+                    id={fid("industry")}
+                    label="Industry"
+                    placeholder="Select an industry"
+                    options={INDUSTRIES}
+                    value={values.industry}
+                    onChange={(v) => set("industry", v)}
+                  />
+
+                  <Select
+                    id={fid("interest")}
+                    label="What should we look at?"
+                    placeholder="Select a process"
+                    options={INTERESTS}
+                    value={values.interest}
+                    onChange={(v) => set("interest", v)}
+                  />
 
                   <div className="uzd__field uzd__field--wide">
                     <label className="uzd__label" htmlFor={fid("notes")}>
-                      Which process hurts most?
+                      Anything we should know first?
                       <span className="uzd__optional">Optional</span>
                     </label>
                     <textarea
@@ -579,14 +470,14 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
                       className="uzd__textarea"
                       name="notes"
                       rows={3}
-                      placeholder="CAPA backlog, change control sign-offs, document reviews, supplier corrective actions…"
+                      placeholder="The systems you run today, the audit you are preparing for, the backlog you want gone."
                       value={values.notes}
                       onChange={(e) => set("notes", e.target.value)}
                     />
                   </div>
                 </div>
 
-                {/* honeypot — off-screen, never announced, never focusable */}
+                {/* honeypot: off-screen, never announced, never focusable */}
                 <input
                   ref={trapRef}
                   className="uzd__trap"
@@ -604,24 +495,24 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
                   </p>
                 ) : null}
 
-                <div className="uzd__actions">
-                  <button
-                    type="submit"
-                    className="uzd__submit"
-                    disabled={status === "submitting"}
-                  >
-                    {status === "submitting" ? "Sending…" : "Request a demo"}
-                    <span className="uzd__arr" aria-hidden="true">
-                      →
-                    </span>
-                  </button>
-                  <p className="uzd__consent">
-                    We use this to run the demo and follow up once.
-                    <br />
-                    No lists, no sequences.
-                  </p>
-                </div>
+                <button
+                  type="submit"
+                  className="uzd__submit"
+                  disabled={status === "submitting"}
+                >
+                  {status === "submitting" ? "Sending" : "Request a demo"}
+                  <span className="uzd__arr" aria-hidden="true">
+                    →
+                  </span>
+                </button>
               </form>
+            </>
+          )}
+
+          {status === "done" ? null : (
+              <p className="uzd__foot">
+                We reply within one business day. No lists, no sequences.
+              </p>
             )}
           </div>
         </div>
@@ -631,14 +522,65 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
   );
 }
 
-function formatStamp(d: Date): string {
-  return d.toLocaleString("en-GB", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+/* The divider between two blocks of the card: one hairline edge to edge, with
+ * a crosshair where it crosses each rail. */
+function Divider() {
+  return (
+    <div className="uzd__div" aria-hidden="true">
+      <span className="uzd__cross uzd__cross--l" />
+      <span className="uzd__cross uzd__cross--r" />
+    </div>
+  );
+}
+
+function Select({
+  id,
+  label,
+  placeholder,
+  options,
+  value,
+  onChange,
+}: {
+  id: string;
+  label: string;
+  placeholder: string;
+  options: readonly string[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className="uzd__field">
+      <label className="uzd__label" htmlFor={id}>
+        {label}
+        <span className="uzd__optional">Optional</span>
+      </label>
+      <div className="uzd__select-wrap">
+        <select
+          id={id}
+          className={cn("uzd__select", !value && "is-empty")}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+        >
+          <option value="">{placeholder}</option>
+          {options.map((o) => (
+            <option key={o} value={o}>
+              {o}
+            </option>
+          ))}
+        </select>
+        <svg className="uzd__chev" viewBox="0 0 20 20" aria-hidden="true">
+          <path
+            d="M6 8l4 4 4-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+  );
 }
 
 /* ------------------------------------------------------------------ trigger */

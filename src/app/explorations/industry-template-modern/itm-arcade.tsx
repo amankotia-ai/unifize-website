@@ -24,6 +24,7 @@ import {
   type ArcadeFlowWorld,
   type ArcadeStepConfig,
 } from "../products/_shared/arcade/arcade";
+import { HeroArcade as SharedHeroArcade, type HeroArcadeStep } from "../products/_shared/arcade/hero-arcade";
 
 /* ------------------------------------------------------------------ world */
 
@@ -324,6 +325,22 @@ export function HeroArcade() {
       <ItmArcadeScene config={TRACE_STEPS[HERO_ORDER[frame]].config} />
     </div>
   );
+}
+
+/* HERO ON THE RAILS (23 Sep 2026) - the page's hero now opens like the
+ * home, platform and DMS heroes: the shared hero arcade (one window on the
+ * moving wash, a step rail of solid glyphs above it) walking the same
+ * CC-2148 journey as the decision trail below. */
+const MD_HERO_STEPS: HeroArcadeStep[] = [
+  { label: "Raise it", icon: "build", config: TRACE_STEPS[0].config },
+  { label: "Assess it", icon: "compare", config: TRACE_STEPS[1].config },
+  { label: "Review it", icon: "route", config: TRACE_STEPS[2].config },
+  { label: "Sign it", icon: "sign", config: TRACE_STEPS[3].config },
+  { label: "Seal it", icon: "trust", config: TRACE_STEPS[4].config },
+];
+
+export function MdHeroArcade() {
+  return <SharedHeroArcade steps={MD_HERO_STEPS} rail="top" />;
 }
 
 /* SECTION B - a pinned scroll story with a TIGHT trail: the whole block

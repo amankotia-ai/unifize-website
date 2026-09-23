@@ -21,16 +21,18 @@ import { useId, useRef, useState, type ReactNode } from "react";
 export function SolutionsGrid({
   cards,
   initial = 4,
-  tail,
+  peek = 2,
 }: {
   cards: { key: string; node: ReactNode }[];
   initial?: number;
-  tail: ReactNode;
+  /** how many of the hidden cards show through the blurred preview */
+  peek?: number;
 }) {
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
   const listRef = useRef<HTMLUListElement>(null);
   const hasMore = cards.length > initial;
+  const peeked = expanded ? [] : cards.slice(initial, initial + peek);
 
   const toggle = () => {
     const next = !expanded;
@@ -59,21 +61,39 @@ export function SolutionsGrid({
           );
         })}
       </ul>
-      <div className="hm-section-tail hm-section-tail--solutions" data-reveal>
-        {tail}
-        {hasMore ? (
-          <button
-            type="button"
-            className="hm-more"
-            aria-expanded={expanded}
-            aria-controls={listId}
-            onClick={toggle}
-          >
-            {expanded ? "Show fewer solutions" : "See more solutions"}
-            <span aria-hidden="true">{expanded ? "↑" : "↓"}</span>
-          </button>
-        ) : null}
-      </div>
+      {hasMore ? (
+        <>
+          {/* blurred, fading preview of the next row: decorative only, so it
+            * is hidden from assistive tech and inert to focus and clicks */}
+          {peeked.length > 0 ? (
+            <div className="hm-peek" aria-hidden="true" inert>
+              {/* three copies, sharp / soft / heavy, each masked to its own
+                * band: a progressive blur that needs no backdrop-filter */}
+              {[0, 1, 2].map((layer) => (
+                <ul className="hm-symptoms hm-symptoms--peek" data-layer={layer} key={layer}>
+                  {peeked.map((card) => (
+                    <li className="hm-symptom" key={card.key}>
+                      {card.node}
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          ) : null}
+          <div className={"hm-more-row" + (expanded ? " is-expanded" : "")}>
+            <button
+              type="button"
+              className="hm-more"
+              aria-expanded={expanded}
+              aria-controls={listId}
+              onClick={toggle}
+            >
+              {expanded ? "Show fewer solutions" : "See more solutions"}
+              <span aria-hidden="true">{expanded ? "\u2191" : "\u2193"}</span>
+            </button>
+          </div>
+        </>
+      ) : null}
     </>
   );
 }

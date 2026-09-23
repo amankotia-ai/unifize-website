@@ -48,7 +48,9 @@ export function IngressNav() {
   };
 
   return (
-    <div className="itm-subnav">
+    /* dms-section: the DmsHeader's theme probe lands on this bar while it
+     * pins, and reads the theme from the nearest .dms-section */
+    <div className="itm-subnav dms-section">
       <div className="itm-wrap itm-wrap--wide itm-subnav__inner">
         <span className="itm-subnav__lab">Three ways in</span>
         <nav className="itm-subnav__tabs" aria-label="Explore Unifize for medical devices">

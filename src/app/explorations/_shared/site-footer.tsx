@@ -73,6 +73,9 @@ export function SiteFooter({
           <span>© Unifize 2026</span>
           <span>{note}</span>
         </div>
+        {/* the giant edge-to-edge wordmark under the base line was removed
+          * from every footer on 23 Sep 2026 (Abhishek: "remove this big
+          * bottom logo from all footers") */}
       </div>
     </footer>
   );

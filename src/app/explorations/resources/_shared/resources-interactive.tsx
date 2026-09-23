@@ -28,11 +28,11 @@ import { VIDEO_INDUSTRIES, VIDEO_PERSONAS, type CustomerVideo } from "./customer
 import type { TranscriptCue } from "./video-transcripts";
 import { VideoCard, PostCard, CaseCard, PlayGlyph, initialsOf } from "./resource-cards";
 
-const pad = (n: number) => String(n).padStart(2, "0");
+export const pad = (n: number) => String(n).padStart(2, "0");
 type Industry = (typeof INDUSTRIES)[number];
 
 /* ------------------------------------------------------------ primitives */
-function SearchBox({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
+export function SearchBox({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder: string }) {
   return (
     <label className="rs-search">
       <svg className="rs-search__ic" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden="true">
@@ -43,7 +43,7 @@ function SearchBox({ value, onChange, placeholder }: { value: string; onChange: 
   );
 }
 
-function FilterLabel({ children }: { children: React.ReactNode }) {
+export function FilterLabel({ children }: { children: React.ReactNode }) {
   return <span className="rs-filterlab">{children}</span>;
 }
 
@@ -52,7 +52,7 @@ function FilterLabel({ children }: { children: React.ReactNode }) {
  * box's grammar that names the group and its current value; the panel lists
  * "All" plus every option with a live count of what choosing it yields.
  * Escape / outside click / blur close it; arrows, Home, and End move focus. */
-function FilterMenu({ label, allLabel, value, options, counts, onChange }: {
+export function FilterMenu({ label, allLabel, value, options, counts, onChange }: {
   label: string;
   allLabel: string;
   value: string;
@@ -173,10 +173,10 @@ function FilterMenu({ label, allLabel, value, options, counts, onChange }: {
 /* ============================================================ video library
  * One "Filter by" toolbar over the real customer-video grid: industry and
  * role dropdowns, and search. */
-const videoHay = (v: CustomerVideo) =>
+export const videoHay = (v: CustomerVideo) =>
   [v.company, v.person, v.role, v.name, v.description, v.industry, v.modules.join(" ")].filter(Boolean).join(" ").toLowerCase();
 
-function tally(all: number, entries: Iterable<string | undefined>) {
+export function tally(all: number, entries: Iterable<string | undefined>) {
   const m = new Map<string, number>([["All", all]]);
   for (const k of entries) if (k) m.set(k, (m.get(k) ?? 0) + 1);
   return m;

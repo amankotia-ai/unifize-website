@@ -87,9 +87,17 @@ export function IntegrationLayer({
   ctaHeading = "Don’t see your system?",
   ctaBody = "We are always adding connectors. Bring us the stack you need to keep in step.",
   ctaLabel = "Talk to us",
+  tone = "dark",
+  className,
 }: {
   data: IntegrationData;
   variant?: "full" | "minimal";
+  /** minimal variant only: the section's ground. "light" drops the dark
+   * surface class (so the sticky header samples it as light) for pages on
+   * the rails grammar (page-rails.css). */
+  tone?: "dark" | "light";
+  /** extra section classes (e.g. `hm-railed`) */
+  className?: string;
   /** minimal-variant strings; defaults are the DMS copy so the standalone
    * DMS page is unchanged when no overrides are passed. */
   minimalHeading?: string;
@@ -107,7 +115,15 @@ export function IntegrationLayer({
 }) {
   if (variant === "minimal") {
     return (
-      <section className="dms-section dms-section--dark dms-intg dms-intg--minimal" id="integrations" aria-labelledby="dms-integrations-title">
+      <section
+        className={
+          "dms-section dms-intg dms-intg--minimal" +
+          (tone === "dark" ? " dms-section--dark" : " dms-intg--light") +
+          (className ? " " + className : "")
+        }
+        id="integrations"
+        aria-labelledby="dms-integrations-title"
+      >
         <div className="dms-wrap">
           <header className="dms-intg__minimal-head" data-reveal>
             {minimalEyebrow ? <Eyebrow>{minimalEyebrow}</Eyebrow> : null}

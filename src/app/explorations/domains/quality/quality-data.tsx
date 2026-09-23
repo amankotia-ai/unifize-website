@@ -155,6 +155,18 @@ export const QUALITY_DATA: DomainPageData = {
         glyph: "loop",
         name: "The event loop",
         line: "Something goes wrong, gets investigated, gets closed for good.",
+        viz: {
+          kicker: "CAPA-1284",
+          state: "In review",
+          title: "Seal failure · line 2",
+          rows: [
+            { label: "Deviation logged", meta: "Day 0" },
+            { label: "NC-0871 dispositioned", meta: "Day 2" },
+            { label: "Root cause accepted", meta: "Today", open: true },
+          ],
+          cursor: { name: "M. Chen", tone: "#7c3aed" },
+          wash: "sky",
+        },
         runsIn: { label: "Runs in the QMS product →", href: "/explorations/products/qms" },
         items: [
           { name: "Deviation Management", line: "Capture, classify and close departures from procedure before the batch ages out." },
@@ -168,6 +180,18 @@ export const QUALITY_DATA: DomainPageData = {
         glyph: "doc",
         name: "Release and the lab",
         line: "Everything between the last test result and product out the door.",
+        viz: {
+          kicker: "Batch 22-114",
+          state: "On hold",
+          title: "Release review",
+          rows: [
+            { label: "Batch record reviewed", meta: "Day 1" },
+            { label: "EM excursion closed", meta: "Day 2" },
+            { label: "QA release", meta: "Pending", open: true },
+          ],
+          cursor: { name: "D. Okafor", tone: "#0f8f7e" },
+          wash: "blue",
+        },
         runsIn: { label: "Batch records run in the MES product →", href: "/explorations/products/mes" },
         items: [
           { name: "Batch Record Review and Release", line: "Line-by-line review to release, with deviations, checks and signatures reconciled." },
@@ -181,6 +205,18 @@ export const QUALITY_DATA: DomainPageData = {
         glyph: "scale",
         name: "Risk and validation",
         line: "Prove it works, and keep it proven as things change.",
+        viz: {
+          kicker: "FMEA · seal integrity",
+          state: "Updating",
+          title: "Seal fixture drift",
+          rows: [
+            { label: "Failure mode linked", meta: "CAPA-1284" },
+            { label: "Control per shift", meta: "Added" },
+            { label: "PQ re-run", meta: "Scheduled", open: true },
+          ],
+          cursor: { name: "S. Ferreira", tone: "#d97706" },
+          wash: "warm",
+        },
         runsIn: { label: "Runs in the QMS product →", href: "/explorations/products/qms" },
         items: [
           { name: "Quality Risk Management", line: "Risk registers that stay current as the operation evolves, not as of the last gate." },
@@ -192,6 +228,19 @@ export const QUALITY_DATA: DomainPageData = {
         glyph: "box",
         name: "Suppliers and the field",
         line: "Quality at the edges: incoming parts, external partners, installed product.",
+        runsIn: { label: "See supplier management →", href: "/explorations/domains/supplier-management" },
+        viz: {
+          kicker: "SCAR · Apex Metals",
+          state: "Supplier action",
+          title: "Receipt R-8874 · PO-2211",
+          rows: [
+            { label: "FAI evidence attached", meta: "Day 1" },
+            { label: "Supplier root cause", meta: "Day 6" },
+            { label: "Verified at receipt", meta: "Next lot", open: true },
+          ],
+          cursor: { name: "P. Musa", tone: "#db2777" },
+          wash: "paper",
+        },
         items: [
           { name: "New Part Approval and First Article Inspection", line: "Production gated on clean FAI evidence against the latest drawing revision." },
           { name: "Emergency Supplier Authorization", line: "A months-long qualification compressed to days without undisclosed risk." },
@@ -226,13 +275,23 @@ export const QUALITY_DATA: DomainPageData = {
         { state: "idle", label: "Effectiveness review", age: "Queued" },
       ],
       float: { kicker: "Audit day", note: "Please pull the full evidence trail for this CAPA." },
-      caption: "The work took a week. The record is still open at day 90.",
+      caption: "The work was done in nine days. The record is still open at day 90.",
+      inbox: {
+        label: "Quality inbox",
+        meta: "47 unread",
+        rows: [
+          { subject: "RE: RE: FW: CAPA-0091 closure sign-off?", from: "D. Okafor · Quality", age: "18d", unread: true, warn: true },
+          { subject: "RE: Effectiveness review, who owns it?", from: "S. Ferreira · Quality", age: "12d", unread: true },
+          { subject: "FW: Containment verified, batch 22-114", from: "M. Chen · QA", age: "81d" },
+          { subject: "Investigation complete: CAPA-0091", from: "D. Okafor · Quality", age: "85d" },
+        ],
+      },
     },
     pains: [
-      { severity: "Critical", surface: "Audit day", name: "Audit-day evidence pull collapses to a manual rebuild", body: "When an auditor asks for the full record of a deviation, change or CAPA, the team spends hours stitching together exports, screenshots and email forwards. The audit passes; passing costs days of team time." },
-      { severity: "Critical", surface: "Drives & threads", name: "Evidence not bound to commit points", body: "Disposition, root-cause acceptance, effectiveness verification, closure: the decisions happen at definable commit points, but the supporting evidence lives in attachments and threads that are not bound to them." },
-      { severity: "Critical", surface: "The floor", name: "Quality system drift between paper and floor", body: "The QMS as documented passes external audits. The QMS as practised on the floor differs in places operators treat as 'how it really works'. The drift is invisible until a serious finding forces it open." },
-      { severity: "High", surface: "Floor walks & email", name: "Disposition decisions live in side channels", body: "Release, rework, scrap or deviate gets argued in floor walks, huddles and emails to QA. The disposition lands in the record; the reasoning, alternatives and who agreed do not." },
+      { severity: "Critical", surface: "Audit day", name: "Audit-day evidence pull collapses to a manual rebuild", short: "Hours of exports, screenshots and forwards to rebuild one record.", body: "When an auditor asks for the full record of a deviation, change or CAPA, the team spends hours stitching together exports, screenshots and email forwards. The audit passes; passing costs days of team time." },
+      { severity: "Critical", surface: "Drives & threads", name: "Evidence not bound to commit points", short: "The decision is on the record. The evidence is in a thread.", body: "Disposition, root-cause acceptance, effectiveness verification, closure: the decisions happen at definable commit points, but the supporting evidence lives in attachments and threads that are not bound to them." },
+      { severity: "Critical", surface: "The floor", name: "Quality system drift between paper and floor", short: "The SOP passes the audit. The floor runs its own version.", body: "The QMS as documented passes external audits. The QMS as practised on the floor differs in places operators treat as 'how it really works'. The drift is invisible until a serious finding forces it open." },
+      { severity: "High", surface: "Floor walks & email", name: "Disposition decisions live in side channels", short: "The disposition lands. The reasoning and who agreed do not.", body: "Release, rework, scrap or deviate gets argued in floor walks, huddles and emails to QA. The disposition lands in the record; the reasoning, alternatives and who agreed do not." },
       { severity: "High", surface: "Inbox & meetings", name: "Status-chasing across CAPA threads", body: "Investigators and quality managers spend daily cycles asking the next owner where a CAPA stands, because the record does not surface its own state." },
       { severity: "High", surface: "The data", name: "Repeat non-conformance pattern recognition fails", body: "Each event is investigated as a fresh case. The pattern across cases (same root cause, same supplier, same line) is visible in the data but never surfaces in the workflow." },
       { severity: "High", surface: "The audit report", name: "Internal audit findings stall at owner assignment", body: "The finding sits in the audit report; the action sits in nobody's queue; the next audit re-finds it." },
@@ -265,6 +324,15 @@ export const QUALITY_DATA: DomainPageData = {
       { t: "Actions committed with owners", who: "Ops · Engineering", when: "Day 9" },
       { t: "Effectiveness verified in window", who: "CAPA Owner", when: "Day 34" },
       { t: "Closed · trace sealed", who: "Head of Quality", when: "Day 35" },
+    ],
+    /* the rails rail: each line is what the arcade pose above it shows
+     * (CAPA-1284's own records, people and checks), titles one verb deep */
+    steps: [
+      { icon: "escalate", title: "Escalate the event", body: "NC-0871 becomes CAPA-1284, with batch 22-114 held on it." },
+      { icon: "cause", title: "Accept the cause", body: "M. Chen accepts seal fixture drift, the 5-Why attached." },
+      { icon: "actions", title: "Commit the actions", body: "Three corrective actions, each with a named owner and date." },
+      { icon: "verify", title: "Verify it held", body: "Thirty days of line 2 yield, and no recurrence found." },
+      { icon: "seal", title: "Seal the trace", body: "S. Ferreira signs, and the CAPA closes as one trace." },
     ],
     trailFoot: "The relation runs back to the event that raised it, and forward into the change and training it triggers. The thread is the trace.",
     chatVariant: "capa",
@@ -405,10 +473,10 @@ export const QUALITY_DATA: DomainPageData = {
    * qms-data.tsx (QMS External Standards) and the LIMS module descriptions.
    * QMS modules link to the live product page; LIMS and CI have no page yet. */
   coverage: {
-    heading: "The products that do the quality work.",
+    heading: "One product runs the quality work.",
     // The reconciling line: section 05 and section 08 tell ONE story now —
     // the modules can BE the QMS or run beside the one you keep.
-    lede: "The modules below serve this domain, bundled into the Quality Management System, LIMS and Continuous Improvement products. Run them as your QMS, or alongside the one you keep — coexistence below. Filter by the standard you are audited against.",
+    lede: "Quality runs in the Quality Management System: its modules share one governed record, from the first event to the sealed close. Run it as your QMS, or alongside the one you keep.",
     standardFilters: ["ISO 9001", "ISO 13485", "21 CFR 820", "21 CFR 211", "IATF 16949", "AS 9100", "ISO/IEC 17025"],
     groups: [
       {
@@ -532,9 +600,9 @@ export const QUALITY_DATA: DomainPageData = {
     heading: "When quality becomes the headline.",
     lede: "Every one of these moments starts a clock, and each routes into a governed workflow, so the response is coordinated on the record it will be judged by.",
     rows: [
-      { name: "FDA Form 483 observation issued", clock: "15 working days to respond", severity: "Urgent", routesTo: "CAPA · Audit Management", owner: "VP Quality", href: "/explorations/triggers/fda-483" },
-      { name: "FDA Warning Letter received", clock: "15 working days · follow-on inspection", severity: "Urgent", routesTo: "CAPA", owner: "VP Quality · Executive team" },
-      { name: "Failed FDA inspection", clock: "OAI posture · import-alert risk", severity: "Urgent", routesTo: "Audit Management", owner: "Executive team" },
+      { name: "FDA Form 483 observation issued", clock: "15 working days to respond", severity: "Urgent", routesTo: "CAPA · Audit Management", owner: "VP Quality", href: "/explorations/triggers/fda-483", viz: "sheet" },
+      { name: "FDA Warning Letter received", clock: "15 working days · follow-on inspection", severity: "Urgent", routesTo: "CAPA", owner: "VP Quality · Executive team", viz: "calendar" },
+      { name: "Failed FDA inspection", clock: "OAI posture · import-alert risk", severity: "Urgent", routesTo: "Audit Management", owner: "Executive team", viz: "scale" },
       { name: "Recall scope definition required", clock: "Regulator's stated timeline", severity: "Urgent", routesTo: "Quality Events", owner: "VP Quality · CMO" },
       { name: "MDR / vigilance reporting deadline", clock: "5–30 days by classification", severity: "Urgent", routesTo: "Complaint Investigation", owner: "Quality · Regulatory" },
       { name: "Data integrity finding", clock: "Treated as systemic", severity: "Urgent", routesTo: "Quality Events · Audit", owner: "Quality Compliance" },
@@ -559,6 +627,11 @@ export const QUALITY_DATA: DomainPageData = {
     systemsOfRecord: ["QMS", "ERP", "LIMS", "MES"],
     body: "Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the decision trace goes missing, not the systems of record that already passed your audits. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your QMS, ERP, LIMS and MES.",
+    bands: {
+      lede: "Keep the eQMS that passed your audits. Unifize runs the coordination around it, and the approved outcome goes back with a 21 CFR Part 11 signature. No rip-and-replace, no revalidation.",
+      vendors: ["MasterControl", "ETQ", "Veeva", "Qualio", "TrackWise"],
+      note: "No eQMS yet, or one with gaps? The QMS modules above run it, on the same layer.",
+    },
     selectorLabel: "Where is your QMS today?",
     paths: [
       {
@@ -566,7 +639,7 @@ export const QUALITY_DATA: DomainPageData = {
         label: "We run a dedicated eQMS",
         vendors: ["MasterControl", "ETQ", "Veeva", "Qualio", "Greenlight Guru", "TrackWise"],
         heading: "Keep it. Unifize runs the coordination it can't see.",
-        body: "Your QMS keeps doing what it does — storing the approved records that already passed your audits. Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the investigation, the evidence gathering and the sign-off chasing actually happen, and the approved outcome carries a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
+        body: "Your QMS keeps doing what it does: storing the approved records that already passed your audits. Unifize replaces the ungoverned channels (email, meetings, spreadsheets) where the investigation, the evidence gathering and the sign-off chasing actually happen, and the approved outcome carries a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
         diagram: {
           role: "Coordination layer",
           chips: ["One governed thread", "Evidence bound to decisions", "Attributable e-signatures"],
@@ -583,7 +656,7 @@ export const QUALITY_DATA: DomainPageData = {
         id: "none",
         label: "Spreadsheets and shared drives",
         heading: "Unifize is the QMS.",
-        body: "Non-conformance, CAPA, quality events, audit and risk management run as governed Unifize modules — the system of record and the coordination layer in one platform, with named ownership, evidence binding and 21 CFR Part 11 e-signatures from the first workstream.",
+        body: "Non-conformance, CAPA, quality events, audit and risk management run as governed Unifize modules: the system of record and the coordination layer in one platform, with named ownership, evidence binding and 21 CFR Part 11 e-signatures from the first workstream.",
         diagram: {
           role: "QMS + coordination layer",
           chips: ["Governed quality records", "Evidence bound to decisions", "Part 11 e-signatures"],
@@ -600,7 +673,7 @@ export const QUALITY_DATA: DomainPageData = {
         id: "weak",
         label: "A QMS with gaps",
         heading: "Keep what passed. Run the gaps on Unifize.",
-        body: "Document control is solid but CAPA lives in spreadsheets? Keep the parts of your QMS that already passed your audits, and run the gap — the CAPA thread, the audit response, the complaint file — as a governed Unifize module. The coordination layer runs across all of it, so the decision trace stays whole even where the records are split.",
+        body: "Document control is solid but CAPA lives in spreadsheets? Keep the parts of your QMS that already passed your audits, and run the gap (the CAPA thread, the audit response, the complaint file) as a governed Unifize module. The coordination layer runs across all of it, so the decision trace stays whole even where the records are split.",
         diagram: {
           role: "Coordination layer + the gap module",
           chips: ["One governed thread", "Evidence bound to decisions", "Attributable e-signatures"],
@@ -634,6 +707,18 @@ export const QUALITY_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["CAPAs", "NCs / Defects", "Audit Management", "Out of Spec", "Complaints"],
+    /* the reel roster, in the page's order: the event loop, the lab, audits,
+     * management review, the field. Each fact is what the film is titled;
+     * no figure appears that the film does not make. */
+    stills: [
+      { wistia: "pox8uvli70", fact: "Non-conformances and deviations tracked on one record" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "amouhm61zr", fact: "Non-conformances resolved in hours" }, /* Mikala Hukka */
+      { wistia: "5iytkalfly", fact: "Real-time collaboration behind faster quality decisions" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "casupievrz", fact: "Out-of-spec results resolved, product to market faster" }, /* Mikala Hukka */
+      { wistia: "czpp4z5i75", fact: "Audits made easier" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "1dqmvmlupm", fact: "Management review run from live dashboards" }, /* Denis Machoka */
+      { wistia: "pwsxw84w56", fact: "Post-market compliance without the scramble" }, /* Clarissa Archer, Harmonic Bionics */
+    ],
     references: [
       {
         tag: "Named reference",

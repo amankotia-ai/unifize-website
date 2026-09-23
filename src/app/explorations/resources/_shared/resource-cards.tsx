@@ -80,3 +80,37 @@ export function CaseCard({ c }: { c: CaseStudy }) {
     </Link>
   );
 }
+
+/* ------------------------------------------------- story cell (rails wave)
+ * The Customer stories library cell, 22 Sep 2026: the same content as
+ * VideoCard, drawn as a hairline cell in a rail-to-rail ledger instead of a
+ * floating card. The still is the object; the copy sits under it, aligned to
+ * the still's edge (the way-in cell grammar). */
+export function StoryCell({ v }: { v: CustomerVideo }) {
+  const who = [v.person, v.role].filter(Boolean).join(", ");
+  const where = v.company ?? v.industry;
+  return (
+    <Link href={`/explorations/resources/testimonials/${v.slug}`} className="cs-cell">
+      <span className="cs-cell__still">
+        {v.thumb
+          ? /* eslint-disable-next-line @next/next/no-img-element */
+            <img src={v.thumb} alt="" loading="lazy" decoding="async" />
+          : <span className="cs-cell__ghost" aria-hidden="true">{initialsOf(v.company ?? v.person)}</span>}
+        <PlayGlyph className="cs-cell__play" />
+        <span className="cs-cell__dur">{v.duration}</span>
+      </span>
+      <span className="cs-cell__body">
+        <span className="cs-cell__title">{v.name}</span>
+        <span className="cs-cell__who">
+          <b>{who}</b>
+          {where ? <i>{where}</i> : null}
+        </span>
+      </span>
+      {v.metrics.length ? (
+        <span className="cs-cell__tags">
+          {v.metrics.slice(0, 2).map((m) => <span key={m}>{m}</span>)}
+        </span>
+      ) : null}
+    </Link>
+  );
+}

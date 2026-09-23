@@ -41,6 +41,8 @@ import { NavGlyph, type IconName } from "../_shared/nav-data";
 export type HeroArcadeView = {
   key: string;
   label: string;
+  /* a solid glyph from the nav set in place of the tab number (22 Sep 2026) */
+  icon?: IconName;
   config: ArcadeStepConfig;
 };
 
@@ -110,6 +112,7 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
             className={"hm-heromock__tab" + (i === active ? " is-active" : "")}
             onClick={() => pick(i)}
           >
+            {v.icon ? <span className="hm-heromock__ico" aria-hidden="true"><NavGlyph name={v.icon} /></span> : null}
             {v.label}
             {autoplay && !paused && i === active ? (
               <span
@@ -123,7 +126,7 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
       </div>
       {/* one persistent window: the camera pans between worlds, the interior
         * dips for the record swap */}
-      <div className="hm-heromock__stage rf rf--fan">
+      <div className="hm-heromock__stage rf rf--fan rf--plate">
         <RibbonField composition="fan" />
         <div className={cn("hm-heromock__scene", scene.dipped && "is-dipped")}>
           <ArcadeStepScene config={scene.shown} />

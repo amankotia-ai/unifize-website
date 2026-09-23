@@ -1,0 +1,953 @@
+/* ============================================================================
+ * stories-rails.css - the Customer stories page on the rails grammar
+ * (22 Sep 2026), the wave that took the homepage, the platform page and DMS.
+ *
+ * The shared grammar is _shared/page-rails.css (`dms--rails` on <main>,
+ * `hm-railed` per section, <HatchBand /> between, the blue-square eyebrow, the
+ * dark bookends). This file is only what this page composes differently:
+ * the charcoal hero with its drifting contact sheet, the split section
+ * heads, the customer ledger, the library toolbar and its cell ledger, the
+ * dark keep-exploring rows, and the close.
+ *
+ * Scoped with `cs-page` so nothing here reaches the other Resources pages,
+ * which still run the older collection grammar. Loaded last, after
+ * resources-kit.css, so equal-specificity rules win by order.
+ * ========================================================================== */
+
+.dms--redesign.cs-page {
+  background: var(--dms-surface);
+}
+
+/* ================================================================== HERO
+ * Charcoal ground: crumb, then the title left with the standfirst and the
+ * CTAs right on one baseline, then the contact sheet running rail to rail.
+ * Rails and hairlines go white at low alpha here. */
+.dms--redesign.cs-page .dms-hero.cs-hero {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-bg-3: var(--hm-charcoal-3, #2b2f36);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --dms-d-border-2: var(--hm-charcoal-border-2, #41464f);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.cs-page .dms-hero.cs-hero {
+  min-height: 0;
+  /* the transparent header sits on the hero, so the head clears the bar at
+   * every width instead of tucking under it on a phone */
+  padding-top: calc(var(--dms-header-h) + clamp(44px, 5.4vw, 88px));
+  padding-bottom: 0;
+}
+
+/* The hero is the one section the transparent header sits ON, so its rails
+ * start below the bar instead of striking through the nav (Abhishek, 22 Sep).
+ * They also have to clear `.dms-hero__frame`, which carries z-index 3, or the
+ * rails stop halfway down the hero where the contact sheet begins
+ * (Abhishek, 23 Sep) - the same lift the platform page needed. */
+.dms--redesign.cs-page .cs-hero.hm-railed::before,
+.dms--redesign.cs-page .cs-hero.hm-railed::after {
+  z-index: 4;
+  top: var(--dms-header-h);
+}
+
+.dms--redesign.cs-page .cs-hero .dms-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(26px, 3vw, 44px);
+}
+
+/* one centred column, no CTA of its own (Abhishek, 23 Sep) */
+.dms--redesign.cs-page .cs-hero__head {
+  display: flex;
+  width: 100%;
+  max-width: 940px;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 1.8vw, 26px);
+  margin-inline: auto;
+  text-align: center;
+}
+
+/* the eyebrow is a flex row of square + label, so it needs centring twice:
+   the chip inside the column, and its own contents (Abhishek, 23 Sep) */
+.dms--redesign.cs-page .cs-hero__head .dms-eyebrow {
+  align-self: center;
+  justify-content: center;
+  width: auto;
+  margin: 0;
+  text-align: center;
+}
+
+/* the headline runs wide enough to sit on two natural lines rather than
+   breaking mid-phrase */
+.dms--redesign.cs-page .cs-hero .dms-hero__title {
+  max-width: 24ch;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.8rem, 5.2vw, 4.6rem);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.dms--redesign.cs-page .cs-hero .dms-hero__line {
+  display: block;
+}
+
+.dms--redesign.cs-page .cs-hero .dms-hero__turn {
+  /* blue-400: the brand blue lifted two steps so it holds on charcoal */
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.cs-page .cs-hero .dms-hero__sub {
+  max-width: 58ch;
+  margin: 0;
+  color: var(--dms-d-ink-2);
+  font-size: clamp(1.02rem, 1.2vw, 1.2rem);
+  line-height: 1.6;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------- the contact sheet
+ * The establishing shot, in the slot the other pages give the arcade
+ * window: two lanes of the real stills drifting in opposite directions
+ * straight on the charcoal (Abhishek, 22 Sep: no coloured container behind
+ * the covers), fading out into the ground at both rails. */
+.dms--redesign.cs-page .cs-hero__frame {
+  margin-top: clamp(36px, 4.2vw, 60px);
+  padding-inline: var(--dms-gutter);
+}
+
+.dms--redesign.cs-page .cs-reel {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.cs-page .cs-reel__wash {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.2vw, 18px);
+  overflow: hidden;
+  padding-block: clamp(26px, 2.8vw, 40px);
+  background: transparent;
+}
+
+.dms--redesign.cs-page .cs-reel__grain {
+  display: none;
+}
+
+.dms--redesign.cs-page .cs-reel__lane {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  gap: clamp(12px, 1.2vw, 18px);
+}
+
+.dms--redesign.cs-page .cs-reel__track {
+  display: flex;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0;
+  gap: clamp(12px, 1.2vw, 18px);
+  list-style: none;
+}
+
+.dms--redesign.cs-page .cs-reel__still {
+  width: clamp(168px, 17vw, 250px);
+  flex: none;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--hm-charcoal-3, #2b2f36);
+}
+
+.dms--redesign.cs-page .cs-reel__still img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.cs-page .cs-reel__lane--0 { animation: cs-drift-l 78s linear infinite; }
+  .dms--redesign.cs-page .cs-reel__lane--1 { animation: cs-drift-r 94s linear infinite; }
+}
+
+/* each lane holds two identical tracks, so a 50% shift loops seamlessly;
+ * the gap between the tracks is carried by the lane, hence the half-gap */
+@keyframes cs-drift-l {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - clamp(6px, 0.6vw, 9px)), 0, 0); }
+}
+
+@keyframes cs-drift-r {
+  from { transform: translate3d(calc(-50% - clamp(6px, 0.6vw, 9px)), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+.dms--redesign.cs-page .cs-reel__fade {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  width: clamp(90px, 11vw, 200px);
+  pointer-events: none;
+}
+
+.dms--redesign.cs-page .cs-reel__fade--l {
+  left: 0;
+  background: linear-gradient(90deg, var(--hm-charcoal, #1f2126) 12%, rgba(31, 33, 38, 0) 100%);
+}
+
+.dms--redesign.cs-page .cs-reel__fade--r {
+  right: 0;
+  background: linear-gradient(270deg, var(--hm-charcoal, #1f2126) 12%, rgba(31, 33, 38, 0) 100%);
+}
+
+/* ========================================================= SECTION HEAD
+ * The rails split head: eyebrow + display heading left, the lede right on
+ * the heading's baseline. */
+.dms--redesign.cs-page .cs-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: 18px clamp(40px, 6vw, 96px);
+  align-items: end;
+  margin-bottom: clamp(34px, 3.8vw, 56px);
+}
+
+.dms--redesign.cs-page .cs-head__lead {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.dms--redesign.cs-page .cs-head .dms-h2 {
+  max-width: 18ch;
+  margin: 0;
+}
+
+.dms--redesign.cs-page .cs-head__lede {
+  max-width: 48ch;
+  margin: 0;
+  padding-bottom: 6px;
+}
+
+/* ====================================================== 01 · CUSTOMERS
+ * The way-in cell grammar, exactly as the homepage draws it (Abhishek, 23
+ * Sep - the bordered, shadowed cards were off-standard): one row of cells
+ * rail to rail, a single hairline between them and one along the top and
+ * bottom, 12px around the plate, and the copy under it aligned to the
+ * plate's edge. No card chrome, no gaps, no shadow.
+ *
+ * The plate is the customer's OWN colour, sampled from their wordmark file
+ * (stories-browser.tsx), with the mark whited out on it. A cell is a door:
+ * picking one filters the library below. */
+.dms--redesign.cs-page .cs-cust {
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+.dms--redesign.cs-page .cs-custgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(226px, 1fr));
+  margin: 0;
+  padding: 0;
+  gap: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  list-style: none;
+}
+
+.dms--redesign.cs-page .cs-custcell + .cs-custcell {
+  border-left: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.cs-page .cs-cust__btn {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding: 12px 12px 24px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 200ms ease-out;
+}
+
+.dms--redesign.cs-page .cs-cust__btn:hover {
+  background: var(--dms-surface-alt);
+}
+
+.dms--redesign.cs-page .cs-cust__btn:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -3px;
+}
+
+/* the plate: the customer's colour, set inline from the sampled value */
+.dms--redesign.cs-page .cs-cust__plate {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
+  place-items: center;
+  isolation: isolate;
+  padding: clamp(20px, 2.4vw, 34px);
+}
+
+/* the same paper grain every wash panel in the grammar carries */
+.dms--redesign.cs-page .cs-cust__plate::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.1;
+  mix-blend-mode: overlay;
+}
+
+.dms--redesign.cs-page .cs-cust__logo {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: clamp(30px, 3.4vw, 46px);
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* a customer with no wordmark file keeps the same optical weight with its
+ * name set in the display face */
+.dms--redesign.cs-page .cs-cust__wordmark {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-family: var(--dms-display);
+  font-size: clamp(1.1rem, 1.6vw, 1.45rem);
+  font-weight: 520;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  text-align: center;
+  text-wrap: balance;
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.cs-page .cs-cust__btn:hover .cs-cust__logo,
+  .dms--redesign.cs-page .cs-cust__btn:hover .cs-cust__wordmark {
+    transform: translateY(-3px);
+  }
+}
+
+.dms--redesign.cs-page .cs-cust__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: clamp(20px, 2.2vw, 28px);
+  padding-inline: 8px;
+}
+
+.dms--redesign.cs-page .cs-cust__name {
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: 1.12rem;
+  font-weight: 560;
+  line-height: 1.2;
+}
+
+.dms--redesign.cs-page .cs-cust__ind {
+  color: var(--dms-accent);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.cs-page .cs-cust__who {
+  margin-top: 4px;
+  color: var(--dms-muted);
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.dms--redesign.cs-page .cs-cust__go {
+  margin-top: 18px;
+  padding-inline: 8px;
+  color: var(--dms-accent);
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+.dms--redesign.cs-page .cs-cust__btn.is-active {
+  background: var(--dms-accent-tint);
+}
+
+.dms--redesign.cs-page .cs-cust__btn.is-active .cs-cust__go {
+  color: var(--dms-accent-hover);
+}
+
+/* ======================================================== 02 · LIBRARY */
+.dms--redesign.cs-page .cs-lib {
+  padding-bottom: clamp(64px, 7vw, 104px);
+  scroll-margin-top: calc(var(--dms-header-h) + 8px);
+}
+
+/* the toolbar sticks under the header, squared off and aligned to the rail
+ * padding so it reads as part of the ledger, not a pill bar floating over it */
+.dms--redesign.cs-page .cs-toolbar {
+  position: sticky;
+  z-index: 20;
+  top: var(--dms-header-h);
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.cs-page .cs-toolbar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px clamp(16px, 2.5vw, 32px);
+  padding-block: 10px;
+}
+
+.dms--redesign.cs-page .cs-toolbar__filters {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.dms--redesign.cs-page .cs-toolbar__right {
+  display: inline-flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 12px;
+}
+
+.dms--redesign.cs-page .cs-toolbar__count {
+  display: inline-flex;
+  align-items: baseline;
+  flex: none;
+  gap: 5px;
+  color: var(--dms-faint);
+  font-size: 0.78rem;
+}
+
+.dms--redesign.cs-page .cs-toolbar__count b {
+  color: var(--dms-ink);
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.dms--redesign.cs-page .cs-toolbar__count i {
+  font-style: normal;
+}
+
+/* the customer pick reads back as a removable chip beside the menus */
+.dms--redesign.cs-page .cs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px;
+  border: 1px solid var(--dms-accent-border);
+  background: var(--dms-accent-tint);
+  color: var(--dms-accent-hover);
+  font: inherit;
+  cursor: pointer;
+}
+
+.dms--redesign.cs-page .cs-chip__lab {
+  color: var(--dms-accent);
+  font-size: 0.74rem;
+  font-weight: 650;
+  line-height: 1;
+}
+
+.dms--redesign.cs-page .cs-chip__val {
+  font-size: 0.84rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.dms--redesign.cs-page .cs-chip svg {
+  width: 11px;
+  height: 11px;
+  flex: none;
+}
+
+.dms--redesign.cs-page .cs-chip:hover {
+  border-color: var(--dms-accent);
+}
+
+/* the dropdown triggers lose their pill so the bar squares off with the page */
+.dms--redesign.cs-page .cs-toolbar .rs-fmenu__btn,
+.dms--redesign.cs-page .cs-toolbar .rs-search {
+  border-radius: 0;
+}
+
+/* ---------------------------------------------------------- the ledger
+ * Every story as a hairline cell, drawn rail to rail. Square, flat, no
+ * shadow: the still is the only object, the copy sits under it aligned to
+ * the still's edge (the way-in cell grammar). */
+.dms--redesign.cs-page .cs-ledger {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(clamp(240px, 24vw, 330px), 1fr));
+  margin: 0;
+  padding: 0;
+  gap: 1px;
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+  list-style: none;
+}
+
+.dms--redesign.cs-page .cs-ledger__cell {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.cs-page .cs-cell {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  padding: 12px 12px 20px;
+  color: inherit;
+  text-decoration: none;
+  transition: background 200ms ease-out;
+}
+
+.dms--redesign.cs-page .cs-cell:hover {
+  background: var(--dms-surface-alt);
+}
+
+.dms--redesign.cs-page .cs-cell:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -3px;
+}
+
+.dms--redesign.cs-page .cs-cell__still {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--dms-surface-sunk);
+}
+
+.dms--redesign.cs-page .cs-cell__still img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.dms--redesign.cs-page .cs-cell__ghost {
+  display: grid;
+  height: 100%;
+  place-items: center;
+  color: var(--dms-faint);
+  font-family: var(--dms-display);
+  font-size: 1.6rem;
+}
+
+.dms--redesign.cs-page .cs-cell__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: rgba(23, 24, 26, 0.52);
+  color: #fff;
+  transition: background 200ms ease-out, transform 320ms var(--dms-ease, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.dms--redesign.cs-page .cs-cell__play svg {
+  width: 24px;
+  height: 24px;
+}
+
+.dms--redesign.cs-page .cs-cell:hover .cs-cell__play {
+  background: var(--dms-accent);
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.dms--redesign.cs-page .cs-cell__dur {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 3px 7px;
+  background: rgba(23, 24, 26, 0.72);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 620;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.dms--redesign.cs-page .cs-cell__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-inline: 8px;
+}
+
+.dms--redesign.cs-page .cs-cell__title {
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: 1rem;
+  font-weight: 560;
+  line-height: 1.32;
+  transition: color 160ms ease-out;
+}
+
+.dms--redesign.cs-page .cs-cell:hover .cs-cell__title {
+  color: var(--dms-accent-hover);
+}
+
+.dms--redesign.cs-page .cs-cell__who {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+  gap: 2px;
+  padding-top: 10px;
+}
+
+.dms--redesign.cs-page .cs-cell__who b {
+  color: var(--dms-ink-2);
+  font-size: 0.82rem;
+  font-weight: 620;
+  line-height: 1.35;
+}
+
+.dms--redesign.cs-page .cs-cell__who i {
+  color: var(--dms-muted);
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.dms--redesign.cs-page .cs-cell__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+  padding-inline: 8px;
+}
+
+.dms--redesign.cs-page .cs-cell__tags span {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--n-100, #f1f2f4);
+  color: var(--dms-muted);
+  font-size: 0.68rem;
+  line-height: 1.3;
+}
+
+.dms--redesign.cs-page .cs-empty {
+  margin: 0;
+  padding: clamp(48px, 6vw, 80px) var(--hm-rail-pad);
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  color: var(--dms-muted);
+}
+
+.dms--redesign.cs-page .cs-more {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(28px, 3vw, 44px);
+}
+
+/* ===================================================== THE STORY PAGE
+ * testimonials/[slug] on the same grammar: the film stays the masthead,
+ * everything under it is railed like the collection. */
+.dms--redesign.cs-story .rs-cine {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  background: var(--dms-d-bg);
+}
+
+/* the facts under the story head: a hairline ledger drawn rail to rail */
+.dms--redesign.cs-page .cs-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.cs-page .cs-fact {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2vw, 26px) clamp(14px, 1.6vw, 22px);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.cs-page .cs-fact__lab {
+  color: var(--dms-faint);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.cs-page .cs-fact__val {
+  color: var(--dms-ink);
+  font-size: 0.94rem;
+  font-weight: 560;
+  line-height: 1.45;
+}
+
+.dms--redesign.cs-page .cs-transcript-section .rs-transcript {
+  max-width: 78ch;
+  margin-inline: auto;
+}
+
+.dms--redesign.cs-page .cs-related {
+  padding-bottom: clamp(64px, 7vw, 104px);
+}
+
+.dms--redesign.cs-page .cs-head__lede a {
+  color: var(--dms-accent);
+  text-decoration: none;
+}
+
+.dms--redesign.cs-page .cs-head__lede a:hover {
+  color: var(--dms-accent-hover);
+  text-decoration: underline;
+}
+
+/* ==================================================== KEEP EXPLORING
+ * Dark rows into the close, so the page's last three sections are one dark
+ * run. The wash panels stay light: the one bright object per row. */
+.dms--redesign.cs-page .cs-keep {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.cs-page .cs-keep__intro {
+  display: flex;
+  max-width: 62ch;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: clamp(32px, 3.6vw, 52px);
+}
+
+.dms--redesign.cs-page .cs-keep__intro .dms-h2 {
+  margin: 0;
+  color: #fff;
+}
+
+.dms--redesign.cs-page .cs-keep__intro .dms-lede {
+  margin: 0;
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.cs-page .cs-keep__rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1px;
+  border: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.cs-page .cs-keeprow {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 12px 24px;
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+  text-decoration: none;
+}
+
+.dms--redesign.cs-page .cs-keeprow__wash {
+  position: relative;
+  display: grid;
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  place-items: center;
+  isolation: isolate;
+  margin-bottom: clamp(20px, 2.2vw, 28px);
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.cs-page .cs-keeprow__wash--case { background: var(--hm-wash-blue); }
+.dms--redesign.cs-page .cs-keeprow__wash--blog { background: var(--hm-wash-warm); }
+
+.dms--redesign.cs-page .cs-keeprow__wash::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+/* a drawn sheet on the wash, the same translucent white the homepage rows
+ * give their glyphs */
+.dms--redesign.cs-page .cs-keeprow__wash i {
+  position: relative;
+  z-index: 1;
+  width: clamp(88px, 9vw, 124px);
+  aspect-ratio: 4 / 5;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 2px 4px rgba(23, 24, 26, 0.08),
+    0 18px 30px rgba(23, 24, 26, 0.2),
+    /* the two sheets behind it */
+    10px -10px 0 -2px rgba(255, 255, 255, 0.42),
+    20px -20px 0 -4px rgba(255, 255, 255, 0.22);
+  transition: transform 450ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.cs-page .cs-keeprow:hover .cs-keeprow__wash i { transform: translateY(-3px); }
+}
+
+.dms--redesign.cs-page .cs-keeprow__col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  margin-inline: 8px;
+}
+
+.dms--redesign.cs-page .cs-keeprow__col b {
+  color: #fff;
+  font-family: var(--dms-display);
+  font-size: 1.22rem;
+  font-weight: 560;
+  line-height: 1.2;
+}
+
+.dms--redesign.cs-page .cs-keeprow__col span {
+  color: var(--dms-d-ink-2);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.dms--redesign.cs-page .cs-keeprow__go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 8px 0;
+  color: var(--u-blue-400);
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.dms--redesign.cs-page .cs-keeprow__go svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dms--redesign.cs-page .cs-keeprow:hover .cs-keeprow__go svg {
+  transform: translateX(3px);
+}
+
+/* ================================================== CLOSE + FOOTER
+ * The dark bookend, on the hero's charcoal (the geometry page-rails.css
+ * declares for `dms--rails`, restated here for this page's own class). */
+.dms--redesign.cs-page .dms-close.cs-close {
+  min-height: 0;
+  padding: clamp(72px, 8vw, 120px) 0 clamp(96px, 9vw, 144px);
+}
+
+.dms--redesign.cs-page .cs-close .dms-close__convergence {
+  height: clamp(110px, 11vw, 150px);
+  margin-bottom: clamp(32px, 3.6vw, 52px);
+}
+
+.dms--redesign.cs-page .cs-close .dms-close__side {
+  align-items: center;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  text-align: center;
+}
+
+.dms--redesign.cs-page .cs-close .dms-close__side .dms-lede {
+  max-width: 52ch;
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.cs-page .cs-close .dms-close__cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.dms--redesign.cs-page .cs-close .dms-btn-ghost {
+  border-color: var(--hm-charcoal-border-2, #41464f);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.cs-page .cs-close .dms-btn-ghost:hover {
+  border-color: var(--dms-d-ink-3);
+  background: var(--hm-charcoal-3, #2b2f36);
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 900px) {
+  .dms--redesign.cs-page .cs-hero .dms-hero__grid,
+  .dms--redesign.cs-page .cs-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+@media (max-width: 720px) {
+  .dms--redesign.cs-page .cs-custgrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dms--redesign.cs-page .cs-custcell + .cs-custcell {
+    border-top: 1px solid var(--hm-rail);
+    border-left: 0;
+  }
+
+  .dms--redesign.cs-page .cs-toolbar__inner {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .dms--redesign.cs-page .cs-toolbar__right {
+    margin-left: 0;
+  }
+
+  .dms--redesign.cs-page .cs-reel__still {
+    width: clamp(140px, 44vw, 190px);
+  }
+}

@@ -187,6 +187,16 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
         glyph: "doc",
         name: "Submissions and registrations",
         line: "Getting the product approved, and keeping it approved in every market you sell in.",
+        /* the filing as a stack of sheets, its citation checked live */
+        viz: {
+          kind: "dossier",
+          kicker: "510(k) · REN-40",
+          title: "11.3 Risk management",
+          cite: "Cites SOP-114 rev 5",
+          state: "Matches the register",
+          cursor: { name: "N. Vega", tone: "#7c3aed" },
+          wash: "sky",
+        },
         items: [
           { name: "Product Registration and Market Authorization Maintenance", line: "Dossiers tailored per jurisdiction, renewals and commitments tracked, the registration picture current as the portfolio moves." },
           { name: "Regulatory Variation and Submission Change Management", line: "Post-approval changes classified correctly per market, affiliate submissions coordinated, commitments tracked to closure." },
@@ -197,7 +207,21 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
         glyph: "pulse",
         name: "Safety reporting",
         line: "What the field tells you, classified and reported inside the clock.",
-        runsIn: { label: "Complaint intake runs in the QMS product →", href: "/explorations/products/qms" },
+        /* the statutory clock as one day axis */
+        viz: {
+          kind: "clock",
+          kicker: "MDR-0912 · reportability",
+          title: "Alarm failure · REN-40",
+          day: 4,
+          span: 30,
+          marks: [
+            { day: 15, label: "EU serious incident" },
+            { day: 30, label: "FDA MDR" },
+          ],
+          cursor: { name: "E. Braun", tone: "#0f8f7e" },
+          wash: "blue",
+        },
+        runsIn: { label: "Complaint intake runs in the QMS →", href: "/explorations/products/qms" },
         items: [
           { name: "Adverse Event Reporting and Regulatory Notification", line: "Events logged with complete detail, classified for reportability across jurisdictions, submitted against the tightest clock that applies." },
           { name: "Post-Market Surveillance and Vigilance Reporting", line: "Field performance monitored, signals separated from noise, signal management provable to regulators and notified bodies." },
@@ -207,6 +231,21 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
         glyph: "box",
         name: "Labels, lots and borders",
         line: "What is printed on the product, and what you can prove about the unit in the box.",
+        /* the carton label, and where the approved change has landed */
+        viz: {
+          kind: "label",
+          product: "REN-40",
+          lines: ["Home respiratory monitor", "Alarm instructions revised", "Rx only · see IFU"],
+          version: "Label v5",
+          endpoints: [
+            { name: "Artwork", done: true },
+            { name: "IFU", done: true },
+            { name: "Package insert", done: false },
+            { name: "Carton", done: false },
+          ],
+          cursor: { name: "M. Rossi", tone: "#d97706" },
+          wash: "warm",
+        },
         runsIn: { label: "Lot records run in the MES product →", href: "/explorations/products/mes" },
         items: [
           { name: "Label and Artwork Control", line: "Labels, inserts, instructions for use and carton artwork authored, versioned and released with the print run and the stock burn-down in view." },
@@ -216,20 +255,26 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
       },
       {
         glyph: "loop",
-        name: "Rule changes and audits",
+        name: "Rules, audits and site duties",
         line: "The regulations move. The proof that you moved with them has to move too.",
-        runsIn: { label: "Change control runs in the DMS product →", href: "/explorations/products/dms" },
+        /* the regulatory-intelligence feed, the binding item routed */
+        viz: {
+          kind: "feed",
+          kicker: "Regulatory intelligence",
+          items: [
+            { source: "FDA", title: "Device cybersecurity", tag: "Guidance" },
+            { source: "EU", title: "MDR transition dates", tag: "Binding · routed", hot: true },
+            { source: "HC", title: "Labelling format", tag: "Watch" },
+          ],
+          cursor: { name: "H. Lindqvist", tone: "#db2777" },
+          wash: "paper",
+        },
+        runsIn: { label: "Change control runs in the DMS →", href: "/explorations/products/dms" },
         items: [
           { name: "Regulatory Intelligence and Impact Assessment", line: "Sources monitored across jurisdictions, guidance separated from binding requirement, impact routed to a named owner." },
           { name: "Regulatory Change Management", line: "External change walked through every dependent procedure, validation and training obligation it touches." },
           { name: "Audit Readiness and Response", line: "Evidence current for every controlled procedure, responses drafted on the clock, commitments tracked to auditable closure." },
-        ],
-      },
-      {
-        glyph: "scale",
-        name: "Site and environmental obligations",
-        line: "The permits, waste streams and safety duties the regulator also holds you to.",
-        items: [
+          /* the site obligations (a fifth cluster until 23 Sep 2026) */
           { name: "Environmental Health and Safety Compliance", line: "Incidents captured on the floor, classified consistently, reported across sites and shifts on tight regulatory clocks." },
           { name: "Waste Management and Controlled Destruction", line: "Regulated waste tracked from generation to certified destruction, with chain of custody provable for controlled material." },
         ],
@@ -250,7 +295,7 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     scene: {
       kicker: "Inbox · vigilance",
       chip: "Day 4 of 30",
-      title: "The reportability file",
+      title: "The filed submission",
       rows: [
         { state: "done", label: "Complaint logged", age: "Day 0" },
         { state: "wait", label: "FW: is this reportable?", age: "2d, no reply", warn: true },
@@ -258,31 +303,46 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
         { state: "idle", label: "Causality opinion", age: "Unread" },
       ],
       float: { kicker: "MDR clock", note: "26 days left. The evidence is still in five inboxes." },
-      caption: "The clock is statutory. The assembly is manual.",
+      caption: "The filing still cites rev 3. The register moved on without it.",
+      /* the rails window: the filed submission, its citation stale against
+       * the register (the page's worst-rated pain) */
+      citation: {
+        doc: "510(k) · REN-40",
+        section: "11.3 Risk management",
+        before: "Risk controls for alarm failure are verified per",
+        cited: "SOP-114 rev 3",
+        after: "and recorded in the risk management file.",
+        lines: 3,
+        register: { label: "Document register", value: "SOP-114 is at rev 5. Revised twice since filing." },
+      },
     },
     pains: [
       {
         severity: "Critical",
         surface: "The document register",
         name: "Submission cross-references chase outdated controlled documents",
+        short: "The filing says rev 3. The register is already at rev 5.",
         body: "A submission cites procedures, validation reports and risk assessments by number and revision. The cited document is revised afterwards and the cross-reference quietly stales: the filing says v3, the register is already at v5.",
       },
       {
         severity: "Critical",
         surface: "Inbox & meeting notes",
         name: "Field-action timeline rebuilt from email and meeting notes",
+        short: "What you knew, and when, rebuilt from email.",
         body: "When a field safety notice or a recall is required, what we knew and when we knew it has to be reconstructed from emails, meeting notes and a scattered set of system records. Regulators expect that timeline as a clean record.",
       },
       {
         severity: "High",
         surface: "Packaging & artwork",
         name: "Labeling changes propagate inconsistently to packaging and inserts",
+        short: "Approved once, landing on each endpoint weeks apart.",
         body: "One approved labeling change has to reach the artwork, the package insert, the secondary packaging, the instructions for use and the website copy. It is approved centrally and propagated by different functions on different schedules, so at least one endpoint lags for weeks.",
       },
       {
         severity: "High",
         surface: "The handoff",
         name: "Post-submission commitments fall between Regulatory and Operations",
+        short: "Regulatory tracks it. Operations runs it. Nobody closes it.",
         body: "Submissions carry post-market commitments: annual reporting, ongoing validation, periodic update. Regulatory tracks them, Operations or Quality executes them, and a commitment lost in that handoff has regulatory consequences.",
       },
     ],
@@ -292,6 +352,7 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     tax: {
       label: "The recurring bill",
       value: "Every filing ages quietly.",
+      tail: "Finding the gap at inspection is the coordination tax.",
       meta: "Nothing tells you when the document a submission cites has moved on. The gap surfaces at inspection, or in the field-action timeline you are rebuilding from email.",
     },
   },
@@ -313,6 +374,14 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
       { t: "Causality assessed on the record", who: "Medical Affairs", when: "Day 11" },
       { t: "Report submitted to the authority", who: "Regulatory Affairs", when: "Day 26" },
       { t: "Closed · trace sealed", who: "Head of Regulatory Affairs", when: "Day 28" },
+    ],
+    /* the rails rail: each line is what the arcade pose above it shows */
+    steps: [
+      { icon: "tray", title: "Take the event in", body: "C-3312 lands with REN-40, lot 22-081 and two similar events." },
+      { icon: "globe", title: "Classify per market", body: "FDA reportable at 30 days; the EU and Health Canada not." },
+      { icon: "link", title: "Bind the causality", body: "Device history, the returned unit and the medical view, linked." },
+      { icon: "submit", title: "Sign and submit", body: "M. Rossi re-authenticates, and the eMDR goes to the FDA." },
+      { icon: "seal", title: "Seal the trace", body: "H. Lindqvist closes MDR-0912 with the acknowledgement on it." },
     ],
     trailFoot: "The relation runs back to the complaint that raised it, and forward into the corrective action and the label change it triggers. The thread is the trace.",
     chatVariant: "capa",
@@ -458,8 +527,8 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
    * Honest gap: nothing in the Modules DB covers submission assembly,
    * registration management or label governance today. */
   coverage: {
-    heading: "The products that do the regulatory work today.",
-    lede: "The modules below carry the document, change, complaint and audit legs of regulatory work, filterable by the standard you are audited against. Submission assembly, registration management and label governance are not modules yet, and this page does not claim them.",
+    heading: "Filings and field events, on one record.",
+    lede: "Complaints, audits and corrective actions run in the Quality Management System; the controlled documents a filing cites, and the changes that move them, run in the Document Management System. One record under both.",
     standardFilters: [
       "ISO 9001",
       "ISO 13485",
@@ -474,17 +543,6 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     ],
     groups: [
       {
-        slug: "dms",
-        name: "Document Management System",
-        tier: "Primary",
-        promise: "The controlled record a filing cites: what a submission points at, what a change touches, and who has to be retrained when it moves.",
-        modules: [
-          { name: "Document Control", blurb: "Controlled authoring, review, approval, distribution and periodic review, with version history, training linkage on revision and effective-date governance.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820", "21 CFR Part 11", "EU GMP"], href: "/explorations/products/dms" },
-          { name: "Change Control", blurb: "Change requests and document revisions through configurable approvals, carrying impact assessment, evidence and propagation into training and distribution.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820", "ICH Q10"], href: "/explorations/products/dms" },
-          { name: "Training Management", blurb: "Competency assignment and completion tracking, with retraining triggered by a document revision or an audit finding.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820"], href: "/explorations/products/dms" },
-        ],
-      },
-      {
         slug: "qms",
         name: "Quality Management System",
         tier: "Primary",
@@ -493,6 +551,17 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
           { name: "Complaint Handling", blurb: "Intake, triage, investigation and closure, carrying the regulatory reportability assessment and the link into downstream investigation.", standards: ["ISO 13485", "21 CFR 820", "EU MDR"], href: "/explorations/products/qms" },
           { name: "Audit Management", blurb: "Scheduling, finding tracking, response routing and effectiveness verification across internal, external and authority audits.", standards: ["ISO 9001", "ISO 13485", "MDSAP"], href: "/explorations/products/qms" },
           { name: "Corrective & Preventive Actions", blurb: "Root-cause acceptance, action plan, effectiveness verification and closure, related back to the event that raised it.", href: "/explorations/products/qms" },
+        ],
+      },
+      {
+        slug: "dms",
+        name: "Document Management System",
+        tier: "Primary",
+        promise: "The controlled record a filing cites: what a submission points at, what a change touches, and who has to be retrained when it moves.",
+        modules: [
+          { name: "Document Control", blurb: "Controlled authoring, review, approval, distribution and periodic review, with version history, training linkage on revision and effective-date governance.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820", "21 CFR Part 11", "EU GMP"], href: "/explorations/products/dms" },
+          { name: "Change Control", blurb: "Change requests and document revisions through configurable approvals, carrying impact assessment, evidence and propagation into training and distribution.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820", "ICH Q10"], href: "/explorations/products/dms" },
+          { name: "Training Management", blurb: "Competency assignment and completion tracking, with retraining triggered by a document revision or an audit finding.", standards: ["ISO 9001", "ISO 13485", "21 CFR 820"], href: "/explorations/products/dms" },
         ],
       },
       {
@@ -588,11 +657,14 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     heading: "When the regulator sets the deadline.",
     lede: "Each of these starts a clock you do not control. Each routes into a governed workflow, so the response is coordinated on the record it will be judged by.",
     rows: [
-      { name: "MDR or vigilance reporting deadline", clock: "30 days FDA · 15 days EU serious incident", severity: "Urgent", routesTo: "Complaint Handling", owner: "Vigilance · Regulatory Affairs" },
-      { name: "FDA Warning Letter received", clock: "15 working days to respond", severity: "Urgent", routesTo: "Audit Management · CAPA", owner: "Regulatory Affairs · Executive team" },
+      { name: "MDR or vigilance reporting deadline", clock: "30 days FDA · 15 days EU serious incident", severity: "Urgent", routesTo: "Complaint Handling", owner: "Vigilance · Regulatory Affairs", viz: "countdown", detail: ["11", "FDA MDR · 30 days", "EU serious incident · 15 days"] },
+      { name: "FDA Warning Letter received", clock: "15 working days to respond", severity: "Urgent", routesTo: "Audit Management · CAPA", owner: "Regulatory Affairs · Executive team", viz: "letter", detail: ["Department of Health and Human Services · Food and Drug Administration", "WARNING LETTER"] },
       { name: "Recall scope definition required", clock: "The regulator's stated timeline", severity: "Urgent", routesTo: "Complaint Handling · CAPA", owner: "Regulatory Affairs · VP Quality" },
-      { name: "Design history file gap at audit", clock: "Treated as systemic", severity: "Urgent", routesTo: "Document Control · Audit Management", owner: "Regulatory Affairs · Engineering" },
+      { name: "Design history file gap at audit", clock: "Treated as systemic", severity: "Urgent", routesTo: "Document Control · Audit Management", owner: "Regulatory Affairs · Engineering", viz: "tree", detail: ["Design inputs", "Design outputs", "!Design verification", "Design validation", "Design transfer"] },
     ],
+    /* the rails board: the reporting clock, the letter, the file with a
+     * hole in it (recall scope leads the post-market page) */
+    featured: ["MDR or vigilance reporting deadline", "FDA Warning Letter received", "Design history file gap at audit"],
   },
 
   /* ------------------------------------------------ 08 · coexistence
@@ -601,10 +673,22 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
    * identifiers across MES, ERP and packaging lines; the coverage modules sit
    * over the QMS and the PLM record. */
   coexistence: {
-    heading: "It sits on the stack you already run.",
+    heading: "Your systems stay. The case runs between them.",
     systemsOfRecord: ["QMS", "ERP", "MES", "PLM"],
     body: "Unifize replaces the ungoverned channels (email, meetings, shared drives) where the reasoning behind a regulatory decision goes missing, not the systems of record that already passed your inspections. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your QMS, ERP, MES and PLM.",
+    bands: {
+      lede: "Keep the systems your filings already cite. Unifize runs the decisions around them, inside the clock, and the approved outcome goes back with a 21 CFR Part 11 signature. No rip-and-replace, no revalidation.",
+      note: "No system for a regulatory workflow yet? The quality and document modules above run it, on the same layer.",
+      tools: {
+        title: "Inboxes and drives",
+        sub: "Stop being the record",
+        names: ["Email", "Drives", "Meetings", "Sheets"],
+        label: "Where the evidence used to wait",
+        body: "The reportability thread, the device-history extract and the causality opinion stop living in inboxes and shared drives. They land on the case, where the clock is.",
+      },
+      flows: { contextIn: "CITED RECORDS IN", back: "PART 11 SIGNED", captured: "EVIDENCE CAPTURED", linked: "ONE CASE, LINKED" },
+    },
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -626,6 +710,18 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["Complaints", "Design History File", "Traceability Matrix", "Audit Management"],
+    /* the reel roster: the design history, the documents a filing cites,
+     * labels, speed to market. Each fact is the film's own title; no film
+     * is shared with another Solutions page. */
+    stills: [
+      { wistia: "ue3xmg5nol", fact: "The design history file managed on Unifize" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "pvf4lw69q4", fact: "The DMR and DHF connected" }, /* Denis Machoka */
+      { wistia: "62t1pburwu", fact: "Artwork revisions handled on the record" }, /* Erica Bennerman */
+      { wistia: "1y2kdwtfiu", fact: "SOPs and their revisions in one place" }, /* Erica Bennerman */
+      { wistia: "qayx823k6h", fact: "Everyone trained on the right version" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "oviazzq258", fact: "Conversations kept apart from the data" }, /* Denis Machoka */
+      { wistia: "wom6k81bbf", fact: "Faster to market" }, /* Denis Machoka */
+    ],
     references: [
       {
         tag: "Named reference",

@@ -33,6 +33,15 @@
  *     accountable-AI claim the metadata title makes; the journey is runnable
  *     on NC-204 OR CC-2148 (same five claims, record toggle); chase + floor
  *     lines in the step copy; DMS suite cell carries the retraining trigger.
+ *   - 2026-09-18, after the 9 Sep review with Raj + Lakshman: quiet ribbon
+ *     container; assessment CTA out of the hero and into 02, where the tax
+ *     is named with a modelled figure per example; router back to three
+ *     cards; eyebrow numbers gone; ex-customer logos out; clock metaphor
+ *     retired; the five-step mechanism journey replaced by a slim platform
+ *     band (its vocabulary was unsourced).
+ *   - 2026-09-22: that slim platform band removed too ("this is empty");
+ *     the suite now hands straight to industries, and the platform page is
+ *     reached from the nav and the hero.
  * Flow still follows the third-scroll rule from the 2026-07-09 call: hook,
  * parity, THEN the coordination tax named at scroll three.
  * ========================================================================== */
@@ -42,7 +51,7 @@ import Link from "next/link";
 import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
 import { Eyebrow } from "../products/dms/dms-primitives";
-import { HeroArcadeSwitcher, MechanismJourney, ProductSuiteShowcase } from "./home-interactive";
+import { HeroArcadeSwitcher, ProductSuiteShowcase } from "./home-interactive";
 import { HeroHeadline, HeroHeadlineProvider } from "./home-headline";
 import { SymptomVisual } from "./home-symptom-scenes";
 import { SolutionsGrid } from "./home-solutions";
@@ -52,8 +61,6 @@ import {
   HOME_HERO_OPS_CONFIG,
   HOME_HERO_DOCUMENT_CONFIG,
   HOME_SUITE_DMS_CONFIG,
-  HOME_JOURNEY_CONFIGS,
-  HOME_JOURNEY_CHANGE_CONFIGS,
 } from "./home-arcade";
 import { QMS_MODULE_ARCADE_CONFIGS } from "../products/qms/qms-arcade";
 import { MES_MODULE_ARCADE_CONFIGS } from "../products/mes/mes-arcade";
@@ -62,12 +69,22 @@ import { CASE_STUDIES, POSTS } from "../resources/_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
 import { HomeProofFilms } from "./home-proof";
 import { ProcessTiles } from "./home-process-tiles";
-import { HomeWaysRail } from "./home-ways-rail";
+import { HomeIndustries } from "./home-industries";
+import { HomeStackMark } from "./home-stack-mark";
+import { ENTRY_VIZ } from "./home-entry-viz";
+import { NavGlyph } from "../_shared/nav-data";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
 import "../products/dms/dms-redesign.css";
 import "./home-kit.css";
+/* 22 Sep 2026 rails wave: page rails, hatched divider bands, dark-grey hero on a
+ * wash, way-in cells. The grammar every page shares is _shared/page-rails.css
+ * (opted in with `dms--rails` on <main>); home-rails.css loads last so the
+ * homepage's own overrides win by order. */
+import { HatchBand } from "./home-rails";
+import "../_shared/page-rails.css";
+import "./home-rails.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
@@ -84,58 +101,29 @@ export const metadata: Metadata = {
 const HERO_VIEWS = [
   {
     key: "quality",
+    icon: "seal" as const,
     label: "Quality event",
     config: HOME_HERO_QUALITY_CONFIG,
   },
   {
     key: "change",
+    icon: "compass" as const,
     label: "Change order",
     config: HOME_HERO_CHANGE_CONFIG,
   },
   {
     key: "ops",
+    icon: "pallet" as const,
     label: "Holds & release",
     config: HOME_HERO_OPS_CONFIG,
   },
   {
     key: "document",
+    icon: "dms" as const,
     label: "Controlled document",
     config: HOME_HERO_DOCUMENT_CONFIG,
   },
 ];
-
-/* 04 - the mechanism journey rail: one claim per pose, the scene proves it.
- * Each step carries a stroke glyph on the same 24 grid as the industry set
- * (7 Sep 2026: the five-claim band that briefly sat above the rail repeated
- * these headings; the glyphs moved onto the rail and the band went). */
-const MECHANISM_GLYPHS: Record<string, ReactNode> = {
-  capture: <path d="M4 14v5h16v-5M4 14h4l1.5 2.5h5L16 14h4M12 3v9m0 0-3-3m3 3 3-3" />,
-  coordinate: <path d="M3 12h6m6 0h6M9 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0M12 10.6V12l1 1M5 6.5h3M16 17.5h3" />,
-  prove: <path d="M12 3 5 5.6v6c0 4 2.9 7.4 7 8.4 4.1-1 7-4.4 7-8.4v-6L12 3Zm-3 9 2.2 2.2L15.5 10" />,
-  writeback: <path d="M4 6.5c0-1.4 3.6-2.5 8-2.5s8 1.1 8 2.5S16.4 9 12 9 4 7.9 4 6.5Zm0 0v11C4 18.9 7.6 20 12 20s8-1.1 8-2.5v-11M4 12c0 1.4 3.6 2.5 8 2.5M16 14.5l3-2.5-3-2.5M13 12h6" />,
-  measure: <path d="M4 20h16M6 16V9M11 16v-5M16 16v-2M21 16V4M6 6l5 3 5-4 5-2" />,
-};
-
-/* the journey rail's per-record copy: same five claims, either record */
-const MECHANISM_STEPS_EVENT = [
-  { title: "Capture", glyph: MECHANISM_GLYPHS["capture"], body: "The event opens one governed thread with its context attached: the reading, the part, the work order. Logged once, at the station; nothing is re-keyed." },
-  { title: "Coordinate", glyph: MECHANISM_GLYPHS["coordinate"], body: "Every handoff gets an owner and a clock everyone can see. Reminders and escalations chase the overdue ones, so you don't." },
-  { title: "Prove", glyph: MECHANISM_GLYPHS["prove"], body: "Evidence and approvals close with the work, so the record is complete at sign-off, not at audit prep." },
-  { title: "Write back", glyph: MECHANISM_GLYPHS["writeback"], body: "The approved outcome writes back. Unifize keeps the cross-functional trail; your systems of record stay authoritative." },
-  { title: "Measure", glyph: MECHANISM_GLYPHS["measure"], body: "Every thread carries its own clock. You watch the coordination tax fall, week by week, against your own baseline." },
-];
-const MECHANISM_STEPS_CHANGE = [
-  { title: "Capture", glyph: MECHANISM_GLYPHS["capture"], body: "The change opens one governed thread with its context attached: the drawing, the risk file, the affected documents. Raised straight from the finding; nothing is re-keyed." },
-  { title: "Coordinate", glyph: MECHANISM_GLYPHS["coordinate"], body: "Quality, engineering, and production see one route: an owner on every approval, one clock. Reminders and escalations chase the overdue ones, so you don't." },
-  { title: "Prove", glyph: MECHANISM_GLYPHS["prove"], body: "Approvals are Part 11 signatures with their meaning attached, so the change is defensible at sign-off, not reconstructed at audit prep." },
-  { title: "Write back", glyph: MECHANISM_GLYPHS["writeback"], body: "The released revision writes back. Your PLM keeps the BOM and the revision; Unifize keeps the decision trail and the effectivity." },
-  { title: "Measure", glyph: MECHANISM_GLYPHS["measure"], body: "Every change carries its own clock. You watch review and approval time fall against your own baseline." },
-];
-const MECHANISM_RECORDS = [
-  { key: "event", label: "Quality event", meta: "NC-204", steps: MECHANISM_STEPS_EVENT, configs: HOME_JOURNEY_CONFIGS },
-  { key: "change", label: "Change order", meta: "CC-2148", steps: MECHANISM_STEPS_CHANGE, configs: HOME_JOURNEY_CHANGE_CONFIGS },
-];
-
 
 /* Solution doors. The homepage recognizes the symptom; the L2 solution page
  * carries the full problem architecture and proof. The first four render;
@@ -143,7 +131,21 @@ const MECHANISM_RECORDS = [
  * four reachable, never a carousel). Keep this a data array: Lakshman's
  * wording pass lands 9 Sep. Every entry past the first four points at a
  * domain page that exists; Training & Competency waits on its route. */
-const SYMPTOMS = [
+/* `tax` (9 Sep 2026 review: name the coordination tax here, with a figure per
+ * example) is the TYPICAL modelled active-coordination time per record from
+ * the Notion reference value streams (The Value Model / Reference Value
+ * Streams: non-conformance 1,163 min, supplier quality 856 min, change
+ * control 29.8 h; document control's 40-minute audit retrieval). All four
+ * streams are Draft / unvalidated, so the section footnotes them as modelled.
+ * Domains without a reference stream carry no figure: never invent one. */
+const SYMPTOMS: {
+  domain: string;
+  visual: string;
+  claim: string;
+  note: string;
+  href: string;
+  tax?: { value: string; label: string };
+}[] = [
   /* the four in front are Raj's pick (2 Sep 2026): quality, documents,
    * suppliers, change control; "Operations" read as a product, not a
    * problem, and moved behind the fold */
@@ -153,6 +155,7 @@ const SYMPTOMS = [
     claim: "CAPAs take 90+ days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
     href: "/explorations/domains/quality",
+    tax: { value: "≈19 hrs", label: "of coordination per non-conformance, detection to CAPA closure" },
   },
   {
     domain: "Document & Records Control",
@@ -160,6 +163,7 @@ const SYMPTOMS = [
     claim: "Three copies of one SOP claim to be current.",
     note: "The controlled system says v3.2, a file share holds v3.1, and the line runs a laminated v2.8. The current version depends on where you look.",
     href: "/explorations/domains/document-and-records-control",
+    tax: { value: "40 min", label: "to pull one controlled document under audit pressure" },
   },
   {
     domain: "Supplier Management",
@@ -167,6 +171,7 @@ const SYMPTOMS = [
     claim: "Supplier approvals live in email threads.",
     note: "Qualification evidence, PPAP reviews, and SCARs scatter across mailboxes at the organisational boundary.",
     href: "/explorations/domains/supplier-management",
+    tax: { value: "≈14 hrs", label: "of coordination per supplier quality issue, incoming to resolved" },
   },
   {
     domain: "Change Control",
@@ -174,6 +179,7 @@ const SYMPTOMS = [
     claim: "The change gets approved. Nobody can replay why.",
     note: "Sign-off happens in email threads and design reviews, so the evidence that was seen and the conditions that were accepted never reach the record.",
     href: "/explorations/domains/change-control",
+    tax: { value: "≈30 hrs", label: "of coordination per change order, initiation to implementation" },
   },
   /* behind "See more solutions"; claims mirror each domain page's hero */
   {
@@ -200,7 +206,7 @@ const SYMPTOMS = [
   {
     domain: "Post-Market & Recall",
     visual: "tracks",
-    claim: "A recall is four workflows, each on its own clock.",
+    claim: "A recall is four workflows, each with its own owner.",
     note: "Hold, notification, returns, and the submission run under different owners. The decisions holding them together happen on calls nobody records.",
     href: "/explorations/domains/post-market-and-recall",
   },
@@ -213,11 +219,12 @@ const SYMPTOMS = [
   },
 ];
 
+/* each row carries a solid glyph from the nav set (nav-data NAV_ICONS) */
 const PRIMARY_SOLUTIONS = [
-  { name: "Quality", meta: "CAPA · NC · Audits", href: "/explorations/domains/quality" },
-  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/explorations/domains/supplier-management" },
-  { name: "Operations", meta: "Holds · Dispositions", href: "/explorations/domains/operations" },
-  { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development" },
+  { name: "Quality", meta: "CAPA · NC · Audits", href: "/explorations/domains/quality", icon: "seal" as const },
+  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/explorations/domains/supplier-management", icon: "truck" as const },
+  { name: "Operations", meta: "Holds · Dispositions", href: "/explorations/domains/operations", icon: "pallet" as const },
+  { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development", icon: "compass" as const },
 ];
 
 /* 04 - each product poses the arcade window on its ESSENCE artifact, the one
@@ -270,34 +277,40 @@ const PRODUCTS = [
   },
 ];
 
+/* `claim` + `turn` are the tile headline (23 Sep 2026, from the Notion
+ * Industries DB Primary Fear Anchor); `standards` are each industry page's
+ * first three chips; `example` is the tile's longer "where it bites" line,
+ * and `moment` stays short because the way-in industry rows use it as meta. `customer` appears only where the Website Customer Videos mirror
+ * attests a current customer in that industry (two so far; the rest of the
+ * logo-per-industry mapping is owed by Raj / Lakshman, never guessed). */
 const INDUSTRY_GROUPS = [
   {
     name: "Life sciences",
     body: "Decision trails that stand up to inspectors, sponsors, and assessors.",
     industries: [
-      { name: "Medical Devices", moment: "A complaint turns reportable", href: "/explorations/industry-template-modern", icon: "medical-devices" },
-      { name: "Pharmaceuticals", moment: "A deviation lands on a batch", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals" },
-      { name: "Contract Research Orgs", moment: "A protocol deviation at a site", href: "/explorations/industries/cro", icon: "cro" },
-      { name: "Laboratories", moment: "An out-of-spec result", href: "/explorations/industries/laboratories", icon: "laboratories" },
+      { name: "Medical Devices", moment: "A complaint turns reportable", example: "A complaint turns reportable and the 30-day MDR clock starts", href: "/explorations/industry-template-modern", icon: "medical-devices", claim: "A design change that misses one record", turn: "is a recall.", standards: ["21 CFR 820", "ISO 13485", "EU MDR 2017/745"] },
+      { name: "Pharmaceuticals", moment: "A deviation lands on a batch", example: "A deviation on a batch, with a root cause that holds at inspection", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals", claim: "A change approved on a call", turn: "never reaches change control.", standards: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10"] },
+      { name: "Contract Research Orgs", moment: "A protocol deviation at a site", example: "A protocol deviation, ready to show whichever sponsor asks", href: "/explorations/industries/cro", icon: "cro", claim: "Every sponsor can audit you,", turn: "one study at a time.", standards: ["ICH E6(R2) GCP", "21 CFR Part 11", "ALCOA+"] },
+      { name: "Laboratories", moment: "An out-of-spec result", example: "An out-of-spec result, closed with an effectiveness check", href: "/explorations/industries/laboratories", icon: "laboratories", claim: "One open nonconformance", turn: "can suspend your scope in 90 days.", standards: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58"] },
     ],
   },
   {
     name: "Process & consumer",
     body: "Controlled changes and evidence across formulation, production, and release.",
     industries: [
-      { name: "Chemicals", moment: "A formulation change", href: "/explorations/industries/chemicals", icon: "chemicals" },
-      { name: "Cosmetics", moment: "A safety substantiation", href: "/explorations/industries/cosmetics", icon: "cosmetics" },
-      { name: "Food Processing", moment: "A hold on a lot", href: "/explorations/industries/food-processing", icon: "food-processing" },
-      { name: "Nutritional Supplements", moment: "A rejected raw material", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements" },
+      { name: "Chemicals", moment: "A formulation change", example: "A process change, traced to REACH and customer notifications", href: "/explorations/industries/chemicals", icon: "chemicals", claim: "A formulation change", turn: "moves your customers' dossiers too.", standards: ["REACH", "TSCA", "OSHA PSM"] },
+      { name: "Cosmetics", moment: "A safety substantiation", example: "MoCRA listings, supplier COAs, and adverse events in one file", href: "/explorations/industries/cosmetics", icon: "cosmetics", claim: "The retailer audit asks for the substantiation file.", turn: "All of it.", standards: ["MoCRA", "ISO 22716", "EU 1223/2009"], customer: { name: "Applechem", src: "/customers/applechem.png" } },
+      { name: "Food Processing", moment: "A hold on a lot", example: "A hold on a lot, closed against the food safety plan", href: "/explorations/industries/food-processing", icon: "food-processing", claim: "An allergen deviation left open", turn: "becomes a recall.", standards: ["FSMA · 21 CFR 117", "HACCP", "SQF"] },
+      { name: "Nutritional Supplements", moment: "A rejected raw material", example: "A rejected raw material, with the ID test and supplier file attached", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements", claim: "Identity testing is", turn: "where the 483 starts.", standards: ["21 CFR Part 111", "cGMP", "NSF"], customer: { name: "Biovation Labs", src: "/customers/biovation-labs.svg" } },
     ],
   },
   {
     name: "Discrete manufacturing",
     body: "Configuration, supplier, and production decisions with the rationale intact.",
     industries: [
-      { name: "Automotive", moment: "A PPAP resubmission", href: "/explorations/industries/automotive", icon: "automotive" },
-      { name: "Aerospace", moment: "A nonconformance on a flight part", href: "/explorations/industries/aerospace", icon: "aerospace" },
-      { name: "Industrial Machinery", moment: "A design change after CE marking", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery" },
+      { name: "Automotive", moment: "A PPAP resubmission", example: "A PPAP resubmission, assembled once instead of chased", href: "/explorations/industries/automotive", icon: "automotive", claim: "One late 8D", turn: "puts you on controlled shipping.", standards: ["IATF 16949", "PPAP", "APQP"] },
+      { name: "Aerospace", moment: "A nonconformance on a flight part", example: "A nonconformance on a flight part, with the objective evidence", href: "/explorations/industries/aerospace", icon: "aerospace", claim: "A NADCAP finding", turn: "gives you 90 days.", standards: ["AS9100", "NADCAP", "FAI · AS9102"] },
+      { name: "Industrial Machinery", moment: "A design change after CE marking", example: "A design change after CE marking, traced into the technical file", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery", claim: "The FAT fails on paperwork,", turn: "not on the machine.", standards: ["CE marking", "Machinery Directive", "ISO 12100"] },
     ],
   },
 ];
@@ -375,15 +388,14 @@ function IndustryIcon({ type }: { type: string }) {
   );
 }
 
-/* 01 - the three ways in; the arcade pose each row stages lives with the
- * rail (home-ways-rail.tsx, keyed by `key`) */
+/* 01 - the three ways in, rendered as three cards side by side */
 const ENTRY_PATHS = [
   {
     key: "solution",
     label: "By solution",
     title: "I need to improve a process.",
     body: "Start with the cross-functional work that is slow, unclear, or difficult to prove.",
-    links: PRIMARY_SOLUTIONS,
+    links: PRIMARY_SOLUTIONS.map((solution) => ({ ...solution, icon: <NavGlyph name={solution.icon} /> })),
     href: "#solutions",
     cta: "Explore solutions",
   },
@@ -392,7 +404,7 @@ const ENTRY_PATHS = [
     label: "By product",
     title: "I am evaluating a system.",
     body: "Start with the governed record your team needs to run and keep current.",
-    links: PRODUCTS.map((product) => ({ name: product.name, meta: product.code, href: product.href })),
+    links: PRODUCTS.map((product) => ({ name: product.name, meta: product.code, href: product.href, icon: <NavGlyph name={product.icon} /> })),
     href: "#products",
     cta: "Explore products",
   },
@@ -400,13 +412,13 @@ const ENTRY_PATHS = [
     key: "industry",
     label: "By industry",
     title: "Show me my regulated world.",
-    body: "Start with your industry: the systems it runs on and the moments that begin the clock.",
+    body: "Start with your industry: the systems it runs on and the problems it keeps running into.",
     links: [
       INDUSTRY_GROUPS[0].industries[0],
       INDUSTRY_GROUPS[0].industries[1],
       INDUSTRY_GROUPS[1].industries[0],
       INDUSTRY_GROUPS[2].industries[1],
-    ].map((industry) => ({ name: industry.name, meta: industry.moment, href: industry.href })),
+    ].map((industry) => ({ name: industry.name, meta: industry.moment, href: industry.href, icon: <IndustryIcon type={industry.icon} /> })),
     href: "#industries",
     cta: "Explore industries",
   },
@@ -417,18 +429,24 @@ const ENTRY_PATHS = [
  * render. */
 const RESOURCE_ROWS = [
   {
+    key: "stories",
+    icon: "stories" as const,
     label: "Customer stories",
     body: "Hear the change in the words of the people who ran it.",
     href: "/explorations/resources/testimonials",
     cta: `Watch all ${CUSTOMER_VIDEOS.length} stories`,
   },
   {
+    key: "case",
+    icon: "case" as const,
     label: "Case studies",
     body: "See the backlog, the intervention, and the measured result.",
     href: "/explorations/resources/case-studies",
     cta: `See all ${CASE_STUDIES.length} case studies`,
   },
   {
+    key: "blog",
+    icon: "blog" as const,
     label: "Blog",
     body: "Field notes for quality, operations, and product leaders.",
     href: "/explorations/resources/blog",
@@ -436,40 +454,47 @@ const RESOURCE_ROWS = [
   },
 ];
 
-/* trust strip: real companies from the Website Customer Videos mirror - only
- * names a customer attested on the record render here */
+/* trust strip: current customers only, checked against the Notion Companies
+ * DB (collection 1ac860e6) */
 /* the customer logo set the live site carries (public/customers, pulled
  * from unifize.com on 7 Sep 2026); rendered as a moving strip (Raj, 2 Sep:
  * "a moving list of icons of all the customers"). Monochromed by CSS. */
+/* 9 Sep 2026 (Lakshman): Harmonic Bionics, Rastelli, Laundrytec and Maia
+ * Estates are no longer customers and left the strip. */
 const CUSTOMER_LOGOS: { name: string; src: string; h?: number }[] = [
   { name: "Biovation Labs", src: "/customers/biovation-labs.svg" },
-  { name: "Harmonic Bionics", src: "/customers/harmonic-bionics.png" },
   { name: "Applechem", src: "/customers/applechem.png" },
   /* EFCO's globe-behind-wordmark lockup collapses to a blob once monochromed;
    * back in when a flat wordmark file exists */
   { name: "Adaptive Health", src: "/customers/adaptive-health.png", h: 44 },
   { name: "Dynamic Blending", src: "/customers/dynamic-blending.svg", h: 46 },
-  { name: "Rastelli", src: "/customers/rastelli.svg" },
   { name: "Jamco", src: "/customers/jamco.png" },
   { name: "ATS", src: "/customers/ats.png" },
   { name: "Yanuvia", src: "/customers/yanuvia.png" },
   { name: "LeaderBrand Produce", src: "/customers/leaderbrand-produce.png" },
-  { name: "Laundrytec", src: "/customers/laundrytec.png" },
-  { name: "Maia Estates", src: "/customers/maia-estates.svg" },
+  /* 23 Sep 2026: current customers from the Notion Companies DB (ARR + a
+   * health signal, Churn Risk rows left out) whose logos the live site
+   * already hosts */
+  { name: "Construction Forms", src: "/customers/conforms.png" },
+  { name: "Gilat Wavestream", src: "/customers/wavestream.png", h: 38 },
+  { name: "PhoMedics", src: "/customers/phomedics.png", h: 40 },
+  { name: "The Will-Burt Company", src: "/customers/will-burt.png", h: 40 },
+  { name: "Engineering Industries", src: "/customers/engineering-industries.png", h: 36 },
+  { name: "TTK Prestige", src: "/customers/ttk-prestige.png", h: 32 },
 ];
 
 /* 01 - the three ways in, drawn: converging process lanes, the product mark's
  * module squares, a certificate. One stroke, one weight. */
 export default function HomePage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--home">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--home dms--rails">
       <DmsHeader />
 
       {/* ============================ HERO =============================
        * Regulated-industry outcome headline (variant D, see home-headline.tsx);
        * the concrete nouns carry the sub. The coordination tax is NOT named
        * here (third-scroll rule). */}
-      <section className="dms-section dms-hero" aria-label="Unifize">
+      <section className="dms-section dms-hero dms-hero--rails hm-railed" aria-label="Unifize">
         <div className="dms-wrap dms-hero__inner">
           <HeroHeadlineProvider>
             <div className="dms-hero__grid">
@@ -480,13 +505,15 @@ export default function HomePage() {
               </div>
               <div className="dms-hero__right">
                 <p className="dms-lede dms-hero__sub">
-                  Unifize closes the gap between your systems and your teams, so CAPAs, change orders, and design
-                  reviews close faster, and close proven.
+                  Unifize closes the gap between your systems and your teams, so <strong>CAPAs</strong>,{" "}
+                  <strong>change orders</strong>, and <strong>design reviews</strong> close faster, and close proven.
                 </p>
                 <div className="dms-hero__ctas">
                   <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-                  <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                    Take Coordination Tax Assessment
+                  {/* 9 Sep 2026 review: the assessment CTA left the hero (the
+                    * tax is not introduced yet); it lives in 02, where it is */}
+                  <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">
+                    See how it works
                   </Link>
                 </div>
               </div>
@@ -495,16 +522,15 @@ export default function HomePage() {
         </div>
 
         {/* the hero visual: one arcade window, four worlds - pick yours */}
-        <div className="dms-wrap dms-hero__frame dms-hero__product-demo hm-hero-demo">
+        <div className="dms-wrap dms-hero__frame dms-hero__product-demo hm-hero-demo hm-bleed">
           <HeroArcadeSwitcher views={HERO_VIEWS} />
         </div>
       </section>
 
       {/* ============================ TRUST STRIP =======================
-       * Real companies from the Website Customer Videos mirror; each name
-       * is attested on film by its own people. */}
-      <section className="dms-section dms-section--dark dms-trust" aria-label="Customers">
-        <div className="dms-wrap dms-trust__inner">
+       * Current customers only (Notion Companies DB); see CUSTOMER_LOGOS. */}
+      <section className="dms-section dms-section--dark dms-trust hm-trust--rails hm-railed" aria-label="Customers">
+        <div className="dms-wrap dms-trust__inner hm-bleed">
           <div className="hm-logos">
             {/* two identical tracks; the second is decorative and makes the loop seamless */}
             {[0, 1].map((copy) => (
@@ -527,38 +553,80 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* the first hatched divider: closes the hero block, opens the router */}
+      <HatchBand />
+
       {/* ============================ 01 · PRIMARY ROUTER ===============
        * The homepage is L1. This section hands visitors directly to the L2
        * taxonomy that matches the way they arrived. */}
-      <section className="dms-section hm-ways-section" id="doors">
+      <section className="dms-section hm-entry-section hm-railed" id="doors">
         <div className="dms-wrap">
           <div className="hm-entry__head" data-reveal>
-            <Eyebrow n={1}>Choose your way in</Eyebrow>
-            <h2 className="dms-h2">Start with what brought you here.</h2>
+            <Eyebrow>Choose your way in</Eyebrow>
+            <h2 className="dms-h2">Find the fit for your work.</h2>
             <p className="dms-lede">
-              Improve the work, evaluate the system, or see Unifize in your regulated world. Every path leads to
-              the same governed decision trail.
+              Improve a process, evaluate a system, or see Unifize in your regulated world. Pick the one that
+              sounds like you.
             </p>
           </div>
+
+          {/* 9 Sep 2026 review: back to three cards side by side (one glance,
+            * no pinned scroll), no index numbers, and an explicit arrow on
+            * every row and every card so the whole thing reads as clickable */}
+          <div className="hm-entry-grid" data-reveal>
+            {ENTRY_PATHS.map((path) => (
+              <article className="hm-entry" key={path.label}>
+                {/* 22 Sep 2026: the card leads with a wash panel (one soft
+                  * gradient per way in) holding a mini product artifact with a
+                  * "You" cursor on it (home-entry-viz.tsx); the isometric
+                  * drawings that sat here first were rejected the same night */}
+                <div className={"hm-entry__wash hm-entry__wash--" + path.key} aria-hidden="true">
+                  {ENTRY_VIZ[path.key as keyof typeof ENTRY_VIZ]}
+                </div>
+                <div className="hm-entry__intro">
+                  <span className="hm-entry__label">{path.label}</span>
+                  <h3>{path.title}</h3>
+                  <p>{path.body}</p>
+                </div>
+                <ul className="hm-entry__links">
+                  {path.links.map((item) => (
+                    <li key={item.name}>
+                      <Link href={item.href}>
+                        {item.icon ? <span className="hm-entry__glyph" aria-hidden="true">{item.icon}</span> : null}
+                        <span className="hm-entry__name">{item.name}</span>
+                        <small>{item.meta}</small>
+                        <i className="hm-entry__go" aria-hidden="true">&rarr;</i>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <Link className="hm-entry__all" href={path.href}>
+                  {path.cta} <span aria-hidden="true">&rarr;</span>
+                </Link>
+              </article>
+            ))}
+          </div>
         </div>
-        {/* the sticky rail ledger breaks out of the wrap: names pin on the
-          * left, each row's colour field bleeds to the right edge */}
-        <HomeWaysRail ways={ENTRY_PATHS} />
       </section>
+
+      {/* the router's closing band; the tax section's dashed trace starts under it */}
+      <HatchBand />
 
       {/* ============================ 02 · RECOGNITION ==================
        * Solutions framed in the buyer's words: four visible, the rest one
        * click away, in place. */}
-      <section className="dms-section dms-section--alt hm-recognition hm-recognition--reframed" id="solutions">
+      {/* no `dms-section--alt`: the section is white, and the class made the
+        * sticky bar frost grey over it (Abhishek, 22 Sep) */}
+      <section className="dms-section hm-recognition hm-recognition--reframed hm-railed" id="solutions">
         <div className="dms-wrap">
           <div className="hm-recognition__head" data-reveal>
             <div>
-              <Eyebrow n={2}>Where the day goes</Eyebrow>
-              <h2 className="dms-h2">Where regulated work slows down.</h2>
+              <Eyebrow>The coordination tax</Eyebrow>
+              <h2 className="dms-h2">Why regulated work slows down.</h2>
             </div>
             <p className="dms-lede">
-              The symptoms look different across teams. The pattern underneath is the same: work waits wherever
-              ownership, evidence, and decisions cross a system boundary.
+              The investigation, the review, the decision: that is the work. The chasing, the waiting, and the
+              rebuilding of context around it is the coordination tax, and nothing on your stack measures it.
             </p>
           </div>
 
@@ -573,6 +641,12 @@ export default function HomePage() {
                     <span className="hm-symptom__domain">{symptom.domain}</span>
                     <span className="hm-symptom__claim">{symptom.claim}</span>
                     <span className="hm-symptom__note">{symptom.note}</span>
+                    {symptom.tax ? (
+                      <span className="hm-symptom__tax">
+                        <strong className="dms-data">{symptom.tax.value}</strong>
+                        <span>{symptom.tax.label}</span>
+                      </span>
+                    ) : null}
                     <span className="hm-symptom__cta">
                       Explore solution <span aria-hidden="true">&rarr;</span>
                     </span>
@@ -580,18 +654,81 @@ export default function HomePage() {
                 </Link>
               ),
             }))}
-            tail={<p>Quality, governance, operations, and supply chain all run on the same decision model.</p>}
           />
+
+          {/* the tax, named where it has just been shown; the assessment CTA
+            * lives here, not in the hero (9 Sep 2026 review) */}
+          <div className="hm-taxcta" data-reveal>
+            <div className="hm-taxcta__lead">
+              <Eyebrow>The assessment</Eyebrow>
+              <p className="hm-taxcta__claim">
+                Coordination tax is why regulated work slows down. <span>Find out what yours costs.</span>
+              </p>
+              <Link href="/coordination-tax-calculator" className="dms-btn hm-taxcta__btn">
+                Take the Coordination Tax Assessment &rarr;
+              </Link>
+            </div>
+            {/* the tax as one picture, on the platform page's explainer idiom
+              * (platform-evidence.tsx, TaxLead): the 75 steps of closing ONE
+              * non-conformance as a block of cells, the work in grey and the
+              * coordination in blue. Source: Notion reference value stream
+              * VS-2, non-conformance to CAPA closure, typical case, modelled. */}
+            <figure
+              className="hm-taxviz"
+              aria-label="Closing one non-conformance takes 75 steps. 54 of them are coordination, not quality work."
+            >
+              <div className="hm-taxviz__head">
+                <span>One non-conformance, detection to CAPA closure</span>
+                <span className="hm-taxviz__total">75 steps</span>
+              </div>
+              <p className="hm-taxviz__v">
+                <span className="dms-data">54</span> of 75 steps are coordination, not quality work.
+              </p>
+              <div className="hm-taxviz__cells" aria-hidden="true">
+                {Array.from({ length: 75 }, (_, i) => (
+                  <i
+                    key={i}
+                    className={i < 21 ? "is-work" : "is-tax"}
+                    style={{ "--i": i } as React.CSSProperties}
+                  />
+                ))}
+              </div>
+              {/* the legend as two ledger rows: the name carries the colour
+                * and the weight, the verbs stay muted, the count sits apart */}
+              <div className="hm-taxviz__legend" aria-hidden="true">
+                <span className="hm-taxviz__key is-work">
+                  <b>The work</b>
+                  <em>investigate, decide, verify</em>
+                  <i>21</i>
+                </span>
+                <span className="hm-taxviz__key is-tax">
+                  <b>The coordination tax</b>
+                  <em>notify, chase, re-key, rebuild</em>
+                  <i>54</i>
+                </span>
+              </div>
+            </figure>
+          </div>
         </div>
       </section>
 
+      {/* the tax hands to the suite across a hatched band */}
+      <HatchBand />
+
       {/* ============================ 03 · PRODUCTS ===================== */}
-      <section className="dms-section hm-products-section" id="products">
+      <section className="dms-section hm-products-section hm-railed" id="products">
         <div className="dms-wrap">
+          {/* 22 Sep 2026 rails wave: split head (mark, eyebrow, claim left;
+            * lede right) instead of the centred stack */}
           <div className="hm-split-head" data-reveal>
             <div>
-              <Eyebrow n={3}>The product suite</Eyebrow>
-              <h2 className="dms-h2">One platform. Four governed records.</h2>
+              <HomeStackMark />
+              <Eyebrow>The product suite</Eyebrow>
+              <h2 className="dms-h2">
+                One platform.
+                <br />
+                Four governed records.
+              </h2>
             </div>
             <p className="dms-lede">
               Start with the system your team needs. Every product runs on the same layer, alongside the systems
@@ -606,75 +743,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============================ 04 · ONE MECHANISM ================ */}
-      <section className="dms-section dms-section--dark hm-mechanism" id="platform">
-        <div className="dms-wrap">
-          <div className="hm-mechanism__head hm-mechanism__head--center" data-reveal>
-            <div>
-              <Eyebrow n={4}>One problem, one mechanism</Eyebrow>
-              <h2 className="dms-h2">Turn hidden waiting into a governed decision trail.</h2>
-            </div>
-            <div className="hm-mechanism__copy">
-              {/* payoff first; the tax named and defined second (2026-09-01
-                * panel: the concept-first opener is where operators stop) */}
-              {/* one sentence (7 Sep 2026): the tax named, the mechanism implied;
-                * the AI and Part 11 lines live on the platform page */}
-              <p className="dms-lede">
-                One owner, one deadline, and evidence that closes with the work: the coordination tax stops
-                hiding and starts falling.
-              </p>
-              <div className="hm-mechanism__ctas">
-                <Link href="/explorations/platform" className="dms-btn">Explore the platform &rarr;</Link>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                  Measure your coordination tax
-                </Link>
-              </div>
-            </div>
-          </div>
-          {/* the argument, shown: one record followed end to end on the same
-            * persistent camera the platform and product pages journey on -
-            * runnable on NC-204 or CC-2148, same five claims */}
-          <div className="pf-page hm-journey" data-reveal>
-            <MechanismJourney records={MECHANISM_RECORDS} />
-          </div>
-        </div>
-      </section>
+      {/* closes the suite; industries follow (not yet on the rails) */}
+      <HatchBand />
 
       {/* ============================ 05 · INDUSTRIES =================== */}
-      <section className="dms-section dms-section--alt hm-industries-section" id="industries">
+      <section className="dms-section dms-section--alt hm-industries-section hm-railed" id="industries">
         <div className="dms-wrap">
           <div className="hm-split-head" data-reveal>
             <div>
-              <Eyebrow n={5}>Your regulated world</Eyebrow>
-              <h2 className="dms-h2">Start from your industry, and the moment that starts the clock.</h2>
+              <Eyebrow>Industries</Eyebrow>
+              <h2 className="dms-h2">We know your industry, and where its work gets stuck.</h2>
             </div>
             <p className="dms-lede">
-              Each industry page is grounded in the systems you run, the frame you are inspected under, and the
-              decisions your teams must be able to replay.
+              Every industry page starts from the systems you run, the standards you are audited under, and
+              the decisions your teams have to be able to replay.
             </p>
           </div>
-          <div className="hm-industry-groups" data-reveal>
-            {INDUSTRY_GROUPS.map((group) => (
-              <article className="hm-industry-group" key={group.name}>
-                <div className="hm-industry-group__head">
-                  <h3>{group.name}</h3>
-                  <p>{group.body}</p>
-                </div>
-                <ul>
-                  {group.industries.map((industry) => (
-                    <li key={industry.name}>
-                      <Link href={industry.href}>
-                        <span className="hm-industry__tile" aria-hidden="true">
-                          <IndustryIcon type={industry.icon} />
-                        </span>
-                        <span className="hm-industry__name">{industry.name}</span>
-                        <small>{industry.moment}</small>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+          {/* 9 Sep 2026 review: groups became tabs, industries became large
+            * tiles that lead with the industry's own challenge. 22 Sep: the
+            * tiles are drawn on the way-in card grammar (home-industries.css). */}
+          <div data-reveal>
+            <HomeIndustries
+              groups={INDUSTRY_GROUPS.map((group) => ({
+                name: group.name,
+                body: group.body,
+                industries: group.industries.map((industry) => ({
+                  name: industry.name,
+                  href: industry.href,
+                  icon: <IndustryIcon type={industry.icon} />,
+                  claim: industry.claim,
+                  turn: industry.turn,
+                  example: industry.example,
+                  standards: industry.standards,
+                  /* 22 Sep 2026 (Abhishek): no company logos on the tiles;
+                   * the attested customers stay in the data for the pages */
+                })),
+              }))}
+            />
           </div>
           <div className="hm-section-tail" data-reveal>
             <p>Whichever standard governs you, from 21 CFR Part 11 and ISO 13485 to IATF 16949 and AS9100, the record you show an auditor is the record the work created.</p>
@@ -683,11 +788,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ============================ 06 · PROOF (film rail) ============ */}
+      {/* industries hand to proof across a hatched band */}
+      <HatchBand />
+
+      {/* ============================ 06 · PROOF (reel of stills) ======= */}
       <HomeProofFilms />
 
+      {/* proof, resources and the close are one dark run (Abhishek, 22 Sep:
+        * "make the Resources section and the divider rails above it dark to
+        * match the testimonial section"); the bands stay on the charcoal */}
+      <HatchBand className="hm-hatch--dark" />
+
       {/* ============================ RESOURCES ========================= */}
-      <section className="dms-section hm-resources-section" aria-labelledby="hm-resources-h">
+      <section className="dms-section dms-section--dark hm-resources-section hm-resources--dark hm-railed" aria-labelledby="hm-resources-h">
         <div className="dms-wrap">
           <div className="hm-resources" data-reveal>
             <div className="hm-resources__intro">
@@ -701,6 +814,11 @@ export default function HomePage() {
             <div className="hm-resources__rows">
               {RESOURCE_ROWS.map((row) => (
                 <Link className="hm-resrow" href={row.href} key={row.label}>
+                  {/* 22 Sep 2026: a wash panel with the content type's glyph,
+                    * the way-in card grammar */}
+                  <span className={"hm-resrow__wash hm-resrow__wash--" + row.key} aria-hidden="true">
+                    <NavGlyph name={row.icon} />
+                  </span>
                   <span className="hm-resrow__col">
                     <strong>{row.label}</strong>
                     <small>{row.body}</small>
@@ -715,8 +833,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* resources hand to the close block, dark to dark */}
+      <HatchBand className="hm-hatch--dark" />
+
       {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close hm-close" id="demo" aria-labelledby="hm-close-h">
+      <section className="dms-section dms-section--dark dms-close hm-close hm-close--rails hm-railed" id="demo" aria-labelledby="hm-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
             {/* 2026-09-09: the lone convergence mark became a pyramid of the
@@ -740,7 +861,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ------------------------------------------------------- footer */}
+      {/* ------------------------------------------------------- footer
+        * 22 Sep 2026 rails wave: the footer closes the page on the same
+        * charcoal as the close above (giant wordmark removed 23 Sep) */}
       <SiteFooter />
     </main>
   );

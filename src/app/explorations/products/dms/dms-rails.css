@@ -1,0 +1,1292 @@
+/* ============================================================================
+ * dms-rails.css - the DMS product page on the rails (22 Sep 2026)
+ *
+ * The homepage's rails wave (home-rails.css), carried onto the DMS page
+ * section by section: the shared grammar comes from _shared/page-rails.css
+ * (`dms--rails` on <main>, `hm-railed` per section, <HatchBand /> between
+ * them); this file is only what the DMS page composes differently.
+ *
+ *   - Hero + trust on the charcoal, the arcade window on the moving sky wash
+ *     with the frosted plate, the six-step rail on a hairline under it.
+ *   - The middle goes light: problems (old world on the paper wash), the
+ *     coordination-tax ledger, modules (each arcade scene on its own wash),
+ *     capabilities, lifecycle (the live panel on the sky wash), integrations,
+ *     audience, compliance and FAQ, every grid drawn as cells rail to rail
+ *     with the 1px-gap-over-hairline trick, every head the PaperStack split.
+ *   - Proof is the homepage reel on the charcoal; close + footer close the
+ *     page on the same ground with the giant wordmark.
+ *
+ * Loaded after dms.css, dms-redesign.css and stylized.css, so equal-
+ * specificity rules here win by order. Scope: .dms--redesign.dms-page.
+ * ========================================================================== */
+
+/* ------------------------------------------------------- the split heads
+ * Eyebrow + claim left, lede right on the same baseline. Two markup shapes
+ * on this page: a head <div> beside the lede (problems, audience,
+ * compliance) and three loose siblings (the tax ledger, integrations, the
+ * module rail), placed explicitly. */
+.dms--redesign.dms-page .hm-railed .dms-problems__intro,
+.dms--redesign.dms-page .hm-railed .dms-audience__head,
+.dms--redesign.dms-page .hm-railed .dms-compliance__head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 22px clamp(48px, 8vw, 120px);
+  align-items: end;
+  justify-items: start;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-problems__intro > div,
+.dms--redesign.dms-page .hm-railed .dms-audience__head > div,
+.dms--redesign.dms-page .hm-railed .dms-compliance__head > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-problems__intro .dms-eyebrow,
+.dms--redesign.dms-page .hm-railed .dms-audience__head .dms-eyebrow,
+.dms--redesign.dms-page .hm-railed .dms-compliance__head .dms-eyebrow {
+  align-self: flex-start;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-problems__intro .dms-h2,
+.dms--redesign.dms-page .hm-railed .dms-audience__head .dms-h2,
+.dms--redesign.dms-page .hm-railed .dms-compliance__head .dms-h2 {
+  max-width: 20ch;
+  margin: 0;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-problems__intro > .dms-lede,
+.dms--redesign.dms-page .hm-railed .dms-audience__head > .dms-lede,
+.dms--redesign.dms-page .hm-railed .dms-compliance__head > .dms-lede {
+  max-width: 48ch;
+  margin: 0;
+  padding-bottom: 0;
+  text-wrap: pretty;
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__head,
+.dms--redesign.dms-page .hm-railed .dms-intg__minimal-head,
+.dms--redesign.dms-page .hm-railed .dms-mrail__head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+  gap: 0 clamp(48px, 8vw, 120px);
+  align-items: end;
+  justify-items: start;
+  max-width: none;
+  margin-inline: 0;
+  text-align: left;
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__head .dms-eyebrow,
+.dms--redesign.dms-page .hm-railed .dms-intg__minimal-head .dms-eyebrow,
+.dms--redesign.dms-page .hm-railed .dms-mrail__head .dms-eyebrow {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__head .dms-h2,
+.dms--redesign.dms-page .hm-railed .dms-intg__minimal-head .dms-h2,
+.dms--redesign.dms-page .hm-railed .dms-mrail__head .dms-h2 {
+  grid-column: 1;
+  grid-row: 2;
+  max-width: 20ch;
+  margin: 22px 0 0;
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__head .dms-lede,
+.dms--redesign.dms-page .hm-railed .dms-intg__minimal-head .dms-lede,
+.dms--redesign.dms-page .hm-railed .dms-mrail__head .dms-lede {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: end;
+  max-width: 48ch;
+  margin: 0;
+  padding-bottom: 0;
+  color: var(--dms-muted);
+  text-wrap: pretty;
+}
+
+/* wraps that sit deeper than section > .dms-wrap still take the rail inset */
+.dms--redesign.dms-page .hm-railed .dms-mrail__head,
+.dms--redesign.dms-page .hm-railed .dms-lifex-wrap,
+.dms--redesign.dms-page .dms-compliance.hm-railed > .dms-wrap,
+.dms--redesign.dms-page .dms-faq-section.hm-railed > .dms-wrap {
+  max-width: var(--dms-maxw);
+  padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+}
+
+/* the section rhythm on the rails */
+.dms--redesign.dms-page .dms-problems.hm-railed,
+.dms--redesign.dms-page .sctx.hm-railed,
+.dms--redesign.dms-page .dms-caps-section,
+.dms--redesign.dms-page .dms-intg--light.hm-railed,
+.dms--redesign.dms-page .dms-audience.hm-railed,
+.dms--redesign.dms-page .dms-compliance.hm-railed,
+.dms--redesign.dms-page .dms-faq-section {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+/* ------------------------------------------------------ the divider bands
+ * A drafting-sheet dot grid in place of the homepage's diagonal hatch
+ * (Abhishek, 22 Sep: "a different pattern for these filler vectors on the
+ * DMS page"); the dashed rules and the corner crosses stay. */
+.dms--redesign.dms-page .hm-hatch__fill {
+  background:
+    radial-gradient(circle, var(--hm-hatch-ink) 0 0.8px, transparent 1.3px) 4px 4px / 9px 9px;
+}
+
+/* the plate every product artifact wears (the hero's translucent border) */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-arc__camera,
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera {
+  border-radius: 0;
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+/* ============================================================== HERO
+ * Dark grey ground: headline left, sub and CTAs right on one baseline,
+ * then the arcade window on the wash running rail to rail, the one light
+ * object on the charcoal. Rails and hairlines go to white at low alpha. */
+.dms--redesign.dms-page .dms-hero.dms-hero--rails,
+.dms--redesign.dms-page .dms-trust.hm-trust--rails {
+  --dms-d-bg: var(--hm-charcoal);
+  --dms-d-bg-2: var(--hm-charcoal-2);
+  --dms-d-bg-3: var(--hm-charcoal-3);
+  --dms-d-border: var(--hm-charcoal-border);
+  --dms-d-border-2: var(--hm-charcoal-border-2);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms-page .dms-hero.dms-hero--rails {
+  padding-top: clamp(104px, 9.5vw, 144px);
+  padding-bottom: 0;
+}
+
+/* the hero is pulled up under the sticky bar; its rails start at the
+ * bar's bottom edge, not the top of the page */
+.dms--redesign.dms-page .dms-hero.dms-hero--rails::before,
+.dms--redesign.dms-page .dms-hero.dms-hero--rails::after {
+  top: var(--dms-header-h);
+}
+
+/* the head is one centred stack (Abhishek, 22 Sep: "make this text and
+ * eyebrow text center aligned"): product tag, headline, sub, CTAs */
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__left,
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__right {
+  align-items: center;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__left { gap: 22px; }
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__right {
+  gap: 22px;
+  margin-top: 26px;
+  padding-bottom: 0;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__product-mark { color: var(--u-blue-400); }
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__title {
+  /* wide enough for each authored line to hold (the home's 13ch broke
+   * "One current version." in two) */
+  max-width: 18ch;
+  color: #fff;
+  font-size: clamp(2.8rem, 4.9vw, 4.4rem);
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__turn {
+  /* blue-400: the brand blue lifted two steps so it holds on charcoal */
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__sub {
+  max-width: 48ch;
+  color: var(--dms-d-ink-2);
+  font-size: clamp(1rem, 1.15vw, 1.14rem);
+  text-align: center;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__ctas {
+  justify-content: center;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-btn-ghost {
+  border-color: var(--dms-d-border-2);
+  color: var(--dms-d-ink);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-btn-ghost:hover {
+  background: var(--dms-d-bg-3);
+  border-color: var(--dms-d-ink-3);
+}
+
+/* the frame runs rail to rail (the wrap is hm-bleed), not the 1280 cap */
+.dms--redesign.dms-page .dms-hero--rails .dms-hero__product-demo {
+  max-width: var(--dms-maxw);
+  margin-top: clamp(40px, 4.5vw, 64px);
+}
+
+/* the wash: the stage keeps its geometry and the engine's camera, but the
+ * navy field and its quiet geometry give way to a light ground with two
+ * soft blobs, one blue and one peach, drifting on long eased loops under a
+ * paper grain (the homepage hero's moving wash). Transform only. */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: #e7eef8;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::before,
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::after {
+  position: absolute;
+  z-index: -1;
+  width: 90%;
+  aspect-ratio: 1;
+  content: "";
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::before {
+  top: -35%;
+  left: -20%;
+  background: radial-gradient(closest-side, #c2dbff 0%, rgba(194, 219, 255, 0.55) 45%, rgba(194, 219, 255, 0) 100%);
+  animation: dmsr-wash-a 26s ease-in-out infinite alternate;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::after {
+  right: -25%;
+  bottom: -40%;
+  background: radial-gradient(closest-side, #fbe0cc 0%, rgba(251, 224, 204, 0.55) 45%, rgba(251, 224, 204, 0) 100%);
+  animation: dmsr-wash-b 32s ease-in-out infinite alternate;
+}
+
+@keyframes dmsr-wash-a {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(14%, 10%, 0) scale(1.08); }
+  100% { transform: translate3d(28%, -4%, 0) scale(0.96); }
+}
+
+@keyframes dmsr-wash-b {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-16%, -12%, 0) scale(1.1); }
+  100% { transform: translate3d(-30%, 6%, 0) scale(0.98); }
+}
+
+/* the grain sits between the wash and the scene; the scene's own field
+ * (the navy and its rings) is switched off */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root {
+  position: relative;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .sty-scene.is-arcade {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-arc-field {
+  display: none;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-arc__camera {
+  --rf-plate: 8px;
+}
+
+/* the step rail: above the wash on a hairline, inside the rails, solid
+ * glyphs instead of counters (Abhishek, 22 Sep: "move this to the top and
+ * use solid icons instead of numbers"; the homepage's tabs idiom) */
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__rail {
+  margin-top: 0;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__steps {
+  padding-inline: var(--hm-rail-pad);
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__btn {
+  align-items: center;
+  /* each step centred in its cell, under the centred head */
+  justify-content: center;
+  min-height: 60px;
+  padding: 0 12px;
+  color: var(--dms-d-ink-2);
+  text-align: center;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__ico {
+  color: var(--dms-d-ink-3);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__btn:hover .dms-heroarc__ico {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step.is-active .dms-heroarc__ico {
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__btn:hover,
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__btn:focus-visible {
+  color: #fff;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step.is-past .dms-heroarc__btn {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step.is-active .dms-heroarc__btn {
+  color: #fff;
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step.is-active .dms-heroarc__n {
+  color: var(--u-blue-400);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step.is-active .dms-heroarc__btn::before {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__tick {
+  background: var(--u-blue-400);
+}
+
+/* the industries strip: same charcoal, inside the rails, on a hairline
+ * under the step rail */
+.dms--redesign.dms-page .dms-trust.hm-trust--rails {
+  padding: 26px 0;
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-trust--rails .dms-trust__label {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms-page .hm-trust--rails .dms-trust__mark {
+  color: var(--dms-d-ink-2);
+}
+
+.dms--redesign.dms-page .hm-trust--rails .dms-trust__icon {
+  color: var(--u-blue-400);
+}
+
+/* ======================================================= 01 · THE PROBLEM
+ * White ground; the spotlight becomes a cell block rail to rail, its index
+ * a row of hairline cells, and the old-world drawing sits on the paper
+ * wash (problems are paper, the product is blue). */
+.dms--redesign.dms-page .dms-problems.hm-railed {
+  border-top: 0;
+  background: var(--dms-surface);
+}
+
+/* the section's old accent tick shared the ::before the rail now uses;
+ * put the rail back where it belongs */
+.dms--redesign.dms-page .dms-problems.hm-railed::before {
+  left: var(--hm-rail-x);
+  height: auto;
+  transform: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__list {
+  border-bottom: 1px solid var(--hm-rail);
+  background: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__it {
+  padding: 18px var(--hm-rail-pad);
+  border-right: 1px solid var(--hm-rail);
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__it:hover {
+  background: var(--n-50);
+  color: var(--dms-ink-2);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__it.is-active {
+  background: var(--n-50);
+  color: var(--dms-ink);
+  box-shadow: inset 0 -2px 0 var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__idx {
+  color: var(--dms-faint);
+}
+
+/* the paper wash runs the full width of the stage panel, rail to rail
+ * (Abhishek, 22 Sep: "make the bg full content width"); the quote and the
+ * drawing both sit on it */
+.dms--redesign.dms-page .hm-railed .dms-spot__stagewrap {
+  position: relative;
+  isolation: isolate;
+  background: var(--hm-wash-paper);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__stagewrap::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.14;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__panel {
+  position: relative;
+  z-index: 1;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__body,
+.dms--redesign.dms-page .hm-railed .dms-spot__context,
+.dms--redesign.dms-page .hm-railed .dms-spot__scene {
+  background: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__body {
+  padding: clamp(32px, 4vw, 56px) var(--hm-rail-pad);
+}
+
+/* the left pane as a case ledger (Abhishek, 22 Sep, second pass: "the big
+ * Days variable is so off putting and the content design in general can be
+ * so much better"). Read top to bottom: what kind of symptom this is and
+ * where it sits in the four, the claim in the team's own words, the one
+ * supporting sentence, the cost of it as a sentence in the tax colour, and
+ * the film that answers it on the pane's floor. No giant word-as-number. */
+.dms--redesign.dms-page .hm-railed .dms-spot__body {
+  /* the ledger takes only the width its measure needs; everything left over
+   * goes to the drawing, and a hairline marks the seam between them */
+  grid-template-columns: minmax(300px, 33rem) minmax(0, 1fr);
+  gap: 0;
+  align-items: stretch;
+  min-height: clamp(440px, 32vw, 560px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__context {
+  justify-content: flex-start;
+  gap: 0;
+  height: 100%;
+  max-width: none;
+  padding-right: clamp(28px, 3.2vw, 56px);
+}
+
+/* the pane's head rule: category left, position in the set right */
+.dms--redesign.dms-page .hm-railed .dms-spot__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__category {
+  padding-left: 0;
+  color: var(--dms-muted);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__pos {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__quote {
+  display: block;
+  max-width: 27ch;
+  margin-top: clamp(20px, 2.2vw, 30px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__quote-mark {
+  display: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__quote p {
+  color: var(--dms-ink);
+  font-size: clamp(1.4rem, 1.82vw, 1.85rem);
+  font-weight: 540;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__fact {
+  margin-top: clamp(18px, 2vw, 26px);
+  padding: 0 0 clamp(24px, 2.6vw, 36px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__detail {
+  max-width: 42ch;
+  margin: 0;
+  color: var(--dms-ink-2);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+/* the cost strip: full tint, full hairline, never a one-sided accent edge */
+.dms--redesign.dms-page .hm-railed .dms-spot__cost {
+  display: grid;
+  gap: 5px;
+  max-width: 42ch;
+  margin-top: clamp(20px, 2.2vw, 28px);
+  padding: 14px 16px;
+  border: 1px solid color-mix(in oklch, var(--dms-tax) 24%, transparent);
+  background: var(--dms-tax-tint);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__cost-label {
+  color: var(--dms-tax-text);
+  font-family: var(--dms-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__cost-line {
+  color: var(--dms-ink-2);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__cost-line b {
+  color: var(--dms-tax-text);
+  font-size: 1.14em;
+  font-weight: 640;
+}
+
+/* the film row on the pane's floor, level with the drawing's base */
+.dms--redesign.dms-page .hm-railed .dms-spot__film {
+  display: flex;
+  width: 100%;
+  margin: auto 0 0;
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  background: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__film:hover,
+.dms--redesign.dms-page .hm-railed .dms-spot__film:focus-visible {
+  border-color: var(--hm-rail);
+  background: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__film:hover .dms-spot__film-text b {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__film-arrow {
+  margin-left: auto;
+}
+
+/* the drawing: whole scene in frame, centred, with margin on every side
+ * (the old 112% fill cropped the right edge of the change + training
+ * scenes). The column stretches; the drawing fits inside it. */
+.dms--redesign.dms-page .hm-railed .dms-spot__scene {
+  align-self: stretch;
+  aspect-ratio: auto;
+  min-height: clamp(280px, 25vw, 400px);
+  padding: clamp(8px, 1.4vw, 20px) 0 clamp(8px, 1.4vw, 20px) clamp(28px, 3.2vw, 56px);
+  border-left: 1px solid var(--hm-rail);
+}
+
+/* on a narrower desktop the ledger's measure would eat the drawing's column,
+ * so the two panes split the width evenly instead */
+@media (max-width: 1280px) {
+  .dms--redesign.dms-page .hm-railed .dms-spot__body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: clamp(400px, 38vw, 520px);
+  }
+}
+
+@media (max-width: 900px) {
+  .dms--redesign.dms-page .hm-railed .dms-spot__body {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: 0;
+  }
+
+  .dms--redesign.dms-page .hm-railed .dms-spot__context {
+    height: auto;
+  }
+
+  .dms--redesign.dms-page .hm-railed .dms-spot__film {
+    margin-top: clamp(24px, 4vw, 32px);
+  }
+
+  .dms--redesign.dms-page .hm-railed .dms-spot__context {
+    padding-right: 0;
+  }
+
+  .dms--redesign.dms-page .hm-railed .dms-spot__scene {
+    min-height: 260px;
+    padding: clamp(20px, 4vw, 28px) 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--hm-rail);
+  }
+}
+
+/* the drawing's own panel fill gives way to the wash */
+.dms--redesign.dms-page .hm-railed .dms-gfx__field {
+  fill: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-spot__film {
+  border-color: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-problems__bridge {
+  align-items: flex-start;
+  margin-top: 28px;
+  padding: 0;
+  text-align: left;
+}
+
+/* ================================================= THE COORDINATION TAX
+ * The ledger runs rail to rail with hairlines, no frame shadow; its stage
+ * column takes the rail inset so the stage names align with the head. */
+.dms--redesign.dms-page .sctx.hm-railed {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__frame {
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--dms-surface);
+  box-shadow: none;
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__header,
+.dms--redesign.dms-page .hm-railed .sctx__row {
+  border-bottom-color: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__header-stage,
+.dms--redesign.dms-page .hm-railed .sctx__row-stage {
+  padding-left: var(--hm-rail-pad);
+  border-right-color: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .sctx__coda {
+  padding-inline: var(--hm-rail-pad);
+  border-top-color: var(--hm-rail);
+  text-align: left;
+}
+
+/* ======================================================== 02 · MODULES
+ * Light ground. The sticky rail ledger sits between the rails (it used to
+ * break out to the viewport edge); each module's arcade scene sits on its
+ * own wash with grain, the window on the plate. */
+.dms--redesign.dms-page .dms-modx-section.hm-railed {
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: 0;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail {
+  --mrail-line: var(--hm-rail);
+  /* the rail column sizes to its names, with the same air on both sides
+   * (Abhishek, 22 Sep: "the spacing looks unbalanced on left and right") */
+  --mrail-rail-w: auto;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__head {
+  padding-bottom: clamp(36px, 4vw, 56px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__ledger {
+  margin-inline: var(--hm-rail-x);
+  padding-left: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__rail {
+  padding: clamp(28px, 3vw, 44px) var(--hm-rail-pad);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link {
+  margin-left: 0;
+  border-radius: 0;
+  color: var(--dms-muted);
+  font-weight: 600;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link svg {
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link:hover {
+  background: var(--n-50);
+  color: var(--dms-ink-2);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link.is-active {
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link.is-active svg {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__link:focus-visible {
+  outline-color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__eyebrow { color: var(--dms-muted); }
+.dms--redesign.dms-page .hm-railed .dms-mrail__title { color: var(--dms-ink); }
+.dms--redesign.dms-page .hm-railed .dms-mrail__blurb { color: var(--dms-ink-2); }
+.dms--redesign.dms-page .hm-railed .dms-mrail__points li { color: var(--dms-ink-2); }
+.dms--redesign.dms-page .hm-railed .dms-mrail__points li::before { background: var(--dms-faint); }
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__standards span {
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 0;
+  background: var(--n-50);
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__stage {
+  isolation: isolate;
+  background: var(--hm-wash-blue);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="change-control"] .dms-mrail__stage {
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__row[data-module="training-management"] .dms-mrail__stage {
+  background: var(--hm-wash-warm);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-mrail__stage::before {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+/* the scene box used to clip the window's shadow a few pixels under it,
+ * which left a hard-edged band on the wash ("weird cut off"); the shadow
+ * now runs out on the wash and only the stage itself clips, at the rail */
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .sty-scene,
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .sty-scene__inner,
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-stage {
+  overflow: visible;
+}
+
+/* the stage's faint surface tiles were made for the dark fields; on the
+ * washes they read as boxes under and beside the window, so they go */
+.dms--redesign.dms-page .hm-railed .dms-mrail__tiles {
+  display: none;
+}
+
+/* the module windows are cropped at the rail and their box runs past the
+ * painted app grid, so the translucent ring showed as a band under the
+ * window (Abhishek, 22 Sep: "the shadow blending issue"); these lift by
+ * shadow only, no ring, no outline */
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera {
+  outline: 0;
+  box-shadow:
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+/* =================================================== 03 · CAPABILITIES
+ * Header rail left, the eight controls as hairline cells right. */
+.dms--redesign.dms-page .dms-caps-section {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-caps {
+  gap: 1px;
+  /* the ledger sits in the right column, off the page rails, so it draws
+   * all four edges itself */
+  border: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-cap {
+  padding: 28px 26px 30px;
+  border-top: 0;
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-cap:nth-child(n + 3) {
+  border-top: 0;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-cap__glyph { color: var(--dms-accent); }
+.dms--redesign.dms-page .hm-railed .dms-cap__title { color: var(--dms-ink); }
+.dms--redesign.dms-page .hm-railed .dms-cap__body { color: var(--dms-muted); }
+
+/* ====================================================== 04 · LIFECYCLE
+ * Light ground (the dark dms-lifex-section class is off the section, so
+ * the sticky header samples it as light). The live panel sits on the sky
+ * wash with grain; the story steps take the light ink scale; the flow
+ * chips become hairline cells. */
+.dms--redesign.dms-page .dms-lifex-section--rails {
+  padding: 0;
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__stage,
+.dms--redesign.dms-page .hm-railed .dms-lifex__stage.dms-stage--brand {
+  /* the stage panel's dark 1px frame from the old layout drew a dark rule
+   * under the divider band; the hatch band's dashed rule is the edge */
+  border: 0;
+  background: var(--dms-surface);
+  background-image: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__stage > .dms-stage__inner {
+  padding: clamp(56px, 6vw, 88px) 0;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__head .dms-h2 {
+  max-width: 20ch;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flows-label {
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchips {
+  background: var(--hm-rail);
+  box-shadow: none;
+  scrollbar-color: var(--hm-rail) transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip {
+  background: var(--dms-surface);
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip:hover {
+  background: var(--n-50);
+  color: var(--dms-ink-2);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip:focus-visible {
+  outline-color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip.is-active {
+  background: var(--n-50);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__flowchip.is-active .dms-lifex__flowchip-actor {
+  color: var(--dms-accent);
+}
+
+/* the flow lede loses its one-sided accent bar (design rule) */
+.dms--redesign.dms-page .hm-railed .dms-lifex__flows-lede {
+  padding-inline-start: 0;
+  color: var(--dms-ink-2);
+  box-shadow: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-item {
+  border-top-color: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-item:last-child {
+  border-bottom-color: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-index,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-label,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step strong,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-body,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-outcome,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-note,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-note b,
+.dms--redesign.dms-page .hm-railed .dms-lifex__outmoves-label {
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-outcome i {
+  border-color: var(--hm-rail);
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-body,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-note {
+  color: var(--dms-ink-2);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-index,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-label,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-note b {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active strong,
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-outcome {
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__outmoves {
+  border-top-color: var(--hm-rail);
+}
+
+/* the live panel on the sky wash, hairline-ringed, no drop shadow */
+.dms--redesign.dms-page .hm-railed .dms-lifex--story .dms-lifex__live {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  background: var(--hm-wash-sky);
+  box-shadow: 0 0 0 1px var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex--story .dms-lifex__live::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.16;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__stagemock {
+  position: relative;
+  z-index: 1;
+}
+
+/* a persona journey mounts the arcade engine in the panel: its navy field
+ * and rings give way to the wash, the window takes the plate */
+.dms--redesign.dms-page .hm-railed .dms-lifex__stagemock .stx-root .sty-scene.is-arcade {
+  background: transparent;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__stagemock .stx-root .stx-arc-field {
+  display: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-lifex__stagemock .stx-root .stx-arc__camera {
+  --rf-plate: 6px;
+  border-radius: 0;
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
+}
+
+/* ==================================================== INTEGRATIONS
+ * Light ground; the logo grid becomes hairline cells rail to rail, the
+ * connector CTA keeps the brand blue (the answer wears the blue). */
+.dms--redesign.dms-page .dms-intg--light.hm-railed {
+  border-top: 0;
+  background: var(--dms-surface);
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-intg__logo-grid {
+  gap: 1px;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-intg__logo-card {
+  min-height: clamp(150px, 13vw, 200px);
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-intg__logo-card img {
+  filter: grayscale(1);
+  opacity: 0.78;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-intg__logo-card span {
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-intg__minimal-cta button {
+  border-radius: 0;
+}
+
+/* ================================================== 05 · WHO IT IS FOR
+ * White ground; the owner cards become cells rail to rail, their ledgers
+ * on dashed rules. */
+.dms--redesign.dms-page .dms-audience.hm-railed {
+  --dms-audience-divider: var(--hm-rail);
+  --dms-audience-card: var(--dms-surface);
+  border-bottom: 0;
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-audience__personas {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  max-width: none;
+  margin: clamp(36px, 4vw, 56px) calc(-1 * var(--hm-rail-pad)) 0;
+  border: 0;
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-owner {
+  min-height: 0;
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-owner__daily li + li {
+  border-top: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) top / 100% 1px no-repeat;
+}
+
+/* ===================================================== 06 · CUSTOMER PROOF
+ * The homepage reel (home-proof.css) on the bookends' charcoal; its tokens
+ * are scoped to the homepage there, so the same block lands here. */
+.dms--redesign.dms-page .hm-proof.hm-proof--reel {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-bg-3: var(--hm-charcoal-3, #2b2f36);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --dms-d-border-2: var(--hm-charcoal-border-2, #41464f);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  --hm-reel-lead: calc(var(--hm-rail-x) + var(--hm-rail-pad));
+  --hm-reel-gap: clamp(14px, 1.6vw, 24px);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+  overflow: hidden;
+  background: var(--dms-d-bg);
+  color: var(--dms-d-ink);
+}
+
+/* ============================================ 07 · COMPLIANCE + INDUSTRIES
+ * White ground; the standards as cells rail to rail, the industries band
+ * in brand blue straight under them. */
+.dms--redesign.dms-page .dms-compliance.hm-railed {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-compliance__head .dms-head {
+  gap: 22px;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-compliance__body {
+  margin-top: clamp(36px, 4vw, 56px);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-compliance__standards {
+  gap: 1px;
+  margin-inline: calc(-1 * var(--hm-rail-pad));
+  border-top: 1px solid var(--hm-rail);
+  border-bottom: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-compliance__standard {
+  min-height: 200px;
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad);
+  box-shadow: none;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-std__issuer {
+  border-radius: 0;
+}
+
+.dms--redesign.dms-page .hm-railed .dms-compliance__industries {
+  margin: 0 calc(-1 * var(--hm-rail-pad));
+  padding: 22px var(--hm-rail-pad);
+}
+
+/* ============================================================ 08 · FAQ
+ * The grey shift before the close; the accordion on hairline + dashed rules. */
+.dms--redesign.dms-page .hm-railed .dms-faq {
+  border-top: 1px solid var(--hm-rail);
+}
+
+.dms--redesign.dms-page .hm-railed .dms-faq__item {
+  border-bottom: 0;
+  background: repeating-linear-gradient(90deg, var(--hm-ledger-rule) 0 4px, transparent 4px 8px) bottom / 100% 1px no-repeat;
+}
+
+/* ========================================================= CLOSE + FOOTER
+ * The dark bookend, on the hero's charcoal so the page opens and closes on
+ * the same ground. The close keeps its convergence mark; the rails run
+ * white at 12% through it and on through the footer, which ends on the
+ * wordmark drawn edge to edge inside the rails (PaperStack). */
+.dms--redesign.dms-page .dms-close.hm-close--rails,
+.dms--redesign.dms-page .sft {
+  --dms-d-bg: var(--hm-charcoal, #1f2126);
+  --dms-d-bg-2: var(--hm-charcoal-2, #24272d);
+  --dms-d-bg-3: var(--hm-charcoal-3, #2b2f36);
+  --dms-d-border: var(--hm-charcoal-border, #353941);
+  --dms-d-border-2: var(--hm-charcoal-border-2, #41464f);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+}
+
+.dms--redesign.dms-page .dms-close.hm-close--rails {
+  min-height: 0;
+  padding: clamp(72px, 8vw, 120px) 0 clamp(96px, 9vw, 144px);
+  background:
+    radial-gradient(60% 42% at 50% 34%, rgba(0, 91, 183, 0.2), transparent 70%),
+    var(--dms-d-bg);
+}
+
+.dms--redesign.dms-page .hm-close--rails .dms-close__convergence {
+  height: clamp(120px, 12vw, 160px);
+  margin-bottom: clamp(36px, 4vw, 56px);
+}
+
+.dms--redesign.dms-page .hm-close--rails .dms-close__lead .dms-eyebrow {
+  align-self: center;
+}
+
+/* the footer on the rails: same geometry as .hm-railed, drawn here because
+ * the shared footer carries no page class */
+.dms--redesign.dms-page .sft {
+  --sft-bg: var(--dms-d-bg);
+  position: relative;
+  border-top: 1px solid var(--hm-rail);
+  background-color: var(--sft-bg);
+  background-image: none;
+}
+
+.dms--redesign.dms-page .sft::before,
+.dms--redesign.dms-page .sft::after {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  content: "";
+  background: var(--hm-rail);
+  pointer-events: none;
+}
+
+.dms--redesign.dms-page .sft::before { left: var(--hm-rail-x); }
+.dms--redesign.dms-page .sft::after { right: var(--hm-rail-x); }
+
+.dms--redesign.dms-page .sft__wrap {
+  padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+}
+
+.dms--redesign.dms-page .sft__base {
+  border-top: 1px solid var(--hm-rail);
+}
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 960px) {
+  .dms--redesign.dms-page .hm-railed .dms-problems__intro,
+  .dms--redesign.dms-page .hm-railed .dms-audience__head,
+  .dms--redesign.dms-page .hm-railed .dms-compliance__head,
+  .dms--redesign.dms-page .hm-railed .sctx__head,
+  .dms--redesign.dms-page .hm-railed .dms-intg__minimal-head,
+  .dms--redesign.dms-page .hm-railed .dms-mrail__head {
+    grid-template-columns: 1fr;
+    gap: 22px 0;
+    align-items: start;
+  }
+
+  .dms--redesign.dms-page .hm-railed .sctx__head .dms-lede,
+  .dms--redesign.dms-page .hm-railed .dms-intg__minimal-head .dms-lede,
+  .dms--redesign.dms-page .hm-railed .dms-mrail__head .dms-lede {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .dms--redesign.dms-page .hm-railed .dms-mrail__railcol {
+    background: var(--dms-surface);
+  }
+
+  .dms--redesign.dms-page .hm-railed .dms-lifex__visual {
+    background: var(--dms-surface);
+  }
+}
+
+@media (max-width: 860px) {
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__step {
+    border-bottom-color: var(--hm-rail);
+  }
+}
+
+@media (max-width: 720px) {
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-arc__camera { --rf-plate: 5px; }
+  .dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera { --rf-plate: 4px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::before,
+  .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::after {
+    animation: none;
+  }
+}

@@ -14,6 +14,7 @@
  * segments), the page states the evidence standard rather than inventing facts.
  * ========================================================================== */
 
+import type { UrgentKind } from "../../_shared/urgent-board";
 import type { ReactNode } from "react";
 
 /** One module — a door into the platform, grouped under a coordination domain. */
@@ -51,6 +52,16 @@ export interface TriggerRow {
   owner: string;
   /** Live destination, if one exists. */
   href?: string;
+  /** The Solutions urgent board's drawn surface for this moment (sheet: a
+   *  received document; calendar: the working days running out; scale: a
+   *  classification landing at its worst; alerts: the notification that
+   *  starts it). Unset rows rotate through the four so no two neighbours
+   *  share a picture. The sibling Solutions pages add their own kinds
+   *  (see UrgentKind in _shared/urgent-board.tsx). */
+  viz?: UrgentKind;
+  /** a few words of the moment's own furniture for its drawn surface
+   *  (the system named, the lot, the line); each kind reads what it needs */
+  detail?: string[];
 }
 
 /** The five first-class buyer roles (the "by your role" ingress). Keys are

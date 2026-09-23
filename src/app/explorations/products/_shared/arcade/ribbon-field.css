@@ -32,6 +32,26 @@
 .rf__field > svg,
 .rf__field > i { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 
+/* the ribbons are blurred into a soft wash (22 Sep 2026: the sharp stripes
+ * competed with the product window). Scaled up a touch so the blur's soft
+ * edge never shows inside the rounded container. */
+.rf__field > .rf__ribbons {
+  filter: blur(28px);
+  transform: scale(1.08);
+  transform-origin: 50% 50%;
+  opacity: 0.85;
+}
+@media (max-width: 720px) {
+  .rf__field > .rf__ribbons { filter: blur(18px); }
+}
+
+/* quiet tone: the ribbons recede into the ground, no bloom, a lighter scrim
+ * (there is no bright stripe left to hold back) */
+.rf__field--quiet > .rf__ribbons { opacity: 0.6; }
+.rf__field--quiet > .rf__scrim {
+  background: radial-gradient(56% 66% at 50% 50%, oklch(0 0 0 / 0.22) 0%, oklch(0 0 0 / 0.1) 45%, transparent 78%);
+}
+
 /* a soft darkening behind the record so the product visual is the
  * brightest object in the container; it fades before it reads as a frame */
 .rf__scrim {
@@ -65,7 +85,26 @@
   box-shadow: none;
 }
 .rf .stx-root .stx-arc__camera {
-  border-radius: 14px;
+  border-radius: 0;
   outline: 0;
   box-shadow: none;
+}
+
+/* rf--plate: a translucent bounding plate a step larger than the window,
+ * with a hairline at its edge, so the window sits lifted off the field
+ * (22 Sep 2026, homepage hero only). Spread shadows on the camera element
+ * itself, so the plate tracks every pan and zoom. */
+.rf.rf--plate .stx-root .stx-arc__camera {
+  --rf-plate: 8px;
+  outline: 1px solid oklch(1 0 0 / 0.5);
+  outline-offset: 0;
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.1),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.2),
+    0 4px 10px -4px oklch(0 0 0 / 0.28),
+    0 24px 48px -20px oklch(0 0 0 / 0.5),
+    0 48px 96px -32px oklch(0 0 0 / 0.55);
+}
+@media (max-width: 720px) {
+  .rf.rf--plate .stx-root .stx-arc__camera { --rf-plate: 5px; }
 }

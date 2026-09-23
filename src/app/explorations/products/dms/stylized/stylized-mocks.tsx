@@ -839,7 +839,16 @@ export const STYLIZED_LIFECYCLE_MOCKS: React.ReactNode[] = [
 
 /* PF-28's world: change control #77 on the same fictional dataset. The change
  * sponsor owns the record; the affected document (SOP-118, PF-29's record)
- * sits one row below in the inbox, and its owner appears in the thread. */
+ * sits one row below in the inbox, and its owner appears in the thread.
+ * 21 Sep 2026: the submitter section carries the product's AI impact button
+ * ("What else does this change affect? (Beta)", from the 16 Sep product
+ * recording): it reads the reason and the change description, the sponsor
+ * adds what it suggests, and the documents link as records. */
+const CHANGE_AT_RISK = [
+  { id: "WI-044", title: "Line 2 rinse station work instruction · Rev B", why: "Cites the §4.2 limit" },
+  { id: "FRM-063", title: "Rinse conductivity log sheet · Rev A", why: "Records against the old limit" },
+];
+
 const CHANGE_CONTROL_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Change Control",
@@ -865,21 +874,25 @@ const CHANGE_CONTROL_WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE REQUEST SUBMITTER",
       items: [
-        { label: "Reason for change", note: "Raised from SOP-118 issue" },
+        {
+          label: "Reason for change",
+          kind: "field",
+          value: "§4.2 does not match the rinse conductivity check on line 2",
+        },
         {
           label: "Full change description",
           kind: "field",
           value: "Update §4.2 rinse conductivity check to validated limits",
-          note: "Entered on the request",
         },
-        { label: "Desired effect · Update", note: "New controlled revision" },
+        { label: "Affected documents", kind: "linked", links: ["SOP-118"] },
+        { label: "Assess impacted documents", kind: "ask", value: "What else does this change affect?", note: "Beta" },
       ],
     },
     {
       title: "INITIAL RISK ANALYSIS",
       items: [
         { label: "Risk analysis", note: "Major · reversible" },
-        { label: "Affected document", note: "SOP-118 · revision linked" },
+        { label: "Affected documents", note: "SOP-118, WI-044, FRM-063 · linked as records" },
         { label: "Decision", kind: "approval", signer: "A. Chen", state: "Routed" },
       ],
     },
@@ -1676,25 +1689,46 @@ const FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
   /* PF-28 · Change Sponsor. This journey follows A5 almost one-to-one. */
   "28": [
     {
-      source: "A5 s2–10",
+      /* the sponsor's initiation, at its one non-obvious moment: the AI
+       * button on the checklist has read the reason and the description, the
+       * sponsor has ticked what it suggested, and the documents link as
+       * records. Beats are from the 16 Sep 2026 product recording; the
+       * records are this page's own. */
+      source: "A5 s2–10 · AI impact, product recording 16 Sep 2026",
       ghost: "Initiate",
       type: "Document Change Control",
       id: "#77",
       title: "Cleaning validation update",
       status: "Draft",
-      actor: "You",
-      event: "Opened the change request",
-      eventDetail: "Title, reason, category and affected document captured",
+      actor: "Unifize Assistant",
+      event: "Two more documents depend on the limit this change replaces",
+      eventDetail: "Suggested from the reason and the change description · added by A. Chen",
       checklist: "CHANGE REQUEST SUBMITTER",
-      checklistItems: ["Reason for change", "Full change description", "Desired effect · Update"],
-      focus: "record",
-      focusTitle: "Change request",
-      focusRows: ["Category · document update", "Risk · Major", "Affected document · SOP-118"],
+      checklistItems: ["Reason for change", "Full change description", "Affected documents"],
+      focus: "assist",
+      poseVariant: "linked",
+      focusTitle: "AI impact summary",
+      focusRows: CHANGE_AT_RISK.map((row) => `${row.id} · ${row.title}`),
       focusAction: "Submit for review",
-      ownershipNote: "Sponsor-owned · SOP-118 linked",
+      ownershipNote: "Suggested by AI, added by the sponsor",
       world: CHANGE_CONTROL_WORLD,
       checklistOpen: "CHANGE REQUEST SUBMITTER",
+      checklistLinks: {
+        section: "CHANGE REQUEST SUBMITTER",
+        item: "Affected documents",
+        links: ["SOP-118", ...CHANGE_AT_RISK.map((row) => row.id)],
+        records: CHANGE_AT_RISK.map((row) => ({ id: row.id, title: row.title, state: "Effective" })),
+      },
       checklistProgress: { "INITIAL RISK ANALYSIS": 0, "DOCUMENT CHANGE CHECKLIST": 0 },
+      assist: {
+        kicker: "UNIFIZE AI · BETA",
+        prompt: "What else does this change affect?",
+        read: ["Reason for change", "Full change description"],
+        suggested: CHANGE_AT_RISK.map((row) => ({ ...row, picked: true })),
+        action: "Add to checklist",
+        alt: "Dismiss",
+        pressed: true,
+      },
     },
     {
       source: "A5 s14–22",
@@ -1707,7 +1741,7 @@ const FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       event: "Presented risk, impact and affected records",
       eventDetail: "The review board can route, return or reject from one record",
       checklist: "INITIAL RISK ANALYSIS",
-      checklistItems: ["Risk analysis", "Affected document", "Decision"],
+      checklistItems: ["Risk analysis", "Affected documents", "Decision"],
       focus: "review",
       focusTitle: "Review board decision",
       focusRows: ["Scope · controlled document", "Risk · Major / reversible", "Stage 1 approval · required"],
@@ -1913,26 +1947,32 @@ const HERO_MEASURE_STEP: ArcadeStepConfig = {
 export const STYLIZED_HERO_STEPS: StylizedHeroStep[] = [
   {
     label: "Build it",
+    icon: "build",
     config: HERO_BUILD_STEP,
   },
   {
     label: "Find it",
+    icon: "find",
     config: FLOW_STEP_SCENES["29"][0],
   },
   {
     label: "Trust it",
+    icon: "trust",
     config: FLOW_STEP_SCENES["29"][1],
   },
   {
     label: "Sign it",
+    icon: "sign",
     config: FLOW_STEP_SCENES["4"][4],
   },
   {
     label: "Release it",
+    icon: "release",
     config: FLOW_STEP_SCENES["4"][5],
   },
   {
     label: "Measure it",
+    icon: "measure",
     config: HERO_MEASURE_STEP,
   },
 ];

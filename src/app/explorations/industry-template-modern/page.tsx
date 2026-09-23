@@ -1,40 +1,56 @@
 /* ============================================================================
- * INDUSTRY PAGE TEMPLATE — MODERN SKIN (Medical Devices instance).
- * Reworked onto Unifize enterprise design system v1 (the DMS language): flat
- * editorial dark hero/close/footer with hairlines (no glows), light neutral-grey
- * middle, Geist display + Inter body + JetBrains mono furniture, Unifize blue on
- * CTAs and one key marker per graphic, near-square corners, editorial registers
- * over shadowed card grids. Same content + flow as before; the skin now matches
- * /explorations/products/dms. Altitude discipline preserved; labeled placeholders
- * stay placeholders.
+ * INDUSTRY PAGE: Medical Devices (the reference industry instance).
+ *
+ * 23 Sep 2026, the rails wave: the page moved onto the design standard the
+ * homepage, platform and DMS pages now share (_shared/page-rails.css):
+ * two hairline rails down the content column, hatched divider bands between
+ * sections, blue-square eyebrows, split heads, cell grids drawn rail to
+ * rail, and every product artifact on a soft wash with the frosted plate.
+ * The page opens and closes on one charcoal (hero + trust, proof, close +
+ * footer); the middle goes light, including the three ways in, which used
+ * to run on an ink block.
+ *
+ * The shell is the DMS page's (`dms dms--redesign dms--rails dms-page` on
+ * <main>, DmsHeader, the shared hero arcade with its glyph step rail, the
+ * reel proof, the convergence close), so the hero, trust strip, bands and
+ * close come from dms-rails.css unchanged. `itm` stays on <main> so the
+ * page's own interactive pieces (decision trail, persona explorer,
+ * coverage ledger, cost ledger) keep their tokens; md-rails.css loads last
+ * and restates them in the rails grammar. Section order, copy and data are
+ * the page's own and are unchanged; both ingress sets stay.
  * ========================================================================== */
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import { TRIGGERS, VALIDATED } from "./industry-data";
-import { SiteHeader } from "./site-header";
+import { DmsHeader } from "../products/dms/dms-header";
 import { SiteFooter } from "../_shared/site-footer";
-import { IngressNav } from "./ingress-nav";
-import { PersonaExplorer } from "./persona-explorer";
-import { ModuleIndex } from "./module-index";
+import { HatchBand } from "../_shared/page-rails";
+import { Eyebrow } from "../products/dms/dms-primitives";
 import { CostLedger } from "./cost-ledger";
-import { ProofFilms } from "./proof-films";
-import { ItmMotion } from "./itm-motion";
-import { Eyebrow, SeverityIcon } from "./itm-primitives";
-import { HeroArcade, DecisionTraceArcade } from "./itm-arcade";
+import { MdProofReel } from "./md-proof";
+import { RoleCells, SolutionCells } from "./ways-in";
+import { UrgentBoard } from "../_shared/urgent-board";
+import "../domains/_shared/solution-rails.css";
+import "../domains/_shared/solution-viz.css";
+import { MdHeroArcade, DecisionTraceArcade } from "./itm-arcade";
 import "./itm.css";
+import "../products/dms/dms.css";
+import "../products/dms/dms-redesign.css";
+import "../_shared/page-rails.css";
+import "../products/dms/dms-rails.css";
+import "./md-rails.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
 
 export const metadata: Metadata = {
   title: "Medical Devices · Unifize",
   description:
-    "Your QMS records that a document was approved. It cannot reconstruct why. Unifize rebuilds the decision trace across every function it touched. The industry template, instanced on Medical Devices.",
+    "Your QMS records that a document was approved. It cannot reconstruct why. Unifize rebuilds the decision trace across every function it touched, for Class II and III device OEMs and CDMOs.",
 };
 
-const HERO_CHIPS = ["21 CFR 820", "ISO 13485", "ISO 14971", "EU MDR 2017/745", "21 CFR Part 11"];
 
-/* Restrained OUTLINE icons for the validation answer cards (Section I),
- * keyed by VALIDATED.points[].icon. Heroicons outline paths, inline. */
+/* Restrained OUTLINE icons for the validation answer cells, keyed by
+ * VALIDATED.points[].icon. Heroicons outline paths, inline. */
 const VAL_ICONS: Record<string, React.ReactNode> = {
   stack: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
@@ -53,217 +69,228 @@ const VAL_ICONS: Record<string, React.ReactNode> = {
   ),
 };
 
-export default function IndustryTemplateModernPage() {
+/* the split head every railed section opens with: eyebrow + claim left,
+ * lede right on the same baseline */
+function SplitHead({
+  n,
+  eyebrow,
+  title,
+  lede,
+  id,
+}: {
+  n: number;
+  eyebrow: string;
+  title: string;
+  lede?: string;
+  id?: string;
+}) {
   return (
-    <main className="itm">
-      <ItmMotion />
-      <SiteHeader />
+    <header className="md-head">
+      <div className="md-head__lead">
+        <Eyebrow n={n}>{eyebrow}</Eyebrow>
+        <h2 className="dms-h2" id={id}>{title}</h2>
+      </div>
+      {lede ? <p className="dms-lede">{lede}</p> : null}
+    </header>
+  );
+}
 
-      {/* ============================ A · HERO ============================= */}
-      <section className="itm-section itm-section--dark itm-hero" aria-label="Medical devices">
-        <div className="itm-hero__glow" aria-hidden="true" />
+/* the urgent board: the moments that carry a drawn surface, in order */
+const LEAD_TRIGGERS = TRIGGERS.filter((t) => t.viz).slice(0, 3);
 
-        <div className="itm-wrap itm-wrap--wide itm-hero__inner">
-          <div className="itm-hero__copy">
-            <div className="itm-hero__crumb itm-meta">
-              <span className="itm-dot itm-dot--accent" aria-hidden="true" />
-              <Link href="/platform#industries">Industries</Link>
-              <span className="itm-hero__crumb-sep" aria-hidden="true">/</span>
-              <span>Medical devices</span>
-            </div>
-            <h1 className="itm-hero__title">
-              Your QMS remembers that it was approved. <span className="itm-hero__turn">Not why.</span>
+export default function MedicalDevicesIndustryPage() {
+  return (
+    <main className="itm dms dms--redesign dms--consistent-eyebrows dms--rails dms-page md-page">
+      <DmsHeader />
+
+      {/* ============================ HERO =============================
+        * Charcoal ground, the centred head the DMS page carries, the
+        * regulatory frame as quiet pills, then the arcade window on the
+        * moving wash walking CC-2148 (raise, assess, review, sign, seal)
+        * with the glyph step rail above it. */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed md-hero--split" aria-label="Medical devices">
+        {/* 23 Sep 2026, the quality Solutions page's hero: two panes between
+          * the rails. The copy on the charcoal left (eyebrow, claim, one
+          * line, two actions; the regulatory pills went with "too many
+          * things on the hero"), the record-only window on the wash right,
+          * looping through CC-2148 with the step rail hidden. */}
+        <div className="dms-wrap hm-bleed md-hero2">
+          <div className="md-hero2__copy">
+            <Eyebrow>Industries · Medical devices</Eyebrow>
+            <h1 className="dms-hero__title">
+              <span className="dms-hero__line">Your QMS remembers that it was approved.</span>
+              <span className="dms-hero__line dms-hero__turn">Not why.</span>
             </h1>
-            <p className="itm-lede itm-hero__sub">
+            <p className="dms-lede dms-hero__sub">
               Built for Class II &amp; III device OEMs and CDMOs, where every change, every CAPA, and
               every complaint has to stay traceable across functions.
             </p>
-            <ul className="itm-hero__stds" aria-label="Regulatory frame">
-              {HERO_CHIPS.map((s) => (
-                <li key={s} className="itm-hero__std">{s}</li>
-              ))}
-            </ul>
-            <div className="itm-hero__ctas">
-              <BookDemoButton className="itm-btn" source="hero">Book a demo →</BookDemoButton>
-              <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+            <div className="dms-hero__ctas">
+              <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
+              <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
             </div>
           </div>
-        </div>
-
-        {/* product stage — decorative, sits free: the arcade engine quietly
-             walking CC-2148 through raise → review → Part 11 sign → seal */}
-        <div className="itm-hero__stage" aria-hidden="true">
-          <div className="itm-hero__shot">
-            <HeroArcade />
-          </div>
-        </div>
-
-        {/* trust strip — named customers */}
-        <div className="itm-wrap itm-wrap--wide">
-          <div className="itm-trust" aria-label="Customers and compliance">
-            <div className="itm-trust__who">
-              <span className="itm-trust__lab">Trusted by FDA-regulated device teams</span>
-              <div className="itm-trust__names">
-                {MD_PROOF.customers.map((c, i) => (
-                  <span key={c.name} style={{ display: "contents" }}>
-                    {i > 0 ? <span className="itm-trust__sep" aria-hidden="true" /> : null}
-                    <span className="itm-trust__name">{c.name}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="md-hero2__visual dms-hero__product-demo dms-hero__product-demo--arcade">
+            <MdHeroArcade />
           </div>
         </div>
       </section>
 
-      {/* ============================ B · THE DIFFERENCE ================== */}
-      <section className="itm-section itm-section--tall" id="thesis">
-        <div className="itm-wrap">
-          <div className="itm-head-block" data-reveal>
-            <Eyebrow n={1}>The difference</Eyebrow>
-            <h2 className="itm-h2">The decision lives in the thread, not the status field.</h2>
-            <p className="itm-lede">
-              Incumbents track document status. Unifize reconstructs the decision trace across every
-              function a change touched.
-            </p>
-          </div>
-
-          {/* the decision trail drives the arcade camera over one persistent
-               CC-2148 record: each step is a pose, not a new screen */}
-          <div data-reveal>
-            <DecisionTraceArcade />
-          </div>
+      {/* ============================ TRUST STRIP =======================
+        * Same charcoal, inside the rails: the device teams on the record. */}
+      <section className="dms-section dms-section--dark dms-trust hm-trust--rails hm-railed" aria-label="Customers">
+        <div className="dms-wrap dms-trust__inner">
+          <p className="dms-trust__label">Trusted by FDA-regulated device teams</p>
+          <ul className="dms-trust__logos md-trust__names" aria-label="Medical device customers">
+            {MD_PROOF.customers.map((c) => (
+              <li key={c.name} className="dms-trust__mark">{c.name}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/* ============ INGRESS · three ways in (sticky sub-nav group) ======== */}
-      <div className="itm-ingress">
-        <IngressNav />
+      {/* the first hatched divider: the dark-to-light break */}
+      <HatchBand />
 
-        {/* D · PERSONAS */}
-        <section className="itm-section itm-section--dark" id="by-role">
-          <div className="itm-wrap">
-            <div className="itm-head-block" data-reveal>
-              <Eyebrow n={2}>By your role</Eyebrow>
-              <h2 className="itm-h2">When the investigator is in the room, someone reconstructs it.</h2>
-              <p className="itm-lede">The reconstruction always lands on someone. Find your seat, and see what you own when the trace has to hold up at audit.</p>
-            </div>
-            <PersonaExplorer />
-          </div>
-        </section>
+      {/* ============================ 01 · THE DIFFERENCE ===============
+        * The decision trail drives the arcade camera over one persistent
+        * CC-2148 record; the stage sits on the sky wash with the plate. */}
+      <section className="dms-section md-sec md-diff hm-railed" id="thesis">
+        <div className="dms-wrap">
+          <SplitHead
+            n={1}
+            eyebrow="The difference"
+            title="The decision lives in the thread, not the status field."
+            lede="Incumbents track document status. Unifize reconstructs the decision trace across every function a change touched."
+          />
+          <DecisionTraceArcade />
+        </div>
+      </section>
 
-        {/* E · MODULE INDEX */}
-        <section className="itm-section itm-section--dark" id="modules">
-          <div className="itm-wrap">
-            <div className="itm-head-block" data-reveal>
-              <Eyebrow n={3}>Coverage</Eyebrow>
-              <h2 className="itm-h2">Nine domains. In each one, the same question: can you replay the decision?</h2>
-              <p className="itm-lede">Filter by the regulation you are audited against to see which controls evidence it.</p>
-            </div>
-            <ModuleIndex />
-          </div>
-        </section>
+      <HatchBand />
 
-        {/* F · TRIGGER BAND: a status board on ink, one severity-coded
-             card per statutory moment; severity leads, then the clock + routing. */}
-        <section className="itm-section itm-section--dark itm-trigs-sec" id="whats-breaking">
-          <div className="itm-wrap">
-            <div className="itm-head-block" data-reveal>
-              <Eyebrow n={4}>What's breaking</Eyebrow>
-              <h2 className="itm-h2">The moments that start a clock you don't control.</h2>
-              <p className="itm-lede">Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response.</p>
-            </div>
-            <div className="itm-trigs-wrap">
-              {(["Urgent", "High"] as const).map((level) => {
-                const rows = TRIGGERS.filter((t) => t.severity === level);
-                return (
-                  <div key={level} className={"itm-trigs-band " + (level === "Urgent" ? "is-urgent" : "is-high")} data-reveal>
-                    <div className="itm-trigs-band__head">
-                      <SeverityIcon severity={level} />
-                      <span className="itm-trigs-band__lab">{level}</span>
-                      <span className="itm-trigs-band__n">{String(rows.length).padStart(2, "0")} moments</span>
-                    </div>
-                    <div className="itm-trigs">
-                      {rows.map((t) => (
-                        <div key={t.name} className={"itm-trig" + (level === "Urgent" ? " is-urgent" : " is-high")}>
-                          <p className="itm-trig__name">{t.name}</p>
-                          <span className="itm-trig__clock">{t.clock}</span>
-                          <div className="itm-trig__foot">
-                            <span className="itm-trig__route">
-                              <span className="itm-trig__mod">{t.routesTo}</span>
-                              <span className="itm-trig__owner">{t.owner}</span>
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      </div>
+      {/* ============ THE THREE WAYS IN ====================================
+        * 23 Sep 2026, rebuilt on the quality Solutions page's grammar (no
+        * sticky sub-nav). The page is ingress: find your seat (02), your
+        * work (03) or your moment (04), recognise it in one precise artifact
+        * from the device world, leave by one door. ways-in.tsx +
+        * _shared/urgent-board.tsx. */}
 
-      {/* ============================ H · COST LEDGER ==================== */}
-      <section className="itm-section itm-section--alt itm-cost-sec" id="cost">
-        <div className="itm-wrap">
-          <div className="itm-head-block" data-reveal>
-            <Eyebrow n={5}>Cost of inaction</Eyebrow>
-            <h2 className="itm-h2">The cost is real. It just never lands on a line you can see.</h2>
-          </div>
+      {/* 02 · BY YOUR ROLE: five seats, each with the record it answers for */}
+      <section className="dms-section md-sec md-roles hm-railed" id="by-role">
+        <div className="dms-wrap">
+          <SplitHead
+            n={2}
+            eyebrow="By your role"
+            title="When the investigator is in the room, someone reconstructs it."
+            lede="The reconstruction always lands on someone. Find your seat, and the record you answer for."
+          />
+          <RoleCells />
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* 03 · COVERAGE: the device work, by the Solution it runs in */}
+      <section className="dms-section dms-section--alt md-sec md-cov hm-railed" id="modules">
+        <div className="dms-wrap">
+          <SplitHead
+            n={3}
+            eyebrow="Coverage"
+            title="Change, CAPA, suppliers, complaints. One decision trace."
+            lede="Each runs as a Unifize solution with the device regulations built in. Start with the one that costs you most."
+          />
+          <SolutionCells />
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--dark" />
+
+      {/* 04 · WHAT'S BREAKING: the quality page's urgent board, on the
+        * charcoal, the three sharpest clocks with one surface each */}
+      <section className="dms-section dms-section--dark md-sec md-trigs md-trigs--dark hm-railed" id="whats-breaking">
+        <div className="dms-wrap">
+          <SplitHead
+            n={4}
+            eyebrow="What's breaking"
+            title="The moments that start a clock you don't control."
+            lede="Statutory deadlines, not customer outcomes. Each one routes to the process that answers it and the team that owns the response."
+          />
+          <UrgentBoard rows={LEAD_TRIGGERS} />
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--dark" />
+
+      {/* ============================ 05 · COST OF INACTION ============= */}
+      <section className="dms-section dms-section--alt md-sec md-cost hm-railed" id="cost">
+        <div className="dms-wrap">
+          <SplitHead
+            n={5}
+            eyebrow="Cost of inaction"
+            title="The cost is real. It just never lands on a line you can see."
+          />
           <CostLedger />
         </div>
       </section>
 
-      {/* ============================ I · VALIDATED-STATE ================ */}
-      <section className="itm-section itm-section--short" id="validated">
-        <div className="itm-wrap">
-          <div className="itm-head-block" data-reveal>
-            <Eyebrow n={6}>{VALIDATED.eyebrow}</Eyebrow>
-            <h2 className="itm-h2">{VALIDATED.headline}</h2>
-          </div>
-          <ul className="itm-valgrid" data-reveal>
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* ============================ 06 · VALIDATED STATE ============== */}
+      <section className="dms-section md-sec md-val hm-railed" id="validated">
+        <div className="dms-wrap">
+          <SplitHead n={6} eyebrow={VALIDATED.eyebrow} title={VALIDATED.headline} />
+          <ul className="md-val__grid">
             {VALIDATED.points.map((pt) => (
-              <li key={pt.label} className="itm-valcard">
-                <span className="itm-valcard__icon" aria-hidden="true">{VAL_ICONS[pt.icon]}</span>
+              <li key={pt.label} className="md-val__cell">
+                <span className="md-val__icon" aria-hidden="true">{VAL_ICONS[pt.icon]}</span>
                 <h3>{pt.label}</h3>
                 <p>{pt.body}</p>
               </li>
             ))}
           </ul>
-          <div className="itm-valcta">
-            <button type="button" className="itm-btn itm-btn-ghost">{VALIDATED.cta}</button>
+          <div className="md-val__cta">
+            <BookDemoButton className="md-textlink" source="validated">{VALIDATED.cta} &rarr;</BookDemoButton>
           </div>
         </div>
       </section>
 
-      {/* ============= J · PROOF (real customer films, DMS film-rail layout) */}
-      <ProofFilms />
+      <HatchBand />
 
-      {/* ============================ K · CLOSE ==========================
-       * Flat editorial dark, asymmetric like the hero: mono kicker + display
-       * headline left, lede + CTA right, on a defining top hairline. No glow. */}
-      <section className="itm-section itm-section--dark itm-close" aria-labelledby="itm-close-h">
-        <div className="itm-wrap itm-wrap--wide">
-          <div className="itm-close__grid" data-reveal>
-            <div className="itm-close__lead">
-              <span className="itm-close__eyebrow">Ready when you are</span>
-              <h2 className="itm-close__h" id="itm-close-h">Incumbents track documents. Unifize reconstructs the decision.</h2>
+      {/* ============================ 07 · PROOF ========================
+        * The homepage reel of customer stills on the bookends' charcoal,
+        * with the medical-device roster (md-proof.tsx). */}
+      <MdProofReel />
+
+      <HatchBand className="hm-hatch--dark" />
+
+      {/* ============================ CLOSE =============================
+        * On the hero's charcoal so the page opens and closes on the same
+        * ground; the rails run through it and on through the footer. */}
+      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="md-close-h">
+        <div className="dms-wrap">
+          <div className="dms-close__grid">
+            <div className="dms-close__convergence" aria-hidden="true">
+              <div className="dms-close__mark">
+                <svg viewBox="0 2.2 21 22" fill="none">
+                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
+                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
+                </svg>
+              </div>
             </div>
-            <div className="itm-close__side">
-              <p className="itm-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
-              <div className="itm-close__cta">
-                <BookDemoButton className="itm-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+            <div className="dms-close__lead">
+              <Eyebrow>Ready when you are</Eyebrow>
+              <h2 className="dms-close__h" id="md-close-h">Incumbents track documents. Unifize reconstructs the decision.</h2>
+              <p className="dms-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
+              <div className="dms-close__cta">
+                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ----------------------------------------------------- site footer */}
-      <SiteFooter tagline="The decision trace for regulated operations." note="Industry template · Medical Devices instance" />
+      <SiteFooter tagline="The decision trace for regulated operations." note="Industries · Medical Devices" />
     </main>
   );
 }

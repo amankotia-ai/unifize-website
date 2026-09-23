@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PostMarketAndRecallDomainPage() {
-  return <SolutionPage data={POST_MARKET_DATA} />;
+  return <SolutionPage data={POST_MARKET_DATA} rails compact />;
 }

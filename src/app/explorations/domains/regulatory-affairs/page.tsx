@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RegulatoryAffairsDomainPage() {
-  return <SolutionPage data={REGULATORY_AFFAIRS_DATA} />;
+  return <SolutionPage data={REGULATORY_AFFAIRS_DATA} rails compact />;
 }

@@ -21,8 +21,11 @@ export function ProofFilmRail({
   countNoun,
   films,
   lead,
+  className,
 }: {
   idPrefix: string;
+  /* extra section classes (the platform page passes `hm-railed`) */
+  className?: string;
   eyebrowN?: number;
   heading: string;
   lede: string;
@@ -92,7 +95,7 @@ export function ProofFilmRail({
   );
 
   return (
-    <section className="dms-section dms-films" id="proof" aria-labelledby={`${idPrefix}-proof-title`}>
+    <section className={"dms-section dms-films" + (className ? " " + className : "")} id="proof" aria-labelledby={`${idPrefix}-proof-title`}>
       <div className="dms-wrap">
         <header className="dms-films__head">
           <div className="dms-head">

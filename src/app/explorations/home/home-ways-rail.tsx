@@ -9,6 +9,7 @@
  * (Sep 2026, after the three-card grid read as dull).
  * ========================================================================== */
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useStickyRail } from "../products/dms/dms-modules-rail";
 import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arcade/arcade";
 import { PLATFORM_BUILDER_CONFIG } from "../platform/platform-arcade";
@@ -22,7 +23,7 @@ export type WayIn = {
   label: string;
   title: string;
   body: string;
-  links: { name: string; meta: string; href: string }[];
+  links: { name: string; meta: string; href: string; icon?: ReactNode }[];
   href: string;
   cta: string;
 };
@@ -127,7 +128,8 @@ export function HomeWaysRail({ ways }: { ways: WayIn[] }) {
                   {way.links.map((item) => (
                     <li key={item.name}>
                       <Link href={item.href}>
-                        <span>{item.name}</span>
+                        {item.icon ? <span className="hm-ways__glyph" aria-hidden="true">{item.icon}</span> : null}
+                        <span className="hm-ways__name">{item.name}</span>
                         <small>{item.meta}</small>
                       </Link>
                     </li>
