@@ -76,7 +76,7 @@ export function PlmProofReel() {
       heading={plmCopy("proof.heading", "What engineering teams say when the trace holds.")}
       lede={plmCopy("proof.sub", "Short, candid accounts of design control, traceability, risk, and change from the engineers who own the record.")}
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

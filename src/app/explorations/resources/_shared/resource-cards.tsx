@@ -24,7 +24,7 @@ export function PlayGlyph({ className }: { className?: string }) {
 export function VideoCard({ v }: { v: CustomerVideo }) {
   const byline = [v.role, v.company].filter(Boolean).join(", ") || v.industry || "Customer story";
   return (
-    <Link href={`/explorations/resources/testimonials/${v.slug}`} className="rs-card rs-vcard">
+    <Link href={`/resources/testimonials/${v.slug}`} className="rs-card rs-vcard">
       <div className="rs-plate">
         {v.thumb
           ? <img className="rs-plate__img rs-plate__img--center" src={v.thumb} alt="" loading="lazy" />
@@ -47,7 +47,7 @@ export function VideoCard({ v }: { v: CustomerVideo }) {
 /* ------------------------------------------------------------------- post */
 export function PostCard({ p }: { p: Post }) {
   return (
-    <Link href={`/explorations/resources/blog/${p.slug}`} className="rs-card rs-postcard">
+    <Link href={`/resources/blog/${p.slug}`} className="rs-card rs-postcard">
       <div className="rs-plate rs-plate--post">
         <span className="rs-plate__cat">{p.category}</span>
         <span className="rs-plate__mins">{p.readMins} min</span>
@@ -67,7 +67,7 @@ export function PostCard({ p }: { p: Post }) {
 /* ------------------------------------------------------------- case study */
 export function CaseCard({ c }: { c: CaseStudy }) {
   return (
-    <Link href={`/explorations/resources/case-studies/${c.slug}`} className="rs-card rs-casecard">
+    <Link href={`/resources/case-studies/${c.slug}`} className="rs-card rs-casecard">
       <div className="rs-plate rs-plate--case">
         <span className="rs-plate__val">{c.metrics[0].value}</span>
         <span className="rs-plate__vlab">{c.metrics[0].label}</span>
@@ -90,7 +90,7 @@ export function StoryCell({ v }: { v: CustomerVideo }) {
   const who = [v.person, v.role].filter(Boolean).join(", ");
   const where = v.company ?? v.industry;
   return (
-    <Link href={`/explorations/resources/testimonials/${v.slug}`} className="cs-cell">
+    <Link href={`/resources/testimonials/${v.slug}`} className="cs-cell">
       <span className="cs-cell__still">
         {v.thumb
           ? /* eslint-disable-next-line @next/next/no-img-element */

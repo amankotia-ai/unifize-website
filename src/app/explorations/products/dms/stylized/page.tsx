@@ -8,5 +8,5 @@
 import { redirect } from "next/navigation";
 
 export default function DmsStylizedRedirect() {
-  redirect("/explorations/products/dms");
+  redirect("/products/dms");
 }

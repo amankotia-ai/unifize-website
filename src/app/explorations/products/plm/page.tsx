@@ -69,7 +69,7 @@ export default function PlmProductPage() {
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
-              <Link className="dms-hero__product" href="/explorations/platform">
+              <Link className="dms-hero__product" href="/platform">
                 <span className="dms-hero__product-mark" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path className="dms-hero__product-sheet" d="M12 2.2 20.5 7v10L12 21.8 3.5 17V7L12 2.2Z" />

@@ -69,15 +69,15 @@ export function NavGlyph({ name }: { name: IconName }) {
 }
 
 export const NAV: NavItem[] = [
-  { label: "Platform", href: "/explorations/platform" },
+  { label: "Platform", href: "/platform" },
   {
     label: "Products",
     menu: "products",
     items: [
-      { code: "QMS", label: "Quality management", href: "/explorations/products/qms", desc: "CAPA, audits, NCs and change control on one governed thread.", icon: "qms" },
-      { code: "DMS", label: "Document management", href: "/explorations/products/dms", desc: "Controlled documents, versioning and e-signatures, always audit-ready.", icon: "dms" },
-      { code: "MES", label: "Manufacturing execution", href: "/explorations/products/mes", desc: "Electronic batch records and shop-floor execution, paperless.", icon: "mes" },
-      { code: "PLM", label: "Product lifecycle", href: "/explorations/products/plm", desc: "Specs, BOMs and design history from concept to launch.", icon: "plm" },
+      { code: "QMS", label: "Quality management", href: "/products/qms", desc: "CAPA, audits, NCs and change control on one governed thread.", icon: "qms" },
+      { code: "DMS", label: "Document management", href: "/products/dms", desc: "Controlled documents, versioning and e-signatures, always audit-ready.", icon: "dms" },
+      { code: "MES", label: "Manufacturing execution", href: "/products/mes", desc: "Electronic batch records and shop-floor execution, paperless.", icon: "mes" },
+      { code: "PLM", label: "Product lifecycle", href: "/products/plm", desc: "Specs, BOMs and design history from concept to launch.", icon: "plm" },
     ],
   },
   {
@@ -86,36 +86,36 @@ export const NAV: NavItem[] = [
     cols: [
       {
         heading: "Quality & Compliance", icon: "shield", items: [
-          { label: "Quality", href: "/explorations/domains/quality", desc: "NCs, CAPA and audits on one quality record." },
-          { label: "Compliance", href: "/explorations/domains/compliance", desc: "Stay inspection-ready against every standard." },
-          { label: "Regulatory Affairs", href: "/explorations/domains/regulatory-affairs", desc: "Submissions, registrations and regulatory change." },
+          { label: "Quality", href: "/domains/quality", desc: "NCs, CAPA and audits on one quality record." },
+          { label: "Compliance", href: "/domains/compliance", desc: "Stay inspection-ready against every standard." },
+          { label: "Regulatory Affairs", href: "/domains/regulatory-affairs", desc: "Submissions, registrations and regulatory change." },
           // Renamed in the Domains DB on 2026-05-14 (Supplier Quality -> Supplier
           // Management) to widen the buyer door past the Supplier Quality Director
           // to the CPO / Head of Procurement. Slug follows the DB, not the old nav.
-          { label: "Supplier Management", href: "/explorations/domains/supplier-management", desc: "Qualification, SCARs and supplier performance." },
-          { label: "Post-Market & Recall", href: "/explorations/domains/post-market-and-recall", desc: "Complaints, adverse events and recalls, closed." },
+          { label: "Supplier Management", href: "/domains/supplier-management", desc: "Qualification, SCARs and supplier performance." },
+          { label: "Post-Market & Recall", href: "/domains/post-market-and-recall", desc: "Complaints, adverse events and recalls, closed." },
         ],
       },
       {
         heading: "Governance & Control", icon: "ledger", items: [
-          { label: "Change Control", href: "/explorations/domains/change-control", desc: "Every change proposed, reviewed and approved." },
-          { label: "Document & Records Control", href: "/explorations/domains/document-and-records-control", desc: "Controlled documents and records, audit-ready." },
-          { label: "Periodic Review & Data Governance", href: "/explorations/domains/periodic-review-and-data-governance", desc: "Scheduled reviews and defensible data integrity." },
-          { label: "Training & Competency", href: "/explorations/domains/training-and-competency", desc: "Role-based training tied to controlled documents." },
-          { label: "System & Data Integration Governance", href: "/explorations/domains/system-and-data-integration-governance", desc: "Govern the systems and the data between them." },
+          { label: "Change Control", href: "/domains/change-control", desc: "Every change proposed, reviewed and approved." },
+          { label: "Document & Records Control", href: "/domains/document-and-records-control", desc: "Controlled documents and records, audit-ready." },
+          { label: "Periodic Review & Data Governance", href: "/domains/periodic-review-and-data-governance", desc: "Scheduled reviews and defensible data integrity." },
+          { label: "Training & Competency", href: "/domains/training-and-competency", desc: "Role-based training tied to controlled documents." },
+          { label: "System & Data Integration Governance", href: "/domains/system-and-data-integration-governance", desc: "Govern the systems and the data between them." },
         ],
       },
       {
         heading: "Operations & Supply Chain", icon: "truck", items: [
-          { label: "Operations", href: "/explorations/domains/operations", desc: "Run the shop floor without paper or handoffs." },
-          { label: "Supply Chain & Planning", href: "/explorations/domains/supply-chain-and-planning", desc: "Plan and keep supply aligned to demand." },
-          { label: "Procurement & Sourcing", href: "/explorations/domains/procurement-and-sourcing", desc: "Source and buy against quality requirements." },
-          { label: "Customer Management", href: "/explorations/domains/customer-management", desc: "Orders, complaints and commitments, connected." },
-          { label: "New Product Development", href: "/explorations/domains/new-product-development", desc: "Concept to launch with the design history intact." },
+          { label: "Operations", href: "/domains/operations", desc: "Run the shop floor without paper or handoffs." },
+          { label: "Supply Chain & Planning", href: "/domains/supply-chain-and-planning", desc: "Plan and keep supply aligned to demand." },
+          { label: "Procurement & Sourcing", href: "/domains/procurement-and-sourcing", desc: "Source and buy against quality requirements." },
+          { label: "Customer Management", href: "/domains/customer-management", desc: "Orders, complaints and commitments, connected." },
+          { label: "New Product Development", href: "/domains/new-product-development", desc: "Concept to launch with the design history intact." },
         ],
       },
     ],
-    foot: { title: "The Problem, end to end", desc: "See how the solutions connect into one system of record.", href: "/explorations/domains", cta: "All solutions" },
+    foot: { title: "The Problem, end to end", desc: "See how the solutions connect into one system of record.", href: "/domains", cta: "All solutions" },
   },
   {
     label: "Industries",
@@ -123,39 +123,39 @@ export const NAV: NavItem[] = [
     cols: [
       {
         heading: "Life sciences", icon: "flask", items: [
-          { label: "Medical Devices", href: "/explorations/industry-template-modern", desc: "Class II & III OEMs and CDMOs" },
-          { label: "Pharmaceuticals", href: "/explorations/industries/pharmaceuticals", desc: "Commercial sponsors and CDMOs" },
-          { label: "Contract Research Orgs", href: "/explorations/industries/cro", desc: "GCP clinical trial services" },
-          { label: "Laboratories", href: "/explorations/industries/laboratories", desc: "ISO/IEC 17025 testing & calibration" },
+          { label: "Medical Devices", href: "/industries/medical-devices", desc: "Class II & III OEMs and CDMOs" },
+          { label: "Pharmaceuticals", href: "/industries/pharmaceuticals", desc: "Commercial sponsors and CDMOs" },
+          { label: "Contract Research Orgs", href: "/industries/cro", desc: "GCP clinical trial services" },
+          { label: "Laboratories", href: "/industries/laboratories", desc: "ISO/IEC 17025 testing & calibration" },
         ],
       },
       {
         heading: "Process & consumer", icon: "droplet", items: [
-          { label: "Chemicals", href: "/explorations/industries/chemicals", desc: "Specialty and pharma-supply" },
-          { label: "Cosmetics", href: "/explorations/industries/cosmetics", desc: "Personal care under MoCRA" },
-          { label: "Food Processing", href: "/explorations/industries/food-processing", desc: "FSMA and GFSI manufacturers" },
-          { label: "Nutritional Supplements", href: "/explorations/industries/nutritional-supplements", desc: "21 CFR Part 111 makers" },
+          { label: "Chemicals", href: "/industries/chemicals", desc: "Specialty and pharma-supply" },
+          { label: "Cosmetics", href: "/industries/cosmetics", desc: "Personal care under MoCRA" },
+          { label: "Food Processing", href: "/industries/food-processing", desc: "FSMA and GFSI manufacturers" },
+          { label: "Nutritional Supplements", href: "/industries/nutritional-supplements", desc: "21 CFR Part 111 makers" },
         ],
       },
       {
         heading: "Discrete manufacturing", icon: "cube", items: [
-          { label: "Automotive", href: "/explorations/industries/automotive", desc: "IATF 16949 tiers and suppliers" },
-          { label: "Aerospace", href: "/explorations/industries/aerospace", desc: "AS9100 and NADCAP suppliers" },
-          { label: "Industrial Machinery", href: "/explorations/industries/industrial-machinery", desc: "Build-to-order OEMs" },
+          { label: "Automotive", href: "/industries/automotive", desc: "IATF 16949 tiers and suppliers" },
+          { label: "Aerospace", href: "/industries/aerospace", desc: "AS9100 and NADCAP suppliers" },
+          { label: "Industrial Machinery", href: "/industries/industrial-machinery", desc: "Build-to-order OEMs" },
         ],
       },
     ],
-    foot: { title: "See a complete industry page", desc: "Tour how Unifize maps to one industry end to end.", href: "/explorations/industry-template-modern", cta: "Take the tour" },
+    foot: { title: "See a complete industry page", desc: "Tour how Unifize maps to one industry end to end.", href: "/industries/medical-devices", cta: "Take the tour" },
   },
   { label: "About us", href: "/about" },
   {
     label: "Resources",
     menu: "resources",
     items: [
-      { label: "Customer stories", href: "/explorations/resources/testimonials", desc: "Video stories by company, industry and module.", icon: "stories" },
-      { label: "Case studies", href: "/explorations/resources/case-studies", desc: "The backlog, the change, the numbers.", icon: "case" },
-      { label: "Blog", href: "/explorations/resources/blog", desc: "Field notes on running quality.", icon: "blog" },
+      { label: "Customer stories", href: "/resources/testimonials", desc: "Video stories by company, industry and module.", icon: "stories" },
+      { label: "Case studies", href: "/resources/case-studies", desc: "The backlog, the change, the numbers.", icon: "case" },
+      { label: "Blog", href: "/resources/blog", desc: "Field notes on running quality.", icon: "blog" },
     ],
-    foot: { title: "The full library", desc: "Every story, study and field note in one place.", href: "/explorations/resources", cta: "All resources" },
+    foot: { title: "The full library", desc: "Every story, study and field note in one place.", href: "/resources", cta: "All resources" },
   },
 ];

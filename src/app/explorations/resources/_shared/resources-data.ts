@@ -496,18 +496,18 @@ export const RESOURCE_FOOTER = {
     {
       label: "Products",
       links: [
-        { label: "QMS", href: "/explorations/products/qms" },
-        { label: "DMS", href: "/explorations/products/dms" },
-        { label: "MES", href: "/explorations/products/mes" },
-        { label: "PLM", href: "/explorations/products/plm" },
+        { label: "QMS", href: "/products/qms" },
+        { label: "DMS", href: "/products/dms" },
+        { label: "MES", href: "/products/mes" },
+        { label: "PLM", href: "/products/plm" },
       ],
     },
     {
       label: "Resources",
       links: [
-        { label: "Customer stories", href: "/explorations/resources/testimonials" },
-        { label: "Case studies", href: "/explorations/resources/case-studies" },
-        { label: "Blog", href: "/explorations/resources/blog" },
+        { label: "Customer stories", href: "/resources/testimonials" },
+        { label: "Case studies", href: "/resources/case-studies" },
+        { label: "Blog", href: "/resources/blog" },
       ],
     },
     {

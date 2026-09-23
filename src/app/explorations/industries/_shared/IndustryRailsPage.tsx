@@ -1,7 +1,7 @@
 /* ============================================================================
  * IndustryRailsPage - an industry page on the rails (23 Sep 2026).
  *
- * The Medical Devices page (/explorations/industry-template-modern) moved
+ * The Medical Devices page (/industries/medical-devices) moved
  * onto the design standard the homepage, platform and DMS pages share, with
  * a Luthor-style hero visual. This renders the same page for any industry
  * from its IndustryData (the Notion-backed kit data) plus its IndustryRails
@@ -162,7 +162,7 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
             <p className="dms-lede dms-hero__sub">{d.hero.sub}</p>
             <div className="dms-hero__ctas">
               <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-              <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
+              <Link href="/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
             </div>
           </div>
           <div className="md-hero2__visual">

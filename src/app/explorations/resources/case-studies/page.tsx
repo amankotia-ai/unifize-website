@@ -33,7 +33,7 @@ export default function CaseStudiesPage() {
       <ResourceCTA
         heading="Ready to see transformation in action?"
         sub="These numbers started as somebody's backlog. Book a demo and scope what Unifize would change for you."
-        ctaSecondary={{ label: "Watch customer stories", href: "/explorations/resources/testimonials" }}
+        ctaSecondary={{ label: "Watch customer stories", href: "/resources/testimonials" }}
       />
       <ResourceFooter />
     </ResourceShell>

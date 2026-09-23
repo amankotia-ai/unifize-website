@@ -127,7 +127,7 @@ export function ProductPage({ data }: { data: ProductPageData }) {
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
               <div className="dms-hero__crumb">
-                <Link href="/explorations/platform">Products</Link>
+                <Link href="/platform">Products</Link>
                 <span className="dms-hero__crumb-sep" aria-hidden="true">/</span>
                 <span>{data.crumbLabel}</span>
               </div>

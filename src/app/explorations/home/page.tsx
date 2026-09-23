@@ -155,7 +155,7 @@ const SYMPTOMS: {
     visual: "cycle",
     claim: "CAPAs take 90+ days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
-    href: "/explorations/domains/quality",
+    href: "/domains/quality",
     tax: { value: "≈19 hrs", label: "of coordination per non-conformance, detection to CAPA closure" },
   },
   {
@@ -163,7 +163,7 @@ const SYMPTOMS: {
     visual: "versions",
     claim: "Three copies of one SOP claim to be current.",
     note: "The controlled system says v3.2, a file share holds v3.1, and the line runs a laminated v2.8. The current version depends on where you look.",
-    href: "/explorations/domains/document-and-records-control",
+    href: "/domains/document-and-records-control",
     tax: { value: "40 min", label: "to pull one controlled document under audit pressure" },
   },
   {
@@ -171,7 +171,7 @@ const SYMPTOMS: {
     visual: "handoffs",
     claim: "Supplier approvals live in email threads.",
     note: "Qualification evidence, PPAP reviews, and SCARs scatter across mailboxes at the organisational boundary.",
-    href: "/explorations/domains/supplier-management",
+    href: "/domains/supplier-management",
     tax: { value: "≈14 hrs", label: "of coordination per supplier quality issue, incoming to resolved" },
   },
   {
@@ -179,7 +179,7 @@ const SYMPTOMS: {
     visual: "approval",
     claim: "The change gets approved. Nobody can replay why.",
     note: "Sign-off happens in email threads and design reviews, so the evidence that was seen and the conditions that were accepted never reach the record.",
-    href: "/explorations/domains/change-control",
+    href: "/domains/change-control",
     tax: { value: "≈30 hrs", label: "of coordination per change order, initiation to implementation" },
   },
   /* behind "See more solutions"; claims mirror each domain page's hero */
@@ -188,44 +188,44 @@ const SYMPTOMS: {
     visual: "trace",
     claim: "The design history is assembled after the fact.",
     note: "Decisions made in reviews and threads get reconstructed into the DHF weeks later, under deadline.",
-    href: "/explorations/domains/product-development",
+    href: "/domains/product-development",
   },
   {
     domain: "Operations",
     visual: "wip",
     claim: "WIP ages while dispositions wait in inboxes.",
     note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
-    href: "/explorations/domains/operations",
+    href: "/domains/operations",
   },
   {
     domain: "Regulatory Affairs",
     visual: "deadline",
     claim: "The reporting clock starts before the evidence is gathered.",
     note: "Reportability, submissions, and label approvals close on deadlines someone else set, with the evidence still in five inboxes.",
-    href: "/explorations/domains/regulatory-affairs",
+    href: "/domains/regulatory-affairs",
   },
   {
     domain: "Post-Market & Recall",
     visual: "tracks",
     claim: "A recall is four workflows, each with its own owner.",
     note: "Hold, notification, returns, and the submission run under different owners. The decisions holding them together happen on calls nobody records.",
-    href: "/explorations/domains/post-market-and-recall",
+    href: "/domains/post-market-and-recall",
   },
   {
     domain: "Compliance",
     visual: "matrix",
     claim: "You can prove compliance today. Ask again tomorrow.",
     note: "Validation, data integrity, and regulatory change are governed in briefs and spreadsheets beside the quality system, so the answer has to be rebuilt each time.",
-    href: "/explorations/domains/compliance",
+    href: "/domains/compliance",
   },
 ];
 
 /* each row carries a solid glyph from the nav set (nav-data NAV_ICONS) */
 const PRIMARY_SOLUTIONS = [
-  { name: "Quality", meta: "CAPA · NC · Audits", href: "/explorations/domains/quality", icon: "seal" as const },
-  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/explorations/domains/supplier-management", icon: "truck" as const },
-  { name: "Operations", meta: "Holds · Dispositions", href: "/explorations/domains/operations", icon: "pallet" as const },
-  { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development", icon: "compass" as const },
+  { name: "Quality", meta: "CAPA · NC · Audits", href: "/domains/quality", icon: "seal" as const },
+  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/domains/supplier-management", icon: "truck" as const },
+  { name: "Operations", meta: "Holds · Dispositions", href: "/domains/operations", icon: "pallet" as const },
+  { name: "Product Development", meta: "ECOs · Design history", href: "/domains/product-development", icon: "compass" as const },
 ];
 
 /* 04 - each product poses the arcade window on its ESSENCE artifact, the one
@@ -246,7 +246,7 @@ const PRODUCTS = [
     name: "Quality management",
     body: "CAPA, audits, nonconformances, and change control on one governed quality record.",
     outcome: "Close the finding. Keep the decision.",
-    href: "/explorations/products/qms",
+    href: "/products/qms",
     config: QMS_MODULE_ARCADE_CONFIGS["capa"],
   },
   {
@@ -255,7 +255,7 @@ const PRODUCTS = [
     name: "Document management",
     body: "Controlled documents, versioning, and e-signatures from draft to obsolete. A revision going effective assigns the retraining itself.",
     outcome: "One current version, everywhere.",
-    href: "/explorations/products/dms",
+    href: "/products/dms",
     config: HOME_SUITE_DMS_CONFIG,
   },
   {
@@ -264,7 +264,7 @@ const PRODUCTS = [
     name: "Manufacturing execution",
     body: "Electronic batch records and shop-floor execution with evidence captured as work happens.",
     outcome: "The record builds with the shift.",
-    href: "/explorations/products/mes",
+    href: "/products/mes",
     config: MES_MODULE_ARCADE_CONFIGS["electronic-batch-lot-records"],
   },
   {
@@ -273,7 +273,7 @@ const PRODUCTS = [
     name: "Product lifecycle",
     body: "Requirements, design controls, BOMs, and change orders on one traceable product record.",
     outcome: "Keep the trace from input to release.",
-    href: "/explorations/products/plm",
+    href: "/products/plm",
     config: PLM_MODULE_ARCADE_CONFIGS["design-controls-traceability"],
   },
 ];
@@ -289,29 +289,29 @@ const INDUSTRY_GROUPS = [
     name: "Life sciences",
     body: "Decision trails that stand up to inspectors, sponsors, and assessors.",
     industries: [
-      { name: "Medical Devices", moment: "A complaint turns reportable", example: "A complaint turns reportable and the 30-day MDR clock starts", href: "/explorations/industry-template-modern", icon: "medical-devices", claim: "A design change that misses one record", turn: "is a recall.", standards: ["21 CFR 820", "ISO 13485", "EU MDR 2017/745"] },
-      { name: "Pharmaceuticals", moment: "A deviation lands on a batch", example: "A deviation on a batch, with a root cause that holds at inspection", href: "/explorations/industries/pharmaceuticals", icon: "pharmaceuticals", claim: "A change approved on a call", turn: "never reaches change control.", standards: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10"] },
-      { name: "Contract Research Orgs", moment: "A protocol deviation at a site", example: "A protocol deviation, ready to show whichever sponsor asks", href: "/explorations/industries/cro", icon: "cro", claim: "Every sponsor can audit you,", turn: "one study at a time.", standards: ["ICH E6(R2) GCP", "21 CFR Part 11", "ALCOA+"] },
-      { name: "Laboratories", moment: "An out-of-spec result", example: "An out-of-spec result, closed with an effectiveness check", href: "/explorations/industries/laboratories", icon: "laboratories", claim: "One open nonconformance", turn: "can suspend your scope in 90 days.", standards: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58"] },
+      { name: "Medical Devices", moment: "A complaint turns reportable", example: "A complaint turns reportable and the 30-day MDR clock starts", href: "/industries/medical-devices", icon: "medical-devices", claim: "A design change that misses one record", turn: "is a recall.", standards: ["21 CFR 820", "ISO 13485", "EU MDR 2017/745"] },
+      { name: "Pharmaceuticals", moment: "A deviation lands on a batch", example: "A deviation on a batch, with a root cause that holds at inspection", href: "/industries/pharmaceuticals", icon: "pharmaceuticals", claim: "A change approved on a call", turn: "never reaches change control.", standards: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10"] },
+      { name: "Contract Research Orgs", moment: "A protocol deviation at a site", example: "A protocol deviation, ready to show whichever sponsor asks", href: "/industries/cro", icon: "cro", claim: "Every sponsor can audit you,", turn: "one study at a time.", standards: ["ICH E6(R2) GCP", "21 CFR Part 11", "ALCOA+"] },
+      { name: "Laboratories", moment: "An out-of-spec result", example: "An out-of-spec result, closed with an effectiveness check", href: "/industries/laboratories", icon: "laboratories", claim: "One open nonconformance", turn: "can suspend your scope in 90 days.", standards: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58"] },
     ],
   },
   {
     name: "Process & consumer",
     body: "Controlled changes and evidence across formulation, production, and release.",
     industries: [
-      { name: "Chemicals", moment: "A formulation change", example: "A process change, traced to REACH and customer notifications", href: "/explorations/industries/chemicals", icon: "chemicals", claim: "A formulation change", turn: "moves your customers' dossiers too.", standards: ["REACH", "TSCA", "OSHA PSM"] },
-      { name: "Cosmetics", moment: "A safety substantiation", example: "MoCRA listings, supplier COAs, and adverse events in one file", href: "/explorations/industries/cosmetics", icon: "cosmetics", claim: "The retailer audit asks for the substantiation file.", turn: "All of it.", standards: ["MoCRA", "ISO 22716", "EU 1223/2009"], customer: { name: "Applechem", src: "/customers/applechem.png" } },
-      { name: "Food Processing", moment: "A hold on a lot", example: "A hold on a lot, closed against the food safety plan", href: "/explorations/industries/food-processing", icon: "food-processing", claim: "An allergen deviation left open", turn: "becomes a recall.", standards: ["FSMA · 21 CFR 117", "HACCP", "SQF"] },
-      { name: "Nutritional Supplements", moment: "A rejected raw material", example: "A rejected raw material, with the ID test and supplier file attached", href: "/explorations/industries/nutritional-supplements", icon: "nutritional-supplements", claim: "Identity testing is", turn: "where the 483 starts.", standards: ["21 CFR Part 111", "cGMP", "NSF"], customer: { name: "Biovation Labs", src: "/customers/biovation-labs.svg" } },
+      { name: "Chemicals", moment: "A formulation change", example: "A process change, traced to REACH and customer notifications", href: "/industries/chemicals", icon: "chemicals", claim: "A formulation change", turn: "moves your customers' dossiers too.", standards: ["REACH", "TSCA", "OSHA PSM"] },
+      { name: "Cosmetics", moment: "A safety substantiation", example: "MoCRA listings, supplier COAs, and adverse events in one file", href: "/industries/cosmetics", icon: "cosmetics", claim: "The retailer audit asks for the substantiation file.", turn: "All of it.", standards: ["MoCRA", "ISO 22716", "EU 1223/2009"], customer: { name: "Applechem", src: "/customers/applechem.png" } },
+      { name: "Food Processing", moment: "A hold on a lot", example: "A hold on a lot, closed against the food safety plan", href: "/industries/food-processing", icon: "food-processing", claim: "An allergen deviation left open", turn: "becomes a recall.", standards: ["FSMA · 21 CFR 117", "HACCP", "SQF"] },
+      { name: "Nutritional Supplements", moment: "A rejected raw material", example: "A rejected raw material, with the ID test and supplier file attached", href: "/industries/nutritional-supplements", icon: "nutritional-supplements", claim: "Identity testing is", turn: "where the 483 starts.", standards: ["21 CFR Part 111", "cGMP", "NSF"], customer: { name: "Biovation Labs", src: "/customers/biovation-labs.svg" } },
     ],
   },
   {
     name: "Discrete manufacturing",
     body: "Configuration, supplier, and production decisions with the rationale intact.",
     industries: [
-      { name: "Automotive", moment: "A PPAP resubmission", example: "A PPAP resubmission, assembled once instead of chased", href: "/explorations/industries/automotive", icon: "automotive", claim: "One late 8D", turn: "puts you on controlled shipping.", standards: ["IATF 16949", "PPAP", "APQP"] },
-      { name: "Aerospace", moment: "A nonconformance on a flight part", example: "A nonconformance on a flight part, with the objective evidence", href: "/explorations/industries/aerospace", icon: "aerospace", claim: "A NADCAP finding", turn: "gives you 90 days.", standards: ["AS9100", "NADCAP", "FAI · AS9102"] },
-      { name: "Industrial Machinery", moment: "A design change after CE marking", example: "A design change after CE marking, traced into the technical file", href: "/explorations/industries/industrial-machinery", icon: "industrial-machinery", claim: "The FAT fails on paperwork,", turn: "not on the machine.", standards: ["CE marking", "Machinery Directive", "ISO 12100"] },
+      { name: "Automotive", moment: "A PPAP resubmission", example: "A PPAP resubmission, assembled once instead of chased", href: "/industries/automotive", icon: "automotive", claim: "One late 8D", turn: "puts you on controlled shipping.", standards: ["IATF 16949", "PPAP", "APQP"] },
+      { name: "Aerospace", moment: "A nonconformance on a flight part", example: "A nonconformance on a flight part, with the objective evidence", href: "/industries/aerospace", icon: "aerospace", claim: "A NADCAP finding", turn: "gives you 90 days.", standards: ["AS9100", "NADCAP", "FAI · AS9102"] },
+      { name: "Industrial Machinery", moment: "A design change after CE marking", example: "A design change after CE marking, traced into the technical file", href: "/industries/industrial-machinery", icon: "industrial-machinery", claim: "The FAT fails on paperwork,", turn: "not on the machine.", standards: ["CE marking", "Machinery Directive", "ISO 12100"] },
     ],
   },
 ];
@@ -434,7 +434,7 @@ const RESOURCE_ROWS = [
     icon: "stories" as const,
     label: "Customer stories",
     body: "Hear the change in the words of the people who ran it.",
-    href: "/explorations/resources/testimonials",
+    href: "/resources/testimonials",
     cta: `Watch all ${CUSTOMER_VIDEOS.length} stories`,
   },
   {
@@ -442,7 +442,7 @@ const RESOURCE_ROWS = [
     icon: "case" as const,
     label: "Case studies",
     body: "See the backlog, the intervention, and the measured result.",
-    href: "/explorations/resources/case-studies",
+    href: "/resources/case-studies",
     cta: `See all ${CASE_STUDIES.length} case studies`,
   },
   {
@@ -450,7 +450,7 @@ const RESOURCE_ROWS = [
     icon: "blog" as const,
     label: "Blog",
     body: "Field notes for quality, operations, and product leaders.",
-    href: "/explorations/resources/blog",
+    href: "/resources/blog",
     cta: `Read all ${POSTS.length} field notes`,
   },
 ];
@@ -515,7 +515,7 @@ export default function HomePage() {
                   <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
                   {/* 9 Sep 2026 review: the assessment CTA left the hero (the
                     * tax is not introduced yet); it lives in 02, where it is */}
-                  <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">
+                  <Link href="/platform" className="dms-btn dms-btn-ghost">
                     See how it works
                   </Link>
                 </div>
@@ -786,7 +786,7 @@ export default function HomePage() {
           </div>
           <div className="hm-section-tail" data-reveal>
             <p>Whichever standard governs you, from 21 CFR Part 11 and ISO 13485 to IATF 16949 and AS9100, the record you show an auditor is the record the work created.</p>
-            <Link href="/explorations/platform#compliance">Every standard we work under &rarr;</Link>
+            <Link href="/platform#compliance">Every standard we work under &rarr;</Link>
           </div>
         </div>
       </section>
@@ -810,7 +810,7 @@ export default function HomePage() {
               <span>Keep exploring</span>
               <h3 id="hm-resources-h">Evidence for the next conversation.</h3>
               <p>The voices, the numbers, and the field notes behind the claims on this page.</p>
-              <Link className="hm-resources__all" href="/explorations/resources">
+              <Link className="hm-resources__all" href="/resources">
                 Browse all resources <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>

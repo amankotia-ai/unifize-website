@@ -25,7 +25,7 @@ const ROSTER = ["VP Quality", "Quality Director", "QA Manager", "RAQA Director"]
 
 export const QUALITY_MANAGER_DATA: PersonaPageData = {
   slug: "quality-manager",
-  crumb: { industry: { label: "Medical Devices", href: "/explorations/industry-template-modern" }, role: "Quality leadership" },
+  crumb: { industry: { label: "Medical Devices", href: "/industries/medical-devices" }, role: "Quality leadership" },
   metaTitle: "Quality leadership · Medical Devices · Unifize",
   metaDescription:
     "You own release confidence across dozens of open CAPAs, change controls, and approvals. Unifize keeps the decision - context, evidence, and sign-off - on one governed thread, so the trace is ready before the audit is.",
@@ -105,10 +105,10 @@ export const QUALITY_MANAGER_DATA: PersonaPageData = {
     heading: "The workflows you own, on one system.",
     lede: "The decisions in your queue live in modules you already know. Each opens in the product that runs it.",
     items: [
-      { name: "CAPA & Nonconformance", product: "QMS", body: "Raise, investigate, disposition, and prove effective - with the trace intact.", href: "/explorations/products/qms" },
-      { name: "Change & Document Control", product: "DMS", body: "Controlled documents and change control with 21 CFR Part 11 e-signature and the training cascade.", href: "/explorations/products/dms" },
-      { name: "Audit & Supplier Quality", product: "QMS", body: "Audit evidence and supplier corrective actions assembled on the record, not across five systems.", href: "/explorations/products/qms" },
-      { name: "Manufacturing quality holds", product: "MES", body: "Quality holds raised on the line the moment an inspection fails, not at final inspection.", href: "/explorations/products/mes" },
+      { name: "CAPA & Nonconformance", product: "QMS", body: "Raise, investigate, disposition, and prove effective - with the trace intact.", href: "/products/qms" },
+      { name: "Change & Document Control", product: "DMS", body: "Controlled documents and change control with 21 CFR Part 11 e-signature and the training cascade.", href: "/products/dms" },
+      { name: "Audit & Supplier Quality", product: "QMS", body: "Audit evidence and supplier corrective actions assembled on the record, not across five systems.", href: "/products/qms" },
+      { name: "Manufacturing quality holds", product: "MES", body: "Quality holds raised on the line the moment an inspection fails, not at final inspection.", href: "/products/mes" },
     ],
   },
 
@@ -181,7 +181,7 @@ export const QUALITY_MANAGER_DATA: PersonaPageData = {
           { label: "Workflows you own", href: "#workflows" },
           { label: "Who you work with", href: "#people" },
           { label: "FAQ", href: "#faq" },
-          { label: "Medical Devices", href: "/explorations/industry-template-modern" },
+          { label: "Medical Devices", href: "/industries/medical-devices" },
         ],
       },
     ],

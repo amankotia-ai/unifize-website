@@ -46,10 +46,10 @@ const HOME_ENTRY_PATHS: EntryPath[] = [
     title: "I need to improve a process.",
     body: "Start with the cross-functional work that is slow, unclear, or difficult to prove.",
     links: [
-      { name: "Quality", meta: "CAPA · NC · Audits", href: "/explorations/domains/quality" },
-      { name: "Supplier Management", meta: "PPAP · SCARs", href: "/explorations/domains/supplier-management" },
-      { name: "Operations", meta: "Holds · Dispositions", href: "/explorations/domains/operations" },
-      { name: "Product Development", meta: "ECOs · Design history", href: "/explorations/domains/product-development" },
+      { name: "Quality", meta: "CAPA · NC · Audits", href: "/domains/quality" },
+      { name: "Supplier Management", meta: "PPAP · SCARs", href: "/domains/supplier-management" },
+      { name: "Operations", meta: "Holds · Dispositions", href: "/domains/operations" },
+      { name: "Product Development", meta: "ECOs · Design history", href: "/domains/product-development" },
     ],
     href: "#sf-solutions",
     cta: "Explore solutions",
@@ -59,10 +59,10 @@ const HOME_ENTRY_PATHS: EntryPath[] = [
     title: "I am evaluating a system.",
     body: "Start with the governed record your team needs to run and keep current.",
     links: [
-      { name: "Quality management", meta: "QMS", href: "/explorations/products/qms" },
-      { name: "Document management", meta: "DMS", href: "/explorations/products/dms" },
-      { name: "Manufacturing execution", meta: "MES", href: "/explorations/products/mes" },
-      { name: "Product lifecycle", meta: "PLM", href: "/explorations/products/plm" },
+      { name: "Quality management", meta: "QMS", href: "/products/qms" },
+      { name: "Document management", meta: "DMS", href: "/products/dms" },
+      { name: "Manufacturing execution", meta: "MES", href: "/products/mes" },
+      { name: "Product lifecycle", meta: "PLM", href: "/products/plm" },
     ],
     href: "#sf-products",
     cta: "Explore products",
@@ -72,9 +72,9 @@ const HOME_ENTRY_PATHS: EntryPath[] = [
     title: "Show me my regulated world.",
     body: "Start with your standards, validated stack, and the moments that begin the clock.",
     links: [
-      { name: "Medical Devices", meta: "FDA 820 · ISO 13485", href: "/explorations/industry-template-modern" },
-      { name: "Pharmaceuticals", meta: "cGMP · Annex 11", href: "/explorations/industries/pharmaceuticals" },
-      { name: "Aerospace", meta: "AS9100 · NADCAP", href: "/explorations/industries/aerospace" },
+      { name: "Medical Devices", meta: "FDA 820 · ISO 13485", href: "/industries/medical-devices" },
+      { name: "Pharmaceuticals", meta: "cGMP · Annex 11", href: "/industries/pharmaceuticals" },
+      { name: "Aerospace", meta: "AS9100 · NADCAP", href: "/industries/aerospace" },
     ],
     href: "#sf-industries",
     cta: "Explore industries",
@@ -86,29 +86,29 @@ const HOME_INDUSTRY_GROUPS = [
     name: "Life sciences",
     body: "Decision trails that stand up to inspectors, sponsors, and assessors.",
     industries: [
-      { name: "Medical Devices", meta: "FDA 820 · ISO 13485", href: "/explorations/industry-template-modern" },
-      { name: "Pharmaceuticals", meta: "cGMP · Annex 11", href: "/explorations/industries/pharmaceuticals" },
-      { name: "Contract Research Orgs", meta: "GCP · ICH E6", href: "/explorations/industries/cro" },
-      { name: "Laboratories", meta: "ISO/IEC 17025", href: "/explorations/industries/laboratories" },
+      { name: "Medical Devices", meta: "FDA 820 · ISO 13485", href: "/industries/medical-devices" },
+      { name: "Pharmaceuticals", meta: "cGMP · Annex 11", href: "/industries/pharmaceuticals" },
+      { name: "Contract Research Orgs", meta: "GCP · ICH E6", href: "/industries/cro" },
+      { name: "Laboratories", meta: "ISO/IEC 17025", href: "/industries/laboratories" },
     ],
   },
   {
     name: "Process & consumer",
     body: "Controlled changes and evidence across formulation, production, and release.",
     industries: [
-      { name: "Chemicals", meta: "REACH · GHS", href: "/explorations/industries/chemicals" },
-      { name: "Cosmetics", meta: "MoCRA · ISO 22716", href: "/explorations/industries/cosmetics" },
-      { name: "Food Processing", meta: "FSMA · GFSI", href: "/explorations/industries/food-processing" },
-      { name: "Nutritional Supplements", meta: "21 CFR 111", href: "/explorations/industries/nutritional-supplements" },
+      { name: "Chemicals", meta: "REACH · GHS", href: "/industries/chemicals" },
+      { name: "Cosmetics", meta: "MoCRA · ISO 22716", href: "/industries/cosmetics" },
+      { name: "Food Processing", meta: "FSMA · GFSI", href: "/industries/food-processing" },
+      { name: "Nutritional Supplements", meta: "21 CFR 111", href: "/industries/nutritional-supplements" },
     ],
   },
   {
     name: "Discrete manufacturing",
     body: "Configuration, supplier, and production decisions with the rationale intact.",
     industries: [
-      { name: "Automotive", meta: "IATF 16949", href: "/explorations/industries/automotive" },
-      { name: "Aerospace", meta: "AS9100 · NADCAP", href: "/explorations/industries/aerospace" },
-      { name: "Industrial Machinery", meta: "ISO 9001 · CE", href: "/explorations/industries/industrial-machinery" },
+      { name: "Automotive", meta: "IATF 16949", href: "/industries/automotive" },
+      { name: "Aerospace", meta: "AS9100 · NADCAP", href: "/industries/aerospace" },
+      { name: "Industrial Machinery", meta: "ISO 9001 · CE", href: "/industries/industrial-machinery" },
     ],
   },
 ];
@@ -121,28 +121,28 @@ const HOME_SYMPTOMS = [
     visual: "cycle" as const,
     claim: "CAPAs take 90 days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
-    href: "/explorations/domains/quality",
+    href: "/domains/quality",
   },
   {
     domain: "Operations",
     visual: "wip" as const,
     claim: "WIP ages while dispositions wait in inboxes.",
     note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
-    href: "/explorations/domains/operations",
+    href: "/domains/operations",
   },
   {
     domain: "Supplier management",
     visual: "handoffs" as const,
     claim: "Supplier approvals live in email threads.",
     note: "Qualification evidence, PPAP reviews, and SCARs scatter across mailboxes at the organisational boundary.",
-    href: "/explorations/domains/supplier-management",
+    href: "/domains/supplier-management",
   },
   {
     domain: "Product development",
     visual: "trace" as const,
     claim: "The design history is assembled after the fact.",
     note: "Decisions made in reviews and threads get reconstructed into the DHF weeks later, under deadline.",
-    href: "/explorations/domains/product-development",
+    href: "/domains/product-development",
   },
 ];
 
@@ -159,46 +159,46 @@ const HOME_PRODUCTS = [
     name: "Quality management",
     body: "CAPA, audits, nonconformances, and change control on one governed quality record.",
     outcome: "Close the finding. Keep the decision.",
-    href: "/explorations/products/qms",
+    href: "/products/qms",
   },
   {
     code: "DMS",
     name: "Document management",
     body: "Controlled documents, versioning, training, and e-signatures from draft to obsolete.",
     outcome: "One current version, everywhere.",
-    href: "/explorations/products/dms",
+    href: "/products/dms",
   },
   {
     code: "MES",
     name: "Manufacturing execution",
     body: "Electronic batch records and shop-floor execution with evidence captured as work happens.",
     outcome: "The record builds with the shift.",
-    href: "/explorations/products/mes",
+    href: "/products/mes",
   },
   {
     code: "PLM",
     name: "Product lifecycle",
     body: "Requirements, design controls, BOMs, and change orders on one traceable product record.",
     outcome: "Keep the trace from input to release.",
-    href: "/explorations/products/plm",
+    href: "/products/plm",
   },
 ];
 
 const HOME_PROOF_CONTEXT = {
   "how-unifize-improved-our-non-conformance-closure-time-by-75-within-the-first-month": [
-    { label: "Manufacturing", href: "/explorations/industries" },
-    { label: "Quality", href: "/explorations/domains/quality" },
-    { label: "QMS", href: "/explorations/products/qms" },
+    { label: "Manufacturing", href: "/industries" },
+    { label: "Quality", href: "/domains/quality" },
+    { label: "QMS", href: "/products/qms" },
   ],
   "how-smaller-groups-lead-to-70-faster-actions": [
-    { label: "Operations", href: "/explorations/domains/operations" },
-    { label: "Collaboration", href: "/explorations/platform" },
-    { label: "QMS", href: "/explorations/products/qms" },
+    { label: "Operations", href: "/domains/operations" },
+    { label: "Collaboration", href: "/platform" },
+    { label: "QMS", href: "/products/qms" },
   ],
   "how-unifize-helped-reduce-60-000-of-material-cost-on-just-one-product": [
-    { label: "Nutritional supplements", href: "/explorations/industries" },
-    { label: "Product development", href: "/explorations/domains/product-development" },
-    { label: "PLM", href: "/explorations/products/plm" },
+    { label: "Nutritional supplements", href: "/industries" },
+    { label: "Product development", href: "/domains/product-development" },
+    { label: "PLM", href: "/products/plm" },
   ],
 };
 
@@ -217,17 +217,17 @@ const HOME_RESOURCES = [
   {
     label: "Customer stories",
     body: "Hear the change in the words of the people who ran it.",
-    href: "/explorations/resources/testimonials",
+    href: "/resources/testimonials",
   },
   {
     label: "Case studies",
     body: "See the backlog, the intervention, and the measured result.",
-    href: "/explorations/resources/case-studies",
+    href: "/resources/case-studies",
   },
   {
     label: "Blog",
     body: "Field notes for quality, operations, and product leaders.",
-    href: "/explorations/resources/blog",
+    href: "/resources/blog",
   },
 ];
 
@@ -482,7 +482,7 @@ export function HomeRecognition() {
 
         <footer className="sf-home-section__footer">
           <p>Quality, operations, supplier management, and product development all run on the same decision model.</p>
-          <HeroLink href="/explorations/domains" muted>See every solution</HeroLink>
+          <HeroLink href="/domains" muted>See every solution</HeroLink>
         </footer>
       </div>
     </section>
@@ -539,7 +539,7 @@ export function HomeMechanism() {
           <div className="sf-home-mechanism__intro">
             <p>The coordination tax is the time lost holding cross-functional work together when no system owns it end to end. Unifize makes that waiting visible, accountable, and recoverable.</p>
             <div>
-              <HeroLink href="/explorations/platform">Explore the platform</HeroLink>
+              <HeroLink href="/platform">Explore the platform</HeroLink>
               <HeroLink href="/coordination-tax-calculator" muted>Measure the tax</HeroLink>
             </div>
           </div>
@@ -640,7 +640,7 @@ export function HomeIndustryDirectory() {
 
         <footer className="sf-home-industries__footer">
           <p>E-signatures, attributable approvals, and a complete audit trail on every governed thread.</p>
-          <Link className="sf-directory-pill is-primary" href="/explorations/home#industries">
+          <Link className="sf-directory-pill is-primary" href="/home#industries">
             Explore industries <Arrow />
           </Link>
         </footer>
@@ -679,7 +679,7 @@ export function HomeProof() {
                     <span className="sf-proof-story__avatar" aria-hidden="true">{story.person.split(" ").map((part) => part[0]).join("")}</span>
                     <p><b>{story.person}</b><span>{[story.role, story.company].filter(Boolean).join(" · ")}</span><small>{story.industry}</small></p>
                   </div>
-                  <Link className="sf-proof-story__link" href={`/explorations/resources/testimonials/${story.slug}`}>
+                  <Link className="sf-proof-story__link" href={`/resources/testimonials/${story.slug}`}>
                     Watch the story <Arrow />
                   </Link>
                 </article>
@@ -721,7 +721,7 @@ export function HomeClose() {
             <Link className="sf-close-link is-primary" href="/chat-anatomy">Book a 30-minute walkthrough <Arrow diagonal /></Link>
             <Link className="sf-close-link" href="/coordination-tax-calculator">Take the assessment <Arrow /></Link>
           </div>
-          <Link className="sf-home-close__it" href="/explorations/platform#platform">For IT: how it fits your architecture <Arrow /></Link>
+          <Link className="sf-home-close__it" href="/platform#platform">For IT: how it fits your architecture <Arrow /></Link>
         </div>
       </div>
     </section>

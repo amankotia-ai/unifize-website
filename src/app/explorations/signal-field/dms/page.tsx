@@ -27,7 +27,7 @@ export default function SignalFieldDmsPage() {
               Document control, change, and training on one governed record.
             </p>
             <div className="sf-hero-actions">
-              <HeroLink href="/explorations/products/dms">Explore DMS</HeroLink>
+              <HeroLink href="/products/dms">Explore DMS</HeroLink>
               <HeroLink href="/chat-anatomy" muted>Talk to us</HeroLink>
             </div>
           </div>

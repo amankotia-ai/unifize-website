@@ -75,7 +75,7 @@ export default async function VideoItemPage({ params }: { params: Promise<{ slug
       <section className="dms-section dms-section--dark rs-cine" aria-label={v.name}>
         <CineMedia v={v} />
         <div className="dms-wrap rs-cine__frame">
-          <Crumb trail={[{ label: "Customer stories", href: "/explorations/resources/testimonials" }, { label: v.person }]} dark />
+          <Crumb trail={[{ label: "Customer stories", href: "/resources/testimonials" }, { label: v.person }]} dark />
           <div className="rs-cine__foot">
             <div className="rs-cine__head">
               <span className="rs-cine__co">{v.company ?? v.person}</span>
@@ -138,7 +138,7 @@ export default async function VideoItemPage({ params }: { params: Promise<{ slug
             </div>
             <p className="dms-lede cs-head__lede">
               The nearest stories first: the same company, then the same industry.{" "}
-              <Link href="/explorations/resources/testimonials">Browse them all</Link>.
+              <Link href="/resources/testimonials">Browse them all</Link>.
             </p>
           </header>
         </div>
@@ -182,7 +182,7 @@ export default async function VideoItemPage({ params }: { params: Promise<{ slug
               </p>
               <div className="dms-close__cta">
                 <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
+                <Link href="/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>

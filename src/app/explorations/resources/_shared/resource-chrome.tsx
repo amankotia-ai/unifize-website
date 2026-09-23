@@ -16,7 +16,7 @@ import { BookDemoButton } from "@/components/organisms/book-demo";
 export function Crumb({ trail, dark, center }: { trail: { label: string; href?: string }[]; dark?: boolean; center?: boolean }) {
   return (
     <nav className={"rs-crumb" + (dark ? " rs-crumb--dark" : "") + (center ? " rs-crumb--center" : "")} aria-label="Breadcrumb">
-      <Link href="/explorations/resources">Resources</Link>
+      <Link href="/resources">Resources</Link>
       {trail.map((t) => (
         <span key={t.label} className="rs-crumb__seg">
           <span aria-hidden="true">/</span>
@@ -87,11 +87,11 @@ export function QuoteBand({
       <div className="dms-wrap">
         <div className="rs-qband__head">
           <h2 className="rs-qband__h">{heading}</h2>
-          <Link className="rs-qband__all" href="/explorations/resources/testimonials">All customer stories &rarr;</Link>
+          <Link className="rs-qband__all" href="/resources/testimonials">All customer stories &rarr;</Link>
         </div>
         <div className="rs-qband__grid">
           {list.map((v) => (
-            <Link href={`/explorations/resources/testimonials/${v.slug}`} className="rs-qcell" key={v.slug}>
+            <Link href={`/resources/testimonials/${v.slug}`} className="rs-qcell" key={v.slug}>
               <p className="rs-qcell__q">{v.name}</p>
               <div className="rs-qcell__who">
                 <span className="rs-qcell__name">{v.person}</span>

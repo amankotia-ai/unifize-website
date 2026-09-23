@@ -78,7 +78,7 @@ const ROLES: Cell[] = [
       ],
       cursor: MARTIN,
     },
-    go: { label: "Change control, end to end →", href: "/explorations/domains/change-control" },
+    go: { label: "Change control, end to end →", href: "/domains/change-control" },
   },
   {
     name: "Regulatory Affairs",
@@ -92,7 +92,7 @@ const ROLES: Cell[] = [
       state: "Drafting",
       cursor: KAPOOR,
     },
-    go: { label: "Regulatory affairs →", href: "/explorations/domains/regulatory-affairs" },
+    go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
   },
   {
     name: "Compliance & Validation",
@@ -125,7 +125,7 @@ const ROLES: Cell[] = [
       note: "Released the hour CC-2148 closes",
       cursor: OSEI,
     },
-    go: { label: "Holds and dispositions →", href: "/explorations/domains/quality" },
+    go: { label: "Holds and dispositions →", href: "/domains/quality" },
   },
 ];
 
@@ -146,7 +146,7 @@ const SOLUTIONS: Cell[] = [
       cursor: CHEN,
     },
     items: ["CAPA & Effectiveness", "Nonconformance / NCR", "MRB Disposition", "Internal Audit"],
-    go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+    go: { label: "See the quality solution →", href: "/domains/quality" },
   },
   {
     name: "Change control",
@@ -163,7 +163,7 @@ const SOLUTIONS: Cell[] = [
       ],
     },
     items: ["Engineering Change (ECO/ECR)", "Design Controls / DHF", "Risk Management File", "Controlled Distribution"],
-    go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+    go: { label: "See the change control solution →", href: "/domains/change-control" },
   },
   {
     name: "Supplier quality",
@@ -179,7 +179,7 @@ const SOLUTIONS: Cell[] = [
       cursor: KAPOOR,
     },
     items: ["Supplier Qualification / PPAP", "SCAR / Supplier CAPA", "Incoming Inspection / MRB", "Quality Agreements"],
-    go: { label: "See the supplier solution →", href: "/explorations/domains/supplier-management" },
+    go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
   },
   {
     name: "Complaints & recall",
@@ -196,7 +196,7 @@ const SOLUTIONS: Cell[] = [
       cursor: MARTIN,
     },
     items: ["Complaint / MDR Reporting", "Recall Execution", "Label Governance"],
-    go: { label: "See the post-market solution →", href: "/explorations/domains/post-market-and-recall" },
+    go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
   },
 ];
 

@@ -135,7 +135,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
           <div className="itm-hero__copy">
             <div className="itm-hero__crumb itm-meta">
               <span className="itm-dot itm-dot--accent" aria-hidden="true" />
-              <Link href="/explorations/domains">Solutions</Link>
+              <Link href="/domains">Solutions</Link>
               <span className="itm-hero__crumb-sep" aria-hidden="true">/</span>
               <span>{d.hero.crumb}</span>
             </div>

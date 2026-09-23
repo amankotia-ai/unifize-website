@@ -500,7 +500,7 @@ export function SolutionPage({
           <div className="dms-wrap dms-hero__inner">
             <div className="dms-hero__grid">
               <div className="dms-hero__left">
-                <Link className="dms-hero__product" href="/explorations/home#solutions">
+                <Link className="dms-hero__product" href="/home#solutions">
                   <span className="dms-hero__product-mark" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
                       <path className="sk-hero__glyph" d="M3.5 5.5h5M3.5 12h5.5M3.5 18.5h5M8.5 5.5c4.5 0 3.5 6.5 8 6.5M8.5 18.5c4.5 0 3.5-6.5 8-6.5M14 12h6.5M17.5 9l3 3-3 3" />
@@ -887,7 +887,7 @@ export function SolutionPage({
 
               <div className="sk-tail" data-reveal>
                 <p>Every module runs on the same governed record, next to the systems you already trust.</p>
-                <Link href="/explorations/platform#stack">How the platform is put together &rarr;</Link>
+                <Link href="/platform#stack">How the platform is put together &rarr;</Link>
               </div>
             </>
           )}
@@ -1230,7 +1230,7 @@ export function SolutionPage({
               <p className="dms-lede">{d.close.lede}</p>
               <div className="dms-close__cta">
                 <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
+                <Link href="/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>

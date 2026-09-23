@@ -393,7 +393,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
         ],
         cursor: QA,
       },
-      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
     },
     operations: {
       viz: {
@@ -419,7 +419,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
         state: "Drafting",
         cursor: RA,
       },
-      go: { label: "Regulatory affairs →", href: "/explorations/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
@@ -446,7 +446,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
           { org: "Quality", name: "QA Director", meaning: "Approve" },
         ],
       },
-      go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
     },
   },
 
@@ -469,7 +469,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
           ],
           cursor: QA,
         },
-        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
       },
       {
         domain: "product-development",
@@ -485,7 +485,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
           outcome: "Major · notification impact assessed",
           cursor: RA,
         },
-        go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+        go: { label: "See the change control solution →", href: "/domains/change-control" },
       },
       {
         domain: "supplier-management",
@@ -499,7 +499,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
             { org: "Quality", text: "Post-approval change impact assessed on the record" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/explorations/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
       },
       {
         domain: "training-competency",

@@ -52,19 +52,19 @@ const WORKFLOWS = [
     code: "QLT",
     title: "Quality decisions",
     body: "Investigations, CAPAs, deviations, and supplier events move from signal to approved outcome.",
-    href: "/explorations/domains/quality",
+    href: "/domains/quality",
   },
   {
     code: "OPS",
     title: "Operational decisions",
     body: "Holds, dispositions, release decisions, and escalations stay visible across every team involved.",
-    href: "/explorations/products/mes",
+    href: "/products/mes",
   },
   {
     code: "PDV",
     title: "Product decisions",
     body: "Design reviews and change orders retain the rationale, evidence, and approvals behind every revision.",
-    href: "/explorations/products/plm",
+    href: "/products/plm",
   },
 ];
 
@@ -105,21 +105,21 @@ export default function StrategicHomePage() {
     <main className="sv-home">
       <div className="sv-frame">
         <header className="sv-header">
-          <Link className="sv-brand" href="/explorations/home" aria-label="Unifize home">
+          <Link className="sv-brand" href="/home" aria-label="Unifize home">
             <img src="/logo_dark.svg" alt="Unifize" width="124" height="29" />
           </Link>
 
           <nav className="sv-nav" aria-label="Primary navigation">
-            <Link href="/explorations/platform">
+            <Link href="/platform">
               Platform <span aria-hidden="true">+</span>
             </Link>
-            <Link href="/explorations/products/dms">
+            <Link href="/products/dms">
               Products <span aria-hidden="true">+</span>
             </Link>
-            <Link href="/explorations/industry-template-modern">
+            <Link href="/industries/medical-devices">
               Industries <span aria-hidden="true">+</span>
             </Link>
-            <Link href="/explorations/resources">Resources</Link>
+            <Link href="/resources">Resources</Link>
             <Link href="/coordination-tax-calculator">Pricing</Link>
           </nav>
 
@@ -148,7 +148,7 @@ export default function StrategicHomePage() {
             <Link className="sv-button sv-button--primary" href="/chat-anatomy">
               Book a demo
             </Link>
-            <Link className="sv-button sv-button--secondary" href="/explorations/platform">
+            <Link className="sv-button sv-button--secondary" href="/platform">
               View platform
             </Link>
           </div>
@@ -325,7 +325,7 @@ export default function StrategicHomePage() {
               Use one governed model across quality, operations, and product development while
               keeping each team&apos;s work specific to its domain.
             </p>
-            <Link className="sv-button sv-button--light" href="/explorations/platform">
+            <Link className="sv-button sv-button--light" href="/platform">
               Explore the platform
             </Link>
           </div>
@@ -392,7 +392,7 @@ export default function StrategicHomePage() {
             <Link className="sv-button sv-button--light" href="/chat-anatomy">
               Book a demo
             </Link>
-            <Link className="sv-button sv-button--blue-ghost" href="/explorations/platform">
+            <Link className="sv-button sv-button--blue-ghost" href="/platform">
               Explore the platform
             </Link>
           </div>
@@ -406,14 +406,14 @@ export default function StrategicHomePage() {
           <nav aria-label="Footer navigation">
             <div>
               <span>Platform</span>
-              <Link href="/explorations/platform">Overview</Link>
-              <Link href="/explorations/products/qms">Quality</Link>
-              <Link href="/explorations/products/plm">Product lifecycle</Link>
+              <Link href="/platform">Overview</Link>
+              <Link href="/products/qms">Quality</Link>
+              <Link href="/products/plm">Product lifecycle</Link>
             </div>
             <div>
               <span>Company</span>
-              <Link href="/explorations/resources">Resources</Link>
-              <Link href="/explorations/resources/case-studies">Case studies</Link>
+              <Link href="/resources">Resources</Link>
+              <Link href="/resources/case-studies">Case studies</Link>
               <Link href="/coordination-tax-calculator">Assessment</Link>
             </div>
           </nav>

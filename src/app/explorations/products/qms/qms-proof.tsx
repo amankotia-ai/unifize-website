@@ -37,7 +37,7 @@ export function QmsProofReel() {
       heading="What quality teams say when the proof stays on the record."
       lede="Short, candid accounts of non-conformances, CAPAs, audits, and supplier quality from the people who run them."
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

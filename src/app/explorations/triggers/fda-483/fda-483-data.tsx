@@ -42,7 +42,7 @@ const RELATED: TriggerPageData["related"]["items"] = [
 
 export const FDA_483_DATA: TriggerPageData = {
   slug: "fda-483",
-  crumb: { industry: { label: "Medical Devices", href: "/explorations/industry-template-modern" }, section: "Triggers", trigger: "Form 483" },
+  crumb: { industry: { label: "Medical Devices", href: "/industries/medical-devices" }, section: "Triggers", trigger: "Form 483" },
   metaTitle: "FDA Form 483 issued · Trigger · Unifize",
   metaDescription:
     "A Form 483 just landed and the clock is 15 working days. Unifize runs the response on one governed thread - root cause, corrective action, and a Part 11 sign-off - so the trace is the audit trail, not a scramble across five systems.",
@@ -198,7 +198,7 @@ export const FDA_483_DATA: TriggerPageData = {
           { label: "Related moments", href: "#related" },
           { label: "Compliance", href: "#compliance" },
           { label: "FAQ", href: "#faq" },
-          { label: "Medical Devices", href: "/explorations/industry-template-modern" },
+          { label: "Medical Devices", href: "/industries/medical-devices" },
         ],
       },
     ],

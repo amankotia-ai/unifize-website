@@ -32,7 +32,7 @@ export default function ResourcesHubPage() {
 
       <section className="dms-section rs-block rs-hubband">
         <div className="dms-wrap">
-          <BandHead title="Customer stories" link={{ label: `All ${CUSTOMER_VIDEOS.length} videos`, href: "/explorations/resources/testimonials" }} />
+          <BandHead title="Customer stories" link={{ label: `All ${CUSTOMER_VIDEOS.length} videos`, href: "/resources/testimonials" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
             {films.map((f) => <VideoCard key={f.slug} v={f} />)}
           </div>
@@ -41,7 +41,7 @@ export default function ResourcesHubPage() {
 
       <section className="dms-section rs-block rs-hubband dms-section--alt">
         <div className="dms-wrap">
-          <BandHead title="Case studies" link={{ label: `All ${CASE_STUDIES.length} studies`, href: "/explorations/resources/case-studies" }} />
+          <BandHead title="Case studies" link={{ label: `All ${CASE_STUDIES.length} studies`, href: "/resources/case-studies" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
             {studies.map((c) => <CaseCard key={c.slug} c={c} />)}
           </div>
@@ -50,7 +50,7 @@ export default function ResourcesHubPage() {
 
       <section className="dms-section rs-block rs-hubband">
         <div className="dms-wrap">
-          <BandHead title="From the blog" link={{ label: `All ${POSTS.length} posts`, href: "/explorations/resources/blog" }} />
+          <BandHead title="From the blog" link={{ label: `All ${POSTS.length} posts`, href: "/resources/blog" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
             {latest.map((p) => <PostCard key={p.slug} p={p} />)}
           </div>
@@ -61,7 +61,7 @@ export default function ResourcesHubPage() {
       <ResourceCTA
         heading="Ready to see it in action?"
         sub="Book a demo and see how connected collaboration drives real results on your own processes."
-        ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }}
+        ctaSecondary={{ label: "See the platform", href: "/platform" }}
       />
       <ResourceFooter />
     </ResourceShell>

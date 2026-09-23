@@ -191,7 +191,7 @@ export function SiteHeader() {
   return (
     <header className={"itm-header is-" + theme + (frosted ? " is-frosted" : "")}>
       <div className="itm-wrap itm-wrap--wide itm-header__inner">
-        <a className="itm-header__brand" href="/explorations/home">
+        <a className="itm-header__brand" href="/home">
           <img className="itm-header__logo itm-header__logo--light" src="/logo_light.svg" alt="Unifize" />
           <img className="itm-header__logo itm-header__logo--dark" src="/logo_dark.svg" alt="" aria-hidden="true" />
         </a>

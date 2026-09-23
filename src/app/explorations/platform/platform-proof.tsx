@@ -42,7 +42,7 @@ export function PlatformProofFilms() {
       heading="Real teams, on camera, on the record."
       lede="Quality directors, engineers, and operators on their own before and after: off legacy systems, live in weeks, closing work faster."
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

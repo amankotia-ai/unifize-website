@@ -366,7 +366,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
         ],
         cursor: QM,
       },
-      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
     },
     operations: {
       viz: {
@@ -392,7 +392,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
         state: "Updating",
         cursor: STEWARD,
       },
-      go: { label: "Regulatory affairs →", href: "/explorations/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
@@ -418,7 +418,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
           { id: "OPS", label: "Commercial batch", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/explorations/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
     },
   },
 
@@ -441,7 +441,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
           ],
           cursor: QM,
         },
-        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
       },
       {
         domain: "supplier-management",
@@ -455,7 +455,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
             { org: "Supplier Quality", text: "Spec, SDS and customer-notification impact assessed" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/explorations/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
       },
       {
         domain: "compliance",

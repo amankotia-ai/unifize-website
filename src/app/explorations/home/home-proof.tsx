@@ -70,7 +70,7 @@ export function HomeProofFilms() {
       heading="From the people who stopped paying the coordination tax."
       lede="Real customers, on film. Quality directors, engineers, and operators on their own before and after: off legacy systems, live in weeks, closing work faster."
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

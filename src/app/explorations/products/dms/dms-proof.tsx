@@ -79,7 +79,7 @@ export function DmsProofReel() {
       heading={dmsCopy("proof.heading", "Results, honestly stated, from quality teams like yours.")}
       lede={dmsCopy("proof.sub", "Short, candid accounts of document control, training, and change management from the people doing the work.")}
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

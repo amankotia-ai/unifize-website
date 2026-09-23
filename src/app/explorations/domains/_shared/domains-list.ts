@@ -31,19 +31,19 @@ export interface DomainLink {
 
 export const ALL_DOMAINS: DomainLink[] = [
   // Quality & Compliance
-  { slug: "quality", label: "Quality", href: "/explorations/domains/quality", pillar: "Quality & Compliance", tier: "Primary" },
-  { slug: "compliance", label: "Compliance", href: "/explorations/domains/compliance", pillar: "Quality & Compliance", tier: "Secondary" },
-  { slug: "regulatory-affairs", label: "Regulatory Affairs", href: "/explorations/domains/regulatory-affairs", pillar: "Quality & Compliance", tier: "Secondary" },
-  { slug: "supplier-management", label: "Supplier Management", href: "/explorations/domains/supplier-management", pillar: "Quality & Compliance", tier: "Primary" },
-  { slug: "post-market-and-recall", label: "Post-Market & Recall", href: "/explorations/domains/post-market-and-recall", pillar: "Quality & Compliance", tier: "Secondary" },
+  { slug: "quality", label: "Quality", href: "/domains/quality", pillar: "Quality & Compliance", tier: "Primary" },
+  { slug: "compliance", label: "Compliance", href: "/domains/compliance", pillar: "Quality & Compliance", tier: "Secondary" },
+  { slug: "regulatory-affairs", label: "Regulatory Affairs", href: "/domains/regulatory-affairs", pillar: "Quality & Compliance", tier: "Secondary" },
+  { slug: "supplier-management", label: "Supplier Management", href: "/domains/supplier-management", pillar: "Quality & Compliance", tier: "Primary" },
+  { slug: "post-market-and-recall", label: "Post-Market & Recall", href: "/domains/post-market-and-recall", pillar: "Quality & Compliance", tier: "Secondary" },
   // Governance & Control
-  { slug: "change-control", label: "Change Control", href: "/explorations/domains/change-control", pillar: "Governance & Control", tier: "Secondary" },
-  { slug: "document-and-records-control", label: "Document & Records Control", href: "/explorations/domains/document-and-records-control", pillar: "Governance & Control", tier: "Secondary" },
-  { slug: "training-and-competency", label: "Training & Competency", href: "/explorations/domains/training-and-competency", pillar: "Governance & Control", tier: "Secondary" },
+  { slug: "change-control", label: "Change Control", href: "/domains/change-control", pillar: "Governance & Control", tier: "Secondary" },
+  { slug: "document-and-records-control", label: "Document & Records Control", href: "/domains/document-and-records-control", pillar: "Governance & Control", tier: "Secondary" },
+  { slug: "training-and-competency", label: "Training & Competency", href: "/domains/training-and-competency", pillar: "Governance & Control", tier: "Secondary" },
   // Operations & Supply Chain
-  { slug: "operations", label: "Operations", href: "/explorations/domains/operations", pillar: "Operations & Supply Chain", tier: "Primary" },
-  { slug: "supply-chain-and-planning", label: "Supply Chain & Planning", href: "/explorations/domains/supply-chain-and-planning", pillar: "Operations & Supply Chain", tier: "Secondary" },
-  { slug: "procurement-and-sourcing", label: "Procurement & Sourcing", href: "/explorations/domains/procurement-and-sourcing", pillar: "Operations & Supply Chain", tier: "Secondary" },
-  { slug: "customer-management", label: "Customer Management", href: "/explorations/domains/customer-management", pillar: "Operations & Supply Chain", tier: "Secondary" },
-  { slug: "product-development", label: "Product Development", href: "/explorations/domains/product-development", pillar: "Operations & Supply Chain", tier: "Primary" },
+  { slug: "operations", label: "Operations", href: "/domains/operations", pillar: "Operations & Supply Chain", tier: "Primary" },
+  { slug: "supply-chain-and-planning", label: "Supply Chain & Planning", href: "/domains/supply-chain-and-planning", pillar: "Operations & Supply Chain", tier: "Secondary" },
+  { slug: "procurement-and-sourcing", label: "Procurement & Sourcing", href: "/domains/procurement-and-sourcing", pillar: "Operations & Supply Chain", tier: "Secondary" },
+  { slug: "customer-management", label: "Customer Management", href: "/domains/customer-management", pillar: "Operations & Supply Chain", tier: "Secondary" },
+  { slug: "product-development", label: "Product Development", href: "/domains/product-development", pillar: "Operations & Supply Chain", tier: "Primary" },
 ];

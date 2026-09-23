@@ -367,7 +367,7 @@ export const CRO_RAILS: IndustryRails = {
         ],
         cursor: GCPQA,
       },
-      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
     },
     operations: {
       viz: {
@@ -441,7 +441,7 @@ export const CRO_RAILS: IndustryRails = {
           ],
           cursor: GCPQA,
         },
-        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
       },
       {
         domain: "pharmacovigilance-safety",

@@ -54,7 +54,7 @@ export function MdProofReel() {
       lede="Short, candid accounts of change control, the DHF, and FDA audits from the engineers and quality leads doing the work."
       stills={stills}
       lead={LEAD}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

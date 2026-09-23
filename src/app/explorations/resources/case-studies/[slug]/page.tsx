@@ -63,14 +63,14 @@ export default async function CaseStudyItemPage({ params }: { params: Promise<{ 
           <span className="rs-cine__scrim" aria-hidden="true" />
           <span className="rs-cine__sample">Sample</span>
           {video ? (
-            <Link href={`/explorations/resources/testimonials/${video.slug}`} className="rs-cine__play" aria-label={`Watch ${c.company}'s story`}>
+            <Link href={`/resources/testimonials/${video.slug}`} className="rs-cine__play" aria-label={`Watch ${c.company}'s story`}>
               <PlayGlyph />
               <span className="rs-cine__runtime">Watch · {video.duration}</span>
             </Link>
           ) : null}
         </div>
         <div className="dms-wrap rs-cine__frame">
-          <Crumb trail={[{ label: "Case studies", href: "/explorations/resources/case-studies" }, { label: c.company }]} dark />
+          <Crumb trail={[{ label: "Case studies", href: "/resources/case-studies" }, { label: c.company }]} dark />
           <div className="rs-cine__foot">
             <div className="rs-cine__head">
               <span className="rs-cine__co">{c.company}</span>
@@ -141,7 +141,7 @@ export default async function CaseStudyItemPage({ params }: { params: Promise<{ 
       {/* related */}
       <section className="dms-section rs-block">
         <div className="dms-wrap">
-          <BandHead title="More case studies" link={{ label: "View all", href: "/explorations/resources/case-studies" }} />
+          <BandHead title="More case studies" link={{ label: "View all", href: "/resources/case-studies" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
             {relatedAll.map((o) => <CaseCard key={o.slug} c={o} />)}
           </div>
@@ -151,7 +151,7 @@ export default async function CaseStudyItemPage({ params }: { params: Promise<{ 
       <ResourceCTA
         heading="Ready to see transformation in action?"
         sub={`Book a demo and run the play ${c.company} ran, on your own quality processes.`}
-        ctaSecondary={{ label: "See the platform", href: "/explorations/platform" }}
+        ctaSecondary={{ label: "See the platform", href: "/platform" }}
       />
       <ResourceFooter />
     </ResourceShell>

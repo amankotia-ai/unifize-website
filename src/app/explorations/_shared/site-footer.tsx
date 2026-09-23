@@ -41,16 +41,16 @@ export function SiteFooter({
 }) {
   const products = [
     ...byMenu("products").items!.map((p) => ({ label: p.label, href: p.href })),
-    { label: "The platform", href: "/explorations/platform" },
+    { label: "The platform", href: "/platform" },
   ];
   const solutions = [
     ...byMenu("domains").cols!.flatMap((c) => c.items.map((x) => ({ label: x.label, href: x.href }))),
-    { label: "All solutions", href: "/explorations/domains" },
+    { label: "All solutions", href: "/domains" },
   ];
   const industries = byMenu("industries").cols!.flatMap((c) => c.items.map((x) => ({ label: x.label, href: x.href })));
   const resources = [
     ...byMenu("resources").items!.map((r) => ({ label: r.label, href: r.href })),
-    { label: "All resources", href: "/explorations/resources" },
+    { label: "All resources", href: "/resources" },
   ];
 
   return (

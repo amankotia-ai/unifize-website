@@ -374,7 +374,7 @@ export function CtaxStory() {
       {/* ============================================= chapter 01 · name it */}
       <header className="ctax-hero">
         <div className="ctax-hero__bar">
-          <Link href="/explorations/home" className="ctax-mark">Unifize</Link>
+          <Link href="/home" className="ctax-mark">Unifize</Link>
           <span className="ctax-dim">An explainer in three parts</span>
         </div>
         <div className="ctax-hero__center">
@@ -546,7 +546,7 @@ export function CtaxStory() {
             </span>
           </p>
           <div data-rise>
-            <Link href="/explorations/products/dms" className="ctax-cta">
+            <Link href="/products/dms" className="ctax-cta">
               See it removed in the DMS <span aria-hidden="true">&rarr;</span>
             </Link>
           </div>

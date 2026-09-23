@@ -61,7 +61,7 @@ export function MesProofReel() {
       heading="What operations teams say when the record builds itself."
       lede="Short, candid accounts of lot release, travellers, and floor-level traceability from the people running production."
       stills={stills}
-      allHref="/explorations/resources/testimonials"
+      allHref="/resources/testimonials"
     />
   );
 }

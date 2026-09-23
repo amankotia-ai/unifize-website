@@ -228,7 +228,7 @@ export function DmsHeader() {
   return (
     <header className={"dms-header is-" + theme + (frosted ? " is-frosted" : "") + (settling ? " dms-header--settling" : "")}>
       <div className="dms-wrap dms-header__inner">
-        <a className="dms-header__brand" href="/explorations/home">
+        <a className="dms-header__brand" href="/home">
           <img className="dms-header__logo dms-header__logo--light" src="/logo_light.svg" alt="Unifize" />
           <img className="dms-header__logo dms-header__logo--dark" src="/logo_dark.svg" alt="" aria-hidden="true" />
         </a>

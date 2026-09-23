@@ -2,7 +2,7 @@
  * IndustryPage — the industry template, rendered from one `IndustryData` object.
  *
  * A faithful generalisation of the Medical Devices instance
- * (/explorations/industry-template-modern). Same section arc, same Unifize
+ * (/industries/medical-devices). Same section arc, same Unifize
  * enterprise design system (the DMS language): flat editorial dark hero / close
  * / footer with hairlines, light neutral-grey middle, near-black INK block for
  * the three ingress sections, mono chapter eyebrows, one blue accent.
@@ -76,7 +76,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
             </ul>
             <div className="itm-hero__ctas">
               <BookDemoButton className="itm-btn" source="hero">Book a demo →</BookDemoButton>
-              <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+              <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
             </div>
           </div>
         </div>
@@ -311,7 +311,7 @@ export function IndustryPage({ data }: { data: IndustryData }) {
               <p className="itm-lede">{d.close.lede}</p>
               <div className="itm-close__cta">
                 <BookDemoButton className="itm-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/explorations/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
+                <Link href="/platform" className="itm-btn itm-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>

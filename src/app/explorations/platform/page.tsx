@@ -304,7 +304,7 @@ export default async function PlatformPage({
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
-              <Link className="dms-hero__product" href="/explorations/home">
+              <Link className="dms-hero__product" href="/home">
                 <span className="dms-hero__product-mark pf-hero__mark" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <rect className="dms-hero__product-sheet" x="3.25" y="3.25" width="7.5" height="7.5" />

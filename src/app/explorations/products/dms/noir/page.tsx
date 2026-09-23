@@ -46,7 +46,7 @@ export default function DmsNoirPage() {
 
       {/* ------------------------------------------------------- top bar */}
       <div className="dn-bar">
-        <Link href="/explorations/home" className="dn-bar__mark">Unifize</Link>
+        <Link href="/home" className="dn-bar__mark">Unifize</Link>
         <span className="dn-bar__meta dn-dim">Document Management System · UPD-2</span>
         <a href="#demo" className="dn-bar__cta">Book a demo</a>
       </div>

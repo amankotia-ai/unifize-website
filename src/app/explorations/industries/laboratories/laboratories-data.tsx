@@ -354,7 +354,7 @@ export const LABORATORIES_RAILS: IndustryRails = {
         ],
         cursor: QM,
       },
-      go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
     },
     operations: {
       viz: {
@@ -427,7 +427,7 @@ export const LABORATORIES_RAILS: IndustryRails = {
           ],
           cursor: QM,
         },
-        go: { label: "See the quality solution →", href: "/explorations/domains/quality" },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
       },
       {
         domain: "method-development",

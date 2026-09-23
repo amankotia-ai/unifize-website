@@ -70,7 +70,7 @@ export default function QmsProductPage() {
         <div className="dms-wrap dms-hero__inner">
           <div className="dms-hero__grid">
             <div className="dms-hero__left">
-              <Link className="dms-hero__product" href="/explorations/platform">
+              <Link className="dms-hero__product" href="/platform">
                 <span className="dms-hero__product-mark" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none">
                     <path className="dms-hero__product-sheet" d="M12 2.8 19 5.6v5.7c0 4.5-3 8.5-7 9.9-4-1.4-7-5.4-7-9.9V5.6L12 2.8Z" />

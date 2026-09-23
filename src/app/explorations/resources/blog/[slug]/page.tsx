@@ -56,7 +56,7 @@ export default async function BlogItemPage({ params }: { params: Promise<{ slug:
       {/* centered article mast + full-width category plate */}
       <section className="dms-section rs-artmast">
         <div className="dms-wrap rs-artmast__inner">
-          <Crumb trail={[{ label: "Blog", href: "/explorations/resources/blog" }]} center />
+          <Crumb trail={[{ label: "Blog", href: "/resources/blog" }]} center />
           <span className="rs-tag rs-tag--mod">{p.category}</span>
           <h1 className="rs-artmast__title">{p.title}</h1>
           <p className="rs-artmast__meta">{p.dateLabel} · {p.readMins} min read · {p.author.name}</p>
@@ -88,7 +88,7 @@ export default async function BlogItemPage({ params }: { params: Promise<{ slug:
       {/* related */}
       <section className="dms-section rs-block dms-section--alt">
         <div className="dms-wrap">
-          <BandHead title="More from the blog" link={{ label: "View all", href: "/explorations/resources/blog" }} />
+          <BandHead title="More from the blog" link={{ label: "View all", href: "/resources/blog" }} />
           <div className="rs-grid rs-grid--3" data-reveal>
             {relatedAll.map((o) => <PostCard key={o.slug} p={o} />)}
           </div>
@@ -98,7 +98,7 @@ export default async function BlogItemPage({ params }: { params: Promise<{ slug:
       <ResourceCTA
         heading="Reading about it is one thing. Watch it work."
         sub="Book a demo and see connected collaboration on your own processes."
-        ctaSecondary={{ label: "Watch customer stories", href: "/explorations/resources/testimonials" }}
+        ctaSecondary={{ label: "Watch customer stories", href: "/resources/testimonials" }}
       />
       <ResourceFooter />
     </ResourceShell>

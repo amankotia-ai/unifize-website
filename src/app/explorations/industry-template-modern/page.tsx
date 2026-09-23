@@ -128,7 +128,7 @@ export default function MedicalDevicesIndustryPage() {
             </p>
             <div className="dms-hero__ctas">
               <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-              <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
+              <Link href="/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
             </div>
           </div>
           {/* 23 Sep 2026, after luthor.ai: one animated record (CC-2148

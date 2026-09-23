@@ -102,7 +102,7 @@ function HeroCopy() {
     <div className="dms-hv__copy">
       <div className="dms-hero__grid">
         <div className="dms-hero__left">
-          <Link className="dms-hero__product" href="/explorations/platform">
+          <Link className="dms-hero__product" href="/platform">
             <span className="dms-hero__product-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none">
                 <path className="dms-hero__product-sheet" d="M7 3.75h7.4L18 7.35v12.9H7V3.75Z" />

@@ -13,15 +13,15 @@ export interface IndustryLink {
 }
 
 export const ALL_INDUSTRIES: IndustryLink[] = [
-  { slug: "medical-devices", label: "Medical devices", href: "/explorations/industry-template-modern" },
-  { slug: "pharmaceuticals", label: "Pharmaceuticals", href: "/explorations/industries/pharmaceuticals" },
-  { slug: "chemicals", label: "Chemicals", href: "/explorations/industries/chemicals" },
-  { slug: "cosmetics", label: "Cosmetics", href: "/explorations/industries/cosmetics" },
-  { slug: "laboratories", label: "Laboratories", href: "/explorations/industries/laboratories" },
-  { slug: "automotive", label: "Automotive", href: "/explorations/industries/automotive" },
-  { slug: "aerospace", label: "Aerospace", href: "/explorations/industries/aerospace" },
-  { slug: "food-processing", label: "Food processing", href: "/explorations/industries/food-processing" },
-  { slug: "nutritional-supplements", label: "Nutritional supplements", href: "/explorations/industries/nutritional-supplements" },
-  { slug: "industrial-machinery", label: "Industrial machinery", href: "/explorations/industries/industrial-machinery" },
-  { slug: "cro", label: "Contract research orgs", href: "/explorations/industries/cro" },
+  { slug: "medical-devices", label: "Medical devices", href: "/industries/medical-devices" },
+  { slug: "pharmaceuticals", label: "Pharmaceuticals", href: "/industries/pharmaceuticals" },
+  { slug: "chemicals", label: "Chemicals", href: "/industries/chemicals" },
+  { slug: "cosmetics", label: "Cosmetics", href: "/industries/cosmetics" },
+  { slug: "laboratories", label: "Laboratories", href: "/industries/laboratories" },
+  { slug: "automotive", label: "Automotive", href: "/industries/automotive" },
+  { slug: "aerospace", label: "Aerospace", href: "/industries/aerospace" },
+  { slug: "food-processing", label: "Food processing", href: "/industries/food-processing" },
+  { slug: "nutritional-supplements", label: "Nutritional supplements", href: "/industries/nutritional-supplements" },
+  { slug: "industrial-machinery", label: "Industrial machinery", href: "/industries/industrial-machinery" },
+  { slug: "cro", label: "Contract research orgs", href: "/industries/cro" },
 ];

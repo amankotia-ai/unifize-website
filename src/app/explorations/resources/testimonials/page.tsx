@@ -52,14 +52,14 @@ const KEEP_EXPLORING = [
     label: "Case studies",
     line: "The same teams, with the numbers and the timeline around the change.",
     cta: "Read the case studies",
-    href: "/explorations/resources/case-studies",
+    href: "/resources/case-studies",
   },
   {
     key: "blog",
     label: "Field notes",
     line: "What we learn building for quality, operations, and product leaders.",
     cta: "Read the blog",
-    href: "/explorations/resources/blog",
+    href: "/resources/blog",
   },
 ];
 
@@ -165,7 +165,7 @@ export default function TestimonialsPage() {
               </p>
               <div className="dms-close__cta">
                 <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/explorations/resources/case-studies" className="dms-btn dms-btn-ghost">
+                <Link href="/resources/case-studies" className="dms-btn dms-btn-ghost">
                   Read the case studies
                 </Link>
               </div>

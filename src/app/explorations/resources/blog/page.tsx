@@ -34,7 +34,7 @@ export default function BlogPage() {
         heading="Writing worth your inbox."
         sub="Subscribe and get new posts at the cadence of when we have something to say."
         ctaPrimary="Subscribe"
-        ctaSecondary={{ label: "Read the case studies", href: "/explorations/resources/case-studies" }}
+        ctaSecondary={{ label: "Read the case studies", href: "/resources/case-studies" }}
       />
       <ResourceFooter />
     </ResourceShell>

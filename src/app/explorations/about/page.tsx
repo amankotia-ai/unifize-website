@@ -84,10 +84,10 @@ const START_STEPS = [
 ];
 
 const PRODUCTS: ProductTile[] = [
-  { code: "QMS", name: "Quality management", href: "/explorations/products/qms", body: "Non-conformance, CAPA, audits and supplier quality." },
-  { code: "DMS", name: "Document management", href: "/explorations/products/dms", body: "Document control, change control and training." },
-  { code: "PLM", name: "Product lifecycle", href: "/explorations/products/plm", body: "Specifications, design controls, FMEA and control plans." },
-  { code: "MES", name: "Manufacturing execution", href: "/explorations/products/mes", body: "Work orders, travellers, FAI and batch records." },
+  { code: "QMS", name: "Quality management", href: "/products/qms", body: "Non-conformance, CAPA, audits and supplier quality." },
+  { code: "DMS", name: "Document management", href: "/products/dms", body: "Document control, change control and training." },
+  { code: "PLM", name: "Product lifecycle", href: "/products/plm", body: "Specifications, design controls, FMEA and control plans." },
+  { code: "MES", name: "Manufacturing execution", href: "/products/mes", body: "Work orders, travellers, FAI and batch records." },
 ];
 
 /* coordinates: 430 Cambridge Avenue geocoded to the building; the Bengaluru
@@ -139,7 +139,7 @@ export default function AboutPage() {
               </p>
               <div className="dms-hero__ctas">
                 <BookDemoButton className="dms-btn" source="about-hero">Book a demo &rarr;</BookDemoButton>
-                <Link href="/explorations/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
+                <Link href="/platform" className="dms-btn dms-btn-ghost">See the platform</Link>
               </div>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function AboutPage() {
           </div>
           <ProductGrid products={PRODUCTS} />
           <p className="ab-product__foot">
-            <Link href="/explorations/platform">How the platform fits your architecture &rarr;</Link>
+            <Link href="/platform">How the platform fits your architecture &rarr;</Link>
           </p>
         </div>
       </section>

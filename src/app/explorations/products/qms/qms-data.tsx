@@ -395,7 +395,7 @@ export const QMS_DATA: Omit<ProductPageData, "owners"> = {
           { label: "Who owns it", href: "#who" },
           { label: "Compliance", href: "#compliance" },
           { label: "FAQ", href: "#faq" },
-          { label: "All products", href: "/explorations/platform" },
+          { label: "All products", href: "/platform" },
         ],
       },
     ],

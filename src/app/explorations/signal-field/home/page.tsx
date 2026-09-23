@@ -40,7 +40,7 @@ export default function SignalFieldHomePage() {
             </h1>
             <p>One governed thread keeps the decision, owner, and proof together.</p>
             <div className="sf-hero-actions">
-              <HeroLink href="/explorations/platform">See the platform</HeroLink>
+              <HeroLink href="/platform">See the platform</HeroLink>
               <HeroLink href="/chat-anatomy" muted>Talk to us</HeroLink>
             </div>
           </div>
