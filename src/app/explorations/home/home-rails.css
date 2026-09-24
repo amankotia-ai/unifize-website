@@ -2046,3 +2046,12 @@
     padding-top: calc(var(--dms-header-h) + clamp(56px, 9vw, 96px));
   }
 }
+
+/* split heads (24 Sep 2026): the lede block mirrors the claim. It sits on the
+ * right at the same inset the claim holds on the left; the text itself stays
+ * left-set. Stacked heads (<=960px) keep the left axis. */
+@media (min-width: 961px) {
+  .dms--redesign.dms--home :is(.hm-entry__head, .hm-recognition--reframed .hm-recognition__head, .hm-split-head:not(.hm-split-head--center)) > .dms-lede {
+    justify-self: end;
+  }
+}

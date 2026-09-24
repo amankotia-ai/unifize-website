@@ -2,8 +2,7 @@
  * home-proof.css - homepage Customer proof: the reel (2026-09-22, late).
  * A dark band on the bookends' charcoal. Head on the rails (claim left,
  * arrows right), then one row of customer stills at their native 16:9 that
- * scrolls edge to edge past the rails; the first still aligns with the head
- * text. Square corners; hairlines, never a one-sided colored border.
+ * scrolls inside the rails; the first still aligns with the head text. Square corners; hairlines, never a one-sided colored border.
  * ========================================================================== */
 
 .dms--redesign.dms--home .hm-proof.hm-proof--reel {
@@ -75,18 +74,18 @@
 
 /* --------------------------------------------------------------- track */
 .hm-reel__track {
-  /* the stills float above the page rails (which sit at z-index 2) */
-  position: relative;
-  z-index: 3;
+  /* (24 Sep, Abhishek: "the videos should not overflow over the rails")
+   * the scroll window sits between the rails, stills clip at each rail;
+   * the first still still aligns with the head text */
   display: flex;
-  margin: clamp(40px, 4.5vw, 64px) 0 0;
-  padding: 0 var(--hm-reel-lead);
+  margin: clamp(40px, 4.5vw, 64px) calc(var(--hm-rail-x) + 1px) 0;
+  padding: 0 calc(var(--hm-rail-pad) - 1px);
   column-gap: var(--hm-reel-gap);
   list-style: none;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: var(--hm-reel-lead);
+  scroll-padding-inline: calc(var(--hm-rail-pad) - 1px);
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }

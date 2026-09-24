@@ -4,7 +4,7 @@
  * home-proof-reel.tsx - the homepage Customer proof as a reel of stills.
  * A dark band on the bookends' charcoal: the claim and prev/next arrows in
  * the head, then one row of customer stills at their native 16:9, scrolling
- * edge to edge past the rails. Under each still a caption row: the company
+ * inside the rails, clipped at each rail. Under each still a caption row: the company
  * on the left, the one fact that customer attests on the right. Nothing
  * plays inside the section; a still is a link to the customer's story page.
  * Nothing counts the inventory.
@@ -133,7 +133,7 @@ export function HomeProofReel({
         </header>
       </div>
 
-      {/* the reel runs edge to edge; the first still aligns with the head */}
+      {/* the reel scrolls between the rails; the first still aligns with the head */}
       <ul className="hm-reel__track" ref={trackRef} aria-label="Customers on film">
         {lead ? (
           <li className="hm-reel__item hm-reel__item--lead">

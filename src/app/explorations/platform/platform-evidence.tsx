@@ -125,7 +125,6 @@ export function PlatformEvidence() {
     <TaxLead />
     <p className="pf-stats__kicker" data-reveal>
       What the tax turns into
-      <span>Three effects, each sourced, each traced back to the tax</span>
     </p>
       {/* 30% - part-of-whole ledger bar */}
       <EvidenceTile
