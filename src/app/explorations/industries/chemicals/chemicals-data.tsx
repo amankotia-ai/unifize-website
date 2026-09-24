@@ -15,16 +15,12 @@
  * ========================================================================== */
 
 import type { IndustryData, IndustryRails } from "../_shared/types";
+import { CHEMICALS_JOURNEY } from "./chemicals-journey";
 
 export const CHEMICALS: IndustryData = {
   slug: "chemicals",
   name: "Chemicals",
 
-  meta: {
-    title: "Chemicals · Unifize",
-    description:
-      "Your ERP records that a change shipped. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, EHS, and the regulatory dossier, so it holds up in a GMP or REACH audit.",
-  },
 
   hero: {
     crumb: "Chemicals",
@@ -283,7 +279,7 @@ export const CHEMICALS: IndustryData = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
+    eyebrow: "Chemicals on Unifize",
     heading: "Incumbents track the change log. Unifize reconstructs the decision.",
     lede: "Pick a change or deviation you could not replay at the last audit. We will reconstruct it live.",
   },
@@ -345,7 +341,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
       "A raw material substitution in Unifize: one component of a formulation changes supplier, and the change reaches the safety data sheet, the REACH dossier and the notice to pharma customers before it is approved with the dossier current.",
   },
 
-  thread: { title: "Formulation change → approval" },
+  journey: CHEMICALS_JOURNEY,
 
   trust: {
     label: "Built for specialty and pharma-supply chemical makers",

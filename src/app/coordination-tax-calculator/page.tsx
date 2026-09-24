@@ -5,29 +5,33 @@
  * report HTMLs): a cold read built from public data with every
  * figure labelled by source, a persona lens, the modelled theme
  * mix, the benchmark band, and the path into the full report at
- * ./report. Runs in the DMS page shell (DmsHeader, dms-section
- * system, SiteFooter) so it reads as the current site. Linked
- * from the DMS pages' "Take Coordination Tax Assessment" CTA.
+ * ./report. Runs on the rails grammar the other pages share
+ * (page-rails.css, platform-rails.css for the split head and the
+ * close grid; this page is a pf-page too), page-local rules in
+ * cta-rails.css. Linked from every "Take the assessment" CTA.
  * ------------------------------------------------------------ */
 import type { Metadata } from "next";
 import { DmsHeader } from "../explorations/products/dms/dms-header";
 import { SiteFooter } from "../explorations/_shared/site-footer";
+import { DmsMotion } from "../explorations/products/dms/dms-motion";
 import { CtaxAssessment } from "./assessment";
-import "../explorations/industry-template-modern/itm.css";
 import "../explorations/products/dms/dms.css";
+import "../explorations/products/_shared/product-kit.css";
+import "../explorations/platform/platform-kit.css";
 import "../explorations/products/dms/dms-redesign.css";
+import "../explorations/_shared/page-rails.css";
+import "../explorations/platform/platform-rails.css";
 import "./cta-assessment.css";
+import "./cta-rails.css";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Coordination Tax Assessment · Unifize",
-  description:
-    "Where coordination tax is likely hurting you the most: a cold read from public data, every figure labelled by source, sharpened as you confirm your numbers.",
-};
+export const metadata: Metadata = pageMetadata("/coordination-tax-calculator");
 
 export default function CoordinationTaxAssessmentPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows">
+    <main className="dms dms--redesign pf-page dms--rails dms--ctax">
       <DmsHeader />
+      <DmsMotion />
       <CtaxAssessment />
       <SiteFooter
         tagline="The number behind the coordination you can feel."

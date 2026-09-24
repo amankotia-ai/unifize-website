@@ -14,17 +14,13 @@
  * per-event dollar figure is stated (Notion has none for this segment).
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { COSMETICS_JOURNEY } from "./cosmetics-journey";
 
 export const COSMETICS: IndustryData = {
   slug: "cosmetics",
   name: "Cosmetics",
 
-  meta: {
-    title: "Cosmetics · Unifize",
-    description:
-      "Your records show the product shipped. They cannot reconstruct why. Unifize rebuilds the decision trace across quality, safety, and regulatory, so it holds up in a retailer audit or an FDA inquiry under MoCRA. The industry template, instanced on Cosmetics.",
-  },
 
   hero: {
     crumb: "Cosmetics",
@@ -285,4 +281,217 @@ export const COSMETICS: IndustryData = {
     heading: "Incumbents track the substantiation folder. Unifize reconstructs the decision.",
     lede: "Pick a formula or supplier change you could not replay at the last retailer audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Cosmetics" (Primary Fear Anchor: an incomplete
+ *   safety substantiation file at a retailer audit or FDA inquiry, delisting.
+ *   Opportunity: supplier qualification and COA management across the
+ *   boundary, largely manual; adverse event reporting under MoCRA.
+ *   Regulatory Vocabulary: MoCRA, ISO 22716, 21 CFR 700 / 740, 21 CFR 330,
+ *   EU 1223/2009, PIF, Responsible Person, AER / SAER).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The product and the SKUs are illustrative, not a customer's; cursors carry
+ * persona titles, not people.
+ * ========================================================================== */
+const QA = { name: "QA Manager", tone: "#d97706" };
+const PLANT = { name: "Plant Manager", tone: "#2563eb" };
+const RP = { name: "Responsible Person (EU)", tone: "#7c3aed" };
+const SAFETY = { name: "Safety Assessor", tone: "#0f8f7e" };
+
+export const COSMETICS_RAILS: IndustryRails = {
+  /* the key element: the per-SKU safety substantiation file a retailer audit
+   * asks for, one ingredient COA missing, requested and received across the
+   * supplier boundary, the file complete and signed (the fear anchor) */
+  hero: {
+    kind: "file",
+    id: "Retailer audit request",
+    title: "Safety substantiation file",
+    from: "Leave-on face cream · MoCRA · ISO 22716",
+    stages: { assemble: "Assembling", gap: "Gap · supplier COA", review: "Quality review", released: "Complete · substantiated" },
+    tiles: [
+      { name: "Ingredient COAs", fn: "Supplier QA" },
+      { name: "Stability", fn: "R&D" },
+      { name: "Preservative challenge", fn: "R&D" },
+      { name: "Microbiological limits", fn: "QC" },
+      { name: "Hazard analysis · CIR", fn: "Safety" },
+      { name: "Claim support", fn: "Regulatory" },
+    ],
+    gap: { tile: 0, label: "Missing for one lot", closed: "Tied to the lot" },
+    request: [
+      { org: "Supplier Quality", text: "COA requested for the lot at receipt" },
+      { org: "Ingredient supplier", text: "COA sent, checked against spec", ext: true },
+    ],
+    sign: { idle: "Sign · e-signature", done: "Signed" },
+    approvers: { label: "Quality · Safety · Regulatory" },
+    frame: { cap: "Checked against", items: ["MoCRA", "ISO 22716", "21 CFR 700 / 740", "EU 1223/2009"] },
+    cascade: {
+      cap: "EU Product Information File",
+      off: "PIF to update",
+      on: "PIF current for this SKU",
+      note: "Responsible Person copy",
+    },
+    clock: { cap: "Serious adverse event", line: "15 business days to FDA · MoCRA" },
+    seal: { cap: "Retailer audit", off: "File requested", on: "Complete file sent" },
+    aria:
+      "A safety substantiation file in Unifize: a retailer audit asks for it, one ingredient certificate of analysis is missing, the supplier sends it across the boundary, and the file is completed and signed with the EU Product Information File kept current.",
+  },
+
+  journey: COSMETICS_JOURNEY,
+
+  trust: {
+    label: "Built for cosmetic and personal-care manufacturers",
+    marks: ["MoCRA", "ISO 22716", "21 CFR 700 / 740", "21 CFR 330", "EU 1223/2009"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Retailer audit",
+        state: "File requested",
+        title: "Safety substantiation file",
+        rows: [
+          { label: "Ingredient COAs", meta: "Supplier Quality" },
+          { label: "Stability & challenge testing", meta: "R&D" },
+          { label: "Hazard analysis · CIR", meta: "Safety", open: true },
+        ],
+        cursor: QA,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Batch", v: "Filled" },
+          { k: "Waiting on", v: "Micro results" },
+          { k: "Released by", v: "Quality" },
+        ],
+        note: "Released on one thread, not an email chain",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "EU PIF",
+        title: "Product Information File",
+        cite: "EC 1223/2009 · MoCRA listing",
+        state: "Current",
+        cursor: RP,
+      },
+      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "matrix",
+        wash: "paper",
+        kicker: "Safety substantiation",
+        cols: ["COA", "Stability", "CIR"],
+        rows: [
+          { name: "Face cream", cells: ["ok", "ok", "ok"] },
+          { name: "Shampoo", cells: ["ok", "due", "ok"] },
+          { name: "Body lotion", cells: ["gap", "ok", "due"] },
+        ],
+        cursor: SAFETY,
+      },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "Change", title: "Preservative system" },
+        items: [
+          { id: "STB", label: "Stability" },
+          { id: "PCT", label: "Challenge test" },
+          { id: "SSF", label: "Safety substantiation", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "Substantiation, suppliers, adverse events, listing. One trace.",
+    lede: "Each runs with MoCRA, ISO 22716 and the EU PIF built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the executed batch record to a substantiation file that holds at the retailer audit.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Batch record review",
+          title: "Executed batch record",
+          fields: [
+            { label: "Micro limits", value: "Within spec", select: true },
+            { label: "Stability", value: "Attached" },
+            { label: "Disposition", value: "Release", focus: true },
+          ],
+          cursor: QA,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "supplier-management",
+        line: "Ingredient COAs captured and tied to the lots they clear, not chased at receipt.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Certificate of analysis",
+          messages: [
+            { org: "Ingredient supplier", text: "COA for the lot at receipt", ext: true },
+            { org: "Supplier Quality", text: "Checked against spec, tied to the lot" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+      },
+      {
+        domain: "post-market-recall",
+        line: "Consumer adverse events triaged against the MoCRA clock, hazard analysis attached.",
+        viz: {
+          kind: "decision",
+          wash: "warm",
+          kicker: "Adverse event report",
+          steps: [
+            { q: "Serious adverse event?", a: "Yes" },
+            { q: "Hazard analysis on file?", a: "Yes" },
+          ],
+          outcome: "Report to FDA within 15 business days",
+          cursor: SAFETY,
+        },
+        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+      },
+      {
+        domain: "regulatory-affairs",
+        line: "Facility registration, product listing and claims kept current as formulas change.",
+        viz: {
+          kind: "lanes",
+          wash: "blue",
+          kicker: "MoCRA registration & listing",
+          lanes: [
+            { name: "Facility registration", owner: "Regulatory", pct: 100 },
+            { name: "Product listing", owner: "Regulatory", pct: 72 },
+            { name: "Claim substantiation", owner: "Quality", pct: 48 },
+          ],
+        },
+        go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "Serious adverse event report (SAER)", viz: "countdown", detail: ["15", "FDA · business days · MoCRA"] },
+    {
+      name: "Retailer audit exposes a substantiation gap",
+      viz: "elements",
+      detail: ["Safety substantiation file", "Ingredient COAs", "Stability", "!Claim support", "Hazard analysis", "Preservative challenge"],
+    },
+    { name: "MoCRA product listing or registration rejected", viz: "alerts" },
+  ],
 };

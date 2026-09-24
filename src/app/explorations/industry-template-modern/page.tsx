@@ -41,13 +41,16 @@ import "../products/dms/dms-redesign.css";
 import "../_shared/page-rails.css";
 import "../products/dms/dms-rails.css";
 import "./md-rails.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../_shared/page-motion.css";
+import { DmsMotion } from "../products/dms/dms-motion";
+import { Words } from "../_shared/split-words";
+import { PM_REVEAL_INDUSTRY } from "../_shared/page-motion-reveal";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Medical Devices · Unifize",
-  description:
-    "Your QMS records that a document was approved. It cannot reconstruct why. Unifize rebuilds the decision trace across every function it touched, for Class II and III device OEMs and CDMOs.",
-};
+export const metadata: Metadata = pageMetadata("/industries/medical-devices");
 
 
 /* Restrained OUTLINE icons for the validation answer cells, keyed by
@@ -101,8 +104,10 @@ const LEAD_TRIGGERS = TRIGGERS.filter((t) => t.viz).slice(0, 3);
 
 export default function MedicalDevicesIndustryPage() {
   return (
-    <main className="itm dms dms--redesign dms--consistent-eyebrows dms--rails dms-page md-page">
+    <main className="itm dms dms--redesign dms--consistent-eyebrows dms--rails dms-page md-page pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and section heads (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL_INDUSTRY} />
 
       {/* ============================ HERO =============================
         * Charcoal ground, the centred head the DMS page carries, the
@@ -119,8 +124,9 @@ export default function MedicalDevicesIndustryPage() {
           <div className="md-hero2__copy">
             <Eyebrow>Industries · Medical devices</Eyebrow>
             <h1 className="dms-hero__title">
-              <span className="dms-hero__line">Your QMS remembers that it was approved.</span>
-              <span className="dms-hero__line dms-hero__turn">Not why.</span>
+              {/* split into words for the page-in stagger (page-motion.css) */}
+              <span className="dms-hero__line"><Words text="Your QMS remembers that it was approved." /></span>
+              <span className="dms-hero__line dms-hero__turn"><Words text="Not why." from={7} /></span>
             </h1>
             <p className="dms-lede dms-hero__sub">
               Built for Class II &amp; III device OEMs and CDMOs, where every change, every CAPA, and
@@ -224,9 +230,6 @@ export default function MedicalDevicesIndustryPage() {
               </li>
             ))}
           </ul>
-          <div className="md-val__cta">
-            <BookDemoButton className="md-textlink" source="validated">{VALIDATED.cta} &rarr;</BookDemoButton>
-          </div>
         </div>
       </section>
 
@@ -272,28 +275,13 @@ export default function MedicalDevicesIndustryPage() {
       {/* ============================ CLOSE =============================
         * On the hero's charcoal so the page opens and closes on the same
         * ground; the rails run through it and on through the footer. */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="md-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid">
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>Ready when you are</Eyebrow>
-              <h2 className="dms-close__h" id="md-close-h">Incumbents track documents. Unifize reconstructs the decision.</h2>
-              <p className="dms-lede">Pick a decision you could not replay at the last audit. We will reconstruct it live.</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="md-close-h"
+        eyebrow="Medical devices on Unifize"
+        heading="Incumbents track documents. Unifize reconstructs the decision."
+        lede="Pick a decision you could not replay at the last audit, a design change, a complaint or a CAPA, and we will reconstruct it live in a 30-minute walkthrough."
+        secondary={{ label: "See the platform", href: "/platform" }}
+      />
 
       <SiteFooter tagline="The decision trace for regulated operations." note="Industries · Medical Devices" />
     </main>

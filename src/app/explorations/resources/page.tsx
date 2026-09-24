@@ -10,11 +10,9 @@ import { CollectionMast, BandHead, QuoteBand, ResourceCTA, ResourceFooter } from
 import { VideoCard, PostCard, CaseCard } from "./_shared/resource-cards";
 import { CASE_STUDIES, POSTS } from "./_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "./_shared/customer-videos";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Resources — Unifize",
-  description: "Customer videos, case studies, and writing on running quality in regulated manufacturing.",
-};
+export const metadata: Metadata = pageMetadata("/resources");
 
 const films = CUSTOMER_VIDEOS.slice(0, 3);
 const studies = CASE_STUDIES.slice(0, 3);

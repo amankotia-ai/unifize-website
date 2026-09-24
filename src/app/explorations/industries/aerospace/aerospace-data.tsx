@@ -16,17 +16,13 @@
  * canonical per-company coordination tax carries it.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { AEROSPACE_JOURNEY } from "./aerospace-journey";
 
 export const AEROSPACE: IndustryData = {
   slug: "aerospace",
   name: "Aerospace",
 
-  meta: {
-    title: "Aerospace · Unifize",
-    description:
-      "Your PLM remembers the part shipped. It cannot reconstruct why. Unifize rebuilds the decision trace across engineering, quality, and the customer program, so it holds up at an AS9100 or NADCAP audit. The industry template, instanced on Aerospace.",
-  },
 
   hero: {
     crumb: "Aerospace",
@@ -291,4 +287,214 @@ export const AEROSPACE: IndustryData = {
     heading: "Incumbents track the configuration state. Unifize reconstructs the decision.",
     lede: "Pick a change or first article you could not replay at the last audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Aerospace" (Primary Fear Anchor: a NADCAP
+ *   special-process finding on a 90-day clock, a first article failing at
+ *   customer source inspection, removal from the approved supplier list,
+ *   counterfeit parts. Opportunity: engineering change and configuration
+ *   carried to FAI and the shop floor; special-process flow-down; MRB.
+ *   Regulatory Vocabulary: AS9100, AS9102, NADCAP, FAA Part 21, AS6081,
+ *   DCSA / QAR, CDRL).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The part, its drawing and the characteristics are illustrative, not a
+ * customer's; cursors carry persona titles, not people.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const PLANT = { name: "Production Manager", tone: "#2563eb" };
+const QSM = { name: "Quality Systems Manager", tone: "#0f8f7e" };
+
+export const AEROSPACE_RAILS: IndustryRails = {
+  /* the key element: an AS9102 first article. The three forms close, the
+   * ballooned drawing is measured characteristic by characteristic, one
+   * key characteristic measures out, goes through MRB and rework, and is
+   * re-measured before the package is signed for source inspection (the
+   * fear anchor: FAI failure at source inspection) */
+  hero: {
+    kind: "fai",
+    id: "First article",
+    title: "Machined bracket · FAI",
+    from: "New part number · AS9102",
+    stages: { forms: "Assembling forms", measure: "Measuring", mrb: "Out of tolerance · MRB", released: "Signed · ready for source" },
+    forms: [
+      { code: "Form 1", label: "Part number accountability" },
+      { code: "Form 2", label: "Product accountability" },
+      { code: "Form 3", label: "Characteristic accountability" },
+    ],
+    cascadeForm: 1,
+    fail: { balloon: 3, out: "Out of tolerance", back: "Within tolerance" },
+    steps: [
+      { label: "Nonconformance · MRB disposition", meta: "Quality · Engineering" },
+      { label: "Reworked · re-measured", meta: "Production" },
+    ],
+    sign: { idle: "Sign · e-signature", done: "Signed" },
+    approvers: { label: "Quality · Engineering · Program" },
+    frame: { cap: "Checked against", items: ["AS9100", "AS9102", "NADCAP", "FAA Part 21"] },
+    cascade: {
+      cap: "Special process · heat treat",
+      off: "Certificate to verify",
+      on: "NADCAP certificate on file",
+      note: "Flowed down to the supplier",
+    },
+    clock: { cap: "Customer source inspection", line: "Production held until the FAI closes" },
+    seal: { cap: "FAI package", off: "Open", on: "Signed, ready for source inspection" },
+    aria:
+      "An AS9102 first article inspection in Unifize: the three forms close with the special-process certificate on file, the ballooned drawing is measured characteristic by characteristic, one key characteristic measures out of tolerance and goes through MRB and rework, and once it is re-measured the package is signed ready for customer source inspection.",
+  },
+
+  journey: AEROSPACE_JOURNEY,
+
+  trust: {
+    label: "Built for AS9100-certified aerospace and defense suppliers",
+    marks: ["AS9100", "NADCAP", "FAA Part 21", "FAI · AS9102", "AS6081"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Nonconformance",
+        state: "MRB",
+        title: "Key characteristic out",
+        rows: [
+          { label: "Containment · parts held", meta: "Quality" },
+          { label: "MRB disposition · rework", meta: "Engineering", open: true },
+          { label: "CAPA · effectiveness", meta: "Quality" },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Parts", v: "First lot" },
+          { k: "Waiting on", v: "FAI sign-off" },
+          { k: "Released by", v: "Quality" },
+        ],
+        note: "Released before the source inspection, on the record",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "signoff",
+        wash: "blue",
+        kicker: "Customer source inspection",
+        title: "FAI package",
+        signers: [
+          { org: "Supplier", name: "Program Quality Manager", meaning: "Submitted", time: "Signed" },
+          { org: "Customer", name: "Source inspector", meaning: "Accept" },
+        ],
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "dossier",
+        wash: "paper",
+        kicker: "NADCAP",
+        title: "Special-process audit",
+        cite: "Heat treat · chemical processing",
+        state: "Objective evidence",
+        cursor: QSM,
+      },
+      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "ECO", title: "Drawing revision" },
+        items: [
+          { id: "CFG", label: "Configuration" },
+          { id: "KC", label: "Key characteristics" },
+          { id: "FAI", label: "Delta first article", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "MRB, change, special processes, the field. One trace.",
+    lede: "Each runs with AS9100, AS9102 and NADCAP built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the nonconformance on the floor to an MRB disposition and CAPA an assessor can follow.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Nonconformance / MRB",
+          title: "Nonconforming part",
+          fields: [
+            { label: "Characteristic", value: "Key characteristic", select: true },
+            { label: "Disposition", value: "Rework" },
+            { label: "Authority", value: "Design authority", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "change-control",
+        line: "Engineering change carried to configuration, the first article and the shop floor.",
+        viz: {
+          kind: "feed",
+          wash: "blue",
+          kicker: "Configuration",
+          items: [
+            { source: "ECO", title: "Drawing revised", tag: "Cascade", hot: true },
+            { source: "FAI", title: "Delta first article", tag: "Due" },
+            { source: "Floor", title: "Work instruction", tag: "Sent" },
+          ],
+        },
+        go: { label: "See the change control solution →", href: "/domains/change-control" },
+      },
+      {
+        domain: "supplier-management",
+        line: "Special-process flow-down and AS6081 evidence across the supplier boundary.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Special-process flow-down",
+          messages: [
+            { org: "Heat-treat supplier", text: "NADCAP certificate and process record for the lot", ext: true },
+            { org: "Supplier Quality", text: "Checked against the flow-down, lot accepted" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+      },
+      {
+        domain: "post-market-recall",
+        line: "Escapes and airworthiness directives investigated back to the part and the lot.",
+        viz: {
+          kind: "decision",
+          wash: "warm",
+          kicker: "Escape investigation",
+          steps: [
+            { q: "Delivered parts affected?", a: "Yes" },
+            { q: "Airworthiness impact?", a: "No" },
+          ],
+          outcome: "Customer notified, parts recalled for rework",
+        },
+        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "NADCAP special-process finding", viz: "sheet", clock: "90 days, or lose accreditation" },
+    {
+      name: "First article inspection failure at source inspection",
+      viz: "elements",
+      detail: ["AS9102 package", "Form 1 · part number", "Form 2 · product", "!Form 3 · characteristics", "Special-process certificates", "Material certificates"],
+    },
+    { name: "Counterfeit part → airworthiness directive", viz: "alerts" },
+  ],
 };

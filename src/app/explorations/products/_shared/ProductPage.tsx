@@ -39,8 +39,9 @@ export type Standard = { name: string; geo: string; body: string };
 export type ProductPageData = {
   slug: string;
   crumbLabel: string;
-  metaTitle: string;
-  metaDescription: string;
+  /** @deprecated page SEO lives in explorations/_shared/seo.ts */
+  metaTitle?: string;
+  metaDescription?: string;
 
   hero: {
     headline: React.ReactNode;

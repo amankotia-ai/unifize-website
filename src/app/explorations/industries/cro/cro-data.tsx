@@ -23,16 +23,12 @@
  * ========================================================================== */
 
 import type { IndustryData, IndustryRails } from "../_shared/types";
+import { CRO_JOURNEY } from "./cro-journey";
 
 export const CRO: IndustryData = {
   slug: "cro",
   name: "Contract research organizations",
 
-  meta: {
-    title: "Contract research organizations · Unifize",
-    description:
-      "Your eTMF records that the study closed. It cannot reconstruct why. Unifize rebuilds the decision trace across clinical quality, operations, and each sponsor, so it holds up at an FDA BIMO inspection and every sponsor audit, per study and per sponsor.",
-  },
 
   hero: {
     crumb: "Contract research organizations",
@@ -281,7 +277,7 @@ export const CRO: IndustryData = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
+    eyebrow: "Clinical research on Unifize",
     heading: "Incumbents track the eTMF entry. Unifize reconstructs the decision, per study and per sponsor.",
     lede: "Pick a protocol deviation or CAPA you could not replay at the last BIMO inspection or sponsor audit. We will reconstruct it live.",
   },
@@ -346,7 +342,7 @@ export const CRO_RAILS: IndustryRails = {
       "A multi-sponsor board in Unifize: an important protocol deviation lands in one sponsor's study, root cause, CAPA and the eTMF filing are bound to it, and when that sponsor audits, the other sponsors' studies lock and only this study's evidence is sent.",
   },
 
-  thread: { title: "Protocol deviation → CAPA" },
+  journey: CRO_JOURNEY,
 
   trust: {
     label: "Built for GCP-regulated clinical research teams",

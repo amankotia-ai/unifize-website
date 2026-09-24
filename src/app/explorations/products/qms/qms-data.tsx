@@ -214,9 +214,6 @@ const INDUSTRIES: string[] = ["Medical Devices", "Pharmaceuticals", "Automotive"
 export const QMS_DATA: Omit<ProductPageData, "owners"> = {
   slug: "qms",
   crumbLabel: "Quality Management System",
-  metaTitle: "Quality Management System · Unifize",
-  metaDescription:
-    "QMS bundles Non-conformance, CAPA, Complaint Handling, Audit, Supplier Quality, and Quality Risk Management on one governed record. A finding always has an owner, an action, and a verified close.",
 
   hero: {
     headline: (
@@ -250,7 +247,7 @@ export const QMS_DATA: Omit<ProductPageData, "owners"> = {
   positioning: {
     eyebrowN: 1,
     heading: "Most systems close a CAPA when the paperwork is signed.",
-    lede: "Unifize closes it when the effectiveness check passes inside its window, with the trace held all the way back to the event that raised it. A quality system is only as good as the record that proves the fix worked.",
+    lede: "Unifize closes it when the effectiveness check passes, traced back to the event that raised it.",
     features: [
       { title: "One governed record", body: "Every event, CAPA, audit finding, and SCAR on one record, with named ownership and evidence bound in.", glyph: "shield" },
       { title: "Nothing closes unproven", body: "Root cause approved, actions verified, effectiveness checked, before a record is allowed to close.", glyph: "search" },
@@ -369,9 +366,9 @@ export const QMS_DATA: Omit<ProductPageData, "owners"> = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
-    heading: "Bring the finding that has been open too long.",
-    lede: "We will run it through the system live, from the event to root cause to a verified, effectiveness-checked close.",
+    eyebrow: "Quality management on Unifize",
+    heading: "Close the finding. Keep the proof.",
+    lede: "Bring the finding that has been open too long and watch it run from the event to root cause to a verified, effectiveness-checked close in a 30-minute walkthrough.",
     ctaPrimary: "Book a 30-minute walkthrough",
     ctaSecondary: { label: "See what is bundled", href: "#modules" },
   },

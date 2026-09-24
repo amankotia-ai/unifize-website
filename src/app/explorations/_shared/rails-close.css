@@ -1,0 +1,47 @@
+/* ----------------------------------------------------------------------------
+ * rails-close.css - layout for the shared RailsClose (rails-close.tsx),
+ * lifted from the quality solution page's close. `main` in the selectors
+ * lifts it over the per-page close rules (dms-rails, platform-kit,
+ * home-kit) so every page lands on the same geometry.
+ * -------------------------------------------------------------------------- */
+
+main.dms--redesign.dms--rails .dms-close.rc-close {
+  min-height: 0;
+  padding: clamp(72px, 8vw, 120px) 0 clamp(96px, 9vw, 144px);
+  background:
+    radial-gradient(60% 42% at 50% 34%, rgba(0, 91, 183, 0.2), transparent 70%),
+    var(--dms-d-bg);
+}
+
+main.dms--redesign.dms--rails .rc-close .dms-close__convergence {
+  height: clamp(120px, 12vw, 160px);
+  margin-bottom: clamp(36px, 4vw, 56px);
+}
+
+main.dms--redesign.dms--rails .rc-close .dms-close__lead {
+  align-items: center;
+  gap: 24px;
+}
+
+main.dms--redesign.dms--rails .rc-close .dms-close__side {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-top: 24px;
+  padding-bottom: 0;
+}
+
+main.dms--redesign.dms--rails .rc-close .dms-close__cta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 767px) {
+  main.dms--redesign.dms--rails .rc-close .dms-close__cta { width: 100%; }
+  main.dms--redesign.dms--rails .rc-close .dms-close__cta .dms-btn { flex: 1 1 100%; justify-content: center; }
+}

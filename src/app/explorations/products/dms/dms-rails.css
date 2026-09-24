@@ -921,16 +921,14 @@
   display: none;
 }
 
-/* the module windows are cropped at the rail and their box runs past the
- * painted app grid, so the translucent ring showed as a band under the
- * window (Abhishek, 22 Sep: "the shadow blending issue"); these lift by
- * shadow only, no ring, no outline */
+/* the module windows wear the hero's translucent plate. It was pulled on
+ * 22 Sep because the old window box ran past the painted app grid and the
+ * ring banded under it; the record-only cut below makes the box exactly
+ * the painted record, so the ring sits flush again (24 Sep). The camera is
+ * scaled, so the plate is divided back out to read at the hero's 8px. */
 .dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera {
-  outline: 0;
-  box-shadow:
-    0 4px 10px -4px oklch(0 0 0 / 0.12),
-    0 24px 48px -20px oklch(0 0 0 / 0.22),
-    0 48px 96px -32px oklch(0 0 0 / 0.18);
+  --rf-plate: calc(8px / var(--mrail-scene-scale, 1));
+  border-radius: 0;
 }
 
 /* ============================================ 02 · MODULES, record only
@@ -1177,6 +1175,14 @@
 .dms--redesign.dms-page .hm-railed .dms-lifex__story-outcome i {
   border-color: var(--hm-rail);
   color: var(--dms-muted);
+}
+
+/* the active step's tick: white on the accent square (the rule above greyed
+ * the glyph and outranked dms-redesign's active rule, 24 Sep 2026) */
+.dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active .dms-lifex__story-outcome i {
+  border-color: var(--dms-accent);
+  background: var(--dms-accent);
+  color: #fff;
 }
 
 .dms--redesign.dms-page .hm-railed .dms-lifex__story-step.is-active,
@@ -1656,7 +1662,7 @@
 
 @media (max-width: 720px) {
   .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-arc__camera { --rf-plate: 5px; }
-  .dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera { --rf-plate: 4px; }
+  .dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root .stx-arc__camera { --rf-plate: calc(5px / var(--mrail-scene-scale, 1)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

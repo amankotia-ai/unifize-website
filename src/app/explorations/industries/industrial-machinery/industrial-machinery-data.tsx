@@ -21,17 +21,13 @@
  *   canonical facts; nothing factual is invented.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { INDUSTRIAL_MACHINERY_JOURNEY } from "./industrial-machinery-journey";
 
 export const INDUSTRIAL_MACHINERY: IndustryData = {
   slug: "industrial-machinery",
   name: "Industrial machinery",
 
-  meta: {
-    title: "Industrial machinery · Unifize",
-    description:
-      "Your PLM records that the machine shipped. It cannot reconstruct why the design choices were made. Unifize rebuilds the decision trace across engineering, quality, and commissioning, so it holds up at FAT, SAT, and the customer's qualification audit. The industry template, instanced on Industrial machinery.",
-  },
 
   hero: {
     crumb: "Industrial machinery",
@@ -285,4 +281,225 @@ export const INDUSTRIAL_MACHINERY: IndustryData = {
     heading: "Incumbents track the change record. Unifize reconstructs the decision.",
     lede: "Pick an engineering change or a qualification package you could not replay at the last FAT, SAT, or customer audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Industrial Machinery" (Primary Fear Anchor:
+ *   customer rejection at FAT / SAT for incomplete qualification documents;
+ *   a post-installation audit finding on validation records; a CE marking /
+ *   technical construction file challenge. Opportunity: engineering change
+ *   management, field modification, customer-specific qualification
+ *   packages. Regulatory Vocabulary: CE marking, Machinery Directive,
+ *   ISO 12100, IQ / OQ / PQ, FAT / SAT, 21 CFR Part 11, TCF).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The machine, its tests and the installed units are illustrative, not a
+ * customer's; cursors carry persona titles, not people.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const PM = { name: "Program Manager", tone: "#2563eb" };
+const CE = { name: "CE Marking Lead", tone: "#7c3aed" };
+const VAL = { name: "Validation Manager", tone: "#0f8f7e" };
+
+export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
+  /* the key element: the customer-witnessed FAT protocol on the build's
+   * milestone track. The tests pass under the customer's witness, the
+   * qualification documents come up incomplete, a punch item is raised and
+   * closed, and the machine is accepted and moves on to ship (the fear
+   * anchor: rejection at FAT for incomplete qualification documents) */
+  hero: {
+    kind: "fat",
+    id: "Factory acceptance test",
+    title: "Packaging line · FAT",
+    from: "Build-to-order · customer witness on site",
+    stages: { run: "FAT in progress", punch: "Punch item open", witness: "Customer sign-off", released: "Accepted · ready to ship" },
+    milestones: ["Build", "FAT", "Ship", "SAT", "Commission"],
+    at: 1,
+    tests: [
+      { name: "Guarding & interlocks", ref: "ISO 12100 risk assessment" },
+      { name: "E-stop & safety circuits", ref: "Machinery Directive" },
+      { name: "Controls I/O check", ref: "FDS" },
+      { name: "Qualification documents", ref: "IQ / OQ package" },
+      { name: "Throughput run", ref: "URS" },
+    ],
+    fail: { row: 3, out: "Incomplete", back: "Complete" },
+    punch: [
+      { label: "Punch item · IQ protocol missing", meta: "Customer" },
+      { label: "Protocol attached · re-reviewed", meta: "Qualification" },
+    ],
+    witness: "Witness",
+    sign: { idle: "Accept · e-signature", done: "Accepted" },
+    approvers: { label: "Quality · Program · Customer" },
+    frame: { cap: "Checked against", items: ["CE marking", "Machinery Directive", "ISO 12100", "IQ / OQ / PQ"] },
+    cascade: {
+      cap: "Payment milestone",
+      off: "Held at FAT",
+      on: "Released on acceptance",
+      note: "Tied to the signed protocol",
+    },
+    clock: { cap: "Site acceptance test", line: "Next on the customer's clock" },
+    seal: { cap: "Technical construction file", off: "Awaiting the FAT record", on: "FAT record sealed" },
+    aria:
+      "A factory acceptance test in Unifize: the customer witnesses each test on a packaging line, the qualification documents come up incomplete, a punch item is raised and closed with the IQ protocol attached, and the machine is accepted and moves from FAT to ship with the payment milestone released.",
+  },
+
+  journey: INDUSTRIAL_MACHINERY_JOURNEY,
+
+  trust: {
+    label: "Built for build-to-order machinery OEMs",
+    marks: ["CE marking", "Machinery Directive", "ISO 12100", "IQ / OQ / PQ", "FAT / SAT"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Punch list",
+        state: "Open",
+        title: "FAT punch-list item",
+        rows: [
+          { label: "NCR raised", meta: "Quality" },
+          { label: "Corrective action", meta: "Engineering", open: true },
+          { label: "Customer verification", meta: "Customer" },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "lanes",
+        wash: "warm",
+        kicker: "Build milestones",
+        lanes: [
+          { name: "Build", owner: "Operations", pct: 100 },
+          { name: "FAT", owner: "Quality", pct: 72 },
+          { name: "SAT", owner: "Commissioning", pct: 20 },
+        ],
+        cursor: PM,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "TCF",
+        title: "Declaration of conformity",
+        cite: "Machinery Directive · ISO 12100",
+        state: "Current",
+        cursor: CE,
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "matrix",
+        wash: "paper",
+        kicker: "Customer qualification",
+        cols: ["IQ", "OQ", "PQ"],
+        rows: [
+          { name: "Filler", cells: ["ok", "ok", "ok"] },
+          { name: "Capper", cells: ["ok", "ok", "due"] },
+          { name: "Labeller", cells: ["ok", "gap", "due"] },
+        ],
+        cursor: VAL,
+      },
+      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "ECR", title: "Guard redesign" },
+        items: [
+          { id: "FMEA", label: "Design FMEA" },
+          { id: "TCF", label: "Construction file" },
+          { id: "IQ", label: "Qualification impact", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "NCRs, change, the field, qualification. One trace.",
+    lede: "Each runs with CE marking, ISO 12100 and your customers' IQ / OQ / PQ built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the NCR on the build floor to a closed punch list the customer verifies.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Nonconformance",
+          title: "NCR on the build",
+          fields: [
+            { label: "Found at", value: "FAT", select: true },
+            { label: "Punch list", value: "Added" },
+            { label: "Corrective action", value: "Engineering", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "change-control",
+        line: "Engineering change assessed for qualification impact before the cut-in.",
+        viz: {
+          kind: "feed",
+          wash: "blue",
+          kicker: "Engineering change",
+          items: [
+            { source: "ECR", title: "Guard redesigned", tag: "Cascade", hot: true },
+            { source: "IQ", title: "Protocol revised", tag: "Review" },
+            { source: "TCF", title: "File updated", tag: "Due" },
+          ],
+        },
+        go: { label: "See the change control solution →", href: "/domains/change-control" },
+      },
+      {
+        domain: "operations",
+        line: "Field modifications and service held against the unit they touch, for its life.",
+        viz: {
+          kind: "asset",
+          wash: "warm",
+          serial: "Installed unit",
+          model: "Packaging line",
+          visits: [
+            { label: "SAT · commissioned", when: "Year 1" },
+            { label: "Field modification", when: "Year 2" },
+            { label: "Spare-part NCR", when: "Now", now: true },
+          ],
+        },
+      },
+      {
+        domain: "compliance",
+        line: "CE marking and the customer's IQ / OQ / PQ package assembled as it is generated.",
+        viz: {
+          kind: "tiles",
+          wash: "paper",
+          kicker: "Qualification package",
+          title: "IQ / OQ / PQ elements",
+          total: 12,
+          open: [8],
+          foot: "One element open before delivery",
+        },
+        go: { label: "See the compliance solution →", href: "/domains/compliance" },
+      },
+    ],
+  },
+
+  lead: [
+    {
+      name: "Customer rejection at FAT / SAT for incomplete qualification docs",
+      viz: "elements",
+      detail: ["FAT documentation", "FAT protocol", "!IQ protocol", "Calibration certificates", "As-built drawings", "Material certificates"],
+    },
+    { name: "Post-installation audit finds validation records miss the customer's standard", viz: "alerts" },
+    {
+      name: "CE marking challenge · technical construction file gap",
+      viz: "letter",
+      detail: ["Market surveillance authority", "CONFORMITY CHALLENGE"],
+      clock: "the authority's deadline",
+    },
+  ],
 };

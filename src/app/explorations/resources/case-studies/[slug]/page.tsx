@@ -15,6 +15,7 @@ import { CaseCard, PlayGlyph, initialsOf } from "../../_shared/resource-cards";
 import { CASE_STUDIES, getCaseStudy } from "../../_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "../../_shared/customer-videos";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
 export function generateStaticParams() {
   return CASE_STUDIES.map((c) => ({ slug: c.slug }));
@@ -22,9 +23,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const c = getCaseStudy(slug);
-  if (!c) return { title: "Case study — Unifize" };
-  return { title: `${c.company} — Unifize case study`, description: c.summary };
+  return pageMetadata(`/resources/case-studies/${slug}`);
 }
 
 function Fact({ label, value }: { label: string; value: string }) {

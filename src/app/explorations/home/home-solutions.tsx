@@ -50,7 +50,7 @@ export function SolutionsGrid({
 
   return (
     <>
-      <ul className="hm-symptoms" id={listId} ref={listRef} data-reveal>
+      <ul className="hm-symptoms" id={listId} ref={listRef} data-reveal data-stagger>
         {cards.map((card, index) => {
           const extra = index >= initial;
           if (extra && !expanded) return null;

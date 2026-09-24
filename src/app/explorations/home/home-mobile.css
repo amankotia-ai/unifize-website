@@ -1,0 +1,413 @@
+/* ============================================================================
+ * home-mobile.css - the homepage's phone layer (24 Sep 2026).
+ *
+ * Phones only: every rule sits under max-width 767px, so tablet (768+) and
+ * desktop render exactly as before. Loaded after home-rails.css; selectors
+ * lead with `main.dms--redesign.dms--home.dms--rails.dms--rails` (the rails
+ * class doubled for weight) so they outrank the section-scoped rules of the
+ * earlier layers without !important.
+ *
+ * Goals, per section: the rails move out to the screen edge so the content
+ * column gets the width back, the type scale drops a step, section air is
+ * trimmed, and the long stacked grids take a phone-native layout (a single
+ * row of hero tabs, compact way-in cards, a 2 x 2 suite picker, side-washed
+ * resource rows, a smaller close pyramid, a tighter footer).
+ * -------------------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  /* ------------------------------------------------------------ tokens */
+  main.dms--redesign.dms--home.dms--rails.dms--rails {
+    --dms-gutter: 10px;
+    --hm-rail-pad: 14px;
+    --hm-m-sec: 44px;
+  }
+
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-section {
+    padding-top: var(--hm-m-sec);
+    padding-bottom: var(--hm-m-sec);
+  }
+
+  /* hatch bands: a slimmer divider */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-hatch {
+    height: 20px;
+  }
+
+  /* ------------------------------------------------------------ type */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-h2 {
+    font-size: 1.95rem;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-lede {
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-railed .dms-eyebrow {
+    margin-bottom: 12px;
+  }
+
+  /* section heads: less air between head and body */
+  main.dms--redesign.dms--home.dms--rails.dms--rails :is(.hm-entry__head, .hm-recognition__head, .hm-split-head) {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails :is(.hm-entry__head, .hm-recognition__head, .hm-split-head) .dms-h2 {
+    margin-bottom: 0;
+  }
+
+  /* ============================================================== HERO */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-section.dms-hero.dms-hero--rails {
+    padding-top: calc(var(--dms-header-h) + 36px);
+    padding-bottom: 0;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails h1 {
+    font-size: 2.55rem;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .dms-hero__sub {
+    margin-top: 16px;
+    font-size: 0.98rem;
+    line-height: 1.55;
+  }
+  /* CTAs side by side, full width between the rails */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .dms-hero__ctas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 22px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .dms-hero__ctas .dms-btn {
+    justify-content: center;
+    width: 100%;
+    min-height: 46px;
+    padding-inline: 10px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .hm-hero-demo {
+    margin-top: 32px;
+  }
+
+  /* the four worlds: one swipeable row instead of a 2 x 2 block */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .hm-heromock__tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    overflow-x: auto;
+    padding-inline: var(--hm-rail-pad);
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .hm-heromock__tabs::-webkit-scrollbar {
+    display: none;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-hero--rails .hm-heromock__tab {
+    flex: 0 0 auto;
+    min-height: 48px;
+    padding-inline: 12px;
+    border-bottom: 0;
+    font-size: 0.84rem;
+    white-space: nowrap;
+    scroll-snap-align: start;
+  }
+
+  /* ============================================================= TRUST */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-trust.hm-trust--rails {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  /* ======================================================= 01 · WAYS IN
+   * The wash becomes a short banner, 136px tall, the artifact zoomed to
+   * fit, so each card is copy-led. */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry {
+    padding: 8px 8px 18px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__wash {
+    aspect-ratio: auto;
+    height: 136px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__wash > .hm-ev {
+    zoom: 0.68;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__intro {
+    margin-top: 0;
+    padding: 16px 8px 0;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__intro h3 {
+    margin-top: 6px;
+    font-size: 1.25rem;
+    line-height: 1.15;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__intro p {
+    margin-top: 6px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__links {
+    margin-top: 10px;
+    padding-inline: 8px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__links a {
+    padding-block: 8px;
+    font-size: 0.92rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__links small {
+    font-size: 0.74rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-entry__all {
+    padding: 14px 8px 0;
+    font-size: 0.9rem;
+  }
+
+  /* ================================================== 02 · RECOGNITION
+   * Each solution card: the artifact on a shorter wash, the copy tighter. */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-recognition--reframed .hm-cardviz {
+    min-height: 0;
+    height: 172px;
+    padding: 12px 16px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-recognition--reframed .hm-cardviz .hm-viz {
+    zoom: 0.8;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-recognition--reframed .hm-symptom__body {
+    padding: 18px var(--hm-rail-pad) 20px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-symptom__claim {
+    margin-top: 8px;
+    font-size: 1.12rem;
+    line-height: 1.25;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-symptom__note {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-symptom__tax {
+    margin-top: 14px;
+    padding-top: 12px;
+    font-size: 0.84rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-symptom__cta {
+    margin-top: 0;
+    padding-top: 14px;
+    font-size: 0.9rem;
+  }
+
+  /* the tax call to action and its 75-cell picture */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxcta {
+    margin-top: 32px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxcta__lead {
+    padding: 22px var(--hm-rail-pad);
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxcta__claim {
+    font-size: 1.3rem;
+    line-height: 1.2;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxcta__btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxviz {
+    padding: 18px var(--hm-rail-pad);
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-taxviz__cells {
+    grid-template-columns: repeat(15, minmax(0, 1fr));
+  }
+
+  /* ===================================================== 03 · PRODUCTS
+   * The suite picker becomes a 2 x 2 grid of tiles under the window: name
+   * and outcome only, the long body is the product page's job. */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-products-section .hm-split-head > div > svg,
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-products-section .hm-stack-mark {
+    display: none;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__rail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--dms-surface);
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__pick {
+    flex: 1;
+    padding: 16px 12px 6px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__body {
+    display: none;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__name {
+    margin-top: 10px;
+    font-size: 0.98rem;
+    line-height: 1.2;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__outcome {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__link {
+    margin-bottom: 14px;
+    padding: 0 12px;
+    font-size: 0.84rem;
+  }
+
+  /* ==================================================== 05 · INDUSTRIES */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__tabs {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__tabs::-webkit-scrollbar {
+    display: none;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__tab {
+    flex: 0 0 auto;
+    min-height: 46px;
+    padding-inline: 12px;
+    font-size: 0.86rem;
+    white-space: nowrap;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__tab:first-child {
+    padding-left: var(--hm-rail-pad);
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__tile {
+    padding: 18px var(--hm-rail-pad) 18px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__claim {
+    margin-top: 12px;
+    font-size: 1.08rem;
+    line-height: 1.25;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__plate {
+    margin-top: 10px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__plate dd {
+    font-size: 0.86rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ind__go {
+    padding-top: 12px;
+    font-size: 0.88rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-section-tail {
+    margin-top: 24px;
+    font-size: 0.88rem;
+  }
+
+  /* ========================================================= 06 · PROOF */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-reel__head {
+    gap: 18px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-reel__head .dms-lede {
+    margin-top: 12px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-reel__arrow {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* ===================================================== RESOURCES
+   * Rows instead of tall cards: a small wash square on the left, the copy
+   * and the link on the right. */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resources__intro h3 {
+    font-size: 1.55rem;
+    line-height: 1.12;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resources__intro p {
+    font-size: 0.92rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resources__rows > .hm-resrow {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    grid-template-areas:
+      "wash col"
+      "wash go";
+    gap: 0 14px;
+    align-items: start;
+    padding: 14px var(--hm-rail-pad) 16px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__wash {
+    grid-area: wash;
+    width: 76px;
+    height: 76px;
+    aspect-ratio: auto;
+    margin: 0;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__wash svg {
+    width: 40px;
+    height: 40px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__col {
+    grid-area: col;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__col strong {
+    font-size: 1.05rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__col small {
+    margin-top: 4px;
+    font-size: 0.84rem;
+    line-height: 1.45;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-resrow__go {
+    grid-area: go;
+    padding-top: 8px;
+    font-size: 0.86rem;
+  }
+
+  /* ========================================================= CLOSE */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ptiles {
+    --tile: 34px;
+    --tile-gap: 8px;
+    margin-bottom: 24px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-ptiles__tile svg {
+    width: 16px;
+    height: 16px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-close__h {
+    font-size: 1.95rem;
+    line-height: 1.08;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-close__side .dms-lede {
+    font-size: 0.95rem;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-close__cta {
+    display: grid;
+    gap: 8px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .dms-close__cta .dms-btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ========================================================= FOOTER */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft {
+    padding-top: 40px;
+    padding-bottom: 24px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft__wrap {
+    padding-inline: calc(var(--dms-gutter) + var(--hm-rail-pad));
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft__subs {
+    gap: 24px 16px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft__list {
+    gap: 8px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft__link {
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .sft__base {
+    padding-top: 18px;
+  }
+}

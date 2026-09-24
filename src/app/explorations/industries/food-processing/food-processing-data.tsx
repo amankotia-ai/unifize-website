@@ -19,17 +19,13 @@
  * this page, and no metric is stated until a customer signs off on it.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { FOOD_PROCESSING_JOURNEY } from "./food-processing-journey";
 
 export const FOOD_PROCESSING: IndustryData = {
   slug: "food-processing",
   name: "Food processing",
 
-  meta: {
-    title: "Food processing · Unifize",
-    description:
-      "Your records show the lot shipped. They cannot reconstruct why it was released. Unifize rebuilds the decision trace across food safety, operations, and supplier quality, so it holds up at a GFSI surveillance audit or an FDA recall. The industry template, instanced on Food processing.",
-  },
 
   hero: {
     crumb: "Food processing",
@@ -291,4 +287,222 @@ export const FOOD_PROCESSING: IndustryData = {
     heading: "Incumbents track the status field. Unifize reconstructs the decision.",
     lede: "Pick a deviation or corrective action you could not replay at the last audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Food Processing" (Primary Fear Anchor: an
+ *   allergen-control or food safety failure that cannot be traced and
+ *   contained, a recall and a Reportable Food Registry obligation under an
+ *   FDA clock; GFSI certification and retailer supply access. Opportunity:
+ *   deviation / corrective action, supplier verification and COA management,
+ *   holds and dispositions run on spreadsheets and email. Regulatory
+ *   Vocabulary: FSMA 21 CFR 117, HACCP, SQF, BRCGS, FSSC 22000, GFSI, RFR,
+ *   21 CFR Part 7).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The lots, runs and sites are illustrative, not a customer's; cursors carry
+ * persona titles, not people.
+ * ========================================================================== */
+const PCQI = { name: "PCQI", tone: "#d97706" };
+const PLANT = { name: "Plant Manager", tone: "#2563eb" };
+const LABEL = { name: "Label Compliance Lead", tone: "#7c3aed" };
+const SQF = { name: "SQF Practitioner", tone: "#0f8f7e" };
+
+export const FOOD_PROCESSING_RAILS: IndustryRails = {
+  /* the key element: the lot genealogy. A supplier's notice on one
+   * ingredient lot is traced forward through the production runs to every
+   * finished lot, each placed on hold, and the Reportable Food Registry
+   * decision goes on the record (the fear anchor: trace and contain) */
+  hero: {
+    kind: "trace",
+    id: "Supplier notice",
+    title: "Undeclared allergen · ingredient lot",
+    from: "Traceback · FSMA 21 CFR 117 · HACCP",
+    stages: { notice: "Supplier notice", trace: "Tracing forward", decide: "RFR decision", released: "Contained · record sealed" },
+    levels: [
+      { cap: "Ingredient lot", nodes: [{ name: "Ingredient lot", sub: "Received · in use", done: "Contained" }] },
+      {
+        cap: "Production runs",
+        nodes: [
+          { name: "Run · Line 1", sub: "Completed", done: "Traced", from: 0 },
+          { name: "Run · Line 2", sub: "Completed", done: "Traced", from: 0 },
+        ],
+      },
+      {
+        cap: "Finished lots",
+        nodes: [
+          { name: "Finished lot", sub: "In warehouse", done: "On hold", from: 0 },
+          { name: "Finished lot", sub: "In warehouse", done: "On hold", from: 0 },
+          { name: "Finished lot", sub: "At customer DC", done: "Held at DC", from: 1 },
+        ],
+      },
+    ],
+    flag: "Undeclared allergen",
+    decision: { label: "Reportable Food Registry", idle: "Pending scope", done: "Decision on record" },
+    sign: { idle: "Sign · e-signature", done: "Signed" },
+    approvers: { label: "Food Safety · Quality · Regulatory" },
+    frame: { cap: "Checked against", items: ["FSMA · 21 CFR 117", "HACCP", "SQF", "BRCGS"] },
+    cascade: {
+      cap: "Customer notification",
+      off: "Waiting on scope",
+      on: "Customers notified",
+      note: "Distribution list from the trace",
+    },
+    clock: { cap: "Reportable Food Registry", line: "FDA reporting clock" },
+    seal: { cap: "Mock recall evidence", off: "Trace running", on: "Traceback on record" },
+    aria:
+      "A traceback in Unifize: a supplier notice of an undeclared allergen in one ingredient lot is traced forward through two production runs to three finished lots, each placed on hold, and the Reportable Food Registry decision is recorded before the record is signed and sealed.",
+  },
+
+  journey: FOOD_PROCESSING_JOURNEY,
+
+  trust: {
+    label: "Built for FSMA-regulated, GFSI-certified food makers",
+    marks: ["FSMA · 21 CFR 117", "HACCP", "SQF", "BRCGS", "FSSC 22000"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Corrective action",
+        state: "Verification",
+        title: "Allergen control deviation",
+        rows: [
+          { label: "Root cause · changeover", meta: "Food Safety" },
+          { label: "Corrective action", meta: "Production" },
+          { label: "Verification · e-signature", meta: "PCQI", open: true },
+        ],
+        cursor: PCQI,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Product", v: "Finished lot" },
+          { k: "Waiting on", v: "Disposition" },
+          { k: "Released by", v: "Food Safety" },
+        ],
+        note: "Released with the approver chain recorded",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "feed",
+        wash: "blue",
+        kicker: "Allergen & label",
+        items: [
+          { source: "Recipe", title: "Change approved", tag: "Cascade", hot: true },
+          { source: "Label", title: "Allergens revised", tag: "Review" },
+          { source: "Sites", title: "Artwork sent", tag: "Sent" },
+        ],
+        cursor: LABEL,
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "matrix",
+        wash: "paper",
+        kicker: "GFSI surveillance",
+        cols: ["HACCP", "EMP", "Suppliers"],
+        rows: [
+          { name: "Plant 1", cells: ["ok", "ok", "ok"] },
+          { name: "Plant 2", cells: ["ok", "due", "ok"] },
+          { name: "Co-packer", cells: ["ok", "ok", "gap"] },
+        ],
+        cursor: SQF,
+      },
+      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "Recipe", title: "Formulation change" },
+        items: [
+          { id: "ALG", label: "Allergen statement" },
+          { id: "LBL", label: "Label artwork" },
+          { id: "HAZ", label: "Hazard analysis", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "Deviations, suppliers, the floor, recalls. One trace.",
+    lede: "Each runs with FSMA, HACCP and your GFSI scheme built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the deviation on the line to a corrective action closed before the next surveillance audit.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Deviation",
+          title: "Allergen control deviation",
+          fields: [
+            { label: "Control point", value: "Allergen changeover", select: true },
+            { label: "Product", value: "On hold" },
+            { label: "Root cause", value: "Investigation", focus: true },
+          ],
+          cursor: PCQI,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "supplier-management",
+        line: "COAs and letters of guarantee checked against spec and tied to the lot they cleared.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Letter of guarantee",
+          messages: [
+            { org: "Ingredient supplier", text: "COA and letter of guarantee for the lot", ext: true },
+            { org: "Supplier Quality", text: "Checked against spec, lot released" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+      },
+      {
+        domain: "operations",
+        line: "Environmental monitoring positives and holds decided on a trail, not an escalation call.",
+        viz: {
+          kind: "signal",
+          wash: "warm",
+          kicker: "Environmental monitoring",
+          title: "Zone 2 positives by week",
+          weeks: [1, 2, 1, 1, 2, 1, 5, 2],
+          spike: 6,
+          note: "Positive investigated, corrective action open",
+        },
+      },
+      {
+        domain: "post-market-recall",
+        line: "Recall, mock recall and the RFR decision coordinated as one event under the clock.",
+        viz: {
+          kind: "lanes",
+          wash: "blue",
+          kicker: "Mock recall",
+          lanes: [
+            { name: "Traceback", owner: "Food Safety", pct: 100 },
+            { name: "Customer notification", owner: "Quality", pct: 64 },
+            { name: "RFR decision", owner: "Regulatory", pct: 40 },
+          ],
+        },
+        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "FDA recall classification (Class I / II / III)", viz: "scale" },
+    { name: "Allergen control deviation", viz: "alerts" },
+    { name: "GFSI surveillance-audit nonconformance", viz: "sheet", clock: "the corrective-action window" },
+  ],
 };

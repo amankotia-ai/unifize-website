@@ -147,6 +147,13 @@ export type ArcadeStepConfig = {
   /* ALL-CAPS caption on the focus card (route, training, diff, history);
    * falls back to the DMS-era captions so existing journeys render unchanged */
   focusKicker?: string;
+  /* ALL-CAPS kicker on the e-signature dialog; defaults to 21 CFR PART 11
+   * (an IATF or AS9100 shop signs under its own frame, not Part 11) */
+  signKicker?: string;
+  /* the thread so far: earlier steps' messages, oldest first, posted above
+   * this step's event so the conversation builds along a journey instead of
+   * every pose showing one message (older ones scroll off the top) */
+  history?: { actor: ArcadeStepConfig["actor"]; name: string; time: string; message: string; detail: string }[];
   /* the checklist field being ENTERED this step (checklist pose): the named
    * item renders as a focused input with a live caret and the target ring */
   checklistEntry?: { section: string; item: string };
@@ -246,6 +253,8 @@ function Icon({ name }: { name: IconName }) {
   );
 }
 
+const initialsOf = (name: string) =>
+  name.split(/[\s.·&]+/).filter(Boolean).map((part) => part[0]).join("").toUpperCase().slice(0, 2);
 const stateClass = (state: string) => "is-" + state.toLowerCase().replace(/[^a-z0-9]+/g, "-");
 const poseClass = (config: ArcadeStepConfig) =>
   `is-focus-${config.focus}` + (config.poseVariant ? ` is-pose-${config.poseVariant}` : "");
@@ -495,7 +504,7 @@ function ArcadeSignDialog({ config, world }: { config: ArcadeStepConfig; world: 
   return (
     <div className="stx-arc__signwrap">
       <div className="stx-arc__signdialog is-target">
-        <header><span><small>21 CFR PART 11</small><b>{config.focusTitle}</b></span><i aria-hidden="true"><Icon name="close" /></i></header>
+        <header><span><small>{config.signKicker ?? "21 CFR PART 11"}</small><b>{config.focusTitle}</b></span><i aria-hidden="true"><Icon name="close" /></i></header>
         <div className="stx-arc__sign-type"><span>Type</span><b><i aria-hidden="true" />Approval</b><em>Rejection</em></div>
         <div className="stx-arc__sign-field"><span>Email id</span><i>{viewerName(world).toLowerCase().replace(/[^a-z]/g, "")}@engineering.example</i></div>
         <div className="stx-arc__sign-field"><span>Password</span><i>••••••••••</i></div>
@@ -638,6 +647,12 @@ function ArcadeConversation({ config, world }: { config: ArcadeStepConfig; world
         {config.signedItems?.length ? null : (
           <article className="stx-arc__thread-context"><span className="stx-arc__actor" aria-hidden="true">{world.context.initials}</span><div className="stx-arc__message"><header><b>{world.context.name}</b><time>{world.context.time}</time></header><p>{world.context.message}</p><small>{world.context.detail}</small></div></article>
         )}
+        {config.history?.map((h) => (
+          <article className="stx-arc__thread-past" key={h.time + h.message}>
+            <span className={"stx-arc__actor " + stateClass(h.actor)} aria-hidden="true">{h.actor === "automator" ? "A" : h.actor === "Unifize Assistant" ? <Icon name="spark" /> : initialsOf(h.name)}</span>
+            <div className="stx-arc__message"><header><b>{h.actor === "You" ? h.name : h.actor}</b><time>{h.time}</time></header><p>{h.message}</p><small>{h.detail}</small></div>
+          </article>
+        ))}
         {config.signedItems?.map((item) => <ArcadeSignedItem item={item} key={item.approvalId} />)}
         <article>
           <span className={"stx-arc__actor " + stateClass(config.actor)} aria-hidden="true">{config.actor === "You" ? viewerInitials(world) : config.actor === "automator" ? "A" : <Icon name="spark" />}</span>

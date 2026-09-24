@@ -17,16 +17,12 @@
  * ========================================================================== */
 
 import type { IndustryData, IndustryRails } from "../_shared/types";
+import { LABORATORIES_JOURNEY } from "./laboratories-journey";
 
 export const LABORATORIES: IndustryData = {
   slug: "laboratories",
   name: "Laboratories",
 
-  meta: {
-    title: "Laboratories · Unifize",
-    description:
-      "Your LIMS records the result. It cannot reconstruct why. Unifize rebuilds the decision trace around it: the nonconformance, the corrective action, and the effectiveness check that survives the ISO/IEC 17025 surveillance audit.",
-  },
 
   hero: {
     crumb: "Laboratories",
@@ -273,7 +269,7 @@ export const LABORATORIES: IndustryData = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
+    eyebrow: "Laboratories on Unifize",
     heading: "Incumbents track the result. Unifize reconstructs the decision.",
     lede: "Pick a nonconformance or corrective action you could not replay at the last surveillance audit. We will reconstruct it live.",
   },
@@ -333,7 +329,7 @@ export const LABORATORIES_RAILS: IndustryRails = {
       "A QC control chart in Unifize: a result breaks the 1-3s Westgard rule, a nonconformance opens, affected results are held, the root cause and corrective action are bound to it, and the next results plot back in control with the effectiveness check on the record.",
   },
 
-  thread: { title: "Nonconformance → corrective action" },
+  journey: LABORATORIES_JOURNEY,
 
   trust: {
     label: "Built for ISO/IEC 17025-accredited labs",

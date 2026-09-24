@@ -23,6 +23,7 @@
 import { Eyebrow } from "./dms-primitives";
 import { Glyph } from "./dms-linework";
 import { PRODUCT_INTEGRATION_LOGOS, type IntegrationLogo } from "../_shared/integrations-catalog";
+import { IntegrationIso } from "./dms-integrations-iso";
 
 export type IntegrationData = {
   heading: string;
@@ -91,7 +92,9 @@ export function IntegrationLayer({
   className,
 }: {
   data: IntegrationData;
-  variant?: "full" | "minimal";
+  /** "iso" = the tilted tile field with the Unifize hub (dms-integrations-iso);
+   * it takes the minimal-variant strings and logos and is always light. */
+  variant?: "full" | "minimal" | "iso";
   /** minimal variant only: the section's ground. "light" drops the dark
    * surface class (so the sticky header samples it as light) for pages on
    * the rails grammar (page-rails.css). */
@@ -113,6 +116,18 @@ export function IntegrationLayer({
   ctaBody?: string;
   ctaLabel?: string;
 }) {
+  if (variant === "iso") {
+    return (
+      <IntegrationIso
+        className={className}
+        eyebrow={minimalEyebrow}
+        heading={minimalHeading}
+        lede={minimalLede}
+        logos={logos}
+      />
+    );
+  }
+
   if (variant === "minimal") {
     return (
       <section

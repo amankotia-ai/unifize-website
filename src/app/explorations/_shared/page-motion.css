@@ -1,0 +1,503 @@
+/* ============================================================================
+ * page-motion.css - the page-in timeline and the scroll choreography
+ * (24 Sep 2026): homepage, platform, the four product pages (DMS, QMS,
+ * PLM, MES), the railed solution pages (SolutionPage `rails`) and the
+ * industry pages (Medical Devices + IndustryRailsPage). A page opts in with `pm` on its <main> (beside `dms--rails`)
+ * and mounts <DmsMotion> with a selector from page-motion-reveal.ts. Loads
+ * LAST on the page so it wins by order. Product heroes take the platform's
+ * type beats and the homepage's stage beats (see PRODUCT HEROES).
+ *
+ * The idea: the page is ruled, then written. The rails and the hatched
+ * bands are the site's drafting lines, so the motion draws them; the words
+ * land into the ruled space; the product arrives as the payoff. Crisp, not
+ * cinematic (Abhishek, 24 Sep: "slow ... something more crispy"): every
+ * beat is 450-900 ms on a hard expo-out (most of the travel in the first
+ * third), staggers are 28-50 ms, the whole page-in is at rest by ~1.3 s.
+ * Small distances (6 to 24px), no bounce, no glow, blur only on type.
+ *
+ * PAGE-IN (ms from first paint; the same on a route change, since the new
+ * page mounts fresh under the dissolving old one, page-transition.css)
+ *
+ *   HOME                                   PLATFORM
+ *   0     hero rails draw down (900)       0     the platform mark: three
+ *   40    H1 words rise out of a 4px             sheets set down, 40 apart
+ *         blur, 28 ms apart, line 2        60    H1 words, 28 ms apart
+ *         carrying on (8 words, 650)       100   the mark's label slides in
+ *   220   the sub (600)                    220   the sub (right column)
+ *   300   Book a demo / 340 the ghost      300   Book a demo / 340 the ghost
+ *   380   tab rule opens from the centre,  360   the film rises and settles
+ *         the wash opens from below              (scale .98, 20px, 900)
+ *   420   tabs step in, 35 ms apart        480   chapter rail opens from the
+ *   460   the product window tilts up            centre; steps 35 ms apart
+ *         into place (8deg, 24px, 850)
+ *   700   the logo strip fades up
+ *   ~1.3 s at rest                         ~1.2 s at rest
+ *
+ * SCROLL (both pages; triggered by DmsMotion as each block enters)
+ *   hatch band   top rule draws left to right, bottom rule right to left,
+ *                the hatch wipes across behind them, the four crosses turn
+ *                a quarter into place (right pair 150 ms on). 700 ms.
+ *   section head the eyebrow square sets, the eyebrow slides, the H2 rises
+ *                out of a blur, the lede 140 ms on. Done by ~850 ms.
+ *   card grids   `data-stagger`: children rise 20px, 50 ms apart
+ *   the close    tiles cascade (home-kit), then the claim, then the asks
+ *   the rest     one rise (16px), 700 ms
+ *
+ * Off under reduced motion (DmsMotion never arms; the entry keyframes sit
+ * behind no-preference). Entry keyframes use fill `backwards` and the
+ * individual transform properties (translate / scale / rotate), so they
+ * never hold a value after they end and never fight a component's own
+ * transform (the arcade camera, the tab dip, the crosshair centring).
+ * Timings are literal: the CSS pipeline drops an `animation` shorthand
+ * that carries a var() when a longhand follows it.
+ * ========================================================================== */
+
+.dms--redesign.dms--rails.pm {
+  --pm-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ======================================================= THE HERO WORDS
+ * The line's gradient moves onto each word (a moving child breaks a
+ * parent's background-clip text), tiled per 1lh exactly as the line was, so
+ * the lit-from-above finish is unchanged at rest. */
+.dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__title .dms-hero__line:has(.pm-w),
+.dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__title .dms-hero__turn:has(.pm-w) {
+  background-image: none;
+  animation: none;
+}
+
+.dms--redesign.dms--rails.pm .dms-hero__title .pm-w {
+  display: inline-block;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dms--redesign.dms--rails.pm .dms-hero__title .dms-hero__turn .pm-w {
+  background-image: linear-gradient(180deg, #82b8ff 30%, var(--u-blue-400) 100%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* ===================================================== SHARED HERO BEATS */
+
+  /* the rails draw down from the header */
+  .dms--redesign.dms--rails.pm .dms-hero--rails.hm-railed::before,
+  .dms--redesign.dms--rails.pm .dms-hero--rails.hm-railed::after {
+    transform-origin: top;
+    animation: pm-rail 900ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .dms--redesign.dms--rails.pm .dms-hero__title .pm-w {
+    animation-name: pm-word;
+    animation-duration: 650ms;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-fill-mode: backwards;
+    animation-delay: calc(40ms + var(--w, 0) * 28ms);
+  }
+
+  /* !important: dms-redesign.css stills every direct child of the hero
+   * columns with an important `animation: none`, which is why the sub
+   * never moved; this is the one child animated on itself */
+  .dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__sub {
+    animation: pm-rise 600ms cubic-bezier(0.16, 1, 0.3, 1) 220ms backwards !important;
+  }
+
+  /* the two buttons land separately; the ghost a beat behind */
+  .dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__ctas {
+    animation: none;
+  }
+
+  .dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__ctas > * {
+    animation: pm-cta 550ms cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm .dms-hero--rails .dms-hero__ctas > * + * {
+    animation: pm-cta 550ms cubic-bezier(0.16, 1, 0.3, 1) 340ms backwards;
+  }
+
+  /* ========================================================== HOME HERO */
+
+  /* the tab row: its top rule opens from the centre, then the tabs */
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__tabs {
+    animation: pm-open-x 600ms cubic-bezier(0.16, 1, 0.3, 1) 380ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__tab {
+    animation: pm-rise-sm 450ms cubic-bezier(0.16, 1, 0.3, 1) 420ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__tab:nth-child(2) { animation-delay: 455ms; }
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__tab:nth-child(3) { animation-delay: 490ms; }
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__tab:nth-child(4) { animation-delay: 525ms; }
+
+  /* the wash opens up from below, its field settling as it does */
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__stage {
+    perspective: 1800px;
+    animation: pm-aperture 800ms cubic-bezier(0.16, 1, 0.3, 1) 380ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__stage .rf__field {
+    animation: pm-settle 900ms cubic-bezier(0.16, 1, 0.3, 1) 380ms backwards;
+  }
+
+  /* the payoff: the product window tilts up into place */
+  .dms--redesign.dms--rails.pm.dms--home .dms-hero--rails .hm-heromock__scene {
+    transform-origin: 50% 100%;
+    animation: pm-window 850ms cubic-bezier(0.16, 1, 0.3, 1) 460ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms--home .hm-trust--rails .hm-logos {
+    animation: pm-fade 600ms ease-out 700ms backwards;
+  }
+
+  /* ====================================================== PLATFORM HERO */
+
+  /* the platform mark: three sheets set down one after another */
+  .dms--redesign.dms--rails.pm.pf-page .pf-hero__mark .dms-hero__product-sheet {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pm-sheet 450ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.pf-page .pf-hero__mark .dms-hero__product-sheet:nth-of-type(2) { animation-delay: 40ms; }
+  .dms--redesign.dms--rails.pm.pf-page .pf-hero__mark .dms-hero__product-sheet:nth-of-type(3) { animation-delay: 80ms; }
+
+  .dms--redesign.dms--rails.pm:is(.pf-page, .dms-page) .dms-hero__product > span:last-child {
+    display: inline-block;
+    animation: pm-slide 500ms cubic-bezier(0.16, 1, 0.3, 1) 100ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm:is(.pf-page, .dms-page) .dms-hero__title .pm-w {
+    animation-delay: calc(60ms + var(--w, 0) * 28ms);
+  }
+
+  /* ===================================================== PRODUCT HEROES
+   * DMS, QMS, PLM, MES: the product glyph sets down, then the platform's
+   * type beats, then the homepage's stage (step rail opens, wash opens,
+   * window tilts up) */
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero__product-mark svg {
+    animation: pm-sheet 450ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__rail--top {
+    animation: pm-open-x 600ms cubic-bezier(0.16, 1, 0.3, 1) 380ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step {
+    animation: pm-rise-sm 450ms cubic-bezier(0.16, 1, 0.3, 1) 420ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(2) { animation-delay: 455ms; }
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(3) { animation-delay: 490ms; }
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(4) { animation-delay: 525ms; }
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(5) { animation-delay: 560ms; }
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(6) { animation-delay: 595ms; }
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__step:nth-child(n + 7) { animation-delay: 630ms; }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__stage {
+    perspective: 1800px;
+    animation: pm-aperture 800ms cubic-bezier(0.16, 1, 0.3, 1) 380ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-hero--rails .dms-heroarc__stage > .stx-root {
+    transform-origin: 50% 100%;
+    animation: pm-window 850ms cubic-bezier(0.16, 1, 0.3, 1) 460ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.dms-page .dms-trust__inner {
+    animation: pm-fade 600ms ease-out 700ms backwards;
+  }
+
+  /* ===================================================== SOLUTION HEROES
+   * The railed solution pages (SolutionPage `rails`): two panes. The copy
+   * takes the platform's type beats (their <main> carries pf-page), led by
+   * the eyebrow; the wash pane opens from the rail it sits on, then the
+   * window tilts up into it, as on the homepage */
+  .dms--redesign.dms--rails.pm:is(.sk-page, .md-page) :is(.sk-hero2__copy, .md-hero2__copy) > .dms-eyebrow {
+    animation: pm-slide 500ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .dms--redesign.dms--rails.pm:is(.sk-page, .md-page) :is(.sk-hero2__copy, .md-hero2__copy) > .dms-eyebrow::before {
+    animation: pm-sheet 450ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .dms--redesign.dms--rails.pm:is(.sk-page, .md-page) .dms-hero--rails :is(.sk-hero2__visual, .md-hero2__visual) {
+    animation: pm-pane 800ms cubic-bezier(0.16, 1, 0.3, 1) 300ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.sk-page .sk-hero2__visual :is(.dms-heroarc__stage, .dms-hero__stage) {
+    perspective: 1800px;
+  }
+
+  .dms--redesign.dms--rails.pm.sk-page .sk-hero2__visual :is(.dms-heroarc__stage, .dms-hero__stage) > * {
+    transform-origin: 50% 100%;
+    animation: pm-window 850ms cubic-bezier(0.16, 1, 0.3, 1) 420ms backwards;
+  }
+
+  /* the industry pages: the record card on the wash (industry-hero-trace)
+   * tilts up like the window; its stage carries dms-heroarc__stage, so the
+   * product pages' aperture on that class stands down (the pane opens) */
+  .dms--redesign.dms--rails.pm.md-page .md-hero2__visual .dms-heroarc__stage {
+    perspective: 1800px;
+    animation: none;
+  }
+
+  .dms--redesign.dms--rails.pm.md-page .md-hero2__visual .mdt__scene {
+    transform-origin: 50% 100%;
+    animation: pm-window 850ms cubic-bezier(0.16, 1, 0.3, 1) 420ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.sk-page .dms-trust__inner {
+    animation: pm-fade 600ms ease-out 700ms backwards;
+  }
+
+  /* the film rises and settles, already playing */
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-film {
+    animation: pm-film 900ms cubic-bezier(0.16, 1, 0.3, 1) 360ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-film + .pf-journey__rail {
+    animation: pm-open-x 600ms cubic-bezier(0.16, 1, 0.3, 1) 480ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step {
+    animation: pm-rise-sm 450ms cubic-bezier(0.16, 1, 0.3, 1) 520ms backwards;
+  }
+
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step:nth-child(2) { animation-delay: 555ms; }
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step:nth-child(3) { animation-delay: 590ms; }
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step:nth-child(4) { animation-delay: 625ms; }
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step:nth-child(5) { animation-delay: 660ms; }
+  .dms--redesign.dms--rails.pm.pf-page .dms-hero--rails .pf-journey__rail .pf-journey__step:nth-child(6) { animation-delay: 695ms; }
+}
+
+/* ========================================================== THE KEYFRAMES */
+@keyframes pm-rail {
+  from { scale: 1 0; }
+}
+
+@keyframes pm-word {
+  from { opacity: 0; translate: 0 0.22em; filter: blur(4px); }
+}
+
+@keyframes pm-rise {
+  from { opacity: 0; translate: 0 8px; }
+}
+
+@keyframes pm-rise-sm {
+  from { opacity: 0; translate: 0 6px; }
+}
+
+@keyframes pm-cta {
+  from { opacity: 0; translate: 0 8px; scale: 0.97; }
+}
+
+@keyframes pm-fade {
+  from { opacity: 0; }
+}
+
+@keyframes pm-slide {
+  from { opacity: 0; translate: -6px 0; }
+}
+
+@keyframes pm-sheet {
+  from { opacity: 0; scale: 0.5; }
+}
+
+@keyframes pm-open-x {
+  from { clip-path: inset(0 50% 0 50%); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes pm-aperture {
+  from { opacity: 0; clip-path: inset(24% 6% 0 6%); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes pm-pane {
+  from { opacity: 0; clip-path: inset(0 0 0 14%); }
+  to { opacity: 1; clip-path: inset(0 0 0 0); }
+}
+
+@keyframes pm-settle {
+  from { scale: 1.04; }
+}
+
+@keyframes pm-window {
+  from { opacity: 0; translate: 0 24px; rotate: x 8deg; scale: 0.97; }
+}
+
+@keyframes pm-film {
+  from { opacity: 0; translate: 0 20px; scale: 0.98; }
+}
+
+/* ===================================================== SCROLL CHOREOGRAPHY
+ * DmsMotion marks each block `dms-will-reveal` when it registers below the
+ * fold and adds `is-in` as it enters. Blocks already on screen at load are
+ * never marked, so the hero is left to the page-in above. */
+
+/* the default: one rise */
+.dms.pm[data-motion] .dms-will-reveal {
+  transition: opacity 600ms ease-out, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] .dms-will-reveal:not(.is-in) {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* containers that choreograph their children hold still themselves */
+.dms.pm[data-motion] :is(.hm-hatch, .hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head, .dms-close__grid, .dms-caps__rail, .dms-compliance__head, [data-stagger]).dms-will-reveal:not(.is-in) {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- the hatch band: ruled, hatched, registered */
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal .hm-hatch__rule {
+  transition: scale 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal .hm-hatch__rule--t { transform-origin: left; }
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal .hm-hatch__rule--b { transform-origin: right; transition-delay: 40ms; }
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal:not(.is-in) .hm-hatch__rule { scale: 0 1; }
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal .hm-hatch__fill {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 750ms cubic-bezier(0.16, 1, 0.3, 1) 60ms;
+}
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal:not(.is-in) .hm-hatch__fill { clip-path: inset(0 100% 0 0); }
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal .hm-cross {
+  transition: opacity 300ms ease-out, scale 500ms cubic-bezier(0.16, 1, 0.3, 1), rotate 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal :is(.hm-cross--tr, .hm-cross--br) { transition-delay: 150ms; }
+
+.dms.pm[data-motion] .hm-hatch.dms-will-reveal:not(.is-in) .hm-cross {
+  opacity: 0;
+  scale: 0.3;
+  rotate: -90deg;
+}
+
+/* ---- section heads: square, eyebrow, claim, lede */
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal .dms-eyebrow {
+  transition: opacity 450ms ease-out 40ms, translate 600ms cubic-bezier(0.16, 1, 0.3, 1) 40ms;
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal .dms-eyebrow::before {
+  transition: scale 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal .dms-h2 {
+  transition: opacity 550ms ease-out 60ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 60ms, filter 550ms ease-out 60ms;
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal .dms-lede {
+  transition: opacity 550ms ease-out 140ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 140ms;
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal .hm-stackmark {
+  transition: opacity 450ms ease-out, translate 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal:not(.is-in) .dms-eyebrow {
+  opacity: 0;
+  translate: -6px 0;
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal:not(.is-in) .dms-eyebrow::before {
+  scale: 0;
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal:not(.is-in) .dms-h2 {
+  opacity: 0;
+  translate: 0 0.2em;
+  filter: blur(4px);
+}
+
+.dms.pm[data-motion] :is(.hm-split-head, .pf-split-head, .hm-entry__head, .hm-recognition__head, .dms-head, .sk-split, .md-head).dms-will-reveal:not(.is-in) :is(.dms-lede, .hm-stackmark) {
+  opacity: 0;
+  translate: 0 8px;
+}
+
+/* ---- card grids: children rise one after another */
+.dms.pm[data-motion] [data-stagger].dms-will-reveal > * {
+  transition: opacity 550ms ease-out, translate 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(40ms + var(--pm-i, 0) * 50ms);
+}
+
+.dms.pm[data-motion] [data-stagger].dms-will-reveal:not(.is-in) > * {
+  opacity: 0;
+  translate: 0 20px;
+}
+
+/* ---- the close: the tiles cascade first (home-kit.css), then the claim,
+ * then the asks */
+.dms.pm[data-motion] .dms-close__grid.dms-will-reveal .dms-close__lead {
+  transition: opacity 550ms ease-out 300ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 300ms, filter 550ms ease-out 300ms;
+}
+
+.dms.pm[data-motion] .dms-close__grid.dms-will-reveal .dms-close__side {
+  transition: opacity 550ms ease-out 400ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 400ms;
+}
+
+.dms.pm[data-motion] .dms-close__grid.dms-will-reveal:not(.is-in) .dms-close__lead {
+  opacity: 0;
+  translate: 0 0.25em;
+  filter: blur(4px);
+}
+
+.dms.pm[data-motion] .dms-close__grid.dms-will-reveal:not(.is-in) .dms-close__side {
+  opacity: 0;
+  translate: 0 10px;
+}
+
+/* ---- head parts on their own (the product pages, PM_REVEAL in
+ * page-motion-reveal.ts): the same square / eyebrow / claim / lede beats,
+ * keyed to each part instead of to a head container */
+.dms.pm[data-motion] .dms-eyebrow.dms-will-reveal {
+  transition: opacity 450ms ease-out 40ms, translate 600ms cubic-bezier(0.16, 1, 0.3, 1) 40ms;
+}
+
+.dms.pm[data-motion] .dms-eyebrow.dms-will-reveal::before {
+  transition: scale 450ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dms.pm[data-motion] .dms-h2.dms-will-reveal {
+  transition: opacity 550ms ease-out 60ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 60ms, filter 550ms ease-out 60ms;
+}
+
+.dms.pm[data-motion] .dms-lede.dms-will-reveal {
+  transition: opacity 550ms ease-out 140ms, translate 700ms cubic-bezier(0.16, 1, 0.3, 1) 140ms;
+}
+
+.dms.pm[data-motion] :is(.dms-eyebrow, .dms-h2, .dms-lede).dms-will-reveal:not(.is-in) {
+  transform: none;
+}
+
+.dms.pm[data-motion] .dms-eyebrow.dms-will-reveal:not(.is-in) {
+  opacity: 0;
+  translate: -6px 0;
+}
+
+.dms.pm[data-motion] .dms-eyebrow.dms-will-reveal:not(.is-in)::before {
+  scale: 0;
+}
+
+.dms.pm[data-motion] .dms-h2.dms-will-reveal:not(.is-in) {
+  opacity: 0;
+  translate: 0 0.2em;
+  filter: blur(4px);
+}
+
+.dms.pm[data-motion] .dms-lede.dms-will-reveal:not(.is-in) {
+  opacity: 0;
+  translate: 0 8px;
+}

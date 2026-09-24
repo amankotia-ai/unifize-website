@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { COSMETICS } from "./cosmetics-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { COSMETICS, COSMETICS_RAILS } from "./cosmetics-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: COSMETICS.meta.title,
-  description: COSMETICS.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/cosmetics");
 
 export default function CosmeticsPage() {
-  return <IndustryPage data={COSMETICS} />;
+  return <IndustryRailsPage data={COSMETICS} rails={COSMETICS_RAILS} />;
 }

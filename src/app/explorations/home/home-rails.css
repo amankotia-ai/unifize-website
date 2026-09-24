@@ -928,7 +928,7 @@
 }
 
 .dms--redesign.dms--home .hm-ind__tiles,
-.dms--redesign.dms--home .hm-ind__tiles--3 {
+.dms--redesign.dms--home .hm-ind__tiles--row {
   gap: 1px;
   margin: 24px calc(-1 * var(--hm-rail-pad)) 0;
   border-top: 1px solid var(--hm-rail);
@@ -996,6 +996,7 @@
 }
 
 .dms--redesign.dms--home .hm-industries-section .hm-section-tail {
+  justify-content: flex-end;
   margin-top: 24px;
 }
 
@@ -2053,5 +2054,75 @@
 @media (min-width: 961px) {
   .dms--redesign.dms--home :is(.hm-entry__head, .hm-recognition--reframed .hm-recognition__head, .hm-split-head:not(.hm-split-head--center)) > .dms-lede {
     justify-self: end;
+  }
+}
+
+/* 05 · industry tiles, 2x2 and a readable order (Abhishek, 24 Sep: "four
+ * cards in a row look busy ... implement proper IA for the card content").
+ * Four or more tiles lay out 2x2, three or fewer one row (home-industries).
+ * The ledger captions come back as quiet mono labels so each line says what
+ * it is: who, the stake, where it bites, audited under, the door. A tile
+ * wider than 640px splits into story (label, claim, door) on the left and
+ * the captioned evidence on the right, so no line runs past ~60ch. */
+.dms--redesign.dms--home .hm-ind__claim {
+  max-width: 22ch;
+}
+
+.dms--redesign.dms--home .hm-ind__plate {
+  margin-top: 24px;
+}
+
+.dms--redesign.dms--home .hm-ind__row {
+  gap: 8px;
+  padding: 0;
+}
+
+.dms--redesign.dms--home .hm-ind__row + .hm-ind__row {
+  margin-top: 18px;
+}
+
+.dms--redesign.dms--home .hm-ind__row dt {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--home .hm-ind__row dd {
+  max-width: 44ch;
+  color: var(--dms-ink-2);
+  font-size: 0.95rem;
+  font-weight: 450;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.dms--redesign.dms--home .hm-ind__go {
+  padding-top: 28px;
+}
+
+@container (min-width: 640px) {
+  .dms--redesign.dms--home .hm-ind__tile {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "intro plate"
+      "go    plate";
+    column-gap: clamp(32px, 4cqi, 56px);
+  }
+  .dms--redesign.dms--home .hm-ind__intro { grid-area: intro; }
+  .dms--redesign.dms--home .hm-ind__go { grid-area: go; align-self: end; }
+  .dms--redesign.dms--home .hm-ind__plate {
+    grid-area: plate;
+    align-self: start;
+    /* the ledger starts level with the claim, under the label line */
+    margin-top: 40px;
   }
 }

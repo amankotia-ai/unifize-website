@@ -31,6 +31,7 @@ import "../../../products/dms/dms-redesign.css";
 import "../../_shared/resources-kit.css";
 import "../../../_shared/page-rails.css";
 import "../../_shared/stories-rails.css";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
 export function generateStaticParams() {
   return CUSTOMER_VIDEOS.map((v) => ({ slug: v.slug }));
@@ -38,9 +39,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const v = getVideo(slug);
-  if (!v) return { title: "Customer story — Unifize" };
-  return { title: `${v.person} on Unifize: ${v.name}`, description: v.description };
+  return pageMetadata(`/resources/testimonials/${slug}`);
 }
 
 function Fact({ label, value }: { label: string; value?: string }) {

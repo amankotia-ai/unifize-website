@@ -18,8 +18,9 @@ import Link from "next/link";
 import { ProductAudience } from "../_shared/ProductAudience";
 import { SiteFooter } from "../../_shared/site-footer";
 import { DmsHeader } from "../dms/dms-header";
-import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
-import { QMS_CTAX_SCENES, QMS_CTAX_AFTER_NOTES, QMS_CTAX_COPY } from "./qms-ctax";
+import { QMS_CTAX_AFTER_NOTES } from "./qms-ctax";
+import { ProblemBoard } from "../_shared/problem-board";
+import { QMS_BOARD_ARTIFACTS } from "./qms-problem-board";
 import { IntegrationLayer } from "../dms/dms-integrations";
 import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { DmsIndustryIcon } from "../dms/dms-industry-icons";
@@ -32,7 +33,6 @@ import { HeroArcade } from "../_shared/arcade/hero-arcade";
 import { QMS_AUDIENCE, QMS_DATA, QMS_MODULES, QMS_PROBLEMS, QMS_FLOWS } from "./qms-data";
 import { qmsCopy } from "./qms-copy";
 import { QMS_ARCADE_FLOW_CONFIGS, QMS_HERO_STEPS, QMS_MODULE_ARCADE_CONFIGS } from "./qms-arcade";
-import { QmsProblemSpotlight } from "./qms-problem-visuals";
 import { QmsProofReel } from "./qms-proof";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
@@ -43,12 +43,17 @@ import "./qms.css";
 import "../../_shared/page-rails.css";
 import "../dms/dms-rails.css";
 import "./qms-rails.css";
+import { DmsMotion } from "../dms/dms-motion";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL } from "../../_shared/page-motion-reveal";
+import "../_shared/problem-board.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../../_shared/page-motion.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: QMS_DATA.metaTitle,
-  description: QMS_DATA.metaDescription,
-};
+export const metadata: Metadata = pageMetadata("/products/qms");
 
 /* rail glyphs for the six QMS modules (16-grid line paths, the ModuleRail
  * idiom; its built-in set covers only the DMS modules) */
@@ -63,8 +68,10 @@ const QMS_RAIL_ICONS: Record<string, string> = {
 
 export default function QmsProductPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized qms dms--rails dms-page">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized qms dms--rails dms-page pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and each section head's parts (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL} />
 
       <section className="dms-section dms-hero dms-hero--rails hm-railed" aria-label="Quality Management System">
         <div className="dms-wrap dms-hero__inner">
@@ -80,8 +87,9 @@ export default function QmsProductPage() {
                 <span>Quality Management System</span>
               </Link>
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">A finding isn&rsquo;t closed</span>
-                <span className="dms-hero__line dms-hero__turn">until the fix is proven.</span>
+                {/* split into words for the page-in stagger (page-motion.css) */}
+                <span className="dms-hero__line"><Words text="A finding isn’t closed" /></span>
+                <span className="dms-hero__line dms-hero__turn"><Words text="until the fix is proven." from={4} /></span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -121,32 +129,17 @@ export default function QmsProductPage() {
       {/* the first hatched divider: the dark-to-light break */}
       <HatchBand />
 
-      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="qms-problems-title">
-        <div className="dms-wrap dms-problems__inner">
-          <header className="dms-problems__intro">
-            <div className="dms-problems__head">
-              <Eyebrow n={1}>The problem</Eyebrow>
-              <h2 className="dms-h2" id="qms-problems-title">{QMS_DATA.positioning.heading}</h2>
-            </div>
-            <p className="dms-lede">{QMS_DATA.positioning.lede}</p>
-          </header>
-
-          <QmsProblemSpotlight items={QMS_PROBLEMS} />
-
-          <div className="dms-problems__bridge">
-            <p><strong>Four failure modes, one root cause.</strong> The quality work is not the bottleneck; the coordination around it is.</p>
-          </div>
-        </div>
-      </section>
-
-      <HatchBand />
-
-      <StylizedCoordinationTax
-        className="hm-railed"
+      {/* The problem and the coordination tax, said once (24 Sep 2026): four
+        * loops as cells, each with its record artifact on a wash, the tax and
+        * the outcome as a two-row ledger, and a Today / With Unifize switch
+        * that flips every artifact. Replaced the tabbed spotlight + the
+        * BEFORE/AFTER ledger, which told the same four stories twice. */}
+      <ProblemBoard
+        heading={QMS_DATA.positioning.heading}
+        lede={QMS_DATA.positioning.lede}
         problems={QMS_PROBLEMS}
-        scenes={QMS_CTAX_SCENES}
+        artifacts={QMS_BOARD_ARTIFACTS}
         afterNotes={QMS_CTAX_AFTER_NOTES}
-        copy={QMS_CTAX_COPY}
       />
 
       <HatchBand />
@@ -217,9 +210,10 @@ export default function QmsProductPage() {
 
       <IntegrationLayer
         data={QMS_DATA.integrations}
-        variant="minimal"
+        variant="iso"
         tone="light"
         className="hm-railed"
+        minimalEyebrow="Integrations"
         minimalLede="Connect the quality record to the tools already holding your lots, suppliers, and complaints."
         logos={PRODUCT_INTEGRATION_LOGOS.qms}
       />
@@ -307,28 +301,14 @@ export default function QmsProductPage() {
 
       {/* On the hero's charcoal so the page opens and closes on the same
         * ground; the rails run through it and on through the footer. */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="qms-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid" data-reveal>
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>{QMS_DATA.close.eyebrow}</Eyebrow>
-              <h2 className="dms-close__h" id="qms-close-h">{QMS_DATA.close.heading}</h2>
-              <p className="dms-lede">{QMS_DATA.close.lede}</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">{QMS_DATA.close.ctaPrimary}</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="qms-close-h"
+        eyebrow={QMS_DATA.close.eyebrow}
+        heading={QMS_DATA.close.heading}
+        lede={QMS_DATA.close.lede}
+        primaryLabel={QMS_DATA.close.ctaPrimary}
+        secondary={QMS_DATA.close.ctaSecondary}
+      />
 
       <SiteFooter tagline={QMS_DATA.footer.tagline} note={QMS_DATA.footer.baseRight} />
     </main>

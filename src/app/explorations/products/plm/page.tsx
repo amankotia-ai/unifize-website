@@ -22,8 +22,9 @@ import Link from "next/link";
 import { ProductAudience } from "../_shared/ProductAudience";
 import { SiteFooter } from "../../_shared/site-footer";
 import { DmsHeader } from "../dms/dms-header";
-import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
-import { PLM_CTAX_SCENES, PLM_CTAX_AFTER_NOTES, PLM_CTAX_COPY } from "./plm-ctax";
+import { PLM_CTAX_AFTER_NOTES } from "./plm-ctax";
+import { ProblemBoard } from "../_shared/problem-board";
+import { PLM_BOARD_ARTIFACTS } from "./plm-problem-board";
 import { IntegrationLayer } from "../dms/dms-integrations";
 import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { DmsIndustryIcon } from "../dms/dms-industry-icons";
@@ -37,7 +38,6 @@ import { PLM_AUDIENCE, PLM_DATA, PLM_MODULES, PLM_PROBLEMS, PLM_FLOWS } from "./
 import { plmCopy } from "./plm-copy";
 import { PLM_ARCADE_FLOW_CONFIGS, PLM_HERO_STEPS, PLM_MODULE_ARCADE_CONFIGS } from "./plm-arcade";
 import { PlmSpecRecord, PlmTraceMatrix, PlmFmea } from "./plm-mocks";
-import { PlmProblemSpotlight } from "./plm-problem-visuals";
 import { PlmProofReel } from "./plm-proof";
 import "../../industry-template-modern/itm.css";
 import "../dms/dms.css";
@@ -47,20 +47,27 @@ import "../dms/stylized/stylized.css";
 import "../../_shared/page-rails.css";
 import "../dms/dms-rails.css";
 import "./plm.css";
+import { DmsMotion } from "../dms/dms-motion";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL } from "../../_shared/page-motion-reveal";
+import "../_shared/problem-board.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../../_shared/page-motion.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: PLM_DATA.metaTitle,
-  description: PLM_DATA.metaDescription,
-};
+export const metadata: Metadata = pageMetadata("/products/plm");
 
 /* one staged prototype per lifecycle step (spec → trace → FMEA → trace → spec) */
 const PLM_STAGE_MOCKS = [<PlmSpecRecord key="0" />, <PlmTraceMatrix key="1" />, <PlmFmea key="2" />, <PlmTraceMatrix key="3" />, <PlmSpecRecord key="4" />];
 
 export default function PlmProductPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page plm">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page plm pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and each section head's parts (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL} />
 
       {/* ============================ HERO =============================
         * Charcoal ground, centred head, then the arcade window on the sky
@@ -79,8 +86,9 @@ export default function PlmProductPage() {
                 <span>Product Lifecycle Management</span>
               </Link>
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">The trace from requirement to result</span>
-                <span className="dms-hero__line dms-hero__turn">shouldn&rsquo;t have gaps.</span>
+                {/* split into words for the page-in stagger (page-motion.css) */}
+                <span className="dms-hero__line"><Words text="The trace from requirement to result" /></span>
+                <span className="dms-hero__line dms-hero__turn"><Words text="shouldn’t have gaps." from={6} /></span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -121,36 +129,18 @@ export default function PlmProductPage() {
       {/* the first hatched divider: the dark-to-light break */}
       <HatchBand />
 
-      {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="plm-problems-title">
-        <div className="dms-wrap dms-problems__inner">
-          <header className="dms-problems__intro">
-            <div className="dms-problems__head">
-              <Eyebrow n={1}>The problem</Eyebrow>
-              <h2 className="dms-h2" id="plm-problems-title">{PLM_DATA.positioning.heading}</h2>
-            </div>
-            <p className="dms-lede">{PLM_DATA.positioning.lede}</p>
-          </header>
-
-          {/* Spotlight: index rail left, one failure mode on stage at a time. */}
-          <PlmProblemSpotlight items={PLM_PROBLEMS} />
-
-          <div className="dms-problems__bridge">
-            <p><strong>Four failure modes, one root cause.</strong> The design work is not the bottleneck; the coordination around it is.</p>
-          </div>
-        </div>
-      </section>
-
-      <HatchBand />
-
-      {/* ==================== THE COORDINATION TAX =====================
-       * The four failure modes roll up into one measurable root cause. */}
-      <StylizedCoordinationTax
-        className="hm-railed"
+      {/* ============================ THE PROBLEM =======================
+       * The problem and the coordination tax, said once (24 Sep 2026): four
+       * loops as cells, each with its object on a wash, one line that the
+       * Today / With Unifize switch swaps, the customer film on the floor.
+       * Replaced the tabbed spotlight + the BEFORE/AFTER ledger, which told
+       * the same four stories twice. Shared: _shared/problem-board. */}
+      <ProblemBoard
+        heading={PLM_DATA.positioning.heading}
+        lede={PLM_DATA.positioning.lede}
         problems={PLM_PROBLEMS}
-        scenes={PLM_CTAX_SCENES}
+        artifacts={PLM_BOARD_ARTIFACTS}
         afterNotes={PLM_CTAX_AFTER_NOTES}
-        copy={PLM_CTAX_COPY}
       />
 
       <HatchBand />
@@ -225,7 +215,7 @@ export default function PlmProductPage() {
       {/* ==================== INTEGRATIONS (connector layer) =========== */}
       <IntegrationLayer
         data={PLM_DATA.integrations}
-        variant="minimal"
+        variant="iso"
         tone="light"
         className="hm-railed"
         minimalEyebrow="Integrations"
@@ -319,28 +309,14 @@ export default function PlmProductPage() {
       {/* ============================ CLOSE =============================
         * On the hero's charcoal so the page opens and closes on the same
         * ground; the rails run through it and on through the footer. */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="plm-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid" data-reveal>
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>{PLM_DATA.close.eyebrow}</Eyebrow>
-              <h2 className="dms-close__h" id="plm-close-h">{PLM_DATA.close.heading}</h2>
-              <p className="dms-lede">{PLM_DATA.close.lede}</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">{PLM_DATA.close.ctaPrimary}</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="plm-close-h"
+        eyebrow={PLM_DATA.close.eyebrow}
+        heading={PLM_DATA.close.heading}
+        lede={PLM_DATA.close.lede}
+        primaryLabel={PLM_DATA.close.ctaPrimary}
+        secondary={PLM_DATA.close.ctaSecondary}
+      />
 
       {/* ------------------------------------------------------- footer */}
       <SiteFooter tagline={PLM_DATA.footer.tagline} note={PLM_DATA.footer.baseRight} />

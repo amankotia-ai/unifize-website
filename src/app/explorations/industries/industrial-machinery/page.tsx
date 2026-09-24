@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { INDUSTRIAL_MACHINERY } from "./industrial-machinery-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { INDUSTRIAL_MACHINERY, INDUSTRIAL_MACHINERY_RAILS } from "./industrial-machinery-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: INDUSTRIAL_MACHINERY.meta.title,
-  description: INDUSTRIAL_MACHINERY.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/industrial-machinery");
 
 export default function IndustrialMachineryPage() {
-  return <IndustryPage data={INDUSTRIAL_MACHINERY} />;
+  return <IndustryRailsPage data={INDUSTRIAL_MACHINERY} rails={INDUSTRIAL_MACHINERY_RAILS} />;
 }

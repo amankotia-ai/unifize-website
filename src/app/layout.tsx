@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 // globals.css carries the full design system + section styles (incl. §04 .air-*)
 import "./globals.css";
+import { PAGE_SEO, SITE_URL } from "./explorations/_shared/seo";
 
 // Self-hosted variable fonts (see ./fonts/README.md). Vendored to avoid
 // next/font/google's compile-time network fetch, which stalls behind this
@@ -35,14 +36,17 @@ const ibmPlexSans = localFont({
   display: "swap",
 });
 
+/* the site-wide fallback; every public page overrides it with its own
+ * title, description and share card from explorations/_shared/seo.ts */
+const HOME = PAGE_SEO["/home"];
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://unifize.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Unifize — The governed layer for regulated processes",
+    default: HOME.title,
     template: "%s · Unifize",
   },
-  description:
-    "Coordination tax, visible, measurable, reducible. Unifize is the shared operational source of truth between your systems of record and the conversations that actually move work forward.",
+  description: HOME.description,
   keywords: [
     "QMS",
     "regulated processes",
@@ -63,17 +67,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://unifize.com",
     siteName: "Unifize",
-    title: "Unifize — The governed layer for regulated processes",
-    description:
-      "Work happens in one place. The record lives somewhere else. Unifize closes the gap.",
+    title: HOME.title,
+    description: HOME.description,
+    images: [{ url: "/og/home", width: 1200, height: 630, alt: "Regulated work, closed on time. Defensible at audit." }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Unifize",
-    description:
-      "Coordination tax, visible, measurable, reducible — for regulated processes.",
+    title: HOME.title,
+    description: HOME.description,
+    images: ["/og/home"],
   },
   robots: { index: true, follow: true },
 };

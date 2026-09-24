@@ -124,12 +124,6 @@ export const POST_MARKET_DATA: DomainPageData = {
   name: "Post-Market & Recall",
   tier: "Secondary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Post-Market & Recall · Solutions",
-    description:
-      "A field action runs the manufacturing hold, the customer notification, the returns and the regulatory submission at the same time, each on its own clock. Unifize holds all four against one record, from the complaint that raised it to the verified close.",
-  },
 
   hero: {
     crumb: "Post-Market & Recall",

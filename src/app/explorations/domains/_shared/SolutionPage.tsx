@@ -88,7 +88,13 @@ import "./solution-kit.css";
 import "../../_shared/page-rails.css";
 import "./solution-rails.css";
 import "./solution-viz.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography (railed pages
+ * only; every rule is scoped to `pm`), loaded last */
+import "../../_shared/page-motion.css";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL_PAGE } from "../../_shared/page-motion-reveal";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../../_shared/rails-close";
 
 /* Outline glyphs for the workstream clusters (heroicons-style, 1.5 stroke),
  * the same family the homepage's entry cards draw. */
@@ -147,6 +153,66 @@ const JOURNEY_ICONS: Record<JourneyIcon, string> = {
   scope: "M9.2 1.5h1.6v2.6a6 6 0 0 1 5.1 5.1h2.6v1.6h-2.6a6 6 0 0 1-5.1 5.1v2.6H9.2v-2.6a6 6 0 0 1-5.1-5.1H1.5V9.2h2.6a6 6 0 0 1 5.1-5.1V1.5Zm.8 4.3a4.2 4.2 0 1 0 0 8.4 4.2 4.2 0 0 0 0-8.4Zm0 2.4a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6Z",
   /* four bars: four tracks at once */
   tracks: "M2 3h16v2.4H2V3Zm0 4.2h11v2.4H2V7.2Zm0 4.2h14v2.4H2v-2.4Zm0 4.2h8V18H2v-2.4Z",
+  /* change control (24 Sep 2026): a sheet with a plus, the request raised */
+  request: "M4 2h8l4 4v12H4V2Zm7.2 1.8V6.8h3L11.2 3.8ZM9.2 8.5v2.3H6.9v1.6h2.3v2.3h1.6v-2.3h2.3v-1.6h-2.3V8.5H9.2Z",
+  /* rings spreading from a point: everything the change touches */
+  ripple: "M10 8a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm4.2-3.4a7.2 7.2 0 0 1 0 10.8l-1.3-1.3a5.4 5.4 0 0 0 0-8.2l1.3-1.3Zm-8.4 0 1.3 1.3a5.4 5.4 0 0 0 0 8.2l-1.3 1.3a7.2 7.2 0 0 1 0-10.8Zm10.7-2.3a10.4 10.4 0 0 1 0 15.4l-1.3-1.3a8.6 8.6 0 0 0 0-12.8l1.3-1.3Zm-13 0 1.3 1.3a8.6 8.6 0 0 0 0 12.8l-1.3 1.3a10.4 10.4 0 0 1 0-15.4Z",
+  /* three seats at one table: the board */
+  board: "M4 3.5a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm6-1a2 2 0 1 1 0 4 2 2 0 0 1 0-4Zm6 1a2 2 0 1 1 0 4 2 2 0 0 1 0-4ZM1 10h18v2.2h-1.5V17h-2v-4.8h-11V17h-2v-4.8H1V10Z",
+  /* a pen nib over a line: signed */
+  sign: "M13.6 2.2 17.8 6.4 8.4 15.8 3 17l1.2-5.4 9.4-9.4Zm0 2.6-7.8 7.8-.5 2.1 2.1-.5 7.8-7.8-1.6-1.6ZM10 17.2h8V19h-8v-1.8Z",
+  /* a calendar, the day checked: effective */
+  /* document & records control (24 Sep 2026): a sheet with a pencil, drafted */
+  draft: "M4 2h8l4 4v5.2l-1.8 1.8V7h-4V3.8H5.8v12.4H10V18H4V2Zm13.4 10.2 1.4 1.4-5.6 5.6-2.2.6.6-2.2 5.8-5.4Z",
+  /* two bubbles: the review conversation */
+  comments: "M2 3h10a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H6l-3 2.5V11H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Zm12.5 3H18a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-1v2.5L14 14h-4a1 1 0 0 1-1-1v-.2h3.5a2 2 0 0 0 2-2V6Z",
+  /* a stamp: approved */
+  approve: "M7.5 2h5v2.2a2.5 2.5 0 0 1-.9 1.9L10.9 7l.2 3H17v4H3v-4h5.9l.2-3-.7-.9a2.5 2.5 0 0 1-.9-1.9V2ZM3 16h14v2H3v-2Z",
+  /* a document radiating: effective and distributed */
+  publish: "M7 3h6v14H7V3Zm1.8 2.5v1.2h2.4V5.5H8.8Zm0 2.7v1.2h2.4V8.2H8.8ZM4.6 5.4 5.9 6.7a4.6 4.6 0 0 0 0 6.6l-1.3 1.3a6.4 6.4 0 0 1 0-9.2Zm10.8 0a6.4 6.4 0 0 1 0 9.2l-1.3-1.3a4.6 4.6 0 0 0 0-6.6l1.3-1.3Z",
+  /* an archive box: the old version retired */
+  retire: "M2 3h16v4H2V3Zm1 5.5h14V17H3V8.5Zm4.5 2v1.6h5v-1.6h-5Z",
+  /* training & competency (24 Sep 2026): a waterfall of steps, the cascade */
+  cascade: "M2 2h7v4H2V2Zm4.5 6h7v4h-7V8Zm4.5 6h7v4h-7v-4ZM4.7 6.8h1.6v2.5h-1.6V6.8Zm4.5 6h1.6v2.5H9.2v-2.5Z",
+  /* a person with a plus: assigned */
+  assign: "M8 2.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7ZM1.5 17c0-3.2 2.9-5.5 6.5-5.5 1.3 0 2.5.3 3.5.8V17H1.5Zm13.7-6.5h1.6v2.4h2.4v1.6h-2.4v2.4h-1.6v-2.4h-2.4v-1.6h2.4v-2.4Z",
+  /* an open book, the check under it: read and understood */
+  ack: "M1.5 4c2.8-.9 5.6-.6 8.5 1 2.9-1.6 5.7-1.9 8.5-1v10.5c-2.8-.9-5.6-.6-8.5 1-2.9-1.6-5.7-1.9-8.5-1V4Zm7.7 2.4C7.2 5.4 5.2 5.2 3.3 5.5v7.3c2-.2 3.9 0 5.9.9V6.4Zm1.6 0v7.3c2-.9 3.9-1.1 5.9-.9V5.5c-1.9-.3-3.9-.1-5.9.9Z",
+  /* an eye: demonstrated, observed on the job */
+  observe: "M10 4c4.2 0 7.3 3 8.5 6-1.2 3-4.3 6-8.5 6S2.7 13 1.5 10C2.7 7 5.8 4 10 4Zm0 2.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm0 1.8a1.6 1.6 0 1 1 0 3.2 1.6 1.6 0 0 1 0-3.2Z",
+  /* a grid, one cell filled: the matrix current */
+  matrix: "M2 2h16v16H2V2Zm1.8 1.8v3.6h3.6V3.8H3.8Zm5.4 0v3.6h3.6V3.8H9.2Zm5.4 0v3.6h1.6V3.8h-1.6ZM3.8 9.2v3.6h3.6V9.2H3.8Zm5.4 0v3.6h3.6V9.2H9.2Zm5.4 0v3.6h1.6V9.2h-1.6ZM3.8 14.6v1.6h3.6v-1.6H3.8Zm5.4 0v1.6h3.6v-1.6H9.2Z",
+  /* operations (24 Sep 2026): a raised palm, the hold */
+  hold: "M7 3.5a1.3 1.3 0 0 1 2.6 0V9h.8V2.3a1.3 1.3 0 0 1 2.6 0V9h.8V3.8a1.3 1.3 0 0 1 2.6 0V12a6.5 6.5 0 0 1-6.5 6.5A6 6 0 0 1 4.6 16L2 11.8a1.3 1.3 0 0 1 2.2-1.4L6 13V5a1 1 0 0 1 1-1v-.5Z",
+  /* a clip joining sheets: the evidence gathered */
+  gather: "M3 5h9v13H3V5Zm2 3v1.5h5V8H5Zm0 3v1.5h5V11H5ZM14 2v11.5a2.5 2.5 0 0 1-5 0V4h1.8v9.5a.7.7 0 0 0 1.4 0V3.8H8V2h6Z",
+  /* a gavel: the board decides */
+  decide: "M9.3 1.8 14 6.5 12.6 8 11.9 7.2 8 11.1l.7.7-1.4 1.4L2.6 8.5 4 7.1l.7.7 3.9-3.9-.7-.7 1.4-1.4Zm1.4 7.2 6.8 6.8-1.8 1.8-6.8-6.8 1.8-1.8ZM2 16h8v2H2v-2Z",
+  /* an arrow out of a box: released */
+  release: "M3 9h2v7h10V9h2v9H3V9Zm7-7 4.5 4.5-1.4 1.4-2.1-2.1V12H9V5.8L6.9 7.9 5.5 6.5 10 2Z",
+  /* two arrows passing: shift to shift */
+  handover: "M13 2l4 4-4 4V7H3V5h10V2ZM7 10v3h10v2H7v3l-4-4 4-4Z",
+  /* supply chain & planning (24 Sep 2026): a box with a gap, short */
+  short: "M2 5.5 10 2l8 3.5V14l-8 4-8-4V5.5Zm2 1.6v5.8l5 2.5V9.6L4 7.1Zm7 2.5v5.8l2.2-1.1V8.5L11 9.6Zm4.2-2.1v5.3L16 12.9V7.1l-.8.4ZM10 3.9 5.4 5.9 10 8l4.6-2.1L10 3.9Z",
+  /* three branches from one stem: the options */
+  options: "M9.1 2h1.8v6.2l4.3-2.6.9 1.6-5.2 3.1v3.2l5.2 3.1-.9 1.6-4.3-2.6V18H9.1v-3.4l-4.3 2.6-.9-1.6 5.2-3.1v-3.2L3.9 7.2l.9-1.6 4.3 2.6V2Z",
+  /* a pie split three ways: allocated */
+  allocate: "M9.1 2.05V10.9l6.3 6.3A8 8 0 0 1 9.1 2.05Zm1.8 0A8 8 0 0 1 18 9.1h-7.1V2.05Zm0 8.85H18a8 8 0 0 1-1.35 4.3l-5.75-4.3Z",
+  /* a handshake line: committed */
+  commit: "M1.5 6.5 5 4l3 1.5 2-1 4.5 1.5 4 3-1.5 2-2-1.5v1l-5 4.5-2-1-2 1-5.5-5.5 1-3Zm6.2.6L5.4 8.8l3.8 3.8 1.4-.7 1.8 1 3-2.7-3.6-2.8-2.2 1.1-1.4-.4Z",
+  /* a bell: customers told */
+  notify: "M10 2a1.4 1.4 0 0 1 1.4 1.4v.4A5.5 5.5 0 0 1 15.5 9v3.6l1.8 2.4H2.7l1.8-2.4V9a5.5 5.5 0 0 1 4.1-5.2v-.4A1.4 1.4 0 0 1 10 2Zm-2.2 14.3h4.4a2.2 2.2 0 0 1-4.4 0Z",
+  /* procurement & sourcing (24 Sep 2026): a sheet going out, the request for quote */
+  rfq: "M3 3h10v3h-2V5H5v10h4v2H3V3Zm4 3.5h4V8H7V6.5Zm0 3h2.5V11H7V9.5Zm6.5 1.3 5 3.2-5 3.2v-2.2H10v-2h3.5v-2.2Z",
+  /* two columns side by side: compared */
+  compare: "M2 4h7v13H2V4Zm1.8 2v1.5h3.4V6H3.8Zm0 3v1.5h3.4V9H3.8ZM11 4h7v13h-7V4Zm1.8 2v1.5h3.4V6h-3.4Zm0 3v1.5h3.4V9h-3.4Z",
+  /* a star over a line: scored */
+  score: "M10 2l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5L2.8 7.3l5-.7L10 2ZM3 17h14v1.8H3V17Z",
+  /* a ribbon: awarded */
+  award: "M10 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 2.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6.3 12.8 5 18.5l3-1.3 2 2 2-2 3 1.3-1.3-5.7A7 7 0 0 1 10 14a7 7 0 0 1-3.7-1.2Z",
+  /* a door open with an arrow in: onboarded */
+  onboard: "M10 2h8v16h-8v-2h6V4h-6V2ZM8 6l4 4-4 4v-3H2V9h6V6Z",
+  golive: "M6 1.5h1.8V3h4.4V1.5H14V3h2a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 16 18H4a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 4 3h2V1.5ZM4.3 7.5v8.7h11.4V7.5H4.3Zm8.3 1.7 1.3 1.3-4.6 4.6-2.6-2.6 1.3-1.3 1.3 1.3 3.3-3.3Z",
 };
 
 const ARROW = (
@@ -235,10 +301,17 @@ function LeakInbox({ scene }: { scene: LeakScene }) {
 
 /* the hero rail wants a one-word label per pose; the arcade steps carry one
  * as `ghost`, the trail title is the fallback */
-function heroSteps(trail: { t: string }[], steps: ArcadeStepConfig[]) {
+function heroSteps(
+  trail: { t: string }[],
+  steps: ArcadeStepConfig[],
+  journey?: { icon: JourneyIcon }[],
+) {
   const n = Math.min(trail.length, steps.length);
   return Array.from({ length: n }, (_, i) => ({
     label: (steps[i] as { ghost?: string }).ghost ?? trail[i].t,
+    caption: trail[i].t,
+    /* the same solid glyph the journey rail gives this step */
+    captionIcon: journey?.[i] ? JOURNEY_ICONS[journey[i].icon] : undefined,
     config: steps[i],
   }));
 }
@@ -335,7 +408,7 @@ export function SolutionPage({
    * two-pane frame below) */
   const heroFrame = arcade ? (
     <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-      <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps)} />
+      <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
     </div>
   ) : (
     <div className="dms-hero__frame dms-hero__product-demo sk-hero__static">
@@ -356,14 +429,20 @@ export function SolutionPage({
     .map((g) => ({ ...g, modules: g.modules.filter(shipped) }))
     .filter((g) => g.modules.length > 0);
 
+  /* the product's own glyph (the single-product cell drew the QMS shield
+   * for every page until 24 Sep 2026) */
+  const glyph = (slug: string) =>
+    (slug === "cmms" ? "wrench" : ["qms", "dms", "mes", "plm"].includes(slug) ? slug : "qms") as Parameters<typeof NavGlyph>[0]["name"];
+
   const modulesOnRails = () => {
     /* The sibling pages (23 Sep 2026): their work spans two or three live
      * products. Each product is a column (its wash, glyph, promise and live
      * modules), and a rail under the columns ties them into the one record
      * they all write to. One product keeps quality's single cell. */
-    const live = shippedGroups.filter((g) => g.modules.some((m) => m.href));
+    /* every shipped product gets a column; one without a product page on
+     * the site (CMMS, 24 Sep 2026) lists its modules unlinked */
+    const live = shippedGroups;
     if (live.length > 1) {
-      const glyph = (slug: string) => (["qms", "dms", "mes", "plm"].includes(slug) ? slug : "qms") as Parameters<typeof NavGlyph>[0]["name"];
       const washes = ["blue", "sky", "paper"];
       return (
         <div className="sk-qm" style={{ "--sk-qm-n": live.length } as React.CSSProperties} data-reveal>
@@ -378,12 +457,16 @@ export function SolutionPage({
                     <p className="sk-qm__promise">{g.promise}</p>
                   </div>
                   <ul className="sk-qm__mods">
-                    {g.modules.filter((m) => m.href).map((m) => (
+                    {g.modules.map((m) => (
                       <li key={m.name}>
-                        <Link href={m.href!}>
-                          <span>{m.name}</span>
-                          {ARROW}
-                        </Link>
+                        {m.href ? (
+                          <Link href={m.href}>
+                            <span>{m.name}</span>
+                            {ARROW}
+                          </Link>
+                        ) : (
+                          <span className="sk-qm__plain"><span>{m.name}</span></span>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -402,7 +485,7 @@ export function SolutionPage({
       <div className="sk-qp" data-reveal>
         <div className="sk-qp__grid">
           <div className="sk-qp__product">
-            <span className="sk-qp__glyph" aria-hidden="true"><NavGlyph name="qms" /></span>
+            <span className="sk-qp__glyph" aria-hidden="true"><NavGlyph name={glyph(primary.slug)} /></span>
             <span className="sk-qp__tier">Runs in</span>
             <h3 className="sk-qp__name">{primary.name}</h3>
             <p className="sk-qp__promise">{primary.promise}</p>
@@ -449,9 +532,11 @@ export function SolutionPage({
     );
 
   return (
-    <main className={"dms dms--redesign dms--consistent-eyebrows pf-page sk-page" + (rails ? " dms--rails" : "")}>
+    <main className={"dms dms--redesign dms--consistent-eyebrows pf-page sk-page" + (rails ? " dms--rails pm" : "")}>
       <DmsHeader />
-      <DmsMotion />
+      {/* on the rails: the page-in timeline and scroll choreography of the
+        * homepage, platform and product pages (page-motion.css) */}
+      <DmsMotion selector={rails ? PM_REVEAL_PAGE : undefined} />
 
       {/* ============================ HERO =============================
        * Problem-led, on the shared dark hero: title, lede, CTAs, then the
@@ -470,9 +555,12 @@ export function SolutionPage({
               * leads the proof reel instead. */}
             <div className="sk-hero2__copy">
               <Eyebrow>Solutions · {d.hero.crumb}</Eyebrow>
+              {/* split into words for the page-in stagger (page-motion.css) */}
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">{d.hero.titleLead}</span>
-                <span className="dms-hero__line dms-hero__turn">{d.hero.titleTurn}</span>
+                <span className="dms-hero__line"><Words text={d.hero.titleLead} /></span>
+                <span className="dms-hero__line dms-hero__turn">
+                  <Words text={d.hero.titleTurn} from={d.hero.titleLead.split(" ").length} />
+                </span>
               </h1>
               <p className="dms-lede dms-hero__sub">{d.hero.sub}</p>
               <div className="dms-hero__ctas">
@@ -482,7 +570,7 @@ export function SolutionPage({
             </div>
             {arcade ? (
               <div className="sk-hero2__visual dms-hero__product-demo dms-hero__product-demo--arcade">
-                <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps)} />
+                <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
               </div>
             ) : (
               <div className="sk-hero2__visual dms-hero__product-demo sk-hero__static">
@@ -600,7 +688,7 @@ export function SolutionPage({
              * with a wash panel holding its own record as a small product
              * surface (solution-work-viz.tsx), then the claim, the
              * workstreams on dashed rules, and one exit. */
-            <div className="sk-wk" style={{ "--sk-work-n": Math.min(4, d.work.groups.length) } as React.CSSProperties} data-reveal>
+            <div className="sk-wk" style={{ "--sk-work-n": Math.min(4, d.work.groups.length) } as React.CSSProperties} data-reveal data-stagger>
               {d.work.groups.map((g) => (
                 <article className="sk-wk__cell" key={g.name}>
                   <div className={"sk-wk__wash sk-wk__wash--" + (g.viz?.wash ?? "sky")} aria-hidden="true">
@@ -726,7 +814,7 @@ export function SolutionPage({
             <>
               {/* the register as a compact ledger: severity, where it leaks, the
                 * failure named, the body at reading size; one screen for all */}
-              <ol className="sk-pains" data-reveal>
+              <ol className="sk-pains" data-reveal data-stagger>
                 {(compact ? d.leaks.pains.slice(0, COMPACT_PAINS) : d.leaks.pains).map((p, i) => painRow(p, i))}
               </ol>
               {compact && d.leaks.pains.length > COMPACT_PAINS ? (
@@ -773,7 +861,7 @@ export function SolutionPage({
                 steps={
                   rails && d.flow.steps?.length
                     ? d.flow.steps.slice(0, trailCount).map((st) => ({ title: st.title, body: st.body, icon: JOURNEY_ICONS[st.icon] }))
-                    : d.flow.trail.slice(0, trailCount).map((s) => ({ title: s.t, body: `${s.who} · ${s.when}` }))
+                    : d.flow.trail.slice(0, trailCount).map((s) => ({ title: s.t, body: s.who }))
                 }
                 configs={arcade.steps.slice(0, trailCount)}
               />
@@ -786,7 +874,7 @@ export function SolutionPage({
                   {d.flow.trail.map((s) => (
                     <li className="sk-trail__step" key={s.t}>
                       <span className="sk-trail__t">{s.t}</span>
-                      <span className="sk-trail__meta">{s.who} · {s.when}</span>
+                      <span className="sk-trail__meta">{s.who}</span>
                     </li>
                   ))}
                 </ol>
@@ -832,7 +920,7 @@ export function SolutionPage({
                 * grid of cells on the right (name + the standards it evidences,
                 * as plain mono text). A product still in development says so
                 * once, in its head, instead of a badge on every cell. */}
-              <div className="sk-mods" data-reveal>
+              <div className="sk-mods" data-reveal data-stagger>
                 {shippedGroups.map((g) => {
                   const door = g.modules.find((m) => m.href)?.href;
                   const allSoon = g.modules.every((m) => !m.href && m.soon);
@@ -1053,7 +1141,7 @@ export function SolutionPage({
           <section className={"dms-section sk-inds-section" + (rails ? railed : " dms-section--alt")} id="by-industry" aria-labelledby="sk-inds-title">
             <div className="dms-wrap">
               {head(7, "For your industry", "sk-inds-title", d.industries.heading, d.industries.lede)}
-              <ul className="sk-inds" data-reveal>
+              <ul className="sk-inds" data-reveal data-stagger>
                 {d.industries.rows.map((row) => (
                   <li key={row.name}>
                     <Link href={row.href} className="sk-ind" aria-label={`${d.name} for ${row.name}: ${row.line}`}>
@@ -1077,7 +1165,7 @@ export function SolutionPage({
           <section className={"dms-section sk-roles-section" + railed} id="by-role" aria-labelledby="sk-roles-title">
             <div className="dms-wrap">
               {head(8, "By your role", "sk-roles-title", d.personas.heading, d.personas.lede)}
-              <div className="sk-roles" data-reveal>
+              <div className="sk-roles" data-reveal data-stagger>
                 {d.personas.cards.map((p) => (
                   <article className={"sk-role" + (p.primary ? " is-primary" : "")} key={p.key}>
                     <span className="sk-role__stake">
@@ -1123,7 +1211,7 @@ export function SolutionPage({
               }
             />
           ) : (
-          <div className="sk-trigs" data-reveal>
+          <div className="sk-trigs" data-reveal data-stagger>
             {urgentLevels.flatMap((level) =>
               d.triggers.rows
                 .filter((t) => t.severity === level)
@@ -1168,7 +1256,7 @@ export function SolutionPage({
               </div>
               <p className="dms-lede">{d.trust.lede}</p>
             </div>
-            <ul className="sk-pts" data-reveal>
+            <ul className="sk-pts" data-reveal data-stagger>
               {d.trust.points.map((p) => (
                 <li className="sk-pt" key={p.title}>
                   <h3 className="sk-pt__t">{p.title}</h3>
@@ -1194,7 +1282,7 @@ export function SolutionPage({
               </div>
               <p className="dms-lede">{d.caseKit.lede}</p>
             </div>
-            <ul className="sk-pts" data-reveal>
+            <ul className="sk-pts" data-reveal data-stagger>
               {d.caseKit.items.map((it) => (
                 <li className="sk-pt" key={it.title}>
                   <h3 className="sk-pt__t">{it.title}</h3>
@@ -1211,6 +1299,15 @@ export function SolutionPage({
       {d.caseKit ? band("alt") : null}
 
       {/* ============================ CLOSE ============================ */}
+      {rails ? (
+        <RailsClose
+          id="sk-close-h"
+          eyebrow={d.close.eyebrow}
+          heading={d.close.heading}
+          lede={d.close.lede}
+          secondary={{ label: "See the platform", href: "/platform" }}
+        />
+      ) : (
       <section className={"dms-section dms-section--dark dms-close" + (rails ? " hm-close--rails hm-railed" : "")} id="demo" aria-labelledby="sk-close-h">
         <div className="dms-wrap">
           <div className="dms-close__grid" data-reveal>
@@ -1236,6 +1333,7 @@ export function SolutionPage({
           </div>
         </div>
       </section>
+      )}
 
       {/* ------------------------------------------------------- footer */}
       <SiteFooter tagline="The decision trace for regulated operations." />

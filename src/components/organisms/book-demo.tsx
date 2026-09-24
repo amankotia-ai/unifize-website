@@ -12,9 +12,8 @@
  * (itm, dms, the atoms kit) aliases rather than redefines.
  *
  * Rebuilt 22 Sep 2026 in the rails grammar the home, platform and DMS pages
- * share, drawn properly at card size: two hairline rails run the full height
- * of the card, every block is inset inside them, a hairline divides the
- * head from the form with a crosshair at each rail crossing, and the footer
+ * share; the rails came out on 24 Sep. Every block shares one inset, a
+ * hairline divides the head from the form, and the footer
  * strip sits on the alt grey. The old record chrome (mono code, status chip,
  * four-step thread, standards strip, receipt stamp) stays gone.
  * -------------------------------------------------------------------------- */
@@ -349,14 +348,13 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
             * the home, platform and product heroes stage, on the pages' own
             * wash ground. Decorative: the dialog is the form beside it. */}
           <aside className="uzd__viz" aria-hidden="true">
-            <div className="uzd__stage rf rf--twin">
+            <div className="uzd__stage rf rf--twin rf--plate">
               <RibbonField composition="twin" tone="quiet" />
               <ArcadeStepScene config={HOME_HERO_QUALITY_CONFIG} />
             </div>
           </aside>
 
-          {/* right pane: the rails run its full height, so every block below
-            * is drawn between the same pair of lines */}
+          {/* right pane: the form column */}
           <div className="uzd__inner">
           <button
             type="button"
@@ -522,15 +520,9 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
   );
 }
 
-/* The divider between two blocks of the card: one hairline edge to edge, with
- * a crosshair where it crosses each rail. */
+/* The divider between two blocks of the card: one hairline edge to edge. */
 function Divider() {
-  return (
-    <div className="uzd__div" aria-hidden="true">
-      <span className="uzd__cross uzd__cross--l" />
-      <span className="uzd__cross uzd__cross--r" />
-    </div>
-  );
+  return <div className="uzd__div" aria-hidden="true" />;
 }
 
 function Select({

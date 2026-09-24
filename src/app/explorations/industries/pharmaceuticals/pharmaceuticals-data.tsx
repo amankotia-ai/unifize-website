@@ -16,16 +16,12 @@
  * ========================================================================== */
 
 import type { IndustryData, IndustryRails } from "../_shared/types";
+import { PHARMACEUTICALS_JOURNEY } from "./pharmaceuticals-journey";
 
 export const PHARMACEUTICALS: IndustryData = {
   slug: "pharmaceuticals",
   name: "Pharmaceuticals",
 
-  meta: {
-    title: "Pharmaceuticals · Unifize",
-    description:
-      "Your QMS records that a batch was released. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, regulatory, and operations, so it holds up at an FDA inspection.",
-  },
 
   hero: {
     crumb: "Pharmaceuticals",
@@ -307,7 +303,7 @@ export const PHARMACEUTICALS: IndustryData = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
+    eyebrow: "Pharmaceuticals on Unifize",
     heading: "Incumbents track batch records. Unifize reconstructs the decision.",
     lede: "Pick a deviation or change you could not replay at the last inspection. We will reconstruct it live.",
   },
@@ -372,7 +368,7 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
       "An executed batch record under review in Unifize: an out-of-specification result opens a deviation, the investigation, root cause and CAPA are bound to it, the section closes, and the Qualified Person releases the batch with the reason on the record.",
   },
 
-  thread: { title: "Deviation → CAPA" },
+  journey: PHARMACEUTICALS_JOURNEY,
 
   trust: {
     label: "Built for GxP-regulated pharma teams",

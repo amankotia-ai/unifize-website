@@ -10,6 +10,7 @@ import { ResourceShell } from "../../_shared/resource-shell";
 import { Crumb, BandHead, ResourceCTA, ResourceFooter } from "../../_shared/resource-chrome";
 import { PostCard, initialsOf } from "../../_shared/resource-cards";
 import { POSTS, getPost, type Block, type Author } from "../../_shared/resources-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
 export function generateStaticParams() {
   return POSTS.map((p) => ({ slug: p.slug }));
@@ -17,9 +18,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const p = getPost(slug);
-  if (!p) return { title: "Blog — Unifize" };
-  return { title: `${p.title} — Unifize`, description: p.dek };
+  return pageMetadata(`/resources/blog/${slug}`);
 }
 
 function Avatar({ author, cls }: { author: Author; cls: string }) {

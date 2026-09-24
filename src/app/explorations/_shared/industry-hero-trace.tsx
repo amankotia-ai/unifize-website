@@ -21,6 +21,24 @@
  *   formula   chemicals: the formulation's composition, one component's
  *             supplier changing, the change fanning out to the SDS, the
  *             REACH dossier and the customer notice
+ *   file      cosmetics: the per-SKU safety substantiation file a retailer
+ *             audit asks for, one supplier COA missing, requested and
+ *             received across the supplier boundary, the file complete
+ *   trace     food: the lot genealogy, a supplier's notice on one ingredient
+ *             lot traced forward through the runs to every finished lot,
+ *             each held, the reporting decision put on the record
+ *   identity  supplements: the incoming identity test, the lot's fingerprint
+ *             drawn over the reference, an unmatched band held and the lot
+ *             rejected, the replacement lot matching and released
+ *   eightd    automotive: a warranty return run through the eight
+ *             disciplines, containment across every place the suspect stock
+ *             sits, the control plan updated, the 8D closed with the OEM
+ *   fai       aerospace: an AS9102 first article, the three forms, the
+ *             ballooned drawing measured characteristic by characteristic,
+ *             one key characteristic out, through MRB, re-measured, signed
+ *   fat       machinery: the customer-witnessed FAT protocol on the build's
+ *             milestone track, the qualification documents short, a punch
+ *             item raised and closed, the machine accepted and on to ship
  * Around it the four quiet chips (regulatory frame, a cascade that wakes on
  * its moment, a statutory clock, the sealed trace that wakes on release),
  * placed per kind so the compositions differ too.
@@ -114,7 +132,96 @@ export type FormulaHero = Chips &
     cascadeOutput: number;
   };
 
-export type HeroTraceData = ChangeHero | BatchHero | SponsorsHero | ControlHero | FormulaHero;
+export type FileHero = Chips &
+  Head & {
+    kind: "file";
+    stages: { assemble: string; gap: string; review: string; released: string };
+    /** the evidence the file holds, one tile each, with the function behind it */
+    tiles: { name: string; fn: string }[];
+    /** the tile that is missing, what it says while open and once closed */
+    gap: { tile: number; label: string; closed: string };
+    /** the exchange that closes it, across the supplier boundary */
+    request: { org: string; text: string; ext?: boolean }[];
+  };
+
+export type TraceHero = Chips &
+  Head & {
+    kind: "trace";
+    stages: { notice: string; trace: string; decide: string; released: string };
+    /** the genealogy, one column per level; every node after the first
+     *  level names its parent in the level before (`from`) */
+    levels: { cap: string; nodes: { name: string; sub: string; done: string; from?: number }[] }[];
+    /** what the flag on the source lot says */
+    flag: string;
+    /** the reporting decision recorded once the scope is bound */
+    decision: { label: string; idle: string; done: string };
+  };
+
+export type IdentityHero = Chips &
+  Head & {
+    kind: "identity";
+    stages: { testing: string; mismatch: string; retest: string; released: string };
+    /** the chart's caption and the two lines' names */
+    method: string;
+    legend: { reference: string; sample: string };
+    /** the reference fingerprint as bands (x and width 0..1, height 0..1) */
+    bands: { x: number; h: number; w: number }[];
+    /** the band the first lot carries that the reference does not */
+    extra: { x: number; h: number; w: number; label: string };
+    /** what happens once it is flagged (the first wakes the cascade) */
+    steps: { label: string; meta: string }[];
+    /** the replacement lot's line under the chart */
+    lots: { first: string; second: string; match: string };
+  };
+
+export type EightDHero = Chips &
+  Head & {
+    kind: "eightd";
+    stages: { opened: string; contain: string; solve: string; released: string };
+    /** the disciplines in order, D1 to D8 */
+    disciplines: { code: string; label: string }[];
+    /** the discipline that opens the containment panel, and where the
+     *  suspect stock sits (each contained one tick after the last) */
+    containment: { at: number; cap: string; sites: { name: string; off: string; on: string }[] };
+    /** the discipline that wakes the cascade chip */
+    cascadeAt: number;
+    /** the customer's copy, submitted when the last discipline closes */
+    response: { label: string; idle: string; done: string };
+  };
+
+export type FaiHero = Chips &
+  Head & {
+    kind: "fai";
+    stages: { forms: string; measure: string; mrb: string; released: string };
+    /** the AS9102 forms, in order; the last closes with the characteristics */
+    forms: { code: string; label: string }[];
+    /** the form that wakes the cascade chip when it closes */
+    cascadeForm: number;
+    /** the ballooned characteristic that measures out (1-based, of six), and
+     *  what its balloon tag says out and back in */
+    fail: { balloon: number; out: string; back: string };
+    /** what happens to it before it is re-measured */
+    steps: { label: string; meta: string }[];
+  };
+
+export type FatHero = Chips &
+  Head & {
+    kind: "fat";
+    stages: { run: string; punch: string; witness: string; released: string };
+    /** the build's milestones; `at` is the one being accepted */
+    milestones: string[];
+    at: number;
+    /** the protocol's tests, in order */
+    tests: { name: string; ref: string }[];
+    /** the test that comes up short, and what its result says */
+    fail: { row: number; out: string; back: string };
+    /** the punch item that closes it */
+    punch: { label: string; meta: string }[];
+    /** the two sides of the witness column */
+    witness: string;
+  };
+
+export type HeroTraceData = ChangeHero | BatchHero | SponsorsHero | ControlHero | FormulaHero | FileHero | TraceHero | IdentityHero | EightDHero | FaiHero | FatHero;
 
 /* ------------------------------------------------------------ the clocks
  * Every kind runs on the same tick; each lays out its own beats and says
@@ -180,7 +287,127 @@ function formulaBeats(d: FormulaHero) {
   return { flagAt, outAt, reviewAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: outAt[d.cascadeOutput] };
 }
 
+function fileBeats(d: FileHero) {
+  const flagAt = 2;
+  const doneAt: number[] = [];
+  let k = flagAt + 1;
+  d.tiles.forEach((_, i) => {
+    if (i !== d.gap.tile) doneAt[i] = k++;
+  });
+  /* the other tiles fill while the request is out; its answer closes the gap */
+  const resolveAt = k;
+  doneAt[d.gap.tile] = resolveAt;
+  const last = d.request.length - 1;
+  const reqAt = d.request.map((_, i) => (i === last ? resolveAt : flagAt + i * 2));
+  const signAt = resolveAt + 2;
+  const releaseAt = signAt + 2;
+  return { flagAt, reqAt, doneAt, resolveAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: resolveAt + 1 };
+}
+
+function traceBeats(d: TraceHero) {
+  const flagAt = 2;
+  let k = flagAt + 1;
+  /* level 0 is the flagged source; the rest light up one node per tick */
+  const nodeAt = d.levels.map((l, li) => l.nodes.map(() => (li === 0 ? flagAt : k++)));
+  const decisionAt = k++;
+  const signAt = k++;
+  const releaseAt = k + 1;
+  const last = nodeAt[nodeAt.length - 1];
+  return { flagAt, nodeAt, decisionAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: last[last.length - 1] };
+}
+
+function identityBeats(d: IdentityHero) {
+  const drawFrom = 1;
+  const DRAW = 4;
+  const flagAt = drawFrom + DRAW;
+  const stepAt = d.steps.map((_, i) => flagAt + 1 + i);
+  const redrawFrom = flagAt + d.steps.length + 1;
+  const matchAt = redrawFrom + 2;
+  const signAt = matchAt + 1;
+  const releaseAt = signAt + 2;
+  return { drawFrom, DRAW, flagAt, stepAt, redrawFrom, matchAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: stepAt[0] };
+}
+
+function eightdBeats(d: EightDHero) {
+  const openAt = 1;
+  const dAt: number[] = [];
+  const siteAt: number[] = [];
+  let k = openAt + 1;
+  /* containment opens when its discipline starts and closes only once every
+   * place the stock sits is contained */
+  let panelAt = 0;
+  d.disciplines.forEach((_, i) => {
+    if (i === d.containment.at) {
+      panelAt = k;
+      d.containment.sites.forEach(() => siteAt.push(k++));
+    }
+    dAt[i] = k++;
+  });
+  const responseAt = dAt[dAt.length - 1];
+  const signAt = responseAt + 1;
+  const releaseAt = signAt + 2;
+  return { openAt, dAt, siteAt, panelAt, responseAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: dAt[d.cascadeAt] };
+}
+
+/* the drawing's six balloons: where each sits, and the feature its leader
+ * points at (a machined L-bracket, 400 x 170) */
+const FAI_BALLOONS = [
+  { x: 110, y: 24, tx: 62, ty: 62 },
+  { x: 150, y: 70, tx: 118, ty: 118 },
+  { x: 232, y: 70, tx: 202, ty: 118 },
+  { x: 340, y: 88, tx: 306, ty: 118 },
+  { x: 334, y: 156, tx: 300, ty: 148 },
+  { x: 16, y: 20, tx: 24, ty: 52 },
+];
+
+function faiBeats(d: FaiHero) {
+  const formAt = d.forms.map((_, i) => 2 + i);
+  const last = d.forms.length - 1;
+  let k = formAt[last - 1] + 1;
+  const balloonAt: number[] = [];
+  const stepAt: number[] = [];
+  let flagAt = 0;
+  let backAt = 0;
+  FAI_BALLOONS.forEach((_, i) => {
+    balloonAt[i] = k++;
+    if (i === d.fail.balloon - 1) {
+      flagAt = balloonAt[i];
+      d.steps.forEach(() => stepAt.push(k++));
+      backAt = stepAt[stepAt.length - 1];
+    }
+  });
+  formAt[last] = k - 1;
+  const signAt = k;
+  const releaseAt = signAt + 2;
+  return { formAt, balloonAt, stepAt, flagAt, backAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: formAt[d.cascadeForm] };
+}
+
+function fatBeats(d: FatHero) {
+  let k = 2;
+  const testAt: number[] = [];
+  const punchAt: number[] = [];
+  let flagAt = 0;
+  let backAt = 0;
+  d.tests.forEach((_, i) => {
+    testAt[i] = k++;
+    if (i === d.fail.row) {
+      flagAt = testAt[i];
+      d.punch.forEach(() => punchAt.push(k++));
+      backAt = punchAt[punchAt.length - 1];
+    }
+  });
+  const signAt = k;
+  const releaseAt = signAt + 2;
+  return { testAt, punchAt, flagAt, backAt, signAt, releaseAt, end: releaseAt + HOLD, cascadeAt: releaseAt };
+}
+
 function beatsOf(d: HeroTraceData): Beats {
+  if (d.kind === "fat") return fatBeats(d);
+  if (d.kind === "fai") return faiBeats(d);
+  if (d.kind === "eightd") return eightdBeats(d);
+  if (d.kind === "identity") return identityBeats(d);
+  if (d.kind === "trace") return traceBeats(d);
+  if (d.kind === "file") return fileBeats(d);
   if (d.kind === "formula") return formulaBeats(d);
   if (d.kind === "batch") return batchBeats(d);
   if (d.kind === "sponsors") return sponsorsBeats(d);
@@ -620,6 +847,451 @@ function FormulaCard({ d, t }: { d: FormulaHero; t: number }) {
   );
 }
 
+/* ------------------------------------------ file (cosmetics) */
+function FileCard({ d, t }: { d: FileHero; t: number }) {
+  const b = fileBeats(d);
+  const released = t >= b.releaseAt;
+  const open = t >= b.flagAt && t < b.resolveAt;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : t >= b.resolveAt ? "review" : open ? "exception" : "assess";
+  const stage = released ? d.stages.released : t >= b.resolveAt ? d.stages.review : open ? d.stages.gap : d.stages.assemble;
+  const n = d.tiles.length;
+  const inFile = d.tiles.filter((_, i) => t >= b.doneAt[i]).length;
+  return (
+    <article className="mdt-card mdt-card--file" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <div className="mdt-card__label">
+        <span>Evidence</span>
+        <span className="mdt-card__count">
+          {inFile} of {n} in file
+        </span>
+      </div>
+      <div className="mhk-meter">
+        {d.tiles.map((tile, i) => (
+          <span
+            key={tile.name}
+            className={t >= b.doneAt[i] ? "is-on" : i === d.gap.tile && open ? "is-flag" : undefined}
+          />
+        ))}
+      </div>
+      <ul className="mhk-grid">
+        {d.tiles.map((tile, i) => {
+          const done = t >= b.doneAt[i];
+          const flagged = i === d.gap.tile && open;
+          return (
+            <li key={tile.name} className={"mhk-tile" + (done ? " is-on" : "") + (flagged ? " is-flag" : "")}>
+              <span className="mhk-tile__top">
+                <span className="mdt-row__tick">{done ? <Check /> : null}</span>
+                <small>{tile.fn}</small>
+              </span>
+              <b>{tile.name}</b>
+              <span className="mhk-tile__state">
+                {flagged ? d.gap.label : done ? (i === d.gap.tile ? d.gap.closed : "In file") : "Pending"}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+
+      <ol className={"mhk-req" + (t >= b.flagAt ? " is-open" : "")}>
+        {d.request.map((m, i) => (
+          <li key={m.text} className={(t >= b.reqAt[i] ? "is-on" : "") + (m.ext ? " is-ext" : "")}>
+            <span className="mhk-req__org">{m.org}</span>
+            <span className="mhk-req__text">{m.text}</span>
+          </li>
+        ))}
+      </ol>
+
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
+/* ------------------------------------------------- trace (food processing) */
+const TG = { w: 400, h: 176, colW: 116, nodeH: 42 };
+
+function TraceCard({ d, t }: { d: TraceHero; t: number }) {
+  const b = traceBeats(d);
+  const released = t >= b.releaseAt;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : t >= b.decisionAt ? "review" : t >= b.flagAt ? "exception" : "assess";
+  const stage = released
+    ? d.stages.released
+    : t >= b.decisionAt
+      ? d.stages.decide
+      : t >= b.nodeAt[1]?.[0]
+        ? d.stages.trace
+        : d.stages.notice;
+  const cols = d.levels.length;
+  const gap = (TG.w - cols * TG.colW) / (cols - 1);
+  const xOf = (li: number) => li * (TG.colW + gap);
+  const yOf = (li: number, ni: number) => (TG.h * (ni + 0.5)) / d.levels[li].nodes.length;
+  const lastLevel = d.levels[cols - 1];
+  const bound = lastLevel.nodes.filter((_, i) => t >= b.nodeAt[cols - 1][i]).length;
+  return (
+    <article className="mdt-card mdt-card--trace" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <div className="mdt-card__label mht-caps">
+        {d.levels.map((l) => (
+          <span key={l.cap}>{l.cap}</span>
+        ))}
+      </div>
+      <svg className="mht-graph" viewBox={`0 0 ${TG.w} ${TG.h}`}>
+        {d.levels.slice(1).map((l, li) =>
+          l.nodes.map((n, ni) => {
+            const x0 = xOf(li) + TG.colW;
+            const y0 = yOf(li, n.from ?? 0);
+            const x1 = xOf(li + 1);
+            const y1 = yOf(li + 1, ni);
+            const mx = (x0 + x1) / 2;
+            return (
+              <path
+                key={n.name + ni}
+                className={t >= b.nodeAt[li + 1][ni] ? "is-on" : undefined}
+                d={`M${x0} ${y0} C ${mx} ${y0}, ${mx} ${y1}, ${x1} ${y1}`}
+              />
+            );
+          }),
+        )}
+        {d.levels.map((l, li) =>
+          l.nodes.map((n, ni) => {
+            const on = t >= b.nodeAt[li][ni];
+            const src = li === 0;
+            const cls = "mht-node" + (on ? (src ? (released ? " is-done" : " is-flag") : " is-on") : "");
+            const x = xOf(li);
+            const y = yOf(li, ni) - TG.nodeH / 2;
+            return (
+              <g key={n.name + ni} className={cls}>
+                <rect x={x} y={y} width={TG.colW} height={TG.nodeH} />
+                <text className="mht-node__name" x={x + 10} y={y + 17}>{n.name}</text>
+                <text className="mht-node__sub" x={x + 10} y={y + 32}>
+                  {src ? (on ? (released ? n.done : d.flag) : n.sub) : on ? n.done : n.sub}
+                </text>
+              </g>
+            );
+          }),
+        )}
+      </svg>
+      <div className="mht-scope">
+        <span>Scope bound</span>
+        <b>
+          {bound} of {lastLevel.nodes.length} {lastLevel.cap.toLowerCase()}
+        </b>
+      </div>
+      <div className={"mht-decision" + (t >= b.decisionAt ? " is-on" : "")}>
+        <span className="mdt-row__tick">{t >= b.decisionAt ? <Check /> : null}</span>
+        <b>{d.decision.label}</b>
+        <small>{t >= b.decisionAt ? d.decision.done : d.decision.idle}</small>
+      </div>
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
+/* ------------------------------------------- identity (supplements) */
+const SP = { w: 400, h: 132, base: 116, top: 10, n: 120 };
+
+function spectrum(bands: { x: number; h: number; w: number }[]) {
+  const pts: string[] = [];
+  for (let i = 0; i <= SP.n; i++) {
+    const x = i / SP.n;
+    const y = bands.reduce((a, b) => a + b.h * Math.exp(-(((x - b.x) / b.w) ** 2)), 0.03);
+    pts.push(`${(x * SP.w).toFixed(1)},${(SP.base - Math.min(1, y) * (SP.base - SP.top)).toFixed(1)}`);
+  }
+  return pts.join(" ");
+}
+
+function IdentityCard({ d, t }: { d: IdentityHero; t: number }) {
+  const b = identityBeats(d);
+  const released = t >= b.releaseAt;
+  const second = t >= b.redrawFrom;
+  const flagged = t >= b.flagAt && !second;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : t >= b.matchAt ? "review" : t >= b.flagAt ? "exception" : "assess";
+  const stage = released ? d.stages.released : second ? d.stages.retest : t >= b.flagAt ? d.stages.mismatch : d.stages.testing;
+  /* how much of the sample line is drawn: the first lot over DRAW ticks,
+   * the replacement over two */
+  const drawn = second
+    ? Math.min(1, (t - b.redrawFrom + 1) / 2)
+    : Math.max(0, Math.min(1, (t - b.drawFrom + 1) / b.DRAW));
+  const ref = spectrum(d.bands);
+  const sample = spectrum(second ? d.bands : [...d.bands, d.extra]);
+  const ex = d.extra.x * SP.w;
+  const exW = d.extra.w * SP.w * 2.4;
+  return (
+    <article className="mdt-card mdt-card--identity" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <div className="mdt-card__label">
+        <span>{d.method}</span>
+        <span className="mhi-legend">
+          <i className="is-ref" />
+          {d.legend.reference}
+          <i className="is-sample" />
+          {d.legend.sample}
+        </span>
+      </div>
+      <div className="mhi-chart">
+        <svg viewBox={`0 0 ${SP.w} ${SP.h}`}>
+          <defs>
+            <clipPath id="mhi-clip">
+              <rect key={second ? "b" : "a"} x="0" y="0" height={SP.h} width={SP.w * drawn} style={{ transition: "width 780ms linear" }} />
+            </clipPath>
+          </defs>
+          <line className="mhi-axis" x1="0" x2={SP.w} y1={SP.base} y2={SP.base} />
+          {flagged ? (
+            <g className="mhi-band">
+              <rect x={ex - exW / 2} y={SP.top - 4} width={exW} height={SP.base - SP.top + 4} />
+              <text x={ex} y={SP.h - 2}>{d.extra.label}</text>
+            </g>
+          ) : null}
+          <polyline className="mhi-ref" points={ref} />
+          <polyline
+            className={"mhi-sample" + (flagged ? " is-flag" : "") + (t >= b.matchAt ? " is-match" : "")}
+            points={sample}
+            clipPath="url(#mhi-clip)"
+          />
+        </svg>
+      </div>
+
+      <ul className={"mhc-steps mhi-steps" + (t >= b.flagAt ? " is-open" : "")}>
+        {d.steps.map((s, i) => {
+          const on = t >= b.stepAt[i];
+          return (
+            <li key={s.label} className={on ? "is-on" : undefined}>
+              <span className="mdt-row__tick">{on ? <Check /> : null}</span>
+              <b>{s.label}</b>
+              <small>{s.meta}</small>
+            </li>
+          );
+        })}
+        <li className={"mhc-steps__eff" + (t >= b.matchAt ? " is-on" : "")}>
+          <span className="mdt-row__tick">{t >= b.matchAt ? <Check /> : null}</span>
+          <b>{d.lots.second}</b>
+          <small>{t >= b.matchAt ? d.lots.match : second ? "Testing" : "Awaiting"}</small>
+        </li>
+      </ul>
+
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
+/* ----------------------------------------------- eightd (automotive) */
+function EightDCard({ d, t }: { d: EightDHero; t: number }) {
+  const b = eightdBeats(d);
+  const released = t >= b.releaseAt;
+  const n = d.disciplines.length;
+  const done = d.disciplines.filter((_, i) => t >= b.dAt[i]).length;
+  /* the discipline being worked is the one after the last closed */
+  const current = released || done >= n ? null : done;
+  const panelOpen = t >= b.panelAt;
+  const solving = done > d.containment.at;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : solving ? "review" : t >= b.openAt ? "exception" : "assess";
+  const stage = released ? d.stages.released : solving ? d.stages.solve : panelOpen ? d.stages.contain : d.stages.opened;
+  return (
+    <article className="mdt-card mdt-card--eightd" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <div className="mdt-card__label">
+        <span>Eight disciplines</span>
+        <span className="mdt-card__count">
+          {done} of {n} closed
+        </span>
+      </div>
+      <ol className="mh8-ladder">
+        {d.disciplines.map((x, i) => {
+          const on = t >= b.dAt[i];
+          const now = i === current;
+          return (
+            <li key={x.code} className={(on ? "is-on" : "") + (now ? " is-now" : "")}>
+              {x.code}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mh8-now">
+        {current != null ? (
+          <>
+            <b>{d.disciplines[current].code}</b> {d.disciplines[current].label}
+          </>
+        ) : (
+          <>
+            <Check /> All disciplines closed
+          </>
+        )}
+      </p>
+
+      <div className={"mh8-contain" + (panelOpen ? " is-open" : "")}>
+        <span className="mh8-contain__cap">{d.containment.cap}</span>
+        <ul>
+          {d.containment.sites.map((site, i) => {
+            const on = t >= b.siteAt[i];
+            return (
+              <li key={site.name} className={on ? "is-on" : panelOpen ? "is-flag" : undefined}>
+                <b>{site.name}</b>
+                <small>
+                  {on ? <Check /> : null}
+                  {on ? site.on : site.off}
+                </small>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      <div className={"mht-decision" + (t >= b.responseAt ? " is-on" : "")}>
+        <span className="mdt-row__tick">{t >= b.responseAt ? <Check /> : null}</span>
+        <b>{d.response.label}</b>
+        <small>{t >= b.responseAt ? d.response.done : d.response.idle}</small>
+      </div>
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
+/* ---------------------------------------------------- fai (aerospace) */
+function FaiCard({ d, t }: { d: FaiHero; t: number }) {
+  const b = faiBeats(d);
+  const released = t >= b.releaseAt;
+  const fi = d.fail.balloon - 1;
+  const out = t >= b.flagAt && t < b.backAt;
+  const measured = FAI_BALLOONS.filter((_, i) => t >= b.balloonAt[i]).length;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : out ? "exception" : measured === FAI_BALLOONS.length ? "review" : "assess";
+  const stage = released ? d.stages.released : out ? d.stages.mrb : t >= b.balloonAt[0] ? d.stages.measure : d.stages.forms;
+  return (
+    <article className="mdt-card mdt-card--fai" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <ol className="mhq-forms">
+        {d.forms.map((f, i) => {
+          const on = t >= b.formAt[i];
+          return (
+            <li key={f.code} className={on ? "is-on" : undefined}>
+              <span className="mdt-row__tick">{on ? <Check /> : null}</span>
+              <span>
+                <b>{f.code}</b>
+                <small>{f.label}</small>
+              </span>
+            </li>
+          );
+        })}
+      </ol>
+      <div className="mdt-card__label">
+        <span>Ballooned drawing</span>
+        <span className="mdt-card__count">
+          {measured} of {FAI_BALLOONS.length} measured
+        </span>
+      </div>
+      <div className="mhq-drawing">
+        <svg viewBox="0 0 400 170">
+          {/* the part: an L-bracket, flange left, three holes */}
+          <path className="mhq-part" d="M24 26 H62 V104 H306 V148 H24 Z" />
+          <circle className="mhq-part" cx="43" cy="62" r="8" />
+          <circle className="mhq-part" cx="118" cy="126" r="7" />
+          <circle className="mhq-part" cx="202" cy="126" r="7" />
+          <path className="mhq-center" d="M118 112 V140 M104 126 H132 M202 112 V140 M188 126 H216 M43 48 V76 M29 62 H57" />
+          {/* dimensions */}
+          <path className="mhq-dim" d="M24 160 H306 M24 155 V165 M306 155 V165" />
+          <path className="mhq-dim" d="M318 104 H330 M318 148 H330 M326 104 V148" />
+          {FAI_BALLOONS.map((p, i) => {
+            const on = t >= b.balloonAt[i];
+            const isOut = i === fi && out;
+            const cls = "mhq-balloon" + (isOut ? " is-flag" : on ? " is-on" : "");
+            return (
+              <g key={i} className={cls}>
+                <line x1={p.x} y1={p.y} x2={p.tx} y2={p.ty} />
+                <circle cx={p.x} cy={p.y} r="10" />
+                <text x={p.x} y={p.y + 3.5}>{i + 1}</text>
+              </g>
+            );
+          })}
+          {t >= b.flagAt ? (
+            <g className={"mhq-tag" + (out ? " is-flag" : " is-back")}>
+              <rect x={FAI_BALLOONS[fi].x - 48} y={FAI_BALLOONS[fi].y - 38} width="96" height="17" />
+              <text x={FAI_BALLOONS[fi].x} y={FAI_BALLOONS[fi].y - 26}>{out ? d.fail.out : d.fail.back}</text>
+            </g>
+          ) : null}
+        </svg>
+      </div>
+      <ul className={"mhc-steps" + (t >= b.flagAt ? " is-open" : "")}>
+        {d.steps.map((s, i) => {
+          const on = t >= b.stepAt[i];
+          return (
+            <li key={s.label} className={on ? "is-on" : undefined}>
+              <span className="mdt-row__tick">{on ? <Check /> : null}</span>
+              <b>{s.label}</b>
+              <small>{s.meta}</small>
+            </li>
+          );
+        })}
+      </ul>
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
+/* ------------------------------------------------- fat (machinery) */
+function FatCard({ d, t }: { d: FatHero; t: number }) {
+  const b = fatBeats(d);
+  const released = t >= b.releaseAt;
+  const out = t >= b.flagAt && t < b.backAt;
+  const run = d.tests.filter((_, i) => t >= b.testAt[i]).length;
+  const phase = released ? "released" : t >= b.signAt ? "signed" : out ? "exception" : run === d.tests.length ? "review" : "assess";
+  const stage = released ? d.stages.released : t >= b.signAt ? d.stages.witness : out ? d.stages.punch : d.stages.run;
+  const now = released ? d.at + 1 : d.at;
+  return (
+    <article className="mdt-card mdt-card--fat" aria-hidden="true">
+      <CardHead d={d} phase={phase} stage={stage} />
+      <ol className="mhm-track">
+        {d.milestones.map((m, i) => (
+          <li key={m} className={i < now ? "is-done" : i === now ? "is-now" : undefined}>
+            <i>{i < now ? <Check /> : null}</i>
+            <span>{m}</span>
+          </li>
+        ))}
+      </ol>
+      <table className="mhm-proto">
+        <thead>
+          <tr>
+            <th>{d.milestones[d.at]} protocol</th>
+            <th>Result</th>
+            <th>{d.witness}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {d.tests.map((x, i) => {
+            const ran = t >= b.testAt[i];
+            const isOut = i === d.fail.row && out;
+            const passed = ran && !isOut;
+            return (
+              <tr key={x.name} className={isOut ? "is-flag" : passed ? "is-on" : undefined}>
+                <td>
+                  <b>{x.name}</b>
+                  <small>{x.ref}</small>
+                </td>
+                <td className="mhm-proto__res">
+                  {isOut ? d.fail.out : passed ? (i === d.fail.row ? d.fail.back : "Pass") : "Pending"}
+                </td>
+                <td className="mhm-proto__wit">
+                  <span className="mdt-row__tick">{passed ? <Check /> : null}</span>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <ul className={"mhc-steps" + (t >= b.flagAt ? " is-open" : "")}>
+        {d.punch.map((s, i) => {
+          const on = t >= b.punchAt[i];
+          return (
+            <li key={s.label} className={on ? "is-on" : undefined}>
+              <span className="mdt-row__tick">{on ? <Check /> : null}</span>
+              <b>{s.label}</b>
+              <small>{s.meta}</small>
+            </li>
+          );
+        })}
+      </ul>
+      <CardFoot d={d} phase={phase} released={released} />
+    </article>
+  );
+}
+
 /* ------------------------------------------------------------ the shell */
 export function IndustryHeroTrace({ data }: { data: HeroTraceData }) {
   const d = data;
@@ -634,9 +1306,22 @@ export function IndustryHeroTrace({ data }: { data: HeroTraceData }) {
     if (!root) return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     let timer: number | undefined;
+    let done = false;
     const start = () => {
-      if (timer) return;
-      timer = window.setInterval(() => setT((v) => (v + 1) % T_END), TICK);
+      if (timer || done) return;
+      // play once, then hold on the finished record (no loop)
+      timer = window.setInterval(
+        () =>
+          setT((v) => {
+            if (v + 1 >= T_END - 1) {
+              done = true;
+              stop();
+              return T_END - 1;
+            }
+            return v + 1;
+          }),
+        TICK,
+      );
     };
     const stop = () => {
       window.clearInterval(timer);
@@ -658,6 +1343,12 @@ export function IndustryHeroTrace({ data }: { data: HeroTraceData }) {
 
   let card: ReactNode;
   if (d.kind === "formula") card = <FormulaCard d={d} t={t} />;
+  else if (d.kind === "file") card = <FileCard d={d} t={t} />;
+  else if (d.kind === "trace") card = <TraceCard d={d} t={t} />;
+  else if (d.kind === "identity") card = <IdentityCard d={d} t={t} />;
+  else if (d.kind === "eightd") card = <EightDCard d={d} t={t} />;
+  else if (d.kind === "fai") card = <FaiCard d={d} t={t} />;
+  else if (d.kind === "fat") card = <FatCard d={d} t={t} />;
   else if (d.kind === "batch") card = <BatchCard d={d} t={t} />;
   else if (d.kind === "sponsors") card = <SponsorsCard d={d} t={t} />;
   else if (d.kind === "control") card = <ControlCard d={d} t={t} />;

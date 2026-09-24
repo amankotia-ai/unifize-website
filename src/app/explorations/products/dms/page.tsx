@@ -28,7 +28,6 @@ import {
   PRODUCT,
   DMS_PROBLEMS,
   DMS_FLOWS,
-  INTEGRATIONS,
   CAPABILITIES,
   AUDIENCE,
   STANDARDS,
@@ -37,11 +36,12 @@ import {
 import { dmsCopy } from "./dms-copy";
 import { DmsHeader } from "./dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
-import { IntegrationLayer } from "./dms-integrations";
+import { IntegrationIso } from "./dms-integrations-iso";
 import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { Eyebrow } from "./dms-primitives";
 import { CapGlyph } from "./dms-linework";
-import { DmsProblemSpotlight } from "./dms-problem-visuals";
+import { ProblemBoard } from "../_shared/problem-board";
+import { DMS_BOARD_AFTER_NOTES, DMS_BOARD_ARTIFACTS } from "./dms-problem-board";
 import { DmsIndustryIcon } from "./dms-industry-icons";
 import { DmsProofReel } from "./dms-proof";
 import {
@@ -56,7 +56,6 @@ import {
   STYLIZED_MODULE_RAIL_CONFIGS,
 } from "./stylized/stylized-mocks";
 import { HeroArcade } from "../_shared/arcade/hero-arcade";
-import { StylizedCoordinationTax } from "./stylized/stylized-ctax";
 import { HatchBand } from "../../_shared/page-rails";
 import "../../industry-template-modern/itm.css";
 import "./dms.css";
@@ -64,18 +63,27 @@ import "./dms-redesign.css";
 import "./stylized/stylized.css";
 import "../../_shared/page-rails.css";
 import "./dms-rails.css";
+import { DmsMotion } from "../dms/dms-motion";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL } from "../../_shared/page-motion-reveal";
+import "../_shared/problem-board.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../../_shared/page-motion.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Document Management System · Unifize",
-  description:
-    "DMS bundles Document Control, Change Control, and Training into one governed record. Controlled documents from draft to obsolete, with 21 CFR Part 11 e-signature where required.",
-};
+export const metadata: Metadata = pageMetadata("/products/dms");
+
+/* line 2's words carry on the stagger from line 1 (page-motion.css) */
+const HERO_LINE1_WORDS = dmsCopy("hero.line1", "One current version.").split(" ").length;
 
 export default function DmsProductPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and each section head's parts (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL} />
 
       {/* ============================ HERO =============================
         * Dark grey ground: headline left, sub + CTAs right on one baseline,
@@ -95,8 +103,9 @@ export default function DmsProductPage() {
                 <span>Document Management System</span>
               </Link>
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">{dmsCopy("hero.line1", "One current version.")}</span>
-                <span className="dms-hero__line dms-hero__turn">{dmsCopy("hero.line2", "Everywhere you look.")}</span>
+                {/* split into words for the page-in stagger (page-motion.css) */}
+                <span className="dms-hero__line"><Words text={dmsCopy("hero.line1", "One current version.")} /></span>
+                <span className="dms-hero__line dms-hero__turn"><Words text={dmsCopy("hero.line2", "Everywhere you look.")} from={HERO_LINE1_WORDS} /></span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -139,41 +148,22 @@ export default function DmsProductPage() {
       {/* the first hatched divider: the dark-to-light break */}
       <HatchBand />
 
-      {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="dms-problems-title">
-        <div className="dms-wrap dms-problems__inner">
-          <header className="dms-problems__intro">
-            <div className="dms-problems__head">
-              <Eyebrow n={1}>The problem</Eyebrow>
-              <h2 className="dms-h2" id="dms-problems-title">
-                {dmsCopy("problem.heading", "You have the document. Nobody can find it when it matters.")}
-              </h2>
-            </div>
-            <p className="dms-lede">
-              {dmsCopy(
-                "problem.lede",
-                "Quality teams spend up to a third of their week hunting for controlled documents across shared drives, QMS folders, and email threads.",
-              )}
-            </p>
-          </header>
-
-          {/* Spotlight: index rail left, one symptom on stage at a time. The
-            * old world sits on the paper wash (problems are paper, the
-            * product is blue). */}
-          <DmsProblemSpotlight items={DMS_PROBLEMS} />
-
-          <div className="dms-problems__bridge">
-            <p><strong>Four symptoms, one root cause.</strong> The work isn’t the bottleneck; the coordination around it is.</p>
-          </div>
-        </div>
-      </section>
-
-      <HatchBand />
-
-      {/* ==================== THE COORDINATION TAX =====================
-       * The four daily symptoms roll up into one measurable root cause, read
-       * as a BEFORE / AFTER ledger with a drawn scene per stage. */}
-      <StylizedCoordinationTax problems={DMS_PROBLEMS} className="hm-railed" />
+      {/* ============================ THE PROBLEM =======================
+       * The problem and the coordination tax, said once (24 Sep 2026): four
+       * loops as cells, each with its object on a wash, one line that the
+       * Today / With Unifize switch swaps, the customer film on the floor.
+       * Replaced the tabbed spotlight + the BEFORE/AFTER ledger, which told
+       * the same four stories twice. Shared with QMS: _shared/problem-board. */}
+      <ProblemBoard
+        heading={dmsCopy("problem.heading", "You have the document. Nobody can find it when it matters.")}
+        lede={dmsCopy(
+          "problem.lede",
+          "Quality teams spend up to a third of their week hunting for controlled documents across shared drives, QMS folders, and email threads.",
+        )}
+        problems={DMS_PROBLEMS}
+        artifacts={DMS_BOARD_ARTIFACTS}
+        afterNotes={DMS_BOARD_AFTER_NOTES}
+      />
 
       <HatchBand />
 
@@ -237,18 +227,12 @@ export default function DmsProductPage() {
       <HatchBand />
 
       {/* ==================== INTEGRATIONS (connector layer) =========== */}
-      <IntegrationLayer
-        data={INTEGRATIONS}
-        variant="minimal"
-        tone="light"
+      <IntegrationIso
         className="hm-railed"
-        minimalEyebrow="Integrations"
-        minimalHeading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
-        minimalLede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
+        eyebrow="Integrations"
+        heading={dmsCopy("integrations.heading", "Works with the systems you already run.")}
+        lede={dmsCopy("integrations.lede", "Connect document control to the tools already holding your product, people, and process data.")}
         logos={PRODUCT_INTEGRATION_LOGOS.dms}
-        ctaHeading={dmsCopy("integrations.cta.heading", "Don’t see your system?")}
-        ctaBody={dmsCopy("integrations.cta.body", "We are always adding connectors. Bring us the stack you need to keep in step.")}
-        ctaLabel={dmsCopy("integrations.cta.label", "Talk to us")}
       />
 
       <HatchBand />
@@ -336,28 +320,14 @@ export default function DmsProductPage() {
       {/* ============================ CLOSE =============================
         * On the hero's charcoal so the page opens and closes on the same
         * ground; the rails run through it and on through the footer. */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="dms-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid" data-reveal>
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>{dmsCopy("close.eyebrow", "Ready when you are")}</Eyebrow>
-              <h2 className="dms-close__h" id="dms-close-h">{dmsCopy("close.heading", "Bring the SOP you could not find the current version of.")}</h2>
-              <p className="dms-lede">{dmsCopy("close.lede", "We will run it through the lifecycle live, from draft to Part 11 approval.")}</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">{dmsCopy("close.cta", "Book a 30-minute walkthrough")}</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="dms-close-h"
+        eyebrow="Document control on Unifize"
+        heading={dmsCopy("close.heading", "Bring the SOP you could not find the current version of.")}
+        lede={dmsCopy("close.lede", "We will run it through the lifecycle live, from draft to Part 11 approval.")}
+        primaryLabel={dmsCopy("close.cta", "Book a 30-minute walkthrough")}
+        secondary={{ label: "See what is bundled", href: "#modules" }}
+      />
 
       {/* ------------------------------------------------------- footer
         * the footer closes the page on the same charcoal as the close */}

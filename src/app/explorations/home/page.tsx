@@ -68,7 +68,6 @@ import { PLM_MODULE_ARCADE_CONFIGS } from "../products/plm/plm-arcade";
 import { CASE_STUDIES, POSTS } from "../resources/_shared/resources-data";
 import { CUSTOMER_VIDEOS } from "../resources/_shared/customer-videos";
 import { HomeProofFilms } from "./home-proof";
-import { ProcessTiles } from "./home-process-tiles";
 import { HomeIndustries } from "./home-industries";
 import { HomeStackMark } from "./home-stack-mark";
 import { ENTRY_VIZ } from "./home-entry-viz";
@@ -86,13 +85,15 @@ import "./home-kit.css";
 import { HatchBand } from "./home-rails";
 import "../_shared/page-rails.css";
 import "./home-rails.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../_shared/page-motion.css";
+import { DmsMotion } from "../products/dms/dms-motion";
+import "./home-mobile.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "The AI-powered platform for cross-functional work in regulated industries",
-  description:
-    "Unifize connects the decisions, evidence, and completion your teams scatter across email, meetings, and spreadsheets, so every CAPA, change order, design review, and supplier approval closes faster and closes proven.",
-};
+export const metadata: Metadata = pageMetadata("/home");
 
 /* the hero visual: one arcade app window, four worlds - pick yours. One
  * artifact per audience, per the panel's role-coverage finding. Each tab
@@ -488,8 +489,10 @@ const CUSTOMER_LOGOS: { name: string; src: string; h?: number }[] = [
  * module squares, a certificate. One stroke, one weight. */
 export default function HomePage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--home dms--rails">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--home dms--rails pm">
       <DmsHeader />
+      {/* scroll choreography: the blocks and the hatch bands (page-motion.css) */}
+      <DmsMotion selector="[data-reveal], .hm-hatch" />
       {/* warm the cache with the platform hero film once this page is idle */}
       <PrefetchHeroFilm />
 
@@ -576,7 +579,7 @@ export default function HomePage() {
           {/* 9 Sep 2026 review: back to three cards side by side (one glance,
             * no pinned scroll), no index numbers, and an explicit arrow on
             * every row and every card so the whole thing reads as clickable */}
-          <div className="hm-entry-grid" data-reveal>
+          <div className="hm-entry-grid" data-reveal data-stagger>
             {ENTRY_PATHS.map((path) => (
               <article className="hm-entry" key={path.label}>
                 {/* 22 Sep 2026: the card leads with a wash panel (one soft
@@ -784,8 +787,8 @@ export default function HomePage() {
               }))}
             />
           </div>
+          {/* 24 Sep 2026: the standards sentence went (Abhishek); the door stays */}
           <div className="hm-section-tail" data-reveal>
-            <p>Whichever standard governs you, from 21 CFR Part 11 and ISO 13485 to IATF 16949 and AS9100, the record you show an auditor is the record the work created.</p>
             <Link href="/platform#compliance">Every standard we work under &rarr;</Link>
           </div>
         </div>
@@ -805,8 +808,8 @@ export default function HomePage() {
       {/* ============================ RESOURCES ========================= */}
       <section className="dms-section dms-section--dark hm-resources-section hm-resources--dark hm-railed" aria-labelledby="hm-resources-h">
         <div className="dms-wrap">
-          <div className="hm-resources" data-reveal>
-            <div className="hm-resources__intro">
+          <div className="hm-resources">
+            <div className="hm-resources__intro" data-reveal>
               <span>Keep exploring</span>
               <h3 id="hm-resources-h">Evidence for the next conversation.</h3>
               <p>The voices, the numbers, and the field notes behind the claims on this page.</p>
@@ -814,7 +817,7 @@ export default function HomePage() {
                 Browse all resources <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
-            <div className="hm-resources__rows">
+            <div className="hm-resources__rows" data-reveal data-stagger>
               {RESOURCE_ROWS.map((row) => (
                 <Link className="hm-resrow" href={row.href} key={row.label}>
                   {/* 22 Sep 2026: a wash panel with the content type's glyph,
@@ -840,29 +843,13 @@ export default function HomePage() {
       <HatchBand className="hm-hatch--dark" />
 
       {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close hm-close hm-close--rails hm-railed" id="demo" aria-labelledby="hm-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid" data-reveal>
-            {/* 2026-09-09: the lone convergence mark became a pyramid of the
-              * processes people bring (home-process-tiles.tsx), tapering to
-              * the mark. Same convergence idea, now with the nouns on it. */}
-            <ProcessTiles />
-            <div className="dms-close__lead">
-              <span className="dms-close__eyebrow">Ready when you are</span>
-              <h2 className="dms-close__h" id="hm-close-h">Bring the process that hurts most.</h2>
-            </div>
-            <div className="dms-close__side">
-              <p className="dms-lede">
-                We will run it end to end on Unifize, live, and show you where the time is going.
-              </p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">Take the assessment</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="hm-close-h"
+        eyebrow="Start with one process"
+        heading="Bring the process that hurts most."
+        lede="A change, an investigation or a supplier issue: we will run it end to end on Unifize, live, and show you where the time is going in a 30-minute walkthrough."
+        secondary={{ label: "Take the assessment", href: "/coordination-tax-calculator" }}
+      />
 
       {/* ------------------------------------------------------- footer
         * 22 Sep 2026 rails wave: the footer closes the page on the same

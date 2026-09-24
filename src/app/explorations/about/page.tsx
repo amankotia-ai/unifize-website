@@ -25,6 +25,7 @@ import { SiteFooter } from "../_shared/site-footer";
 import { HatchBand } from "../_shared/page-rails";
 import { Eyebrow } from "../products/dms/dms-primitives";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../_shared/rails-close";
 import { AboutMap, type Office } from "./about-map";
 import { AboutFigure, ProductGrid, type ProductTile } from "./about-figure";
 import "../products/dms/dms.css";
@@ -34,12 +35,9 @@ import "../products/dms/dms-redesign.css";
 import "../_shared/page-rails.css";
 import "../platform/platform-rails.css";
 import "./about-kit.css";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "About Unifize",
-  description:
-    "Unifize was founded in 2018 by two operators who ran regulated manufacturing across four countries and paid the coordination tax at every handoff. Built in Palo Alto and Bengaluru.",
-};
+export const metadata: Metadata = pageMetadata("/about");
 
 const JOURNEY = [
   {
@@ -74,13 +72,6 @@ const CHAPTERS = [
   { href: "#journey", label: "The journey", line: "Two operators who paid the coordination tax." },
   { href: "#product", label: "What Unifize is", line: "One platform for the work between your systems." },
   { href: "#locations", label: "Where we are", line: "Palo Alto and Bengaluru, one team." },
-];
-
-/* the close: how an engagement starts, from the positioning copy above */
-const START_STEPS = [
-  { title: "Configure it to your process", note: "With our team in the room, on the process that hurts most." },
-  { title: "Prove value in ninety days", note: "On that one process, before anything else." },
-  { title: "Expand when ready", note: "The next process joins the same platform." },
 ];
 
 const PRODUCTS: ProductTile[] = [
@@ -247,39 +238,14 @@ export default function AboutPage() {
 
       {/* ----------------------------------------------------------- close
         * the platform page's close grid: the ask left, how we start right */}
-      <section className="dms-section dms-section--dark pf-close hm-close--rails hm-railed" id="demo" aria-labelledby="ab-close-h">
-        <div className="dms-wrap">
-          <div className="pf-close__grid">
-            <div className="pf-close__lead">
-              <span className="dms-close__eyebrow">Ready when you are</span>
-              <h2 className="pf-close__h" id="ab-close-h">Bring the process that hurts most.</h2>
-              <p className="pf-close__lede">
-                Practitioners, not a consultancy and not self-serve software. We start where the
-                coordination tax is highest.
-              </p>
-              <div className="pf-close__cta">
-                <BookDemoButton className="dms-btn" source="about-close">Book a demo</BookDemoButton>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">Take the assessment</Link>
-              </div>
-            </div>
-            <div className="pf-close__plan">
-              <p className="pf-close__plan-head">
-                <span>How we start</span>
-                <span>90 days</span>
-              </p>
-              <ol className="pf-close__steps">
-                {START_STEPS.map((step, index) => (
-                  <li className="pf-close__step" key={step.title}>
-                    <span className="pf-close__step-n" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="pf-close__step-title">{step.title}</span>
-                    <span className="pf-close__step-note">{step.note}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="ab-close-h"
+        eyebrow="Work with us"
+        heading="Practitioners. Not a consultancy."
+        lede="Bring the process where the coordination tax is highest and we will run it with you, live, in a 30-minute walkthrough."
+        secondary={{ label: "See the platform", href: "/platform" }}
+        source="about-close"
+      />
 
       <SiteFooter tagline="Practitioners who built a platform." />
     </main>

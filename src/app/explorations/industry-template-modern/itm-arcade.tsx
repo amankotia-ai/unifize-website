@@ -77,7 +77,7 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
       title: "APPROVAL & RELEASE",
       items: [
         { label: "Cross-functional review", kind: "approval", signer: "R. Kapoor", state: "Approved" },
-        { label: "VP Quality · Part 11", kind: "approval", signer: "P. Ramesh", state: "Signed" },
+        { label: "Quality approval · Part 11", kind: "approval", signer: "P. Ramesh", state: "Signed" },
         { label: "Audit trail", note: "Sealed · 21 CFR 820.40" },
       ],
     },
@@ -109,7 +109,7 @@ export type TraceStep = {
 export const TRACE_STEPS: TraceStep[] = [
   {
     t: "Change raised",
-    who: "Lisa Martin",
+    who: "Device Engineering",
     when: "T+0",
     zoom: 1.45,
     config: {
@@ -170,7 +170,7 @@ export const TRACE_STEPS: TraceStep[] = [
   },
   {
     t: "Cross-functional review",
-    who: "Rupa Kapoor",
+    who: "Quality",
     when: "T+5d",
     zoom: 1.3,
     config: {
@@ -184,7 +184,7 @@ export const TRACE_STEPS: TraceStep[] = [
       event: "Assembled the cross-functional review",
       eventDetail: "Engineering and Manufacturing on one thread · comment resolved inline",
       checklist: "APPROVAL & RELEASE",
-      checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Audit trail"],
+      checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
       focus: "review",
       focusTitle: "Cross-functional review",
       focusRows: [
@@ -202,7 +202,7 @@ export const TRACE_STEPS: TraceStep[] = [
   },
   {
     t: "Approved · Part 11 e-signature",
-    who: "Priya Ramesh · VP",
+    who: "Quality Assurance",
     when: "T+9d",
     zoom: 1.15,
     config: {
@@ -216,7 +216,7 @@ export const TRACE_STEPS: TraceStep[] = [
       event: "Re-authenticated for regulated approval",
       eventDetail: "Signer, meaning and time seal to CC-2148",
       checklist: "APPROVAL & RELEASE",
-      checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Audit trail"],
+      checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
       focus: "signature",
       focusTitle: "Apply your signature",
       focusRows: [],
@@ -226,7 +226,7 @@ export const TRACE_STEPS: TraceStep[] = [
       checklistOpen: "APPROVAL & RELEASE",
       checklistProgress: { "APPROVAL & RELEASE": 1 },
       signedItems: [
-        { name: "R. Kapoor", initials: "RK", role: "Cross-functional review", approvalId: "4C21B2148A90", time: "T+5d" },
+        { name: "R. Kapoor", initials: "RK", role: "Cross-functional review", approvalId: "4C21B2148A90", time: "Sep 13" },
       ],
     },
   },
@@ -246,7 +246,7 @@ export const TRACE_STEPS: TraceStep[] = [
       event: "Published Rev D and sealed the trace",
       eventDetail: "Rev C retired · training cascade complete · 21 CFR 820.40",
       checklist: "APPROVAL & RELEASE",
-      checklistItems: ["Cross-functional review", "VP Quality · Part 11", "Audit trail"],
+      checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
       focus: "history",
       focusKicker: "DECISION TRACE",
       focusTitle: "One sealed decision trace",
@@ -259,7 +259,7 @@ export const TRACE_STEPS: TraceStep[] = [
       world: CHANGE_WORLD,
       checklistOpen: "APPROVAL & RELEASE",
       signedItems: [
-        { name: "P. Ramesh", initials: "PR", role: "VP Quality", approvalId: "9E77C2148D41", time: "Now" },
+        { name: "P. Ramesh", initials: "PR", role: "Quality approval", approvalId: "9E77C2148D41", time: "Now" },
       ],
       related: 3,
     },
@@ -478,16 +478,29 @@ function useFocusCamera(active: number, zoom: number) {
   return { stageRef, focusRef, cam };
 }
 
-export function DecisionTraceArcade() {
+/* Every industry page runs this same mount on its own record (24 Sep 2026):
+ * the steps (trail copy + camera pose per step), the trail label and the
+ * foot come in as props; the defaults are the MD page's CC-2148 story. */
+const MD_TRACE_FOOT = "The same change, sealed as a 21 CFR Part 11 audit trail. The record is the trace.";
+
+export function DecisionTraceArcade({
+  steps = TRACE_STEPS,
+  label = "How the decision moves",
+  foot = MD_TRACE_FOOT,
+}: {
+  steps?: TraceStep[];
+  label?: string;
+  foot?: string;
+} = {}) {
   const [active, setActive] = useState(0);
-  const { stageRef, focusRef, cam } = useFocusCamera(active, TRACE_STEPS[active].zoom);
+  const { stageRef, focusRef, cam } = useFocusCamera(active, steps[active].zoom);
   const [engaged, setEngaged] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   /* mobile/stacked fallback only: the desktop pin is scroll-driven */
   useAutoAdvance(wrapRef, !engaged, 5200, () => {
     if (window.matchMedia?.(DESKTOP_PIN).matches) return;
-    setActive((a) => (a + 1) % TRACE_STEPS.length);
+    setActive((a) => (a + 1) % steps.length);
   });
 
   useEffect(() => {
@@ -501,7 +514,7 @@ export function DecisionTraceArcade() {
       if (runway <= 0) return;
       const stickyTop = inner.getBoundingClientRect().top;
       const progress = Math.min(1, Math.max(0, (wrap.getBoundingClientRect().top - stickyTop) / -runway));
-      setActive(Math.min(TRACE_STEPS.length - 1, Math.floor(progress * TRACE_STEPS.length)));
+      setActive(Math.min(steps.length - 1, Math.floor(progress * steps.length)));
     };
     const onScroll = () => {
       cancelAnimationFrame(raf);
@@ -515,7 +528,7 @@ export function DecisionTraceArcade() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [steps.length]);
 
   const select = (index: number) => {
     setEngaged(true);
@@ -530,7 +543,7 @@ export function DecisionTraceArcade() {
         const wrapTopDoc = wrap.getBoundingClientRect().top + window.scrollY;
         const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
         window.scrollTo({
-          top: wrapTopDoc - stickyTop + (runway * (index + 0.5)) / TRACE_STEPS.length,
+          top: wrapTopDoc - stickyTop + (runway * (index + 0.5)) / steps.length,
           behavior: reduce ? "auto" : "smooth",
         });
         return;
@@ -554,23 +567,23 @@ export function DecisionTraceArcade() {
     <div ref={wrapRef} className="itm-tracepin">
       <div className="itm-tracepin__inner">
         <div className="itm-diff__grid itm-diff__grid--arcade">
-          <aside className="itm-trail itm-trail--live" aria-label="How the decision moves">
+          <aside className="itm-trail itm-trail--live" aria-label={label}>
             <div className="itm-trail__head">
-              <span className="itm-trail__lab">How the decision moves</span>
+              <span className="itm-trail__lab">{label}</span>
               <span className="itm-trail__meter" aria-hidden="true">
-                {TRACE_STEPS.map((step, i) => (
+                {steps.map((step, i) => (
                   <i key={step.t} className={i <= active ? "is-on" : undefined} />
                 ))}
               </span>
             </div>
             <ol className="itm-trail__steps">
-              {TRACE_STEPS.map((step, i) => (
+              {steps.map((step, i) => (
                 <li
                   className={
                     "itm-trail__step" +
                     (i === active ? " is-active" : "") +
                     (i < active ? " is-past" : "") +
-                    (i === TRACE_STEPS.length - 1 ? " is-sealed" : "")
+                    (i === steps.length - 1 ? " is-sealed" : "")
                   }
                   key={step.t}
                 >
@@ -586,7 +599,7 @@ export function DecisionTraceArcade() {
                     <span className="itm-trail__body">
                       <span className="itm-trail__t">{keepRefs(step.t)}</span>
                       <span className="itm-trail__meta">
-                        {step.who} <span className="itm-data">· {step.when}</span>
+                        {step.who}
                       </span>
                     </span>
                     <span className="itm-trail__state" aria-hidden="true" />
@@ -594,9 +607,7 @@ export function DecisionTraceArcade() {
                 </li>
               ))}
             </ol>
-            <p className="itm-trail__foot">
-              The same change, sealed as a 21 CFR Part 11 audit trail. The record is the trace.
-            </p>
+            <p className="itm-trail__foot">{foot}</p>
           </aside>
 
           <div ref={stageRef} className="itm-arcstage itm-arcstage--sticky" id="itm-trace-stage" aria-live="polite">
@@ -605,11 +616,51 @@ export function DecisionTraceArcade() {
               className="itm-focus"
               style={{ transform: `translate3d(${cam.x}px, ${cam.y}px, 0) scale(${cam.s})` }}
             >
-              <ItmArcadeScene config={TRACE_STEPS[active].config} />
+              <ItmArcadeScene config={withThread(steps, active)} />
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+}
+
+/* The thread builds along the trail (24 Sep 2026, "no natural progression
+ * in the chat surface"): each pose carries the earlier steps' messages, who
+ * posted them and when (the trail's own who/when), above its own event. A
+ * person's step reads under their role, not "You": by then the viewer may
+ * be someone else. */
+/* the trail's offsets (T+0, T+8d) never show (user, 24 Sep 2026); in the
+ * thread they become ordinary chat dates counted from the day it opened */
+function chatDate(when: string) {
+  const d = new Date(2026, 8, 8 + (parseInt(when.replace(/\D+/g, ""), 10) || 0));
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function withThread(steps: TraceStep[], active: number): ArcadeStepConfig {
+  const config = steps[active].config;
+  if (active === 0 || config.history) return config;
+  const past = steps.slice(0, active);
+  /* sealed signatures stay in the thread once they land */
+  const signed = [...past, steps[active]].flatMap((s) => s.config.signedItems ?? []);
+  return {
+    ...config,
+    /* a signing step's own message is the dialog; what stays in the thread
+     * is its sealed signature card, so it is not repeated as a message */
+    history: past
+      .filter((s) => s.config.focus !== "signature")
+      .map((s) => ({
+        actor: s.config.actor,
+        /* inside the product a person's step reads under their name (the
+         * record's viewer on that step, else its owner); the trail beside it
+         * may name the department instead */
+        name: s.config.world?.viewer ?? s.config.world?.owner ?? s.who.split(" · ")[0],
+        time: chatDate(s.when),
+        message: s.config.event,
+        detail: s.config.eventDetail,
+      })),
+    signedItems: signed.length
+      ? signed.filter((it, i) => signed.findIndex((x) => x.approvalId === it.approvalId) === i)
+      : undefined,
+  };
 }

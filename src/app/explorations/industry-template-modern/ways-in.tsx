@@ -206,6 +206,7 @@ function Cells({ cells, compact }: { cells: Cell[]; compact?: boolean }) {
       className={"sk-wk md-wk" + (compact ? " md-wk--roles" : "")}
       style={{ "--sk-work-n": cells.length } as CSSProperties}
       data-reveal
+      data-stagger
     >
       {cells.map((c) => (
         <article className="sk-wk__cell" key={c.name}>

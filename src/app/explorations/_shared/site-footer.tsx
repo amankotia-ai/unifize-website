@@ -1,11 +1,15 @@
 /* ----------------------------------------------------------------------------
- * SiteFooter - the shared site footer. The whole information architecture,
- * mapped flat and quiet: Products (4 + platform), Solutions (all 15),
- * Industries (all 11), Resources (3 + library), Company - derived from the
- * same NAV source the headers render, so footer and dropdowns never drift.
- * One hairline-topped column grid in the locked dark-editorial system: mono
- * column labels, plain links, dashed base rule. No cards, no blurbs, no CTAs -
- * every page already closes on a CTA band right above this.
+ * SiteFooter - the shared site footer. The whole information architecture:
+ * Solutions (all 15), Industries (all 11), then Products, Resources and
+ * Company - derived from the same NAV source the headers render, so footer
+ * and dropdowns never drift.
+ *
+ * Layout (24 Sep 2026, "bands", picked over the flat column grid, which
+ * had dropped the nav's subgroups and wrapped most labels in skinny
+ * columns): one ruled row per menu, label on the left, three labelled
+ * subgroups on the right, so a 15-item list reads as three short ones.
+ * No cards, no blurbs, no CTAs - every page already closes on a CTA band
+ * right above this.
  * Server component; kit-agnostic (own .sft namespace over the global tokens),
  * so it drops into both the itm and dms page shells.
  *
@@ -13,21 +17,39 @@
  * line are props, defaulting to the platform line.
  * -------------------------------------------------------------------------- */
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { NAV, type NavItem } from "./nav-data";
 import "./site-footer.css";
 
-const byMenu = (menu: NavItem["menu"]) => NAV.find((n) => n.menu === menu)!;
+type L = { label: string; href: string };
+type Group = { heading: string; links: L[] };
 
-function Col({ label, links, wide }: { label: string; links: { label: string; href: string }[]; wide?: boolean }) {
+const byMenu = (menu: NavItem["menu"]) => NAV.find((n) => n.menu === menu)!;
+const pick = (x: L): L => ({ label: x.label, href: x.href });
+
+/* a nav subgroup (Quality & Compliance, Life sciences...) as a labelled list */
+function Sub({ g }: { g: Group }) {
   return (
-    <nav className={"sft__col" + (wide ? " sft__col--wide" : "")} aria-label={label}>
-      <span className="sft__lab">{label}</span>
-      <div className="sft__links">
-        {links.map((l) => (
-          <Link className="sft__link" href={l.href} key={l.label}>{l.label}</Link>
+    <div className="sft__sub">
+      <span className="sft__subhead">{g.heading}</span>
+      <ul className="sft__list">
+        {g.links.map((l) => (
+          <li key={l.label}><Link className="sft__link" href={l.href}>{l.label}</Link></li>
         ))}
+      </ul>
+    </div>
+  );
+}
+
+/* one ruled row: the menu label on the left, its subgroups on the right */
+function Band({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <nav className="sft__band" aria-label={label}>
+      <div className="sft__head">
+        <span className="sft__lab">{label}</span>
       </div>
+      <div className="sft__subs">{children}</div>
     </nav>
   );
 }
@@ -39,36 +61,30 @@ export function SiteFooter({
   tagline?: string;
   note?: string;
 }) {
-  const products = [
-    ...byMenu("products").items!.map((p) => ({ label: p.label, href: p.href })),
-    { label: "The platform", href: "/platform" },
-  ];
-  const solutions = [
-    ...byMenu("domains").cols!.flatMap((c) => c.items.map((x) => ({ label: x.label, href: x.href }))),
-    { label: "All solutions", href: "/domains" },
-  ];
-  const industries = byMenu("industries").cols!.flatMap((c) => c.items.map((x) => ({ label: x.label, href: x.href })));
-  const resources = [
-    ...byMenu("resources").items!.map((r) => ({ label: r.label, href: r.href })),
-    { label: "All resources", href: "/resources" },
-  ];
+  const groups = (menu: NavItem["menu"]): Group[] =>
+    byMenu(menu).cols!.map((c) => ({ heading: c.heading, links: c.items.map(pick) }));
+  const products = [...byMenu("products").items!.map(pick), { label: "The platform", href: "/platform" }];
+  const resources = [...byMenu("resources").items!.map(pick), { label: "All resources", href: "/resources" }];
+  const company = [{ label: "About us", href: "/about" }, { label: "Book a demo", href: "#demo" }];
 
   return (
     <footer className="sft">
       <div className="sft__wrap">
-        <div className="sft__grid">
-          <div className="sft__brand">
-            <img className="sft__logo" src="/logo_light.svg" alt="Unifize" />
-            <span className="sft__tag">{tagline}</span>
-          </div>
-          <Col label="Products" links={products} />
-          <Col label="Solutions" links={solutions} wide />
-          <Col label="Industries" links={industries} />
-          <div className="sft__col">
-            <Col label="Resources" links={resources} />
-            <Col label="Company" links={[{ label: "About us", href: "/about" }, { label: "Book a demo", href: "#demo" }]} />
-          </div>
+        <div className="sft__brand">
+          <img className="sft__logo" src="/logo_light.svg" alt="Unifize" />
+          <span className="sft__tag">{tagline}</span>
         </div>
+        <Band label="Solutions">
+          {groups("domains").map((g) => <Sub g={g} key={g.heading} />)}
+        </Band>
+        <Band label="Industries">
+          {groups("industries").map((g) => <Sub g={g} key={g.heading} />)}
+        </Band>
+        <Band label="Unifize">
+          <Sub g={{ heading: "Products", links: products }} />
+          <Sub g={{ heading: "Resources", links: resources }} />
+          <Sub g={{ heading: "Company", links: company }} />
+        </Band>
         <div className="sft__base">
           <span>© Unifize 2026</span>
           <span>{note}</span>

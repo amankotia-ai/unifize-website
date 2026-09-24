@@ -277,7 +277,6 @@
   box-shadow:
     0 2px 6px -2px oklch(0 0 0 / 0.08),
     0 16px 32px -16px oklch(0 0 0 / 0.2);
-  animation: mdt-bob 8s ease-in-out infinite alternate;
 }
 
 .mdt-chip__stack { display: flex; flex-direction: column; gap: 3px; }
@@ -289,7 +288,6 @@
   left: 36px;
   flex-direction: column;
   gap: 7px;
-  animation-delay: -2s;
 }
 .mdt-toggle {
   display: inline-flex;
@@ -325,7 +323,6 @@
   flex-direction: column;
   gap: 4px;
   max-width: 232px;
-  animation-delay: -5s;
 }
 .mdt-chip__big {
   font-family: var(--dms-display);
@@ -367,7 +364,6 @@
   bottom: 18px;
   left: 0;
   align-items: center;
-  animation-delay: -1s;
 }
 .mdt-ring { position: relative; display: grid; place-items: center; width: 36px; height: 36px; }
 .mdt-ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
@@ -387,7 +383,6 @@
   right: 0;
   width: 186px;
   align-items: center;
-  animation-delay: -6s;
 }
 .mdt-seal {
   display: grid;
@@ -404,10 +399,6 @@
 .mdt-chip--seal.is-on .mdt-seal { background: var(--mdt-blue); box-shadow: none; color: #fff; }
 .mdt-chip--seal.is-on .mdt-chip__line { color: var(--mdt-ink); }
 
-@keyframes mdt-bob {
-  from { transform: translate3d(0, -3px, 0); }
-  to { transform: translate3d(0, 4px, 0); }
-}
 @keyframes mdt-pop {
   from { transform: scale(0.4); }
   to { transform: scale(1); }
@@ -860,4 +851,502 @@
 @media (max-width: 767px) {
   .mdt-card--formula { left: 20px; width: 400px; }
   .mdt__scene--formula .mdt-chip--mdr { bottom: 0; right: 0; }
+}
+
+/* ------------------------------------ file: the safety substantiation file
+ * cosmetics (24 Sep 2026): the per-SKU file a retailer audit asks for, six
+ * evidence tiles, one supplier COA missing and closed across the boundary */
+.mdt-card--file { top: 88px; left: 180px; width: 440px; }
+
+.mhk-meter {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 3px;
+  margin: 8px 0 12px;
+}
+.mhk-meter span {
+  height: 4px;
+  background: var(--n-100, #f1f2f4);
+  transition: background-color 400ms var(--mdt-ease);
+}
+.mhk-meter span.is-on { background: var(--mdt-blue); }
+.mhk-meter span.is-flag { background: var(--s-warn, #c98a12); }
+
+.mhk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.mhk-tile {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-height: 84px;
+  padding: 9px 10px 10px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  transition: background-color 450ms var(--mdt-ease), outline-color 450ms var(--mdt-ease);
+}
+.mhk-tile__top { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.mhk-tile__top small {
+  font-family: var(--dms-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+  white-space: nowrap;
+}
+.mhk-tile b { font-size: 12px; font-weight: 600; line-height: 1.25; color: var(--n-400, #9aa0aa); transition: color 400ms var(--mdt-ease); }
+.mhk-tile__state { font-size: 10.5px; color: var(--mdt-muted); }
+.mhk-tile.is-on { background: #fff; outline-color: color-mix(in oklch, var(--u-primary) 30%, white); }
+.mhk-tile.is-on b { color: var(--mdt-ink); }
+.mhk-tile.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+.mhk-tile.is-on .mhk-tile__state { color: var(--mdt-blue); font-weight: 600; }
+.mhk-tile.is-flag {
+  background: repeating-linear-gradient(135deg, color-mix(in oklch, var(--s-warn, #c98a12) 14%, white) 0 6px, color-mix(in oklch, var(--s-warn, #c98a12) 6%, white) 6px 12px);
+  outline: 1.5px solid var(--s-warn, #c98a12);
+}
+.mhk-tile.is-flag b { color: var(--mdt-ink); }
+.mhk-tile.is-flag .mhk-tile__state { color: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); font-weight: 600; }
+
+/* the exchange across the supplier boundary: two lines of one thread */
+.mhk-req {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 10px 0 0;
+  list-style: none;
+  box-shadow: inset 0 1px 0 var(--mdt-line);
+  opacity: 0.35;
+  transition: opacity 400ms var(--mdt-ease);
+}
+.mhk-req.is-open { opacity: 1; }
+.mhk-req li {
+  display: grid;
+  grid-template-columns: 158px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--n-400, #9aa0aa);
+  transition: color 400ms var(--mdt-ease);
+}
+.mhk-req li.is-on { color: var(--mdt-ink); }
+.mhk-req__org { font-size: 10.5px; font-weight: 600; color: var(--mdt-muted); white-space: nowrap; }
+.mhk-req li.is-ext .mhk-req__org::after {
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: var(--n-100, #f1f2f4);
+  font-size: 9px;
+  font-weight: 500;
+  content: "External";
+}
+.mhk-req li.is-on .mhk-req__text { animation: mdt-in 360ms var(--mdt-ease); }
+
+.mdt__scene--file .mdt-chip--frame { left: auto; right: 6px; top: 290px; }
+.mdt__scene--file .mdt-chip--seal { right: auto; left: 0; top: 190px; width: 176px; }
+.mdt__scene--file .mdt-chip--mdr { left: 20px; bottom: 36px; }
+
+@media (max-width: 767px) {
+  .mdt-card--file { left: 0; width: 440px; }
+  .mdt__scene--file .mdt-chip--mdr { left: auto; bottom: 0; right: 0; }
+  .mdt__scene--file .mdt-chip--train { left: 0; }
+}
+
+/* ------------------------------------------- trace: the lot genealogy
+ * food processing (24 Sep 2026): a supplier's notice on one ingredient lot,
+ * traced forward through the runs to every finished lot, each held */
+.mdt-card--trace { top: 96px; left: 180px; width: 440px; }
+
+.mht-caps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mht-caps span:nth-child(2) { text-align: center; }
+.mht-caps span:last-child { text-align: right; }
+
+.mht-graph { display: block; width: 100%; height: auto; margin: 10px 0 4px; overflow: visible; }
+.mht-graph path {
+  fill: none;
+  stroke: var(--n-200, #dcdfe4);
+  stroke-width: 1.6;
+  transition: stroke 400ms var(--mdt-ease);
+}
+.mht-graph path.is-on { stroke: var(--mdt-blue); }
+.mht-node rect {
+  fill: var(--n-50, #f7f8f9);
+  stroke: var(--mdt-line);
+  stroke-width: 1;
+  transition: fill 450ms var(--mdt-ease), stroke 450ms var(--mdt-ease);
+}
+.mht-node__name { font-family: var(--dms-sans); font-size: 11.5px; font-weight: 600; fill: var(--n-400, #9aa0aa); transition: fill 400ms var(--mdt-ease); }
+.mht-node__sub { font-family: var(--dms-sans); font-size: 10px; fill: var(--mdt-muted); }
+.mht-node.is-on rect { fill: #fff; stroke: color-mix(in oklch, var(--u-primary) 45%, white); }
+.mht-node.is-on .mht-node__name { fill: var(--mdt-ink); }
+.mht-node.is-on .mht-node__sub { fill: var(--mdt-blue); font-weight: 600; }
+.mht-node.is-flag rect { fill: color-mix(in oklch, var(--s-warn, #c98a12) 10%, white); stroke: var(--s-warn, #c98a12); stroke-width: 1.5; }
+.mht-node.is-flag .mht-node__name { fill: var(--mdt-ink); }
+.mht-node.is-flag .mht-node__sub { fill: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); font-weight: 600; }
+.mht-node.is-done rect { fill: #fff; stroke: var(--mdt-blue); stroke-width: 1.5; }
+.mht-node.is-done .mht-node__name { fill: var(--mdt-ink); }
+.mht-node.is-done .mht-node__sub { fill: var(--mdt-blue); font-weight: 600; }
+
+.mht-scope {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  box-shadow: inset 0 -1px 0 var(--mdt-line);
+  font-size: 11.5px;
+  color: var(--mdt-muted);
+}
+.mht-scope b { color: var(--mdt-blue); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.mht-decision {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0 2px;
+  font-size: 12px;
+}
+.mht-decision b { font-weight: 600; color: var(--n-400, #9aa0aa); transition: color 400ms var(--mdt-ease); }
+.mht-decision small { font-size: 10.5px; color: var(--mdt-muted); white-space: nowrap; }
+.mht-decision.is-on b { color: var(--mdt-ink); }
+.mht-decision.is-on small { color: var(--mdt-blue); font-weight: 600; }
+.mht-decision.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+
+.mdt__scene--trace .mdt-chip--train { right: auto; left: 0; top: 0; }
+.mdt__scene--trace .mdt-chip--mdr { left: auto; right: 0; top: 14px; bottom: auto; }
+.mdt__scene--trace .mdt-chip--frame { left: auto; right: 0; top: 420px; }
+.mdt__scene--trace .mdt-chip--seal { right: auto; left: 0; top: 540px; width: 186px; }
+
+@media (max-width: 767px) {
+  .mdt-card--trace { left: 0; width: 440px; }
+  .mdt__scene--trace .mdt-chip--mdr { top: auto; bottom: 0; right: 0; }
+}
+
+/* --------------------------------------- identity: the fingerprint overlay
+ * nutritional supplements (24 Sep 2026): the lot's spectrum drawn over the
+ * reference, an unmatched band held, the replacement lot matching */
+.mdt-card--identity { top: 110px; left: 200px; width: 440px; }
+
+.mhi-legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: var(--dms-sans);
+  font-size: 10.5px;
+}
+.mhi-legend i { width: 14px; height: 0; margin-left: 6px; border-top: 1.6px solid var(--mdt-blue); }
+.mhi-legend i.is-ref { margin-left: 0; border-top: 1.6px dashed var(--n-400, #9aa0aa); }
+
+.mhi-chart {
+  margin: 10px 0 4px;
+  padding: 8px 8px 2px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+}
+.mhi-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mhi-axis { stroke: var(--n-200, #dcdfe4); stroke-width: 1; }
+.mhi-ref { fill: none; stroke: var(--n-400, #9aa0aa); stroke-width: 1.4; stroke-dasharray: 4 3; }
+.mhi-sample {
+  fill: none;
+  stroke: var(--mdt-blue);
+  stroke-width: 1.9;
+  stroke-linejoin: round;
+  transition: stroke 400ms var(--mdt-ease);
+}
+.mhi-sample.is-flag { stroke: color-mix(in oklch, var(--s-warn, #c98a12) 85%, black); }
+.mhi-band rect { fill: color-mix(in oklch, var(--s-warn, #c98a12) 12%, transparent); stroke: var(--s-warn, #c98a12); stroke-width: 1; stroke-dasharray: 3 2; }
+.mhi-band text {
+  font-family: var(--dms-sans);
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black);
+}
+
+.mhi-steps .mhc-steps__eff.is-on small { color: var(--mdt-blue); font-weight: 600; }
+
+.mdt__scene--identity .mdt-chip--train { right: auto; left: 0; top: 20px; }
+.mdt__scene--identity .mdt-chip--frame { left: 0; top: 400px; }
+.mdt__scene--identity .mdt-chip--seal { right: 0; top: 30px; width: 196px; }
+.mdt__scene--identity .mdt-chip--mdr { left: auto; right: 0; bottom: 60px; }
+
+@media (max-width: 767px) {
+  .mdt-card--identity { left: 0; width: 440px; }
+  .mdt__scene--identity .mdt-chip--train { top: 0; }
+  .mdt__scene--identity .mdt-chip--mdr { bottom: 0; right: 0; }
+}
+
+/* ----------------------------------------- eightd: the 8D in motion
+ * automotive (24 Sep 2026): a warranty return through the eight
+ * disciplines, containment across every place the suspect stock sits */
+.mdt-card--eightd { top: 104px; left: 170px; width: 440px; }
+
+.mh8-ladder {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 4px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mh8-ladder li {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  font-family: var(--dms-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--n-400, #9aa0aa);
+  transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease), outline-color 400ms var(--mdt-ease);
+}
+.mh8-ladder li.is-on { background: var(--mdt-blue); outline-color: var(--mdt-blue); color: #fff; }
+.mh8-ladder li.is-now { background: #fff; outline: 1.5px solid var(--mdt-blue); color: var(--mdt-blue); }
+
+.mh8-now {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 18px;
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--mdt-ink-2);
+}
+.mh8-now b { font-family: var(--dms-mono); font-size: 11px; color: var(--mdt-blue); }
+.mh8-now svg { width: 13px; height: 13px; color: var(--mdt-blue); }
+
+.mh8-contain {
+  margin-top: 12px;
+  opacity: 0.35;
+  transition: opacity 400ms var(--mdt-ease);
+}
+.mh8-contain.is-open { opacity: 1; }
+.mh8-contain__cap {
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+}
+.mh8-contain ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mh8-contain li {
+  display: grid;
+  gap: 4px;
+  padding: 9px 10px 10px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  transition: background-color 450ms var(--mdt-ease), outline-color 450ms var(--mdt-ease);
+}
+.mh8-contain li b { font-size: 11.5px; font-weight: 600; line-height: 1.25; color: var(--mdt-ink); }
+.mh8-contain li small { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; color: var(--mdt-muted); }
+.mh8-contain li small svg { width: 11px; height: 11px; color: var(--mdt-blue); }
+.mh8-contain li.is-flag {
+  background: repeating-linear-gradient(135deg, color-mix(in oklch, var(--s-warn, #c98a12) 14%, white) 0 6px, color-mix(in oklch, var(--s-warn, #c98a12) 6%, white) 6px 12px);
+  outline: 1.5px solid var(--s-warn, #c98a12);
+}
+.mh8-contain li.is-flag small { color: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); font-weight: 600; }
+.mh8-contain li.is-on { background: #fff; outline-color: color-mix(in oklch, var(--u-primary) 35%, white); }
+.mh8-contain li.is-on small { color: var(--mdt-blue); font-weight: 600; }
+
+.mdt-card--eightd .mht-decision { margin-top: 10px; box-shadow: inset 0 1px 0 var(--mdt-line); }
+
+.mdt__scene--eightd .mdt-chip--frame { left: auto; right: 0; top: 60px; }
+.mdt__scene--eightd .mdt-chip--train { right: auto; left: 0; top: 330px; }
+.mdt__scene--eightd .mdt-chip--seal { right: 0; top: 470px; width: 190px; }
+.mdt__scene--eightd .mdt-chip--mdr { left: 30px; bottom: auto; top: 30px; }
+
+@media (max-width: 767px) {
+  .mdt-card--eightd { left: 0; width: 440px; }
+  .mdt__scene--eightd .mdt-chip--train { top: 0; }
+  .mdt__scene--eightd .mdt-chip--mdr { top: auto; bottom: 0; left: auto; right: 0; }
+}
+
+/* ----------------------------------------- fai: the first article
+ * aerospace (24 Sep 2026): the AS9102 forms and the ballooned drawing,
+ * measured characteristic by characteristic */
+.mdt-card--fai { top: 92px; left: 190px; width: 440px; }
+
+.mhq-forms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.mhq-forms li {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 9px;
+  background: var(--n-50, #f7f8f9);
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+  transition: background-color 450ms var(--mdt-ease), outline-color 450ms var(--mdt-ease);
+}
+.mhq-forms li > span:last-child { display: grid; gap: 2px; }
+.mhq-forms b { font-family: var(--dms-mono); font-size: 10.5px; font-weight: 600; color: var(--n-400, #9aa0aa); transition: color 400ms var(--mdt-ease); }
+.mhq-forms small { font-size: 10px; line-height: 1.25; color: var(--mdt-muted); }
+.mhq-forms li.is-on { background: #fff; outline-color: color-mix(in oklch, var(--u-primary) 30%, white); }
+.mhq-forms li.is-on b { color: var(--mdt-blue); }
+.mhq-forms li.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+
+.mhq-drawing {
+  margin: 8px 0 4px;
+  padding: 10px 10px 6px;
+  background-color: #fbfcfd;
+  background-image:
+    linear-gradient(var(--n-100, #f1f2f4) 1px, transparent 1px),
+    linear-gradient(90deg, var(--n-100, #f1f2f4) 1px, transparent 1px);
+  background-size: 16px 16px;
+  outline: 1px solid var(--mdt-line);
+  outline-offset: -1px;
+}
+.mhq-drawing svg { display: block; width: 100%; height: auto; overflow: visible; }
+.mhq-part { fill: none; stroke: var(--mdt-ink-2); stroke-width: 1.5; }
+.mhq-center { fill: none; stroke: var(--n-300, #c4c8cf); stroke-width: 0.8; stroke-dasharray: 5 2 1 2; }
+.mhq-dim { fill: none; stroke: var(--n-400, #9aa0aa); stroke-width: 0.8; }
+.mhq-balloon line { stroke: var(--n-400, #9aa0aa); stroke-width: 0.9; }
+.mhq-balloon circle {
+  fill: #fff;
+  stroke: var(--n-400, #9aa0aa);
+  stroke-width: 1.2;
+  transition: fill 400ms var(--mdt-ease), stroke 400ms var(--mdt-ease);
+}
+.mhq-balloon text {
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  fill: var(--mdt-ink-2);
+  transition: fill 400ms var(--mdt-ease);
+}
+.mhq-balloon.is-on circle { fill: var(--mdt-blue); stroke: var(--mdt-blue); }
+.mhq-balloon.is-on text { fill: #fff; }
+.mhq-balloon.is-on line { stroke: color-mix(in oklch, var(--u-primary) 55%, white); }
+.mhq-balloon.is-flag circle { fill: color-mix(in oklch, var(--s-warn, #c98a12) 16%, white); stroke: var(--s-warn, #c98a12); stroke-width: 1.6; }
+.mhq-balloon.is-flag text { fill: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); }
+.mhq-balloon.is-flag line { stroke: var(--s-warn, #c98a12); }
+.mhq-tag rect { fill: #fff; stroke-width: 1; }
+.mhq-tag text { font-family: var(--dms-sans); font-size: 10px; font-weight: 600; text-anchor: middle; }
+.mhq-tag.is-flag rect { stroke: var(--s-warn, #c98a12); fill: color-mix(in oklch, var(--s-warn, #c98a12) 8%, white); }
+.mhq-tag.is-flag text { fill: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); }
+.mhq-tag.is-back rect { stroke: color-mix(in oklch, var(--u-primary) 45%, white); }
+.mhq-tag.is-back text { fill: var(--mdt-blue); }
+
+.mdt-card--fai .mhc-steps { margin-top: 4px; }
+
+.mdt__scene--fai .mdt-chip--train { right: auto; left: 0; top: 250px; }
+.mdt__scene--fai .mdt-chip--frame { left: 20px; top: 20px; }
+.mdt__scene--fai .mdt-chip--seal { right: 0; top: 0; width: 196px; }
+.mdt__scene--fai .mdt-chip--mdr { left: auto; right: 0; bottom: 30px; }
+
+@media (max-width: 767px) {
+  .mdt-card--fai { left: 0; width: 440px; }
+  .mdt__scene--fai .mdt-chip--train { top: 0; }
+  .mdt__scene--fai .mdt-chip--mdr { bottom: 0; }
+}
+
+/* -------------------------------------- fat: the witnessed acceptance test
+ * industrial machinery (24 Sep 2026): the build's milestone track and the
+ * customer-witnessed FAT protocol, one punch item raised and closed */
+.mdt-card--fat { top: 96px; left: 180px; width: 440px; }
+
+.mhm-track {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: 14px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+.mhm-track::before {
+  position: absolute;
+  top: 8px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--n-150, #e8eaee);
+  content: "";
+}
+.mhm-track li { position: relative; display: grid; justify-items: center; gap: 5px; }
+.mhm-track i {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--n-300, #c4c8cf);
+  color: #fff;
+  transition: background-color 400ms var(--mdt-ease), box-shadow 400ms var(--mdt-ease);
+}
+.mhm-track i svg { width: 11px; height: 11px; }
+.mhm-track span { font-size: 11px; font-weight: 500; color: var(--mdt-muted); }
+.mhm-track li.is-done i { background: var(--mdt-blue); box-shadow: none; }
+.mhm-track li.is-now i { box-shadow: inset 0 0 0 1.5px var(--mdt-blue), 0 0 0 4px var(--mdt-blue-tint); }
+.mhm-track li.is-now span { color: var(--mdt-blue); font-weight: 600; }
+.mhm-track li.is-done span { color: var(--mdt-ink); }
+
+.mhm-proto {
+  width: 100%;
+  margin-top: 10px;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.mhm-proto th {
+  padding: 0 0 6px;
+  font-family: var(--dms-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--mdt-muted);
+  box-shadow: inset 0 -1px 0 var(--mdt-line);
+}
+.mhm-proto th:nth-child(2) { width: 88px; }
+.mhm-proto th:last-child { width: 62px; text-align: center; }
+.mhm-proto td { padding: 6px 0; box-shadow: inset 0 -1px 0 var(--mdt-line); vertical-align: middle; transition: background-color 400ms var(--mdt-ease); }
+.mhm-proto td b { display: block; font-size: 12px; font-weight: 600; color: var(--n-400, #9aa0aa); transition: color 400ms var(--mdt-ease); }
+.mhm-proto td small { font-size: 10px; color: var(--mdt-muted); }
+.mhm-proto__res { font-size: 11px; font-weight: 600; color: var(--n-400, #9aa0aa); }
+.mhm-proto__wit .mdt-row__tick { margin: 0 auto; }
+.mhm-proto tr.is-on td b { color: var(--mdt-ink); }
+.mhm-proto tr.is-on .mhm-proto__res { color: var(--mdt-blue); }
+.mhm-proto tr.is-on .mdt-row__tick { background: var(--mdt-blue); box-shadow: none; }
+.mhm-proto tr.is-flag td { background: color-mix(in oklch, var(--s-warn, #c98a12) 9%, white); }
+.mhm-proto tr.is-flag td b { color: var(--mdt-ink); }
+.mhm-proto tr.is-flag .mhm-proto__res { color: color-mix(in oklch, var(--s-warn, #c98a12) 75%, black); }
+
+.mdt-card--fat .mhc-steps { margin-top: 6px; }
+
+.mdt__scene--fat .mdt-chip--train { right: auto; left: 0; top: 440px; }
+.mdt__scene--fat .mdt-chip--frame { left: auto; right: 0; top: 150px; }
+.mdt__scene--fat .mdt-chip--seal { right: auto; left: 0; top: 20px; width: 196px; }
+.mdt__scene--fat .mdt-chip--mdr { left: auto; right: 0; top: 10px; bottom: auto; }
+
+@media (max-width: 767px) {
+  .mdt-card--fat { left: 0; width: 440px; }
+  .mdt__scene--fat .mdt-chip--train { top: 0; }
+  /* the protocol runs taller than the other cards: the clock steps off */
+  .mdt__scene--fat .mdt-chip--mdr { display: none; }
 }

@@ -9,11 +9,9 @@ import { ResourceShell } from "../_shared/resource-shell";
 import { CollectionMast, QuoteBand, ResourceCTA, ResourceFooter } from "../_shared/resource-chrome";
 import { BlogLibrary } from "../_shared/resources-interactive";
 import { POSTS, BLOG_CATEGORIES } from "../_shared/resources-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Blog — Unifize",
-  description: "Practical insights and real-world advice on improving quality and collaboration: CAPA, 21 CFR Part 11, review-by-exception, design controls, and surviving an FDA 483.",
-};
+export const metadata: Metadata = pageMetadata("/resources/blog");
 
 export default function BlogPage() {
   return (

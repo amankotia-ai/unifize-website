@@ -6,18 +6,16 @@
  * .dms--redesign, so it aliases only the global --u / --n tokens that every
  * local system builds on.
  *
- * The grammar, at card size, same rules as page-rails.css:
- *   - two hairline rails run the full height of the card, at --uzd-rail-x
- *   - every block is inset inside them by --uzd-rail-pad, so head, form and
- *     footer share one pair of lines
- *   - the divider is one hairline, with a crosshair at each rail crossing
+ * The grammar, at card size:
+ *   - no rails in the dialog (24 Sep 2026); head, form and footer share one
+ *     inset, --uzd-inset
+ *   - the divider is one plain hairline
  *   - blue-square eyebrow, display face on the heading, house pill button
  * ========================================================================== */
 
 .uzd {
   --uzd-line: var(--n-150);
   --uzd-rail: var(--n-200);
-  --uzd-cross: var(--n-500);
   --uzd-line-strong: var(--n-200);
   --uzd-ink: #17191f;
   --uzd-ink-2: #3f4550;
@@ -50,12 +48,12 @@
 
 .uzd__panel {
   position: relative;
-  width: min(1060px, 100%);
+  width: min(1360px, 100%);
   max-height: calc(100dvh - 48px);
   overflow: auto;
   overscroll-behavior: contain;
   background: var(--n-0);
-  border: 1px solid var(--uzd-line);
+  border: 0;
   border-radius: 0;
   box-shadow:
     0 1px 2px rgba(11, 13, 17, 0.06),
@@ -71,11 +69,11 @@
 
 /* ----------------------------------------------------------------- split ---
  * Two panes: the product visual on the left, the railed form column on the
- * right. Under 980px the visual pane drops and the dialog is the form. */
+ * right. Under 1140px the visual pane drops and the dialog is the form. */
 
 .uzd__split {
   display: grid;
-  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 600px);
   /* the card holds its height between the form and the confirmation, so the
    * product visual stays composed and the panel does not jump on submit */
   min-height: min(700px, calc(100dvh - 50px));
@@ -106,7 +104,6 @@
 
   position: relative;
   overflow: hidden;
-  border-right: 1px solid var(--uzd-line);
 }
 
 /* square, on the light wash the rails pages use; the ribbon container's
@@ -121,38 +118,63 @@
   background: linear-gradient(150deg, #cfe2ff 0%, #e2eeff 36%, #f1f0ec 66%, #fbe3d2 100%);
 }
 
-/* the pane is narrower than a page stage, so the scene is pulled back a
- * step: the window still crops at the pane edge, as it does in every
- * narrow container on the site */
-.uzd__stage .sty-scene {
-  transform: scale(0.95);
-  transform-origin: 50% 50%;
+/* the dialog is wide so the visual pane can hold the record whole: the
+ * record-only cut the module rows use (thread 540 + checklist 286 = 826,
+ * no nav rail, no inbox) with the camera pinned, so the whole window sits
+ * centred on the wash with margin on every side instead of cropping at the
+ * pane edge (24 Sep: the cropped hero pose read as broken in the modal).
+ * The scale steps with the pane width (about vw - 648px). */
+.uzd__viz {
+  --uzd-viz-scale: 0.84;
 }
 
-/* ----------------------------------------------------------------- rails ---
- * Drawn on the form column, not the panel: the panel is the scroller, so
- * rails pinned to it would stop at the fold. */
+.uzd__viz .stx-root .stx-arc__camera {
+  --stx-camera-x: 0px !important;
+  --stx-camera-y: 0px !important;
+  --stx-camera-scale: var(--uzd-viz-scale) !important;
+  grid-template-columns: 540px 286px;
+  width: 826px;
+}
+
+/* the camera centres on the anchor box, so the anchor fills the stage and
+ * the window lands in the middle of the pane, not at the top of it */
+.uzd__viz .stx-root .stx-arc {
+  height: 100%;
+}
+
+.uzd__viz .stx-root :is(.stx-arc__rail, .stx-arc__inbox) {
+  display: none;
+}
+
+.uzd__viz .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+  inset: 0;
+}
+
+@media (max-width: 1407px) {
+  .uzd__viz { --uzd-viz-scale: 0.72; }
+}
+
+@media (max-width: 1299px) {
+  .uzd__viz { --uzd-viz-scale: 0.62; }
+}
+
+@media (max-width: 1219px) {
+  .uzd__viz { --uzd-viz-scale: 0.54; }
+}
+
+@media (min-width: 1300px) and (max-height: 760px) {
+  .uzd__viz { --uzd-viz-scale: 0.62; }
+}
+
+/* ------------------------------------------------------------ form column ---
+ * No rails in the dialog (24 Sep): the blocks keep their inset, the card's
+ * sections are split by plain hairlines. */
 .uzd__inner {
   position: relative;
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
-
-.uzd__inner::before,
-.uzd__inner::after {
-  position: absolute;
-  z-index: 2;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  content: "";
-  background: var(--uzd-rail);
-  pointer-events: none;
-}
-
-.uzd__inner::before { left: var(--uzd-rail-x); }
-.uzd__inner::after { right: var(--uzd-rail-x); }
 
 .uzd__close {
   position: absolute;
@@ -243,37 +265,13 @@
 }
 
 /* --------------------------------------------------------------- divider ---
- * One hairline edge to edge between two blocks of the card, with a crosshair
- * where it crosses each rail. */
+ * One hairline edge to edge between two blocks of the card. */
 
 .uzd__div {
-  position: relative;
   flex: none;
   height: 1px;
   background: var(--uzd-rail);
 }
-
-.uzd__cross {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  width: 13px;
-  height: 13px;
-  transform: translate(-50%, -50%);
-}
-
-.uzd__cross::before,
-.uzd__cross::after {
-  position: absolute;
-  content: "";
-  background: var(--uzd-cross);
-}
-
-.uzd__cross::before { top: 6px; right: 0; left: 0; height: 1px; }
-.uzd__cross::after { top: 0; bottom: 0; left: 6px; width: 1px; }
-
-.uzd__cross--l { left: var(--uzd-rail-x); }
-.uzd__cross--r { left: calc(100% - var(--uzd-rail-x)); }
 
 /* ---------------------------------------------------------------- fields --- */
 
@@ -514,7 +512,7 @@
 
 /* --------------------------------------------------------------- phone --- */
 
-@media (max-width: 980px) {
+@media (max-width: 1140px) {
   .uzd__viz {
     display: none;
   }
@@ -538,7 +536,6 @@
   .uzd__panel {
     width: 100%;
     max-height: 92dvh;
-    border-width: 1px 0 0;
     animation: uzd-sheet 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 

@@ -37,12 +37,9 @@ import "../../products/dms/dms-redesign.css";
 import "../_shared/resources-kit.css";
 import "../../_shared/page-rails.css";
 import "../_shared/stories-rails.css";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Customer stories — Unifize",
-  description:
-    "Customer stories and product walkthroughs from teams running quality, documents, product, and manufacturing on Unifize.",
-};
+export const metadata: Metadata = pageMetadata("/resources/testimonials");
 
 /* the two doors off this page, on the dark rows grammar the homepage closes
  * its resources band with */

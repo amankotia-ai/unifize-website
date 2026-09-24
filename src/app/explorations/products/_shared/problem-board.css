@@ -1,0 +1,1422 @@
+/* ============================================================================
+ * problem-board.css - the product pages' merged problem section (pb) and its
+ * mini-UI artifacts (pbv). Grammar lifted from the homepage symptom cells
+ * (home-rails.css "hm-recognition--reframed"): split head, rail-to-rail
+ * cells drawn by the 1px-gap trick, artifacts on a grained wash with the
+ * small plate. Paper wash = today, blue wash = the record; rust = the tax,
+ * blue = the answer. Square corners, no one-sided colored edges.
+ * Markup: problem-board.tsx, <page>-problem-board.tsx.
+ * ========================================================================== */
+
+.dms--redesign.dms--rails .pb {
+  --pb-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  padding-top: clamp(56px, 6vw, 88px);
+  padding-bottom: clamp(56px, 6vw, 88px);
+}
+
+/* ------------------------------------------------------------- the head
+ * One centred stack (Abhishek, 24 Sep): eyebrow, claim, lede, switch. */
+.dms--redesign.dms--rails .pb__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: clamp(32px, 3.6vw, 48px);
+  text-align: center;
+}
+
+.dms--redesign.dms--rails .pb__head > div:first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* the consistent-eyebrows rule pins eyebrows to flex-start; centre it */
+.dms--redesign.dms--rails .pb__head .dms-eyebrow {
+  align-self: center;
+}
+
+.dms--redesign.dms--rails .pb__head .dms-h2 {
+  max-width: 30ch;
+  margin: 14px auto 0;
+  text-wrap: balance;
+}
+
+.dms--redesign.dms--rails .pb__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.dms--redesign.dms--rails .pb__aside .dms-lede {
+  max-width: 72ch;
+  margin: 0 auto;
+  text-wrap: balance;
+}
+
+/* the Today / With Unifize switch: two equal segments on a grey track, a
+ * white plate that slides under the chosen one, a status glyph per world
+ * (rust = the tax, blue = the record). Rounded pill (Abhishek, 24 Sep). */
+.dms--redesign.dms--rails .pb-switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  min-width: 300px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--n-100);
+  box-shadow: inset 0 0 0 1px var(--hm-rail);
+}
+
+.dms--redesign.dms--rails .pb-switch__thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--dms-surface);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.07), 0 1px 2px oklch(0 0 0 / 0.06), 0 6px 14px -8px oklch(0.24 0.02 263 / 0.35);
+  transition: transform 420ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb-switch[data-world="after"] .pb-switch__thumb {
+  transform: translateX(100%);
+}
+
+.dms--redesign.dms--rails .pb-switch__btn {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  appearance: none;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dms-muted);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 260ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb-switch__btn:hover,
+.dms--redesign.dms--rails .pb-switch__btn[aria-pressed="true"] {
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--rails .pb-switch__btn:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -2px;
+}
+
+.dms--redesign.dms--rails .pb-switch__ico { width: 15px; height: 15px; flex: none; }
+.dms--redesign.dms--rails .pb-switch__ico circle { fill: var(--n-400); transition: fill 260ms var(--pb-ease); }
+.dms--redesign.dms--rails .pb-switch__ico path { fill: none; stroke: #fff; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.dms--redesign.dms--rails .pb-switch__btn[aria-pressed="true"] .pb-switch__ico.is-before circle { fill: var(--dms-tax); }
+.dms--redesign.dms--rails .pb-switch__btn[aria-pressed="true"] .pb-switch__ico.is-after circle { fill: var(--dms-accent); }
+
+/* ------------------------------------------------------------ the grid */
+.dms--redesign.dms--rails .pb__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 calc(-1 * var(--hm-rail-pad));
+  padding: 0;
+  list-style: none;
+  border-block: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+}
+
+.dms--redesign.dms--rails .pb-cell {
+  display: grid;
+  grid-template-columns: minmax(236px, 0.85fr) minmax(0, 1.15fr);
+  background: var(--dms-surface);
+}
+
+/* the wash: paper today, blue on the record, grain over both */
+.dms--redesign.dms--rails .pb-cell__wash {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+  padding: 28px 18px;
+  background: var(--hm-wash-paper);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dms--redesign.dms--rails .pb-cell__wash::before,
+.dms--redesign.dms--rails .pb-cell__wash::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.dms--redesign.dms--rails .pb-cell__wash::before {
+  background: var(--hm-wash-blue);
+  opacity: 0;
+  transition: opacity 520ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb-cell__wash::after {
+  background-image: var(--dms-grain);
+  background-size: 180px 180px;
+  opacity: 0.1;
+  mix-blend-mode: multiply;
+}
+
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__wash::before {
+  opacity: 1;
+}
+
+.dms--redesign.dms--rails .pb-cell__stage {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 100%;
+  max-width: 270px;
+}
+
+.dms--redesign.dms--rails .pb-cell__art {
+  grid-area: 1 / 1;
+  align-self: center;
+  transition: opacity 380ms var(--pb-ease), transform 520ms var(--pb-ease), visibility 0s linear 520ms;
+}
+
+.dms--redesign.dms--rails .pb .pb-cell__art.is-after,
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__art.is-before {
+  opacity: 0;
+  transform: translateY(8px) scale(0.985);
+  visibility: hidden;
+}
+
+.dms--redesign.dms--rails .pb .pb-cell__art.is-before,
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__art.is-after {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* ------------------------------------------------------------ the body */
+.dms--redesign.dms--rails .pb-cell__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(24px, 2.4vw, 30px) clamp(24px, 2.4vw, 32px) 0;
+}
+
+/* top row: status dot + category. The dot flips with
+ * the switch: rust today, blue on the record. */
+.dms--redesign.dms--rails .pb-cell__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dms--redesign.dms--rails .pb-cell__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dms-muted);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.dms--rails .pb-cell__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dms-tax);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dms-tax), transparent 82%);
+  transition: background-color 380ms var(--pb-ease), box-shadow 380ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__dot {
+  background: var(--dms-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--dms-accent), transparent 82%);
+}
+
+.dms--redesign.dms--rails .pb-cell__claim {
+  margin: 16px 0 0;
+  color: var(--dms-ink);
+  font-family: var(--u-display);
+  font-size: clamp(1.15rem, 1.4vw, 1.3rem);
+  font-weight: 560;
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.dms--redesign.dms--rails .pb-cell__detail {
+  margin: 10px 0 0;
+  color: var(--dms-muted);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+/* one line under a hairline, swapped by the switch (stacked in one grid
+ * area so the cell never changes height) */
+.dms--redesign.dms--rails .pb-cell__say {
+  display: grid;
+  margin: 10px 0 0;
+  color: var(--dms-muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.dms--redesign.dms--rails .pb-cell__line {
+  grid-area: 1 / 1;
+  transition: opacity 320ms var(--pb-ease), visibility 0s linear 320ms;
+}
+
+.dms--redesign.dms--rails .pb-cell__line b { font-weight: 620; }
+.dms--redesign.dms--rails .pb-cell__line.is-before b { color: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pb-cell__line.is-after b { color: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pb .pb-cell__line.is-after,
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__line.is-before {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.dms--redesign.dms--rails .pb .pb-cell__line.is-before,
+.dms--redesign.dms--rails .pb[data-world="after"] .pb-cell__line.is-after {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* the customer film: a full-width footer row on the cell floor, split off
+ * by a hairline that runs edge to edge of the body */
+.dms--redesign.dms--rails .pb-cell__film {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  margin: auto calc(-1 * clamp(24px, 2.4vw, 32px)) 0;
+  padding: 14px clamp(24px, 2.4vw, 32px);
+  border-top: 1px solid var(--hm-rail);
+  color: var(--dms-ink);
+  text-decoration: none;
+  transition: background-color 200ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb-cell__say + .pb-cell__film { margin-top: auto; }
+.dms--redesign.dms--rails .pb-cell__body > .pb-cell__say { margin-bottom: 24px; }
+
+.dms--redesign.dms--rails .pb-cell__film:hover { background: var(--n-50); }
+.dms--redesign.dms--rails .pb-cell__film:focus-visible { outline: 2px solid var(--dms-accent); outline-offset: -2px; }
+
+.dms--redesign.dms--rails .pb-cell__play {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--dms-accent);
+}
+
+.dms--redesign.dms--rails .pb-cell__play svg { width: 15px; height: 15px; margin-left: 2px; fill: #fff; }
+
+.dms--redesign.dms--rails .pb-cell__film-text { display: grid; gap: 1px; min-width: 0; }
+
+.dms--redesign.dms--rails .pb-cell__film-text small {
+  font-family: var(--dms-mono);
+  font-size: 0.6rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms--rails .pb-cell__film-text span {
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 580;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pb-cell__film-arrow {
+  color: var(--dms-accent);
+  transition: transform 200ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pb-cell__film:hover .pb-cell__film-arrow { transform: translateX(3px); }
+
+.dms--redesign.dms--rails .pb__coda {
+  margin: clamp(24px, 2.6vw, 32px) 0 0;
+  color: var(--dms-muted);
+  font-size: 1rem;
+}
+
+.dms--redesign.dms--rails .pb__coda strong {
+  color: var(--dms-ink);
+  font-weight: 620;
+}
+
+/* ======================================================= the artifacts
+ * Four different objects, four silhouettes (24 Sep rework): a report page
+ * with a floating owner field, a month calendar, a defect chart, a file
+ * pile that becomes one bound packet. Markup: qms-problem-board.tsx. */
+.dms--redesign.dms--rails .pb {
+  --pbx-plate: 0 0 0 4px oklch(1 0 0 / 0.24), 0 0 0 5px oklch(1 0 0 / 0.45), 0 1px 2px -1px oklch(0 0 0 / 0.07),
+    0 16px 32px -20px oklch(0.24 0.02 263 / 0.42);
+  --pbx-float: 0 0 0 1px oklch(0 0 0 / 0.08), 0 2px 4px -2px oklch(0 0 0 / 0.08), 0 18px 32px -14px oklch(0.24 0.02 263 / 0.45);
+  --pbx-mono: var(--dms-mono);
+}
+
+.dms--redesign.dms--rails .pbx-scene {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 228px;
+  color: var(--dms-ink);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.dms--redesign.dms--rails .pbx-ico { width: 13px; height: 13px; flex: none; }
+.dms--redesign.dms--rails .pbx-ico circle,
+.dms--redesign.dms--rails .pbx-ico path { fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.dms--redesign.dms--rails .pbx-ico.is-ok circle { fill: var(--dms-ok); }
+.dms--redesign.dms--rails .pbx-ico.is-tax circle { fill: var(--dms-tax); }
+.dms--redesign.dms--rails .pbx-ico:is(.is-ok, .is-tax) path { stroke: #fff; }
+.dms--redesign.dms--rails .pbx-ico.is-line :is(circle, path) { stroke: currentColor; }
+
+/* 1 · the report page + owner field */
+.dms--redesign.dms--rails .pbx-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 178px;
+  margin-right: 40px;
+  padding: 14px 14px 22px;
+  background: #fffdf9;
+  box-shadow: var(--pbx-plate);
+  rotate: -2deg;
+}
+
+.dms--redesign.dms--rails .pbx-doc__head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--dms-hairline);
+  font-family: var(--pbx-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms--rails .pbx-doc__head span:first-child { color: var(--dms-ink); font-weight: 700; }
+.dms--redesign.dms--rails .pbx-bar { display: block; height: 4px; background: oklch(0.92 0.006 80); }
+.dms--redesign.dms--rails .pbx-bar.is-short { width: 58%; }
+.dms--redesign.dms--rails .pbx-bar.is-mid { width: 80%; }
+
+.dms--redesign.dms--rails .pbx-doc__finding {
+  display: grid;
+  gap: 2px;
+  margin: 3px -6px;
+  padding: 6px;
+  background: var(--dms-tax-tint);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--dms-tax), transparent 75%);
+  font-size: 0.6rem;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--rails .pbx-doc__finding b { color: var(--dms-tax-text); font-size: 0.64rem; }
+.dms--redesign.dms--rails .pbx-doc__finding.is-owned { background: color-mix(in oklab, var(--dms-accent), #fff 90%); box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 72%); }
+.dms--redesign.dms--rails .pbx-doc__finding.is-owned b { color: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pbx-float {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  display: grid;
+  gap: 6px;
+  width: 136px;
+  padding: 10px 11px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+}
+
+.dms--redesign.dms--rails .pbx-float__lab {
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+}
+
+.dms--redesign.dms--rails .pbx-owner__slot {
+  padding: 5px 7px;
+  border: 1px dashed color-mix(in oklab, var(--dms-tax), transparent 40%);
+  color: var(--dms-faint);
+  font-style: italic;
+}
+
+.dms--redesign.dms--rails .pbx-owner__who { display: inline-flex; align-items: center; gap: 7px; font-weight: 620; font-size: 0.72rem; }
+
+.dms--redesign.dms--rails .pbx-av {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ede4fb;
+  color: #6b3fc4;
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+.dms--redesign.dms--rails .pbx-due {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--pbx-mono);
+  font-size: 0.58rem;
+  font-weight: 650;
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms--rails .pbx-due.is-tax { color: var(--dms-tax-text); }
+
+/* 2 · the month calendar */
+.dms--redesign.dms--rails .pbx-cal {
+  width: 232px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-plate);
+}
+
+.dms--redesign.dms--rails .pbx-cal__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 11px 12px 8px;
+}
+
+.dms--redesign.dms--rails .pbx-cal__head b { font-family: var(--dms-display); font-size: 0.86rem; font-weight: 640; letter-spacing: -0.01em; }
+.dms--redesign.dms--rails .pbx-cal__head span { font-family: var(--pbx-mono); font-size: 0.55rem; color: var(--dms-faint); }
+
+.dms--redesign.dms--rails .pbx-cal__dow,
+.dms--redesign.dms--rails .pbx-cal__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  padding: 0 8px;
+}
+
+.dms--redesign.dms--rails .pbx-cal__dow span {
+  padding-bottom: 4px;
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  color: var(--dms-faint);
+  text-align: center;
+}
+
+.dms--redesign.dms--rails .pbx-cal__grid { gap: 2px 0; padding-bottom: 8px; }
+
+.dms--redesign.dms--rails .pbx-cal__grid span {
+  display: grid;
+  place-items: center;
+  height: 22px;
+  font-family: var(--pbx-mono);
+  font-size: 0.58rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--rails .pbx-cal__grid .is-slip {
+  color: var(--dms-tax-text);
+  background: repeating-linear-gradient(-45deg, color-mix(in oklab, var(--dms-tax), transparent 91%) 0 1.5px, transparent 1.5px 5px);
+}
+
+.dms--redesign.dms--rails .pbx-cal__grid .is-target { color: var(--dms-tax-text); font-weight: 700; box-shadow: inset 0 0 0 1.5px var(--dms-tax); }
+.dms--redesign.dms--rails .pbx-cal__grid .is-recur { background: var(--dms-tax); color: #fff; font-weight: 700; }
+.dms--redesign.dms--rails .pbx-cal__grid .in-window { background: color-mix(in oklab, var(--dms-accent), #fff 88%); color: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-cal__grid .is-gate { background: var(--dms-accent); color: #fff; font-weight: 700; }
+.dms--redesign.dms--rails .pbx-cal__grid .is-today { background: var(--dms-ink); color: #fff; font-weight: 700; }
+
+.dms--redesign.dms--rails .pbx-cal__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--dms-hairline);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 650;
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms--rails .pbx-cal__foot.is-tax { color: var(--dms-tax-text); }
+
+/* 3 · the defect chart */
+.dms--redesign.dms--rails .pbx-chart {
+  width: 250px;
+  padding: 11px 10px 6px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-plate);
+}
+
+.dms--redesign.dms--rails .pbx-chart__head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 2px 6px; }
+.dms--redesign.dms--rails .pbx-chart__head b { font-family: var(--dms-display); font-size: 0.8rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-chart__head span { font-family: var(--pbx-mono); font-size: 0.52rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-chart__svg { display: block; width: 100%; height: auto; overflow: visible; }
+.dms--redesign.dms--rails .pbx-grid { stroke: var(--n-150); stroke-width: 1; }
+.dms--redesign.dms--rails .pbx-limit { stroke: var(--dms-tax); stroke-width: 1; stroke-dasharray: 4 3; }
+.dms--redesign.dms--rails .pbx-limit__lab { font-family: var(--pbx-mono); font-size: 7px; font-weight: 700; letter-spacing: 0.06em; fill: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-mark { stroke: var(--dms-ink); stroke-width: 1; }
+.dms--redesign.dms--rails .pbx-mark__tag { fill: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-mark__tag.is-accent { fill: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-mark__lab { font-family: var(--pbx-mono); font-size: 7px; font-weight: 700; letter-spacing: 0.07em; fill: #fff; }
+.dms--redesign.dms--rails .pbx-line { fill: none; stroke: var(--dms-tax); stroke-width: 1.8; stroke-linejoin: round; }
+.dms--redesign.dms--rails .pbx-line.is-good { stroke: var(--n-500); }
+.dms--redesign.dms--rails .pbx-pt { stroke: #fff; stroke-width: 1.5; }
+.dms--redesign.dms--rails .pbx-pt.is-bad { fill: var(--dms-tax); }
+.dms--redesign.dms--rails .pbx-pt.is-good { fill: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-axis { font-family: var(--pbx-mono); font-size: 7px; fill: var(--dms-faint); }
+
+/* 4 · the file pile, then the bound packet */
+.dms--redesign.dms--rails .pbx-scene--pile { min-height: 236px; }
+
+.dms--redesign.dms--rails .pbx-slot {
+  padding: 18px 16px;
+  border: 1.5px dashed color-mix(in oklab, var(--dms-tax), transparent 35%);
+  background: color-mix(in oklab, var(--dms-tax-tint), transparent 30%);
+  font-family: var(--pbx-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--dms-tax-text);
+}
+
+.dms--redesign.dms--rails .pbx-tile {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px 7px 7px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  color: var(--dms-muted);
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pbx-tile__ico { display: grid; place-items: center; width: 22px; height: 22px; flex: none; }
+.dms--redesign.dms--rails .pbx-tile__ico svg { width: 18px; height: 18px; fill: none; stroke-width: 1.4; }
+.dms--redesign.dms--rails .pbx-tile__ico.is-sheet svg { stroke: #1f7a4d; }
+.dms--redesign.dms--rails .pbx-tile__ico.is-mail svg { stroke: #6b3fc4; }
+.dms--redesign.dms--rails .pbx-tile__ico.is-pdf { background: #c8412f; color: #fff; font-size: 0.46rem; font-weight: 800; }
+
+.dms--redesign.dms--rails .pbx-tile.is-shot { flex-direction: column; align-items: flex-start; gap: 5px; padding: 6px 6px 7px; }
+
+.dms--redesign.dms--rails .pbx-shot {
+  display: grid;
+  gap: 3px;
+  width: 92px;
+  padding: 6px;
+  background: linear-gradient(160deg, #dfeaff, #f4efe8);
+}
+
+.dms--redesign.dms--rails .pbx-shot i { display: block; height: 3px; background: oklch(1 0 0 / 0.9); }
+.dms--redesign.dms--rails .pbx-shot i:nth-child(2) { width: 70%; }
+.dms--redesign.dms--rails .pbx-shot i:nth-child(3) { width: 45%; }
+
+.dms--redesign.dms--rails .pbx-packet { position: relative; width: 208px; }
+
+.dms--redesign.dms--rails .pbx-packet__sheet {
+  position: absolute;
+  inset: 0;
+  background: var(--dms-surface);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.08);
+}
+
+.dms--redesign.dms--rails .pbx-packet__sheet.is-3 { translate: 10px 10px; opacity: 0.7; }
+.dms--redesign.dms--rails .pbx-packet__sheet.is-2 { translate: 5px 5px; }
+
+.dms--redesign.dms--rails .pbx-packet__front { position: relative; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+
+.dms--redesign.dms--rails .pbx-packet__head {
+  display: grid;
+  gap: 2px;
+  padding: 12px 12px 9px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+
+.dms--redesign.dms--rails .pbx-packet__head b { font-family: var(--dms-display); font-size: 0.84rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-packet__head span { font-family: var(--pbx-mono); font-size: 0.55rem; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-packet ol { margin: 0; padding: 6px 12px 10px; list-style: none; }
+.dms--redesign.dms--rails .pbx-packet li { position: relative; display: flex; align-items: center; gap: 7px; padding: 5px 0; }
+.dms--redesign.dms--rails .pbx-packet li + li::before { position: absolute; top: -4px; left: 6px; width: 1px; height: 8px; content: ""; background: var(--dms-ok); }
+.dms--redesign.dms--rails .pbx-packet li b { font-family: var(--pbx-mono); font-size: 0.58rem; }
+.dms--redesign.dms--rails .pbx-packet li span { color: var(--dms-muted); }
+
+.dms--redesign.dms--rails .pbx-seal {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--dms-accent);
+  box-shadow: 0 0 0 4px oklch(1 0 0 / 0.6), 0 8px 18px -8px oklch(0.3 0.1 260 / 0.6);
+}
+
+.dms--redesign.dms--rails .pbx-seal svg { width: 20px; height: 20px; }
+.dms--redesign.dms--rails .pbx-seal path { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linejoin: round; stroke-linecap: round; }
+
+/* ---------------------------------------------- DMS set (24 Sep 2026)
+ * folder tree -> record, fanned copies -> one stamped, station tablet,
+ * training matrix. Markup: dms/dms-problem-board.tsx. */
+
+/* shared-drive tree */
+.dms--redesign.dms--rails .pbx-tree { width: 236px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+
+.dms--redesign.dms--rails .pbx-tree__search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 10px 6px;
+  padding: 6px 8px;
+  background: var(--n-50);
+  box-shadow: inset 0 0 0 1px var(--dms-hairline);
+  font-size: 0.6rem;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--rails .pbx-tree__search svg { width: 11px; height: 11px; flex: none; fill: none; stroke: var(--dms-faint); stroke-width: 1.5; stroke-linecap: round; }
+.dms--redesign.dms--rails .pbx-tree__search span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dms--redesign.dms--rails .pbx-tree__search em { font-family: var(--pbx-mono); font-size: 0.52rem; font-style: normal; font-weight: 700; color: var(--dms-tax-text); white-space: nowrap; }
+
+.dms--redesign.dms--rails .pbx-tree ul { margin: 0; padding: 2px 0 6px; list-style: none; }
+
+.dms--redesign.dms--rails .pbx-tree li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3.5px 12px;
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  color: var(--dms-muted);
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pbx-tree li.is-dir { color: var(--dms-ink); font-weight: 650; }
+.dms--redesign.dms--rails .pbx-tree li.is-in1 { padding-left: 24px; }
+.dms--redesign.dms--rails .pbx-tree li.is-in2 { padding-left: 38px; }
+.dms--redesign.dms--rails .pbx-tree__ico { width: 12px; height: 12px; flex: none; fill: none; stroke: var(--dms-faint); stroke-width: 1.2; stroke-linejoin: round; }
+.dms--redesign.dms--rails .pbx-tree__ico.is-folder { fill: #f3d99b; stroke: #c9a24c; }
+
+.dms--redesign.dms--rails :is(.pbx-tree__foot, .pbx-mx__foot) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--dms-hairline);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 650;
+  color: var(--dms-tax-text);
+}
+
+/* the SOP record */
+.dms--redesign.dms--rails .pbx-rec { width: 236px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+
+.dms--redesign.dms--rails .pbx-rec__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(--dms-hairline);
+}
+
+.dms--redesign.dms--rails .pbx-rec__head span { display: grid; gap: 2px; font-size: 0.62rem; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-rec__head b { font-family: var(--dms-display); font-size: 0.86rem; font-weight: 640; color: var(--dms-ink); }
+
+.dms--redesign.dms--rails .pbx-rec__head em,
+.dms--redesign.dms--rails .pbx-tab__title em {
+  flex: none;
+  padding: 3px 6px;
+  font-family: var(--pbx-mono);
+  font-size: 0.52rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--dms-accent);
+  background: color-mix(in oklab, var(--dms-accent), #fff 90%);
+}
+
+.dms--redesign.dms--rails .pbx-rec ul { margin: 0; padding: 4px 12px; list-style: none; }
+.dms--redesign.dms--rails .pbx-rec li { display: flex; align-items: center; gap: 7px; padding: 6px 0; }
+.dms--redesign.dms--rails .pbx-rec li + li { border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-rec li span { flex: 1; font-weight: 560; }
+.dms--redesign.dms--rails .pbx-rec li small { font-family: var(--pbx-mono); font-size: 0.55rem; color: var(--dms-faint); }
+
+.dms--redesign.dms--rails .pbx-rec__btn {
+  margin: 4px 12px 12px;
+  padding: 7px;
+  background: var(--dms-accent);
+  color: #fff;
+  font-size: 0.64rem;
+  font-weight: 620;
+  text-align: center;
+}
+
+/* three copies, fanned */
+.dms--redesign.dms--rails .pbx-fan { min-height: 244px; }
+
+/* cascaded down-right so each back sheet keeps its top row (version +
+ * where it lives) in view */
+.dms--redesign.dms--rails .pbx-sheet {
+  position: absolute;
+  top: calc(50% - 104px + var(--i) * 38px);
+  left: calc(50% - 106px + var(--i) * 34px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 144px;
+  padding: 9px 11px 12px;
+  background: #fffdf9;
+  box-shadow: var(--pbx-float);
+  transition: opacity 420ms var(--pb-ease), filter 420ms var(--pb-ease);
+}
+
+.dms--redesign.dms--rails .pbx-sheet.is-0 { --i: 0; rotate: -3deg; }
+.dms--redesign.dms--rails .pbx-sheet.is-1 { --i: 1; rotate: 1.5deg; }
+.dms--redesign.dms--rails .pbx-sheet.is-2 { --i: 2; rotate: -1deg; }
+
+.dms--redesign.dms--rails .pbx-sheet__top { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+.dms--redesign.dms--rails .pbx-sheet__id { font-family: var(--pbx-mono); font-size: 0.48rem; letter-spacing: 0.04em; color: var(--dms-faint); white-space: nowrap; }
+.dms--redesign.dms--rails .pbx-sheet__v { font-family: var(--dms-display); font-size: 1.05rem; font-weight: 640; letter-spacing: -0.02em; color: var(--dms-tax-text); }
+
+.dms--redesign.dms--rails .pbx-sheet__where {
+  font-family: var(--pbx-mono);
+  font-size: 0.46rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--dms-muted);
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pbx-fan.is-after .pbx-sheet:is(.is-0, .is-1) { opacity: 0.5; filter: grayscale(1); }
+.dms--redesign.dms--rails .pbx-fan.is-after .pbx-sheet:is(.is-0, .is-1) .pbx-sheet__v { color: var(--dms-faint); text-decoration: line-through; }
+.dms--redesign.dms--rails .pbx-fan.is-after .pbx-sheet.is-2 { box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-fan.is-after .pbx-sheet.is-2 .pbx-sheet__v { color: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pbx-stamp {
+  position: absolute;
+  right: 8px;
+  bottom: 10px;
+  padding: 3px 6px;
+  border: 1.5px solid var(--dms-accent);
+  font-family: var(--pbx-mono);
+  font-size: 0.52rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--dms-accent);
+  rotate: -8deg;
+}
+
+.dms--redesign.dms--rails .pbx-fan__q,
+.dms--redesign.dms--rails .pbx-tag {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  translate: -50% 0;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--dms-tax-text);
+  white-space: nowrap;
+}
+
+/* the line-station tablet */
+.dms--redesign.dms--rails .pbx-tab {
+  width: 232px;
+  padding: 9px;
+  border-radius: 10px;
+  background: #1f2126;
+  box-shadow: 0 0 0 1px #353941, 0 20px 36px -18px oklch(0.2 0.02 263 / 0.6);
+}
+
+.dms--redesign.dms--rails .pbx-tab__screen { display: grid; gap: 8px; padding: 10px; border-radius: 3px; background: var(--dms-surface); }
+
+.dms--redesign.dms--rails .pbx-tab__top { display: flex; justify-content: space-between; font-family: var(--pbx-mono); font-size: 0.5rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-tab__title { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.dms--redesign.dms--rails .pbx-tab__title b { font-family: var(--dms-display); font-size: 0.74rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-tab__title em.is-tax { color: var(--dms-tax-text); background: var(--dms-tax-tint); }
+
+.dms--redesign.dms--rails .pbx-tab__banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  font-size: 0.58rem;
+  font-weight: 620;
+}
+
+.dms--redesign.dms--rails .pbx-tab__banner.is-tax { color: var(--dms-tax-text); background: var(--dms-tax-tint); }
+.dms--redesign.dms--rails .pbx-tab__banner.is-accent { color: var(--dms-accent); background: color-mix(in oklab, var(--dms-accent), #fff 90%); }
+
+.dms--redesign.dms--rails .pbx-tab__steps { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .pbx-tab__steps li { display: flex; align-items: center; gap: 7px; }
+.dms--redesign.dms--rails .pbx-tab__steps li span { display: grid; place-items: center; width: 14px; height: 14px; flex: none; border-radius: 50%; background: var(--n-100); font-family: var(--pbx-mono); font-size: 0.48rem; font-weight: 700; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-tab__steps .pbx-bar { flex: 1; }
+
+.dms--redesign.dms--rails .pbx-tag { bottom: 2px; left: auto; right: 0; translate: none; }
+.dms--redesign.dms--rails .pbx-tag.is-ok { color: color-mix(in oklab, var(--dms-ok), black 30%); }
+
+/* the training matrix */
+.dms--redesign.dms--rails .pbx-mx { width: 246px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+
+.dms--redesign.dms--rails .pbx-mx__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) 0.6fr 0.6fr 1fr;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+}
+
+.dms--redesign.dms--rails .pbx-mx__row + .pbx-mx__row { border-top: 1px solid var(--dms-hairline); }
+
+.dms--redesign.dms--rails .pbx-mx__head span {
+  font-family: var(--pbx-mono);
+  font-size: 0.48rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dms-faint);
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pbx-mx__head span.is-tax { color: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-mx__head span.is-accent { color: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pbx-mx__who { display: inline-flex; align-items: center; gap: 5px; min-width: 0; font-size: 0.58rem; font-weight: 560; white-space: nowrap; overflow: hidden; }
+.dms--redesign.dms--rails .pbx-mx__av { display: grid; place-items: center; width: 15px; height: 15px; flex: none; border-radius: 50%; background: var(--n-100); font-family: var(--pbx-mono); font-size: 0.42rem; font-weight: 700; color: var(--dms-muted); }
+
+.dms--redesign.dms--rails .pbx-mx__c {
+  display: grid;
+  place-items: center;
+  height: 17px;
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+.dms--redesign.dms--rails .pbx-mx__c.is-old { color: var(--dms-faint); background: var(--n-50); }
+.dms--redesign.dms--rails .pbx-mx__c.is-late { color: var(--dms-tax-text); background: var(--dms-tax-tint); }
+.dms--redesign.dms--rails .pbx-mx__c.is-none { box-shadow: inset 0 0 0 1px var(--n-200); background: repeating-linear-gradient(-45deg, var(--n-100) 0 1.5px, transparent 1.5px 4px); }
+.dms--redesign.dms--rails .pbx-mx__c.is-ok { color: var(--dms-accent); background: color-mix(in oklab, var(--dms-accent), #fff 88%); }
+.dms--redesign.dms--rails .pbx-mx__foot:not(.is-tax) { color: var(--dms-accent); }
+
+/* ---------------------------------------------- PLM set (24 Sep 2026)
+ * split windows -> trace chain, part drawing, coverage ring, FMEA table.
+ * Markup: plm/plm-problem-board.tsx. */
+
+/* two tools, the link between them broken */
+.dms--redesign.dms--rails .pbx-split { min-height: 236px; }
+
+.dms--redesign.dms--rails .pbx-win {
+  position: absolute;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+}
+
+.dms--redesign.dms--rails .pbx-win.is-sheet { top: 8px; left: 0; width: 176px; }
+.dms--redesign.dms--rails .pbx-win.is-test { right: 0; bottom: 38px; width: 164px; }
+
+.dms--redesign.dms--rails .pbx-win__bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 9px;
+  border-bottom: 1px solid var(--dms-hairline);
+  background: var(--n-50);
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  font-weight: 650;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--rails .pbx-win__bar::before {
+  width: 6px;
+  height: 6px;
+  content: "";
+  border-radius: 50%;
+  background: var(--n-300);
+  box-shadow: 9px 0 0 var(--n-300), 18px 0 0 var(--n-300);
+  margin-right: 20px;
+}
+
+.dms--redesign.dms--rails .pbx-win.is-sheet .pbx-win__bar { background: #e9f4ec; }
+
+.dms--redesign.dms--rails .pbx-xl {
+  display: grid;
+  grid-template-columns: 16px 48px 1fr;
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--rails .pbx-xl span {
+  padding: 5px 5px;
+  border-right: 1px solid var(--dms-hairline);
+  border-bottom: 1px solid var(--dms-hairline);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.dms--redesign.dms--rails .pbx-xl span.is-h { padding: 3px 4px; background: var(--n-50); color: var(--dms-faint); text-align: center; }
+.dms--redesign.dms--rails .pbx-xl span.is-hot { background: var(--dms-tax-tint); color: var(--dms-tax-text); font-weight: 700; }
+
+.dms--redesign.dms--rails .pbx-win.is-test ul { margin: 0; padding: 3px 9px 5px; list-style: none; }
+.dms--redesign.dms--rails .pbx-win.is-test li { display: flex; align-items: center; gap: 6px; padding: 5px 0; font-size: 0.56rem; }
+.dms--redesign.dms--rails .pbx-win.is-test li + li { border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-win.is-test li b { font-family: var(--pbx-mono); font-size: 0.52rem; }
+.dms--redesign.dms--rails .pbx-win.is-test li span { flex: 1; color: var(--dms-muted); white-space: nowrap; }
+.dms--redesign.dms--rails .pbx-win.is-test li em { font-family: var(--pbx-mono); font-size: 0.48rem; font-style: normal; font-weight: 700; color: color-mix(in oklab, var(--dms-ok), black 25%); }
+
+.dms--redesign.dms--rails .pbx-break {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--dms-tax-text);
+  white-space: nowrap;
+}
+
+/* the trace chain */
+.dms--redesign.dms--rails .pbx-chain { display: grid; gap: 14px; width: 210px; margin: 0; padding: 0; list-style: none; }
+
+.dms--redesign.dms--rails .pbx-chain li {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 10px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-size: 0.6rem;
+}
+
+.dms--redesign.dms--rails .pbx-chain li:nth-child(2) { margin-left: 14px; }
+.dms--redesign.dms--rails .pbx-chain li:nth-child(3) { margin-left: 28px; }
+.dms--redesign.dms--rails .pbx-chain li:nth-child(4) { margin-left: 42px; }
+
+.dms--redesign.dms--rails .pbx-chain li + li::before {
+  position: absolute;
+  top: -15px;
+  left: 4px;
+  width: 1.5px;
+  height: 15px;
+  content: "";
+  background: var(--dms-accent);
+}
+
+.dms--redesign.dms--rails .pbx-chain b { font-family: var(--pbx-mono); font-size: 0.56rem; color: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-chain span { color: var(--dms-muted); white-space: nowrap; }
+.dms--redesign.dms--rails .pbx-chain li.is-end { background: color-mix(in oklab, var(--dms-accent), #fff 92%); box-shadow: 0 0 0 1px color-mix(in oklab, var(--dms-accent), transparent 70%), var(--pbx-float); }
+
+/* the part drawing */
+.dms--redesign.dms--rails .pbx-dwg {
+  width: 240px;
+  margin-bottom: 26px;
+  background: #f7f9fc;
+  background-image: linear-gradient(var(--n-100) 1px, transparent 1px), linear-gradient(90deg, var(--n-100) 1px, transparent 1px);
+  background-size: 12px 12px;
+  box-shadow: var(--pbx-plate);
+}
+
+.dms--redesign.dms--rails .pbx-dwg__svg { display: block; width: 100%; height: auto; padding: 6px 4px 0; }
+.dms--redesign.dms--rails .pbx-dwg__part { fill: none; stroke: #3a4a66; stroke-width: 1.3; }
+.dms--redesign.dms--rails .pbx-dwg__cl { fill: none; stroke: #8a97ad; stroke-width: 0.7; stroke-dasharray: 8 2 2 2; }
+.dms--redesign.dms--rails .pbx-dwg__lead { fill: none; stroke: #3a4a66; stroke-width: 0.8; }
+.dms--redesign.dms--rails .pbx-dwg__dim { font-family: var(--pbx-mono); font-size: 9px; font-weight: 700; }
+.dms--redesign.dms--rails .pbx-dwg__dim.is-tax { fill: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-dwg__dim.is-accent { fill: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pbx-dwg__block {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 9px;
+  border-top: 1px solid #c9d2e0;
+  background: var(--dms-surface);
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  color: var(--dms-muted);
+}
+
+.dms--redesign.dms--rails .pbx-dwg__block b { color: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-dwg__lock { display: inline-flex; align-items: center; gap: 4px; font-weight: 700; color: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-dwg__lock .pbx-ico { width: 11px; height: 11px; }
+
+/* the coverage ring */
+.dms--redesign.dms--rails .pbx-cov { width: 236px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-cov__top { display: flex; align-items: center; gap: 12px; padding: 14px 12px 12px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-cov__ring { width: 76px; height: 76px; flex: none; rotate: -90deg; }
+.dms--redesign.dms--rails .pbx-cov__track { fill: none; stroke: var(--n-100); stroke-width: 8; }
+.dms--redesign.dms--rails .pbx-cov__arc { fill: none; stroke: var(--dms-tax); stroke-width: 8; }
+.dms--redesign.dms--rails .pbx-cov__arc.is-accent { stroke: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-cov__pct { rotate: 90deg; transform-origin: 42px 42px; font-family: var(--dms-display); font-size: 15px; font-weight: 650; fill: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-cov__lab { display: grid; gap: 3px; min-width: 0; }
+.dms--redesign.dms--rails .pbx-cov__lab small { font-family: var(--pbx-mono); font-size: 0.48rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-cov__lab b { font-family: var(--dms-display); font-size: 0.74rem; font-weight: 640; line-height: 1.2; }
+.dms--redesign.dms--rails .pbx-cov__lab span { font-size: 0.56rem; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-cov ul { margin: 0; padding: 4px 12px 8px; list-style: none; }
+.dms--redesign.dms--rails .pbx-cov li { display: flex; align-items: center; gap: 7px; padding: 5px 0; }
+.dms--redesign.dms--rails .pbx-cov li + li { border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-cov li b { font-family: var(--pbx-mono); font-size: 0.56rem; }
+.dms--redesign.dms--rails .pbx-cov li span { margin-left: auto; font-family: var(--pbx-mono); font-size: 0.52rem; font-weight: 700; }
+.dms--redesign.dms--rails .pbx-cov li span.is-tax { color: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-cov li span.is-accent { color: var(--dms-accent); }
+
+/* the FMEA table */
+.dms--redesign.dms--rails .pbx-fmea { width: 244px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-fmea__head { display: grid; gap: 2px; padding: 11px 11px 9px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-fmea__head b { font-family: var(--dms-display); font-size: 0.8rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-fmea__head span { font-family: var(--pbx-mono); font-size: 0.52rem; color: var(--dms-faint); }
+
+.dms--redesign.dms--rails .pbx-fmea__row {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 34px;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 11px;
+  font-size: 0.58rem;
+}
+
+.dms--redesign.dms--rails .pbx-fmea__row + .pbx-fmea__row { border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-fmea__row.is-h span { font-family: var(--pbx-mono); font-size: 0.46rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-fmea__row > span { display: flex; align-items: center; gap: 5px; min-width: 0; white-space: nowrap; font-weight: 550; }
+.dms--redesign.dms--rails .pbx-fmea__row > span.is-blank { height: 12px; background: repeating-linear-gradient(-45deg, var(--n-100) 0 1.5px, transparent 1.5px 4px); box-shadow: inset 0 0 0 1px var(--n-150); }
+.dms--redesign.dms--rails .pbx-fmea__row em { padding: 1px 4px; font-family: var(--pbx-mono); font-size: 0.42rem; font-style: normal; font-weight: 700; text-transform: uppercase; color: var(--dms-accent); background: color-mix(in oklab, var(--dms-accent), #fff 90%); }
+
+.dms--redesign.dms--rails .pbx-fmea__rpn { justify-content: center; height: 18px; font-family: var(--pbx-mono); font-size: 0.54rem; font-weight: 700; }
+.dms--redesign.dms--rails .pbx-fmea__rpn.is-hi { background: var(--dms-tax); color: #fff; }
+.dms--redesign.dms--rails .pbx-fmea__rpn.is-mid { background: var(--dms-tax-tint); color: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-fmea__rpn.is-lo { background: color-mix(in oklab, var(--dms-ok), #fff 86%); color: color-mix(in oklab, var(--dms-ok), black 30%); }
+
+.dms--redesign.dms--rails .pbx-fmea__foot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border-top: 1px solid var(--dms-hairline);
+  font-family: var(--pbx-mono);
+  font-size: 0.54rem;
+  font-weight: 650;
+  color: var(--dms-accent);
+}
+
+.dms--redesign.dms--rails .pbx-fmea__foot.is-tax { color: var(--dms-tax-text); }
+
+/* ---------------------------------------------- MES set (24 Sep 2026)
+ * four counts -> one batch record, clipboard checklist, recall sheet ->
+ * genealogy tree, sticky note -> signed entry. Markup:
+ * mes/mes-problem-board.tsx. */
+
+/* four systems, four counts */
+.dms--redesign.dms--rails .pbx-quad {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, 112px);
+  gap: 10px;
+  padding-bottom: 30px;
+}
+
+.dms--redesign.dms--rails .pbx-quad__t {
+  display: grid;
+  gap: 1px;
+  padding: 9px 10px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+}
+
+.dms--redesign.dms--rails .pbx-quad__t.is-paper { background: #fffdf5; rotate: -2deg; }
+.dms--redesign.dms--rails .pbx-quad__t small { font-family: var(--pbx-mono); font-size: 0.46rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-quad__t span { font-size: 0.54rem; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-quad__t b { margin-top: 4px; font-family: var(--dms-display); font-size: 1.25rem; font-weight: 640; letter-spacing: -0.02em; color: var(--dms-tax-text); line-height: 1; }
+.dms--redesign.dms--rails .pbx-quad__t em { font-family: var(--pbx-mono); font-size: 0.46rem; font-style: normal; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-quad__t.is-paper b { font-family: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive; font-weight: 700; }
+
+.dms--redesign.dms--rails .pbx-quad__q {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  translate: -50% 0;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--dms-tax-text);
+  white-space: nowrap;
+}
+
+/* the one batch record */
+.dms--redesign.dms--rails .pbx-batch { display: grid; gap: 8px; width: 230px; padding: 12px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-batch > small { font-family: var(--pbx-mono); font-size: 0.5rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-batch__n { display: flex; align-items: center; gap: 10px; }
+.dms--redesign.dms--rails .pbx-batch__n b { font-family: var(--dms-display); font-size: 2rem; font-weight: 640; letter-spacing: -0.03em; line-height: 1; color: var(--dms-accent); }
+.dms--redesign.dms--rails .pbx-batch__n span { font-size: 0.58rem; line-height: 1.35; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-batch ul { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin: 0; padding: 8px 0 0; list-style: none; border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-batch li { display: flex; align-items: center; gap: 5px; font-size: 0.58rem; font-weight: 560; }
+.dms--redesign.dms--rails .pbx-batch__foot { padding: 6px 8px; background: color-mix(in oklab, var(--dms-accent), #fff 91%); font-family: var(--pbx-mono); font-size: 0.52rem; font-weight: 700; color: var(--dms-accent); }
+
+/* the printed controlled form + the work-order label */
+.dms--redesign.dms--rails .pbx-form {
+  width: 208px;
+  margin: 0 34px 20px 0;
+  background: #fffdf9;
+  box-shadow: var(--pbx-plate);
+  rotate: -1.5deg;
+}
+
+.dms--redesign.dms--rails .pbx-form__hdr {
+  display: grid;
+  grid-template-columns: 1fr 34px 28px 30px;
+  border-bottom: 1px solid #cfc9bd;
+}
+
+.dms--redesign.dms--rails .pbx-form__hdr > span {
+  display: grid;
+  gap: 1px;
+  padding: 6px 6px;
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--dms-ink);
+}
+
+.dms--redesign.dms--rails .pbx-form__hdr > span + span { border-left: 1px solid #cfc9bd; }
+.dms--redesign.dms--rails .pbx-form__hdr small { font-size: 0.42rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-form__hdr .pbx-form__title { font-family: var(--dms-display); font-size: 0.66rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-form__hdr > span.is-tax { background: var(--dms-tax-tint); color: var(--dms-tax-text); }
+.dms--redesign.dms--rails .pbx-form__hdr > span.is-accent { background: color-mix(in oklab, var(--dms-accent), #fff 90%); color: var(--dms-accent); }
+
+.dms--redesign.dms--rails .pbx-form ul { margin: 0; padding: 6px 10px 2px; list-style: none; }
+.dms--redesign.dms--rails .pbx-form li { display: flex; align-items: center; gap: 7px; padding: 5px 3px; font-size: 0.58rem; color: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-form li + li { border-top: 1px dashed #e2ddd2; }
+.dms--redesign.dms--rails .pbx-form li.is-hot { background: var(--dms-tax-tint); color: var(--dms-tax-text); font-weight: 650; }
+
+.dms--redesign.dms--rails .pbx-form__box { position: relative; width: 10px; height: 10px; flex: none; box-shadow: inset 0 0 0 1px #8d877b; }
+.dms--redesign.dms--rails .pbx-form__box.is-on::after {
+  position: absolute;
+  top: 0;
+  left: 3px;
+  width: 3px;
+  height: 7px;
+  content: "";
+  border: solid var(--dms-ink);
+  border-width: 0 1.5px 1.5px 0;
+  rotate: 40deg;
+}
+
+.dms--redesign.dms--rails .pbx-form__sig { display: flex; align-items: flex-end; gap: 6px; padding: 8px 13px 12px; font-family: var(--pbx-mono); font-size: 0.46rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-form__sig i { flex: 1; height: 1px; background: #cfc9bd; }
+
+.dms--redesign.dms--rails .pbx-wo {
+  position: absolute;
+  right: 0;
+  bottom: 8px;
+  display: grid;
+  gap: 3px;
+  width: 112px;
+  padding: 8px 9px;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  rotate: 2deg;
+}
+
+.dms--redesign.dms--rails .pbx-wo__bc { display: block; width: 100%; height: 16px; fill: var(--dms-ink); }
+.dms--redesign.dms--rails .pbx-wo b { font-family: var(--pbx-mono); font-size: 0.62rem; letter-spacing: 0.04em; }
+.dms--redesign.dms--rails .pbx-wo span { font-size: 0.54rem; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-wo em { font-style: normal; font-weight: 700; color: var(--dms-ink); }
+
+.dms--redesign.dms--rails .pbx-wo strong {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  padding-top: 5px;
+  border-top: 1px solid var(--dms-hairline);
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--dms-tax-text);
+}
+
+.dms--redesign.dms--rails .pbx-wo strong .pbx-ico { width: 11px; height: 11px; }
+.dms--redesign.dms--rails .pbx-wo.is-ok strong { color: var(--dms-accent); }
+
+/* the recall spreadsheet */
+.dms--redesign.dms--rails .pbx-sheetx { width: 240px; margin-bottom: 22px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-sheetx .pbx-win__bar { background: #e9f4ec; }
+
+.dms--redesign.dms--rails .pbx-sheetx__grid {
+  display: grid;
+  grid-template-columns: 16px 56px 1fr 44px;
+  font-family: var(--pbx-mono);
+  font-size: 0.5rem;
+}
+
+.dms--redesign.dms--rails .pbx-sheetx__grid span { padding: 4px 5px; border-right: 1px solid var(--dms-hairline); border-bottom: 1px solid var(--dms-hairline); white-space: nowrap; overflow: hidden; }
+.dms--redesign.dms--rails .pbx-sheetx__grid span.is-h { padding: 3px 3px; background: var(--n-50); color: var(--dms-faint); text-align: center; }
+.dms--redesign.dms--rails .pbx-sheetx__grid span.is-b { font-weight: 700; }
+.dms--redesign.dms--rails .pbx-sheetx__grid span.is-hot { background: var(--dms-tax-tint); color: var(--dms-tax-text); font-weight: 700; }
+
+.dms--redesign.dms--rails .pbx-sheetx__tabs { display: flex; gap: 2px; padding: 4px 6px 5px; background: var(--n-50); }
+.dms--redesign.dms--rails .pbx-sheetx__tabs span { padding: 2px 6px; font-family: var(--pbx-mono); font-size: 0.46rem; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-sheetx__tabs span.is-on { background: var(--dms-surface); color: #1f7a4d; font-weight: 700; box-shadow: 0 0 0 1px var(--dms-hairline); }
+
+/* the genealogy tree */
+.dms--redesign.dms--rails .pbx-gen { position: relative; width: 240px; height: 214px; }
+.dms--redesign.dms--rails .pbx-gen__lines { position: absolute; inset: 0 0 14px; width: 100%; height: calc(100% - 14px); }
+.dms--redesign.dms--rails .pbx-gen__lines path { fill: none; stroke: var(--dms-accent); stroke-width: 1.3; vector-effect: non-scaling-stroke; }
+
+.dms--redesign.dms--rails .pbx-gen__node {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  padding: 5px 8px;
+  translate: -50% -50%;
+  background: var(--dms-surface);
+  box-shadow: var(--pbx-float);
+  font-family: var(--pbx-mono);
+  font-size: 0.54rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dms--redesign.dms--rails .pbx-gen__node small { font-size: 0.42rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-gen__node.is-root { left: 50%; top: 14%; background: var(--dms-accent); color: #fff; }
+.dms--redesign.dms--rails .pbx-gen__node.is-root small { color: oklch(1 0 0 / 0.75); }
+.dms--redesign.dms--rails .pbx-gen__node.is-mid { left: 25.8%; top: 48%; }
+.dms--redesign.dms--rails .pbx-gen__node.is-mid2 { left: 74.2%; top: 48%; }
+.dms--redesign.dms--rails .pbx-gen__node:is(.is-leaf1, .is-leaf2, .is-leaf3) { top: 76%; font-weight: 600; color: var(--dms-muted); }
+.dms--redesign.dms--rails .pbx-gen__node.is-leaf1 { left: 15%; }
+.dms--redesign.dms--rails .pbx-gen__node.is-leaf2 { left: 47.5%; }
+.dms--redesign.dms--rails .pbx-gen__node.is-leaf3 { left: 78%; }
+
+.dms--redesign.dms--rails .pbx-gen__foot {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  translate: -50% 0;
+  font-family: var(--pbx-mono);
+  font-size: 0.56rem;
+  font-weight: 700;
+  color: var(--dms-accent);
+  white-space: nowrap;
+}
+
+/* the sticky note, then the signed entry */
+.dms--redesign.dms--rails .pbx-sticky {
+  position: relative;
+  width: 168px;
+  margin-bottom: 24px;
+  padding: 22px 16px 16px;
+  background: linear-gradient(170deg, #fff3a6, #fbe57a);
+  box-shadow: 0 16px 26px -14px oklch(0.35 0.06 90 / 0.55), 0 1px 1px oklch(0 0 0 / 0.08);
+  rotate: -3deg;
+  font-family: "Bradley Hand", "Segoe Print", "Comic Sans MS", cursive;
+  color: #3b3522;
+}
+
+.dms--redesign.dms--rails .pbx-sticky p { margin: 0; font-size: 0.82rem; line-height: 1.35; }
+.dms--redesign.dms--rails .pbx-sticky > span:last-child { display: block; margin-top: 8px; text-align: right; font-size: 0.8rem; }
+
+.dms--redesign.dms--rails .pbx-sticky__tape {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 56px;
+  height: 18px;
+  translate: -50% 0;
+  rotate: 4deg;
+  background: oklch(0.97 0.01 90 / 0.7);
+  box-shadow: 0 0 0 1px oklch(0 0 0 / 0.04);
+}
+
+.dms--redesign.dms--rails .pbx-entry { width: 236px; background: var(--dms-surface); box-shadow: var(--pbx-plate); }
+.dms--redesign.dms--rails .pbx-entry__head { display: grid; gap: 3px; padding: 12px 12px 10px; border-bottom: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-entry__head small { font-family: var(--pbx-mono); font-size: 0.48rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-entry__head b { font-family: var(--dms-display); font-size: 0.86rem; font-weight: 640; }
+.dms--redesign.dms--rails .pbx-entry dl { margin: 0; padding: 4px 12px; }
+.dms--redesign.dms--rails .pbx-entry dl div { display: grid; grid-template-columns: 58px 1fr; gap: 6px; padding: 5px 0; }
+.dms--redesign.dms--rails .pbx-entry dl div + div { border-top: 1px solid var(--dms-hairline); }
+.dms--redesign.dms--rails .pbx-entry dt { font-family: var(--pbx-mono); font-size: 0.48rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dms-faint); }
+.dms--redesign.dms--rails .pbx-entry dd { margin: 0; font-size: 0.6rem; font-weight: 550; }
+.dms--redesign.dms--rails .pbx-entry__sig { display: flex; align-items: center; gap: 6px; margin: 4px 12px 12px; padding: 6px 8px; background: color-mix(in oklab, var(--dms-accent), #fff 91%); font-family: var(--pbx-mono); font-size: 0.52rem; font-weight: 700; color: var(--dms-accent); }
+
+/* ======================================================= responsive */
+@media (max-width: 1180px) {
+  .dms--redesign.dms--rails .pb__grid { grid-template-columns: minmax(0, 1fr); }
+  .dms--redesign.dms--rails .pb-cell { grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr); }
+}
+
+@media (max-width: 640px) {
+  .dms--redesign.dms--rails .pb-cell { grid-template-columns: minmax(0, 1fr); }
+  .dms--redesign.dms--rails .pb-cell__wash { min-height: 0; padding: 32px 20px; }
+  .dms--redesign.dms--rails .pb-switch { align-self: stretch; min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms--rails .pb :is(.pb-cell__art, .pb-cell__wash::before, .pb-cell__line, .pb-switch__btn, .pb-switch__thumb) {
+    transition: none;
+  }
+}

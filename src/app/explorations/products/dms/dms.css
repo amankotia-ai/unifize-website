@@ -290,7 +290,7 @@
 .dms-hero__crumb a { color:var(--dms-d-ink-2); text-decoration:none; }
 .dms-hero__crumb a:hover { color:var(--dms-d-ink); }
 .dms-hero__crumb-sep { color:var(--dms-d-ink-3); }
-.dms-hero__title { font-family:var(--dms-display); font-size:var(--dms-h1-size); font-weight:500; line-height:1.05; letter-spacing:-0.024em; color:var(--dms-d-ink); margin:0; text-wrap:balance; max-width:16ch; }
+.dms-hero__title { font-family:var(--dms-display); font-size:var(--dms-h1-size); font-weight:500; line-height:1.04; letter-spacing:-0.024em; color:var(--dms-d-ink); margin:0; text-wrap:balance; max-width:16ch; }
 .dms-hero__turn { color:var(--dms-d-ink-3); }
 .dms-hero__sub { color:var(--dms-d-ink-2); max-width:38ch; margin:0; font-size:1rem; }
 .dms-hero__stds { display:flex; flex-wrap:wrap; align-items:center; gap:10px 0; list-style:none; padding:0; margin:0;

@@ -178,9 +178,6 @@ const INDUSTRIES: string[] = ["Medical Devices", "Pharmaceuticals", "Automotive"
 export const PLM_DATA: Omit<ProductPageData, "owners"> = {
   slug: "plm",
   crumbLabel: "Product Lifecycle Management",
-  metaTitle: "Product Lifecycle Management · Unifize",
-  metaDescription:
-    "PLM manages product specifications, design controls, risk, and FMEA on one record, so every requirement ends in a verification you can point to.",
 
   hero: {
     headline: (
@@ -214,7 +211,7 @@ export const PLM_DATA: Omit<ProductPageData, "owners"> = {
   positioning: {
     eyebrowN: 1,
     heading: "A design isn't controlled until the trace is unbroken.",
-    lede: "Requirements drift from what shipped when inputs, outputs, verification, and validation live in different tools. PLM holds them on one record, so a change to a requirement shows every test it touches.",
+    lede: "One record holds requirements, tests and results, so a change shows every test it touches.",
     features: [
       { title: "One product record", body: "Specifications, risk, design controls, and control plans on one versioned, approved record.", glyph: "shield" },
       { title: "A trace with no gaps", body: "Every design input links forward to an output, a verification, and a validation, from requirement to result.", glyph: "search" },
@@ -332,9 +329,9 @@ export const PLM_DATA: Omit<ProductPageData, "owners"> = {
   },
 
   close: {
-    eyebrow: "Ready when you are",
-    heading: "Bring the requirement you can't trace to a test.",
-    lede: "We will walk it from design input to a released, verifiable record, with the trace intact.",
+    eyebrow: "Product lifecycle on Unifize",
+    heading: "Release the design. Keep the trace.",
+    lede: "Bring the requirement you can't trace to a test and watch it walk from design input to a released, verifiable record in a 30-minute walkthrough.",
     ctaPrimary: "Book a 30-minute walkthrough",
     ctaSecondary: { label: "See what is bundled", href: "#modules" },
   },

@@ -6,9 +6,9 @@
  *   /coordination-tax-calculator/report   - intake, then the full report
  *
  * Content and logic ported from Ben's Aug 2026 prototypes
- * (Coordination Tax Assessment + full report HTMLs). Both pages run
- * inside the DMS page shell (DmsHeader / dms-section / SiteFooter);
- * these are the assessment-specific data components.
+ * (Coordination Tax Assessment + full report HTMLs). Both pages run on
+ * the rails grammar (cta-rails.css); these are the data components
+ * they share.
  * ------------------------------------------------------------ */
 
 export type Provenance =
@@ -84,51 +84,61 @@ export const THEMES: Array<[string, Array<[string, number]>]> = [
   ],
 ];
 
-/* Theme bars: theme totals compared to each other, domains nested
-   underneath as members, not rivals. */
-export function ThemeBars({ withMoney = false }: { withMoney?: boolean }) {
-  const sums = THEMES.map(([, doms]) => doms.reduce((a, [, v]) => a + v, 0));
-  const max = Math.max(...sums);
-  const order = THEMES.map((_, i) => i).sort((a, b) => sums[b] - sums[a]);
+/* The modelled theme mix, largest first: one stacked rust bar per theme
+   with its domains as segments, the domains listed underneath. Shared
+   by the assessment (where it concentrates) and the report (lens 1). */
+export const THEME_ROWS = THEMES.map(([name, doms]) => ({
+  name,
+  total: doms.reduce((a, [, v]) => a + v, 0),
+  doms: [...doms].sort((a, b) => b[1] - a[1]),
+})).sort((a, b) => b.total - a.total);
+const THEME_MAX = THEME_ROWS[0].total;
+const THEME_ALL = THEME_ROWS.reduce((a, t) => a + t.total, 0);
+export const TOP_TWO = Math.round(((THEME_ROWS[0].total + THEME_ROWS[1].total) / THEME_ALL) * 100);
+
+export function ThemeStack({ withMoney = false }: { withMoney?: boolean }) {
   return (
-    <div className="ctax-bars">
-      {order.map((i) => {
-        const [name, doms] = THEMES[i];
-        const total = sums[i];
-        return (
-          <div key={name} className="ctax-theme">
-            <div className="ctax-br ctax-br--head">
-              <span>{name}</span>
-              <span className="ctax-br__rail">
-                <span
-                  className="ctax-br__bar"
-                  style={{ width: `${Math.round((total / max) * 100)}%` }}
-                />
-              </span>
-              <span className="ctax-br__val ctax-mono">
-                {total}%{withMoney ? ` · ${money((MID * total) / 100)}` : ""}
-              </span>
-            </div>
-            {[...doms]
-              .sort((a, b) => b[1] - a[1])
-              .map(([d, v]) => (
-                <div key={d} className="ctax-br ctax-br--sub">
-                  <span>{d}</span>
-                  <span className="ctax-br__rail">
-                    <span
-                      className="ctax-br__bar"
-                      style={{ width: `${Math.round((v / max) * 100)}%` }}
-                    />
-                  </span>
-                  <span className="ctax-br__val ctax-mono">{v}%</span>
-                </div>
-              ))}
+    <ol className="cx-themes">
+      {THEME_ROWS.map((t) => (
+        <li key={t.name} className="cx-theme">
+          <div className="cx-theme__head">
+            <span className="cx-theme__name">{t.name}</span>
+            <span className="cx-theme__val">
+              {t.total}%{withMoney ? ` · ${money((MID * t.total) / 100)}` : ""}
+            </span>
           </div>
-        );
-      })}
-    </div>
+          <span className="cx-theme__bar" aria-hidden="true">
+            {t.doms.map(([d, v], j) => (
+              <span
+                key={d}
+                className={`is-${Math.min(j, 2)}`}
+                style={{ width: `${(v / THEME_MAX) * 100}%` }}
+              />
+            ))}
+          </span>
+          <ul className="cx-theme__doms">
+            {t.doms.map(([d, v], j) => (
+              <li key={d}>
+                <i className={`is-${Math.min(j, 2)}`} aria-hidden="true" />
+                {d} <span>{v}%</span>
+              </li>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </ol>
   );
 }
+
+/* What the full report holds: the assessment's step 4 and the intake. */
+export const REPORT_CONTENTS: Array<[string, string]> = [
+  ["Where you sit across every industry", "Medical devices against aerospace, pharma, automotive, and the rest."],
+  ["How you compare to your peers", "Once your numbers are confirmed, against the median and top quartile."],
+  ["Your tax from six angles", "By process, economic layer, waste type, team, site, and theme."],
+  ["A deep dive into your domain", "Quality, supplier quality, change control, or your area, broken into stages."],
+  ["How we assessed you", "Every signal we used, labelled confirmed, inferred, or assumed."],
+  ["How Unifize removes it", "The mechanism for each kind of waste, plus a CFO one-pager."],
+];
 
 export type BarRow = {
   label: string;

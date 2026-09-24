@@ -22,9 +22,15 @@
  * industry page's own. `customer` renders only
  * where the Website Customer Videos mirror attests a company in that
  * industry. No auto-advance: the visitor picks.
+ *
+ * 24 Sep 2026: four tiles in a row read busy. A group of four or more lays
+ * out 2x2, three or fewer stay one row (home-rails.css). The tile reads in
+ * one order: who (label), the stake (claim), the evidence (a captioned
+ * ledger: where it bites, audited under), then a door named for the
+ * industry. A wide tile splits story left, evidence right (container query).
  * -------------------------------------------------------------------------- */
 import Link from "next/link";
-import { useId, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useId, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 import "./home-industries.css";
 
 export type HomeIndustry = {
@@ -80,7 +86,11 @@ export function HomeIndustries({ groups }: { groups: HomeIndustryGroup[] }) {
 
       <div className="hm-ind__panel" id={panelId} role="tabpanel" aria-labelledby={tabId(active)}>
         <p className="hm-ind__lede">{group.body}</p>
-        <ul className={"hm-ind__tiles hm-ind__tiles--" + group.industries.length} key={group.name}>
+        <ul
+          className={"hm-ind__tiles " + (group.industries.length >= 4 ? "hm-ind__tiles--grid" : "hm-ind__tiles--row")}
+          style={{ "--hm-ind-count": group.industries.length } as CSSProperties}
+          key={group.name}
+        >
           {group.industries.map((industry) => (
             <li key={industry.name}>
               <article className="hm-ind__tile">
@@ -117,7 +127,7 @@ export function HomeIndustries({ groups }: { groups: HomeIndustryGroup[] }) {
                   ) : null}
                 </dl>
                 <Link className="hm-ind__go" href={industry.href}>
-                  Learn more <span aria-hidden="true">&rarr;</span>
+                  Explore {industry.name} <span aria-hidden="true">&rarr;</span>
                 </Link>
               </article>
             </li>

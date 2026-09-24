@@ -68,6 +68,11 @@ export type HeroArcadeStep = {
   config: ArcadeStepConfig;
   /* a solid glyph in place of the step number */
   icon?: HeroStepIcon;
+  /* one light line under the window saying what this moment is (the
+   * solutions hero, 24 Sep 2026, where the step rail is hidden) */
+  caption?: string;
+  /* a solid glyph before the caption: one filled path on a 20 grid */
+  captionIcon?: string;
 };
 
 const DWELL_MS = 5200;
@@ -115,6 +120,40 @@ export function HeroArcade({
   const stage = (
     <div className="dms-heroarc__stage" id="dms-heroarc-stage" ref={stageRef}>
       <ArcadeStepScene config={step.config} />
+      {step.caption ? (
+        /* the step indicator: one dash per moment, the active one filling
+         * over its dwell */
+        <div className="dms-heroarc__dashes" aria-hidden="true">
+          {steps.map((s, i) => (
+            <span
+              key={s.label}
+              className={
+                "dms-heroarc__dash" +
+                (i === active ? " is-active" : "") +
+                (i < active ? " is-past" : "")
+              }
+            >
+              {i === active ? (
+                <i
+                  key={active}
+                  className={engaged ? "is-held" : undefined}
+                  style={{ animationDuration: `${DWELL_MS}ms` }}
+                />
+              ) : null}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      {step.caption ? (
+        <p className="dms-heroarc__caption" aria-live="polite" key={active}>
+          {step.captionIcon ? (
+            <svg className="dms-heroarc__caption-ico" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d={step.captionIcon} />
+            </svg>
+          ) : null}
+          <span>{step.caption}</span>
+        </p>
+      ) : null}
     </div>
   );
 

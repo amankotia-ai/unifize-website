@@ -40,8 +40,9 @@ import {
 import { DmsHeader } from "../dms/dms-header";
 import { SiteFooter } from "../../_shared/site-footer";
 import { NAV } from "../../_shared/nav-data";
-import { StylizedCoordinationTax } from "../dms/stylized/stylized-ctax";
-import { MES_CTAX_SCENES, MES_CTAX_AFTER_NOTES, MES_CTAX_COPY } from "./mes-ctax";
+import { MES_CTAX_AFTER_NOTES } from "./mes-ctax";
+import { ProblemBoard } from "../_shared/problem-board";
+import { MES_BOARD_ARTIFACTS } from "./mes-problem-board";
 import { IntegrationLayer } from "../dms/dms-integrations";
 import { PRODUCT_INTEGRATION_LOGOS } from "../_shared/integrations-catalog";
 import { Eyebrow } from "../dms/dms-primitives";
@@ -54,7 +55,6 @@ import {
   MesControlPlan,
   MesBatchRecord,
 } from "./mes-mocks";
-import { MesProblemSpotlight } from "./mes-problem-visuals";
 import { mesCopy } from "./mes-copy";
 import { MesProofReel } from "./mes-proof";
 import { LifecycleExplorer, FaqAccordion } from "../dms/dms-interactive";
@@ -69,13 +69,17 @@ import "./mes.css";
 import "../../_shared/page-rails.css";
 import "../dms/dms-rails.css";
 import "./mes-rails.css";
+import { DmsMotion } from "../dms/dms-motion";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL } from "../../_shared/page-motion-reveal";
+import "../_shared/problem-board.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../../_shared/page-motion.css";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../../_shared/rails-close";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Manufacturing Execution System · Unifize",
-  description:
-    "MES runs work orders, electronic travellers, inspection, and batch records on one system, so every operation is signed, evidenced, and traceable by lot.",
-};
+export const metadata: Metadata = pageMetadata("/products/mes");
 
 /* the trust strip and compliance band share the icon set; the strip shows a
  * REPRESENTATIVE set of regulated manufacturers, the compliance band keeps the
@@ -96,8 +100,10 @@ const MES_TRUST_INDUSTRIES =
 
 export default function MesProductPage() {
   return (
-    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page mes">
+    <main className="dms dms--redesign dms--consistent-eyebrows dms--stylized dms--rails dms-page mes pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and each section head's parts (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL} />
 
       {/* ============================ HERO =============================
         * Dark grey ground: the centred head, then the arcade window on the
@@ -116,8 +122,9 @@ export default function MesProductPage() {
                 <span>Manufacturing Execution System</span>
               </Link>
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">What happened on the floor.</span>
-                <span className="dms-hero__line dms-hero__turn">A record, not a memory.</span>
+                {/* split into words for the page-in stagger (page-motion.css) */}
+                <span className="dms-hero__line"><Words text="What happened on the floor." /></span>
+                <span className="dms-hero__line dms-hero__turn"><Words text="A record, not a memory." from={5} /></span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -160,42 +167,18 @@ export default function MesProductPage() {
       {/* the first hatched divider: the dark-to-light break */}
       <HatchBand />
 
-      {/* ============================ THE PROBLEM ======================= */}
-      <section className="dms-section dms-problems hm-railed" id="problem" aria-labelledby="mes-problems-title">
-        <div className="dms-wrap dms-problems__inner">
-          <header className="dms-problems__intro">
-            <div className="dms-problems__head">
-              <Eyebrow n={1}>The problem</Eyebrow>
-              <h2 className="dms-h2" id="mes-problems-title">
-                Paper travellers can&rsquo;t prove what happened on the line.
-              </h2>
-            </div>
-            <p className="dms-lede">
-              When step completion, evidence, and signatures live on paper, the batch record is a reconstruction,
-              and every question about the run becomes an investigation.
-            </p>
-          </header>
-
-          {/* Spotlight: index rail left, one symptom on stage at a time. */}
-          <MesProblemSpotlight items={MES_PROBLEMS} />
-
-          <div className="dms-problems__bridge">
-            <p><strong>Four symptoms, one root cause.</strong> The work isn&rsquo;t the bottleneck; the coordination around it is.</p>
-          </div>
-        </div>
-      </section>
-
-      <HatchBand />
-
-      {/* ==================== THE COORDINATION TAX =====================
-       * The four daily symptoms roll up into one measurable root cause, read
-       * as a BEFORE / AFTER ledger with a drawn scene per stage. */}
-      <StylizedCoordinationTax
+      {/* ============================ THE PROBLEM =======================
+       * The problem and the coordination tax, said once (24 Sep 2026): four
+       * loops as cells, each with its object on a wash, one line that the
+       * Today / With Unifize switch swaps, the customer film on the floor.
+       * Replaced the tabbed spotlight + the BEFORE/AFTER ledger, which told
+       * the same four stories twice. Shared: _shared/problem-board. */}
+      <ProblemBoard
+        heading="Paper travellers can’t prove what happened on the line."
+        lede="Built at the operation, the batch record answers every question about the run."
         problems={MES_PROBLEMS}
-        scenes={MES_CTAX_SCENES}
+        artifacts={MES_BOARD_ARTIFACTS}
         afterNotes={MES_CTAX_AFTER_NOTES}
-        copy={MES_CTAX_COPY}
-        className="hm-railed"
       />
 
       <HatchBand />
@@ -277,7 +260,7 @@ export default function MesProductPage() {
       {/* ==================== INTEGRATIONS (connector layer) =========== */}
       <IntegrationLayer
         data={INTEGRATIONS}
-        variant="minimal"
+        variant="iso"
         tone="light"
         className="hm-railed"
         minimalEyebrow="Integrations"
@@ -373,28 +356,13 @@ export default function MesProductPage() {
       {/* ============================ CLOSE =============================
         * On the hero's charcoal so the page opens and closes on the same
         * ground; the rails run through it and on through the footer. */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="mes-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid" data-reveal>
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>Ready when you are</Eyebrow>
-              <h2 className="dms-close__h" id="mes-close-h">Bring the batch record you rebuild by hand.</h2>
-              <p className="dms-lede">We will run a lot live, from a released work order to a sealed, traceable record, signed at every step.</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="mes-close-h"
+        eyebrow="Production records on Unifize"
+        heading="Release the lot. Keep the record."
+        lede="Bring the batch record you rebuild by hand and watch one lot run from work order to a sealed, signed record in a 30-minute walkthrough."
+        secondary={{ label: "See what is bundled", href: "#modules" }}
+      />
 
       {/* ------------------------------------------------------- footer
         * the footer closes the page on the same charcoal as the close */}

@@ -3,21 +3,29 @@
 /* ------------------------------------------------------------
  * CtaxAssessment - the cold-read Coordination Tax Assessment.
  *
- * Content and logic from Ben's prototype (Aug 2026). Layout is
- * the DMS system at its most minimal: every section is one
- * rail-and-content grid (sticky eyebrow + headline + lede left,
- * the data right), hairline-ruled lists instead of boxes, one
- * accent, provenance as quiet dot-labels. The page shell
- * (DmsHeader / SiteFooter) is owned by page.tsx.
+ * Content and logic from Ben's prototype (Aug 2026). 24 Sep 2026:
+ * moved onto the rails grammar the other pages share (charcoal
+ * hero and close, split heads, cells rail to rail, hatch bands
+ * between sections) and re-paced as a guided read: the hero floor
+ * names the four steps, and each step is one section with one
+ * point. The mechanics are unchanged: confirm / look up, division
+ * and role selects driving the persona lens, the scorecard, the
+ * theme mix, the benchmark band and the way into ./report.
+ * The page shell (DmsHeader / SiteFooter) is owned by page.tsx.
  * ------------------------------------------------------------ */
 
 import { useState } from "react";
 import Link from "next/link";
 import { Eyebrow } from "../explorations/products/dms/dms-primitives";
+import { HatchBand } from "../explorations/_shared/page-rails";
+import { RailsClose } from "../explorations/_shared/rails-close";
 import {
   BenchTrack,
   Prov,
-  ThemeBars,
+  REPORT_CONTENTS,
+  THEME_ROWS,
+  ThemeStack,
+  TOP_TWO,
   type Provenance,
 } from "./cta-shared";
 
@@ -109,17 +117,74 @@ const ROLE_TO_PERSONA: Record<string, number> = {
   Other: 0,
 };
 
-const REPORT_CONTENTS: Array<[string, string]> = [
-  ["Where you sit across every industry", "Medical devices against aerospace, pharma, automotive, and the rest."],
-  ["How you compare to your peers", "Once your numbers are confirmed, against the median and top quartile."],
-  ["Your tax from six angles", "By process, economic layer, waste type, team, site, and theme."],
-  ["A deep dive into your domain", "Quality, supplier quality, change control, or your area, broken into stages."],
-  ["How we assessed you", "Every signal we used, labelled confirmed, inferred, or assumed."],
-  ["How Unifize removes it", "The mechanism for each kind of waste, plus a CFO one-pager."],
+
+const PROFILE: Array<[string, string]> = [
+  ["Industry", "Medical device manufacturer"],
+  ["Size", "~1,200 employees"],
+  ["Sites", "3"],
+  ["Regulation", "FDA & ISO 13485"],
+  ["On file", "2 Form 483s"],
+];
+
+const LEGEND: Array<[Provenance, string]> = [
+  ["confirmed", "you told us"],
+  ["inferred", "derived from a public signal"],
+  ["assumed", "industry-typical default"],
+  ["modelled", "computed by our model"],
 ];
 
 const sevTone = (sev: number) =>
   sev >= 7 ? "is-high" : sev >= 4 ? "is-elevated" : "is-moderate";
+
+
+/* the hero visual: the cold read as one stylized record, built only from
+   the figures below it (the company view's range, band and heaviest areas) */
+const HERO_ROWS = [...SCORE_BY_PERSONA[0].slice(1)]
+  .sort((a, b) => b.sev - a.sev)
+  .slice(0, 4);
+
+function HeroRead() {
+  return (
+    <figure className="cx-read" aria-label="Acme Medical Devices, coordination tax cold read">
+      <div className="cx-read__head">
+        <span className="cx-read__title">Acme Medical Devices</span>
+        <span className="cx-read__chip">Cold read</span>
+      </div>
+      <div className="cx-read__sum">
+        <p className="cx-label">
+          Estimated coordination tax <Prov kind="modelled" />
+        </p>
+        <p className="cx-read__fig">
+          $3.2M <span>to</span> $5.1M <span>a year</span>
+        </p>
+        <div className="cx-read__band" aria-hidden="true">
+          <span className="cx-read__range" />
+          <span className="cx-read__you" />
+        </div>
+        <p className="cx-read__scale" aria-hidden="true">
+          <span>8%</span>
+          <span>18 to 24% of operating cost</span>
+          <span>32%</span>
+        </p>
+      </div>
+      <ol className="cx-read__rows">
+        {HERO_ROWS.map((r) => (
+          <li key={r.area} className={sevTone(r.sev)}>
+            <span className="cx-read__area">{r.area}</span>
+            <Prov kind={r.prov} />
+            <span className="cx-read__meter" aria-hidden="true">
+              <span style={{ width: `${r.sev * 10}%` }} />
+            </span>
+            <span className="cx-read__sev">{r.sev}/10</span>
+          </li>
+        ))}
+      </ol>
+      <figcaption className="cx-read__foot">
+        Built from public data only. Confirm your numbers to narrow it.
+      </figcaption>
+    </figure>
+  );
+}
 
 export function CtaxAssessment() {
   const [persona, setPersona] = useState(0);
@@ -135,55 +200,75 @@ export function CtaxAssessment() {
 
   return (
     <div className="ctax">
-      {/* ============================ HERO ============================= */}
-      <section className="dms-section dms-hero ctax-hero" aria-label="Coordination Tax Assessment">
-        <div className="dms-wrap">
-          <div className="ctax-hero__stack">
-            <span className="dms-hero__product">
-              <span className="dms-hero__product-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path className="dms-hero__product-sheet" d="M4 4.5h16v15H4v-15Z" />
-                  <path className="dms-hero__product-detail" d="M7.5 15.5v-4.2M12 15.5V8.4m4.5 7.1v-2.6" />
-                </svg>
-              </span>
-              <span>Coordination Tax Assessment</span>
-            </span>
-            <h1 className="dms-hero__title">
-              <span className="dms-hero__line">Where coordination tax is likely</span>
-              <span className="dms-hero__line dms-hero__turn">hurting Acme the most.</span>
-            </h1>
-            <p className="dms-lede dms-hero__sub">
-              The cost of holding cross-functional work together when no
-              system owns it end to end. Read cold from public data, every
-              figure labelled by where it came from.
-            </p>
-            <p className="ctax-recogline">
-              <span className="ctax-recog__dot" aria-hidden="true" />
-              <span>
-                <b>Acme Medical Devices</b> · recognized from your network via
-                Factors.ai
-              </span>
-              <a href="#isyou">not you?</a>
-            </p>
+      {/* ------------------------------------------------------------ hero
+        * charcoal bookend: the claim, lede, recognition and asks stacked
+        * left; the read itself as a stylized card on the wash right */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed cx-hero" aria-label="Coordination Tax Assessment">
+        <div className="dms-wrap dms-hero__inner">
+          <div className="cx-hero__grid">
+            <div className="cx-hero__copy">
+              <Eyebrow>Coordination Tax Assessment</Eyebrow>
+              <h1 className="dms-hero__title">
+                <span className="dms-hero__line">Where coordination tax is likely</span>
+                <span className="dms-hero__line dms-hero__turn">hurting Acme the most.</span>
+              </h1>
+              <p className="dms-lede dms-hero__sub">
+                The cost of holding cross-functional work together when no
+                system owns it end to end. Read cold from public data, every
+                figure labelled by where it came from.
+              </p>
+              <div className="dms-hero__ctas">
+                <a href="#isyou" className="dms-btn">Start the read</a>
+                <Link href="/coordination-tax-calculator/report#sample" className="dms-btn dms-btn-ghost">
+                  See a sample report
+                </Link>
+              </div>
+              <p className="cx-recog">
+                <span className="cx-recog__dot" aria-hidden="true" />
+                <span>
+                  <b>Acme Medical Devices</b>, recognized via Factors.ai
+                </span>
+                <a href="#isyou">Not you?</a>
+              </p>
+            </div>
+            <div className="cx-hero__stage">
+              <HeroRead />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============================ IS THIS YOU ======================= */}
-      <section className="dms-section ctax-sec" id="isyou">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow>Is this you?</Eyebrow>
-            <h2 className="dms-h2">Acme Medical Devices.</h2>
+      <HatchBand />
+
+      {/* ---------------------------------------------------- 1 · confirm
+        * what we found as a record, and the two questions that tailor it */}
+      <section className="dms-section cx-sec hm-railed" id="isyou" aria-labelledby="cx-isyou-h">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Step 1 · Confirm</Eyebrow>
+              <h2 className="dms-h2" id="cx-isyou-h">Is this Acme Medical Devices?</h2>
+            </div>
             <p className="dms-lede">
-              Medical device manufacturer · ~1,200 employees · 3 sites · FDA
-              &amp; ISO 13485 · 2 Form 483s on file. Pulled from public
-              sources.
+              We pulled this from public sources. Confirm it, or point us at
+              the right company, then tell us where you sit.
             </p>
-          </div>
-          <div className="ctax-content">
-            <div className="ctax-block">
-              <div className="ctax-ctarow">
+          </header>
+
+          <div className="cx-cells cx-cells--2" data-reveal>
+            <div className="cx-cell">
+              <p className="cx-label">
+                What we found <Prov kind="public" />
+              </p>
+              <dl className="cx-profile">
+                {PROFILE.map(([k, v]) => (
+                  <div key={k}>
+                    <dt>{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="cx-actions">
                 <button
                   type="button"
                   className="dms-btn"
@@ -199,22 +284,21 @@ export function CtaxAssessment() {
                 <button
                   type="button"
                   className="dms-btn dms-btn-ghost"
+                  aria-expanded={notMineOpen}
                   onClick={() => setNotMineOpen((v) => !v)}
                 >
                   Not your company?
                 </button>
               </div>
-              {confirmMsg ? (
-                <p className={`ctax-note ctax-confirm is-${confirmMsg.tone}`}>
-                  {confirmMsg.text}
-                </p>
+              {confirmMsg?.tone === "ok" ? (
+                <p className="cx-msg is-ok" role="status">{confirmMsg.text}</p>
               ) : null}
               {notMineOpen ? (
-                <div className="ctax-lookup">
+                <div className="cx-lookup">
                   <label htmlFor="ctax-co">
                     Enter a website and we re-run the read for that company.
                   </label>
-                  <div className="ctax-lookup__row">
+                  <div className="cx-lookup__row">
                     <input
                       id="ctax-co"
                       type="text"
@@ -234,21 +318,16 @@ export function CtaxAssessment() {
                       Look it up
                     </button>
                   </div>
-                  {lookupMsg ? <p className="ctax-note">{lookupMsg}</p> : null}
+                  {lookupMsg ? <p className="cx-msg" role="status">{lookupMsg}</p> : null}
                 </div>
               ) : null}
             </div>
 
-            <div className="ctax-block">
-              <p className="ctax-note">
-                <b className="ctax-ink">4 colleagues from Acme</b> have looked
-                at this in the last 30 days. Coordination tax is a team
-                problem; the more you tell us, the sharper and more personal
-                this gets.
-              </p>
-              <div className="ctax-enrich">
+            <div className="cx-cell cx-cell--quiet">
+              <p className="cx-label">Tailor the read</p>
+              <div className="cx-fields">
                 {EMPLOYEES >= 800 ? (
-                  <div className="ctax-fld">
+                  <div className="cx-fld">
                     <label htmlFor="ctax-div">
                       Which site or division are you focused on?
                     </label>
@@ -273,7 +352,7 @@ export function CtaxAssessment() {
                     </select>
                   </div>
                 ) : null}
-                <div className="ctax-fld">
+                <div className="cx-fld">
                   <label htmlFor="ctax-role">
                     Your role, so we can tailor the impact
                   </label>
@@ -295,10 +374,18 @@ export function CtaxAssessment() {
                   </select>
                 </div>
               </div>
-              <p className="ctax-note">
-                Or jump to{" "}
+              {confirmMsg?.tone === "muted" ? (
+                <p className="cx-msg" role="status">{confirmMsg.text}</p>
+              ) : null}
+              <p className="cx-note">
+                <b>4 colleagues from Acme</b>{" "}have looked at this in the last
+                30 days. Coordination tax is a team problem; the more you tell
+                us, the sharper this gets.
+              </p>
+              <p className="cx-note">
+                Already know your numbers?{" "}
                 <Link href="/coordination-tax-calculator/report">
-                  confirming your numbers in the full report
+                  Confirm them in the full report
                 </Link>
                 .
               </p>
@@ -307,272 +394,293 @@ export function CtaxAssessment() {
         </div>
       </section>
 
-      {/* ============================ 01 · SCORECARD ==================== */}
-      <section className="dms-section dms-section--alt ctax-sec" id="assessment">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow n={1}>The assessment</Eyebrow>
-            <h2 className="dms-h2">Where it tends to hurt.</h2>
+      <HatchBand />
+
+      {/* ----------------------------------------------- 2 · where it hurts
+        * the persona lens as text tabs, one row per area as a cell */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="assessment" aria-labelledby="cx-assess-h">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Step 2 · Where it hurts</Eyebrow>
+              <h2 className="dms-h2" id="cx-assess-h">Where coordination tends to hurt.</h2>
+            </div>
             <p className="dms-lede">
               Industry-typical readings for a manufacturer your size,
-              sharpened where a public signal supports it. Every figure is{" "}
-              <b>assumed until you confirm it</b>.
+              sharpened where a public signal supports it. Every figure is
+              assumed until you confirm it.
             </p>
-            <dl className="ctax-legend">
-              <div>
-                <dt><Prov kind="confirmed" /></dt>
-                <dd>you told us</dd>
-              </div>
-              <div>
-                <dt><Prov kind="inferred" /></dt>
-                <dd>derived from a public signal</dd>
-              </div>
-              <div>
-                <dt><Prov kind="assumed" /></dt>
-                <dd>industry-typical default</dd>
-              </div>
-              <div>
-                <dt><Prov kind="modelled" /></dt>
-                <dd>computed by our model</dd>
-              </div>
-            </dl>
-          </div>
+          </header>
 
-          <div className="ctax-content">
-            <div className="ctax-lens" role="tablist" aria-label="Rate the impact for">
+          <div className="cx-lens" data-reveal>
+            <span className="cx-lens__k" id="cx-lens-k">Read it as</span>
+            <div className="cx-lens__tabs" role="tablist" aria-labelledby="cx-lens-k">
               {PERSONAS.map((p, i) => (
                 <button
                   key={p}
                   type="button"
                   role="tab"
                   aria-selected={persona === i}
-                  className={`ctax-pbtn${persona === i ? " is-on" : ""}`}
+                  className={`cx-tab${persona === i ? " is-on" : ""}`}
                   onClick={() => setPersona(i)}
                 >
                   {p}
                 </button>
               ))}
             </div>
-            <p className="ctax-personaline">{PERSONA_LINES[persona]}</p>
+          </div>
+          <p className="cx-personaline">{PERSONA_LINES[persona]}</p>
 
-            <div className="ctax-sc">
-              <div className="ctax-sc__hd" aria-hidden="true">
-                <div>Where it hurts</div>
-                <div>Typical reading</div>
-                <div>Intensity</div>
-                <div>Why, and what it could cost</div>
-              </div>
-              {rows.map((r) => (
-                <div className="ctax-sc__row" key={r.area}>
-                  <div className="ctax-sc__area">{r.area}</div>
-                  <div className="ctax-sc__reading">
+          <div className="cx-sc" role="table" aria-label="Where it hurts">
+            <div className="cx-sc__hd" role="row">
+              <span role="columnheader">Where it hurts</span>
+              <span role="columnheader">Intensity</span>
+              <span role="columnheader">Why, and what it could cost</span>
+            </div>
+            {rows.map((r) => (
+              <div className="cx-sc__row" role="row" key={r.area}>
+                <div className="cx-sc__area" role="cell">
+                  <h3>{r.area}</h3>
+                  <p>
                     <span>{r.reading}</span>
                     <Prov kind={r.prov} />
-                  </div>
-                  <div className={`ctax-sc__sev ${sevTone(r.sev)}`}>
-                    <span className="ctax-sev">
-                      <span style={{ width: `${r.sev * 10}%` }} />
-                    </span>
-                    <span className="ctax-sevchip ctax-mono">
-                      {r.sev}/10 {r.level}
-                    </span>
-                  </div>
-                  <div className="ctax-sc__why">{r.why}</div>
+                  </p>
+                </div>
+                <div className={`cx-sc__sev ${sevTone(r.sev)}`} role="cell">
+                  <span className="cx-sev__num">
+                    {r.sev}<small>/10</small>
+                  </span>
+                  <span className="cx-sev__lvl">{r.level}</span>
+                  <span className="cx-sev" aria-hidden="true">
+                    <span style={{ width: `${r.sev * 10}%` }} />
+                  </span>
+                </div>
+                <p className="cx-sc__why" role="cell">{r.why}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="cx-foot">
+            <p>
+              <b>Read this honestly.</b>{" "}
+              We have not measured Acme&rsquo;s
+              systems. These are industry-typical assumptions for your size
+              and regulatory profile, a starting hypothesis rather than a
+              verdict. Tell us your actual numbers and each assumed figure is
+              replaced with your own; only then do we benchmark you against
+              peers.
+            </p>
+            <dl className="cx-legend">
+              {LEGEND.map(([k, d]) => (
+                <div key={k}>
+                  <dt><Prov kind={k} /></dt>
+                  <dd>{d}</dd>
                 </div>
               ))}
-            </div>
-
-            <div className="ctax-foot">
-              <p>
-                <b>Read this honestly.</b> We have not measured Acme's
-                systems. These are industry-typical assumptions for your size
-                and regulatory profile, a starting hypothesis rather than a
-                verdict. Tell us your actual numbers and each assumed figure
-                is replaced with your own; only then do we benchmark you
-                against peers.
-              </p>
-            </div>
+            </dl>
           </div>
         </div>
       </section>
 
-      {/* ============================ 02 · CONCENTRATION ================ */}
-      <section className="dms-section ctax-sec" id="concentrates">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow n={2}>Where it concentrates</Eyebrow>
-            <h2 className="dms-h2">By theme, then domain.</h2>
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* ------------------------------------------- where it concentrates
+        * one takeaway (the top two themes' share), then the six themes as
+        * stacked bars with their domains inside */}
+      <section className="dms-section cx-sec hm-railed" id="concentrates" aria-labelledby="cx-conc-h">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Where it concentrates</Eyebrow>
+              <h2 className="dms-h2" id="cx-conc-h">Two themes carry half of it.</h2>
+            </div>
             <p className="dms-lede">
               The modelled mix for your industry, grouped into comparable
-              themes with the domains nested underneath. Your own mix is
-              confirmed once you share your volumes.
+              themes with the domains inside each. Your own mix is confirmed
+              once you share your volumes.
             </p>
-          </div>
-          <div className="ctax-content">
-            <ThemeBars />
+          </header>
+
+          <div className="cx-cells cx-cells--lead" data-reveal>
+            <div className="cx-cell cx-cell--quiet cx-stat">
+              <p className="cx-label">
+                Modelled mix · medical devices <Prov kind="modelled" />
+              </p>
+              <p className="cx-stat__fig">{TOP_TWO}%</p>
+              <p className="cx-stat__line">
+                of the modelled tax sits in two themes:{" "}
+                <b>{THEME_ROWS[0].name}</b>, and <b>{THEME_ROWS[1].name}</b>.
+              </p>
+            </div>
+            <div className="cx-cell">
+              <ThemeStack />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ============================ 03 · WHERE YOU SIT ================ */}
-      <section className="dms-section dms-section--alt ctax-sec" id="benchmark">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow n={3}>Where you sit</Eyebrow>
-            <h2 className="dms-h2">18 to 24 percent of operating cost.</h2>
+      <HatchBand />
+
+      {/* ------------------------------------------------ 3 · what it costs
+        * the range is the moment; the band beside it; the cause under both */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="benchmark" aria-labelledby="cx-bench-h">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Step 3 · What it costs</Eyebrow>
+              <h2 className="dms-h2" id="cx-bench-h">18 to 24 percent of operating cost.</h2>
+            </div>
             <p className="dms-lede">
-              Our model's range for medical device manufacturers your size{" "}
-              <Prov kind="modelled" />. Until we have your numbers, your
-              position inside it is an estimate, not a measurement.
+              Our model&rsquo;s range for medical device manufacturers your
+              size. Until we have your numbers, your position inside it is an
+              estimate, not a measurement.
             </p>
-          </div>
-          <div className="ctax-content">
-            <BenchTrack
-              band={[34, 76]}
-              markers={[
-                { at: 34, label: "industry 18%" },
-                { at: 76, label: "24%" },
-                { at: 55, label: "our estimate for you", tone: "ink" },
-              ]}
-            />
-            <div className="ctax-range-row">
-              <div>
-                <div className="ctax-range ctax-mono">
-                  $3.2M <span>to</span> $5.1M <span>/ year</span>
-                </div>
-                <p className="ctax-note">
-                  Wide range because it is built from public data only.
-                  Confirming your volumes narrows it.
-                </p>
-              </div>
-              <Link
-                href="/coordination-tax-calculator/report"
-                className="dms-btn"
-              >
+          </header>
+
+          <div className="cx-cells cx-cells--2" data-reveal>
+            <div className="cx-cell cx-range">
+              <p className="cx-label">
+                Our estimate for Acme <Prov kind="modelled" />
+              </p>
+              <p className="cx-range__fig">
+                $3.2M <span>to</span> $5.1M
+              </p>
+              <p className="cx-range__unit">a year</p>
+              <p className="cx-note">
+                Wide range because it is built from public data only.
+                Confirming your volumes narrows it.
+              </p>
+              <Link href="/coordination-tax-calculator/report" className="dms-btn">
                 Confirm your numbers
               </Link>
             </div>
-            <div className="ctax-foot">
-              <p>
-                <b>One root cause underneath all of it.</b> Your system of
-                record stores what is officially true. The work that produces
-                those records runs in email, meetings, and spreadsheets. The
-                gap between the two is the tax, and it bites hardest around a
-                trigger: an audit, a 483, a recall, a new quality leader, an
-                acquisition.
-              </p>
-              <p>
-                This range is Unifize's model for your industry and size, not
-                a published statistic and not a measurement of Acme. The
-                report replaces assumptions with your actuals and states the
-                confidence at every step.
+            <div className="cx-cell cx-bench">
+              <p className="cx-label">Where you sit in the band</p>
+              <BenchTrack
+                band={[34, 76]}
+                markers={[
+                  { at: 34, label: "industry 18%" },
+                  { at: 76, label: "24%" },
+                  { at: 55, label: "our estimate for you", tone: "ink" },
+                ]}
+              />
+              <p className="cx-note">
+                Share of operating cost spent holding cross-functional work
+                together, medical device manufacturers your size.
               </p>
             </div>
+          </div>
+
+          <div className="cx-foot cx-foot--cause">
+            <p>
+              <b>One root cause underneath all of it.</b>{" "}Your system of
+              record stores what is officially true. The work that produces
+              those records runs in email, meetings, and spreadsheets. The gap
+              between the two is the tax, and it bites hardest around a
+              trigger: an audit, a 483, a recall, a new quality leader, an
+              acquisition.
+            </p>
+            <p>
+              This range is Unifize&rsquo;s model for your industry and size,
+              not a published statistic and not a measurement of Acme. The
+              report replaces assumptions with your actuals and states the
+              confidence at every step.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* ============================ 04 · PROOF ======================== */}
-      <section className="dms-section dms-section--dark ctax-sec" id="proof">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow n={4}>Proof</Eyebrow>
-            <h2 className="dms-h2">Already being reduced.</h2>
-          </div>
-          <div className="ctax-content">
-            <figure className="ctax-dquote">
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* ------------------------------------------------------------ proof
+        * the one dark island: the quote left, its two facts right */}
+      <section className="dms-section dms-section--dark cx-sec cx-proof hm-railed" id="proof" aria-labelledby="cx-proof-h">
+        <div className="dms-wrap">
+          <header className="cx-proof__head" data-reveal>
+            <Eyebrow>Proof</Eyebrow>
+            <h2 className="dms-h2" id="cx-proof-h">Already being reduced.</h2>
+          </header>
+          <div className="cx-cells cx-cells--proof" data-reveal>
+            <figure className="cx-cell cx-quote">
               <blockquote>
                 &ldquo;Tasks that have taken weeks or months are now completed
                 in days.&rdquo;
               </blockquote>
               <figcaption>
-                Tedd Carr, Director of Quality, The Will-Burt Company
+                <b>Tedd Carr</b>, Director of Quality, The Will-Burt Company
               </figcaption>
-              <p className="ctax-dquote__stats ctax-mono">
-                75% faster issue closure in the first month · 5 quality
-                systems consolidated into 1
-              </p>
             </figure>
-            <div className="ctax-dref">
-              <p className="ctax-dref__k">In your industry</p>
-              <p>
-                <b>Recovery Force</b>, an FDA-regulated, ISO 13485 wearable
-                device maker, runs CAPA, complaints, audits, and change
-                control on Unifize through a 483 observation.
-              </p>
+            <div className="cx-cell cx-fact">
+              <p className="cx-fact__fig">75%</p>
+              <p>faster issue closure in the first month</p>
+            </div>
+            <div className="cx-cell cx-fact">
+              <p className="cx-fact__fig">5 &rarr; 1</p>
+              <p>quality systems consolidated into one</p>
             </div>
           </div>
+          <p className="cx-proof__ref">
+            <span className="cx-label">In your industry</span>
+            <span>
+              <b>Recovery Force</b>, an FDA-regulated, ISO 13485 wearable
+              device maker, runs CAPA, complaints, audits, and change control
+              on Unifize through a 483 observation.
+            </span>
+          </p>
         </div>
       </section>
 
-      {/* ============================ 05 · THE FULL REPORT ============== */}
-      <section className="dms-section ctax-sec" id="report">
-        <div className="dms-wrap ctax-grid">
-          <div className="ctax-rail">
-            <Eyebrow n={5}>The full report</Eyebrow>
-            <h2 className="dms-h2">The full picture, and what to do about it.</h2>
-            <p className="dms-lede">
-              This page is the cold read from public data. The full report
-              confirms your numbers, then shows how you compare and how it
-              gets reduced.
-            </p>
-            <div className="ctax-ctarow">
-              <Link
-                href="/coordination-tax-calculator/report#sample"
-                className="dms-btn"
-              >
-                Sample report
-              </Link>
-              <Link
-                href="/coordination-tax-calculator/report"
-                className="dms-btn dms-btn-ghost"
-              >
-                My personalized report
-              </Link>
+      <HatchBand />
+
+      {/* ----------------------------------------------- 4 · the full report
+        * what is in it as cells; the two ways in sit with the head */}
+      <section className="dms-section cx-sec hm-railed" id="report" aria-labelledby="cx-report-h">
+        <div className="dms-wrap">
+          <header className="pf-split-head" data-reveal>
+            <div>
+              <Eyebrow>Step 4 · The full report</Eyebrow>
+              <h2 className="dms-h2" id="cx-report-h">The full picture, and what to do about it.</h2>
             </div>
-          </div>
-          <ol className="ctax-ledger">
+            <div className="cx-head-right">
+              <p className="dms-lede">
+                This page is the cold read from public data. The full report
+                confirms your numbers, then shows how you compare and how it
+                gets reduced.
+              </p>
+              <div className="cx-actions">
+                <Link href="/coordination-tax-calculator/report" className="dms-btn">
+                  My personalized report
+                </Link>
+                <Link href="/coordination-tax-calculator/report#sample" className="dms-btn dms-btn-ghost">
+                  Sample report
+                </Link>
+              </div>
+            </div>
+          </header>
+          <ol className="cx-cells cx-cells--3 cx-contents" data-reveal>
             {REPORT_CONTENTS.map(([t, d], i) => (
-              <li key={t}>
-                <span className="ctax-ledger__n ctax-mono">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <b>{t}</b>
-                  <span>{d}</span>
-                </div>
+              <li key={t} className="cx-cell">
+                <span className="cx-contents__n">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
               </li>
             ))}
           </ol>
         </div>
       </section>
 
-      {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark ctax-close" id="demo">
-        <div className="dms-wrap">
-          <div className="ctax-close__lead">
-            <Eyebrow>Take it further</Eyebrow>
-            <h2 className="ctax-close__h">
-              Turn this read into a measured number.
-            </h2>
-            <p className="dms-lede">
-              A short conversation replaces the assumptions with your actuals;
-              a two-week Phase 0 measures it for real.
-            </p>
-            <div className="ctax-ctarow ctax-ctarow--center">
-              <Link
-                href="/coordination-tax-calculator/report"
-                className="dms-btn"
-              >
-                Get the full report
-              </Link>
-              <button type="button" className="dms-btn dms-btn-ghost">
-                Talk to us
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HatchBand />
+
+      {/* ------------------------------------------------------------ close
+        * the one closing CTA every railed page ends on */}
+      <RailsClose
+        id="cx-close-h"
+        eyebrow="Take it further"
+        heading="Turn this read into a measured number."
+        lede="A short conversation replaces the assumptions with your actuals; a two-week Phase 0 measures it for real."
+        secondary={{ label: "Get the full report", href: "/coordination-tax-calculator/report" }}
+        source="ctax-close"
+      />
     </div>
   );
 }

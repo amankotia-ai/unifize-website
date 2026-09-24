@@ -224,7 +224,8 @@
 .dms--redesign.dms--rails .sft {
   --sft-bg: var(--dms-d-bg);
   position: relative;
-  border-top-color: var(--hm-rail);
+  /* the top rail: full-bleed, same weight as the vertical rails */
+  border-top: 1px solid var(--hm-rail);
   background: var(--sft-bg);
 }
 
@@ -255,4 +256,184 @@
 @media (max-width: 720px) {
   .dms--redesign.dms--rails .hm-cross { display: none; }
   .dms--redesign.dms--rails .hm-hatch { height: 36px; }
+}
+
+/* ====================================================== PAGE FINISH (24 Sep 2026)
+ * The homepage finish on every rails page (Abhishek, 24 Sep: "do it for all
+ * pages and sections as we have done it for the homepage"). Mirrors the
+ * HERO / LIGHT SECTION / DARK SECTION FINISH blocks at the end of
+ * home-rails.css, at the same very subtle strength: no bloom, no sheen, no
+ * glowing shadows ([[polish-subtle-no-glow]]). The homepage keeps its own
+ * blocks (excluded here); the platform hero keeps its own (platform-rails.css)
+ * and takes only the section finish from here.
+ *   hero: a faint cool key light + film grain behind the copy, each headline
+ *     row lit top to bottom, the sub a step brighter, CTAs with an inset top
+ *     highlight, a short rise on load;
+ *   light sections: each H2 row lit from above in ink, ledes a step darker;
+ *   dark sections: each heading row lit white to cool grey, ledes a step
+ *     brighter, the close CTAs flat with the inset highlight and glass ghost.
+ * Inline children of a lit heading keep their own colour (currentColor fill),
+ * so a coloured word never goes transparent. Reduced motion: no entry. */
+
+/* ---- hero: the copy block carries the light (the section's ::before and
+ * ::after are the rails); split heroes light the copy pane only */
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.dms-hero__inner, .md-hero2__copy, .sk-hero2__copy) {
+  position: relative;
+  isolation: isolate;
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.dms-hero__inner, .md-hero2__copy, .sk-hero2__copy)::before,
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.dms-hero__inner, .md-hero2__copy, .sk-hero2__copy)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__inner::before {
+  background: radial-gradient(45% 60% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+  filter: blur(8px);
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.md-hero2__copy, .sk-hero2__copy)::before {
+  background: radial-gradient(60% 50% at 38% 44%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+  filter: blur(8px);
+}
+
+/* the grain, faded out toward the rails so the charcoal stays clean */
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.dms-hero__inner, .md-hero2__copy, .sk-hero2__copy)::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.04;
+  mix-blend-mode: soft-light;
+  -webkit-mask-image: radial-gradient(75% 70% at 40% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(75% 70% at 40% 50%, #000 30%, transparent 80%);
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__title {
+  line-height: 1.04;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* one gradient per visual row (1lh tiles), so a wrapped line is lit the
+ * same on every row; descender room under the clip */
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__line {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__line.dms-hero__turn {
+  background-image: linear-gradient(180deg, #82b8ff 30%, var(--u-blue-400) 100%);
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__sub {
+  color: #c3c8d1;
+  line-height: 1.62;
+}
+
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__sub strong {
+  color: #fff;
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__line {
+    animation: pr-hero-rise 900ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+  }
+  .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__line + .dms-hero__line {
+    animation-delay: 110ms;
+  }
+  .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails :is(.dms-hero__sub, .dms-hero__ctas) {
+    animation: pr-hero-fade 800ms cubic-bezier(0.2, 0.7, 0.1, 1) 260ms both;
+  }
+  .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__ctas {
+    animation-delay: 360ms;
+  }
+}
+
+@keyframes pr-hero-rise {
+  from { opacity: 0; transform: translateY(0.18em); filter: blur(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pr-hero-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---- CTAs on the charcoal (hero and dark sections): the primary lit from
+ * its top edge, the ghost a faint glass */
+.dms--redesign.dms--rails:not(.dms--home) :is(.dms-hero--rails, .dms-section--dark) .dms-btn:not(.dms-btn-ghost) {
+  background: linear-gradient(180deg, #0a66c8 0%, var(--dms-accent) 100%);
+  border-color: transparent;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.18), 0 1px 2px oklch(0 0 0 / 0.3);
+  transition: box-shadow 220ms ease-out, background-color 160ms ease-out, transform 220ms ease-out;
+}
+
+.dms--redesign.dms--rails:not(.dms--home) :is(.dms-hero--rails, .dms-section--dark) .dms-btn:not(.dms-btn-ghost):hover {
+  background: linear-gradient(180deg, #0f6dd2 0%, var(--dms-accent-hover) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.22), 0 1px 2px oklch(0 0 0 / 0.3);
+}
+
+.dms--redesign.dms--rails:not(.dms--home) :is(.dms-hero--rails, .dms-section--dark) .dms-btn-ghost {
+  background: oklch(1 0 0 / 0.03);
+  border-color: oklch(1 0 0 / 0.16);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+}
+
+.dms--redesign.dms--rails:not(.dms--home) :is(.dms-hero--rails, .dms-section--dark) .dms-btn-ghost:hover {
+  background: oklch(1 0 0 / 0.07);
+  border-color: oklch(1 0 0 / 0.28);
+}
+
+/* ---- light sections: each H2 row lit from above in ink, the lede a step
+ * darker. No light behind the heads (a low-alpha radial bands on white). */
+.dms--redesign.dms--rails:not(.dms--home) .dms-section:not(.dms-section--dark, .dms-hero) :is(.dms-h2, .itm-h2) {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.dms--rails:not(.dms--home) .dms-section:not(.dms-section--dark, .dms-hero) .dms-lede {
+  color: #555c68;
+}
+
+/* ---- dark sections: each heading row lit white to a faint cool grey, the
+ * lede a step brighter */
+.dms--redesign.dms--rails:not(.dms--home) .dms-section--dark :is(.dms-h2, .itm-h2, .dms-close__h, .itm-close__h, .pf-close__h) {
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
+  background-size: 100% 1lh;
+  background-repeat: repeat-y;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dms--redesign.dms--rails:not(.dms--home) .dms-section--dark .dms-lede {
+  color: #c3c8d1;
+}
+
+/* a coloured word inside a lit heading keeps its own fill */
+.dms--redesign.dms--rails:not(.dms--home) .dms-section:not(.dms-section--dark, .dms-hero) :is(.dms-h2, .itm-h2) *,
+.dms--redesign.dms--rails:not(.dms--home) .dms-section--dark :is(.dms-h2, .itm-h2, .dms-close__h, .itm-close__h, .pf-close__h) * {
+  -webkit-text-fill-color: currentColor;
 }

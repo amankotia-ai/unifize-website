@@ -19,7 +19,7 @@
   /* ---------- TYPE SCALE ---------- */
   --itm-eyebrow-size: 0.6875rem; --itm-eyebrow-weight: 500; --itm-eyebrow-ls: 0.08em;
   --itm-h1-size: clamp(2.4rem, 1.6rem + 3vw, 4rem);
-  --itm-h1-weight: 600; --itm-h1-lh: 1.08; --itm-h1-ls: -0.022em;
+  --itm-h1-weight: 600; --itm-h1-lh: 1.04; --itm-h1-ls: -0.022em;
   --itm-h2-size: clamp(1.9rem, 1.35rem + 2vw, 3rem);
   --itm-h3-size: clamp(1.1875rem, 1rem + 0.7vw, 1.5rem);
   --itm-lede-size: clamp(1.02rem, 0.94rem + 0.35vw, 1.2rem);

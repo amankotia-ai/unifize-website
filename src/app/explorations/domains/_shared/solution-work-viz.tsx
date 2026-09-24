@@ -378,6 +378,356 @@ function Surface({ viz }: { viz: WorkViz }) {
         </div>
       );
 
+    case "redline":
+      /* change control: the revision itself, one line struck and one
+       * inserted, the approvers it still waits on */
+      return (
+        <div className="sk-wv__card sk-vz-rl">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.doc}</span>
+            <span className="sk-vz-rl__rev"><s>{viz.from}</s><i aria-hidden="true">&rarr;</i><b>{viz.to}</b></span>
+          </header>
+          <ol className="sk-vz-rl__lines">
+            {viz.lines.map((l) => (
+              <li key={l.text} className={l.mark ? "is-" + l.mark : undefined}>{l.text}</li>
+            ))}
+          </ol>
+          <ul className="sk-vz-rl__who">
+            {viz.approvers.map((a) => (
+              <li key={a.name} className={a.done ? "is-done" : undefined}>{a.done ? <Done /> : <Open />}{a.name}</li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "bom":
+      /* the bill of materials, the revised line bumped */
+      return (
+        <div className="sk-wv__card sk-vz-bm">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <ul>
+            {viz.rows.map((r) => (
+              <li key={r.part} className={(r.next ? "is-next " : "") + "d" + r.depth}>
+                <code>{r.part}</code>
+                <span>{r.name}</span>
+                <small>{r.next ? <><s>{r.rev}</s> {r.next}</> : r.rev}</small>
+              </li>
+            ))}
+          </ul>
+          <p className="sk-vz-bm__foot">{viz.foot}</p>
+        </div>
+      );
+
+    case "watermark":
+      /* document & records: the controlled page, its state across it */
+      return (
+        <div className="sk-wv__card sk-vz-wm">
+          <div className="sk-vz-wm__page">
+            <header><code>{viz.doc}</code><b>{viz.version}</b></header>
+            <p>{viz.title}</p>
+            <i /><i /><i className="is-short" /><i /><i className="is-short" />
+            <span className="sk-vz-wm__mark" aria-hidden="true">{viz.mark}</span>
+          </div>
+          <dl className="sk-vz-wm__meta">
+            {viz.meta.map((m) => (
+              <div key={m.k}><dt>{m.k}</dt><dd>{m.v}</dd></div>
+            ))}
+          </dl>
+        </div>
+      );
+
+    case "artwork":
+      /* an artwork proof, markup pins over it, one language open */
+      return (
+        <div className="sk-wv__card sk-vz-aw">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.file}</span>
+            <span className="sk-vz-aw__langs">
+              {viz.langs.map((l, i) => <i key={l} className={i === viz.lang ? "is-on" : undefined}>{l}</i>)}
+            </span>
+          </header>
+          <div className="sk-vz-aw__proof" aria-hidden="true">
+            <span className="sk-vz-aw__logo" />
+            <b /><i /><i className="is-short" />
+            <span className="sk-vz-aw__bars">{Array.from({ length: 18 }, (_, i) => <i key={i} style={{ width: [1, 2, 1, 3, 1, 1, 2][i % 7] }} />)}</span>
+            {viz.pins.map((p, i) => <em key={p.n} className={p.open ? "is-open" : undefined} style={{ top: `${[18, 44, 70][i % 3]}%`, left: `${[72, 30, 60][i % 3]}%` }}>{p.n}</em>)}
+          </div>
+          <ul className="sk-vz-aw__notes">
+            {viz.pins.map((p) => <li key={p.n} className={p.open ? "is-open" : undefined}><em>{p.n}</em>{p.note}</li>)}
+          </ul>
+        </div>
+      );
+
+    case "access":
+      /* the periodic access review, one account to revoke */
+      return (
+        <div className="sk-wv__card sk-vz-ac">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span><span className="sk-vz-ac__sys">{viz.system}</span></header>
+          <ul>
+            {viz.users.map((u) => (
+              <li key={u.name} className={u.flag ? "is-flag" : undefined}>
+                <span className="sk-vz-ac__av" aria-hidden="true">{u.name.split(/[\s.]+/).filter(Boolean).map((x) => x[0]).join("").slice(0, 2)}</span>
+                <span className="sk-vz-ac__who"><b>{u.name}</b><small>{u.flag ?? u.role}</small></span>
+                <span className="sk-vz-ac__act">{u.flag ? "Revoke" : "Keep"}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "delta":
+      /* training: the revision's sections, only the changed ones retrained */
+      return (
+        <div className="sk-wv__card sk-vz-dl">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.doc}</span>
+            <span className="sk-vz-rl__rev"><s>{viz.from}</s><i aria-hidden="true">&rarr;</i><b>{viz.to}</b></span>
+          </header>
+          <ol>
+            {viz.sections.map((sec) => (
+              <li key={sec.name} className={sec.changed ? "is-changed" : undefined}>
+                <span>{sec.name}</span>
+                <small>{sec.changed ? "Changed" : "Unchanged"}</small>
+              </li>
+            ))}
+          </ol>
+          <p className="sk-vz-dl__choice"><span className="sk-vz-dl__radio" aria-hidden="true" />{viz.choice}</p>
+        </div>
+      );
+
+    case "onboard":
+      /* a new hire's ramp, planned by week instead of by shadowing */
+      return (
+        <div className="sk-wv__card sk-vz-ob">
+          <header className="sk-vz-ob__head">
+            <span className="sk-vz-ac__av" aria-hidden="true">{viz.name.split(/[\s.]+/).filter(Boolean).map((x) => x[0]).join("").slice(0, 2)}</span>
+            <span><b>{viz.name}</b><small>{viz.role}</small></span>
+          </header>
+          <ol>
+            {viz.weeks.map((w) => (
+              <li key={w.wk} className={"is-" + w.state}>
+                <code>{w.wk}</code>
+                <span>{w.step}</span>
+                {w.state === "done" ? <Done /> : w.state === "now" ? <Open /> : <i aria-hidden="true" />}
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+
+    case "levels":
+      /* one person's qualification, level by competency */
+      return (
+        <div className="sk-wv__card sk-vz-lv">
+          <header className="sk-vz-ob__head">
+            <span className="sk-vz-ac__av" aria-hidden="true">{viz.name.split(/[\s.]+/).filter(Boolean).map((x) => x[0]).join("").slice(0, 2)}</span>
+            <span><b>{viz.name}</b><small>{viz.role}</small></span>
+          </header>
+          <ul>
+            {viz.skills.map((sk) => (
+              <li key={sk.name} className={sk.pending ? "is-pending" : undefined}>
+                <span className="sk-vz-lv__name">{sk.name}{sk.pending ? <small>{sk.pending}</small> : null}</span>
+                <span className="sk-vz-lv__pips" aria-hidden="true">{[1, 2, 3, 4].map((n) => <i key={n} className={n <= sk.level ? "is-on" : undefined} />)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "mrb":
+      /* operations: the review board's columns, one lot aging */
+      return (
+        <div className="sk-wv__card sk-vz-mb">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <div className="sk-vz-mb__cols" style={{ "--mb-n": viz.cols.length } as CSSProperties}>
+            {viz.cols.map((c) => (
+              <div key={c.name} className="sk-vz-mb__col">
+                <small>{c.name}</small>
+                {c.lots.map((l) => (
+                  <span key={l.id} className={"sk-vz-mb__lot" + (l.aging ? " is-aging" : "")}><b>{l.id}</b>{l.note}</span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+
+    case "route":
+      /* the traveller as its route, the current operation open */
+      return (
+        <div className="sk-wv__card sk-vz-rt">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <ol className="sk-vz-rt__ops">
+            {viz.ops.map((o) => (
+              <li key={o.op} className={"is-" + o.state}><code>{o.op}</code><span>{o.name}</span></li>
+            ))}
+          </ol>
+          <label className="sk-vz-rt__entry"><small>{viz.entry.label}</small><span>{viz.entry.value}<i aria-hidden="true" /></span></label>
+        </div>
+      );
+
+    case "instrument":
+      /* one gauge in its tolerance band, calibration due */
+      return (
+        <div className="sk-wv__card sk-vz-in">
+          <header className="sk-vz-in__head"><code>{viz.id}</code><b>{viz.name}</b></header>
+          <div className="sk-vz-in__band" aria-hidden="true">
+            <span className="sk-vz-in__ok" />
+            <i style={{ left: `${viz.at}%` }} />
+          </div>
+          <div className="sk-vz-in__scale"><span>{viz.low}</span><span>{viz.high}</span></div>
+          <p className="sk-vz-in__due"><Open /><span>{viz.due}</span><small>{viz.owner}</small></p>
+        </div>
+      );
+
+    case "promise":
+      /* customer orders, promised against projected */
+      return (
+        <div className="sk-wv__card sk-vz-pr">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <table>
+            <thead><tr><th>Order</th><th>Promised</th><th>Projected</th><th /></tr></thead>
+            <tbody>
+              {viz.orders.map((o) => (
+                <tr key={o.id} className={"is-" + o.state}>
+                  <td>{o.id}</td><td>{o.promised}</td><td>{o.projected}</td>
+                  <td><em>{o.state === "ok" ? "On track" : o.state === "risk" ? "At risk" : "Recommitted"}</em></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+    case "coverage":
+      /* supply chain: one part's weeks, supply against demand */
+      return (
+        <div className="sk-wv__card sk-vz-cv">
+          <header className="sk-vz-in__head"><code>{viz.part}</code><b>{viz.name}</b></header>
+          <table>
+            <thead><tr><th />{viz.weeks.map((w) => <th key={w.wk}>{w.wk}</th>)}</tr></thead>
+            <tbody>
+              <tr><th>Demand</th>{viz.weeks.map((w) => <td key={w.wk}>{w.demand}</td>)}</tr>
+              <tr><th>Supply</th>{viz.weeks.map((w) => <td key={w.wk}>{w.supply}</td>)}</tr>
+              <tr className="sk-vz-cv__net">
+                <th>Net</th>
+                {viz.weeks.map((w) => {
+                  const net = w.supply - w.demand;
+                  return <td key={w.wk} className={net < 0 ? "is-short" : undefined}>{net > 0 ? `+${net}` : net}</td>;
+                })}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      );
+
+    case "po":
+      /* a PO revision, its terms changed, two approvals in parallel */
+      return (
+        <div className="sk-wv__card sk-vz-po">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.po} · {viz.supplier}</span>
+            <span className="sk-vz-po__rev">{viz.rev}</span>
+          </header>
+          <ul className="sk-vz-po__chg">
+            {viz.changes.map((c) => (
+              <li key={c.field}><small>{c.field}</small><s>{c.from}</s><i aria-hidden="true">&rarr;</i><b>{c.to}</b></li>
+            ))}
+          </ul>
+          <div className="sk-vz-po__lanes">
+            {viz.lanes.map((l) => <span key={l.name} className={l.done ? "is-done" : undefined}>{l.done ? <Done /> : <Open />}{l.name}</span>)}
+          </div>
+        </div>
+      );
+
+    case "ltb":
+      /* the last-time buy, worked to the end of support */
+      return (
+        <div className="sk-wv__card sk-vz-lt">
+          <header className="sk-vz-in__head"><code>{viz.part}</code><b>{viz.name}</b></header>
+          <dl>
+            {viz.rows.map((r) => (
+              <div key={r.k} className={r.total ? "is-total" : undefined}><dt>{r.k}</dt><dd>{r.v}</dd></div>
+            ))}
+          </dl>
+          <p className="sk-vz-lt__by"><Open /><span>{viz.by}</span></p>
+        </div>
+      );
+
+    case "bids":
+      /* procurement: suppliers side by side, the award on total cost */
+      return (
+        <div className="sk-wv__card sk-vz-bd">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <table>
+            <thead><tr><th />{viz.suppliers.map((sp) => <th key={sp.name} className={sp.pick ? "is-pick" : undefined}>{sp.name}</th>)}</tr></thead>
+            <tbody>
+              {viz.rows.map((r, ri) => (
+                <tr key={r}>
+                  <th>{r}</th>
+                  {viz.suppliers.map((sp) => (
+                    <td key={sp.name} className={(sp.pick ? "is-pick " : "") + (sp.flag === ri ? "is-flag" : "")}>{sp.cells[ri]}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+
+    case "fai":
+      /* a first article check sheet, balloons against the drawing */
+      return (
+        <div className="sk-wv__card sk-vz-fa">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">FAI · {viz.part}</span><span className="sk-vz-fa__dwg">{viz.drawing}</span></header>
+          <ol>
+            {viz.rows.map((r) => (
+              <li key={r.n} className={r.ok ? undefined : "is-fail"}>
+                <em>{r.n}</em>
+                <span>{r.char}</span>
+                <code>{r.nominal}</code>
+                <code>{r.actual}</code>
+                {r.ok ? <Done /> : <Gap />}
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+
+    case "gate":
+      /* the PO release gate: the supplier's standing, checked */
+      return (
+        <div className="sk-wv__card sk-vz-gt">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.po} · {viz.supplier}</span></header>
+          <ul>
+            {viz.checks.map((c) => (
+              <li key={c.label} className={c.ok ? undefined : "is-gap"}>{c.ok ? <Done /> : <Gap />}<span>{c.label}</span><small>{c.note}</small></li>
+            ))}
+          </ul>
+          <p className="sk-vz-gt__verdict">{viz.verdict}</p>
+        </div>
+      );
+
+    case "eol":
+      /* a component's life as stages, the buy window it is in */
+      return (
+        <div className="sk-wv__card sk-vz-eo">
+          <header className="sk-vz-eo__head">
+            <code>{viz.part}</code>
+            <b>{viz.name}</b>
+          </header>
+          <ol className="sk-vz-eo__stages" style={{ "--eo-n": viz.stages.length } as CSSProperties}>
+            {viz.stages.map((st, i) => (
+              <li key={st} className={i < viz.at ? "is-past" : i === viz.at ? "is-now" : undefined}>{st}</li>
+            ))}
+          </ol>
+          <p className="sk-vz-eo__note">{viz.note}</p>
+          <p className="sk-vz-eo__alt"><Done /><span>{viz.alt.name}</span><small>{viz.alt.state}</small></p>
+        </div>
+      );
+
     default:
       return (
         <div className="sk-wv__card">

@@ -75,14 +75,15 @@ import "./platform-kit.css";
  * (loads last so it wins by order) */
 import "../_shared/page-rails.css";
 import "./platform-rails.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../_shared/page-motion.css";
+import { Words } from "../_shared/split-words";
 import { BookDemoButton } from "@/components/organisms/book-demo";
+import { RailsClose } from "../_shared/rails-close";
 import { FaqAccordion } from "../products/dms/dms-interactive";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "The Platform",
-  description:
-    "Unifize makes the cross-functional work behind every CAPA, change order, and approval visible, measurable, and faster, without replacing the systems you run.",
-};
+export const metadata: Metadata = pageMetadata("/platform");
 
 /* hero - the journey rail: six screens in the demo order, one claim per
  * pose, the scene proves it. Screens per Raj (2 Sep 2026): home built for
@@ -200,13 +201,6 @@ const PLATFORM_FAQS: { q: string; a: string }[] = [
   },
 ];
 
-/* the close: what the walkthrough is, in the lede's own terms */
-const CLOSE_STEPS = [
-  { title: "You bring the process that hurts.", note: "A CAPA, a change order, a supplier approval: whichever one costs you most today." },
-  { title: "We run it live, end to end, on one thread.", note: "Your steps, your approvers, your evidence, in the product rather than on slides." },
-  { title: "You see where the time goes.", note: "Where it waited, who it waited on, and what that coordination costs you." },
-];
-
 const STANDARD_GROUPS = [
   {
     label: "Electronic records and quality systems",
@@ -293,9 +287,10 @@ export default async function PlatformPage({
   const measuredFilm = filmByWistia("qp7129voyy"); /* Tedd Carr · Will-Burt · NC closure down 75% */
 
   return (
-    <main className="dms dms--redesign pf-page dms--rails">
+    <main className="dms dms--redesign pf-page dms--rails pm">
       <DmsHeader />
-      <DmsMotion />
+      {/* scroll choreography: the blocks and the hatch bands (page-motion.css) */}
+      <DmsMotion selector="[data-reveal], .hm-hatch" />
 
       {/* ============================ HERO =============================
        * #platform lives here now: the journey is the hero object, so every
@@ -315,8 +310,9 @@ export default async function PlatformPage({
                 <span>The Unifize platform</span>
               </Link>
               <h1 className="dms-hero__title">
-                <span className="dms-hero__line">Your work crosses teams.</span>
-                <span className="dms-hero__line dms-hero__turn">Your systems don&rsquo;t.</span>
+                {/* split into words for the page-in stagger (page-motion.css) */}
+                <span className="dms-hero__line"><Words text="Your work crosses teams." /></span>
+                <span className="dms-hero__line dms-hero__turn"><Words text="Your systems don’t." from={4} /></span>
               </h1>
             </div>
             <div className="dms-hero__right">
@@ -616,38 +612,13 @@ export default async function PlatformPage({
        * the rails: the claim and the ask on the left, what the walkthrough
        * actually is on the right (three steps on one thread). The product
        * doors under it were removed the same day (Abhishek: "remove these"). */}
-      <section className="dms-section dms-section--dark pf-close hm-close--rails hm-railed" aria-labelledby="pf-close-h">
-        <div className="dms-wrap">
-          <div className="pf-close__grid">
-            <div className="pf-close__lead">
-              <span className="dms-close__eyebrow">Ready when you are</span>
-              <h2 className="pf-close__h" id="pf-close-h">Bring the process that hurts. Watch the tax fall.</h2>
-              <p className="pf-close__lede">
-                We will run it end to end on one thread, live, and show you where your time is going.
-              </p>
-              <div className="pf-close__cta">
-                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-                <a href="#platform" className="dms-btn dms-btn-ghost">Watch one change close</a>
-              </div>
-            </div>
-            <div className="pf-close__plan">
-              <p className="pf-close__plan-head">
-                <span>The walkthrough</span>
-                <span>30 min</span>
-              </p>
-              <ol className="pf-close__steps">
-                {CLOSE_STEPS.map((step, index) => (
-                  <li className="pf-close__step" key={step.title}>
-                    <span className="pf-close__step-n" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                    <span className="pf-close__step-title">{step.title}</span>
-                    <span className="pf-close__step-note">{step.note}</span>
-                  </li>
-                ))}
-              </ol>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="pf-close-h"
+        eyebrow="The Unifize platform"
+        heading="One thread. Every decision kept."
+        lede="Bring the process that costs the most coordination and watch it run end to end on one thread in a 30-minute walkthrough."
+        secondary={{ label: "Watch one change close", href: "#platform" }}
+      />
 
       {/* ------------------------------------------------------- footer */}
       <SiteFooter note="The Unifize Platform" />

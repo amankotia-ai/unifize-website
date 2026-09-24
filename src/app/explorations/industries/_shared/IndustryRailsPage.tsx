@@ -29,7 +29,8 @@ import { UrgentBoard, type UrgentRow } from "../../_shared/urgent-board";
 import { IndustryHeroTrace } from "../../_shared/industry-hero-trace";
 import { WorkArtifact } from "../../domains/_shared/solution-work-viz";
 import { BookDemoButton } from "@/components/organisms/book-demo";
-import { TraceThread } from "./industry-rails";
+import { RailsClose } from "../../_shared/rails-close";
+import { DecisionTraceArcade } from "../../industry-template-modern/itm-arcade";
 import type { IndustryData, IndustryRails, RailsCell } from "./types";
 import "../../domains/_shared/solution-rails.css";
 import "../../domains/_shared/solution-viz.css";
@@ -40,6 +41,11 @@ import "../../_shared/page-rails.css";
 import "../../products/dms/dms-rails.css";
 import "../../industry-template-modern/md-rails.css";
 import "./industry-rails.css";
+/* 24 Sep 2026: the page-in timeline and scroll choreography, loaded last */
+import "../../_shared/page-motion.css";
+import { DmsMotion } from "../../products/dms/dms-motion";
+import { Words } from "../../_shared/split-words";
+import { PM_REVEAL_INDUSTRY } from "../../_shared/page-motion-reveal";
 
 const usdM = (n: number) =>
   "$" + (n / 1_000_000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + "M";
@@ -86,6 +92,7 @@ function Cells({ cells, compact }: { cells: Cell[]; compact?: boolean }) {
       className={"sk-wk md-wk" + (compact ? " md-wk--roles" : "")}
       style={{ "--sk-work-n": cells.length } as CSSProperties}
       data-reveal
+      data-stagger
     >
       {cells.map((c) => (
         <article className="sk-wk__cell" key={c.name}>
@@ -145,8 +152,10 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
   const hasTax = econ.annualTaxLow != null && econ.annualTaxHigh != null;
 
   return (
-    <main className="itm dms dms--redesign dms--consistent-eyebrows dms--rails dms-page md-page irt-page">
+    <main className="itm dms dms--redesign dms--consistent-eyebrows dms--rails dms-page md-page irt-page pm">
       <DmsHeader />
+      {/* scroll choreography: blocks, hatch bands and section heads (page-motion.css) */}
+      <DmsMotion selector={PM_REVEAL_INDUSTRY} />
 
       {/* ============================ HERO =============================
         * Two panes between the rails: the copy on the charcoal, the
@@ -156,8 +165,9 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
           <div className="md-hero2__copy">
             <Eyebrow>Industries · {d.hero.crumb}</Eyebrow>
             <h1 className="dms-hero__title">
-              <span className="dms-hero__line">{d.hero.titleLead}</span>
-              <span className="dms-hero__line dms-hero__turn">{d.hero.titleTurn}</span>
+              {/* split into words for the page-in stagger (page-motion.css) */}
+              <span className="dms-hero__line"><Words text={d.hero.titleLead} /></span>
+              <span className="dms-hero__line dms-hero__turn"><Words text={d.hero.titleTurn} from={d.hero.titleLead.split(" ").length} /></span>
             </h1>
             <p className="dms-lede dms-hero__sub">{d.hero.sub}</p>
             <div className="dms-hero__ctas">
@@ -185,16 +195,16 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
 
       <HatchBand />
 
-      {/* ============================ 01 · THE DIFFERENCE =============== */}
+      {/* ============================ 01 · THE DIFFERENCE ===============
+        * As on the MD page: the decision trail drives the arcade camera over
+        * ONE persistent record, this industry's own (rails.journey). */}
       <section className="dms-section md-sec md-diff hm-railed" id="thesis">
         <div className="dms-wrap">
           <SplitHead n={1} eyebrow="The difference" title={d.difference.heading} lede={d.difference.lede} />
-          <TraceThread
+          <DecisionTraceArcade
             label={d.difference.trailLabel}
-            steps={d.difference.trail}
             foot={d.difference.trailFoot}
-            kicker={d.difference.mobileLabel}
-            title={r.thread.title}
+            steps={d.difference.trail.map((s, i) => ({ ...s, ...r.journey[i] }))}
           />
         </div>
       </section>
@@ -234,9 +244,6 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
               </li>
             ))}
           </ul>
-          <div className="md-val__cta">
-            <BookDemoButton className="md-textlink" source="validated">{d.validated.cta} &rarr;</BookDemoButton>
-          </div>
         </div>
       </section>
 
@@ -298,50 +305,14 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
 
       <HatchBand className="hm-hatch--dark" />
 
-      {/* 07 · PROOF: the evidence standard, stated honestly */}
-      <section className="dms-section dms-section--dark md-sec irt-evid hm-railed" id="proof">
-        <div className="dms-wrap">
-          <SplitHead n={7} eyebrow="Proof" title={d.proof.heading} lede={d.proof.lede} />
-          <ol className="irt-evid__grid">
-            {d.proof.points.map((p, i) => (
-              <li key={p} className="irt-evid__cell">
-                <span className="irt-evid__n">{String(i + 1).padStart(2, "0")}</span>
-                <p>{p}</p>
-              </li>
-            ))}
-          </ol>
-          <p className="irt-evid__note">
-            <span className="irt-evid__dot" aria-hidden="true" />
-            {d.proof.maturityNote}
-          </p>
-        </div>
-      </section>
-
-      <HatchBand className="hm-hatch--dark" />
-
       {/* ============================ CLOSE ============================= */}
-      <section className="dms-section dms-section--dark dms-close hm-close--rails hm-railed" id="demo" aria-labelledby="irt-close-h">
-        <div className="dms-wrap">
-          <div className="dms-close__grid">
-            <div className="dms-close__convergence" aria-hidden="true">
-              <div className="dms-close__mark">
-                <svg viewBox="0 2.2 21 22" fill="none">
-                  <path d="M1.55 5.78A1.54 1.54 0 0 0 0 7.32v7.22a7.45 7.45 0 0 0 14.93 0v-2.6a1.55 1.55 0 0 0-3.09 0v2.6a4.38 4.38 0 0 1-8.75 0V8.59h.76a1.41 1.41 0 1 0 0-2.81h-2.3Z" />
-                  <path d="M8.08 6.61a7.47 7.47 0 0 0-2.19 5.29v2.62a1.55 1.55 0 0 0 3.09 0V11.9a4.38 4.38 0 0 1 8.75 0v5.98h-.76a1.42 1.42 0 1 0 0 2.83h2.3c.86 0 1.55-.69 1.55-1.55V11.9a7.47 7.47 0 0 0-12.74-5.29Z" />
-                </svg>
-              </div>
-            </div>
-            <div className="dms-close__lead">
-              <Eyebrow>{d.close.eyebrow}</Eyebrow>
-              <h2 className="dms-close__h" id="irt-close-h">{d.close.heading}</h2>
-              <p className="dms-lede">{d.close.lede}</p>
-              <div className="dms-close__cta">
-                <BookDemoButton className="dms-btn" source="close">Book a 30-minute walkthrough</BookDemoButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <RailsClose
+        id="irt-close-h"
+        eyebrow={d.close.eyebrow}
+        heading={d.close.heading}
+        lede={d.close.lede}
+        secondary={{ label: "See the platform", href: "/platform" }}
+      />
 
       <SiteFooter tagline="The decision trace for regulated operations." note={`Industries · ${d.name}`} />
     </main>

@@ -121,12 +121,6 @@ export const COMPLIANCE_DATA: DomainPageData = {
   name: "Compliance",
   tier: "Secondary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Compliance · Solutions",
-    description:
-      "Validation, data integrity, EHS and regulatory change get governed beside the quality system, and the reasoning behind each decision goes missing. Unifize keeps the decision trace, in your industry's regulatory frame.",
-  },
 
   hero: {
     crumb: "Compliance",

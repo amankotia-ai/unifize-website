@@ -1,0 +1,211 @@
+/* ----------------------------------------------------------------------------
+ * dms-intg-iso.css - the "iso" Integrations variant (dms-integrations-iso.tsx).
+ * A tilted field of square hairline tiles that fades at its edges; the
+ * connector logos lie on tiles around a raised Unifize tile. Square corners,
+ * hairlines, no glow (design system v1 + polish rules).
+ * -------------------------------------------------------------------------- */
+.dms--redesign .dms-intg--iso {
+  --iso-cell: clamp(46px, 8.6vw, 122px);
+  --iso-gap: calc(var(--iso-cell) * 0.12);
+  --iso-line: var(--n-200, #e3e6ea);
+}
+
+/* the stage clips the plane and fades it into the ground on every side */
+.dms--redesign .dms-intg--iso .iso-stage {
+  position: relative;
+  height: calc(var(--iso-cell) * 5.2);
+  margin: clamp(28px, 3vw, 44px) calc(-1 * var(--hm-rail-pad, 0px)) 0;
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0, #000 16%, #000 84%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 18%, #000 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent 0, #000 16%, #000 84%, transparent 100%),
+    linear-gradient(180deg, transparent 0, #000 18%, #000 80%, transparent 100%);
+  mask-composite: intersect;
+}
+
+.dms--redesign .dms-intg--iso .iso-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  grid-template-columns: repeat(10, var(--iso-cell));
+  grid-template-rows: repeat(10, var(--iso-cell));
+  gap: var(--iso-gap);
+  transform: translate(-50%, -50%) rotateX(58deg) rotateZ(45deg);
+  transform-style: preserve-3d;
+}
+
+.dms--redesign .dms-intg--iso .iso-tile {
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--iso-line);
+  background: var(--dms-surface);
+  transform-style: preserve-3d;
+}
+
+/* shaded tiles take the page's hatch (the rails divider bands) */
+.dms--redesign .dms-intg--iso .iso-tile--shade {
+  border-color: var(--n-150);
+  background:
+    repeating-linear-gradient(45deg, var(--n-200) 0 1px, transparent 1px 7px),
+    var(--n-50);
+}
+
+/* logo tiles stand a few px proud of the field on a hairline base, so
+ * each connector reads as a placed piece, not a printed square */
+.dms--redesign .dms-intg--iso .iso-tile--logo {
+  position: relative;
+  z-index: 1;
+  border-color: var(--n-300, #cfd4da);
+  background: var(--dms-surface);
+  transform: translateZ(7px);
+  transition: transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.dms--redesign .dms-intg--iso .iso-tile--logo::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--n-300, #cfd4da);
+  background: var(--n-100);
+  transform: translateZ(-7px);
+}
+
+.dms--redesign .dms-intg--iso .iso-tile--logo:hover {
+  transform: translateZ(12px);
+}
+
+.dms--redesign .dms-intg--iso .iso-tile--logo:hover::before {
+  transform: translateZ(-12px);
+}
+
+/* connector routes: a dashed hairline from the hub to each tile, with one
+ * short segment travelling outward along it, slow and staggered */
+.dms--redesign .dms-intg--iso .iso-wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  transform: translateZ(1px);
+}
+
+.dms--redesign .dms-intg--iso .iso-wire,
+.dms--redesign .dms-intg--iso .iso-pulse {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.dms--redesign .dms-intg--iso .iso-wire {
+  stroke: color-mix(in oklab, var(--dms-accent) 42%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.dms--redesign .dms-intg--iso .iso-pulse {
+  stroke: var(--dms-accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 10 90;
+  stroke-dashoffset: 10;
+  opacity: 0;
+  animation: iso-pulse 5.6s cubic-bezier(0.45, 0, 0.35, 1) infinite;
+  animation-delay: calc(var(--i) * 0.8s);
+}
+
+@keyframes iso-pulse {
+  0% { stroke-dashoffset: 10; opacity: 0; }
+  8% { opacity: 1; }
+  52% { stroke-dashoffset: -90; opacity: 1; }
+  60%, 100% { stroke-dashoffset: -90; opacity: 0; }
+}
+
+/* logos sit square to their tile (turned with the plane), foreshortened
+ * by the tilt so they lie on the tile */
+.dms--redesign .dms-intg--iso .iso-tile--logo img {
+  width: 56%;
+  height: 56%;
+  object-fit: contain;
+  transform: none;
+  opacity: 0.88;
+}
+
+/* wordmark lockups (Webflow PNGs, the NetSuite mark) carry their own
+ * padding and aspect, so they get the tile's full diagonal to read */
+.dms--redesign .dms-intg--iso .iso-tile--logo img[src*="website-files"],
+.dms--redesign .dms-intg--iso .iso-tile--logo img[src*="netsuite"] {
+  width: 96%;
+  height: 96%;
+  max-width: none;
+}
+
+/* the hub: three hairline layers stacked under a raised brand tile */
+.dms--redesign .dms-intg--iso .iso-hub {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.dms--redesign .dms-intg--iso .iso-hub__layer,
+.dms--redesign .dms-intg--iso .iso-hub__top {
+  position: absolute;
+  inset: 0;
+}
+
+.dms--redesign .dms-intg--iso .iso-hub__layer {
+  border: 1px solid color-mix(in oklab, var(--dms-accent) 26%, transparent);
+  background: color-mix(in oklab, var(--dms-accent) 3%, var(--dms-surface));
+  transform: translateZ(var(--z));
+}
+
+.dms--redesign .dms-intg--iso .iso-hub__top {
+  display: grid;
+  place-items: center;
+  border: 1.5px solid var(--dms-accent);
+  background: color-mix(in oklab, var(--dms-accent) 7%, var(--dms-surface));
+  transform: translateZ(44px);
+}
+
+/* a second hairline frame inside the brand tile */
+.dms--redesign .dms-intg--iso .iso-hub__top::after {
+  content: "";
+  position: absolute;
+  inset: 7%;
+  border: 1px solid color-mix(in oklab, var(--dms-accent) 22%, transparent);
+}
+
+.dms--redesign .dms-intg--iso .iso-hub__top img {
+  width: 40%;
+  transform: none;
+}
+
+/* names for assistive tech; the plane itself is decorative */
+.dms--redesign .dms-intg--iso .iso-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .dms--redesign .dms-intg--iso { --iso-cell: 40px; }
+  .dms--redesign .dms-intg--iso .iso-stage {
+    height: calc(var(--iso-cell) * 5.8);
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%),
+      linear-gradient(180deg, transparent 0, #000 18%, #000 80%, transparent 100%);
+    mask-image:
+      linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%),
+      linear-gradient(180deg, transparent 0, #000 18%, #000 80%, transparent 100%);
+  }
+  .dms--redesign .dms-intg--iso .iso-hub__top { transform: translateZ(28px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign .dms-intg--iso .iso-tile--logo { transition: none; }
+  .dms--redesign .dms-intg--iso .iso-pulse { display: none; }
+}

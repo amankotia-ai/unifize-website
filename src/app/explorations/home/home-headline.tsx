@@ -25,6 +25,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { Words } from "../_shared/split-words";
 
 /* the record nouns that revolve in variant A: the work a regulated quality
  * team is measured on */
@@ -72,7 +73,11 @@ const VARIANTS: Variant[] = [
     key: "D",
     name: "Regulated",
     text: "Regulated work, closed on time. Defensible at audit.",
-    lines: [<>Regulated work, closed on time.</>, <span className="dms-hero__turn">Defensible at audit.</span>],
+    /* split into words for the page-in stagger (page-motion.css) */
+    lines: [
+      <Words text="Regulated work, closed on time." />,
+      <span className="dms-hero__turn"><Words text="Defensible at audit." from={5} /></span>,
+    ],
   },
   {
     key: "E",

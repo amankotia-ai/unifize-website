@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { NUTRITIONAL_SUPPLEMENTS } from "./nutritional-supplements-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { NUTRITIONAL_SUPPLEMENTS, NUTRITIONAL_SUPPLEMENTS_RAILS } from "./nutritional-supplements-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: NUTRITIONAL_SUPPLEMENTS.meta.title,
-  description: NUTRITIONAL_SUPPLEMENTS.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/nutritional-supplements");
 
 export default function NutritionalSupplementsPage() {
-  return <IndustryPage data={NUTRITIONAL_SUPPLEMENTS} />;
+  return <IndustryRailsPage data={NUTRITIONAL_SUPPLEMENTS} rails={NUTRITIONAL_SUPPLEMENTS_RAILS} />;
 }

@@ -273,29 +273,6 @@ export function IndustryPage({ data }: { data: IndustryData }) {
               </li>
             ))}
           </ul>
-          <div className="itm-valcta">
-            <button type="button" className="itm-btn itm-btn-ghost">{d.validated.cta}</button>
-          </div>
-        </div>
-      </section>
-
-      {/* ============= J · PROOF (evidence-standard band, honest) ========= */}
-      <section className="itm-section itm-section--alt itm-evid" id="proof" aria-label="Proof">
-        <div className="itm-wrap">
-          <div className="itm-head-block" data-reveal>
-            <Eyebrow n={8}>Proof</Eyebrow>
-            <h2 className="itm-h2">{d.proof.heading}</h2>
-            <p className="itm-lede">{d.proof.lede}</p>
-          </div>
-          <ol className="itm-evid__grid" data-reveal>
-            {d.proof.points.map((p, i) => (
-              <li key={p} className="itm-evid__item">
-                <span className="itm-evid__idx itm-data" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-                <p className="itm-evid__body">{p}</p>
-              </li>
-            ))}
-          </ol>
-          <p className="itm-evid__note"><span className="itm-dot" aria-hidden="true" />{d.proof.maturityNote}</p>
         </div>
       </section>
 

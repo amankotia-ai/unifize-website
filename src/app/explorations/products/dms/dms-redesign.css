@@ -281,7 +281,7 @@
   font-kerning: normal;
   font-feature-settings: "kern" 1;
   letter-spacing: -0.065em !important;
-  line-height: 1;
+  line-height: 1.04;
   text-wrap: balance;
 }
 .dms--redesign .dms-hero__line {
@@ -2944,7 +2944,7 @@
   --sft-ink-3: #737a86;
   padding-top: clamp(72px, 7vw, 104px);
   padding-bottom: 34px;
-  border-top: 0;
+  border-top: 1px solid #2a2e36;
   background-color: #101216;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 2'%3E%3Cpath d='M1 1H8' fill='none' stroke='%23fff' stroke-opacity='.08' stroke-width='1' stroke-linecap='round'/%3E%3C/svg%3E");
   background-position: left top;
@@ -2952,26 +2952,14 @@
   background-size: 12px 2px;
 }
 .dms--redesign .sft__wrap { max-width: var(--dms-maxw); padding-inline: var(--dms-gutter); }
-.dms--redesign .sft__grid {
-  grid-template-columns: minmax(260px, 1.45fr) minmax(120px, 0.85fr) minmax(250px, 1.65fr) minmax(140px, 0.9fr) minmax(150px, 1fr);
-  gap: 48px clamp(36px, 4vw, 72px);
-}
 .dms--redesign .sft__brand { gap: 22px; }
 .dms--redesign .sft__logo { height: 28px; }
 .dms--redesign .sft__tag { max-width: 30ch; color: #9298a3; line-height: 1.65; }
-.dms--redesign .sft__col { gap: 18px; }
-.dms--redesign .sft__col .sft__col + .sft__col { margin-top: 36px; }
 .dms--redesign .sft__lab { color: #c0c4cc; font-family: var(--u-font) !important; text-transform: uppercase; }
-.dms--redesign .sft__links { gap: 13px; }
 .dms--redesign .sft a.sft__link { color: #9298a3; font-size: 0.9rem; }
 .dms--redesign .sft a.sft__link:hover { color: #fff; }
-.dms--redesign .sft__base { margin-top: 64px; padding-top: 26px; border-top: 1px solid #2a2e36; }
+.dms--redesign .sft__base { padding-top: 26px; border-top: 1px solid #2a2e36; }
 .dms--redesign .sft__base span { color: #737a86; font-family: var(--u-font) !important; }
-
-@media (max-width: 1180px) {
-  .dms--redesign .sft__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .dms--redesign .sft__brand { grid-column: 1 / -1; }
-}
 
 @media (max-width: 1100px) {
   .dms--redesign .dms-problem__grid,
@@ -3013,8 +3001,6 @@
   .dms--redesign .dms-close { min-height: 640px; padding-block: 112px; }
   .dms--redesign .dms-close__circuit { width: 150vw; }
   .dms--redesign .dms-close__grid { align-items: center; }
-  .dms--redesign .sft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dms--redesign .sft__brand { grid-column: 1 / -1; }
   .dms--redesign .dms-spot__body {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -3095,17 +3081,7 @@
   }
   .dms--redesign .dms-close__convergence { margin-bottom: 42px; }
   .dms--redesign .dms-close__h { font-size: clamp(2.35rem, 10.25vw, 2.55rem); }
-  /* two columns, not one (23 Sep 2026): a single column ran the footer to
-   * ~1850px on a phone. Dense flow pulls Industries up beside Products;
-   * Solutions spans the row with its links in two columns. */
-  .dms--redesign .sft__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: 36px 24px; }
-  .dms--redesign .sft__brand,
-  .dms--redesign .sft__col--wide { grid-column: 1 / -1; }
-  .dms--redesign .sft__col--wide .sft__links { column-count: 2; column-gap: 24px; }
   .dms--redesign .sft a.sft__link { font-size: 0.875rem; }
-  .dms--redesign .sft__grid > div.sft__col { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-  .dms--redesign .sft__col .sft__col + .sft__col { margin-top: 0; }
-  .dms--redesign .sft__base { margin-top: 44px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

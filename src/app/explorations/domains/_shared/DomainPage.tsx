@@ -315,7 +315,7 @@ export function DomainPage({ data }: { data: DomainPageData }) {
                     <li className={"itm-trail__step" + (i === d.flow.trail.length - 1 ? " is-sealed" : "")} key={s.t}>
                       <span className="itm-trail__node" aria-hidden="true" />
                       <span className="itm-trail__t">{s.t}</span>
-                      <span className="itm-trail__meta">{s.who} <span className="itm-data">· {s.when}</span></span>
+                      <span className="itm-trail__meta">{s.who}</span>
                     </li>
                   ))}
                 </ol>

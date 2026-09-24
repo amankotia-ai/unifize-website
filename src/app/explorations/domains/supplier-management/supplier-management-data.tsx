@@ -127,12 +127,6 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
   name: "Supplier Management",
   tier: "Primary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Supplier Management · Solutions",
-    description:
-      "Qualification, PPAP, incoming disposition and supplier corrective action all close across an organisational boundary, and the reasoning stays in email on both sides. Unifize runs the supplier thread as the record, in your industry's regulatory frame.",
-  },
 
   hero: {
     crumb: "Supplier Management",

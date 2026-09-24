@@ -84,7 +84,7 @@ function Pop({ item }: { item: NavItem }) {
             ))}
           </div>
         </div>
-        {item.foot ? <PopFoot foot={item.foot} /> : null}
+        {item.menu !== "domains" && item.foot ? <PopFoot foot={item.foot} /> : null}
       </div>
     );
   }

@@ -11,7 +11,8 @@ export type IconName =
   | "flask" | "droplet" | "cube"
   | "stories" | "case" | "blog"
   | "shield" | "ledger" | "truck"
-  | "seal" | "pallet" | "compass";
+  | "seal" | "pallet" | "compass"
+  | "wrench";
 export type NavLink = { label: string; href: string; desc?: string; code?: string; icon?: IconName };
 export type NavCol = { heading: string; icon: IconName; items: NavLink[] };
 export type NavFoot = { title: string; desc: string; href: string; cta: string };
@@ -28,6 +29,8 @@ export type NavItem = {
  * silhouette (evenodd holes, or opposite-winding subpaths where shapes union),
  * so every mark stays one currentColor and works on any plate. */
 export const NAV_ICONS: Record<IconName, React.ReactNode> = {
+  /* wrench, jaw carved out (CMMS on the Solutions pages, 24 Sep 2026) */
+  wrench: (<path fillRule="evenodd" d="M14.6 2.6a5.2 5.2 0 0 1 5.6 7L21 10.4a1 1 0 0 1 0 1.4l-.6.6-1.1-1.1a5.2 5.2 0 0 1-5.6 1L6.4 19.6a2.1 2.1 0 0 1-3-3l7.3-7.3a5.2 5.2 0 0 1 3.9-6.7zm.9 2.2-1.8 1.8.4 2.9 2.9.4 1.8-1.8a3 3 0 0 0-3.3-3.3zM5 17.4a.8.8 0 1 0 1.2 1.2A.8.8 0 0 0 5 17.4z" />),
   /* shield, check carved out */
   qms: (<path fillRule="evenodd" d="M12 2.6l7.4 2.8v5.1c0 4.7-3.1 8.1-7.4 9.7-4.3-1.6-7.4-5-7.4-9.7V5.4L12 2.6zM9.25 10.65l1.45 1.45 4.05-4.2 1.6 1.5-5.65 5.8-2.95-3.05z" />),
   /* document with clipped fold corner, two record lines carved out */

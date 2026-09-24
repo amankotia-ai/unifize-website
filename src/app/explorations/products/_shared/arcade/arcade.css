@@ -1545,7 +1545,7 @@
 
 .stx-root .stx-arc__status-row .stx-ed-docglyph { width: 28px; height: 34px; }
 
-.stx-root .stx-arc__status-row > span { display: flex; flex-direction: column; gap: 2px; }
+.stx-root .stx-arc__status-row > span:not(.stx-state) { display: flex; flex-direction: column; gap: 2px; }
 
 .stx-root .stx-arc__status-row small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
 
@@ -3931,3 +3931,8 @@
       padding 180ms ease-in-out;
   }
 }
+
+/* guard: a state chip is always dot-then-label on one line, whatever
+ * container it lands in (a parent's `> span { flex-direction: column }`
+ * once stacked the dot above the label) */
+.stx-root .stx-state { flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; }

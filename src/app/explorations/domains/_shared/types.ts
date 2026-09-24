@@ -42,6 +42,13 @@ export interface DomainArcadeJourney {
   heroOrder?: number[];
 }
 
+/** A trigger on a Solutions page. The industries TriggerRow stops at High;
+ *  the rails urgent board never prints severity, so a Solutions page can
+ *  carry a Medium moment (24 Sep 2026, procurement: three of its five
+ *  triggers are Medium). The non-rails board still lists Urgent and High
+ *  only. */
+export type SolutionTriggerRow = Omit<TriggerRow, "severity"> & { severity: TriggerRow["severity"] | "Medium" };
+
 /** Pain Points DB severity scale (Critical / High / Medium; Low unused on page). */
 export type PainSeverity = "Critical" | "High" | "Medium";
 
@@ -85,7 +92,13 @@ export type JourneyIcon =
   | "finding" | "impact" | "lock" | "clipcheck"
   | "tray" | "globe" | "link" | "submit"
   | "reject" | "weigh" | "sendout" | "accept"
-  | "complaint" | "clock" | "scope" | "tracks";
+  | "complaint" | "clock" | "scope" | "tracks"
+  | "request" | "ripple" | "board" | "sign" | "golive"
+  | "draft" | "comments" | "approve" | "publish" | "retire"
+  | "cascade" | "assign" | "ack" | "observe" | "matrix"
+  | "hold" | "gather" | "decide" | "release" | "handover"
+  | "short" | "options" | "allocate" | "commit" | "notify"
+  | "rfq" | "compare" | "score" | "award" | "onboard";
 
 /** A named multiplayer cursor on the step the visitor would touch. */
 export interface VizCursor { name: string; tone: string }
@@ -130,7 +143,51 @@ export type WorkViz =
   /** four tracks running in parallel against one record */
   | { kind: "lanes"; wash: VizWash; cursor?: VizCursor; kicker: string; lanes: { name: string; owner: string; pct: number }[] }
   /** one installed unit and its service history */
-  | { kind: "asset"; wash: VizWash; cursor?: VizCursor; serial: string; model: string; visits: { label: string; when: string; now?: boolean }[] };
+  | { kind: "asset"; wash: VizWash; cursor?: VizCursor; serial: string; model: string; visits: { label: string; when: string; now?: boolean }[] }
+  /* change control (24 Sep 2026) */
+  /** a document redline, one line struck and one inserted, the approvers under it */
+  | { kind: "redline"; wash: VizWash; cursor?: VizCursor; doc: string; from: string; to: string; lines: { text: string; mark?: "del" | "ins" }[]; approvers: { name: string; done: boolean }[] }
+  /** a bill of materials, the revised line bumped and what has to follow it */
+  | { kind: "bom"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; rows: { part: string; name: string; rev: string; next?: string; depth: 0 | 1 | 2 }[]; foot: string }
+  /** a component's lifecycle as stages, the one it is in marked, the buy window under it */
+  /* document & records control (24 Sep 2026) */
+  /** a controlled document page, its state watermarked across it, the title block under it */
+  | { kind: "watermark"; wash: VizWash; cursor?: VizCursor; doc: string; title: string; version: string; mark: string; meta: { k: string; v: string }[] }
+  /** an artwork proof with numbered markup pins and its language tabs */
+  | { kind: "artwork"; wash: VizWash; cursor?: VizCursor; file: string; langs: string[]; lang: number; pins: { n: number; note: string; open?: boolean }[] }
+  /** a periodic access review: who holds which role, one to revoke */
+  | { kind: "access"; wash: VizWash; cursor?: VizCursor; kicker: string; system: string; users: { name: string; role: string; flag?: string }[] }
+  /* training & competency (24 Sep 2026) */
+  /** a revision's sections, the changed ones marked, and the delta-retrain choice */
+  | { kind: "delta"; wash: VizWash; cursor?: VizCursor; doc: string; from: string; to: string; sections: { name: string; changed?: boolean }[]; choice: string }
+  /** a new hire's ramp plan by week, today's step open */
+  | { kind: "onboard"; wash: VizWash; cursor?: VizCursor; name: string; role: string; weeks: { wk: string; step: string; state: "done" | "now" | "next" }[] }
+  /** one person's qualification: level pips per competency, one awaiting sign-off */
+  | { kind: "levels"; wash: VizWash; cursor?: VizCursor; name: string; role: string; skills: { name: string; level: number; pending?: string }[] }
+  /* operations (24 Sep 2026) */
+  /** the material review board: held lots by column, one aging */
+  | { kind: "mrb"; wash: VizWash; cursor?: VizCursor; kicker: string; cols: { name: string; lots: { id: string; note: string; aging?: boolean }[] }[] }
+  /** an electronic traveller as its route of operations, the current one open with its entry */
+  | { kind: "route"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; ops: { op: string; name: string; state: "done" | "now" | "next" }[]; entry: { label: string; value: string } }
+  /** one instrument: its reading inside the tolerance band, calibration due */
+  | { kind: "instrument"; wash: VizWash; cursor?: VizCursor; id: string; name: string; low: string; high: string; at: number; due: string; owner: string }
+  /** customer orders, promised against projected */
+  | { kind: "promise"; wash: VizWash; cursor?: VizCursor; kicker: string; orders: { id: string; promised: string; projected: string; state: "ok" | "risk" | "recommit" }[] }
+  /* supply chain & planning (24 Sep 2026) */
+  /** one part's coverage by week: demand against supply, the short week marked */
+  | { kind: "coverage"; wash: VizWash; cursor?: VizCursor; part: string; name: string; weeks: { wk: string; demand: number; supply: number }[] }
+  /** a purchase order revision, its changed terms, and the two approvals it waits on */
+  | { kind: "po"; wash: VizWash; cursor?: VizCursor; po: string; supplier: string; rev: string; changes: { field: string; from: string; to: string }[]; lanes: { name: string; done: boolean }[] }
+  /** a last-time buy worked out to the end of support */
+  | { kind: "ltb"; wash: VizWash; cursor?: VizCursor; part: string; name: string; rows: { k: string; v: string; total?: boolean }[]; by: string }
+  /* procurement & sourcing (24 Sep 2026) */
+  /** a bid evaluation: suppliers side by side, the award on total cost, not price */
+  | { kind: "bids"; wash: VizWash; cursor?: VizCursor; kicker: string; rows: string[]; suppliers: { name: string; cells: string[]; pick?: boolean; flag?: number }[] }
+  /** a first article check sheet: ballooned characteristics against the drawing */
+  | { kind: "fai"; wash: VizWash; cursor?: VizCursor; part: string; drawing: string; rows: { n: number; char: string; nominal: string; actual: string; ok: boolean }[] }
+  /** a PO release gate: the supplier's standing checked before the order goes out */
+  | { kind: "gate"; wash: VizWash; cursor?: VizCursor; po: string; supplier: string; checks: { label: string; ok: boolean; note: string }[]; verdict: string }
+  | { kind: "eol"; wash: VizWash; cursor?: VizCursor; part: string; name: string; stages: string[]; at: number; note: string; alt: { name: string; state: string } };
 
 /** One row of the section-02 "old world" artifact (see LeakScene). */
 export interface LeakSceneRow {
@@ -194,6 +251,58 @@ export interface LeakScene {
   };
   /** Post-market: the recall run from a chat channel, four trackers
    *  arguing about which list is current. */
+  /** Change control: the work instruction at the station, still on the
+   *  superseded revision, its title block saying so to nobody. */
+  printout?: {
+    doc: string;
+    title: string;
+    rev: string;
+    effective: string;
+    station: string;
+    steps: string[];
+    /** the step the approved change rewrote (index into steps) */
+    changed: number;
+  };
+  /** Procurement & sourcing: the award slide, price on it, the cost of
+   *  quality not. */
+  slide?: {
+    deck: string;
+    title: string;
+    bars: { name: string; value: number; label: string; pick?: boolean }[];
+    callout: string;
+    page: string;
+  };
+  /** Supply chain & planning: the stand-up notes where the allocation was
+   *  decided, the planning system never told why. */
+  minutes?: {
+    title: string;
+    date: string;
+    attendees: string;
+    bullets: { text: string; faint?: boolean; mark?: boolean }[];
+  };
+  /** Operations: the escalation call where the hold was released, no
+   *  notes, nobody recording. */
+  call?: {
+    title: string;
+    time: string;
+    people: { initials: string; name: string; tone: string; speaking?: boolean }[];
+    notes: string;
+  };
+  /** Training & competency: the classroom sign-in sheet, signed, still
+   *  not in the matrix. Blank signature = not there. */
+  signin?: {
+    title: string;
+    doc: string;
+    date: string;
+    rows: { name: string; signed: boolean }[];
+    foot: string;
+  };
+  /** Document & records control: the same procedure in three places at
+   *  three versions, the one in front of the operator the oldest. */
+  copies?: {
+    doc: string;
+    items: { where: string; version: string; note: string; state: "current" | "stale" | "used" }[];
+  };
   chat?: {
     channel: string;
     meta: string;
@@ -267,7 +376,8 @@ export interface DomainPageData {
   /** Domains DB Tier — Primary domains carry the full arc. */
   tier: "Primary" | "Secondary";
 
-  meta: { title: string; description: string };
+  /** @deprecated page SEO lives in explorations/_shared/seo.ts */
+  meta?: { title: string; description: string };
 
   hero: {
     crumb: string;
@@ -342,7 +452,7 @@ export interface DomainPageData {
   /** 07 · The moments it turns urgent. `featured` (names, in order) picks
    *  the three the compact rails board shows; without it the board takes
    *  the first rows, Urgent before High. */
-  triggers: { heading: string; lede: string; rows: TriggerRow[]; featured?: string[] };
+  triggers: { heading: string; lede: string; rows: SolutionTriggerRow[]; featured?: string[] };
 
   /** 08 · Coexistence — Unifize as the coordination layer over the systems of
    *  record already in place (same section as the industry template; panel

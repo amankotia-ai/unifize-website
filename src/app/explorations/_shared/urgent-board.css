@@ -329,3 +329,200 @@
   .dms--redesign.dms--rails .sk-urg { grid-template-columns: 1fr; }
   .dms--redesign.dms--rails .sk-urg__cell + .sk-urg__cell { border-left: 0; border-top: 1px solid var(--hm-rail); }
 }
+
+/* ---------------------------------------------------------------------
+ * Change control (24 Sep 2026), same skin. */
+
+/* rejected: the change notice with the customer's stamp across it */
+.dms--redesign.dms--rails .sk-uv--rejected { position: relative; max-width: 280px; gap: 8px; }
+.dms--redesign.dms--rails .sk-uv--rejected header { padding-bottom: 10px; border-bottom: 1px solid var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--rejected > i { display: block; height: 5px; background: var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--rejected > i.is-short { width: 58%; }
+.dms--redesign.dms--rails .sk-uv__reason { display: grid; gap: 3px; margin: 6px 0 0; padding: 8px 10px; background: #f6f5f2; font-size: 0.76rem; font-weight: 560; }
+.dms--redesign.dms--rails .sk-uv__reason small { color: var(--dms-muted); font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.dms--redesign.dms--rails .sk-uv__rej {
+  position: absolute;
+  top: 46%;
+  right: 14px;
+  padding: 4px 12px;
+  border: 2px solid var(--uv-rust);
+  color: var(--uv-rust);
+  font-size: 0.86rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: rotate(-9deg);
+  background: oklch(1 0 0 / 0.85);
+}
+
+/* revs: the released revision against the copy on the floor */
+.dms--redesign.dms--rails .sk-uv--revs { max-width: 280px; gap: 8px; }
+.dms--redesign.dms--rails .sk-uv__rev { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 9px 12px; background: #f6f5f2; }
+.dms--redesign.dms--rails .sk-uv__rev span { color: var(--dms-muted); font-size: 0.7rem; font-weight: 560; }
+.dms--redesign.dms--rails .sk-uv__rev b { font-family: var(--dms-mono); font-size: 0.9rem; font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv__rev.is-site { background: transparent; box-shadow: inset 0 0 0 1.5px var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__rev.is-site span,
+.dms--redesign.dms--rails .sk-uv__rev.is-site b { color: var(--uv-rust); }
+
+/* roster: who the change retrains, short on the day */
+.dms--redesign.dms--rails .sk-uv--roster ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--roster li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; color: var(--dms-ink-2, #4a4d55); font-size: 0.76rem; }
+.dms--redesign.dms--rails .sk-uv--roster li + li { border-top: 1px solid var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--roster li small { color: var(--dms-muted); font-size: 0.62rem; }
+.dms--redesign.dms--rails .sk-uv--roster li.is-due { color: var(--dms-ink); font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv--roster li.is-due small { color: var(--uv-rust); font-weight: 650; }
+
+/* ---------------------------------------------------------------------
+ * Document & records control (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--findings table { width: 100%; border-collapse: collapse; font-size: 0.72rem; }
+.dms--redesign.dms--rails .sk-uv--findings td { padding: 7px 4px; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); vertical-align: top; }
+.dms--redesign.dms--rails .sk-uv--findings td:first-child { width: 16px; color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.62rem; }
+.dms--redesign.dms--rails .sk-uv--findings td:nth-child(2) { width: 44px; color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.62rem; }
+.dms--redesign.dms--rails .sk-uv--findings tr.is-hot td { background: color-mix(in oklab, var(--uv-rust) 10%, white); color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--findings tr.is-hot td:nth-child(2) { color: var(--uv-rust); }
+
+.dms--redesign.dms--rails .sk-uv--affected ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--affected li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; font-family: var(--dms-mono); font-size: 0.7rem; }
+.dms--redesign.dms--rails .sk-uv--affected li + li { border-top: 1px solid var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--affected li small { padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--uv-rust); color: var(--uv-rust); font-family: inherit; font-size: 0.56rem; font-weight: 650; text-transform: uppercase; }
+
+.dms--redesign.dms--rails .sk-uv--agenda ol { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--agenda li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 8px; padding: 7px 0; font-size: 0.74rem; color: var(--dms-ink-2, #4a4d55); }
+.dms--redesign.dms--rails .sk-uv--agenda li + li { border-top: 1px solid var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--agenda time { color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.66rem; }
+.dms--redesign.dms--rails .sk-uv--agenda li.is-due { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--agenda li.is-due small { grid-column: 2; color: var(--uv-rust); font-size: 0.62rem; font-weight: 650; }
+
+/* ---------------------------------------------------------------------
+ * Training & competency (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--lag { max-width: 330px; }
+.dms--redesign.dms--rails .sk-uv--lag table { width: 100%; border-collapse: collapse; font-size: 0.7rem; }
+.dms--redesign.dms--rails .sk-uv--lag th { padding: 0 4px 6px; color: var(--dms-muted); font-size: 0.56rem; font-weight: 600; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; }
+.dms--redesign.dms--rails .sk-uv--lag td { padding: 7px 4px; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); font-variant-numeric: tabular-nums; }
+.dms--redesign.dms--rails .sk-uv--lag td:first-child { font-family: var(--dms-mono); font-size: 0.64rem; }
+.dms--redesign.dms--rails .sk-uv--lag tr.is-hot td { background: color-mix(in oklab, var(--uv-rust) 10%, white); color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--lag tr.is-hot td:last-child { color: var(--uv-rust); }
+
+.dms--redesign.dms--rails .sk-uv--shifts ul { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--shifts li { display: grid; grid-template-columns: 50px minmax(0, 1fr) 84px; align-items: center; gap: 10px; font-size: 0.72rem; }
+.dms--redesign.dms--rails .sk-uv__sh { color: var(--dms-muted); font-size: 0.66rem; font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv__bar { height: 10px; background: #f1f0ec; }
+.dms--redesign.dms--rails .sk-uv__bar i { display: block; height: 100%; background: #b9bec8; }
+.dms--redesign.dms--rails .sk-uv--shifts li.is-untrained .sk-uv__bar i { background: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__who { display: grid; gap: 1px; color: var(--dms-ink); font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv__who small { color: var(--dms-muted); font-size: 0.6rem; font-weight: 500; }
+.dms--redesign.dms--rails .sk-uv--shifts li.is-untrained .sk-uv__who small { color: var(--uv-rust); font-weight: 650; }
+
+.dms--redesign.dms--rails .sk-uv--cert { max-width: 280px; gap: 10px; }
+.dms--redesign.dms--rails .sk-uv__cert {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  padding: 16px 14px 14px;
+  box-shadow: inset 0 0 0 1px #d9d6ce, inset 0 0 0 4px #fff, inset 0 0 0 5px #e8e5dd;
+  text-align: center;
+}
+.dms--redesign.dms--rails .sk-uv__cert small { color: var(--dms-muted); font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.dms--redesign.dms--rails .sk-uv__cert b { font-family: Georgia, "Times New Roman", serif; font-size: 1rem; font-weight: 500; }
+.dms--redesign.dms--rails .sk-uv__cert span { color: var(--dms-muted); font-size: 0.66rem; }
+.dms--redesign.dms--rails .sk-uv__cert p { margin: 6px 0 0; color: var(--dms-ink-2, #4a4d55); font-size: 0.7rem; }
+.dms--redesign.dms--rails .sk-uv__cert p s { text-decoration-color: var(--uv-rust); text-decoration-thickness: 1.5px; font-family: var(--dms-mono); }
+.dms--redesign.dms--rails .sk-uv__rosette { position: absolute; top: 10px; right: 12px; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 2px #c9b98f, inset 0 0 0 5px #fff, inset 0 0 0 7px #e2d6b4; }
+.dms--redesign.dms--rails .sk-uv__cur { display: flex; align-items: baseline; gap: 8px; margin: 0; padding: 9px 12px; box-shadow: inset 0 0 0 1.5px var(--uv-rust); color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__cur small { font-size: 0.62rem; font-weight: 560; }
+.dms--redesign.dms--rails .sk-uv__cur b { font-family: var(--dms-mono); font-size: 0.86rem; }
+.dms--redesign.dms--rails .sk-uv__cur em { margin-left: auto; font-size: 0.62rem; font-style: normal; font-weight: 650; text-transform: uppercase; }
+
+/* ---------------------------------------------------------------------
+ * Operations (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--watch { align-items: flex-start; gap: 6px; max-width: 260px; }
+.dms--redesign.dms--rails .sk-uv__elapsed { display: flex; align-items: baseline; gap: 8px; color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__elapsed b { font-family: var(--dms-mono); font-size: 2.6rem; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+.dms--redesign.dms--rails .sk-uv__elapsed span { color: var(--dms-muted); font-size: 0.66rem; }
+.dms--redesign.dms--rails .sk-uv--watch ul { display: grid; width: 100%; margin: 8px 0 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--watch li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); font-size: 0.74rem; }
+.dms--redesign.dms--rails .sk-uv--watch li small { color: var(--dms-muted); font-size: 0.64rem; }
+.dms--redesign.dms--rails .sk-uv--watch li.is-wait { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--watch li.is-wait small { color: var(--uv-rust); font-weight: 650; }
+
+.dms--redesign.dms--rails .sk-uv--alloc header b { font-family: var(--dms-mono); font-size: 1.2rem; }
+.dms--redesign.dms--rails .sk-uv--alloc ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--alloc li { display: grid; grid-template-columns: minmax(0, 1fr) auto 44px; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--uv-line); font-size: 0.76rem; }
+.dms--redesign.dms--rails .sk-uv--alloc li small { color: var(--dms-muted); font-size: 0.66rem; }
+.dms--redesign.dms--rails .sk-uv--alloc li i { display: grid; height: 24px; place-items: center; box-shadow: inset 0 0 0 1.5px var(--uv-rust); color: var(--uv-rust); font-style: normal; font-weight: 650; }
+
+.dms--redesign.dms--rails .sk-uv__hist { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; gap: 8px; height: 110px; }
+.dms--redesign.dms--rails .sk-uv__hist span { display: flex; height: 100%; flex-direction: column; justify-content: flex-end; gap: 5px; }
+.dms--redesign.dms--rails .sk-uv__hist i { display: block; background: #cfd3da; }
+.dms--redesign.dms--rails .sk-uv__hist span.is-old i { background: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__hist small { color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.6rem; text-align: center; }
+.dms--redesign.dms--rails .sk-uv__hist span.is-old small { color: var(--uv-rust); font-weight: 650; }
+
+/* ---------------------------------------------------------------------
+ * Supply chain & planning (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--trade ol { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--trade li { display: grid; grid-template-columns: 22px minmax(0, 1fr); align-items: start; gap: 10px; padding: 8px 10px; background: #f6f5f2; font-size: 0.76rem; font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv--trade li > span:last-child { display: grid; gap: 2px; }
+.dms--redesign.dms--rails .sk-uv--trade li small { color: var(--uv-rust); font-size: 0.66rem; font-weight: 560; }
+.dms--redesign.dms--rails .sk-uv__opt { display: grid; width: 22px; height: 22px; place-items: center; box-shadow: inset 0 0 0 1.5px #b9bec8; color: var(--dms-muted); font-size: 0.66rem; font-weight: 700; }
+
+.dms--redesign.dms--rails .sk-uv--stack { gap: 10px; max-width: 280px; }
+.dms--redesign.dms--rails .sk-uv__pile { position: relative; display: grid; height: 132px; }
+.dms--redesign.dms--rails .sk-uv__pile span {
+  position: absolute;
+  left: calc(var(--i) * 8px);
+  right: calc(var(--i) * -8px);
+  top: calc(var(--i) * 26px);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--uv-line), 0 6px 12px -8px oklch(0 0 0 / 0.25);
+  font-size: 0.72rem;
+  z-index: calc(10 - var(--i));
+}
+.dms--redesign.dms--rails .sk-uv__pile b { font-family: var(--dms-mono); font-size: 0.68rem; }
+.dms--redesign.dms--rails .sk-uv__pile small { color: var(--dms-muted); font-size: 0.62rem; }
+.dms--redesign.dms--rails .sk-uv__pile em { color: var(--uv-rust); font-size: 0.58rem; font-style: normal; font-weight: 700; text-transform: uppercase; }
+
+.dms--redesign.dms--rails .sk-uv--sources ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--sources li { display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--uv-line); font-size: 0.76rem; font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv--sources li > span { display: grid; gap: 1px; }
+.dms--redesign.dms--rails .sk-uv--sources li small { color: var(--dms-muted); font-size: 0.64rem; font-weight: 500; }
+.dms--redesign.dms--rails .sk-uv--sources li > i { width: 8px; height: 8px; background: #cfd3da; }
+.dms--redesign.dms--rails .sk-uv--sources li em { font-size: 0.6rem; font-style: normal; font-weight: 650; text-transform: uppercase; color: var(--dms-muted); }
+.dms--redesign.dms--rails .sk-uv--sources li.is-down > i { background: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv--sources li.is-down em { color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv--sources li.is-ok > i { background: var(--dms-accent); }
+.dms--redesign.dms--rails .sk-uv--sources li.is-ok em { color: var(--dms-accent); }
+
+/* ---------------------------------------------------------------------
+ * Procurement & sourcing (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--debrief ul,
+.dms--redesign.dms--rails .sk-uv--gantt ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--debrief li { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); font-size: 0.76rem; }
+.dms--redesign.dms--rails .sk-uv--debrief li.is-top { color: var(--dms-ink); font-weight: 650; }
+.dms--redesign.dms--rails .sk-uv__w { display: inline-flex; gap: 3px; }
+.dms--redesign.dms--rails .sk-uv__w i { width: 14px; height: 6px; background: #ecebe7; }
+.dms--redesign.dms--rails .sk-uv__w i.is-on { background: #9aa0ab; }
+.dms--redesign.dms--rails .sk-uv--debrief li.is-top .sk-uv__w i.is-on { background: var(--uv-rust); }
+
+.dms--redesign.dms--rails .sk-uv--gantt li { display: grid; grid-template-columns: 64px minmax(0, 1fr) 36px; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.72rem; color: var(--dms-ink-2, #4a4d55); }
+.dms--redesign.dms--rails .sk-uv--gantt li small { color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.62rem; text-align: right; }
+.dms--redesign.dms--rails .sk-uv__gbar { position: relative; display: grid; gap: 2px; }
+.dms--redesign.dms--rails .sk-uv__gbar i { display: block; height: 5px; }
+.dms--redesign.dms--rails .sk-uv__gbar i.is-plan { background: #dfe3ea; }
+.dms--redesign.dms--rails .sk-uv__gbar i.is-act { background: #9aa0ab; }
+.dms--redesign.dms--rails .sk-uv--gantt li.is-late { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--gantt li.is-late .sk-uv__gbar i.is-act { background: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv--gantt li.is-late small { color: var(--uv-rust); font-weight: 650; }
+
+.dms--redesign.dms--rails .sk-uv--clauses ol { display: grid; margin: 0; padding: 0 0 0 18px; font-size: 0.74rem; color: var(--dms-ink-2, #4a4d55); }
+.dms--redesign.dms--rails .sk-uv--clauses li { padding: 6px 0; border-top: 1px solid var(--uv-line); }
+.dms--redesign.dms--rails .sk-uv--clauses li span { display: inline-block; min-width: 60%; }
+.dms--redesign.dms--rails .sk-uv--clauses li small { float: right; color: var(--dms-muted); font-size: 0.64rem; }
+.dms--redesign.dms--rails .sk-uv--clauses li.is-open { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--clauses li.is-open small { color: var(--uv-rust); font-weight: 650; }

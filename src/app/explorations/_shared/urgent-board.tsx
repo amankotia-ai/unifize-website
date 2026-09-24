@@ -8,6 +8,7 @@
  * and the trigger page when one exists. Styles: urgent-board.css.
  * ========================================================================== */
 
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import "./urgent-board.css";
 
@@ -42,11 +43,41 @@ export type UrgentKind =
    *                    floor filling up), capacity (demand over what the
    *                    supplier can make)
    *   post-market      genealogy (the lot and its sisters out to the field),
-   *                    rings (each authority's clock), bins (the held stock) */
+   *                    rings (each authority's clock), bins (the held stock)
+   *   change control   rejected (the customer's stamp across the ECO),
+   *   (24 Sep 2026)    revs (the site's copy one revision behind the
+   *                    release), roster (the trained list short on the
+   *                    effective date)
+   *   document control findings (the audit report's table, one row
+   *   (24 Sep 2026)    open), affected (the batches built to the old
+   *                    version, under review), agenda (the audit day, the
+   *                    document walk-through not ready)
+   *   training         lag (effective dates against training completion,
+   *   (24 Sep 2026)    the gap in days), shifts (units built per shift by
+   *                    operators not yet trained), cert (a training record
+   *                    for a version that is no longer current)
+   *   operations       stopwatch (the line held, time running up, the
+   *   (24 Sep 2026)    sign-offs still missing), allocate (the last units
+   *                    against the lines that need them), aging (the
+   *                    review board's queue by age)
+   *   supply chain     tradeoff (the allocation options on the table, each
+   *   (24 Sep 2026)    with the order it slips), stack (expedite requests
+   *                    piling on one supplier), sources (the alternates for
+   *                    a stopped part, each with its status)
+   *   procurement      debrief (the lost bid's reasons, as the customer
+   *   (24 Sep 2026)    gave them), gantt (a qualification's steps, planned
+   *                    against actual), clauses (an agreement's open points
+   *                    and how many rounds each has taken) */
   | "trail" | "state" | "elements"
   | "countdown" | "letter" | "tree"
   | "andon" | "dock" | "capacity"
-  | "genealogy" | "rings" | "bins";
+  | "genealogy" | "rings" | "bins"
+  | "rejected" | "revs" | "roster"
+  | "findings" | "affected" | "agenda"
+  | "lag" | "shifts" | "cert"
+  | "stopwatch" | "allocate" | "aging"
+  | "tradeoff" | "stack" | "sources"
+  | "debrief" | "gantt" | "clauses";
 const URGENT_VIZ: UrgentKind[] = ["sheet", "calendar", "scale", "alerts"];
 
 /* the row's own furniture, with a fallback */
@@ -134,6 +165,343 @@ function UrgentViz({ row, kind }: { row: UrgentRow; kind: UrgentKind }) {
             return <li key={n} className={gap ? "is-gap" : undefined}><span>{gap ? n.slice(1) : n}</span>{gap ? <small>Missing</small> : null}</li>;
           })}
         </ul>
+      </div>
+    );
+  }
+  if (kind === "rejected") {
+    /* the change notice, the customer's stamp across it.
+     * detail: form kicker, then the reason written in the margin */
+    return (
+      <div className="sk-uv sk-uv--rejected">
+        <header><small>{at(row, 0, "Engineering change notice")}</small><b>{at(row, 1, row.name)}</b></header>
+        <i /><i /><i className="is-short" />
+        <p className="sk-uv__reason"><small>Customer comment</small>{at(row, 2, "Evidence incomplete")}</p>
+        <span className="sk-uv__rej" aria-hidden="true">Rejected</span>
+      </div>
+    );
+  }
+  if (kind === "revs") {
+    /* the released revision against the copy on the floor.
+     * detail: document, released rev, site rev, site name */
+    return (
+      <div className="sk-uv sk-uv--revs">
+        <header><small>Document</small><b>{at(row, 0, "Work instruction")}</b></header>
+        <div className="sk-uv__rev"><span>Released</span><b>{at(row, 1, "Rev D")}</b></div>
+        <div className="sk-uv__rev is-site"><span>{at(row, 3, "At the site")}</span><b>{at(row, 2, "Rev C")}</b></div>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "roster") {
+    /* the roles the change retrains, short on the effective date.
+     * detail: the change, then one line per person ("!" = not trained) */
+    const people = row.detail?.slice(1) ?? ["Operator one", "!Operator two", "!Operator three"];
+    return (
+      <div className="sk-uv sk-uv--roster">
+        <header><small>{at(row, 0, "Retraining")}</small><b>{row.name}</b></header>
+        <ul>
+          {people.map((p) => {
+            const due = p.startsWith("!");
+            return <li key={p} className={due ? "is-due" : undefined}><span>{due ? p.slice(1) : p}</span><small>{due ? "Not trained" : "Trained"}</small></li>;
+          })}
+        </ul>
+      </div>
+    );
+  }
+  if (kind === "findings") {
+    /* the audit report's findings table, the document-control row open.
+     * detail: report kicker, then "clause|finding" rows ("!" marks ours) */
+    const rows = row.detail?.slice(1) ?? ["7.5|Records retention", "!4.2.4|Obsolete copy in use", "8.2|Internal audit schedule"];
+    return (
+      <div className="sk-uv sk-uv--findings">
+        <header><small>{at(row, 0, "Audit report")}</small><b>{row.name}</b></header>
+        <table>
+          <tbody>
+            {rows.map((r, i) => {
+              const hot = r.startsWith("!");
+              const [clause, text] = (hot ? r.slice(1) : r).split("|");
+              return <tr key={r} className={hot ? "is-hot" : undefined}><td>{i + 1}</td><td>{clause}</td><td>{text}</td></tr>;
+            })}
+          </tbody>
+        </table>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "affected") {
+    /* the output built to the superseded version, each record under review.
+     * detail: the version found, then one line per record */
+    const recs = row.detail?.slice(1) ?? ["Record one", "Record two", "Record three"];
+    return (
+      <div className="sk-uv sk-uv--affected">
+        <header><small>Built to</small><b>{at(row, 0, "The superseded version")}</b></header>
+        <ul>{recs.map((r) => <li key={r}><span>{r}</span><small>Under review</small></li>)}</ul>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "agenda") {
+    /* the audit day's agenda, the document walk-through not ready.
+     * detail: the date line, then "time|item" rows ("!" = not ready) */
+    const items = row.detail?.slice(1) ?? ["09:00|Opening meeting", "!10:00|Document control", "13:00|Floor walk"];
+    return (
+      <div className="sk-uv sk-uv--agenda">
+        <header><small>{at(row, 0, "Audit agenda")}</small><b>{row.name}</b></header>
+        <ol>
+          {items.map((it) => {
+            const due = it.startsWith("!");
+            const [t, what] = (due ? it.slice(1) : it).split("|");
+            return <li key={it} className={due ? "is-due" : undefined}><time>{t}</time><span>{what}</span>{due ? <small>Pack not ready</small> : null}</li>;
+          })}
+        </ol>
+      </div>
+    );
+  }
+  if (kind === "lag") {
+    /* effective date against training completion, per procedure.
+     * detail: "doc|effective|trained %|lag" rows ("!" marks the worst) */
+    const rows = row.detail ?? ["SOP-231|02 Jun|100%|0 d", "!WI-0417|16 Jun|40%|+34 d", "SOP-118|30 Jun|75%|+12 d"];
+    return (
+      <div className="sk-uv sk-uv--lag">
+        <header><small>Effective vs trained</small><b>{row.name}</b></header>
+        <table>
+          <thead><tr><th>Procedure</th><th>Effective</th><th>Trained</th><th>Lag</th></tr></thead>
+          <tbody>
+            {rows.map((r) => {
+              const hot = r.startsWith("!");
+              const cells = (hot ? r.slice(1) : r).split("|");
+              return <tr key={r} className={hot ? "is-hot" : undefined}>{cells.map((c, i) => <td key={i}>{c}</td>)}</tr>;
+            })}
+          </tbody>
+        </table>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "shifts") {
+    /* units built per shift under the new procedure, and by whom.
+     * detail: the procedure, then "shift|operator|units|untrained?" rows */
+    const rows = row.detail?.slice(1) ?? ["A|P. Nair|120|", "B|S. Kim|96|!", "C|E. Lind|104|!"];
+    const max = Math.max(...rows.map((r) => Number(r.split("|")[2]) || 0), 1);
+    return (
+      <div className="sk-uv sk-uv--shifts">
+        <header><small>Built to {at(row, 0, "the new procedure")}</small><b>{row.name}</b></header>
+        <ul>
+          {rows.map((r) => {
+            const [shift, who, units, flag] = r.split("|");
+            return (
+              <li key={r} className={flag ? "is-untrained" : undefined}>
+                <span className="sk-uv__sh">Shift {shift}</span>
+                <span className="sk-uv__bar"><i style={{ width: `${(Number(units) / max) * 100}%` }} /></span>
+                <span className="sk-uv__who">{who}<small>{flag ? "Not trained" : "Trained"}</small></span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  if (kind === "cert") {
+    /* a training certificate, issued for a version that has moved on.
+     * detail: person, role, trained-on version, current version */
+    return (
+      <div className="sk-uv sk-uv--cert">
+        <div className="sk-uv__cert">
+          <span className="sk-uv__rosette" aria-hidden="true" />
+          <small>Certificate of training</small>
+          <b>{at(row, 0, "Operator")}</b>
+          <span>{at(row, 1, "")}</span>
+          <p>Qualified on <s>{at(row, 2, "v2.8")}</s></p>
+        </div>
+        <p className="sk-uv__cur"><small>Version in use</small><b>{at(row, 3, "v3.2")}</b><em>Not covered</em></p>
+      </div>
+    );
+  }
+  if (kind === "stopwatch") {
+    /* the line held: time running up, the sign-offs it waits on.
+     * detail: the line, the elapsed time, then "who|state" rows ("!" = waiting) */
+    const [line = "Line 3", elapsed = "03:40", ...who] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--watch">
+        <small className="sk-uv__lab">{line} held for</small>
+        <div className="sk-uv__elapsed"><b>{elapsed}</b><span>h : m</span></div>
+        <ul>
+          {who.map((w) => {
+            const wait = w.startsWith("!");
+            const [name, state] = (wait ? w.slice(1) : w).split("|");
+            return <li key={w} className={wait ? "is-wait" : undefined}><span>{name}</span><small>{state}</small></li>;
+          })}
+        </ul>
+      </div>
+    );
+  }
+  if (kind === "allocate") {
+    /* the last units on hand, and the lines asking for them: the
+     * allocation fields still empty.
+     * detail: "part|on hand", then "line|need" rows */
+    const [head = "Component|40", ...lines] = row.detail ?? [];
+    const [part, have] = head.split("|");
+    return (
+      <div className="sk-uv sk-uv--alloc">
+        <header><small>Allocate · {part}</small><b>{have} on hand</b></header>
+        <ul>
+          {lines.map((l) => {
+            const [name, need] = l.split("|");
+            return <li key={l}><span>{name}</span><small>needs {need}</small><i aria-hidden="true">?</i></li>;
+          })}
+        </ul>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "aging") {
+    /* the review board's queue by age, the oldest in rust.
+     * detail: "bucket|count" rows, oldest last */
+    const rows = row.detail ?? ["0-2 d|6", "3-7 d|9", "8-14 d|7", "15+ d|5"];
+    const max = Math.max(...rows.map((r) => Number(r.split("|")[1]) || 0), 1);
+    return (
+      <div className="sk-uv sk-uv--aging">
+        <header><small>Lots awaiting disposition, by age</small><b>{row.name}</b></header>
+        <div className="sk-uv__hist">
+          {rows.map((r, i) => {
+            const [bucket, n] = r.split("|");
+            return (
+              <span key={r} className={i >= rows.length - 2 ? "is-old" : undefined}>
+                <i style={{ height: `${(Number(n) / max) * 100}%` }} />
+                <small>{bucket}</small>
+              </span>
+            );
+          })}
+        </div>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "tradeoff") {
+    /* the allocation options, each with what it costs; nothing chosen.
+     * detail: the question, then "option|consequence" rows */
+    const [q = "Who gets the 40 kits?", ...opts] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--trade">
+        <header><small>Allocation</small><b>{q}</b></header>
+        <ol>
+          {opts.map((o, i) => {
+            const [opt, cost] = o.split("|");
+            return <li key={o}><span className="sk-uv__opt">{String.fromCharCode(65 + i)}</span><span>{opt}<small>{cost}</small></span></li>;
+          })}
+        </ol>
+        <p className="sk-uv__foot"><i aria-hidden="true" />Criteria: not recorded</p>
+      </div>
+    );
+  }
+  if (kind === "stack") {
+    /* expedite requests stacking on one supplier, newest on top.
+     * detail: the supplier, then "id|who|age" rows, newest first */
+    const [sup = "Supplier", ...reqs] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--stack">
+        <small className="sk-uv__lab">Expedites open with {sup}</small>
+        <div className="sk-uv__pile">
+          {reqs.map((r, i) => {
+            const [id, who, age] = r.split("|");
+            return (
+              <span key={r} style={{ "--i": i } as CSSProperties} className={i === 0 ? "is-top" : undefined}>
+                <b>{id}</b><small>{who} · {age}</small><em>Expedite</em>
+              </span>
+            );
+          })}
+        </div>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "sources") {
+    /* the alternates for a stopped part.
+     * detail: the part, then "supplier|status|note" rows (status down/ok/no) */
+    const [part = "Part", ...rows] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--sources">
+        <header><small>Sources for</small><b>{part}</b></header>
+        <ul>
+          {rows.map((r) => {
+            const [name, st, note] = r.split("|");
+            return (
+              <li key={r} className={"is-" + st}>
+                <i aria-hidden="true" />
+                <span>{name}<small>{note}</small></span>
+                <em>{st === "down" ? "Stopped" : st === "ok" ? "Qualified" : "Not qualified"}</em>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  if (kind === "debrief") {
+    /* the customer's reasons for the loss, weighted.
+     * detail: the bid, then "reason|weight 1-3" rows ("!" = cited first) */
+    const [bid = "Bid", ...reasons] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--debrief">
+        <header><small>Loss debrief</small><b>{bid}</b></header>
+        <ul>
+          {reasons.map((r) => {
+            const top = r.startsWith("!");
+            const [why, w] = (top ? r.slice(1) : r).split("|");
+            return (
+              <li key={r} className={top ? "is-top" : undefined}>
+                <span>{why}</span>
+                <span className="sk-uv__w" aria-hidden="true">{[1, 2, 3].map((n) => <i key={n} className={n <= Number(w) ? "is-on" : undefined} />)}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "gantt") {
+    /* a qualification's steps: planned against actual days.
+     * detail: the supplier, then "step|planned|actual" rows */
+    const [who = "Alternate", ...steps] = row.detail ?? [];
+    const max = Math.max(...steps.map((st) => Math.max(Number(st.split("|")[1]) || 0, Number(st.split("|")[2]) || 0)), 1);
+    return (
+      <div className="sk-uv sk-uv--gantt">
+        <header><small>Qualification · {who}</small><b>{row.name}</b></header>
+        <ul>
+          {steps.map((st) => {
+            const [name, plan, act] = st.split("|");
+            const late = Number(act) > Number(plan);
+            return (
+              <li key={st} className={late ? "is-late" : undefined}>
+                <span>{name}</span>
+                <span className="sk-uv__gbar">
+                  <i className="is-plan" style={{ width: `${(Number(plan) / max) * 100}%` }} />
+                  <i className="is-act" style={{ width: `${(Number(act) / max) * 100}%` }} />
+                </span>
+                <small>{act} d</small>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  }
+  if (kind === "clauses") {
+    /* an agreement's clauses: agreed, or open and on which round.
+     * detail: the agreement, then "clause|state" rows (state "agreed" or rounds) */
+    const [doc = "Quality agreement", ...cls] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--clauses">
+        <header><small>In negotiation</small><b>{doc}</b></header>
+        <ol>
+          {cls.map((c) => {
+            const [name, st] = c.split("|");
+            const open = st !== "agreed";
+            return <li key={c} className={open ? "is-open" : undefined}><span>{name}</span><small>{open ? st : "Agreed"}</small></li>;
+          })}
+        </ol>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
       </div>
     );
   }

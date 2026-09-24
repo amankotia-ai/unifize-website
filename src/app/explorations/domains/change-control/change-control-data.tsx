@@ -47,6 +47,14 @@
  *   Description / Time Sensitivity / Regulatory Framework.
  * source: MD_PROOF (medical-devices-canonical) -> section 09. Harmonic
  *   Bionics is the named reference that runs change control on Unifize.
+ * source: Website Customer Videos mirror -> the rails proof reel (stills),
+ *   seven change-control films none of the other Solutions pages use; each
+ *   fact is taken from the film's own title.
+ * Rails layer (24 Sep 2026, re-checked against the Domains row: same 6
+ *   Themes, 4 Pain Points, 3 Trigger Events, 1 Module as the Aug build):
+ *   the cell artifacts, the station printout, the urgent surfaces and the
+ *   journey verbs are illustrative furniture from the CC-2148 arcade world
+ *   (SOP-118, ECO-441, RA-067, Apex Sterile, Line 2), never claims.
  * Framing / headlines are authored on top of the canonical facts; nothing
  * factual is invented.
  * ========================================================================== */
@@ -132,12 +140,6 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
   name: "Change Control",
   tier: "Secondary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Change Control · Solutions",
-    description:
-      "Engineering changes close on cross-functional judgement that never reaches the record. Unifize keeps the decision trace: impact, evidence, approval and effective date on one governed change, in your industry's regulatory frame.",
-  },
 
   hero: {
     crumb: "Change Control",
@@ -190,6 +192,25 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         name: "The change itself",
         line: "Somebody asks for a change, the right functions weigh in, it goes live for good.",
         runsIn: { label: "Runs in the DMS product →", href: "/products/dms" },
+        viz: {
+          kind: "redline",
+          wash: "sky",
+          cursor: { name: "P. Ramesh", tone: "#7c3aed" },
+          doc: "SOP-118 · Sterilization",
+          from: "Rev C",
+          to: "Rev D",
+          lines: [
+            { text: "Load the packaged sets, labels facing out" },
+            { text: "Hold time set for the previous wrap material", mark: "del" },
+            { text: "Hold time extended for the new wrap material", mark: "ins" },
+            { text: "Release the load on a passing indicator" },
+          ],
+          approvers: [
+            { name: "Engineering", done: true },
+            { name: "Manufacturing", done: true },
+            { name: "VP Quality", done: false },
+          ],
+        },
         items: [
           {
             name: "Change Control",
@@ -206,6 +227,20 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         name: "What a revision touches",
         line: "The specifications a change rewrites, and everything downstream that has to move with them.",
         runsIn: { label: "Specifications run in the PLM product →", href: "/products/plm" },
+        viz: {
+          kind: "bom",
+          wash: "blue",
+          cursor: { name: "D. Okafor", tone: "#0f8f7e" },
+          kicker: "Where used · MS-311",
+          title: "Sterile barrier wrap",
+          rows: [
+            { part: "FG-1040", name: "Instrument set, sterile", rev: "Rev F", depth: 0 },
+            { part: "PK-220", name: "Packaged tray", rev: "Rev B", depth: 1 },
+            { part: "MS-311", name: "Barrier wrap", rev: "Rev A", next: "Rev B", depth: 2 },
+            { part: "SOP-118", name: "Sterilization", rev: "Rev C", next: "Rev D", depth: 1 },
+          ],
+          foot: "Supplier acknowledgement due · Apex Sterile",
+        },
         items: [
           {
             name: "Raw Material and Component Specification Management",
@@ -221,6 +256,17 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         glyph: "chat",
         name: "Change you did not start",
         line: "The revisions that arrive from a customer or a supplier, on their schedule.",
+        viz: {
+          kind: "eol",
+          wash: "warm",
+          cursor: { name: "S. Ferreira", tone: "#d97706" },
+          part: "IC-2231",
+          name: "Pressure sensor",
+          stages: ["Active", "Not recommended", "Last-time buy", "Obsolete"],
+          at: 2,
+          note: "Supplier notice received · last-time buy window open",
+          alt: { name: "Alternate IC-2231A", state: "Qualified" },
+        },
         items: [
           {
             name: "Customer Specification and Contract Change",
@@ -240,7 +286,7 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
    * verbatim; bodies condensed from the Description field; Severity verbatim.
    * `surface` = where the decision leaks to, condensed from each Description. */
   leaks: {
-    heading: "The change is approved. The record cannot replay why.",
+    heading: "The change is approved. The line never hears.",
     lede: "The failure modes we see inside change control. None of them is a missing feature. All of them are decisions that happened off the record.",
     /* the old world, staged (section 02's evidence artifact): the approved
      * change that never quite lands at the site. Furniture is illustrative,
@@ -255,32 +301,51 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         { state: "wait", label: "Supplier notice", age: "unacknowledged" },
         { state: "idle", label: "Effective date", age: "Slipped twice" },
       ],
-      float: { kicker: "Line 2", note: "We built 40 units to Rev C this morning." },
-      caption: "Approved upstream, invisible downstream. The line finds out last.",
+      float: { kicker: "Line 2", note: "We ran two loads to Rev C this morning." },
+      caption: "Approved on day 9. The copy at the station still says Rev C.",
+      /* the rails window: the work instruction taped up at Line 2 */
+      printout: {
+        doc: "SOP-118",
+        title: "Sterilization of packaged sets",
+        rev: "C",
+        effective: "Current",
+        station: "Line 2",
+        steps: [
+          "Load the packaged sets, labels facing out",
+          "Seal the chamber and start the cycle",
+          "Hold for the time set for the wrap material",
+          "Release the load on a passing indicator",
+        ],
+        changed: 2,
+      },
     },
     pains: [
       {
         severity: "Critical",
         surface: "The shop floor",
         name: "Change effectivity not propagated to the production line before parts ship",
+        short: "Approved on time. The line still builds to the old revision.",
         body: "A change is approved with an effective date. The line still builds to the old version because the notification never landed, the training did not happen, or the parts on hand are old-version. The first the operator hears about it is a finished part being rejected.",
       },
       {
         severity: "High",
         surface: "Adjacent functions",
         name: "Change impact assessment skips the affected persona set",
+        short: "Engineering and Quality sign. Training and Field Service find out later.",
         body: "The assessor names the obvious functions (Engineering, Quality) and misses the adjacent ones (Training, Supplier Quality, Field Service). The change lands, and the missed function discovers the consequence after the fact.",
       },
       {
         severity: "High",
         surface: "The training queue",
         name: "Late training cascade after change closure",
+        short: "People work to the new version for weeks, untrained.",
         body: "Closure includes a training cascade: who needs retraining, by when. The assignment goes out late, the deadline slips, and people work to the new version for weeks without verified training. The traceability between change and training is partial.",
       },
       {
         severity: "Medium",
         surface: "The approval queue",
         name: "Low-risk changes inherit high-risk approval depth",
+        short: "A typo in an SOP waits in the same queue as a design change.",
         body: "The workflow is designed for high-risk change: a design revision, a process change, a critical-material supplier swap. The same approval depth applies to a typo in an SOP. Low-risk records fill the queue, and the high-risk change waits behind them.",
       },
     ],
@@ -291,6 +356,7 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
       label: "The recurring bill",
       value: "Parts built to a revision that was already superseded.",
       meta: "The change was approved on time. The line never heard, so the first signal is a finished part failing inspection, and the rework lands on a schedule that had no room for it.",
+      tail: "That rework is the coordination tax.",
     },
   },
 
@@ -312,6 +378,13 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
       { t: "Cross-functional review closed", who: "Change Control Board", when: "Day 5" },
       { t: "Approved with e-signature", who: "VP Quality", when: "Day 9" },
       { t: "Effective at the site · trace sealed", who: "Manufacturing Engineering", when: "Day 16" },
+    ],
+    steps: [
+      { title: "Raise the change", body: "SOP-118 scoped, the reason and PLM ECO-441 on the record.", icon: "request" },
+      { title: "Bind the impact", body: "Risk file RA-067 and Line 2 training pulled in, one pass.", icon: "ripple" },
+      { title: "Review it together", body: "Engineering and Manufacturing approve; the hold-time comment resolved inline.", icon: "board" },
+      { title: "Sign it", body: "P. Ramesh re-authenticates. Signer, meaning and time seal to CC-2148.", icon: "sign" },
+      { title: "Make it effective", body: "Rev D live at the site, Rev C retired, Line 2 trained.", icon: "golive" },
     ],
     trailFoot: "The relation runs back to the request that raised it and forward into the documents, training and supplier notices it changes. The thread is the trace.",
     chatVariant: "change-control",
@@ -617,12 +690,13 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
     lede: "Each of these starts a clock, and each routes into a governed workflow, so the response is coordinated on the record it will be judged by.",
     rows: [
       { name: "DHF gap at audit", clock: "Days to respond · treated as systemic", severity: "Urgent", routesTo: "Design Controls & Traceability", owner: "Engineering · Regulatory · Quality" },
-      { name: "Customer ECO rejection", clock: "Days · the change is blocked until the evidence is assembled", severity: "High", routesTo: "Change Control", owner: "Engineering Manager · Customer Quality" },
-      { name: "Version mismatch at site discovered", clock: "Days · downstream production records under review", severity: "High", routesTo: "Document Control", owner: "Document Control · Quality" },
-      { name: "Change-driven training cascade gap", clock: "Days · exposure compounds with every unit produced", severity: "High", routesTo: "Training Management", owner: "Training Coordinator · Quality" },
+      { name: "Customer ECO rejection", clock: "Days · the change is blocked until the evidence is assembled", severity: "High", routesTo: "Change Control", owner: "Engineering Manager · Customer Quality", viz: "rejected", detail: ["Engineering change notice", "ECO-441 · customer approval", "Verification evidence not attached"] },
+      { name: "Version mismatch at site discovered", clock: "Days · downstream production records under review", severity: "High", routesTo: "Document Control", owner: "Document Control · Quality", viz: "revs", detail: ["SOP-118 · Sterilization", "Rev D", "Rev C", "At Line 2"] },
+      { name: "Change-driven training cascade gap", clock: "Days · exposure compounds with every unit produced", severity: "High", routesTo: "Training Management", owner: "Training Coordinator · Quality", viz: "roster", detail: ["CC-2148 · Rev D effective", "Line 2 lead", "!Operator, shift A", "!Operator, shift B", "Sterilization technician"] },
       { name: "Failed design transfer", clock: "Weeks · the launch date slips while the failing dimensions close", severity: "High", routesTo: "Design Controls & Traceability", owner: "Engineering · Operations" },
       { name: "Delayed product launch", clock: "Weeks · commitments, filings and supplier ramp move with it", severity: "High", routesTo: "Change Control · Product Specifications", owner: "VP Engineering · Product Management" },
     ],
+    featured: ["Customer ECO rejection", "Version mismatch at site discovered", "Change-driven training cascade gap"],
   },
 
   /* ------------------------------------------------ 08 · coexistence
@@ -634,6 +708,21 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
     systemsOfRecord: ["PLM", "ERP", "QMS", "MES"],
     body: "Unifize replaces the ungoverned channels (email threads, design review meetings, spreadsheets) where the reasoning behind a change goes missing, not the systems that hold your BoMs, routings and released documents. Approvals are captured as a 21 CFR Part 11 e-signature. No rip-and-replace, and no revalidation of a system that already passed.",
     diagramCaption: "Unifize as the coordination layer over your PLM, ERP, QMS and MES.",
+    /* the rails drawing: this page's leak is the design review and the
+     * approval thread, so the right-hand band names those */
+    bands: {
+      lede: "Keep the PLM, ERP and MES that hold your BoMs, routings and released documents. Unifize runs the review around them, and the approved change goes back with a 21 CFR Part 11 signature. No rip-and-replace, and no revalidation of a system that already passed.",
+      note: "No change system yet? Change Control ships in the Document Management System above, on the same layer.",
+      tools: {
+        title: "Reviews and threads",
+        sub: "Stop being the record",
+        names: ["Meetings", "Email", "Drives", "Calls"],
+        label: "Where the reasoning used to go missing",
+        body: "The design review, the approval thread and the redline on the shared drive stop being where the decision lives. What was reviewed and what was accepted move onto the change.",
+      },
+      flows: { contextIn: "THE REVISION IN", back: "PART 11 SIGNED", captured: "THE REVIEW CAPTURED", linked: "THE CHANGE, LINKED" },
+      back: "One record per change, the evidence bound, and only the approved revision goes back, with a 21 CFR Part 11 signature.",
+    },
   },
 
   /* ------------------------------------------------ 09 · proof
@@ -655,6 +744,15 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
     /* real films from the Website Customer Videos mirror whose Module tags
      * intersect this domain's work (governance in customer-films.ts) */
     filmTags: ["Change Control", "Change Requests & Orders", "Document Management", "Training"],
+    stills: [
+      { wistia: "h03uca847z", fact: "Change managed on one record" }, /* Michael Hogan, Harmonic Bionics */
+      { wistia: "8zmhdejn6c", fact: "Change control, sped up" }, /* Jesse Kolstad, Biovation Labs */
+      { wistia: "qqpc5kc1iy", fact: "Change control run on Unifize" }, /* Wilson Lin, Applechem */
+      { wistia: "3b8wqz2d8e", fact: "Part revisions managed in one place" }, /* Michael Hogan, Harmonic Bionics */
+      { wistia: "21sc9ixihe", fact: "Document revisions made simple" }, /* Mikala Hukka */
+      { wistia: "mes0wo2mik", fact: "Information and people, unified" }, /* Clarissa Archer, Harmonic Bionics */
+      { wistia: "tkmqff0oh6", fact: "80% of her work runs on Unifize" }, /* Mikala Hukka */
+    ],
     references: [
       {
         tag: "Named reference",

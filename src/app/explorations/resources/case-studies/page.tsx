@@ -9,11 +9,9 @@ import { ResourceShell } from "../_shared/resource-shell";
 import { CollectionMast, QuoteBand, ResourceCTA, ResourceFooter } from "../_shared/resource-chrome";
 import { CaseLibrary } from "../_shared/resources-interactive";
 import { CASE_STUDIES } from "../_shared/resources-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: "Case studies — Unifize",
-  description: "How leading teams simplify their processes and drive measurable results with Unifize, across medical devices, pharma, aerospace, automotive, food, and contract manufacturing.",
-};
+export const metadata: Metadata = pageMetadata("/resources/case-studies");
 
 export default function CaseStudiesPage() {
   return (

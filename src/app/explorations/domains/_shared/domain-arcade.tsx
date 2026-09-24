@@ -206,7 +206,7 @@ export function DomainTraceArcade({
                     <span className="itm-trail__node" aria-hidden="true" />
                     <span className="itm-trail__t">{step.t}</span>
                     <span className="itm-trail__meta">
-                      {step.who} <span className="itm-data">· {step.when}</span>
+                      {step.who}
                     </span>
                   </button>
                 </li>

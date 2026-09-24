@@ -19,17 +19,13 @@
  * section leads with the events and consequences, which is the honest treatment.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { NUTRITIONAL_SUPPLEMENTS_JOURNEY } from "./nutritional-supplements-journey";
 
 export const NUTRITIONAL_SUPPLEMENTS: IndustryData = {
   slug: "nutritional-supplements",
   name: "Nutritional supplements",
 
-  meta: {
-    title: "Nutritional supplements · Unifize",
-    description:
-      "Your records show the batch released. They cannot reconstruct why. Unifize rebuilds the decision trace across quality, operations, and regulatory, so it holds up in a 21 CFR Part 111 inspection or an NSF surveillance audit. The industry template, instanced on Nutritional supplements.",
-  },
 
   hero: {
     crumb: "Nutritional supplements",
@@ -293,4 +289,222 @@ export const NUTRITIONAL_SUPPLEMENTS: IndustryData = {
     heading: "Incumbents track the batch record. Unifize reconstructs the decision.",
     lede: "Pick a release or identity-testing decision you could not replay at the last inspection. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Nutritional Supplements" (Primary Fear Anchor:
+ *   a Part 111 inspection citing incoming identity testing, batch record
+ *   completeness or specification setting; a contract-manufacturer failure
+ *   landing on the brand. Opportunity: incoming identity testing and release,
+ *   supplier qualification and COA management, deeper for botanicals with an
+ *   adulteration history. Regulatory Vocabulary: 21 CFR Part 111, cGMP, NSF,
+ *   USP Verified, DSHEA, HPTLC / HPLC / FTIR, MMR, BPR).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The spectrum, lots and materials are illustrative, not a customer's;
+ * cursors carry persona titles, not people. Notion has no segment tax for
+ * this row, so the cost section shows the events only.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const PLANT = { name: "Plant Manager", tone: "#2563eb" };
+const LABEL = { name: "Label Compliance Lead", tone: "#7c3aed" };
+const AUDIT = { name: "GMP Audit Lead", tone: "#0f8f7e" };
+
+export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
+  /* the key element: the incoming identity test. The lot's fingerprint is
+   * drawn over the reference, a band the reference does not carry is held,
+   * the lot is rejected with the supplier notified, and the replacement lot
+   * matches and is released to production (the fear anchor: identity
+   * testing and botanical adulteration) */
+  hero: {
+    kind: "identity",
+    id: "Incoming material",
+    title: "Botanical raw material · identity",
+    from: "Supplier COA attached · 21 CFR Part 111",
+    stages: { testing: "Identity testing", mismatch: "Does not match", retest: "Replacement lot", released: "Identity confirmed · released" },
+    method: "FTIR fingerprint",
+    legend: { reference: "Reference", sample: "Lot" },
+    bands: [
+      { x: 0.1, h: 0.38, w: 0.025 },
+      { x: 0.22, h: 0.7, w: 0.03 },
+      { x: 0.34, h: 0.3, w: 0.02 },
+      { x: 0.5, h: 0.52, w: 0.035 },
+      { x: 0.78, h: 0.86, w: 0.028 },
+      { x: 0.88, h: 0.34, w: 0.022 },
+    ],
+    extra: { x: 0.64, h: 0.62, w: 0.022, label: "Unmatched band" },
+    steps: [
+      { label: "Lot rejected · supplier notified", meta: "Supplier Quality" },
+      { label: "Adulteration check · CAPA opened", meta: "Quality" },
+    ],
+    lots: { first: "Received lot", second: "Replacement lot · retested", match: "Matches reference" },
+    sign: { idle: "Release · e-signature", done: "Released" },
+    approvers: { label: "QC Lab · Quality · Supplier Quality" },
+    frame: { cap: "Checked against", items: ["21 CFR Part 111", "cGMP", "NSF", "USP Verified"] },
+    cascade: {
+      cap: "Supplier corrective action",
+      off: "No open request",
+      on: "Requested from the supplier",
+      note: "Across the supplier boundary",
+    },
+    clock: { cap: "Release hold", line: "Held until identity is confirmed" },
+    seal: { cap: "Batch production record", off: "Identity result pending", on: "Identity result attached" },
+    aria:
+      "An incoming identity test in Unifize: a botanical lot's FTIR fingerprint is drawn over the reference, a band the reference does not carry is flagged, the lot is rejected with the supplier notified and a CAPA opened, and the replacement lot matches the reference and is released with the result attached to the batch record.",
+  },
+
+  journey: NUTRITIONAL_SUPPLEMENTS_JOURNEY,
+
+  trust: {
+    label: "Built for dietary-supplement GMP teams",
+    marks: ["21 CFR Part 111", "cGMP", "NSF", "USP Verified", "DSHEA"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Batch record review",
+        state: "Release hold",
+        title: "Batch production record",
+        rows: [
+          { label: "Identity results attached", meta: "QC Lab" },
+          { label: "Exceptions reviewed", meta: "Production" },
+          { label: "Release · e-signature", meta: "Quality", open: true },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Material", v: "Botanical lot" },
+          { k: "Waiting on", v: "Identity result" },
+          { k: "Released by", v: "Quality" },
+        ],
+        note: "Released on one thread, not an email chain",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "dossier",
+        wash: "blue",
+        kicker: "Label claims",
+        title: "Structure-function claim",
+        cite: "DSHEA · substantiation",
+        state: "Supported",
+        cursor: LABEL,
+      },
+      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "tiles",
+        wash: "paper",
+        kicker: "NSF certification",
+        title: "Surveillance audit readiness",
+        total: 8,
+        open: [6],
+        foot: "One element open before the visit",
+        cursor: AUDIT,
+      },
+      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "Spec", title: "Blend change" },
+        items: [
+          { id: "MMR", label: "Master record" },
+          { id: "SPC", label: "Specification" },
+          { id: "MTH", label: "Identity method", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "Release, suppliers, identity, complaints. One trace.",
+    lede: "Each runs with Part 111 and your NSF or USP program built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the nonconformance on the floor to a CAPA closed before it ages into a 483.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Nonconformance",
+          title: "In-process test out of spec",
+          fields: [
+            { label: "Batch record", value: "Executed", select: true },
+            { label: "Impact", value: "Lot on hold" },
+            { label: "CAPA", value: "Investigation", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "supplier-management",
+        line: "Supplier COAs checked against spec and tied to the lot, deeper for botanicals.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Certificate of analysis",
+          messages: [
+            { org: "Botanical supplier", text: "COA and identity method for the lot", ext: true },
+            { org: "Supplier Quality", text: "Checked against spec, in-house identity to confirm" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+      },
+      {
+        domain: "operations",
+        line: "Incoming identity testing held on one thread, from receipt to release.",
+        viz: {
+          kind: "matrix",
+          wash: "warm",
+          kicker: "Incoming identity testing",
+          cols: ["HPTLC", "HPLC", "FTIR"],
+          rows: [
+            { name: "Root powder", cells: ["ok", "ok", "ok"] },
+            { name: "Leaf extract", cells: ["ok", "due", "ok"] },
+            { name: "Fruit extract", cells: ["gap", "ok", "due"] },
+          ],
+        },
+      },
+      {
+        domain: "post-market-recall",
+        line: "Consumer complaints triaged and linked to CAPA; recalls run as one event.",
+        viz: {
+          kind: "signal",
+          wash: "blue",
+          kicker: "Consumer complaints",
+          title: "Complaints by week",
+          weeks: [2, 3, 2, 2, 3, 2, 6, 3],
+          spike: 6,
+          note: "Spike linked to one lot, CAPA open",
+        },
+        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+      },
+    ],
+  },
+
+  lead: [
+    {
+      name: "FDA Form 483 or warning letter citing 21 CFR Part 111",
+      viz: "letter",
+      detail: ["Department of Health and Human Services", "FORM FDA 483"],
+      clock: "15 working days",
+    },
+    { name: "Botanical raw-material identity or adulteration finding at receipt", viz: "dock", detail: ["Receiving"] },
+    { name: "E-commerce listing pause after a published FDA warning letter", viz: "alerts" },
+  ],
 };

@@ -106,12 +106,6 @@ export const QUALITY_DATA: DomainPageData = {
   name: "Quality",
   tier: "Primary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Quality · Solutions",
-    description:
-      "Deviations, CAPAs, MRB dispositions and audit findings close on cross-functional decisions that never reach the record. Unifize keeps the decision trace: the full map of quality work, in your industry's regulatory frame.",
-  },
 
   hero: {
     crumb: "Quality",

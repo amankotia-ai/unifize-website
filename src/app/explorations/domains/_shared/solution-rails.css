@@ -1023,28 +1023,35 @@
   box-shadow: inset 1px 0 0 var(--hm-rail);
 }
 
+/* the plate scale, on the pane so the caption under the plate shares it */
+.dms--redesign.sk-page.dms--rails .sk-hero2__visual { --sk-hk: 0.84; }
+
 .dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
 
-.dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage { flex: 1; }
+.dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage {
+  flex: 1;
+  /* room under the plate for the step dashes and the caption; on the stage,
+   * not the arc, so the plate and the caption share one centre */
+  min-height: calc(560px * var(--sk-hk) + 150px);
+}
 .dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage .sty-scene,
 .dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage .sty-scene__inner,
 .dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage .stx-stage { height: 100%; }
 
 .dms--redesign.sk-page.dms--rails .sk-hero2 .stx-root .stx-arc {
-  --sk-hk: 0.84;
   position: relative;
   height: 100%;
   min-height: calc(560px * var(--sk-hk) + 96px);
 }
 
-@media (min-width: 1025px) and (max-width: 1439px) { .dms--redesign.sk-page.dms--rails .sk-hero2 .stx-root .stx-arc { --sk-hk: 0.74; } }
-@media (min-width: 1025px) and (max-width: 1279px) { .dms--redesign.sk-page.dms--rails .sk-hero2 .stx-root .stx-arc { --sk-hk: 0.62; } }
-@media (min-width: 768px) and (max-width: 1024px) { .dms--redesign.sk-page.dms--rails .sk-hero2 .stx-root .stx-arc { --sk-hk: 0.8; } }
-@media (max-width: 767px) { .dms--redesign.sk-page.dms--rails .sk-hero2 .stx-root .stx-arc { --sk-hk: 0.62; } }
+@media (min-width: 1025px) and (max-width: 1439px) { .dms--redesign.sk-page.dms--rails .sk-hero2__visual { --sk-hk: 0.74; } }
+@media (min-width: 1025px) and (max-width: 1279px) { .dms--redesign.sk-page.dms--rails .sk-hero2__visual { --sk-hk: 0.62; } }
+@media (min-width: 768px) and (max-width: 1024px) { .dms--redesign.sk-page.dms--rails .sk-hero2__visual { --sk-hk: 0.8; } }
+@media (max-width: 767px) { .dms--redesign.sk-page.dms--rails .sk-hero2__visual { --sk-hk: 0.62; } }
 
 /* every pose: the record + checklist (x 324..1150 of the 1150 grid),
  * centred, no drift */
@@ -1090,6 +1097,96 @@
       0 0 0 6px oklch(1 0 0 / 0.45),
       0 18px 36px -18px oklch(0 0 0 / 0.22);
   }
+}
+
+/* the caption: one light line under the plate naming the moment on screen
+ * (24 Sep 2026). It sits a fixed gap below the plate, which is centred in
+ * the stage, so it tracks the plate at every --sk-hk. */
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__caption {
+  position: absolute;
+  z-index: 2;
+  top: calc(50% + 280px * var(--sk-hk) + 46px);
+  right: 16px;
+  left: 16px;
+  margin: 0;
+  color: color-mix(in oklab, var(--dms-ink), transparent 42%);
+  font-family: var(--dms-sans);
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  text-wrap: balance;
+  animation: sk-hero-caption-in 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  pointer-events: none;
+}
+
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__caption-ico {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dashes {
+  position: absolute;
+  z-index: 2;
+  top: calc(50% + 280px * var(--sk-hk) + 28px);
+  left: 50%;
+  display: flex;
+  gap: 6px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dash {
+  position: relative;
+  overflow: hidden;
+  width: 22px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--dms-ink), transparent 86%);
+  transition: background-color 300ms ease;
+}
+
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dash.is-past {
+  background: color-mix(in oklab, var(--dms-ink), transparent 58%);
+}
+
+/* the active dash fills left to right over the step's dwell */
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dash i {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--dms-ink), transparent 42%);
+  transform-origin: left center;
+  animation: sk-hero-dash-fill linear both;
+}
+
+.dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dash i.is-held { animation: none; }
+
+@keyframes sk-hero-dash-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes sk-hero-caption-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 767px) {
+  .dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dashes { top: calc(50% + 280px * var(--sk-hk) + 18px); }
+  .dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__caption { top: calc(50% + 280px * var(--sk-hk) + 34px); font-size: 13px; }
+  /* room for a caption that wraps to two lines */
+  .dms--redesign.sk-page.dms--rails .sk-hero2__visual .dms-heroarc__stage { min-height: calc(560px * var(--sk-hk) + 164px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__caption { animation: none; }
+  .dms--redesign.sk-page.dms--rails .sk-hero2 .dms-heroarc__dash i { animation: none; }
 }
 
 /* no step rail (Abhishek, 23 Sep: "hide the steps and keep the visual on

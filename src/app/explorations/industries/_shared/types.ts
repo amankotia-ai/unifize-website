@@ -18,6 +18,7 @@ import type { UrgentKind } from "../../_shared/urgent-board";
 import type { ReactNode } from "react";
 import type { HeroTraceData } from "../../_shared/industry-hero-trace";
 import type { WorkViz } from "../../domains/_shared/types";
+import type { ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 
 /** One module — a door into the platform, grouped under a coordination domain. */
 export interface MapModule {
@@ -122,7 +123,8 @@ export interface IndustryData {
   slug: string;
   name: string;
 
-  meta: { title: string; description: string };
+  /** @deprecated page SEO lives in explorations/_shared/seo.ts */
+  meta?: { title: string; description: string };
 
   hero: {
     crumb: string;
@@ -220,8 +222,12 @@ export interface RailsCell {
 
 export interface IndustryRails {
   hero: HeroTraceData;
-  /** 01 · the thread the trail drives: its title (the event it follows) */
-  thread: { title: string };
+  /** 01 · the arcade journey the trail drives (24 Sep 2026): one camera
+   *  pose per `difference.trail` row, in order, on the industry's own record
+   *  (see industry-journey.ts). `zoom` = how close the focus camera comes to
+   *  the step's highlighted moment (1 = the whole record); `who` names the
+   *  person on that step (overrides the trail's role label). */
+  journey: { zoom: number; config: ArcadeStepConfig; who?: string }[];
   /** the trust strip under the hero: a label and the regulatory frame */
   trust: { label: string; marks: string[] };
   /** 02 · one artifact per persona card, keyed by PersonaCard.key */

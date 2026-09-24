@@ -1309,7 +1309,7 @@
   box-shadow: inset 0 0 0 1px oklch(0.69 0.08 148 / 0.25);
 }
 .dms--stylized .stx-arc__status-row .stx-ed-docglyph { width: 28px; height: 34px; }
-.dms--stylized .stx-arc__status-row > span { display: flex; flex-direction: column; gap: 2px; }
+.dms--stylized .stx-arc__status-row > span:not(.stx-state) { display: flex; flex-direction: column; gap: 2px; }
 .dms--stylized .stx-arc__status-row small { color: var(--dms-faint); font-family: var(--u-mono); font-size: 7px; }
 .dms--stylized .stx-arc__status-row b { font-size: 10px; }
 .dms--stylized .stx-arc__status-row em { color: var(--dms-muted); font-size: 8px; font-style: normal; }
@@ -2680,3 +2680,6 @@
     display: none;
   }
 }
+
+/* guard: a state chip is always dot-then-label on one line */
+.dms--stylized .stx-state { flex-direction: row !important; flex-wrap: nowrap !important; align-items: center !important; }

@@ -17,17 +17,13 @@
  * canonical per-company coordination tax carries it.
  * ========================================================================== */
 
-import type { IndustryData } from "../_shared/types";
+import type { IndustryData, IndustryRails } from "../_shared/types";
+import { AUTOMOTIVE_JOURNEY } from "./automotive-journey";
 
 export const AUTOMOTIVE: IndustryData = {
   slug: "automotive",
   name: "Automotive",
 
-  meta: {
-    title: "Automotive · Unifize",
-    description:
-      "Your QMS records that the part shipped. It cannot reconstruct why. Unifize rebuilds the decision trace across quality, engineering, and the supply base, so it holds up on a customer audit and a warranty return. The industry template, instanced on Automotive.",
-  },
 
   hero: {
     crumb: "Automotive",
@@ -290,4 +286,218 @@ export const AUTOMOTIVE: IndustryData = {
     heading: "Incumbents track the change log. Unifize reconstructs the decision.",
     lede: "Pick a change, an 8D, or a PPAP you could not replay at the last customer audit. We will reconstruct it live.",
   },
+};
+
+/* ============================================================================
+ * The rails layer (24 Sep 2026), for IndustryRailsPage.
+ * source: Industries DB row "Automotive" (Primary Fear Anchor: an OEM quality
+ *   hold or controlled shipping, overdue 8Ds on warranty returns, PPAP
+ *   rejected at cut-in; supplier derating. Opportunity: engineering change
+ *   across multiple OEM programs, sub-tier PPAP and supplier CAPA, layered
+ *   process audits. Regulatory Vocabulary: IATF 16949, APQP, PPAP, FMEA,
+ *   Control Plan, 8D, CSR, CS-1 / CS-2).
+ * source: the data above (trail, persona titles, modules, trigger clocks).
+ * The return, the locations and the lines are illustrative, not a
+ * customer's; cursors carry persona titles, not people.
+ * ========================================================================== */
+const QM = { name: "Quality Manager", tone: "#d97706" };
+const PLANT = { name: "Plant Manager", tone: "#2563eb" };
+const LPA = { name: "Layered Process Audit Owner", tone: "#0f8f7e" };
+
+export const AUTOMOTIVE_RAILS: IndustryRails = {
+  /* the key element: the 8D in motion. A warranty return opens the eight
+   * disciplines, containment runs across every place the suspect stock
+   * sits, the control plan is updated to prevent recurrence, and the 8D
+   * goes back to the OEM (the fear anchor: controlled shipping, overdue 8Ds) */
+  hero: {
+    kind: "eightd",
+    id: "Warranty return",
+    title: "Customer 8D · field return",
+    from: "OEM warranty claim · IATF 16949",
+    stages: { opened: "8D opened", contain: "Containing", solve: "Root cause & correction", released: "Closed · accepted by OEM" },
+    disciplines: [
+      { code: "D1", label: "Team formed" },
+      { code: "D2", label: "Problem described" },
+      { code: "D3", label: "Interim containment" },
+      { code: "D4", label: "Root cause" },
+      { code: "D5", label: "Corrective action chosen" },
+      { code: "D6", label: "Implemented and validated" },
+      { code: "D7", label: "Recurrence prevented" },
+      { code: "D8", label: "Closed and recognised" },
+    ],
+    containment: {
+      at: 2,
+      cap: "Suspect stock",
+      sites: [
+        { name: "OEM assembly plant", off: "Suspect", on: "Sorted" },
+        { name: "In transit", off: "Suspect", on: "Held" },
+        { name: "Our plant · WIP & FG", off: "Suspect", on: "Quarantined" },
+      ],
+    },
+    cascadeAt: 6,
+    response: { label: "8D report to the OEM", idle: "In the response window", done: "Submitted" },
+    sign: { idle: "Close · e-signature", done: "Closed" },
+    approvers: { label: "Quality · Engineering · Customer Quality" },
+    frame: { cap: "Checked against", items: ["IATF 16949", "8D", "PFMEA", "Control Plan"] },
+    cascade: {
+      cap: "PFMEA & control plan",
+      off: "Update pending",
+      on: "Updated · LPA cascaded",
+      note: "To every shift that runs the part",
+    },
+    clock: { cap: "Controlled shipping", line: "Contained until the OEM lifts it" },
+    seal: { cap: "Customer scorecard", off: "8D open", on: "8D closed, accepted" },
+    aria:
+      "A customer 8D in Unifize: a warranty return opens the eight disciplines, suspect stock is contained at the OEM plant, in transit and in the plant, the root cause is found and corrected, the PFMEA and control plan are updated, and the 8D report goes back to the OEM and is closed.",
+  },
+
+  journey: AUTOMOTIVE_JOURNEY,
+
+  trust: {
+    label: "Built for IATF 16949 automotive suppliers",
+    marks: ["IATF 16949", "APQP", "PPAP", "FMEA", "8D"],
+  },
+
+  roles: {
+    quality: {
+      viz: {
+        wash: "sky",
+        kicker: "Customer 8D",
+        state: "D4 · root cause",
+        title: "Warranty return",
+        rows: [
+          { label: "D3 · containment, sorted", meta: "Quality" },
+          { label: "D4 · root cause", meta: "Engineering", open: true },
+          { label: "D5 · corrective action", meta: "Production" },
+        ],
+        cursor: QM,
+      },
+      go: { label: "See the quality solution →", href: "/domains/quality" },
+    },
+    operations: {
+      viz: {
+        kind: "tag",
+        wash: "warm",
+        stamp: "HOLD",
+        lines: [
+          { k: "Parts", v: "Suspect lot" },
+          { k: "Waiting on", v: "MRB disposition" },
+          { k: "Released by", v: "Quality" },
+        ],
+        note: "Released with the approver chain recorded",
+        cursor: PLANT,
+      },
+    },
+    regulatory: {
+      viz: {
+        kind: "signoff",
+        wash: "blue",
+        kicker: "PPAP",
+        title: "Part submission warrant",
+        signers: [
+          { org: "Supplier", name: "Customer Quality Manager", meaning: "Submitted", time: "Signed" },
+          { org: "OEM", name: "Customer supplier quality", meaning: "Approve" },
+        ],
+      },
+    },
+    "compliance-validation": {
+      viz: {
+        kind: "matrix",
+        wash: "paper",
+        kicker: "Layered process audit",
+        cols: ["Shift 1", "Shift 2", "Shift 3"],
+        rows: [
+          { name: "Stamping", cells: ["ok", "ok", "ok"] },
+          { name: "Welding", cells: ["ok", "due", "ok"] },
+          { name: "Assembly", cells: ["ok", "ok", "gap"] },
+        ],
+        cursor: LPA,
+      },
+    },
+    engineering: {
+      viz: {
+        kind: "impact",
+        wash: "sky",
+        source: { kicker: "ECR", title: "Material change" },
+        items: [
+          { id: "FMEA", label: "PFMEA" },
+          { id: "CP", label: "Control plan" },
+          { id: "PSW", label: "PPAP resubmission", open: true },
+        ],
+      },
+      go: { label: "See the change control solution →", href: "/domains/change-control" },
+    },
+  },
+
+  coverage: {
+    title: "8Ds, change, the sub-tier, training. One trace.",
+    lede: "Each runs with IATF 16949 and your customers' CSRs built in. Start with the one that costs you most.",
+    cells: [
+      {
+        domain: "quality",
+        line: "From the suspect lot at the line to an 8D the OEM accepts, inside the response window.",
+        viz: {
+          kind: "form",
+          wash: "sky",
+          kicker: "Nonconformance / MRB",
+          title: "Suspect lot at the line",
+          fields: [
+            { label: "Defect", value: "Out of tolerance", select: true },
+            { label: "Containment", value: "Sorted" },
+            { label: "Disposition", value: "MRB review", focus: true },
+          ],
+          cursor: QM,
+        },
+        go: { label: "See the quality solution →", href: "/domains/quality" },
+      },
+      {
+        domain: "change-control",
+        line: "Engineering change carried to the FMEA, the control plan and the customer PPAP.",
+        viz: {
+          kind: "tiles",
+          wash: "blue",
+          kicker: "PPAP",
+          title: "Submission elements",
+          total: 18,
+          open: [9, 14],
+          foot: "Two elements open before cut-in",
+        },
+        go: { label: "See the change control solution →", href: "/domains/change-control" },
+      },
+      {
+        domain: "supplier-management",
+        line: "Sub-tier PPAP and supplier 8Ds across the boundary, not by email.",
+        viz: {
+          kind: "thread",
+          wash: "paper",
+          kicker: "Sub-tier PPAP",
+          messages: [
+            { org: "Tier 2 supplier", text: "PPAP package and control plan for the change", ext: true },
+            { org: "Supplier Quality", text: "Reviewed, one element returned" },
+          ],
+        },
+        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+      },
+      {
+        domain: "training-competency",
+        line: "Every control-plan change cascades to training and the layered audit.",
+        viz: {
+          kind: "lanes",
+          wash: "warm",
+          kicker: "Training cascade",
+          lanes: [
+            { name: "Control plan revision", owner: "Quality Systems", pct: 100 },
+            { name: "Operator training", owner: "Production", pct: 68 },
+            { name: "LPA checklist", owner: "Quality", pct: 45 },
+          ],
+        },
+      },
+    ],
+  },
+
+  lead: [
+    { name: "OEM quality hold · controlled shipping (CS-1/CS-2)", viz: "bins", detail: ["Finished goods"] },
+    { name: "8D overdue on a warranty return", viz: "calendar", clock: "Customer response window" },
+    { name: "PPAP rejected at cut-in", viz: "letter", detail: ["Customer supplier portal", "PPAP REJECTED"], clock: "before cut-in" },
+  ],
 };

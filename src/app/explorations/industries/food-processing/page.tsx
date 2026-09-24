@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { FOOD_PROCESSING } from "./food-processing-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { FOOD_PROCESSING, FOOD_PROCESSING_RAILS } from "./food-processing-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: FOOD_PROCESSING.meta.title,
-  description: FOOD_PROCESSING.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/food-processing");
 
 export default function FoodProcessingPage() {
-  return <IndustryPage data={FOOD_PROCESSING} />;
+  return <IndustryRailsPage data={FOOD_PROCESSING} rails={FOOD_PROCESSING_RAILS} />;
 }

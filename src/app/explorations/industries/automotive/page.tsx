@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { AUTOMOTIVE } from "./automotive-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { AUTOMOTIVE, AUTOMOTIVE_RAILS } from "./automotive-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: AUTOMOTIVE.meta.title,
-  description: AUTOMOTIVE.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/automotive");
 
 export default function AutomotivePage() {
-  return <IndustryPage data={AUTOMOTIVE} />;
+  return <IndustryRailsPage data={AUTOMOTIVE} rails={AUTOMOTIVE_RAILS} />;
 }

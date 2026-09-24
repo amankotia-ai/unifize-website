@@ -133,12 +133,6 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
   name: "Regulatory Affairs",
   tier: "Secondary",
 
-  meta: {
-    // The root layout template appends "· Unifize".
-    title: "Regulatory Affairs · Solutions",
-    description:
-      "Vigilance reports, submissions and multi-market label approvals run on statutory clocks that cannot slip, while the evidence sits with functions you do not control. Unifize keeps the decision and its evidence on one record, inside the clock.",
-  },
 
   hero: {
     crumb: "Regulatory Affairs",

@@ -3,23 +3,29 @@
 /* ------------------------------------------------------------
  * CtaxReport - the Coordination Tax Assessment full report.
  *
- * Ported from Ben's prototype (full-report HTML, Aug 2026):
- * a six-field role-aware intake, then the stage 2 report - CFO
- * one-pager, thesis, cross-industry backdrop, your number, honest
- * peer compare, symptoms/root cause, six lenses, domain deep dive,
- * load/floor/tax, assessment signals, sharpeners, the solution
- * levels, the reduction journey, recoverable value, proof, next
- * steps. Opening with #sample skips the intake (the sample report).
+ * Ported from Ben's prototype (full-report HTML, Aug 2026): a
+ * role-aware intake, then the stage 2 report. 24 Sep 2026: moved
+ * onto the rails grammar with the assessment page (cta-rails.css):
+ * charcoal two-pane hero (the intake form, or the CFO one-pager, on
+ * the wash), then one section per point with a split head, cells
+ * rail to rail and hatch bands between, the six lenses behind text
+ * tabs, proof as the dark island, the shared RailsClose. Mechanics
+ * unchanged: the intake's role picks the deep-dive domain, #sample
+ * skips the intake, the domain tabs switch, the report prints.
  * ------------------------------------------------------------ */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Eyebrow } from "../../explorations/products/dms/dms-primitives";
+import { HatchBand } from "../../explorations/_shared/page-rails";
+import { RailsClose } from "../../explorations/_shared/rails-close";
 import {
   Bars,
   BenchTrack,
   MID,
   Prov,
-  ThemeBars,
+  REPORT_CONTENTS,
+  ThemeStack,
   money,
   type Provenance,
 } from "../cta-shared";
@@ -119,20 +125,20 @@ const WORKFLOWS: Array<[string, number, string]> = [
   ["Complaint handling", 0.38, "32-day cycle"],
 ];
 
-const LAYERS: Array<{ label: string; pct: number; color: string; note: string }> = [
-  { label: "Layer 1 · labour", pct: 40, color: "var(--ctax-viz-1)", note: "Time spent coordinating" },
-  { label: "Layer 2 · cycle time", pct: 43, color: "var(--ctax-viz-2)", note: "Slower throughput, holds, delayed release" },
-  { label: "Layer 3 · decision quality", pct: 17, color: "var(--ctax-viz-3)", note: "Escapes, recurrence, rework from missed evidence" },
+const LAYERS: Array<{ label: string; pct: number; note: string }> = [
+  { label: "Layer 1 · labour", pct: 40, note: "Time spent coordinating" },
+  { label: "Layer 2 · cycle time", pct: 43, note: "Slower throughput, holds, delayed release" },
+  { label: "Layer 3 · decision quality", pct: 17, note: "Escapes, recurrence, rework from missed evidence" },
 ];
 
 const WASTE: Array<{ label: string; pct: number; color: string }> = [
-  { label: "Waiting / approval queues", pct: 28, color: "var(--ctax-viz-1)" },
-  { label: "Rework / review loops", pct: 22, color: "var(--ctax-viz-2)" },
-  { label: "Overprocessing / duplicate entry", pct: 18, color: "var(--ctax-viz-3)" },
-  { label: "Defects / escapes", pct: 12, color: "var(--ctax-err)" },
-  { label: "Motion / system switching", pct: 10, color: "var(--ctax-warn)" },
-  { label: "Overproduction / audience inflation", pct: 6, color: "var(--ctax-ok)" },
-  { label: "Transport / handoffs", pct: 4, color: "var(--ctax-neutral)" },
+  { label: "Waiting / approval queues", pct: 28, color: "var(--dms-tax)" },
+  { label: "Rework / review loops", pct: 22, color: "color-mix(in oklab, var(--dms-tax) 78%, white)" },
+  { label: "Overprocessing / duplicate entry", pct: 18, color: "color-mix(in oklab, var(--dms-tax) 58%, white)" },
+  { label: "Defects / escapes", pct: 12, color: "color-mix(in oklab, var(--dms-tax) 40%, white)" },
+  { label: "Motion / system switching", pct: 10, color: "color-mix(in oklab, var(--dms-tax) 25%, white)" },
+  { label: "Overproduction / audience inflation", pct: 6, color: "#9aa1ac" },
+  { label: "Transport / handoffs", pct: 4, color: "#c9ced6" },
 ];
 
 const TEAMS: Array<[string, number]> = [
@@ -149,10 +155,10 @@ const SITES: Array<[string, number]> = [
   ["Site C (acquired)", 23],
 ];
 
-const LFT: Array<{ label: string; value: number; color: string }> = [
-  { label: "Total load", value: 5_600_000, color: "var(--ctax-d-bg)" },
-  { label: "Irreducible floor", value: 1_400_000, color: "var(--ctax-neutral)" },
-  { label: "Reducible tax", value: 4_200_000, color: "var(--ctax-viz-1)" },
+const LFT: Array<{ label: string; value: number }> = [
+  { label: "Total load", value: 5_600_000 },
+  { label: "Irreducible floor", value: 1_400_000 },
+  { label: "Reducible tax", value: 4_200_000 },
 ];
 
 const SIGNALS: Array<[string, Provenance, string]> = [
@@ -291,21 +297,36 @@ const DEEP: DeepDomain[] = [
   },
 ];
 
+/* the hero's contents line: the report's chapters */
 const CONTENTS: Array<[string, string]> = [
   ["#thesis", "The problem"],
-  ["#industries", "Across industries"],
   ["#number", "Your number"],
-  ["#compare", "How you compare"],
-  ["#symptoms", "Symptoms & cause"],
-  ["#lenses", "Six lenses"],
-  ["#deep", "Domain deep dive"],
-  ["#floor", "What is recoverable"],
-  ["#signals", "How we assessed you"],
-  ["#sharpen", "Sharpen it"],
-  ["#solution", "Why it is now solvable"],
-  ["#journey", "How you reduce it"],
-  ["#roi", "Recoverable value"],
-  ["#next", "Next steps"],
+  ["#lenses", "Where it lives"],
+  ["#deep", "Your domain"],
+  ["#solution", "How it is removed"],
+  ["#roi", "What you get back"],
+];
+
+const LENSES = [
+  { key: "theme", label: "Theme", title: "By theme, then domain", note: "The 15 coordination domains we measure are not all the same size; some sit inside others. So we group them into comparable themes. Compare theme to theme; the domains nest underneath as members, not rivals." },
+  { key: "workflow", label: "Workflow", title: "By workflow", note: "The processes where the coordination actually accumulates, with typical cycle time." },
+  { key: "layer", label: "Economic layer", title: "By economic layer", note: "Direct labour is the visible part. The larger cost is slower cycle time and worse decisions. Most leaders only ever count layer 1." },
+  { key: "waste", label: "Type of waste", title: "By type of waste", note: "What kind of coordination friction this is, mapped to the lean wastes. This is what tells you which mechanism removes it." },
+  { key: "team", label: "Team", title: "By team", note: "Where the burden falls. Quality owns the outcome but carries only part of the coordination; much of it sits in engineering and supply chain." },
+  { key: "site", label: "Site", title: "By site", note: "Multi-site adds a harmonization tax: the same process runs differently in each plant, so evidence and decisions do not transfer." },
+] as const;
+
+const LEVELS: Array<[string, string, string]> = [
+  ["Level 1 · Execution", "Capture work in governed threads", "Each cross-functional event becomes one accountable thread. Decisions, approvals, evidence, and ownership stay connected, so proof is generated as the work happens rather than reconstructed under pressure."],
+  ["Level 2 · Understanding", "AI sees how work really flows", "The model reads the threads and learns how your processes actually run versus how they are documented, where work waits, who it waits on, and what evidence is missing before a reviewer ever opens it."],
+  ["Level 3 · Transformation", "Continuous, measured reduction", "AI drafts summaries, flags missing evidence before review, and chases the next step, so the coordination tax falls and you can watch it fall on a live number."],
+];
+
+const AGGREGATE: Array<[string, string]> = [
+  ["$4.2M \u2192 $2.9M", "org-wide coordination tax, without vs with Unifize"],
+  ["31%", "reduced in year one, on measured data"],
+  ["90 \u2192 34 days", "CAPA cycle time"],
+  ["3 wks \u2192 2 days", "audit prep, with risk down not up"],
 ];
 
 /* ------------------------------------------------------ component */
@@ -313,7 +334,7 @@ const CONTENTS: Array<[string, string]> = [
 function IntakeField({ q }: { q: Q }) {
   const id = `ctax-q-${q.label.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
   return (
-    <div className="ctax-fld">
+    <div className="cx-fld">
       <label htmlFor={id}>{q.label}</label>
       {q.kind === "num" ? (
         <input id={id} type="number" placeholder={q.ph} defaultValue={q.def} />
@@ -328,11 +349,25 @@ function IntakeField({ q }: { q: Q }) {
   );
 }
 
+/* a section's split head: eyebrow + claim left, lede right */
+function Head({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children?: React.ReactNode }) {
+  return (
+    <header className="pf-split-head" data-reveal>
+      <div>
+        <Eyebrow>{eyebrow}</Eyebrow>
+        <h2 className="dms-h2" id={id}>{title}</h2>
+      </div>
+      {children ? <div className="cx-head-right">{children}</div> : null}
+    </header>
+  );
+}
+
 export function CtaxReport() {
   const [view, setView] = useState<"intake" | "report">("intake");
   const [role, setRole] = useState<string>(ROLES[0]);
   const [domIdx, setDomIdx] = useState(0);
   const [openedFromRole, setOpenedFromRole] = useState(false);
+  const [lens, setLens] = useState(0);
 
   /* #sample skips the intake: the free sample report */
   useEffect(() => {
@@ -358,268 +393,340 @@ export function CtaxReport() {
     return `${w.color} ${from}% ${wasteAcc}%`;
   }).join(",");
 
-  return (
-    <div className="ctax">
-      {view === "intake" ? (
-        /* ============================== INTAKE ============================ */
-        <section className="dms-section dms-section--alt ctax-reportsec">
-          <div className="dms-wrap">
-            <div className="ctax-intake">
-              <div className="ctax-card ctax-intake__card">
-            <div className="ctax-recog ctax-recog--card">
-              <span className="ctax-recog__dot" aria-hidden="true" />
-              <span>
-                <b>Acme Medical Devices</b> recognized · medical device
-                manufacturer · ~1,200 employees · 3 sites
-              </span>
-              <span className="ctax-recog__src">via Factors.ai</span>
-            </div>
-            <span className="ctax-eyebrow">Build your report</span>
-            <h1 className="ctax-h1 ctax-h1--intake">
-              A few details and we will build your coordination tax report
-            </h1>
-            <p className="ctax-note">
-              We already estimated your coordination tax from public data.
-              Answer these and we move you from a public-data estimate (stage
-              1) to a sharpened estimate (stage 2), and we email you the full
-              report. Six fields, about a minute.
-            </p>
-            <div className="ctax-prog" aria-hidden="true">
-              <span style={{ width: "42%" }} />
-            </div>
-            <div className="ctax-qgrid">
-              <div className="ctax-fld ctax-fld--full">
-                <label htmlFor="ctax-email">Work email</label>
-                <input id="ctax-email" type="email" placeholder="you@acme.com" />
+  if (view === "intake") {
+    return (
+      <div className="ctax cx-report">
+        {/* ------------------------------------------------ intake hero
+          * the ask left, the six-field form itself on the wash right */}
+        <section className="dms-section dms-hero dms-hero--rails hm-railed cx-hero" aria-label="Build your report">
+          <div className="dms-wrap dms-hero__inner">
+            <div className="cx-hero__grid">
+              <div className="cx-hero__copy">
+                <Eyebrow>Coordination Tax Assessment · Full report</Eyebrow>
+                <h1 className="dms-hero__title">
+                  <span className="dms-hero__line">A few details, and we</span>
+                  <span className="dms-hero__line dms-hero__turn">build your report.</span>
+                </h1>
+                <p className="dms-lede dms-hero__sub">
+                  We already estimated your coordination tax from public data.
+                  Answer these and we move you from a public-data estimate
+                  (stage 1) to a sharpened estimate (stage 2), and email you
+                  the full report. About a minute.
+                </p>
+                <p className="cx-recog">
+                  <span className="cx-recog__dot" aria-hidden="true" />
+                  <span>
+                    <b>Acme Medical Devices</b>, medical device manufacturer,
+                    ~1,200 employees, 3 sites
+                  </span>
+                </p>
+                <div className="dms-hero__ctas">
+                  <a href="#sample" className="dms-btn dms-btn-ghost" onClick={() => setView("report")}>
+                    Skip to the sample report
+                  </a>
+                </div>
               </div>
-              <div className="ctax-fld ctax-fld--full">
-                <label htmlFor="ctax-rolesel">
-                  Your role (this tailors the questions and the report to what
-                  you actually know)
-                </label>
-                <select
-                  id="ctax-rolesel"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
+              <div className="cx-hero__stage">
+                <form
+                  className="cx-read cx-intake"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    generate();
+                  }}
                 >
-                  {ROLES.map((r) => (
-                    <option key={r}>{r}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="ctax-qgrid">
-              {UNIVERSAL_QS.concat(ROLE_QS[role] ?? []).map((q) => (
-                <IntakeField key={q.label} q={q} />
-              ))}
-              <div className="ctax-fld ctax-fld--full">
-                <label htmlFor="ctax-pain">Biggest pain right now</label>
-                <select id="ctax-pain">
-                  {["Audit readiness", "Cycle time", "Recurring issues", "Supplier quality", "New product speed", "Cost and headcount"].map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <p className="ctax-note">
-              Not sure on a number? Leave it blank. We fall back to public data
-              and tell you the confidence honestly, then sharpen it later.
-            </p>
-            <button type="button" className="dms-btn ctax-btn-full" onClick={generate}>
-              Generate my report
-            </button>
-            <p className="ctax-note ctax-center">
-              The more you tell us, the tighter the estimate. Everything here
-              writes to your account so a specialist can pick up the
-              conversation.
-            </p>
+                  <div className="cx-read__head">
+                    <span className="cx-read__title">Build your report</span>
+                    <span className="cx-read__chip">Stage 1 to 2</span>
+                  </div>
+                  <div className="cx-intake__prog" aria-hidden="true">
+                    <span style={{ width: "42%" }} />
+                  </div>
+                  <div className="cx-intake__body">
+                    <div className="cx-intake__grid">
+                      <div className="cx-fld cx-fld--full">
+                        <label htmlFor="ctax-email">Work email</label>
+                        <input id="ctax-email" type="email" placeholder="you@acme.com" />
+                      </div>
+                      <div className="cx-fld cx-fld--full">
+                        <label htmlFor="ctax-rolesel">
+                          Your role, so the questions match what you know
+                        </label>
+                        <select
+                          id="ctax-rolesel"
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
+                        >
+                          {ROLES.map((r) => (
+                            <option key={r}>{r}</option>
+                          ))}
+                        </select>
+                      </div>
+                      {UNIVERSAL_QS.concat(ROLE_QS[role] ?? []).map((q) => (
+                        <IntakeField key={q.label} q={q} />
+                      ))}
+                      <div className="cx-fld cx-fld--full">
+                        <label htmlFor="ctax-pain">Biggest pain right now</label>
+                        <select id="ctax-pain">
+                          {["Audit readiness", "Cycle time", "Recurring issues", "Supplier quality", "New product speed", "Cost and headcount"].map((o) => (
+                            <option key={o}>{o}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <p className="cx-note">
+                      Not sure on a number? Leave it blank. We fall back to
+                      public data and tell you the confidence honestly.
+                    </p>
+                    <button type="submit" className="dms-btn cx-intake__go">
+                      Generate my report
+                    </button>
+                  </div>
+                  <p className="cx-read__foot">
+                    Everything here writes to your account so a specialist can
+                    pick up the conversation.
+                  </p>
+                </form>
               </div>
             </div>
           </div>
         </section>
-      ) : (
-        /* ============================== REPORT ============================ */
-        <section className="dms-section dms-section--alt ctax-reportsec">
+
+        <HatchBand />
+
+        {/* ------------------------------------------ what the report holds */}
+        <section className="dms-section cx-sec hm-railed" aria-labelledby="cx-holds-h">
           <div className="dms-wrap">
-            <div className="ctax-pagewrap">
-          <div className="ctax-page">
-            {/* mast */}
-            <div className="ctax-mast">
-              <div className="ctax-mast__toprow">
-                <span className="ctax-logo ctax-logo--dark">
-                  <span className="ctax-logo__u" aria-hidden="true">U</span>
-                  <span className="ctax-logo__name">unifize</span>
-                </span>
-                <div className="ctax-mast__stage">
-                  <button
-                    type="button"
-                    className="dms-btn dms-btn-ghost ctax-btn-sm ctax-btn-ghostdark"
-                    onClick={() => window.print()}
-                  >
-                    Download / print
-                  </button>
-                  <div>
-                    Stage 2 estimate
-                    <br />
-                    Medium confidence (62%)
-                  </div>
-                </div>
-              </div>
-              <span className="ctax-eyebrow ctax-eyebrow--dark">
-                Coordination Tax Assessment · Full report
-              </span>
-              <h1 className="ctax-h1 ctax-h1--mast">Acme Medical Devices</h1>
-              <p className="ctax-mast__meta">
-                Medical device manufacturer · ~1,200 employees · 3 sites · FDA
-                &amp; ISO 13485 · Class II/III · prepared 22 June 2026
+            <Head id="cx-holds-h" eyebrow="What you get" title="The full picture, and what to do about it.">
+              <p className="dms-lede">
+                The cold read sized it from public data. The report confirms
+                your numbers, then shows how you compare and how it gets
+                reduced.
               </p>
-              <nav className="ctax-contents" aria-label="Report contents">
+            </Head>
+            <ol className="cx-cells cx-cells--3 cx-contents" data-reveal>
+              {REPORT_CONTENTS.map(([t, d], i) => (
+                <li key={t} className="cx-cell">
+                  <span className="cx-contents__n">{String(i + 1).padStart(2, "0")}</span>
+                  <h3>{t}</h3>
+                  <p>{d}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <HatchBand />
+
+        <RailsClose
+          id="cx-close-h"
+          eyebrow="Rather talk it through?"
+          heading="Bring your numbers to a 30-minute call."
+          lede="A discovery call confirms your real volumes and moves the estimate to stage 3."
+          primaryLabel="Book the discovery call"
+          secondary={{ label: "Back to the assessment", href: "/coordination-tax-calculator" }}
+          source="ctax-report-intake"
+        />
+      </div>
+    );
+  }
+
+  const lensNow = LENSES[lens];
+
+  return (
+    <div className="ctax cx-report">
+      {/* ---------------------------------------------------------- hero
+        * the finding left, the CFO one-pager on the wash right */}
+      <section className="dms-section dms-hero dms-hero--rails hm-railed cx-hero" aria-label="Coordination Tax Assessment, full report">
+        <div className="dms-wrap dms-hero__inner">
+          <div className="cx-hero__grid">
+            <div className="cx-hero__copy">
+              <Eyebrow>Full report · Acme Medical Devices</Eyebrow>
+              <h1 className="dms-hero__title">
+                <span className="dms-hero__line">Coordination tax: about</span>
+                <span className="dms-hero__line dms-hero__turn">21% of operating cost.</span>
+              </h1>
+              <p className="dms-lede dms-hero__sub">
+                Medical device manufacturer · ~1,200 employees · 3 sites · FDA
+                &amp; ISO 13485 · Class II/III · prepared 22 June 2026.
+              </p>
+              <p className="cx-stage">
+                <span>Stage 2 estimate</span>
+                <span>Medium confidence (62%)</span>
+              </p>
+              <div className="dms-hero__ctas">
+                <button type="button" className="dms-btn" onClick={() => window.print()}>
+                  Download / print
+                </button>
+                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
+                  Back to the assessment
+                </Link>
+              </div>
+              <nav className="cx-toc" aria-label="Report contents">
                 {CONTENTS.map(([href, label]) => (
-                  <a key={href} href={href}>
-                    {label}
-                  </a>
+                  <a key={href} href={href}>{label}</a>
                 ))}
               </nav>
             </div>
-
-            {/* CFO one-pager */}
-            <div className="ctax-cfo">
-              <div className="ctax-cfo__h">
-                <span>The one-page version</span>
-                <span>Forward this to your CFO</span>
-              </div>
-              <div className="ctax-cfo__b">
-                <div className="ctax-cfo__big ctax-mono">
-                  $3.8M <span>to</span> $4.6M <span>per year</span>
+            <div className="cx-hero__stage">
+              <figure className="cx-read cx-cfo">
+                <div className="cx-read__head">
+                  <span className="cx-read__title">The one-page version</span>
+                  <span className="cx-read__chip">For your CFO</span>
                 </div>
-                <p className="ctax-note">
-                  Estimated annual coordination tax: the structural cost of
-                  holding cross-functional work together across quality,
-                  engineering, supply chain, and operations.
-                </p>
-                <div className="ctax-cfo__row">
-                  <div className="ctax-kpi">
-                    <b className="ctax-mono">~21%</b>
-                    <span>of operating cost, vs a 13% top-quartile peer</span>
-                  </div>
-                  <div className="ctax-kpi">
-                    <b className="ctax-mono">$0.9M - $1.3M</b>
-                    <span>conservatively recoverable in year one</span>
-                  </div>
-                  <div className="ctax-kpi">
-                    <b className="ctax-mono">62%</b>
-                    <span>confidence, sharpened by the 6 inputs you gave us</span>
-                  </div>
+                <div className="cx-read__sum">
+                  <p className="cx-label">
+                    Estimated annual coordination tax <Prov kind="modelled" />
+                  </p>
+                  <p className="cx-read__fig">
+                    $3.8M <span>to</span> $4.6M <span>per year</span>
+                  </p>
+                  <p className="cx-cfo__line">
+                    The structural cost of holding cross-functional work
+                    together across quality, engineering, supply chain, and
+                    operations.
+                  </p>
                 </div>
-              </div>
+                <dl className="cx-cfo__kpis">
+                  <div>
+                    <dt>~21%</dt>
+                    <dd>of operating cost, vs a 13% top-quartile peer</dd>
+                  </div>
+                  <div>
+                    <dt>$0.9M to $1.3M</dt>
+                    <dd>conservatively recoverable in year one</dd>
+                  </div>
+                  <div>
+                    <dt>62%</dt>
+                    <dd>confidence, sharpened by the inputs you gave us</dd>
+                  </div>
+                </dl>
+                <figcaption className="cx-read__foot">
+                  Forward this page to your CFO and your operations lead.
+                </figcaption>
+              </figure>
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* thesis */}
-            <section id="thesis" className="ctax-pad">
-              <span className="ctax-eyebrow">The problem</span>
-              <h2 className="ctax-h2">
-                Coordination tax, and why it has stayed invisible
-              </h2>
-              <p className="ctax-lead">
-                In a regulated manufacturer, most cross-functional work, an
-                investigation, a change, a supplier issue, a release, does not
-                happen inside one system. It happens across email, meetings,
-                and spreadsheets that wrap around the QMS, the ERP, and the
-                PLM. The structural cost of holding that work together, when no
-                system owns it end to end, is what we call coordination tax.
-              </p>
-              <div className="ctax-gap">
-                <div className="ctax-gap__box">
-                  <h3>System of record</h3>
-                  <p>
-                    Your QMS, ERP, and PLM capture what is officially true: the
-                    approved CAPA, the released document. They store the
-                    result.
-                  </p>
-                </div>
-                <div className="ctax-gap__vs">
-                  the gap
-                  <br />
-                  is the tax
-                </div>
-                <div className="ctax-gap__box ctax-gap__box--tax">
-                  <h3>System of coordination</h3>
-                  <p>
-                    The work that produces those records, chasing evidence,
-                    re-reviewing, status meetings, runs in email and Excel.
-                    Nobody owns it, so nobody measures it.
-                  </p>
-                </div>
-              </div>
-              <p>
-                It has stayed invisible for one reason: you cannot reduce what
-                you cannot see, and until now nothing could see across that
-                fragmented work and measure it. It does not show up as a line
-                item. It shows up as headcount that never feels like enough,
-                audits that consume weeks, and the same issue coming back. It
-                runs 15 to 30 percent of white-collar operational cost in
-                regulated manufacturing, and it is the single largest
-                controllable cost most quality and operations leaders have
-                never had a number for. This report gives you that number, from
-                several angles, and shows what is now possible.
-              </p>
-            </section>
+      <HatchBand />
 
-            {/* industries */}
-            <section id="industries" className="ctax-pad">
-              <span className="ctax-eyebrow">Across industries</span>
-              <h2 className="ctax-h2">
-                How heavy is coordination tax, and where does your industry sit
-              </h2>
-              <p>
-                Coordination tax is not unique to you, and it is not spread
-                evenly. It is heaviest where work is regulated, multi-party,
-                and evidence-bound, because every decision has to be
-                coordinated and then proven. Here is roughly where each sector
-                lands as a share of operating cost, on Unifize's model.
+      {/* ---------------------------------------------------- the problem
+        * the gap as three cells: record, the tax between, coordination */}
+      <section className="dms-section cx-sec hm-railed" id="thesis" aria-labelledby="cr-thesis-h">
+        <div className="dms-wrap">
+          <Head id="cr-thesis-h" eyebrow="The problem" title="Coordination tax, and why it has stayed invisible.">
+            <p className="dms-lede">
+              Most cross-functional work, an investigation, a change, a
+              supplier issue, a release, does not happen inside one system. It
+              happens across email, meetings, and spreadsheets that wrap
+              around the QMS, the ERP, and the PLM.
+            </p>
+          </Head>
+          <div className="cx-cells cx-gap" data-reveal>
+            <div className="cx-cell">
+              <p className="cx-label">System of record</p>
+              <p className="cx-gap__body">
+                Your QMS, ERP, and PLM capture what is officially true: the
+                approved CAPA, the released document. They store the result.
               </p>
+            </div>
+            <div className="cx-cell cx-gap__tax">
+              <p className="cx-gap__k">The gap is the tax</p>
+            </div>
+            <div className="cx-cell">
+              <p className="cx-label">System of coordination</p>
+              <p className="cx-gap__body">
+                The work that produces those records, chasing evidence,
+                re-reviewing, status meetings, runs in email and Excel. Nobody
+                owns it, so nobody measures it.
+              </p>
+            </div>
+          </div>
+          <div className="cx-foot cx-foot--cause">
+            <p>
+              <b>Why it stays invisible.</b>{" "}You cannot reduce what you cannot
+              see, and until now nothing could see across that fragmented work
+              and measure it. It does not show up as a line item. It shows up
+              as headcount that never feels like enough, audits that consume
+              weeks, and the same issue coming back.
+            </p>
+            <p>
+              It runs 15 to 30 percent of white-collar operational cost in
+              regulated manufacturing, and it is the single largest
+              controllable cost most quality and operations leaders have never
+              had a number for. This report gives you that number, from several
+              angles, and shows what is now possible.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <HatchBand />
+
+      {/* ---------------------------------------------- across industries */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="industries" aria-labelledby="cr-ind-h">
+        <div className="dms-wrap">
+          <Head id="cr-ind-h" eyebrow="Across industries" title="Medical devices sits in the heavier third.">
+            <p className="dms-lede">
+              It is heaviest where work is regulated, multi-party, and
+              evidence-bound, because every decision has to be coordinated and
+              then proven. Roughly where each sector lands as a share of
+              operating cost, on Unifize&rsquo;s model.
+            </p>
+          </Head>
+          <div className="cx-cells cx-cells--lead" data-reveal>
+            <div className="cx-cell cx-stat">
+              <p className="cx-label">
+                Medical devices <Prov kind="modelled" />
+              </p>
+              <p className="cx-stat__fig">21%</p>
+              <p className="cx-stat__line">
+                Each design change and supplier action carries documentation
+                and review intensity lighter industries never touch; the bar is
+                simply higher for everyone in your category.
+              </p>
+            </div>
+            <div className="cx-cell cx-bars">
               <Bars
                 rows={INDUSTRIES.map(([label, v]) => ({
                   label: label === "Medical devices" ? `${label} · you` : label,
                   value: v,
                   display: `${v}%`,
                   strong: label === "Medical devices",
-                  color:
-                    label === "Medical devices"
-                      ? "var(--ctax-d-bg)"
-                      : undefined,
                   dim: label !== "Medical devices",
                 }))}
               />
-              <p className="ctax-note">
-                Medical devices sits in the heavier third. Each design change
-                and supplier action carries documentation and review intensity
-                that lighter industries never touch, so even a top-quartile
-                medical device manufacturer carries more coordination tax than
-                a typical consumer electronics firm; the bar is simply higher
-                for everyone in your category. That is the backdrop for your
-                own number below.
-              </p>
-            </section>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* the number */}
-            <section id="number" className="ctax-pad">
-              <span className="ctax-eyebrow">Your number</span>
-              <h2 className="ctax-h2">
-                About 21 percent of your operating cost is coordination tax
-              </h2>
-              <p>
-                Your sharpened estimate is <b>$3.8M to $4.6M per year</b>,
-                midpoint about $4.2M. That is a stage 2 estimate at 62 percent
-                confidence: built from Unifize's model for medical device
-                manufacturing and sharpened by the volumes you shared. A
-                discovery call moves it to stage 3; a two-week Phase 0 measures
-                it for real at stage 4.
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* --------------------------------------------------- your number */}
+      <section className="dms-section cx-sec hm-railed" id="number" aria-labelledby="cr-num-h">
+        <div className="dms-wrap">
+          <Head id="cr-num-h" eyebrow="Your number" title="About two points above your industry median.">
+            <p className="dms-lede">
+              A stage 2 estimate at 62 percent confidence: Unifize&rsquo;s model
+              for medical device manufacturing, sharpened by the volumes you
+              shared. A discovery call moves it to stage 3; a two-week Phase 0
+              measures it for real at stage 4.
+            </p>
+          </Head>
+          <div className="cx-cells cx-cells--2" data-reveal>
+            <div className="cx-cell cx-range">
+              <p className="cx-label">
+                Your sharpened estimate <Prov kind="modelled" />
               </p>
-              <p className="ctax-note">
-                Coordination tax as a share of operating cost, medical device
-                manufacturing
+              <p className="cx-range__fig">
+                $3.8M <span>to</span> $4.6M
               </p>
+              <p className="cx-range__unit">a year, about $4.2M at the midpoint</p>
+            </div>
+            <div className="cx-cell cx-bench">
+              <p className="cx-label">Share of operating cost, medical device manufacturing</p>
               <BenchTrack
                 band={[34, 76]}
                 markers={[
@@ -628,271 +735,262 @@ export function CtaxReport() {
                   { at: 58, label: "you ~21%", tone: "ink" },
                 ]}
               />
-              <p className="ctax-note">
-                The benchmark is Unifize's coordination tax model for your
-                industry, built from structural reasoning and expert judgment
-                and refined with measured customer data. It is not a published
-                third-party statistic. We say so plainly because the number
-                only helps you if you trust where it comes from.
-              </p>
-            </section>
+            </div>
+          </div>
+          <div className="cx-foot">
+            <p>
+              <b>Where the benchmark comes from.</b>{" "}Unifize&rsquo;s coordination
+              tax model for your industry, built from structural reasoning and
+              expert judgment and refined with measured customer data. It is
+              not a published third-party statistic. We say so plainly because
+              the number only helps you if you trust where it comes from.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            {/* compare */}
-            <section id="compare" className="ctax-pad">
-              <span className="ctax-eyebrow">How you compare</span>
-              <h2 className="ctax-h2">You against your industry</h2>
-              <p className="ctax-note">
-                Peer figures are our model's reference points for medical
-                device manufacturers your size, not published data and not a
-                named competitor. We have not measured Acme's operational
-                metrics, so where your reading is not yet measured we say so
-                and make no claim that you are above or below peers. Confirm a
-                number and we benchmark it properly.
-              </p>
-              <table className="ctax-table">
-                <thead>
-                  <tr>
-                    <th>Measure</th>
-                    <th className="is-num">Industry median</th>
-                    <th className="is-num">Top quartile</th>
-                    <th>Your reading</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {CMP.map(([measure, median, top, you, prov]) => (
-                    <tr key={measure}>
-                      <td>{measure}</td>
-                      <td className="is-num ctax-mono ctax-dim">{median}</td>
-                      <td className="is-num ctax-mono is-good">{top}</td>
-                      <td>
-                        {you ? (
-                          <>
-                            <span className="ctax-mono ctax-you">{you}</span>{" "}
-                            <Prov kind={prov} />
-                          </>
-                        ) : (
-                          <>
-                            <span className="ctax-dim">not yet measured</span>{" "}
-                            <Prov kind={prov} />
-                          </>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="ctax-note">
-                Only the two figures we model from your firmographics
-                (coordination tax as a share of operating cost, and per
-                employee) carry a value for you, labelled modelled. The
-                operational metrics stay assumed industry-typical until you
-                confirm them in the intake or a discovery call; we do not
-                assert a gap on a number we have not measured.
-              </p>
-            </section>
+      <HatchBand />
 
-            {/* symptoms */}
-            <section id="symptoms" className="ctax-pad">
-              <span className="ctax-eyebrow">Symptoms, root cause, consequences</span>
-              <h2 className="ctax-h2">
-                What you feel, why it happens, and what it costs
-              </h2>
-              <p>
-                These are the industry-typical manifestations for a medical
-                device manufacturer your size. The volumes are the ones you
-                gave us (140 CAPAs, 320 change orders, 600 suppliers a year,
-                confirmed); the durations and rates below are assumed
-                industry-typical until you confirm them, not measurements of
-                Acme. The root cause is structural; the consequence is what it
-                costs in money, time, and risk.
-              </p>
-              <table className="ctax-table">
-                <thead>
-                  <tr>
-                    <th>What you feel</th>
-                    <th>Why it happens</th>
-                    <th>What it costs</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {SYMPTOMS.map(([feel, why, cost]) => (
-                    <tr key={feel}>
-                      <td>
-                        <b>{feel}</b> <Prov kind="assumed" />
-                      </td>
-                      <td className="ctax-dim">{why}</td>
-                      <td className="ctax-dim">{cost}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="ctax-callout">
-                <b>One root cause underneath all of them.</b> Your system of
-                record (QMS, ERP, PLM) stores what is officially true. The
-                work that produces those records runs in a separate system of
-                coordination: email, meetings, and spreadsheets. Every symptom
-                above is the gap between the two. That is why they cannot be
-                fixed one at a time, and why fixing the gap fixes them
-                together. The rest of this report is how.
+      {/* ----------------------------------------------- how you compare */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="compare" aria-labelledby="cr-cmp-h">
+        <div className="dms-wrap">
+          <Head id="cr-cmp-h" eyebrow="How you compare" title="You against your industry.">
+            <p className="dms-lede">
+              Peer figures are our model&rsquo;s reference points for
+              manufacturers your size, not published data and not a named
+              competitor. Where your reading is not yet measured we say so, and
+              claim no gap.
+            </p>
+          </Head>
+          <div className="cx-rows cx-rows--cmp" role="table" aria-label="You against your industry" data-reveal>
+            <div className="cx-rows__hd" role="row">
+              <span role="columnheader">Measure</span>
+              <span role="columnheader">Industry median</span>
+              <span role="columnheader">Top quartile</span>
+              <span role="columnheader">Your reading</span>
+            </div>
+            {CMP.map(([measure, median, top, you, prov]) => (
+              <div className="cx-rows__row" role="row" key={measure}>
+                <span role="cell" className="cx-rows__k">{measure}</span>
+                <span role="cell" className="cx-rows__num" data-k="Median">{median}</span>
+                <span role="cell" className="cx-rows__num is-good" data-k="Top quartile">{top}</span>
+                <span role="cell" className="cx-rows__you">
+                  {you ? <b>{you}</b> : <span className="cx-rows__dim">not yet measured</span>}
+                  <Prov kind={prov} />
+                </span>
               </div>
-            </section>
+            ))}
+          </div>
+          <div className="cx-foot">
+            <p>
+              Only the two figures we model from your firmographics carry a
+              value for you, labelled modelled. The operational metrics stay
+              assumed industry-typical until you confirm them in the intake or
+              a discovery call.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            {/* six lenses */}
-            <section id="lenses" className="ctax-pad">
-              <span className="ctax-eyebrow">Six lenses</span>
-              <h2 className="ctax-h2">Your coordination tax from six angles</h2>
-              <p className="ctax-note">
-                A single total hides where the cost actually lives. The same
-                $4.2M looks different depending on how you cut it, and each cut
-                points at a different fix.
-              </p>
+      <HatchBand className="hm-hatch--alt" />
 
-              <h3 className="ctax-h3">1 · By theme, then domain</h3>
-              <p className="ctax-note">
-                The 15 coordination domains we measure are not all the same
-                size; some sit inside others. So we group them into comparable
-                themes. Compare theme to theme; the domains nest underneath as
-                members, not rivals.
-              </p>
-              <ThemeBars withMoney />
-
-              <h3 className="ctax-h3">2 · By workflow</h3>
-              <p className="ctax-note">
-                The processes where the coordination actually accumulates, with
-                typical cycle time.
-              </p>
-              <Bars
-                rows={WORKFLOWS.map(([label, v, note], i) => ({
-                  label: `${label} (${note})`,
-                  value: v,
-                  display: `$${v.toFixed(1)}M`,
-                  strong: i === 0,
-                }))}
-              />
-
-              <h3 className="ctax-h3">3 · By economic layer</h3>
-              <p className="ctax-note">
-                Direct labour is the visible part. The larger cost is slower
-                cycle time and worse decisions. Most leaders only ever count
-                layer 1.
-              </p>
-              <div className="ctax-stack">
-                {LAYERS.map((l) => (
-                  <div
-                    key={l.label}
-                    style={{ width: `${l.pct}%`, background: l.color }}
-                  >
-                    {l.pct}%
-                  </div>
-                ))}
+      {/* ------------------------------------------------------- symptoms */}
+      <section className="dms-section cx-sec hm-railed" id="symptoms" aria-labelledby="cr-sym-h">
+        <div className="dms-wrap">
+          <Head id="cr-sym-h" eyebrow="Symptoms and cause" title="What you feel, why it happens, what it costs.">
+            <p className="dms-lede">
+              The volumes are the ones you gave us (140 CAPAs, 320 change
+              orders, 600 suppliers a year, confirmed); the durations and rates
+              are assumed industry-typical until you confirm them.
+            </p>
+          </Head>
+          <div className="cx-rows cx-rows--sym" role="table" aria-label="Symptoms, causes and costs" data-reveal>
+            <div className="cx-rows__hd" role="row">
+              <span role="columnheader">What you feel</span>
+              <span role="columnheader">Why it happens</span>
+              <span role="columnheader">What it costs</span>
+            </div>
+            {SYMPTOMS.map(([feel, why, cost]) => (
+              <div className="cx-rows__row" role="row" key={feel}>
+                <span role="cell" className="cx-rows__k">
+                  {feel} <Prov kind="assumed" />
+                </span>
+                <span role="cell" className="cx-rows__txt">{why}</span>
+                <span role="cell" className="cx-rows__txt">{cost}</span>
               </div>
-              <div className="ctax-vizlegend">
-                {LAYERS.map((l) => (
-                  <span key={l.label}>
-                    <i style={{ background: l.color }} aria-hidden="true" />
-                    {l.label} · {money((MID * l.pct) / 100)} · {l.note}
-                  </span>
-                ))}
-              </div>
+            ))}
+          </div>
+          <div className="cx-foot">
+            <p>
+              <b>One root cause underneath all of them.</b>{" "}Your system of
+              record stores what is officially true. The work that produces
+              those records runs in a separate system of coordination: email,
+              meetings, and spreadsheets. Every symptom above is the gap
+              between the two, which is why they cannot be fixed one at a time,
+              and why fixing the gap fixes them together.
+            </p>
+          </div>
+        </div>
+      </section>
 
-              <h3 className="ctax-h3">4 · By type of waste</h3>
-              <p className="ctax-note">
-                What kind of coordination friction this is, mapped to the lean
-                wastes. This is what tells you which mechanism removes it.
-              </p>
-              <div className="ctax-donutwrap">
-                <div
-                  className="ctax-donut"
-                  role="img"
-                  aria-label="Coordination tax by type of waste"
-                  style={{
-                    background: `conic-gradient(${wasteStops})`,
-                    WebkitMask:
-                      "radial-gradient(circle 44px at center, transparent 98%, #000 100%)",
-                    mask: "radial-gradient(circle 44px at center, transparent 98%, #000 100%)",
-                  }}
+      <HatchBand />
+
+      {/* -------------------------------------------------------- lenses
+        * one angle at a time behind text tabs */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="lenses" aria-labelledby="cr-lens-h">
+        <div className="dms-wrap">
+          <Head id="cr-lens-h" eyebrow="Where it lives" title="Your coordination tax from six angles.">
+            <p className="dms-lede">
+              A single total hides where the cost actually lives. The same
+              $4.2M looks different depending on how you cut it, and each cut
+              points at a different fix.
+            </p>
+          </Head>
+          <div className="cx-lens" data-reveal>
+            <span className="cx-lens__k" id="cr-lens-k">Cut it by</span>
+            <div className="cx-lens__tabs" role="tablist" aria-labelledby="cr-lens-k">
+              {LENSES.map((l, i) => (
+                <button
+                  key={l.key}
+                  type="button"
+                  role="tab"
+                  aria-selected={lens === i}
+                  className={`cx-tab${lens === i ? " is-on" : ""}`}
+                  onClick={() => setLens(i)}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="cx-cells cx-cells--lead cx-lenspane" role="tabpanel" aria-label={lensNow.title}>
+            <div className="cx-cell cx-cell--quiet">
+              <p className="cx-label">Lens {lens + 1} of 6</p>
+              <h3 className="cx-lenspane__h">{lensNow.title}</h3>
+              <p className="cx-note">{lensNow.note}</p>
+            </div>
+            <div className="cx-cell cx-bars">
+              {lensNow.key === "theme" ? <ThemeStack withMoney /> : null}
+              {lensNow.key === "workflow" ? (
+                <Bars
+                  rows={WORKFLOWS.map(([label, v, note], i) => ({
+                    label: `${label} (${note})`,
+                    value: v,
+                    display: `$${v.toFixed(1)}M`,
+                    strong: i === 0,
+                  }))}
                 />
-                <div className="ctax-dlegend">
-                  {WASTE.map((w) => (
-                    <div key={w.label}>
-                      <i style={{ background: w.color }} aria-hidden="true" />
-                      <span>{w.label}</span>
-                      <b className="ctax-mono">{w.pct}%</b>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <h3 className="ctax-h3">5 · By team</h3>
-              <p className="ctax-note">
-                Where the burden falls. Quality owns the outcome but carries
-                only part of the coordination; much of it sits in engineering
-                and supply chain.
-              </p>
-              <Bars
-                rows={TEAMS.map(([label, v], i) => ({
-                  label,
-                  value: v,
-                  display: `${v}% · ${money((MID * v) / 100)}`,
-                  strong: i === 0,
-                }))}
-              />
-
-              <h3 className="ctax-h3">6 · By site</h3>
-              <p className="ctax-note">
-                Multi-site adds a harmonization tax: the same process runs
-                differently in each plant, so evidence and decisions do not
-                transfer.
-              </p>
-              <Bars
-                rows={SITES.map(([label, v], i) => ({
-                  label,
-                  value: v,
-                  display: `${v}% · ${money((MID * v) / 100)}`,
-                  strong: i === 0,
-                }))}
-              />
-            </section>
-
-            {/* domain deep dive */}
-            <section id="deep" className="ctax-pad">
-              <span className="ctax-eyebrow">Domain deep dive</span>
-              <h2 className="ctax-h2">Go deep into one domain</h2>
-              <p className="ctax-note">
-                {openedFromRole
-                  ? `Based on your role we opened ${dom.name}. Switch tabs to explore any domain.`
-                  : "We have defaulted to Quality, the most common entry point and the domain that touches every other. Switch to the area you own to go deep there."}
-              </p>
-              <div className="ctax-domtabs" role="tablist" aria-label="Domains">
-                {DEEP.map((d, i) => (
-                  <button
-                    key={d.name}
-                    type="button"
-                    role="tab"
-                    aria-selected={i === domIdx}
-                    className={`ctax-pbtn${i === domIdx ? " is-on" : ""}`}
-                    onClick={() => setDomIdx(i)}
-                  >
-                    {d.name}
-                  </button>
-                ))}
-              </div>
-              <div className="ctax-cards">
-                <div className="ctax-ca">
-                  <div className="ctax-ca__num ctax-mono">
-                    {dom.share}% · {money((MID * dom.share) / 100)}
+              ) : null}
+              {lensNow.key === "layer" ? (
+                <div className="cx-layers">
+                  <div className="cx-layers__bar" aria-hidden="true">
+                    {LAYERS.map((l, i) => (
+                      <span key={l.label} className={`is-${i}`} style={{ width: `${l.pct}%` }}>
+                        {l.pct}%
+                      </span>
+                    ))}
                   </div>
-                  <div className="ctax-note">
-                    of your coordination tax sits in {dom.name}
-                  </div>
+                  <ul className="cx-legendrows">
+                    {LAYERS.map((l, i) => (
+                      <li key={l.label}>
+                        <i className={`is-${i}`} aria-hidden="true" />
+                        <b>{l.label}</b>
+                        <span>{l.note}</span>
+                        <em>{money((MID * l.pct) / 100)}</em>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="ctax-ca">
-                  <div className="ctax-ca__k">How you compare</div>
-                  <div className="ctax-note">{dom.peer}</div>
+              ) : null}
+              {lensNow.key === "waste" ? (
+                <div className="cx-donutwrap">
+                  <div
+                    className="cx-donut"
+                    role="img"
+                    aria-label="Coordination tax by type of waste"
+                    style={{
+                      background: `conic-gradient(${wasteStops})`,
+                      WebkitMask: "radial-gradient(circle 52px at center, transparent 98%, #000 100%)",
+                      mask: "radial-gradient(circle 52px at center, transparent 98%, #000 100%)",
+                    }}
+                  />
+                  <ul className="cx-legendrows">
+                    {WASTE.map((w) => (
+                      <li key={w.label}>
+                        <i style={{ background: w.color }} aria-hidden="true" />
+                        <b>{w.label}</b>
+                        <em>{w.pct}%</em>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-              <p>{dom.blurb}</p>
-              <h3 className="ctax-h3">Where it accumulates inside {dom.name}</h3>
+              ) : null}
+              {lensNow.key === "team" ? (
+                <Bars
+                  rows={TEAMS.map(([label, v], i) => ({
+                    label,
+                    value: v,
+                    display: `${v}% · ${money((MID * v) / 100)}`,
+                    strong: i === 0,
+                  }))}
+                />
+              ) : null}
+              {lensNow.key === "site" ? (
+                <Bars
+                  rows={SITES.map(([label, v], i) => ({
+                    label,
+                    value: v,
+                    display: `${v}% · ${money((MID * v) / 100)}`,
+                    strong: i === 0,
+                  }))}
+                />
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--alt" />
+
+      {/* ------------------------------------------------ domain deep dive */}
+      <section className="dms-section cx-sec hm-railed" id="deep" aria-labelledby="cr-deep-h">
+        <div className="dms-wrap">
+          <Head id="cr-deep-h" eyebrow="Your domain" title="Go deep into one domain.">
+            <p className="dms-lede">
+              {openedFromRole
+                ? `Based on your role we opened ${dom.name}. Switch tabs to explore any domain.`
+                : "We have defaulted to Quality, the most common entry point and the domain that touches every other. Switch to the area you own to go deep there."}
+            </p>
+          </Head>
+          <div className="cx-lens" data-reveal>
+            <span className="cx-lens__k" id="cr-dom-k">Domain</span>
+            <div className="cx-lens__tabs" role="tablist" aria-labelledby="cr-dom-k">
+              {DEEP.map((d, i) => (
+                <button
+                  key={d.name}
+                  type="button"
+                  role="tab"
+                  aria-selected={i === domIdx}
+                  className={`cx-tab${i === domIdx ? " is-on" : ""}`}
+                  onClick={() => setDomIdx(i)}
+                >
+                  {d.name}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="cx-cells cx-cells--lead cx-lenspane" role="tabpanel" aria-label={dom.name}>
+            <div className="cx-cell cx-cell--quiet cx-stat">
+              <p className="cx-label">Share of your coordination tax</p>
+              <p className="cx-stat__fig">{dom.share}%</p>
+              <p className="cx-stat__line">
+                <b>{money((MID * dom.share) / 100)}</b>{" "}a year sits in {dom.name}.
+              </p>
+              <p className="cx-note">{dom.peer}</p>
+            </div>
+            <div className="cx-cell cx-bars">
+              <p className="cx-deep__blurb">{dom.blurb}</p>
+              <p className="cx-label">Where it accumulates inside {dom.name}</p>
               <Bars
                 rows={dom.sub.map(([label, v], i) => ({
                   label,
@@ -901,410 +999,291 @@ export function CtaxReport() {
                   strong: i === 0,
                 }))}
               />
-              <h3 className="ctax-h3">The dominant waste</h3>
-              <p className="ctax-note">{dom.waste}</p>
-              <h3 className="ctax-h3">
-                How Unifize reduces {dom.name} coordination tax
-              </h3>
-              <ul className="ctax-list">
+            </div>
+          </div>
+          <div className="cx-cells cx-cells--2 cx-deep__pair">
+            <div className="cx-cell">
+              <p className="cx-label">The dominant waste</p>
+              <p className="cx-deep__waste">{dom.waste}</p>
+            </div>
+            <div className="cx-cell cx-cell--answer">
+              <p className="cx-label">How Unifize reduces it</p>
+              <ul className="cx-checks">
                 {dom.fix.map((f) => (
                   <li key={f}>{f}</li>
                 ))}
               </ul>
-            </section>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* load / floor / tax */}
-            <section id="floor" className="ctax-pad">
-              <span className="ctax-eyebrow">What is actually recoverable</span>
-              <h2 className="ctax-h2">Load, floor, and tax</h2>
-              <p>
-                Not all coordination is waste. Some is the irreducible minimum
-                for running a regulated process, the floor. The tax is
-                everything above the floor: the part that exists only because
-                the work is fragmented. Separating the two is how we avoid
-                promising you can delete coordination that you legally cannot.
-              </p>
-              <div className="ctax-lft">
-                {LFT.map((s) => (
-                  <div key={s.label} className="ctax-lft__seg">
-                    <span>{s.label}</span>
-                    <span className="ctax-lft__rail">
-                      <span
-                        className="ctax-lft__bar ctax-mono"
-                        style={{
-                          width: `${Math.round((s.value / LFT[0].value) * 100)}%`,
-                          background: s.color,
-                        }}
-                      >
-                        {money(s.value)}
-                      </span>
-                    </span>
-                  </div>
-                ))}
+      <HatchBand />
+
+      {/* ------------------------------------------------------- signals */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="signals" aria-labelledby="cr-sig-h">
+        <div className="dms-wrap">
+          <Head id="cr-sig-h" eyebrow="How we assessed you" title="The signals behind this estimate.">
+            <p className="dms-lede">
+              Before you told us anything, we built a picture from publicly
+              available data. Exactly what we used, what each signal implies,
+              and where it came from. Nothing here is hidden.
+            </p>
+          </Head>
+          <div className="cx-rows cx-rows--sig" role="table" aria-label="Signals behind the estimate" data-reveal>
+            <div className="cx-rows__hd" role="row">
+              <span role="columnheader">Signal</span>
+              <span role="columnheader">Source</span>
+              <span role="columnheader">What it implies</span>
+            </div>
+            {SIGNALS.map(([signal, source, implies]) => (
+              <div className="cx-rows__row" role="row" key={signal}>
+                <span role="cell" className="cx-rows__k">{signal}</span>
+                <span role="cell"><Prov kind={source} /></span>
+                <span role="cell" className="cx-rows__txt">{implies}</span>
               </div>
-              <p className="ctax-note">
-                Total coordination load $5.6M. Irreducible floor $1.4M (about
-                25%). Reducible coordination tax $4.2M. The recoverable value
-                section below works only against the tax, never the floor.
-              </p>
-            </section>
+            ))}
+          </div>
+          <div className="cx-foot">
+            <p>
+              <b>One engine, one number.</b>{" "}Produced by the controlled
+              Coordination Tax methodology, the same engine sales uses, so this
+              number and the number in a conversation are one and the same.
+              Analyzing your real workflows directly is offered in discovery,
+              with consent; it is not part of this report.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            {/* signals */}
-            <section id="signals" className="ctax-pad">
-              <span className="ctax-eyebrow">How we assessed you</span>
-              <h2 className="ctax-h2">The signals behind this estimate</h2>
-              <p className="ctax-note">
-                Before you told us anything, we built a picture from publicly
-                available data. Here is exactly what we used, what each signal
-                implies for coordination tax, and how confident it makes us.
-                Nothing here is hidden.
-              </p>
-              <table className="ctax-table">
-                <thead>
-                  <tr>
-                    <th>Signal</th>
-                    <th>Source</th>
-                    <th>What it implies</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {SIGNALS.map(([signal, source, implies]) => (
-                    <tr key={signal}>
-                      <td>
-                        <b>{signal}</b>
-                      </td>
-                      <td>
-                        <Prov kind={source} />
-                      </td>
-                      <td className="ctax-dim">{implies}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="ctax-note">
-                <Prov kind="public" /> scraped from open sources.{" "}
-                <Prov kind="inferred" /> derived, not confirmed.{" "}
-                <Prov kind="confirmed" /> you told us directly in the intake.
-              </p>
-            </section>
+      <HatchBand className="hm-hatch--alt" />
 
-            {/* sharpen */}
-            <section id="sharpen" className="ctax-pad">
-              <span className="ctax-eyebrow">Sharpen it</span>
-              <h2 className="ctax-h2">What would make this more accurate</h2>
-              <p>
-                This is a stage 2 estimate. Each of the following would tighten
-                the range and raise confidence. The percentage is how much each
-                one typically narrows the estimate.
-              </p>
-              <div className="ctax-sharp">
-                {SHARPEN.map(([label, lift]) => (
-                  <div key={label} className="ctax-sharp__row">
-                    <span>{label}</span>
-                    <span className="ctax-sharp__lift ctax-mono">{lift}</span>
-                  </div>
-                ))}
+      {/* -------------------------------------------------------- sharpen */}
+      <section className="dms-section cx-sec hm-railed" id="sharpen" aria-labelledby="cr-sharp-h">
+        <div className="dms-wrap">
+          <Head id="cr-sharp-h" eyebrow="Sharpen it" title="What would make this more accurate.">
+            <p className="dms-lede">
+              Each of these tightens the range and raises confidence. The
+              figure is how much each one typically narrows the estimate.
+            </p>
+          </Head>
+          <ol className="cx-cells cx-sharp" data-reveal>
+            {SHARPEN.map(([label, lift], i) => (
+              <li key={label} className={`cx-cell${i === SHARPEN.length - 1 ? " cx-cell--answer" : ""}`}>
+                <span className="cx-sharp__lift">{lift}</span>
+                <span className="cx-sharp__k">{label}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="cx-foot">
+            <p>
+              <b>The most accurate picture comes from a two-week Phase 0</b>,
+              where we measure your actual coordination directly in one
+              workflow family. Most of the inputs above are confirmed for real
+              at that point, and confidence moves past 90 percent.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <HatchBand />
+
+      {/* ------------------------------------------------------- solution */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="solution" aria-labelledby="cr-sol-h">
+        <div className="dms-wrap">
+          <Head id="cr-sol-h" eyebrow="Why it is now solvable" title="The problem is old. The solution is new.">
+            <p className="dms-lede">
+              It can finally be seen, measured, and removed, because AI can now
+              read the work as it happens and accelerate it, while keeping
+              every approval human and auditable.
+            </p>
+          </Head>
+          <ol className="cx-cells cx-cells--3 cx-contents" data-reveal>
+            {LEVELS.map(([n, h, body]) => (
+              <li key={n} className="cx-cell">
+                <span className="cx-contents__n">{n}</span>
+                <h3>{h}</h3>
+                <p>{body}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="cx-subhead">How each kind of waste gets removed</p>
+          <div className="cx-rows cx-rows--sym" role="table" aria-label="How each kind of waste gets removed">
+            <div className="cx-rows__hd" role="row">
+              <span role="columnheader">Where the tax is</span>
+              <span role="columnheader">Why it happens</span>
+              <span role="columnheader">How Unifize removes it</span>
+            </div>
+            {MECH.map(([where, why, how]) => (
+              <div className="cx-rows__row" role="row" key={where}>
+                <span role="cell" className="cx-rows__k">{where}</span>
+                <span role="cell" className="cx-rows__txt">{why}</span>
+                <span role="cell" className="cx-rows__txt cx-rows__how">{how}</span>
               </div>
-              <div className="ctax-callout">
-                The most accurate picture comes from a two-week Phase 0, where
-                we measure your actual coordination directly in one workflow
-                family. Most of the inputs above are confirmed for real at that
-                point, and confidence moves past 90 percent.
-              </div>
-            </section>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            {/* solution */}
-            <section id="solution" className="ctax-pad">
-              <span className="ctax-eyebrow">Why it is now solvable</span>
-              <h2 className="ctax-h2">The problem is old. The solution is new.</h2>
-              <p className="ctax-lead">
-                Coordination tax has existed for as long as cross-functional
-                work has. What is new is that it can finally be seen, measured,
-                and removed, because AI can now read the work as it happens,
-                understand it, and accelerate it, while keeping every approval
-                human and auditable. That was not possible five years ago.
-              </p>
-              <div className="ctax-levels">
-                {[
-                  ["Level 1 · Execution", "Capture work in governed threads", "Each cross-functional event becomes one accountable thread. Decisions, approvals, evidence, and ownership stay connected, so proof is generated as the work happens rather than reconstructed under pressure."],
-                  ["Level 2 · Understanding", "AI sees how work really flows", "The model reads the threads and learns how your processes actually run versus how they are documented, where work waits, who it waits on, and what evidence is missing before a reviewer ever opens it."],
-                  ["Level 3 · Transformation", "Continuous, measured reduction", "AI drafts summaries, flags missing evidence before review, and chases the next step, so the coordination tax falls and you can watch it fall on a live number."],
-                ].map(([n, h, body]) => (
-                  <div key={n} className="ctax-lvl">
-                    <span className="ctax-lvl__n">{n}</span>
-                    <h3>{h}</h3>
-                    <p className="ctax-note">{body}</p>
-                  </div>
-                ))}
-              </div>
-              <h3 className="ctax-h3">How each kind of waste gets removed</h3>
-              <table className="ctax-table">
-                <thead>
-                  <tr>
-                    <th>Where the tax is</th>
-                    <th>Why it happens</th>
-                    <th>How Unifize removes it</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {MECH.map(([where, why, how]) => (
-                    <tr key={where}>
-                      <td>
-                        <b>{where}</b>
-                      </td>
-                      <td className="ctax-dim">{why}</td>
-                      <td>{how}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </section>
+      <HatchBand className="hm-hatch--alt" />
 
-            {/* journey */}
-            <section id="journey" className="ctax-pad">
-              <span className="ctax-eyebrow">How you reduce it</span>
-              <h2 className="ctax-h2">
-                From this assessment to a measured reduction
-              </h2>
-              <p className="ctax-lead">
-                This assessment found and sized the problem. Reducing it is a
-                repeatable journey: take your highest-tax processes, decompose
-                them into steps, cut the wasted time with structure and AI, and
-                measure the before and after, one process at a time, until the
-                whole organization's coordination tax is falling on a dashboard
-                you can watch.
-              </p>
-              <div className="ctax-steps">
-                {JOURNEY.map(([head, body], i) => (
-                  <div
-                    key={head}
-                    className={`ctax-step${i === JOURNEY.length - 1 ? " is-done" : ""}`}
-                  >
-                    <span className="ctax-step__n ctax-mono" aria-hidden="true">
-                      {i + 1}
-                    </span>
-                    <div>
-                      <b>{head}</b>{" "}
-                      <span className="ctax-dim">{body}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <h3 className="ctax-h3">What it looks like at the process level</h3>
-              <p className="ctax-note">
-                One process, the CAPA workflow, without Unifize and with it.
-                The same steps, measured.
-              </p>
-              <div className="ctax-ba">
-                <div className="ctax-ba__row">
+      {/* -------------------------------------------------------- journey */}
+      <section className="dms-section cx-sec hm-railed" id="journey" aria-labelledby="cr-jr-h">
+        <div className="dms-wrap">
+          <Head id="cr-jr-h" eyebrow="How you reduce it" title="From this assessment to a measured reduction.">
+            <p className="dms-lede">
+              Take your highest-tax processes, decompose them into steps, cut
+              the wasted time with structure and AI, and measure the before and
+              after, one process at a time.
+            </p>
+          </Head>
+          <ol className="cx-journey" data-reveal>
+            {JOURNEY.map(([head, body], i) => (
+              <li key={head} className={i === JOURNEY.length - 1 ? "is-done" : undefined}>
+                <span className="cx-journey__n">{String(i + 1).padStart(2, "0")}</span>
+                <b>{head}</b>
+                <span>{body}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="cx-cells cx-cells--2 cx-journey__after">
+            <div className="cx-cell">
+              <p className="cx-label">One process, the CAPA workflow</p>
+              <div className="cx-ba">
+                <div className="cx-ba__row">
                   <span>Without Unifize</span>
-                  <span className="ctax-ba__rail">
-                    <span
-                      className="ctax-ba__bar is-before"
-                      style={{ width: "100%" }}
-                    />
-                  </span>
-                  <span className="ctax-mono">90 days · $1.18M</span>
+                  <span className="cx-ba__rail"><span className="is-before" style={{ width: "100%" }} /></span>
+                  <em>90 days · $1.18M</em>
                 </div>
-                <div className="ctax-ba__row">
+                <div className="cx-ba__row">
                   <span>With Unifize</span>
-                  <span className="ctax-ba__rail">
-                    <span
-                      className="ctax-ba__bar is-after"
-                      style={{ width: "38%" }}
-                    />
-                  </span>
-                  <span className="ctax-mono">34 days · $0.52M</span>
+                  <span className="cx-ba__rail"><span className="is-after" style={{ width: "38%" }} /></span>
+                  <em>34 days · $0.52M</em>
                 </div>
               </div>
-
-              <h3 className="ctax-h3">Then it aggregates</h3>
-              <p className="ctax-note">
-                Process reductions roll up to your coordination tax dashboard.
-                Audit readiness and compliance improve as the tax falls,
-                because evidence is now generated as the work happens.
-              </p>
-              <div className="ctax-cards">
-                {[
-                  ["$4.2M → $2.9M", "org-wide coordination tax, without vs with Unifize"],
-                  ["31%", "reduced in year one, on measured data"],
-                  ["90 → 34 days", "CAPA cycle time"],
-                  ["3 wks → 2 days", "audit prep, with risk down not up"],
-                ].map(([n, d]) => (
-                  <div key={d} className="ctax-ca">
-                    <div className="ctax-ca__num ctax-mono">{n}</div>
-                    <div className="ctax-note">{d}</div>
+              <p className="cx-note">The same steps, measured before and after.</p>
+            </div>
+            <div className="cx-cell cx-cell--quiet">
+              <p className="cx-label">Then it aggregates</p>
+              <dl className="cx-agg">
+                {AGGREGATE.map(([n, d]) => (
+                  <div key={d}>
+                    <dt>{n}</dt>
+                    <dd>{d}</dd>
                   </div>
                 ))}
-              </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="ctax-callout">
-                <b>This is the rest of the value journey.</b> The assessment is
-                step zero: it finds and sizes the tax. Everything above is how
-                Unifize then removes it, process by process, with the before
-                and after measured each time and aggregated so you can watch
-                the organization's coordination tax fall while staying
-                compliant.
-              </div>
-            </section>
+      <HatchBand />
 
-            {/* roi */}
-            <section id="roi" className="ctax-pad">
-              <span className="ctax-eyebrow">Recoverable value</span>
-              <h2 className="ctax-h2">What you could get back</h2>
-              <p className="ctax-note">
-                Applied only to the reducible tax ($4.2M), never the floor.
-                Figures are the midpoint of your range at each level of the
-                roadmap.
-              </p>
-              <div className="ctax-tiers">
-                {TIERS.map(([label, pct, dollars]) => (
-                  <div key={label} className="ctax-tier">
-                    <span>{label}</span>
-                    <span className="ctax-tier__rail">
-                      <span
-                        className="ctax-tier__bar"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </span>
-                    <span className="ctax-mono">
-                      {pct}% · {dollars}
-                    </span>
-                  </div>
-                ))}
+      {/* ------------------------------------------ load, floor, recoverable */}
+      <section className="dms-section dms-section--alt cx-sec hm-railed" id="roi" aria-labelledby="cr-roi-h">
+        <div className="dms-wrap">
+          <Head id="cr-roi-h" eyebrow="What you get back" title="Recovered from the tax, never the floor.">
+            <p className="dms-lede">
+              Not all coordination is waste. Some is the irreducible minimum
+              for running a regulated process. The tax is everything above that
+              floor, and it is the only part we count as recoverable.
+            </p>
+          </Head>
+          <div className="cx-cells cx-cells--3 cx-lft" data-reveal>
+            {LFT.map((l, i) => (
+              <div key={l.label} className={`cx-cell${i === 2 ? " cx-cell--tax" : ""}`}>
+                <p className="cx-label">{l.label}</p>
+                <p className="cx-lft__fig">{money(l.value)}</p>
+                <span className="cx-lft__bar" aria-hidden="true">
+                  <span style={{ width: `${Math.round((l.value / LFT[0].value) * 100)}%` }} />
+                </span>
               </div>
-              <div className="ctax-callout">
-                <b>How we price.</b> Unifize ties pricing to measured
-                reduction. The conservative year-one figure on the CFO summary
-                ($0.9M to $1.3M) is what the first level alone, with no AI,
-                recovers. The question stops being &ldquo;what does the
-                software cost&rdquo; and becomes &ldquo;how confident are you
-                in the reduction&rdquo;, which is exactly what the live
-                measurement answers.
+            ))}
+          </div>
+          <p className="cx-subhead">What you could get back, at each level of the roadmap</p>
+          <div className="cx-tiers">
+            {TIERS.map(([label, pct, dollars]) => (
+              <div key={label} className="cx-tier">
+                <span>{label}</span>
+                <span className="cx-tier__rail"><span style={{ width: `${pct}%` }} /></span>
+                <em>{pct}% · {dollars}</em>
               </div>
-            </section>
+            ))}
+          </div>
+          <div className="cx-foot">
+            <p>
+              <b>How we price.</b>{" "}Unifize ties pricing to measured reduction.
+              The conservative year-one figure on the one-pager ($0.9M to
+              $1.3M) is what the first level alone, with no AI, recovers. The
+              question stops being &ldquo;what does the software cost&rdquo; and
+              becomes &ldquo;how confident are you in the reduction&rdquo;, which
+              is exactly what the live measurement answers.
+            </p>
+          </div>
+        </div>
+      </section>
 
-            {/* proof */}
-            <section className="ctax-pad">
-              <span className="ctax-eyebrow">Proof from regulated manufacturers</span>
-              <h2 className="ctax-h2">Teams with your problem, after Unifize</h2>
-              <p className="ctax-note">
-                Real Unifize customers in regulated, multi-requirement
-                manufacturing. The pattern they describe, disconnected systems
-                that could not tie issues together, is the same root cause this
-                report found in your operation.
-              </p>
+      <HatchBand className="hm-hatch--alt" />
 
-              <figure className="ctax-quote">
-                <blockquote>
-                  &ldquo;Tasks that have taken weeks or months are now
-                  completed in days. We have had conversations that launched
-                  and then closed all in the same day. For us, that is just
-                  unheard of.&rdquo;
-                </blockquote>
-                <figcaption className="ctax-note">
-                  <b>Tedd Carr</b>, Director of Quality, The Will-Burt Company
-                  · 40 years in quality · aerospace, military, and commercial
-                  construction
-                </figcaption>
-                <div className="ctax-cards">
-                  <div className="ctax-ca">
-                    <div className="ctax-ca__num ctax-mono">75%</div>
-                    <div className="ctax-note">
-                      faster issue closure within the first month
-                    </div>
-                  </div>
-                  <div className="ctax-ca">
-                    <div className="ctax-ca__num ctax-mono">5 → 1</div>
-                    <div className="ctax-note">
-                      disconnected quality systems consolidated into Unifize
-                    </div>
-                  </div>
-                </div>
+      {/* ---------------------------------------------------------- proof */}
+      <section className="dms-section dms-section--dark cx-sec cx-proof hm-railed" id="proof" aria-labelledby="cr-proof-h">
+        <div className="dms-wrap">
+          <header className="cx-proof__head" data-reveal>
+            <Eyebrow>Proof from regulated manufacturers</Eyebrow>
+            <h2 className="dms-h2" id="cr-proof-h">Teams with your problem, after Unifize.</h2>
+          </header>
+          <div className="cx-cells cx-cells--proof" data-reveal>
+            <figure className="cx-cell cx-quote">
+              <blockquote>
+                &ldquo;Tasks that have taken weeks or months are now completed
+                in days. We have had conversations that launched and then
+                closed all in the same day.&rdquo;
+              </blockquote>
+              <figcaption>
+                <b>Tedd Carr</b>, Director of Quality, The Will-Burt Company
                 <a
-                  className="ctax-quote__link"
                   href="https://www.unifize.com/content/how-a-quality-veteran-from-the-will-burt-company-replaced-multiple-quality-support-systems-with-unifize-and-boosted-issue-closure-time-by-75-within-the-first-month"
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Read the full Will-Burt story →
+                  Read the story &rarr;
                 </a>
-              </figure>
-
-              <div className="ctax-card ctax-refcard">
-                <span className="ctax-eyebrow ctax-eyebrow--ok">Your industry</span>
-                <h3>Recovery Force, a wearable medical device manufacturer</h3>
-                <p className="ctax-note">
-                  FDA-regulated, ISO 13485, working through a 483 observation.
-                  Recovery Force runs CAPA, complaints, audits, change
-                  control, document control, and training on Unifize, the
-                  exact domains carrying your coordination tax, in a regulated
-                  environment like yours. Their QA manager is a reference
-                  customer.
-                </p>
-              </div>
-              <p className="ctax-note">
-                Both replaced disconnected systems and spreadsheets with one
-                coordinated source of truth. That is the root cause this report
-                identified in your operation, and it is what makes the
-                reduction hold rather than drift back.
-              </p>
-            </section>
-
-            {/* next */}
-            <section id="next" className="ctax-pad">
-              <span className="ctax-eyebrow">Next steps</span>
-              <h2 className="ctax-h2">Three ways to take this further</h2>
-              <ol className="ctax-nextsteps">
-                <li>
-                  <b>Sharpen it.</b> A 30-minute discovery call confirms your
-                  real volumes and moves this to a stage 3 estimate.
-                </li>
-                <li>
-                  <b>Measure it.</b> A bounded two-week Phase 0 in one workflow
-                  family measures your actual coordination tax, with no
-                  rip-and-replace.
-                </li>
-                <li>
-                  <b>Share it.</b> Forward the one-page summary at the top to
-                  your CFO and your operations lead.
-                </li>
-              </ol>
-              <div className="ctax-next__ctas">
-                <button type="button" className="dms-btn">
-                  Book the discovery call
-                </button>
-                <button
-                  type="button"
-                  className="dms-btn dms-btn-ghost"
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                >
-                  Back to top
-                </button>
-              </div>
-            </section>
-
-            <footer className="ctax-page__footer">
-              Coordination Tax Engine (internal name for the machine) ·
-              Coordination Tax Assessment (customer-facing). Produced by the
-              controlled Coordination Tax methodology; the same engine sales
-              uses, so this number and the number in a conversation are one and
-              the same. Confidence is stated honestly at every stage. The
-              probe, analyzing your real workflows directly, is offered in
-              discovery with consent; it is not part of this report.
-            </footer>
-          </div>
-
-              <p className="ctax-backlink">
-                <Link href="/coordination-tax-calculator">
-                  ← Back to the assessment
-                </Link>
-              </p>
+              </figcaption>
+            </figure>
+            <div className="cx-cell cx-fact">
+              <p className="cx-fact__fig">75%</p>
+              <p>faster issue closure within the first month</p>
+            </div>
+            <div className="cx-cell cx-fact">
+              <p className="cx-fact__fig">5 &rarr; 1</p>
+              <p>disconnected quality systems consolidated into Unifize</p>
             </div>
           </div>
-        </section>
-      )}
+          <p className="cx-proof__ref">
+            <span className="cx-label">In your industry</span>
+            <span>
+              <b>Recovery Force</b>, a wearable medical device manufacturer,
+              FDA-regulated and ISO 13485, working through a 483 observation,
+              runs CAPA, complaints, audits, change control, document control,
+              and training on Unifize. Their QA manager is a reference
+              customer.
+            </span>
+          </p>
+        </div>
+      </section>
+
+      <HatchBand className="hm-hatch--dark" />
+
+      <RailsClose
+        id="cx-close-h"
+        eyebrow="Take it further"
+        heading="Sharpen it, then measure it."
+        lede="A 30-minute discovery call confirms your real volumes and moves this to stage 3. A two-week Phase 0 in one workflow family measures it for real, with no rip-and-replace."
+        primaryLabel="Book the discovery call"
+        secondary={{ label: "Back to the assessment", href: "/coordination-tax-calculator" }}
+        source="ctax-report-close"
+      />
     </div>
   );
 }

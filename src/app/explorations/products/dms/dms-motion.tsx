@@ -12,7 +12,11 @@
 
 import { useEffect } from "react";
 
-export function DmsMotion() {
+/* `selector` widens what reveals (the page-motion pages add the hatch bands,
+ * page-motion.css); a revealed element with `data-stagger` numbers its
+ * children (or the descendants its value selects) as --pm-i, so CSS can
+ * step them in one after another. */
+export function DmsMotion({ selector = "[data-reveal]" }: { selector?: string } = {}) {
   useEffect(() => {
     const root = document.querySelector<HTMLElement>(".dms");
     if (!root) return;
@@ -41,9 +45,14 @@ export function DmsMotion() {
 
     const seen = new WeakSet<Element>();
     const scan = () => {
-      root.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+      root.querySelectorAll<HTMLElement>(selector).forEach((el) => {
         if (seen.has(el)) return;
         seen.add(el);
+        const stagger = el.getAttribute("data-stagger");
+        if (stagger !== null) {
+          const items = stagger ? el.querySelectorAll<HTMLElement>(stagger) : el.children;
+          Array.from(items).forEach((item, i) => (item as HTMLElement).style.setProperty("--pm-i", String(i)));
+        }
         const r = el.getBoundingClientRect();
         if (r.top < window.innerHeight && r.bottom > 0) {
           el.classList.add("is-in");
@@ -86,7 +95,7 @@ export function DmsMotion() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [selector]);
 
   return null;
 }

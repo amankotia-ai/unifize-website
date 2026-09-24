@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { IndustryPage } from "../_shared/IndustryPage";
-import { AEROSPACE } from "./aerospace-data";
+import { IndustryRailsPage } from "../_shared/IndustryRailsPage";
+import { AEROSPACE, AEROSPACE_RAILS } from "./aerospace-data";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
 
-export const metadata: Metadata = {
-  title: AEROSPACE.meta.title,
-  description: AEROSPACE.meta.description,
-};
+export const metadata: Metadata = pageMetadata("/industries/aerospace");
 
 export default function AerospacePage() {
-  return <IndustryPage data={AEROSPACE} />;
+  return <IndustryRailsPage data={AEROSPACE} rails={AEROSPACE_RAILS} />;
 }
