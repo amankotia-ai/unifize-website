@@ -247,7 +247,7 @@
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  padding: 9px 11px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--dms-hairline);
 }
 .stx-root .stx-arc__assist > header p { margin: 0; color: var(--dms-muted); font-size: 8.5px; }
@@ -258,15 +258,22 @@
 .stx-root .stx-arc__assist-table > p.is-head,
 .stx-root .stx-arc__assist-row {
   display: grid;
-  grid-template-columns: 22px 62px minmax(0, 1fr);
+  grid-template-columns: 34px 62px minmax(0, 1fr);
   margin: 0;
   border-top: 1px solid var(--dms-surface-alt);
 }
 .stx-root .stx-arc__assist-table > p.is-head { border-top: 0; background: #fafbfc; color: var(--dms-muted); font-size: 7px; }
 .stx-root .stx-arc__assist-table > p.is-head > * ,
-.stx-root .stx-arc__assist-row > * { padding: 6px 7px; border-left: 1px solid var(--dms-surface-alt); }
+.stx-root .stx-arc__assist-row > * { padding: 8px; border-left: 1px solid var(--dms-surface-alt); }
+.stx-root .stx-arc__assist-table > p.is-head > :last-child,
+.stx-root .stx-arc__assist-row > :last-child { padding-right: 14px; }
 .stx-root .stx-arc__assist-table > p.is-head > :first-child,
 .stx-root .stx-arc__assist-row > :first-child { border-left: 0; }
+/* the tick box is its own cell: no cell padding (it would swell the box),
+ * inset 14px like the header and every other thread card, on the first
+ * text line */
+.stx-root .stx-arc__assist-table > p.is-head > .stx-arc__assist-box,
+.stx-root .stx-arc__assist-row > .stx-arc__assist-box { justify-self: start; align-self: start; margin: 7px 0 0 14px; padding: 0; }
 .stx-root .stx-arc__assist-label { color: var(--dms-ink-2); font-size: 7.5px; line-height: 1.35; }
 .stx-root .stx-arc__assist-value { display: flex; flex-direction: column; gap: 4px; min-width: 0; color: var(--dms-ink); font-size: 7.5px; line-height: 1.4; }
 .stx-root .stx-arc__assist-value > p { margin: 0; }
@@ -298,7 +305,7 @@
 .stx-root .stx-arc__assist-box .stx-i { width: 8px; height: 8px; stroke-width: 2.8; }
 .stx-root .stx-arc__assist-row.is-picked { background: color-mix(in oklab, var(--dms-accent), transparent 96%); }
 
-.stx-root .stx-arc__assist > footer { display: block; padding: 8px 10px; border-top: 1px solid var(--dms-hairline); }
+.stx-root .stx-arc__assist > footer { display: block; padding: 12px 14px; border-top: 1px solid var(--dms-hairline); }
 .stx-root .stx-arc__assist > footer b {
   position: relative;
   display: block;
