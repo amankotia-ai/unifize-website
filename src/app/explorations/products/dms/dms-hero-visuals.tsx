@@ -120,9 +120,6 @@ function HeroCopy() {
           <p className="dms-lede dms-hero__sub">{dmsCopy("hero.sub", PRODUCT.description)}</p>
           <div className="dms-hero__ctas">
             <BookDemoButton className="dms-btn" source="hero">{dmsCopy("hero.cta1", "Book a demo")} &rarr;</BookDemoButton>
-            <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-              {dmsCopy("hero.cta2", "Take Coordination Tax Assessment")}
-            </Link>
           </div>
         </div>
       </div>

@@ -324,6 +324,8 @@
   }
   .dms--redesign.dms--home .hm-heromock__scene .stx-root .stx-arc__camera {
     clip-path: inset(0 var(--hm-clip-r) 0 324px);
+    --stx-cut-l: 324px;
+    --stx-cut-r: var(--hm-clip-r);
     transform: translate3d(calc(-50% - var(--hm-frame-dx) * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
     box-shadow: none;
     outline: 0;
@@ -399,6 +401,7 @@
     grid-template-columns: 54px 270px 680px 390px;
     width: 1394px;
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     transform: translate3d(calc(-50% - 162px * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
   }
 
@@ -3026,6 +3029,7 @@
     grid-template-columns: 54px 270px 680px 390px;
     width: 1394px;
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     transform: translate3d(calc(-50% - 162px * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
   }
 }

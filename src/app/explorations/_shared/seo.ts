@@ -60,10 +60,10 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     card: { eyebrow: "Platform", lead: "Your work crosses teams.", turn: "Your systems don’t." },
   },
   "/about": {
-    title: "About Unifize · Built by operators for regulated industries",
+    title: "About Unifize · AI platform for regulated work",
     absolute: true,
     description:
-      "Founded in 2018 by two operators who ran regulated manufacturing across four countries. Where we came from, what we make, and our offices in Palo Alto and Bengaluru.",
+      "Unifize is an AI platform for regulated, cross-functional work, for manufacturers in medical devices, pharma, food and more. Founded 2018 in Palo Alto.",
     card: { eyebrow: "About", lead: "Built by operators.", turn: "For regulated industries." },
   },
   "/coordination-tax-calculator": {
@@ -106,19 +106,19 @@ export const PAGE_SEO: Record<string, PageSeo> = {
   },
 
   /* ----------------------------------------------------------- solutions */
-  "/domains/quality": {
+  "/solution/quality": {
     title: "Quality: the decision behind every CAPA, on the record",
     description:
       "The judgement behind every deviation, CAPA, and audit response lives in email and side channels. Unifize makes the decision part of the quality record.",
     card: { eyebrow: "Solutions · Quality", lead: "Your quality system closes the event.", turn: "It loses the decision." },
   },
-  "/domains/compliance": {
+  "/solution/compliance": {
     title: "Compliance: proof that holds the next time someone asks",
     description:
       "Validation, data integrity, safety, and regulatory change live in briefs and spreadsheets. Unifize keeps the decision trace, so the answer holds when someone asks again.",
     card: { eyebrow: "Solutions · Compliance", lead: "You can prove compliance today.", turn: "Ask again tomorrow." },
   },
-  "/domains/regulatory-affairs": {
+  "/solution/regulatory-affairs": {
     title: "Regulatory Affairs: reporting and submissions on the clock",
     description:
       "Reportability, submissions, and label approvals close on deadlines someone else set. Unifize holds the decision and its evidence on one record, inside the clock.",
@@ -128,58 +128,72 @@ export const PAGE_SEO: Record<string, PageSeo> = {
       turn: "The evidence is still in five inboxes.",
     },
   },
-  "/domains/supplier-management": {
+  "/solution/supplier-management": {
     title: "Supplier Management: qualification you can still prove",
     description:
       "Supplier qualification, part approval, incoming disposition, and corrective action close across company lines. Unifize keeps each decision on the record.",
     card: { eyebrow: "Solutions · Supplier Management", lead: "You qualified the supplier.", turn: "A year on, nobody can prove it." },
   },
-  "/domains/post-market-and-recall": {
+  "/solution/post-market-and-recall": {
     title: "Post-Market & Recall: four workflows, one record",
     description:
       "A recall runs the hold, customer notification, returns, and regulatory submission in parallel. Unifize holds all four on one record, from complaint to verified close.",
     card: { eyebrow: "Solutions · Post-Market & Recall", lead: "A recall is four workflows at once.", turn: "Each one runs its own clock." },
   },
-  "/domains/change-control": {
+  "/solution/change-control": {
     title: "Change Control: every approval you can replay",
     description:
       "Sign-off happens in email threads and design reviews, so the evidence and conditions never reach the record. Unifize holds the change from request to effective date.",
     card: { eyebrow: "Solutions · Change Control", lead: "The change gets approved.", turn: "Nobody can replay why." },
   },
 
-  "/domains/document-and-records-control": {
+  "/solution/document-and-records-control": {
     title: "Document & Records Control: one version, the one in use",
     description:
       "Documents are approved in one place, copied to a share and printed for the floor. Unifize keeps one controlled version, its approval and where it went on the same record.",
     card: { eyebrow: "Solutions · Document & Records Control", lead: "The system says v3.2.", turn: "The workstation says v2.8." },
   },
 
-  "/domains/training-and-competency": {
+  "/solution/training-and-competency": {
     title: "Training & Competency: trained on the version in use",
     description:
       "The procedure goes live and the training catches up weeks later. Unifize creates training from the revision and closes it on a qualified trainer's sign-off.",
     card: { eyebrow: "Solutions · Training & Competency", lead: "The SOP went live.", turn: "The training didn't." },
   },
 
-  "/domains/operations": {
+  "/solution/operations": {
     title: "Operations: release the hold, keep the reason",
     description:
       "QA dispositions and engineering calls are chased through email and escalation calls. Unifize runs the hold, the review and the release on one record the next shift can read.",
     card: { eyebrow: "Solutions · Operations", lead: "The line is held.", turn: "The decision is on a call." },
   },
 
-  "/domains/supply-chain-and-planning": {
+  "/solution/supply-chain-and-planning": {
     title: "Supply Chain & Planning: every allocation, with its reasons",
     description:
       "Shortage allocations, PO changes and expedites are decided in escalation calls. Unifize keeps the options, the criteria and the commitments on the record behind every call.",
     card: { eyebrow: "Solutions · Supply Chain & Planning", lead: "Three lines want the last 40 units.", turn: "Nobody wrote down who got them." },
   },
 
-  "/domains/procurement-and-sourcing": {
+  "/solution/procurement-and-sourcing": {
     title: "Procurement & Sourcing: award on the whole record",
     description:
       "Award rationale and bid criteria live in email and spreadsheets, so sourcing sees price and never the cost of quality. Unifize keeps the evaluation and the award on one record.",
     card: { eyebrow: "Solutions · Procurement & Sourcing", lead: "The award went to the lowest price.", turn: "The rework came with it." },
+  },
+
+  "/solution/customer-management": {
+    title: "Customer Management: answer on time, keep what you promised",
+    description:
+      "Quotes, contract terms and customer requirements are pieced together in email, so responses run late and promises never reach the floor. Unifize runs the response and its commitments on one record.",
+    card: { eyebrow: "Solutions · Customer Management", lead: "The RFQ closes Friday.", turn: "Engineering hasn't seen it yet." },
+  },
+
+  "/solution/new-product-development": {
+    title: "New Product Development: pass every gate on evidence",
+    description:
+      "Gate evidence is rebuilt for every review and approvals live in email, so gates recycle and launches slip. Unifize holds each gate's criteria, evidence and decision on the record.",
+    card: { eyebrow: "Solutions · New Product Development", lead: "The gate passed on a deck.", turn: "Launch slipped anyway." },
   },
 
   /* ---------------------------------------------------------- industries */
@@ -195,70 +209,79 @@ export const PAGE_SEO: Record<string, PageSeo> = {
     absolute: true,
     description:
       "Your batch record shows the lot was released, not why. Unifize keeps the decision trace across quality, regulatory, and operations, ready for an FDA inspection.",
-    card: { eyebrow: "Industries · Pharmaceuticals", lead: "Your batch record shows the lot was released.", turn: "Not why." },
+    card: { eyebrow: "Industries · Pharmaceuticals", lead: "One OOS result stops the batch.", turn: "The release carries the reason." },
   },
   "/industries/chemicals": {
     title: "Unifize for Specialty Chemical Manufacturers",
     absolute: true,
     description:
       "Your change log shows what changed, not why. Unifize keeps the decision trace across quality, EHS, and the regulatory dossier, so it holds up in a GMP or REACH audit.",
-    card: { eyebrow: "Industries · Chemicals", lead: "Your change log shows what changed.", turn: "Not why." },
+    card: { eyebrow: "Industries · Chemicals", lead: "One raw material changes supplier.", turn: "The SDS and the dossier follow it." },
   },
   "/industries/cosmetics": {
     title: "Unifize for Cosmetics and Personal Care Manufacturers",
     absolute: true,
     description:
       "Your substantiation file says the product is safe, not why. Unifize keeps the decision trace behind every formula change and supplier COA under MoCRA.",
-    card: { eyebrow: "Industries · Cosmetics", lead: "Your substantiation file says the product is safe.", turn: "Not why." },
+    card: { eyebrow: "Industries · Cosmetics", lead: "The retailer asks for the safety file.", turn: "The missing COA lands on its lot." },
   },
   "/industries/laboratories": {
     title: "Unifize for ISO/IEC 17025 Testing and Calibration Labs",
     absolute: true,
     description:
       "Your LIMS has the result, not why. Unifize keeps the decision trace behind every nonconformance, method deviation, and competency record for ISO/IEC 17025 labs.",
-    card: { eyebrow: "Industries · Laboratories", lead: "Your LIMS has the result.", turn: "Not why." },
+    card: { eyebrow: "Industries · Laboratories", lead: "One QC point breaks 1-3s.", turn: "Every result it touched is held." },
   },
   "/industries/automotive": {
     title: "Unifize for Automotive Suppliers under IATF 16949",
     absolute: true,
     description:
       "Your PPAP proves the part conforms, not why. Unifize keeps the decision trace behind every PPAP, engineering change, and 8D for IATF 16949 suppliers.",
-    card: { eyebrow: "Industries · Automotive", lead: "Your PPAP proves the part conforms.", turn: "Not why." },
+    card: { eyebrow: "Industries · Automotive", lead: "A warranty return opens the 8D.", turn: "Suspect stock is contained everywhere." },
   },
   "/industries/aerospace": {
     title: "Unifize for Aerospace and Defense Suppliers",
     absolute: true,
     description:
       "Your FAI signed off the first article, not why. Unifize keeps the decision trace behind every change and special process, ready for AS9100 and NADCAP.",
-    card: { eyebrow: "Industries · Aerospace", lead: "Your FAI signed off the first article.", turn: "Not why." },
+    card: { eyebrow: "Industries · Aerospace", lead: "Balloon 3 is out of tolerance.", turn: "The FAI closes with the MRB on it." },
   },
   "/industries/food-processing": {
     title: "Unifize for Food Manufacturers and Co-Packers",
     absolute: true,
     description:
       "Your HACCP plan cleared the lot, not why. Unifize keeps the decision trace behind every deviation, allergen control, and hold for FSMA and GFSI audits.",
-    card: { eyebrow: "Industries · Food processing", lead: "Your HACCP plan cleared the lot.", turn: "Not why." },
+    card: { eyebrow: "Industries · Food processing", lead: "A supplier flags an undeclared allergen.", turn: "Every finished lot it reached is on hold." },
   },
   "/industries/nutritional-supplements": {
     title: "Unifize for Dietary Supplement Manufacturers",
     absolute: true,
     description:
       "Your COA cleared the ingredient, not why. Unifize keeps the decision trace behind identity testing, batch records, and specifications under 21 CFR Part 111.",
-    card: { eyebrow: "Industries · Nutritional supplements", lead: "Your COA cleared the ingredient.", turn: "Not why." },
+    card: { eyebrow: "Industries · Nutritional supplements", lead: "The supplier’s COA passed.", turn: "The FTIR fingerprint didn’t." },
   },
   "/industries/industrial-machinery": {
     title: "Unifize for Industrial Machinery OEMs",
     absolute: true,
     description:
       "Your FAT accepted the machine, not why. Unifize keeps the decision trace behind every engineering change and safety-critical choice, through FAT, SAT, and audit.",
-    card: { eyebrow: "Industries · Industrial machinery", lead: "Your FAT accepted the machine.", turn: "Not why." },
+    card: { eyebrow: "Industries · Industrial machinery", lead: "A missing IQ protocol holds the FAT.", turn: "Acceptance releases payment." },
   },
   "/industries/cro": {
     title: "Unifize for Contract Research Organizations",
     absolute: true,
     description:
       "Your eTMF says the study closed, not why. Unifize keeps every protocol deviation and CAPA inspection-ready per study and per sponsor, for BIMO and sponsor audits.",
-    card: { eyebrow: "Industries · Contract research", lead: "Your eTMF says the study closed.", turn: "Not why." },
+    card: { eyebrow: "Industries · Contract research", lead: "Sponsor B audits Study 03.", turn: "It sees Study 03, and only that." },
+  },
+
+  /* --------------------------------------------------------------- roles
+   * reached from the product pages' "Who it is for" rosters, not the nav */
+  "/personas/quality-manager": {
+    title: "For Quality Managers: every decision, with its evidence",
+    description:
+      "CAPAs, change controls, deviations and audit findings reach you in one queue, each with its evidence and thread, decided on the record and signed under Part 11.",
+    card: { eyebrow: "Roles · Quality Manager", lead: "Dozens of decisions wait on you.", turn: "Each one arrives with its evidence." },
   },
 
   /* ----------------------------------------------------------- resources */

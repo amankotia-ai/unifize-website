@@ -1,0 +1,38 @@
+{
+  "personaId": "document-controller-pharma",
+  "firstImpression": "Wrong industry for me, and the headline is about a change record touching six other records, so I'm hunting for the document control door and not finding it on this page.",
+  "comprehension": "A workflow layer for regulated manufacturers that sits next to the QMS/PLM/ERP and holds the conversation, checklist and e-signatures for a change, CAPA or complaint on one record, so the approval history can be pulled for an inspector. It is not presenting itself as a DMS here; document control shows up as one of the things a change touches.",
+  "resonance": 1,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "Medical devices, Class II/III, 21 CFR 820. Not my regs. The card does show 'SOP-118 Rev D' releasing and 'Training 12 operators on SOP-118 ... Assigned', which is my world, but it is a row inside someone else's change record.", "aboutMyWork": "partly"},
+    {"section": "01", "reaction": "'Incumbents track document status' reads like a dig at exactly what I do. The checklist line 'Document redline Rev C · effective → Rev D · draft' is the only thing I care about and it is 1 of 9 items. Chat inbox screenshot is noise to me.", "aboutMyWork": "partly"},
+    {"section": "02", "reaction": "Seats are quality leadership, engineering, RA, validation, operations. No document controller seat. The person who actually pulls the trace for the investigator is usually me, and I'm not listed.", "aboutMyWork": "no"},
+    {"section": "03", "reaction": "'Controlled Distribution' is under Change control, buried in a tag list. 'One change carried to every document, approval and training record it touches' is close to my job, but I had to dig for it.", "aboutMyWork": "partly"},
+    {"section": "04", "reaction": "Part 11 e-signatures and 'sits alongside the QMS ... you have already validated'. OK, but if it doesn't replace my document module, where do the controlled copies live? That wasn't answered.", "aboutMyWork": "partly"},
+    {"section": "05", "reaction": "MDR reporting, recalls, 483 items. The 483 item about rationale not shown is relatable in general. The rest is RA and complaints, not me.", "aboutMyWork": "no"},
+    {"section": "06", "reaction": "Coordination tax dollar ranges. That's for my Quality Manager's budget conversation, not me. No document control line item.", "aboutMyWork": "no"},
+    {"section": "07", "reaction": "Device company testimonials. 'The Design History File, kept current' is the closest to document control. Nothing from pharma or labs.", "aboutMyWork": "partly"},
+    {"section": "close", "reaction": "'Incumbents track documents. Unifize reconstructs the decision.' Second time they wave off document tracking. Footer finally shows 'Document management' and 'Document & Records Control'. That's where I'm clicking.", "aboutMyWork": "partly"}
+  ],
+  "seeMyself": "Only in fragments: 'Training 12 operators on SOP-118 ... Assigned', 'Effective when SOP-118 Rev D releases', 'Document redline Rev C · effective → Rev D · draft', 'Controlled Distribution', and in the footer 'Document management' / 'Document & Records Control'. The training-tied-to-revision line is the thing I'd want to see, but it only appears as a row on a card. The rest of the page is about change owners, RA, validation, ops and complaints ('Owns change velocity', 'Owns the submission and label trail'). There's no seat for the person who keeps the effective version, and 'Incumbents track document status' / 'Incumbents track documents' reads like my function is the old way.",
+  "examplesRead": "They read as one made-up example running through the whole page: CC-2148, SOP-118, RA-067, CAPA-2140, CMP-311, Lot 22-114, with L. Martin, R. Kapoor and P. Ramesh turning up in different roles (R. Kapoor is both 'Regulatory Affairs' and 'Supplier quality', L. Martin is both engineering and 'Complaints & recall'). That tells me it's a demo scenario, not a customer's data. It's coherent enough to follow, and I don't mind that it's made up, but the reused names make it feel staged. The one real number, '41% lower non-conformance coordination cost ... Signed baseline, anonymized', is about NCs, not documents.",
+  "objections": [
+    "This is a medical devices page, so the regs and examples are 820/13485/MDR, not cGMP or ISO 17025",
+    "Document control is framed as the thing incumbents do, so it's a side feature of change control, not a module in its own right",
+    "Doesn't show the lifecycle I evaluate on: revision, routing, approval, distribution, periodic review, obsolete/retirement",
+    "'Sits alongside the QMS you have already validated' leaves it unclear whether this holds my controlled documents or just links to them"
+  ],
+  "missing": [
+    "A clear link near the top to the document management page, e.g. 'Looking for document control?'",
+    "One visual of the whole document lifecycle including periodic review and retiring the obsolete version, not just Rev C to Rev D",
+    "Proof that a revision automatically triggers retraining and blocks the effective date until training is done, shown as the main point, not a hero sub-row"
+  ],
+  "nextAction": "keep-reading",
+  "demoWillingness": 2,
+  "verbatims": [
+    "Wrong industry page. Where's the DMS page?",
+    "They keep saying incumbents just track documents, like that's the easy part. Try running periodic review on 1,400 SOPs.",
+    "The training cascade tied to Rev D is the one thing I'd click into, and it's a single row on a card."
+  ],
+  "confidence": "medium"
+}

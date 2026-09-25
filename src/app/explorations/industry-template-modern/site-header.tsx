@@ -235,7 +235,7 @@ export function SiteHeader() {
                 {(item.cols ? item.cols.flatMap((c) => c.items) : item.items ?? []).map((sub) => (
                   <a key={sub.label} href={sub.href} onClick={() => setMenuOpen(false)}>{sub.label}</a>
                 ))}
-                {item.foot ? <a href={item.foot.href} onClick={() => setMenuOpen(false)}>{item.foot.cta}</a> : null}
+                {item.menu !== "domains" && item.foot ? <a href={item.foot.href} onClick={() => setMenuOpen(false)}>{item.foot.cta}</a> : null}
               </div>
             ) : (
               <a key={item.label} href={item.href} onClick={() => setMenuOpen(false)}>{item.label}</a>

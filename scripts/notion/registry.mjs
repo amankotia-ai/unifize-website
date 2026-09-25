@@ -92,6 +92,37 @@ export const SOURCES = {
       name: { property: "Name" },
       description: { property: "Description" },
       daily: { property: "Daily Activities", kind: "list" },
+      /* the persona pages (Sep 2026): the "also called" titles and the tier */
+      titles: { property: "Title Variants" },
+      tier: { property: "Tier" },
+    },
+  },
+  /* Pain Points (Ben's DB): what each persona feels, with a severity. A
+   * persona page renders the pains related to its persona, picked by id. */
+  painPoints: {
+    database_id: "4a5cf14f-cab2-44f0-9763-0c6ac0ecc8b6",
+    mirror: "src/content/notion/pain-points.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      severity: { property: "Severity" },
+      description: { property: "Description" },
+      personas: { property: "Product Personas Affected" },
+      modules: { property: "Modules Addressing" },
+    },
+  },
+  /* Product Roles: the roles a persona holds on the record (Document
+   * Approver, Audit Lead, ...), each row naming the personas who hold it.
+   * A persona page's "the seat" section derives from this relation. */
+  roles: {
+    database_id: "d2a6dff7-3bb4-4690-b259-ccb5d9806aaf",
+    mirror: "src/content/notion/roles.json",
+    properties: {
+      id: { property: "ID" },
+      name: { property: "Name" },
+      description: { property: "Description" },
+      permissions: { property: "Permissions" },
+      personas: { property: "Personas Typically Holding This Role" },
     },
   },
   /* Product Flows + Steps are authored by Ben's controlled loop: mirror them

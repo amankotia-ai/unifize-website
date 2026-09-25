@@ -8,6 +8,15 @@
 
 import { MD_WORKFLOW_VARIANTS, MD_ECONOMICS } from "@/lib/platform-data/medical-devices-canonical";
 
+/* 24 Sep 2026: each event on the bill is one the page's story already ran
+ * (CAPA-2140 on the seal complaints, CC-2148 the change, the 483 close-out),
+ * so the cost reads as the price of the story above, not a new example */
+const STORY_REF: Record<string, string> = {
+  capa: "CAPA-2140",
+  "change-control": "CC-2148",
+  audit: "FDA 483",
+};
+
 const usd = (n: number) => "$" + n.toLocaleString("en-US");
 const usdM = (n: number) =>
   "$" + (n / 1_000_000).toLocaleString("en-US", { maximumFractionDigits: 1 }) + "M";
@@ -41,7 +50,10 @@ export function CostLedger() {
             {MD_WORKFLOW_VARIANTS.map((v) => (
               <li key={v.key}>
                 <span className="md-tax__ev">
-                  <b>{v.name}</b>
+                  <b>
+                    {v.name}
+                    {STORY_REF[v.key] ? <em className="md-tax__ref">{STORY_REF[v.key]}</em> : null}
+                  </b>
                   <small>
                     {v.decisions} decisions · {v.cycle} at risk
                   </small>

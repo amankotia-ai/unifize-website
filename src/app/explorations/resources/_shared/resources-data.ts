@@ -513,7 +513,7 @@ export const RESOURCE_FOOTER = {
     {
       label: "Company",
       links: [
-        { label: "About us", href: "/about" },
+        { label: "About", href: "/about" },
         { label: "Platform", href: "/platform" },
         { label: "Book a demo", href: "#" },
       ],

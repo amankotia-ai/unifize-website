@@ -249,53 +249,33 @@
   margin-top: clamp(40px, 4.5vw, 64px);
 }
 
-/* the wash: the stage keeps its geometry and the engine's camera, but the
- * navy field and its quiet geometry give way to a light ground with two
- * soft blobs, one blue and one peach, drifting on long eased loops under a
- * paper grain (the homepage hero's moving wash). Transform only. */
+/* the wash (24 Sep 2026, Abhishek: "use this homepage platform section's
+ * bg color scheme"): the homepage suite stage's ground, the blue wash with
+ * two soft white bands fading out to the right and the fine film grain in
+ * overlay. Static; the drifting blue and peach blobs are retired. */
 .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage {
+  --pr-tex-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: #e7eef8;
-}
-
-.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::before,
-.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::after {
-  position: absolute;
-  z-index: -1;
-  width: 90%;
-  aspect-ratio: 1;
-  content: "";
-  border-radius: 50%;
-  pointer-events: none;
-  will-change: transform;
+  background: var(--hm-wash-blue);
 }
 
 .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::before {
-  top: -35%;
-  left: -20%;
-  background: radial-gradient(closest-side, #c2dbff 0%, rgba(194, 219, 255, 0.55) 45%, rgba(194, 219, 255, 0) 100%);
-  animation: dmsr-wash-a 26s ease-in-out infinite alternate;
-}
-
-.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage::after {
-  right: -25%;
-  bottom: -40%;
-  background: radial-gradient(closest-side, #fbe0cc 0%, rgba(251, 224, 204, 0.55) 45%, rgba(251, 224, 204, 0) 100%);
-  animation: dmsr-wash-b 32s ease-in-out infinite alternate;
-}
-
-@keyframes dmsr-wash-a {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(14%, 10%, 0) scale(1.08); }
-  100% { transform: translate3d(28%, -4%, 0) scale(0.96); }
-}
-
-@keyframes dmsr-wash-b {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-16%, -12%, 0) scale(1.1); }
-  100% { transform: translate3d(-30%, 6%, 0) scale(0.98); }
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 14%,
+    rgba(255, 255, 255, 0.4) 14% 26%,
+    transparent 26% 40%,
+    rgba(255, 255, 255, 0.26) 40% 48%,
+    transparent 48%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
 }
 
 /* the grain sits between the wash and the scene; the scene's own field
@@ -310,10 +290,10 @@
   inset: 0;
   content: "";
   pointer-events: none;
-  background-image: var(--dms-grain);
-  background-size: 180px 180px;
-  opacity: 0.16;
-  mix-blend-mode: multiply;
+  background-image: var(--pr-tex-grain);
+  background-size: 220px 220px;
+  opacity: 0.32;
+  mix-blend-mode: overlay;
 }
 
 .dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root .sty-scene.is-arcade {
@@ -360,7 +340,7 @@
   display: none;
 }
 
-.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+.dms--redesign.dms-page .dms-hero--rails .dms-heroarc__stage .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder, .stx-arc__dash, .stx-arc__rep, .stx-arc__dbs, .stx-arc__modalwrap) {
   inset: 0;
 }
 
@@ -948,7 +928,7 @@
   display: none;
 }
 
-.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+.dms--redesign.dms-page .hm-railed .dms-mrail__scene .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder, .stx-arc__dash, .stx-arc__rep, .stx-arc__dbs, .stx-arc__modalwrap) {
   inset: 0;
 }
 

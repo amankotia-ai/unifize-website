@@ -67,7 +67,15 @@ export type UrgentKind =
    *   procurement      debrief (the lost bid's reasons, as the customer
    *   (24 Sep 2026)    gave them), gantt (a qualification's steps, planned
    *                    against actual), clauses (an agreement's open points
-   *                    and how many rounds each has taken) */
+   *                    and how many rounds each has taken)
+   *   customer         portal (the customer's bid portal, required uploads
+   *   (24 Sep 2026)    missing), escalation (the customer's formal notice,
+   *                    open items aging), twin (the same evidence prepared
+   *                    twice, for the internal and the customer audit)
+   *   development      loopback (a gate sent back, the arrow looping to the
+   *   (24 Sep 2026)    earlier phase), readiness (a transfer's dimensions,
+   *                    the failing ones marked), slip (the launch milestone
+   *                    and each date it moved to) */
   | "trail" | "state" | "elements"
   | "countdown" | "letter" | "tree"
   | "andon" | "dock" | "capacity"
@@ -77,7 +85,9 @@ export type UrgentKind =
   | "lag" | "shifts" | "cert"
   | "stopwatch" | "allocate" | "aging"
   | "tradeoff" | "stack" | "sources"
-  | "debrief" | "gantt" | "clauses";
+  | "debrief" | "gantt" | "clauses"
+  | "portal" | "escalation" | "twin"
+  | "loopback" | "readiness" | "slip";
 const URGENT_VIZ: UrgentKind[] = ["sheet", "calendar", "scale", "alerts"];
 
 /* the row's own furniture, with a fallback */
@@ -500,6 +510,116 @@ function UrgentViz({ row, kind }: { row: UrgentRow; kind: UrgentKind }) {
             const open = st !== "agreed";
             return <li key={c} className={open ? "is-open" : undefined}><span>{name}</span><small>{open ? st : "Agreed"}</small></li>;
           })}
+        </ol>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "portal") {
+    /* the customer's bid portal: required uploads, some still missing.
+     * detail: the RFQ, the closing time, then "upload|ok/missing" rows */
+    const [rfq = "RFQ", closes = "Closes today", ...ups] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--portal">
+        <div className="sk-uv__pbar"><span>Supplier portal</span><b>{rfq}</b></div>
+        <p className="sk-uv__closes">{closes}</p>
+        <ul>
+          {ups.map((u) => {
+            const [name, st] = u.split("|");
+            return <li key={u} className={st === "ok" ? undefined : "is-missing"}><span>{name}</span><small>{st === "ok" ? "Uploaded" : "Missing"}</small></li>;
+          })}
+        </ul>
+        <span className="sk-uv__submit" aria-hidden="true">Submit bid</span>
+      </div>
+    );
+  }
+  if (kind === "escalation") {
+    /* the customer's formal notice, the open items and their age.
+     * detail: from, subject, then "item|days open" rows */
+    const [from = "Customer", subj = "Formal notice", ...items] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--esc">
+        <header><small>From {from}</small><b>{subj}</b></header>
+        <ul>
+          {items.map((it) => {
+            const [name, days] = it.split("|");
+            return <li key={it}><span>{name}</span><small>{days} days open</small></li>;
+          })}
+        </ul>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "twin") {
+    /* the same evidence, prepared twice.
+     * detail: the two pack names, then one row per item */
+    const [a = "Internal audit", b = "Customer audit", ...items] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--twin">
+        <header><small>Evidence packs</small><b>{row.name}</b></header>
+        <div className="sk-uv__cols">
+          {[a, b].map((pack) => (
+            <div key={pack}>
+              <small>{pack}</small>
+              <ul>{items.map((it) => <li key={it}>{it}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+        <p className="sk-uv__foot"><i aria-hidden="true" />Prepared twice</p>
+      </div>
+    );
+  }
+  if (kind === "loopback") {
+    /* the gate held: the programme sent back a phase.
+     * detail: the gate, the phase it returns to, then open reasons */
+    const [gate = "Gate 3", back = "Design", ...reasons] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--loop">
+        <div className="sk-uv__loopline" aria-hidden="true">
+          <span>{back}</span>
+          <i />
+          <span className="is-gate">{gate}</span>
+          <svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M92 2 C 92 22, 8 22, 8 6" /><path d="M4 10 8 4l4 6" /></svg>
+        </div>
+        <small className="sk-uv__lab">Held · back to {back.toLowerCase()}</small>
+        <ul>{reasons.map((r) => <li key={r}>{r}</li>)}</ul>
+        <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
+      </div>
+    );
+  }
+  if (kind === "readiness") {
+    /* a transfer's acceptance dimensions, the failing ones marked.
+     * detail: "dimension|target|actual|ok/fail" rows */
+    const rows = row.detail ?? ["Yield|95%|88%|fail", "Cycle time|42 s|40 s|ok"];
+    return (
+      <div className="sk-uv sk-uv--ready">
+        <header><small>Transfer acceptance</small><b>{row.name}</b></header>
+        <table>
+          <thead><tr><th>Dimension</th><th>Target</th><th>Actual</th></tr></thead>
+          <tbody>
+            {rows.map((r) => {
+              const [dim, tgt, act, st] = r.split("|");
+              return <tr key={r} className={st === "fail" ? "is-fail" : undefined}><td>{dim}</td><td>{tgt}</td><td>{act}</td></tr>;
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  if (kind === "slip") {
+    /* the launch milestone and each date it has moved to.
+     * detail: the milestone, then the dates, oldest first (last = current) */
+    const [ms = "Launch", ...dates] = row.detail ?? [];
+    return (
+      <div className="sk-uv sk-uv--slip">
+        <header><small>Milestone</small><b>{ms}</b></header>
+        <ol>
+          {dates.map((d, i) => (
+            <li key={d} className={i === dates.length - 1 ? "is-now" : undefined}>
+              {i === dates.length - 1 ? <b>{d}</b> : <s>{d}</s>}
+              <small>{i === 0 ? "Committed" : i === dates.length - 1 ? "Now" : "Moved"}</small>
+            </li>
+          ))}
         </ol>
         <p className="sk-uv__foot"><i aria-hidden="true" />{row.clock}</p>
       </div>

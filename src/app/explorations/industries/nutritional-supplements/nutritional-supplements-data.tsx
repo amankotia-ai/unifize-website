@@ -29,8 +29,8 @@ export const NUTRITIONAL_SUPPLEMENTS: IndustryData = {
 
   hero: {
     crumb: "Nutritional supplements",
-    titleLead: "Your COA cleared the ingredient.",
-    titleTurn: "Not why.",
+    titleLead: "The supplier’s COA passed.",
+    titleTurn: "The FTIR fingerprint didn’t.",
     sub: "Built for dietary-supplement brand owners and contract manufacturers under 21 CFR Part 111, where incoming identity testing, batch record completeness, and specification setting have to stay traceable, and hold up in an FDA inspection or an NSF surveillance audit.",
     chips: ["21 CFR Part 111", "cGMP", "NSF", "USP Verified", "DSHEA"],
     trustLabel: "Built for dietary-supplement GMP teams",
@@ -232,11 +232,11 @@ export const NUTRITIONAL_SUPPLEMENTS: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Incoming identity testing & release", coordination: "Operations, quality, and the lab move material from receipt to release across systems", owner: "Operations / Quality", atRisk: "material on hold; an identity gap at inspection" },
-      { name: "Deviation → CAPA", coordination: "Quality and operations reconstruct the investigation across tools", owner: "Quality", atRisk: "cycle time; a 483 if it ages" },
-      { name: "Batch record review & release", coordination: "Exceptions and identity results chased across QA, production, and the lab before release", owner: "Quality", atRisk: "days per lot; a completeness gap at release" },
-      { name: "Supplier qualification & COA", coordination: "Quality and procurement qualify suppliers and check COAs at the boundary, deeper for botanicals", owner: "Supplier Quality", atRisk: "documentation completeness; a missing certificate" },
-      { name: "Spec setting & verification", coordination: "R&D and quality set and verify specs and propagate them to the MMR and methods", owner: "R&D / Quality", atRisk: "specs out of sync; a spec-setting finding" },
+      { name: "Incoming identity testing & release", coordination: "Operations, quality, and the lab move material from receipt to release across systems", owner: "Operations / Quality", atRisk: "material on hold; an identity gap at inspection", story: "Botanical lot" },
+      { name: "Deviation → CAPA", coordination: "Quality and operations reconstruct the investigation across tools", owner: "Quality", atRisk: "cycle time; a 483 if it ages", story: "CA-3120" },
+      { name: "Batch record review & release", coordination: "Exceptions and identity results chased across QA, production, and the lab before release", owner: "Quality", atRisk: "days per lot; a completeness gap at release", story: "Replacement lot" },
+      { name: "Supplier qualification & COA", coordination: "Quality and procurement qualify suppliers and check COAs at the boundary, deeper for botanicals", owner: "Supplier Quality", atRisk: "documentation completeness; a missing certificate", story: "Supplier re-qualification" },
+      { name: "Spec setting & verification", coordination: "R&D and quality set and verify specs and propagate them to the MMR and methods", owner: "R&D / Quality", atRisk: "specs out of sync; a spec-setting finding", story: "Identity spec" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long incoming-release and deviation cycle times", "Slow batch review and release"] },
@@ -305,10 +305,18 @@ export const NUTRITIONAL_SUPPLEMENTS: IndustryData = {
  * cursors carry persona titles, not people. Notion has no segment tax for
  * this row, so the cost section shows the events only.
  * ========================================================================== */
-const QM = { name: "Quality Manager", tone: "#d97706" };
-const PLANT = { name: "Plant Manager", tone: "#2563eb" };
-const LABEL = { name: "Label Compliance Lead", tone: "#7c3aed" };
-const AUDIT = { name: "GMP Audit Lead", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the other railed industry pages): every
+ * artifact from the hero to the cost bill plays CA-3120, the
+ * nonconformance 01 walks: the botanical supplier's COA passed, the
+ * in-house FTIR fingerprint didn't, the lot is rejected, the supplier
+ * re-qualified, the identity spec tightened, and the batch waits on the
+ * replacement lot. Cursors are the cast, one role per name (see
+ * nutritional-supplements-journey.ts); still no metrics. */
+const HOLT = { name: "G. Holt", tone: "#d97706" };
+const ROMERO = { name: "L. Romero", tone: "#0891b2" };
+const CASTILLO = { name: "R. Castillo", tone: "#2563eb" };
+const PATEL = { name: "S. Patel", tone: "#7c3aed" };
+const MOORE = { name: "K. Moore", tone: "#0f8f7e" };
 
 export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
   /* the key element: the incoming identity test. The lot's fingerprint is
@@ -318,7 +326,7 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
    * testing and botanical adulteration) */
   hero: {
     kind: "identity",
-    id: "Incoming material",
+    id: "CA-3120 · Incoming material",
     title: "Botanical raw material · identity",
     from: "Supplier COA attached · 21 CFR Part 111",
     stages: { testing: "Identity testing", mismatch: "Does not match", retest: "Replacement lot", released: "Identity confirmed · released" },
@@ -368,13 +376,13 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
         state: "Release hold",
         title: "Batch production record",
         rows: [
-          { label: "Identity results attached", meta: "QC Lab" },
-          { label: "Exceptions reviewed", meta: "Production" },
-          { label: "Release · e-signature", meta: "Quality", open: true },
+          { label: "Botanical lot · CA-3120", meta: "Rejected" },
+          { label: "Replacement lot identity", meta: "Matched" },
+          { label: "Release · e-signature", meta: "Today", open: true },
         ],
-        cursor: QM,
+        cursor: HOLT,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -383,24 +391,24 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
         stamp: "HOLD",
         lines: [
           { k: "Material", v: "Botanical lot" },
-          { k: "Waiting on", v: "Identity result" },
+          { k: "Waiting on", v: "CA-3120" },
           { k: "Released by", v: "Quality" },
         ],
-        note: "Released on one thread, not an email chain",
-        cursor: PLANT,
+        note: "Never reaches a batch without identity",
+        cursor: CASTILLO,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "Label claims",
-        title: "Structure-function claim",
-        cite: "DSHEA · substantiation",
-        state: "Supported",
-        cursor: LABEL,
+        kicker: "Label claims · CA-3120",
+        title: "The claim rests on the right botanical",
+        cite: "DSHEA · identity per Part 111",
+        state: "Checking",
+        cursor: PATEL,
       },
-      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/solution/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
@@ -410,23 +418,23 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
         title: "Surveillance audit readiness",
         total: 8,
         open: [6],
-        foot: "One element open before the visit",
-        cursor: AUDIT,
+        foot: "CA-3120 evidence due before the visit",
+        cursor: MOORE,
       },
-      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+      go: { label: "See the compliance solution →", href: "/solution/compliance" },
     },
     engineering: {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "Spec", title: "Blend change" },
+        source: { kicker: "CA-3120 · CAPA", title: "Identity spec tightened" },
         items: [
           { id: "MMR", label: "Master record" },
           { id: "SPC", label: "Specification" },
           { id: "MTH", label: "Identity method", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -440,16 +448,16 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Nonconformance",
-          title: "In-process test out of spec",
+          kicker: "CA-3120",
+          title: "Identity does not match",
           fields: [
-            { label: "Batch record", value: "Executed", select: true },
+            { label: "Batch record", value: "Pending", select: true },
             { label: "Impact", value: "Lot on hold" },
-            { label: "CAPA", value: "Investigation", focus: true },
+            { label: "CAPA", value: "Supplier action", focus: true },
           ],
-          cursor: QM,
+          cursor: ROMERO,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "supplier-management",
@@ -459,11 +467,11 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
           wash: "paper",
           kicker: "Certificate of analysis",
           messages: [
-            { org: "Botanical supplier", text: "COA and identity method for the lot", ext: true },
-            { org: "Supplier Quality", text: "Checked against spec, in-house identity to confirm" },
+            { org: "Botanical supplier", text: "COA for the lot: identity passes", ext: true },
+            { org: "Supplier Quality", text: "In-house FTIR disagrees · CA-3120 · re-qualification opened" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "operations",
@@ -471,12 +479,11 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
         viz: {
           kind: "matrix",
           wash: "warm",
-          kicker: "Incoming identity testing",
+          kicker: "Incoming identity · CA-3120",
           cols: ["HPTLC", "HPLC", "FTIR"],
           rows: [
-            { name: "Root powder", cells: ["ok", "ok", "ok"] },
-            { name: "Leaf extract", cells: ["ok", "due", "ok"] },
-            { name: "Fruit extract", cells: ["gap", "ok", "due"] },
+            { name: "Received lot", cells: ["due", "ok", "gap"] },
+            { name: "Replacement lot", cells: ["ok", "ok", "ok"] },
           ],
         },
       },
@@ -490,21 +497,38 @@ export const NUTRITIONAL_SUPPLEMENTS_RAILS: IndustryRails = {
           title: "Complaints by week",
           weeks: [2, 3, 2, 2, 3, 2, 6, 3],
           spike: 6,
-          note: "Spike linked to one lot, CAPA open",
+          note: "Past spike on this supplier · read into CA-3120",
         },
-        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+        go: { label: "See the post-market solution →", href: "/solution/post-market-and-recall" },
       },
     ],
   },
 
   lead: [
+    /* 24 Sep 2026: the three clocks the CA-3120 story starts: the 483 on
+     * the same facts (21 CFR 111.75 identity and COA reliance, 111.255 the
+     * batch record), the batch record waiting on the replacement lot's
+     * identity result, and the NSF surveillance asking for CA-3120 */
     {
       name: "FDA Form 483 or warning letter citing 21 CFR Part 111",
-      viz: "letter",
-      detail: ["Department of Health and Human Services", "FORM FDA 483"],
+      viz: "findings",
+      detail: [
+        "FDA 483 · 21 CFR 111",
+        "!111.75(a)(2)|Supplier COA relied on without qualification",
+        "111.75(a)(1)|Identity not verified on earlier lots",
+        "111.255|Batch record missing the identity result",
+      ],
       clock: "15 working days",
     },
-    { name: "Botanical raw-material identity or adulteration finding at receipt", viz: "dock", detail: ["Receiving"] },
-    { name: "E-commerce listing pause after a published FDA warning letter", viz: "alerts" },
+    {
+      name: "Batch record completeness gap found at release",
+      viz: "tree",
+      detail: ["Master record", "!Identity result · replacement lot", "In-process tests", "Packaging & label", "Release review"],
+    },
+    {
+      name: "NSF or USP surveillance-audit finding",
+      viz: "elements",
+      detail: ["NSF surveillance", "Supplier qualification", "!Identity testing records", "CA-3120 CAPA", "Batch records"],
+    },
   ],
 };

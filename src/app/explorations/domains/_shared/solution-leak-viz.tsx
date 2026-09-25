@@ -9,6 +9,10 @@
  *             the register has already moved past
  *   sheet     supplier management: the SCAR tracker, gone quiet
  *   chat      post-market: the recall argued in a channel
+ *   invite    new product development: the design review invite,
+ *             rescheduled again, the deck on v7 (24 Sep 2026)
+ *   manual    customer management: the customer's requirements manual,
+ *             acknowledged, never flowed down (24 Sep 2026)
  *   slide     procurement: the award deck, unit price on it, the cost of
  *             quality not (24 Sep 2026)
  *   minutes   supply chain: the stand-up notes where the allocation was
@@ -170,6 +174,43 @@ function Printout({ doc }: { doc: NonNullable<LeakScene["printout"]> }) {
   );
 }
 
+function Invite({ inv }: { inv: NonNullable<LeakScene["invite"]> }) {
+  return (
+    <div className="sk-ib__win sk-ow-iv">
+      <div className="sk-ow-iv__head">
+        <span className="sk-ow-iv__cal" aria-hidden="true"><i /></span>
+        <span><b>{inv.title}</b><small>{inv.when}</small></span>
+      </div>
+      <p className="sk-ow-iv__note">{inv.note}</p>
+      <div className="sk-ow-iv__people">
+        {inv.people.map((p) => <i key={p}>{p}</i>)}
+        <em>{inv.more}</em>
+      </div>
+      <ul className="sk-ow-iv__files">
+        {inv.files.map((f) => <li key={f}>{f}</li>)}
+      </ul>
+    </div>
+  );
+}
+
+function Manual({ doc }: { doc: NonNullable<LeakScene["manual"]> }) {
+  return (
+    <div className="sk-ib__win sk-ow-mu">
+      <div className="sk-ow-mu__cover">
+        <small>{doc.customer}</small>
+        <b>{doc.title}</b>
+        <span>{doc.rev}</span>
+        <em className="sk-ow-mu__stamp" aria-hidden="true">{doc.stamp}</em>
+      </div>
+      <ol className="sk-ow-mu__toc">
+        {doc.toc.map((t) => (
+          <li key={t.n} className={t.hot ? "is-hot" : undefined}><code>{t.n}</code><span>{t.name}</span></li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 function Slide({ slide }: { slide: NonNullable<LeakScene["slide"]> }) {
   const max = Math.max(...slide.bars.map((b) => b.value), 1);
   return (
@@ -277,11 +318,11 @@ function Copies({ box }: { box: NonNullable<LeakScene["copies"]> }) {
 }
 
 export function hasOldWorld(scene?: LeakScene) {
-  return Boolean(scene && (scene.files || scene.citation || scene.sheet || scene.chat || scene.printout || scene.copies || scene.signin || scene.call || scene.minutes || scene.slide));
+  return Boolean(scene && (scene.files || scene.citation || scene.sheet || scene.chat || scene.printout || scene.copies || scene.signin || scene.call || scene.minutes || scene.slide || scene.manual || scene.invite));
 }
 
 export function LeakOldWorld({ scene }: { scene: LeakScene }) {
-  const kind = scene.files ? "files" : scene.citation ? "citation" : scene.sheet ? "sheet" : scene.printout ? "printout" : scene.copies ? "copies" : scene.signin ? "signin" : scene.call ? "call" : scene.minutes ? "minutes" : scene.slide ? "slide" : "chat";
+  const kind = scene.files ? "files" : scene.citation ? "citation" : scene.sheet ? "sheet" : scene.printout ? "printout" : scene.copies ? "copies" : scene.signin ? "signin" : scene.call ? "call" : scene.minutes ? "minutes" : scene.slide ? "slide" : scene.manual ? "manual" : scene.invite ? "invite" : "chat";
   return (
     <figure className={"sk-ib sk-ow sk-ow--" + kind} aria-label={`${scene.title}. ${scene.caption}`}>
       <div className="sk-ib__stage" aria-hidden="true">
@@ -295,6 +336,8 @@ export function LeakOldWorld({ scene }: { scene: LeakScene }) {
         {scene.call ? <Call call={scene.call} /> : null}
         {scene.minutes ? <Minutes doc={scene.minutes} /> : null}
         {scene.slide ? <Slide slide={scene.slide} /> : null}
+        {scene.manual ? <Manual doc={scene.manual} /> : null}
+        {scene.invite ? <Invite inv={scene.invite} /> : null}
         {/* the citation brings its own interruption (the register's answer) */}
         {scene.float && !scene.citation ? (
           <div className="sk-ib__float">

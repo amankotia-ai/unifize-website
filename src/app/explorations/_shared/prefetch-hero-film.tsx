@@ -2,7 +2,7 @@
 
 /* ----------------------------------------------------------------------------
  * prefetch-hero-film.tsx - warms the browser cache with the platform hero
- * film (about 10 MB) from pages that lead to the platform page, so the film
+ * film (a few MB) from pages that lead to the platform page, so the film
  * plays at once when the visitor gets there.
  *
  * It waits for the page's own load and for the browser to be idle, so it

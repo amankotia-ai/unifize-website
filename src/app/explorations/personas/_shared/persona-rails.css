@@ -1,0 +1,240 @@
+/* ============================================================================
+ * persona-rails.css - what the role pages add to the Solutions rails kit
+ * (25 Sep 2026). The page wears `sk-page pn-page` on <main>, so every
+ * section class comes from solution-rails.css; this file holds only:
+ *   - 01's role rows: the role, and under it the module it runs in;
+ *   - 02's old world: the legacy system's search for one defect (pn-hist),
+ *     in the sk-ib frame, one window no other page uses.
+ * Square corners, hairlines, status by label colour, never a coloured edge.
+ * ========================================================================== */
+
+/* ------------------------------------------------ 01 · the role rows */
+.dms--redesign.sk-page.pn-page.dms--rails .pn-role {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+  padding-block: 9px;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-role small {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .sk-wk__items a:hover .pn-role small { color: var(--dms-muted); }
+
+/* ------------------------------------------------ 02 · the old world
+ * A search result list in the old system's plain table grammar: record id
+ * and month, the defect, then the CAPA that closed it and the one line that
+ * should worry the reader. Rows are identical by design; the repetition is
+ * the point. */
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist .sk-ib__stage { max-width: 460px; }
+
+/* the panes flipped (Abhishek, 25 Sep: "visual left, text right"): the old
+ * world leads and the head answers it. The markup keeps the head first, so
+ * screen readers and the stacked phone layout still open on the words; the
+ * seam moves to the figure's right edge. */
+@media (min-width: 961px) {
+  .dms--redesign.sk-page.pn-page.dms--rails .sk-lk { grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); }
+
+  .dms--redesign.sk-page.pn-page.dms--rails .sk-lk > .pn-hist {
+    order: -1;
+    box-shadow: inset -1px 0 0 var(--hm-rail);
+  }
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__query {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 16px 4px;
+  padding: 7px 10px;
+  border: 1px solid var(--dms-hairline);
+  color: var(--dms-ink-2);
+  font-family: var(--dms-mono);
+  font-size: 0.72rem;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__query svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  fill: none;
+  stroke: var(--dms-faint);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+
+/* room at the foot for the auditor's question to land on empty window */
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__rows {
+  margin: 0;
+  padding: 0 0 58px;
+  list-style: none;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__rows li {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 10px;
+  row-gap: 6px;
+  padding: 12px 16px;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__rows li + li { border-top: 1px solid var(--dms-hairline); }
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__id {
+  color: var(--dms-ink);
+  font-family: var(--dms-mono);
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__when {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.68rem;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__title {
+  overflow: hidden;
+  color: var(--dms-ink-2);
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* the second line: which CAPA closed it, its state, and what nobody checked */
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__meta {
+  display: flex;
+  grid-column: 1 / -1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__capa {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--dms-muted);
+  font-size: 0.72rem;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__capa b {
+  color: var(--dms-ink-2);
+  font-family: var(--dms-mono);
+  font-weight: 600;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__state {
+  font-family: var(--dms-mono);
+  font-size: 0.66rem;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__state.is-closed { color: var(--dms-faint); }
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__state.is-open { color: var(--dms-accent); font-weight: 650; }
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__note {
+  color: var(--dms-muted);
+  font-size: 0.72rem;
+  text-align: right;
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .pn-hist__note.is-warn {
+  color: var(--sk-warn-ink);
+  font-weight: 650;
+}
+
+@media (max-width: 520px) {
+  .dms--redesign.sk-page.pn-page.dms--rails .pn-hist__rows li { grid-template-columns: auto minmax(0, 1fr); }
+  .dms--redesign.sk-page.pn-page.dms--rails .pn-hist__when { display: none; }
+}
+
+/* ================================================== HERO (25 Sep 2026)
+ * The homepage hero, text left-aligned (Abhishek: "make it like the
+ * homepage but with text left aligned"). PersonaRailsPage wraps the hero in
+ * `dms--redesign dms--home dms--rails pm pn-hero-home`, so home-kit.css and
+ * home-rails.css style it exactly as they style the homepage's; the rest of
+ * the page sits outside that wrapper and never sees a homepage rule. This
+ * block only turns the centred column to the left and fits the persona's
+ * home screen into the window. */
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__grid {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails :is(.dms-hero__left, .dms-hero__right) {
+  align-items: flex-start;
+}
+
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__left { gap: 22px; }
+
+/* each sentence of the headline holds its own line: never broken where
+ * the line fits (Abhishek, 25 Sep: "do not line break on the second line
+ * of the hero title"); phones, where it cannot fit, wrap as usual */
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__title {
+  max-width: none;
+  margin-inline: 0;
+  text-align: left;
+}
+
+@media (min-width: 700px) {
+  .dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__title .dms-hero__line { white-space: nowrap; }
+}
+
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__sub {
+  max-width: 60ch;
+  margin-inline: 0;
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__ctas { justify-content: flex-start; }
+
+/* the light follows the copy (Abhishek, 25 Sep: "the hero section glow is
+ * centered but the text is on the left"): the homepage's key light and
+ * grain mask are centred on its centred column; here they sit behind the
+ * left-aligned headline and sub */
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__inner::before {
+  background: radial-gradient(40% 62% at 28% 44%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+}
+
+.dms--redesign.dms--home.pn-hero-home .dms-hero--rails .dms-hero__inner::after {
+  -webkit-mask-image: radial-gradient(60% 72% at 30% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(60% 72% at 30% 50%, #000 30%, transparent 80%);
+}
+
+/* the home screen fills the window. The hero shows the window from x 324
+ * on (the in-app rail and inbox are cut away, as on the homepage), so the
+ * home page, which normally starts right of the 54px rail, starts at the
+ * cut instead: the whole home screen, greeting to overview, is in frame. */
+.dms--redesign.dms--home.pn-hero-home .hm-heromock__scene .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__dash, .stx-arc__rep, .stx-arc__dbs, .stx-arc__modalwrap) { left: 324px; }
+
+/* phones frame the thread column alone (324..864): the home page takes
+ * that column and drops to one column, the queue first */
+@media (max-width: 640px) {
+  .dms--redesign.dms--home.pn-hero-home .hm-heromock__scene .stx-root .stx-arc__home { right: 286px; }
+  .dms--redesign.dms--home.pn-hero-home .hm-heromock__scene .stx-root .stx-arc__home-grid { grid-template-columns: minmax(0, 1fr); }
+  .dms--redesign.dms--home.pn-hero-home .hm-heromock__scene .stx-root .stx-arc__home-side { display: none; }
+}
+
+/* ============================================ 03 · the audit, walked
+ * The journey window shows the record cut (x 324 on, as in the hero), so
+ * the home screen and the dashboard, pages that normally start right of the
+ * 54px rail, start at the cut: both fit the frame whole. The thread's
+ * messages carry their dates (thread.ts), so the "Today" pill stands down. */
+@media (min-width: 1025px) {
+  .dms--redesign.sk-page.pn-page.dms--rails .sk-journey-section .pf-journey__stage .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__dash, .stx-arc__rep, .stx-arc__dbs, .stx-arc__modalwrap) { left: 324px; }
+}
+
+.dms--redesign.sk-page.pn-page.dms--rails .sk-journey-section .stx-arc__today { display: none; }
+

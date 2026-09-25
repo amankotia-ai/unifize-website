@@ -106,16 +106,57 @@
   overflow: hidden;
 }
 
-/* square, on the light wash the rails pages use; the ribbon container's
- * navy ground and radius are overridden the same way the homepage hero
- * overrides them */
+/* square, on the homepage suite stage's ground (24 Sep): the blue wash
+ * (--hm-wash-blue), two white hatch bands fading out to the right, the
+ * wash grain in overlay, no ribbons. Values are copied, not inherited: the
+ * portal sits outside .dms--redesign. */
 .uzd__stage.rf {
   --rf-r: 0px;
   --rf-pad: clamp(14px, 2vw, 26px);
   position: absolute;
   inset: 0;
   border-radius: 0;
-  background: linear-gradient(150deg, #cfe2ff 0%, #e2eeff 36%, #f1f0ec 66%, #fbe3d2 100%);
+  background: linear-gradient(180deg, #cfe3ff 0%, #e3eeff 55%, #f1f6ff 100%);
+  box-shadow: none;
+}
+
+.uzd__stage.rf::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0 14%,
+    rgba(255, 255, 255, 0.4) 14% 26%,
+    transparent 26% 40%,
+    rgba(255, 255, 255, 0.26) 40% 48%,
+    transparent 48%
+  );
+  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
+}
+
+.uzd__stage .rf__field > :is(.rf__ribbons, .rf__scrim, .rf__vignette) {
+  display: none;
+}
+
+.uzd__stage .rf__field > .rf__grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.32;
+  mix-blend-mode: overlay;
+}
+
+/* the suite stage's frosted plate on the wash */
+.uzd__stage.rf.rf--plate .stx-root .stx-arc__camera {
+  outline: 1px solid oklch(0 0 0 / 0.035);
+  box-shadow:
+    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
+    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
+    0 4px 10px -4px oklch(0 0 0 / 0.12),
+    0 24px 48px -20px oklch(0 0 0 / 0.22),
+    0 48px 96px -32px oklch(0 0 0 / 0.18);
 }
 
 /* the dialog is wide so the visual pane can hold the record whole: the

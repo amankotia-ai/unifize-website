@@ -4,7 +4,17 @@
  * linked to it (root cause at the allergen control) → the corrective
  * actions running across Food Safety and Ops → the verification signature
  * → the sealed trace. Vocabulary from the Notion row (HACCP, CCP, allergen
- * control, Reportable Food Registry, FSMA 21 CFR 117). */
+ * control, Reportable Food Registry, FSMA 21 CFR 117).
+ * 24 Sep 2026, the page's one story: every section below plays CA-3180
+ * (the held lots, the letter of guarantee accepted alone at receiving, the
+ * allergen statement and hazard analysis the ingredient change reopens,
+ * the line 2 swabs, the recall scope). Cast, one role per name:
+ *   M. Silva    Production, raised CA-3180
+ *   A. Khan     Food Safety (PCQI), owns the corrective actions
+ *   B. Carter   Quality, signs the verification
+ *   J. Ortiz    Operations, the held lots
+ *   T. Nguyen   Label compliance
+ *   E. Brooks   GFSI audit */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -33,16 +43,16 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "DEVIATION",
       items: [
-        { label: "Description", kind: "field", value: "Undeclared allergen in a received ingredient lot" },
+        { label: "Description", kind: "field", input: "rich", value: "Undeclared allergen in a received ingredient lot" },
         { label: "Source", note: "Supplier notice" },
-        { label: "Hazard", kind: "field", value: "Allergen · CCP" },
+        { label: "Hazard", kind: "field", input: "select", value: "Allergen · CCP" },
       ],
     },
     {
       title: "ROOT CAUSE",
       items: [
         { label: "Traced lots", kind: "linked", links: ["Ingredient lot"] },
-        { label: "Root cause", note: "Allergen control at receiving" },
+        { label: "Root cause", note: "Letter of guarantee accepted alone at receiving" },
       ],
     },
     {

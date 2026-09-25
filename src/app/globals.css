@@ -100,9 +100,9 @@
      discipline, so "the tax" and "Unifize" never share a colour: blue is
      the governed answer, rust is what it removes. Not a status colour;
      --s-warn stays for review-due / overdue states. 22 Sep 2026. */
-  --u-tax: oklch(0.560 0.150 42);
-  --u-tax-text: oklch(0.500 0.140 42);
-  --u-tax-tint: oklch(0.960 0.020 50);
+  --u-tax: oklch(0.690 0.185 48);
+  --u-tax-text: oklch(0.570 0.170 45);
+  --u-tax-tint: oklch(0.968 0.029 58);
 
   /* Warm surface */
   --n-beige: #f2f0ea;

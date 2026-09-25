@@ -26,8 +26,8 @@ export const LABORATORIES: IndustryData = {
 
   hero: {
     crumb: "Laboratories",
-    titleLead: "Your LIMS has the result.",
-    titleTurn: "Not why.",
+    titleLead: "One QC point breaks 1-3s.",
+    titleTurn: "Every result it touched is held.",
     sub: "Built for ISO/IEC 17025-accredited testing and calibration labs, where every nonconformance, method deviation, and analyst competency record has to stay traceable, and survive the accreditation surveillance audit.",
     chips: ["ISO/IEC 17025", "21 CFR Part 11", "GLP · 21 CFR 58", "ALCOA+", "CLIA / CAP"],
     trustLabel: "Built for ISO/IEC 17025-accredited labs",
@@ -216,11 +216,11 @@ export const LABORATORIES: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Nonconformance → corrective action", coordination: "Analyst, technical signatory, and quality reconstruct root cause across records", owner: "Quality", atRisk: "weeks of cycle time; scope suspension if it ages" },
-      { name: "Method deviation & validation", coordination: "Technical and quality assemble validation evidence and uncertainty", owner: "Technical & Method", atRisk: "a traceability gap at assessment" },
-      { name: "Analyst competency on method change", coordination: "Every method change fans out to authorization, training, and proof", owner: "Training & Competency", atRisk: "an unauthorized-analyst finding at audit" },
-      { name: "Equipment calibration disposition", coordination: "Quality and operations reconcile out-of-tolerance impact across affected results", owner: "Quality / Ops", atRisk: "recall of affected results; held reports" },
-      { name: "Data integrity review", coordination: "Compliance reconstructs audit trails and raw-data lineage for regulated work", owner: "Data Integrity & Compliance", atRisk: "an ALCOA+ finding; lost client work" },
+      { name: "Nonconformance → corrective action", coordination: "Analyst, technical signatory, and quality reconstruct root cause across records", owner: "Quality", atRisk: "weeks of cycle time; scope suspension if it ages", story: "NC-3092" },
+      { name: "Method deviation & validation", coordination: "Technical and quality assemble validation evidence and uncertainty", owner: "Technical & Method", atRisk: "a traceability gap at assessment", story: "Uncertainty re-check" },
+      { name: "Analyst competency on method change", coordination: "Every method change fans out to authorization, training, and proof", owner: "Training & Competency", atRisk: "an unauthorized-analyst finding at audit", story: "Daily BAL-07 check" },
+      { name: "Equipment calibration disposition", coordination: "Quality and operations reconcile out-of-tolerance impact across affected results", owner: "Quality / Ops", atRisk: "recall of affected results; held reports", story: "BAL-07" },
+      { name: "Data integrity review", coordination: "Compliance reconstructs audit trails and raw-data lineage for regulated work", owner: "Data Integrity & Compliance", atRisk: "an ALCOA+ finding; lost client work", story: "Re-run audit trail" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long nonconformance and corrective-action cycle times", "Delayed report release and turnaround"] },
@@ -288,9 +288,16 @@ export const LABORATORIES: IndustryData = {
  * source: the data above (trail, persona titles, modules, trigger clocks).
  * Cursors carry persona titles, not people; no record numbers or metrics.
  * ========================================================================== */
-const QM = { name: "Quality Manager", tone: "#d97706" };
-const LABOPS = { name: "Lab Supervisor", tone: "#2563eb" };
-const SIGNATORY = { name: "Technical Signatory", tone: "#7c3aed" };
+/* 24 Sep 2026, the one story (as on the MD, pharma and CRO pages): every
+ * artifact from the hero to the cost bill plays NC-3092, the nonconformance
+ * 01 walks: daily QC breaks 1-3s because balance BAL-07 drifted out of
+ * calibration; results are held, the reports the drift reached are traced
+ * and amended, BAL-07 is recalibrated and the next runs prove it. Cursors
+ * are the 01 cast, one role per name (see laboratories-journey.ts); record
+ * and instrument IDs are the page's illustrative world; still no metrics. */
+const BECKER = { name: "T. Becker", tone: "#d97706" };
+const ADEYEMI = { name: "K. Adeyemi", tone: "#2563eb" };
+const NOVAK = { name: "E. Novak", tone: "#7c3aed" };
 
 export const LABORATORIES_RAILS: IndustryRails = {
   /* the key element: the QC control chart (Notion Regulatory Vocabulary:
@@ -309,7 +316,7 @@ export const LABORATORIES_RAILS: IndustryRails = {
     steps: [
       { label: "Nonconformance raised", meta: "Analyst" },
       { label: "Affected results held", meta: "Lab ops" },
-      { label: "Root cause · calibration", meta: "Metrology" },
+      { label: "Root cause · BAL-07 calibration", meta: "Metrology" },
       { label: "Corrective action", meta: "Technical signatory" },
     ],
     cascadeStep: 1,
@@ -340,17 +347,17 @@ export const LABORATORIES_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Nonconformance",
+        kicker: "NC-3092",
         state: "In review",
-        title: "Nonconforming test result",
+        title: "QC breach · 1-3s rule",
         rows: [
-          { label: "Investigation & root cause bound", meta: "Quality" },
-          { label: "Corrective action review", meta: "Technical Signatory" },
-          { label: "Effectiveness check", meta: "Quality Manager", open: true },
+          { label: "Root cause · BAL-07 out of calibration", meta: "Metrology" },
+          { label: "Corrective action review", meta: "Technical" },
+          { label: "Effectiveness check", meta: "Next QC runs", open: true },
         ],
-        cursor: QM,
+        cursor: BECKER,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -359,33 +366,33 @@ export const LABORATORIES_RAILS: IndustryRails = {
         stamp: "HOLD",
         lines: [
           { k: "Result", v: "Held" },
-          { k: "Waiting on", v: "Calibration disposition" },
+          { k: "Waiting on", v: "NC-3092" },
           { k: "Report", v: "Not yet issued" },
         ],
-        note: "Released when the disposition is on the record",
-        cursor: LABOPS,
+        note: "Released the hour NC-3092 closes",
+        cursor: ADEYEMI,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "Method validation",
-        title: "Validation evidence and uncertainty",
-        cite: "ISO/IEC 17025",
-        state: "Assembling",
-        cursor: SIGNATORY,
+        kicker: "NC-3092",
+        title: "Uncertainty after BAL-07's recalibration",
+        cite: "ISO/IEC 17025 · 7.6",
+        state: "Assessing",
+        cursor: NOVAK,
       },
     },
     "compliance-validation": {
       viz: {
         kind: "impact",
         wash: "paper",
-        source: { kicker: "GLP work", title: "Validated state" },
+        source: { kicker: "NC-3092", title: "Raw data trail" },
         items: [
-          { id: "IQ", label: "Installation qualification" },
-          { id: "OQ", label: "Operational qualification" },
-          { id: "PQ", label: "Performance qualification", open: true },
+          { id: "RAW", label: "Original QC runs kept" },
+          { id: "AT", label: "Re-runs · audit trail", open: true },
+          { id: "P11", label: "Signatures · Part 11" },
         ],
       },
       go: { label: "How it stays validated ↓", href: "#validated" },
@@ -394,8 +401,8 @@ export const LABORATORIES_RAILS: IndustryRails = {
       viz: {
         kind: "signoff",
         wash: "sky",
-        kicker: "Method change",
-        title: "Analyst authorization",
+        kicker: "NC-3092 · corrective action",
+        title: "Daily BAL-07 check, re-authorized",
         signers: [
           { org: "Training", name: "Competency Lead", meaning: "Assessed", time: "Signed" },
           { org: "Technical", name: "Technical Signatory", meaning: "Authorize" },
@@ -414,30 +421,30 @@ export const LABORATORIES_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Nonconformance",
+          kicker: "NC-3092",
           title: "NC report",
           fields: [
-            { label: "Type", value: "Nonconforming test result", select: true },
+            { label: "Type", value: "QC breach · 1-3s", select: true },
             { label: "Scope", value: "Accreditation scope" },
-            { label: "Root cause", value: "Investigation attached", focus: true },
+            { label: "Root cause", value: "BAL-07 out of calibration", focus: true },
           ],
-          cursor: QM,
+          cursor: BECKER,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "method-development",
-        line: "Validation evidence and proficiency testing held with the scope they support.",
+        line: "Validation evidence, uncertainty and issued results held with the scope they support, down to the reports a drift reached.",
         viz: {
           kind: "decision",
           wash: "blue",
-          kicker: "Proficiency testing",
+          kicker: "Issued reports · NC-3092",
           steps: [
-            { q: "PT result within limits?", a: "No" },
-            { q: "Inside the accreditation scope?", a: "Yes" },
+            { q: "Reports issued since the last good calibration?", a: "Yes" },
+            { q: "Outside the reported uncertainty?", a: "Yes" },
           ],
-          outcome: "Corrective action opened",
-          cursor: SIGNATORY,
+          outcome: "Reports amended · reason on NC-3092",
+          cursor: NOVAK,
         },
       },
       {
@@ -446,10 +453,10 @@ export const LABORATORIES_RAILS: IndustryRails = {
         viz: {
           kind: "thread",
           wash: "paper",
-          kicker: "Calibration",
+          kicker: "Calibration · BAL-07",
           messages: [
-            { org: "Metrology", text: "Out of tolerance at calibration" },
-            { org: "Quality", text: "Affected results traced and held on the record" },
+            { org: "Metrology", text: "BAL-07 out of tolerance at the as-found check" },
+            { org: "Quality", text: "Results since the last good calibration traced to NC-3092" },
           ],
         },
       },
@@ -459,10 +466,10 @@ export const LABORATORIES_RAILS: IndustryRails = {
         viz: {
           kind: "feed",
           wash: "warm",
-          kicker: "Method changes",
+          kicker: "Method change · NC-3092",
           items: [
-            { source: "Method", title: "New revision approved", tag: "Cascade", hot: true },
-            { source: "Analysts", title: "Scoped for re-authorization", tag: "Assigned" },
+            { source: "Method", title: "Daily BAL-07 check added", tag: "Cascade", hot: true },
+            { source: "Analysts", title: "Re-authorized", tag: "Assigned" },
             { source: "Proof", title: "Completion before the effective date", tag: "Due" },
           ],
         },
@@ -471,8 +478,31 @@ export const LABORATORIES_RAILS: IndustryRails = {
   },
 
   lead: [
-    { name: "ISO/IEC 17025 nonconformance at surveillance", viz: "sheet", clock: "90 days, or the scope suspends" },
-    { name: "Data integrity finding", viz: "elements", detail: ["ALCOA+", "Attributable", "Legible", "!Contemporaneous", "Original", "Complete"] },
-    { name: "Customer audit removes lab from an approved list", viz: "alerts" },
+    /* 24 Sep 2026: the three clocks NC-3092 starts, each surface drawn from
+     * it: the surveillance findings (ISO/IEC 17025 clauses: 6.4.10
+     * intermediate checks, 7.10 nonconforming work, 8.7 corrective action),
+     * the client audit that asks for the amended reports, and the method's
+     * traceability index missing BAL-07's calibration link */
+    {
+      name: "ISO/IEC 17025 nonconformance at surveillance",
+      viz: "findings",
+      detail: [
+        "Surveillance · ISO/IEC 17025",
+        "!6.4.10|No intermediate checks defined for BAL-07",
+        "7.10|Results NC-3092 reached traced late",
+        "8.7|Effectiveness not yet shown",
+      ],
+      clock: "90 days, or the scope suspends",
+    },
+    {
+      name: "Customer audit removes lab from an approved list",
+      viz: "elements",
+      detail: ["Client audit", "BAL-07 calibration records", "!Issued-report amendments", "NC-3092 closure", "!Effectiveness evidence"],
+    },
+    {
+      name: "Method validation traceability gap at audit",
+      viz: "tree",
+      detail: ["Validation report", "Uncertainty budget", "!Calibration traceability · BAL-07", "Proficiency testing", "Analyst authorization"],
+    },
   ],
 };

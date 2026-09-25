@@ -4,7 +4,17 @@
  * the retests running across R&D and QC → the Responsible Person's
  * e-signature → the sealed trace with the PIF current. Vocabulary from the
  * Notion row (safety substantiation, PIF, Responsible Person, MoCRA,
- * ISO 22716). */
+ * ISO 22716).
+ * 24 Sep 2026, the page's one story: FRM-1180 brings in the revised
+ * preservative, and the hero's missing COA is that preservative's lot, so
+ * the retailer audit, the held batch, the PIF and the adverse-event check
+ * below all play the same face cream. Cast, one role per name:
+ *   C. Laurent  Formulation R&D, raised FRM-1180
+ *   P. Nair     Regulatory, PIF and MoCRA listing
+ *   J. Weber    Product Safety, signs the formula (safety assessor)
+ *   I. Rossi    QC, microbiological limits
+ *   A. Ferreira Quality, the retailer audit file
+ *   G. Alvarez  Plant operations, the held batch */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -25,7 +35,7 @@ const WORLD: ArcadeFlowWorld = {
   },
   inboxNeighbors: [
     { title: "Retailer audit request", time: "11:45", detail: "Safety substantiation file", kind: "Audit" },
-    { title: "Ingredient COA", time: "Yesterday", detail: "Supplier QA · tied to the lot", kind: "Supplier" },
+    { title: "Preservative COA", time: "Yesterday", detail: "Supplier QA · first lot of the revised system", kind: "Supplier" },
     { title: "Serious adverse event", time: "Mon", detail: "15 business days to FDA · MoCRA", kind: "Safety" },
   ],
   checklistTitle: "Formula change",
@@ -34,7 +44,7 @@ const WORLD: ArcadeFlowWorld = {
       title: "CHANGE",
       items: [
         { label: "Formula", kind: "revision", from: "Current preservative system", to: "Revised preservative system" },
-        { label: "Reason for change", kind: "field", value: "Preservative system revised" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Preservative system revised" },
         { label: "SKU", note: "Leave-on face cream" },
       ],
     },

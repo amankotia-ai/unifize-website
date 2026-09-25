@@ -131,9 +131,6 @@ export default function MesProductPage() {
               <p className="dms-lede dms-hero__sub">{PRODUCT.description}</p>
               <div className="dms-hero__ctas">
                 <BookDemoButton className="dms-btn" source="hero">Book a demo &rarr;</BookDemoButton>
-                <Link href="/coordination-tax-calculator" className="dms-btn dms-btn-ghost">
-                  Take Coordination Tax Assessment
-                </Link>
               </div>
             </div>
           </div>

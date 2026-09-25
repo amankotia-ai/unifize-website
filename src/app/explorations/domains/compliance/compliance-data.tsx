@@ -84,7 +84,7 @@ const COMPLIANCE_WORLD: ArcadeFlowWorld = {
     {
       title: "FINDING & IMPACT",
       items: [
-        { label: "Finding description", kind: "field", value: "Audit trail disabled on result amendments · LIMS v7.2", note: "Entered from the audit" },
+        { label: "Finding description", kind: "field", input: "rich", value: "Audit trail disabled on result amendments · LIMS v7.2", note: "Entered from the audit" },
         { label: "Affected system", note: "LIMS v7.2 · GxP critical" },
         { label: "Records exposure", note: "214 amended results in scope" },
       ],
@@ -716,7 +716,6 @@ export const COMPLIANCE_DATA: DomainPageData = {
         label: "Where the posture used to live",
         body: "The validation binder, the access-review spreadsheet and the scanning brief stop being where the answer lives. The decision and its evidence move onto the record.",
       },
-      flows: { contextIn: "CONTEXT IN", back: "PART 11 SIGNED", captured: "OBLIGATIONS CAPTURED", linked: "THE ANSWER, LINKED" },
     },
   },
 
@@ -790,9 +789,9 @@ export const COMPLIANCE_DATA: DomainPageData = {
     lede: "The same governed record runs the rest of the operation, so the system you land this quarter is the platform your next function joins.",
     steps: [
       { name: "Compliance", note: "You are here" },
-      { name: "Quality", note: "Live · the quality solution", href: "/domains/quality" },
-      { name: "Change control", note: "Live · the change control solution", href: "/domains/change-control" },
-      { name: "Regulatory affairs", note: "Live · the regulatory affairs solution", href: "/domains/regulatory-affairs" },
+      { name: "Quality", note: "Live · the quality solution", href: "/solution/quality" },
+      { name: "Change control", note: "Live · the change control solution", href: "/solution/change-control" },
+      { name: "Regulatory affairs", note: "Live · the regulatory affairs solution", href: "/solution/regulatory-affairs" },
       { name: "Document & records control", note: "Live · the DMS product", href: "/products/dms" },
       { name: "Environment, health & safety", note: "Product in development" },
     ],

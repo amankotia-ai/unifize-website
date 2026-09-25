@@ -1,0 +1,82 @@
+[
+  {
+    "pageId": "37c860e6-b45e-81c0-a6d8-ee4ba870f818",
+    "id": "PRL-1",
+    "name": "Document Approver",
+    "description": "The Document Approver Role is the function of formally approving a controlled document version. Held by whichever Product Persona is named as the approver on a given document type: Quality Manager for SOPs and quality procedures, Document Controller for templates and forms, Department Head for department-specific work instructions. The Role activates whenever an approval request is routed during a document revision; the same person may sit in this Role on dozens of documents while also holding other Roles in parallel. Migrated on 2026-06-11 from the Product Personas database under the change request titled Separate Persona and Role across the Platform and Product layers; the previous row in Product Personas was misclassified as a job title.",
+    "permissions": "Sign and publish the document version they approve; route back for revision; access the diff and full approval thread.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81c6-a0ef-cc8d391ab23a",
+    "id": "PRL-2",
+    "name": "Audit Lead",
+    "description": "The Audit Lead Role is the function of running an audit from planning through closure. Held by whichever Product Persona is named as the lead on a given audit: most often the Quality Manager for ISO and internal audits; a contracted external auditor for certification audits; a Compliance Officer for regulatory audits. The Role activates for the duration of an audit cycle and includes planning the scope, recording findings, signing off the audit report, and routing findings to corrective actions. Migrated on 2026-06-11 from the Product Personas database under the change request titled Separate Persona and Role across the Platform and Product layers; the previous row in Product Personas was misclassified as a job title.",
+    "permissions": "Open and close audit records; classify and sign findings; route findings to corrective actions; access the full audit trail of the audited Module.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-813e-bca6-e8a117de3050",
+    "id": "PRL-3",
+    "name": "CAPA Investigator",
+    "description": "The CAPA Investigator Role is the function of running a corrective action from assignment through verified effectiveness. Held by whichever Product Persona is named as the owner on a given CAPA: most commonly a Quality Engineer (where the company has that seat) or the Quality Manager (in smaller organizations); for engineering-caused defects, an Engineering Manager or Design Engineer. The Role activates on CAPA assignment and runs for weeks to months. Migrated on 2026-06-11 from the Product Personas database under the change request titled Separate Persona and Role across the Platform and Product layers; the previous row in Product Personas was misclassified as a job title.",
+    "permissions": "Open and close CAPA records; assign investigation tasks; route the corrective action plan for approval; verify effectiveness and sign closure.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-8138-b3e2-c4e001127c1e",
+    "id": "PRL-4",
+    "name": "Risk Owner",
+    "description": "The Risk Owner Role is the function of being accountable for one or more entries in the risk register over time. Held by whichever Product Persona is named on the entry: Quality Manager for product-quality risks; Engineering Manager for design risks; EHS Manager for safety risks; Compliance Officer for regulatory risks. The Role activates whenever a risk register entry assigned to the holder needs attention, and stays attached to the entry until the entry is closed. Migrated on 2026-06-11 from the Product Personas database under the change request titled Separate Persona and Role across the Platform and Product layers; the original Product Persona row created earlier today on 2026-06-11 under the prior change request titled Create the four missing Product Persona rows flagged by the Product Journeys cleanup is now trashed; this Product Role row replaces it.",
+    "permissions": "Edit assigned risk register entries; open mitigations through change control; track effectiveness verification; sign closure when residual risk is below threshold.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8115-9243-c81508af35cc",
+      "361860e6-b45e-810d-b38c-fa27d3add5b3"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-816e-8a1e-ebb23e259b04",
+    "id": "PRL-5",
+    "name": "Change Sponsor",
+    "description": "The Change Sponsor Role is the function of being the named accountable owner of a single change request from initiation through closure. Held by whichever Product Persona is named as the sponsor on a given change: Document Controller for procedure revisions; Engineering Manager for architectural changes; Quality Manager for corrective actions of strategic impact; in regulated quality systems sometimes called Change Coordinator. The Role activates on change request creation and ends at terminal status (Done, Active, Rejected, or Deferred). Migrated on 2026-06-11 from the Product Personas database under the change request titled Separate Persona and Role across the Platform and Product layers; the original Product Persona row created earlier today on 2026-06-11 under the prior change request titled Create the four missing Product Persona rows flagged by the Product Journeys cleanup is now trashed; this Product Role row replaces it.",
+    "permissions": "Edit the change request body; set path, risk, reversibility, and category; route for approval; close at terminal status; add the pending change control callout to the affected document.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81e0-b789-dd616ea211bd",
+    "id": "PRL-6",
+    "name": "Disposition Approver",
+    "description": "The Disposition Approver Role is the function of formally approving how nonconforming material is treated: use as is, rework, scrap, return to supplier, or concession. Held by whichever Product Persona is named as the approver on a given disposition: most often Quality Manager for higher-risk dispositions; Quality Engineer for routine dispositions in larger organizations; for engineering concessions, Engineering Manager or Design Engineer signs in addition. The Role activates on a disposition approval request mid-task and runs to signature or routed-back. The same pattern applies to closure approvals on the nonconformance and supplier quality value streams, so JRN-8 and JRN-13 both anchor here.",
+    "permissions": "Sign the disposition decision; route back for further investigation or concession; access the full evidence and prior approval chain.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ]
+  },
+  {
+    "pageId": "37c860e6-b45e-81b8-88a7-cdc8eb9aee48",
+    "id": "PRL-7",
+    "name": "Disposition Approver",
+    "description": "The Disposition Approver Role is the function of formally approving how nonconforming material is treated: use as is, rework, scrap, return to supplier, or concession. Held by whichever Product Persona is named on a given disposition: most often Quality Manager for higher-risk dispositions, Quality Engineer for routine dispositions in larger organizations, Engineering Manager or Design Engineer for engineering concessions. The Role activates on a disposition approval request mid-task and runs to signature or routed-back. The same pattern applies to closure approvals on the nonconformance and supplier quality value streams; JRN-8 and JRN-13 both anchor here.",
+    "permissions": "Sign the disposition decision; route back for further investigation or concession; access the full evidence and prior approval chain.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "37c860e6-b45e-8174-ac8c-d9ed82a70fd2",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ]
+  }
+]

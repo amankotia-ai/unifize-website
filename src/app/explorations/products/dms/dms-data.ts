@@ -307,8 +307,12 @@ export const CAPABILITIES: { title: string; body: string; glyph: string }[] = [
  * Notion adds or removes the card here on the next sync. Presentation
  * (lifecycle span, portrait, route, copy-tightened daily lines) stays
  * page-owned below, keyed by persona ID; a persona without an entry still
- * renders from mirror facts with a fallback portrait. Personas missing name
- * or daily activities are held back rather than rendered broken. */
+ * renders from mirror facts with a fallback portrait. Personas missing a
+ * name, or daily activities from both Notion and the page, are held back
+ * rather than rendered broken.
+ * DMS_SEATS: the Quality Manager approves here but the DMS row's Target
+ * Personas does not name it (25 Sep 2026), so the page adds the seat; its
+ * card is the way into the role page. Drop the entry once Notion names it. */
 type PersonaMirrorRow = {
   pageId: string;
   id: string;
@@ -334,7 +338,7 @@ const PERSONA_PRESENTATION: Record<
     owns: "Approval → Release",
     // Reuse a representative portrait from the two primary persona cards.
     img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
-    href: "/explorations/personas/quality-manager",
+    href: "/personas/quality-manager",
     daily: ["Approve changes of consequence", "Own the audit programme", "Chair management review"],
   },
 };
@@ -356,9 +360,16 @@ export const TRUST_INDUSTRIES: string[] = (dmsProductRow?.industries ?? [])
   )
   .map((row) => row.name);
 
-const dmsPersonaCards = (dmsProductRow?.personas ?? [])
-  .map((pageId) => (personasMirror as PersonaMirrorRow[]).find((p) => p.pageId === pageId))
-  .filter((p): p is PersonaMirrorRow => Boolean(p && p.name && p.daily.length > 0))
+const DMS_SEATS = ["PPS-2"];
+
+const dmsPersonaCards = [
+  ...(dmsProductRow?.personas ?? []).map((pageId) => (personasMirror as PersonaMirrorRow[]).find((p) => p.pageId === pageId)),
+  ...DMS_SEATS.map((id) => (personasMirror as PersonaMirrorRow[]).find((p) => p.id === id)),
+]
+  .filter((p, i, all): p is PersonaMirrorRow =>
+    Boolean(p && p.name && (p.daily.length > 0 || PERSONA_PRESENTATION[p.id]?.daily?.length)) &&
+    all.findIndex((q) => q?.pageId === p?.pageId) === i,
+  )
   .map((p) => {
     const presentation = PERSONA_PRESENTATION[p.id] ?? {};
     return {

@@ -4,7 +4,15 @@
  * (the product's real flow; the hero's root cause is calibration) → the
  * technical signatory's corrective-action review → the effectiveness runs
  * → the sealed trace. Vocabulary from the Notion row (control limits,
- * Westgard rules, non-conformance, corrective action, effectiveness check). */
+ * Westgard rules, non-conformance, corrective action, effectiveness check).
+ * 24 Sep 2026, the page's one story: the calibration cause is balance
+ * BAL-07, and every section below plays NC-3092 (held results, the reports
+ * the drift reached, the recalibration, the re-authorized daily check).
+ * Cast, one role per name:
+ *   R. Iyer     QC analyst, raised NC-3092
+ *   E. Novak    Technical signatory, reviews the corrective action
+ *   T. Becker   Quality, signs the effectiveness check
+ *   K. Adeyemi  Lab operations, holds the results */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -25,7 +33,7 @@ const WORLD: ArcadeFlowWorld = {
   },
   inboxNeighbors: [
     { title: "Issued reports check", time: "08:10", detail: "What already went out on this method", kind: "Review" },
-    { title: "Balance calibration", time: "Yesterday", detail: "Metrology · due this week", kind: "Equipment" },
+    { title: "BAL-07 calibration", time: "Yesterday", detail: "Metrology · due this week", kind: "Equipment" },
     { title: "Proficiency test round", time: "Mon", detail: "Results due to the provider", kind: "Quality event" },
   ],
   checklistTitle: "Nonconformance",
@@ -33,15 +41,17 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "NONCONFORMANCE",
       items: [
-        { label: "Description", kind: "field", value: "QC result outside the 3s control limit" },
-        { label: "Rule violated", kind: "field", value: "Westgard 1-3s" },
+        { label: "Description", kind: "field", input: "rich", value: "QC result outside the 3s control limit" },
+        { label: "Rule violated", kind: "field", input: "select", value: "Westgard 1-3s" },
         { label: "Affected results", note: "Held · Lab ops" },
       ],
     },
     {
       title: "ROOT CAUSE · 5-WHY",
       items: [
-        { label: "Why 1 (choose only one)", kind: "linked", links: [] },
+        { label: "RCA Methodology", kind: "field", input: "select", value: "5-Whys" },
+        { label: "Generate Why 1", kind: "ask", value: "Generate Why 1", note: "Beta" },
+        { label: "Why 1 (Choose only one)", kind: "linked", links: ["WHY-1"] },
         { label: "Root cause", note: "Bound to the NC" },
       ],
     },
@@ -79,40 +89,54 @@ export const LABORATORIES_JOURNEY = cast(
     focusRows: [],
     ownershipNote: "Raised at the bench, not in a spreadsheet",
     checklistOpen: "NONCONFORMANCE",
-    checklistEntry: { section: "NONCONFORMANCE", item: "Description" },
-    checklistProgress: { NONCONFORMANCE: 2, "ROOT CAUSE · 5-WHY": 0, "CORRECTIVE ACTION": 0, EFFECTIVENESS: 0 },
+    /* the rule is a picklist on the record: the analyst picks it, the
+     * dropdown open as the app draws it */
+    checklistPick: { section: "NONCONFORMANCE", item: "Rule violated", options: ["Westgard 1-2s", "Westgard 1-3s", "Westgard 2-2s", "Westgard R-4s"], active: 1 },
+    checklistProgress: { NONCONFORMANCE: 1, "ROOT CAUSE · 5-WHY": 0, "CORRECTIVE ACTION": 0, EFFECTIVENESS: 0 },
   }),
   step(1.25, {
     ghost: "Analyse",
     status: "Open",
-    actor: "Unifize Assistant",
-    event: "Why 1, asked from the nonconformance",
-    eventDetail: "Three candidates against the evidence · only R. Iyer picks the one that fits",
+    actor: "You",
+    event: "Asked AI suggestion for Generate Why 1",
+    eventDetail: "Only R. Iyer picks the one that fits",
     focus: "assist",
     poseVariant: "linked",
     focusTitle: "Why 1",
     focusRows: [],
     ownershipNote: "The chain builds from the record",
     checklistOpen: "ROOT CAUSE · 5-WHY",
+    world: {
+      ...WORLD,
+      viewer: "R. Iyer",
+      viewerInitials: "RI",
+      checklistSections: WORLD.checklistSections.map((section) => ({
+        ...section,
+        items: section.items.map((item) => (item.label === "Why 1 (Choose only one)" ? { ...item, links: [] } : item)),
+      })),
+    },
     checklistLinks: {
       section: "ROOT CAUSE · 5-WHY",
-      item: "Why 1 (choose only one)",
+      item: "Why 1 (Choose only one)",
       links: ["WHY-1"],
-      records: [{ id: "WHY-1", title: "Instrument out of calibration", state: "Picked" }],
+      records: [{ id: "WHY-1", title: "Instrument out of calibration", state: "Pending", tone: "review", owner: "No Owner" }],
     },
-    checklistProgress: { "ROOT CAUSE · 5-WHY": 1, "CORRECTIVE ACTION": 0, EFFECTIVENESS: 0 },
+    checklistFilled: { section: "ROOT CAUSE · 5-WHY", items: ["Why 1 (Choose only one)"] },
+    inboxNew: [{ title: "Instrument out of calibration", detail: "Me: Filled a checklist", kind: "Why (Level 1) · WHY-1", owner: "No Owner", state: "Pending" }],
+    checklistProgress: { "ROOT CAUSE · 5-WHY": 3, "CORRECTIVE ACTION": 0, EFFECTIVENESS: 0 },
     assist: {
-      kicker: "UNIFIZE AI · BETA",
-      prompt: "Why did the QC result break the 1-3s rule?",
-      note: "Answered against the control chart and the equipment record · a suggestion until picked",
-      pick: "one",
-      suggested: [
-        { id: "A", title: "Instrument out of calibration", why: "Equipment record", picked: true },
-        { id: "B", title: "Control material degraded", why: "Lot in date" },
-        { id: "C", title: "Random error on one run", why: "Unsupported" },
+      asker: "R. Iyer",
+      field: "Generate Why 1",
+      rows: [
+        {
+          label: "Why 1 (Choose only one)",
+          options: [
+            { text: "The balance BAL-07 drifted out of calibration, so the QC result ran past the 3s limit.", picked: true },
+            { text: "The control material degraded in storage before the run." },
+            { text: "A single random error on one run, with no fault behind it." },
+          ],
+        },
       ],
-      action: "Add to checklist",
-      alt: "Ask again",
       pressed: true,
     },
   }),
@@ -125,8 +149,8 @@ export const LABORATORIES_JOURNEY = cast(
     focus: "review",
     focusTitle: "Corrective action review",
     focusRows: [
-      "Root cause · calibration",
-      "Correction · recalibrated, results re-run",
+      "Root cause · BAL-07 out of calibration",
+      "Correction · BAL-07 recalibrated, results re-run",
       "Issued reports · amendments tied to the NC",
     ],
     focusAction: "Approve corrective action",
@@ -134,7 +158,7 @@ export const LABORATORIES_JOURNEY = cast(
     ownershipNote: "The reasoning stays on the NC",
     world: { ...WORLD, viewer: "E. Novak", viewerInitials: "EN" },
     checklistOpen: "CORRECTIVE ACTION",
-    checklistProgress: { "ROOT CAUSE · 5-WHY": 2, "CORRECTIVE ACTION": 2, EFFECTIVENESS: 0 },
+    checklistProgress: { "ROOT CAUSE · 5-WHY": 4, "CORRECTIVE ACTION": 2, EFFECTIVENESS: 0 },
   }),
   step(1.3, {
     ghost: "Verify",

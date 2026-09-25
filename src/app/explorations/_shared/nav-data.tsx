@@ -89,36 +89,34 @@ export const NAV: NavItem[] = [
     cols: [
       {
         heading: "Quality & Compliance", icon: "shield", items: [
-          { label: "Quality", href: "/domains/quality", desc: "NCs, CAPA and audits on one quality record." },
-          { label: "Compliance", href: "/domains/compliance", desc: "Stay inspection-ready against every standard." },
-          { label: "Regulatory Affairs", href: "/domains/regulatory-affairs", desc: "Submissions, registrations and regulatory change." },
+          { label: "Quality", href: "/solution/quality", desc: "NCs, CAPA and audits on one quality record." },
+          { label: "Compliance", href: "/solution/compliance", desc: "Stay inspection-ready against every standard." },
+          { label: "Regulatory Affairs", href: "/solution/regulatory-affairs", desc: "Submissions, registrations and regulatory change." },
           // Renamed in the Domains DB on 2026-05-14 (Supplier Quality -> Supplier
           // Management) to widen the buyer door past the Supplier Quality Director
           // to the CPO / Head of Procurement. Slug follows the DB, not the old nav.
-          { label: "Supplier Management", href: "/domains/supplier-management", desc: "Qualification, SCARs and supplier performance." },
-          { label: "Post-Market & Recall", href: "/domains/post-market-and-recall", desc: "Complaints, adverse events and recalls, closed." },
+          { label: "Supplier Management", href: "/solution/supplier-management", desc: "Qualification, SCARs and supplier performance." },
+          { label: "Post-Market & Recall", href: "/solution/post-market-and-recall", desc: "Complaints, adverse events and recalls, closed." },
         ],
       },
       {
         heading: "Governance & Control", icon: "ledger", items: [
-          { label: "Change Control", href: "/domains/change-control", desc: "Every change proposed, reviewed and approved." },
-          { label: "Document & Records Control", href: "/domains/document-and-records-control", desc: "Controlled documents and records, audit-ready." },
-          { label: "Periodic Review & Data Governance", href: "/domains/periodic-review-and-data-governance", desc: "Scheduled reviews and defensible data integrity." },
-          { label: "Training & Competency", href: "/domains/training-and-competency", desc: "Role-based training tied to controlled documents." },
-          { label: "System & Data Integration Governance", href: "/domains/system-and-data-integration-governance", desc: "Govern the systems and the data between them." },
+          { label: "Change Control", href: "/solution/change-control", desc: "Every change proposed, reviewed and approved." },
+          { label: "Document & Records Control", href: "/solution/document-and-records-control", desc: "Controlled documents and records, audit-ready." },
+          { label: "Training & Competency", href: "/solution/training-and-competency", desc: "Role-based training tied to controlled documents." },
         ],
       },
       {
         heading: "Operations & Supply Chain", icon: "truck", items: [
-          { label: "Operations", href: "/domains/operations", desc: "Run the shop floor without paper or handoffs." },
-          { label: "Supply Chain & Planning", href: "/domains/supply-chain-and-planning", desc: "Plan and keep supply aligned to demand." },
-          { label: "Procurement & Sourcing", href: "/domains/procurement-and-sourcing", desc: "Source and buy against quality requirements." },
-          { label: "Customer Management", href: "/domains/customer-management", desc: "Orders, complaints and commitments, connected." },
-          { label: "New Product Development", href: "/domains/new-product-development", desc: "Concept to launch with the design history intact." },
+          { label: "Operations", href: "/solution/operations", desc: "Run the shop floor without paper or handoffs." },
+          { label: "Supply Chain & Planning", href: "/solution/supply-chain-and-planning", desc: "Plan and keep supply aligned to demand." },
+          { label: "Procurement & Sourcing", href: "/solution/procurement-and-sourcing", desc: "Source and buy against quality requirements." },
+          { label: "Customer Management", href: "/solution/customer-management", desc: "Orders, complaints and commitments, connected." },
+          { label: "New Product Development", href: "/solution/new-product-development", desc: "Concept to launch with the design history intact." },
         ],
       },
     ],
-    foot: { title: "The Problem, end to end", desc: "See how the solutions connect into one system of record.", href: "/domains", cta: "All solutions" },
+    foot: { title: "The Problem, end to end", desc: "See how the solutions connect into one system of record.", href: "/solution", cta: "All solutions" },
   },
   {
     label: "Industries",
@@ -150,7 +148,7 @@ export const NAV: NavItem[] = [
     ],
     foot: { title: "See a complete industry page", desc: "Tour how Unifize maps to one industry end to end.", href: "/industries/medical-devices", cta: "Take the tour" },
   },
-  { label: "About us", href: "/about" },
+  { label: "About", href: "/about" },
   {
     label: "Resources",
     menu: "resources",

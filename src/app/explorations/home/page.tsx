@@ -156,7 +156,7 @@ const SYMPTOMS: {
     visual: "cycle",
     claim: "CAPAs take 90+ days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
-    href: "/domains/quality",
+    href: "/solution/quality",
     tax: { value: "≈19 hrs", label: "of coordination per non-conformance, detection to CAPA closure" },
   },
   {
@@ -164,7 +164,7 @@ const SYMPTOMS: {
     visual: "versions",
     claim: "Three copies of one SOP claim to be current.",
     note: "The controlled system says v3.2, a file share holds v3.1, and the line runs a laminated v2.8. The current version depends on where you look.",
-    href: "/domains/document-and-records-control",
+    href: "/solution/document-and-records-control",
     tax: { value: "40 min", label: "to pull one controlled document under audit pressure" },
   },
   {
@@ -172,7 +172,7 @@ const SYMPTOMS: {
     visual: "handoffs",
     claim: "Supplier approvals live in email threads.",
     note: "Qualification evidence, PPAP reviews, and SCARs scatter across mailboxes at the organisational boundary.",
-    href: "/domains/supplier-management",
+    href: "/solution/supplier-management",
     tax: { value: "≈14 hrs", label: "of coordination per supplier quality issue, incoming to resolved" },
   },
   {
@@ -180,7 +180,7 @@ const SYMPTOMS: {
     visual: "approval",
     claim: "The change gets approved. Nobody can replay why.",
     note: "Sign-off happens in email threads and design reviews, so the evidence that was seen and the conditions that were accepted never reach the record.",
-    href: "/domains/change-control",
+    href: "/solution/change-control",
     tax: { value: "≈30 hrs", label: "of coordination per change order, initiation to implementation" },
   },
   /* behind "See more solutions"; claims mirror each domain page's hero */
@@ -189,44 +189,44 @@ const SYMPTOMS: {
     visual: "trace",
     claim: "The design history is assembled after the fact.",
     note: "Decisions made in reviews and threads get reconstructed into the DHF weeks later, under deadline.",
-    href: "/domains/product-development",
+    href: "/solution/new-product-development",
   },
   {
     domain: "Operations",
     visual: "wip",
     claim: "WIP ages while dispositions wait in inboxes.",
     note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
-    href: "/domains/operations",
+    href: "/solution/operations",
   },
   {
     domain: "Regulatory Affairs",
     visual: "deadline",
     claim: "The reporting clock starts before the evidence is gathered.",
     note: "Reportability, submissions, and label approvals close on deadlines someone else set, with the evidence still in five inboxes.",
-    href: "/domains/regulatory-affairs",
+    href: "/solution/regulatory-affairs",
   },
   {
     domain: "Post-Market & Recall",
     visual: "tracks",
     claim: "A recall is four workflows, each with its own owner.",
     note: "Hold, notification, returns, and the submission run under different owners. The decisions holding them together happen on calls nobody records.",
-    href: "/domains/post-market-and-recall",
+    href: "/solution/post-market-and-recall",
   },
   {
     domain: "Compliance",
     visual: "matrix",
     claim: "You can prove compliance today. Ask again tomorrow.",
     note: "Validation, data integrity, and regulatory change are governed in briefs and spreadsheets beside the quality system, so the answer has to be rebuilt each time.",
-    href: "/domains/compliance",
+    href: "/solution/compliance",
   },
 ];
 
 /* each row carries a solid glyph from the nav set (nav-data NAV_ICONS) */
 const PRIMARY_SOLUTIONS = [
-  { name: "Quality", meta: "CAPA · NC · Audits", href: "/domains/quality", icon: "seal" as const },
-  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/domains/supplier-management", icon: "truck" as const },
-  { name: "Operations", meta: "Holds · Dispositions", href: "/domains/operations", icon: "pallet" as const },
-  { name: "Product Development", meta: "ECOs · Design history", href: "/domains/product-development", icon: "compass" as const },
+  { name: "Quality", meta: "CAPA · NC · Audits", href: "/solution/quality", icon: "seal" as const },
+  { name: "Supplier Management", meta: "PPAP · SCARs", href: "/solution/supplier-management", icon: "truck" as const },
+  { name: "Operations", meta: "Holds · Dispositions", href: "/solution/operations", icon: "pallet" as const },
+  { name: "Product Development", meta: "ECOs · Design history", href: "/solution/new-product-development", icon: "compass" as const },
 ];
 
 /* 04 - each product poses the arcade window on its ESSENCE artifact, the one

@@ -46,10 +46,10 @@ const HOME_ENTRY_PATHS: EntryPath[] = [
     title: "I need to improve a process.",
     body: "Start with the cross-functional work that is slow, unclear, or difficult to prove.",
     links: [
-      { name: "Quality", meta: "CAPA · NC · Audits", href: "/domains/quality" },
-      { name: "Supplier Management", meta: "PPAP · SCARs", href: "/domains/supplier-management" },
-      { name: "Operations", meta: "Holds · Dispositions", href: "/domains/operations" },
-      { name: "Product Development", meta: "ECOs · Design history", href: "/domains/product-development" },
+      { name: "Quality", meta: "CAPA · NC · Audits", href: "/solution/quality" },
+      { name: "Supplier Management", meta: "PPAP · SCARs", href: "/solution/supplier-management" },
+      { name: "Operations", meta: "Holds · Dispositions", href: "/solution/operations" },
+      { name: "Product Development", meta: "ECOs · Design history", href: "/solution/new-product-development" },
     ],
     href: "#sf-solutions",
     cta: "Explore solutions",
@@ -121,28 +121,28 @@ const HOME_SYMPTOMS = [
     visual: "cycle" as const,
     claim: "CAPAs take 90 days to close.",
     note: "The investigation is a week of work. The other eleven are spent chasing sign-offs, evidence, and owners.",
-    href: "/domains/quality",
+    href: "/solution/quality",
   },
   {
     domain: "Operations",
     visual: "wip" as const,
     claim: "WIP ages while dispositions wait in inboxes.",
     note: "QA calls, engineering decisions, and lab results arrive by escalation, with no trail of who committed to what.",
-    href: "/domains/operations",
+    href: "/solution/operations",
   },
   {
     domain: "Supplier management",
     visual: "handoffs" as const,
     claim: "Supplier approvals live in email threads.",
     note: "Qualification evidence, PPAP reviews, and SCARs scatter across mailboxes at the organisational boundary.",
-    href: "/domains/supplier-management",
+    href: "/solution/supplier-management",
   },
   {
     domain: "Product development",
     visual: "trace" as const,
     claim: "The design history is assembled after the fact.",
     note: "Decisions made in reviews and threads get reconstructed into the DHF weeks later, under deadline.",
-    href: "/domains/product-development",
+    href: "/solution/new-product-development",
   },
 ];
 
@@ -187,17 +187,17 @@ const HOME_PRODUCTS = [
 const HOME_PROOF_CONTEXT = {
   "how-unifize-improved-our-non-conformance-closure-time-by-75-within-the-first-month": [
     { label: "Manufacturing", href: "/industries" },
-    { label: "Quality", href: "/domains/quality" },
+    { label: "Quality", href: "/solution/quality" },
     { label: "QMS", href: "/products/qms" },
   ],
   "how-smaller-groups-lead-to-70-faster-actions": [
-    { label: "Operations", href: "/domains/operations" },
+    { label: "Operations", href: "/solution/operations" },
     { label: "Collaboration", href: "/platform" },
     { label: "QMS", href: "/products/qms" },
   ],
   "how-unifize-helped-reduce-60-000-of-material-cost-on-just-one-product": [
     { label: "Nutritional supplements", href: "/industries" },
-    { label: "Product development", href: "/domains/product-development" },
+    { label: "Product development", href: "/solution/new-product-development" },
     { label: "PLM", href: "/products/plm" },
   ],
 };
@@ -482,7 +482,7 @@ export function HomeRecognition() {
 
         <footer className="sf-home-section__footer">
           <p>Quality, operations, supplier management, and product development all run on the same decision model.</p>
-          <HeroLink href="/domains" muted>See every solution</HeroLink>
+          <HeroLink href="/solution" muted>See every solution</HeroLink>
         </footer>
       </div>
     </section>

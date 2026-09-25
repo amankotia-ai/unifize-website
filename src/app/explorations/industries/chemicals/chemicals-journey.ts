@@ -4,14 +4,23 @@
  * affect?" answering with the SDS, the REACH dossier and the customer
  * notice, a person adding them (the product's real flow, Beta) → the
  * Quality and EHS review → the e-signature → the sealed trace. Vocabulary
- * from the Notion row (REACH, SDS, GHS, MOC, customer change notification). */
+ * from the Notion row (REACH, SDS, GHS, MOC, customer change notification).
+ * 24 Sep 2026, the page's one story: every section below plays ECN-2210
+ * (the SDS, the REACH dossier, the pharma customers' notice, the MOC on
+ * the PSM process, the new supplier's first lot in quarantine). Cast, one
+ * role per name:
+ *   K. Watanabe  Process Engineering, raised ECN-2210
+ *   N. Petrova   EHS and process safety
+ *   O. Haddad    Quality, approves the change
+ *   L. Moreau    Product stewardship, the REACH / TSCA dossier
+ *   B. Kowalski  Plant operations, the quarantined lot */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
 const IMPACTED = [
-  { id: "SDS", title: "Safety data sheet", why: "Hazards to re-check" },
-  { id: "REACH", title: "REACH dossier", why: "Registration to check" },
-  { id: "Notice", title: "Customer notice", why: "Pharma customers" },
+  { id: "SDS-114", title: "Safety data sheet, solvent blend" },
+  { id: "REACH-22", title: "REACH registration dossier" },
+  { id: "SPEC-310", title: "Raw material specification, solvent" },
 ];
 
 const WORLD: ArcadeFlowWorld = {
@@ -39,7 +48,7 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE REQUEST",
       items: [
-        { label: "Reason for change", kind: "field", value: "Solvent moves to a new supplier" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Solvent moves to a new supplier" },
         { label: "Component", kind: "revision", from: "Current supplier", to: "New supplier" },
         { label: "Formulation", note: "Composition unchanged" },
       ],
@@ -47,8 +56,9 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "IMPACT ASSESSMENT",
       items: [
-        { label: "Affected records", kind: "linked", links: [] },
-        { label: "Assess what this touches", kind: "ask", value: "What else does this change affect?", note: "Beta" },
+        { label: "Assess impacted documents", kind: "ask", value: "What else does this change affect?", note: "Beta" },
+        { label: "AI impact summary", kind: "field", input: "rich", value: IMPACTED.map((r, i) => `${i + 1}.${r.title}`).join(" ") },
+        { label: "Impacted document records", kind: "linked", links: IMPACTED.map((r) => r.id), placeholder: "+ Add Document" },
       ],
     },
     {
@@ -85,31 +95,37 @@ export const CHEMICALS_JOURNEY = cast(
   step(1.2, {
     ghost: "Impact",
     status: "Open",
-    actor: "Unifize Assistant",
-    event: "Three records still depend on the old supplier",
-    eventDetail: "Ticked and added by K. Watanabe · linked to this change as records",
+    actor: "You",
+    event: "Asked AI suggestion for Assess impacted documents",
+    eventDetail: "Ticked and added by K. Watanabe",
     focus: "assist",
     poseVariant: "linked",
     focusTitle: "Impact assessment",
     focusRows: IMPACTED.map((r) => `${r.id} · ${r.title}`),
     ownershipNote: "Suggested by AI, added by a person",
     checklistOpen: "IMPACT ASSESSMENT",
-    checklistReads: { section: "CHANGE REQUEST", items: ["Reason for change"] },
+    world: {
+      ...WORLD,
+      viewer: "K. Watanabe",
+      viewerInitials: "KW",
+      checklistSections: WORLD.checklistSections.map((section) => ({
+        ...section,
+        items: section.items.map((item) => (item.label === "Impacted document records" ? { ...item, links: [] } : item)),
+      })),
+    },
     checklistLinks: {
       section: "IMPACT ASSESSMENT",
-      item: "Affected records",
+      item: "Impacted document records",
       links: IMPACTED.map((r) => r.id),
-      records: IMPACTED.map((r) => ({ id: r.id, title: r.title, state: "Open" })),
+      records: IMPACTED.map((r) => ({ id: r.id, title: r.title })),
     },
-    checklistProgress: { "IMPACT ASSESSMENT": 2, APPROVAL: 0 },
+    checklistFilled: { section: "IMPACT ASSESSMENT", items: ["AI impact summary", "Impacted document records"] },
+    checklistProgress: { "IMPACT ASSESSMENT": 3, APPROVAL: 0 },
     related: 3,
     assist: {
-      kicker: "UNIFIZE AI · BETA",
-      prompt: "What else does this change affect?",
-      read: ["Reason for change", "Component"],
-      suggested: IMPACTED.map((r) => ({ ...r, picked: true })),
-      action: "Add to checklist",
-      alt: "Dismiss",
+      asker: "K. Watanabe",
+      field: "Assess impacted documents",
+      rows: [{ label: "AI impact summary", list: IMPACTED.map((r) => r.title), picked: true }],
       pressed: true,
     },
   }),

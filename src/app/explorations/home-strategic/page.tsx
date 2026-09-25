@@ -52,7 +52,7 @@ const WORKFLOWS = [
     code: "QLT",
     title: "Quality decisions",
     body: "Investigations, CAPAs, deviations, and supplier events move from signal to approved outcome.",
-    href: "/domains/quality",
+    href: "/solution/quality",
   },
   {
     code: "OPS",

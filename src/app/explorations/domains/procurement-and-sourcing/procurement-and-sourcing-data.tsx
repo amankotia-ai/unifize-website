@@ -551,7 +551,6 @@ export const PROCUREMENT_AND_SOURCING_DATA: DomainPageData = {
         label: "Where award rationale used to live",
         body: "The bid tab, the award email and the review deck stop being where the reason for a supplier choice lives.",
       },
-      flows: { contextIn: "VENDORS AND PRICES IN", back: "THE APPROVED AWARD", captured: "CRITERIA CAPTURED", linked: "THE RATIONALE, LINKED" },
       back: "One record per award, the bids and quality history bound, and only the approved choice goes back to the ERP.",
     },
   },
@@ -588,8 +587,8 @@ export const PROCUREMENT_AND_SOURCING_DATA: DomainPageData = {
     lede: "Sourcing runs on the same governed record as supplier quality and supply planning.",
     steps: [
       { name: "Procurement & sourcing", note: "You are here" },
-      { name: "Supplier management", note: "Solution page", href: "/domains/supplier-management" },
-      { name: "Supply chain & planning", note: "Solution page", href: "/domains/supply-chain-and-planning" },
+      { name: "Supplier management", note: "Solution page", href: "/solution/supplier-management" },
+      { name: "Supply chain & planning", note: "Solution page", href: "/solution/supply-chain-and-planning" },
     ],
   },
 

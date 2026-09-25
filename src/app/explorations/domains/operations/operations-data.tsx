@@ -63,7 +63,7 @@ const HOLD_WORLD: ArcadeFlowWorld = {
     {
       title: "HOLD",
       items: [
-        { label: "Reason for hold", kind: "field", value: "Seal torque out of range · Op 30", note: "Entered at the line" },
+        { label: "Reason for hold", kind: "field", input: "rich", value: "Seal torque out of range · Op 30", note: "Entered at the line" },
         { label: "Material segregated", note: "40 units · hold area B" },
         { label: "Nonconformance", note: "NC-1183 · linked" },
       ],
@@ -619,7 +619,6 @@ export const OPERATIONS_DATA: DomainPageData = {
         label: "Where floor decisions used to go missing",
         body: "The escalation call, the shift group chat, the hold tracker and the paper traveller stop being where the disposition lives.",
       },
-      flows: { contextIn: "ORDERS AND LOTS IN", back: "RELEASED, SIGNED", captured: "DECISIONS CAPTURED", linked: "THE HANDOVER, LINKED" },
       back: "One record per hold, the evidence bound, and only the signed release goes back to the lot.",
     },
   },
@@ -659,8 +658,8 @@ export const OPERATIONS_DATA: DomainPageData = {
     lede: "Operations runs on the same governed record as quality and suppliers.",
     steps: [
       { name: "Operations", note: "You are here" },
-      { name: "Quality", note: "Solution page", href: "/domains/quality" },
-      { name: "Supplier management", note: "Solution page", href: "/domains/supplier-management" },
+      { name: "Quality", note: "Solution page", href: "/solution/quality" },
+      { name: "Supplier management", note: "Solution page", href: "/solution/supplier-management" },
       { name: "Manufacturing execution", note: "Live · the MES product", href: "/products/mes" },
     ],
   },

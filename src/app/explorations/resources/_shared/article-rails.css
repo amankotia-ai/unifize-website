@@ -1,0 +1,624 @@
+/* ============================================================================
+ * article-rails.css - the blog article on the rails (24 Sep 2026), laid out
+ * after the luthor.ai article page, drawn in our grammar.
+ *
+ * Shared grammar comes from _shared/page-rails.css (`dms--rails` on <main>,
+ * `hm-railed` per section, <HatchBand /> between, blue-square eyebrows, the
+ * charcoal bookends). This file is only what the article composes: the
+ * left-aligned head, the sticky contents + details aside, the reading
+ * column, the practice panel, and the related-posts ledger.
+ *
+ * Scoped with `ar-page`. No coloured single edges anywhere: the contents
+ * marker is a blue square, callouts and quotes carry a full hairline.
+ * ========================================================================== */
+
+.dms--redesign.ar-page {
+  --ar-measure: 680px;
+  --ar-aside: clamp(208px, 19vw, 252px);
+  --ar-stick: calc(var(--dms-header-h) + 32px);
+  background: var(--dms-surface);
+}
+
+/* the small mono label every block of furniture carries */
+.dms--redesign.ar-page .ar-label {
+  display: block;
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ================================================================== HERO */
+.dms--redesign.ar-page .dms-hero.ar-hero {
+  --dms-d-bg: var(--hm-charcoal);
+  --hm-rail: rgba(255, 255, 255, 0.12);
+  min-height: 0;
+  padding-top: calc(var(--dms-header-h) + clamp(56px, 6.4vw, 104px));
+  padding-bottom: clamp(56px, 6vw, 92px);
+  background: var(--dms-d-bg);
+}
+
+/* the shared hero key light, moved behind the left-aligned head */
+.dms--redesign.dms--rails.ar-page .dms-hero--rails .dms-hero__inner::before {
+  background: radial-gradient(40% 70% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+}
+
+.dms--redesign.dms--rails.ar-page .dms-hero--rails .dms-hero__inner::after {
+  -webkit-mask-image: radial-gradient(60% 80% at 30% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(60% 80% at 30% 50%, #000 30%, transparent 80%);
+}
+
+/* rails start under the transparent bar, above the hero's own layers */
+.dms--redesign.ar-page .ar-hero.hm-railed::before,
+.dms--redesign.ar-page .ar-hero.hm-railed::after {
+  z-index: 4;
+  top: var(--dms-header-h);
+}
+
+.dms--redesign.ar-page .ar-hero__head {
+  display: flex;
+  max-width: 820px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  text-align: left;
+}
+
+.dms--redesign.ar-page .ar-hero__topic {
+  margin-bottom: clamp(18px, 1.8vw, 24px);
+  text-decoration: none;
+}
+
+.dms--redesign.ar-page .ar-hero__topic:hover .dms-eyebrow {
+  color: #fff;
+}
+
+.dms--redesign.ar-page .ar-hero .ar-hero__title {
+  max-width: 22ch;
+  margin: 0;
+  font-size: clamp(2.3rem, 4.3vw, 3.6rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.dms--redesign.ar-page .ar-hero .dms-hero__line {
+  display: block;
+}
+
+.dms--redesign.ar-page .ar-hero .ar-hero__dek {
+  max-width: 58ch;
+  margin: clamp(20px, 2vw, 26px) 0 0;
+  font-size: clamp(1.02rem, 1.15vw, 1.16rem);
+  text-align: left;
+  text-wrap: pretty;
+}
+
+.dms--redesign.ar-page .ar-hero__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: clamp(30px, 3.4vw, 44px) 0 0;
+  color: #9aa1ad;
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-hero__byline span:first-child {
+  color: #e4e7ec;
+}
+
+/* ---- share row */
+.dms--redesign.ar-page .ar-share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.dms--redesign.ar-page .ar-share .ar-label {
+  margin-right: 8px;
+  color: #9aa1ad;
+}
+
+.dms--redesign.ar-page .ar-share__btn {
+  display: inline-grid;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid oklch(1 0 0 / 0.16);
+  background: oklch(1 0 0 / 0.03);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.06);
+  color: #e4e7ec;
+  cursor: pointer;
+  transition: background-color 160ms ease-out, border-color 160ms ease-out;
+}
+
+.dms--redesign.ar-page .ar-share__btn:hover {
+  border-color: oklch(1 0 0 / 0.3);
+  background: oklch(1 0 0 / 0.08);
+}
+
+.dms--redesign.ar-page .ar-share__btn:focus-visible {
+  outline: 2px solid var(--u-blue-400);
+  outline-offset: 2px;
+}
+
+.dms--redesign.ar-page .ar-share__btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.dms--redesign.ar-page .ar-share__note {
+  margin-left: 6px;
+  color: var(--u-blue-400);
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ================================================================== BODY */
+.dms--redesign.ar-page .ar-body {
+  padding-block: clamp(56px, 6.4vw, 104px);
+}
+
+.dms--redesign.ar-page .ar-grid {
+  display: grid;
+  grid-template-columns: var(--ar-aside) minmax(0, 1fr);
+  gap: clamp(40px, 5vw, 88px);
+  align-items: start;
+}
+
+/* the reading column keeps its measure and sits centred in the room right
+ * of the aside, so the page is not heavy left with a dead strip by the rail */
+.dms--redesign.ar-page .ar-article {
+  width: 100%;
+  max-width: var(--ar-measure);
+  margin-inline: auto;
+}
+
+.dms--redesign.ar-page .ar-aside {
+  align-self: stretch;
+}
+
+.dms--redesign.ar-page .ar-aside__stick {
+  position: sticky;
+  top: var(--ar-stick);
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+/* ---- contents: the heading in view takes the eyebrow's blue square */
+.dms--redesign.ar-page .ar-toc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dms--redesign.ar-page .ar-toc__link {
+  position: relative;
+  display: block;
+  padding: 7px 0 7px 18px;
+  color: var(--dms-muted);
+  font-size: 0.86rem;
+  line-height: 1.4;
+  text-decoration: none;
+  text-wrap: pretty;
+  transition: color 160ms ease-out;
+}
+
+.dms--redesign.ar-page .ar-toc__link::before {
+  position: absolute;
+  top: calc(7px + 0.7em - 3px);
+  left: 0;
+  width: 6px;
+  height: 6px;
+  content: "";
+  background: var(--dms-hairline);
+  transition: background-color 160ms ease-out;
+}
+
+.dms--redesign.ar-page .ar-toc__link:hover {
+  color: var(--dms-ink);
+}
+
+.dms--redesign.ar-page .ar-toc__link.is-active {
+  color: var(--dms-ink);
+  font-weight: 540;
+}
+
+.dms--redesign.ar-page .ar-toc__link.is-active::before {
+  background: var(--dms-accent);
+}
+
+/* ---- the details card */
+.dms--redesign.ar-page .ar-details {
+  padding: 20px 20px 6px;
+  border: 1px solid var(--dms-hairline);
+  background: var(--dms-surface-alt);
+}
+
+.dms--redesign.ar-page .ar-details__list {
+  margin: 14px 0 0;
+}
+
+.dms--redesign.ar-page .ar-details__list > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 0;
+  border-top: 1px solid var(--dms-hairline);
+}
+
+.dms--redesign.ar-page .ar-details__list dt {
+  color: var(--dms-faint);
+  font-family: var(--dms-mono);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-details__list dd {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  color: var(--dms-ink);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.dms--redesign.ar-page .ar-details__list dd a {
+  color: var(--dms-accent);
+  text-decoration: none;
+}
+
+.dms--redesign.ar-page .ar-details__list dd a:hover {
+  text-decoration: underline;
+}
+
+.dms--redesign.ar-page .ar-details__name {
+  font-weight: 560;
+}
+
+.dms--redesign.ar-page .ar-details__role {
+  color: var(--dms-muted);
+  font-size: 0.84rem;
+}
+
+/* ---- the reading column */
+.dms--redesign.ar-page .ar-prose {
+  color: #3a404b;
+  font-size: 1.0625rem;
+  line-height: 1.72;
+}
+
+.dms--redesign.ar-page .ar-prose > p {
+  margin: 0 0 1.2em;
+  text-wrap: pretty;
+}
+
+.dms--redesign.ar-page .ar-prose > p:first-child {
+  color: var(--dms-ink);
+  font-size: 1.18rem;
+  line-height: 1.62;
+}
+
+.dms--redesign.ar-page .ar-prose > h2 {
+  margin: 2.3em 0 0.7em;
+  scroll-margin-top: var(--ar-stick);
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.45rem, 1.9vw, 1.8rem);
+  font-weight: 560;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.dms--redesign.ar-page .ar-prose > h2:first-child {
+  margin-top: 0;
+}
+
+.dms--redesign.ar-page .ar-prose > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55em;
+  margin: 0 0 1.4em;
+  padding: 0;
+  list-style: none;
+}
+
+.dms--redesign.ar-page .ar-prose > ul li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.dms--redesign.ar-page .ar-prose > ul li::before {
+  position: absolute;
+  top: calc(0.86em - 3px);
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  content: "";
+  background: var(--dms-accent);
+}
+
+.dms--redesign.ar-page .ar-prose blockquote {
+  margin: 2em 0;
+  padding: clamp(24px, 2.6vw, 34px);
+  border: 1px solid var(--dms-hairline);
+  background: var(--hm-wash-paper);
+}
+
+.dms--redesign.ar-page .ar-prose blockquote p {
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.25rem, 1.6vw, 1.45rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.dms--redesign.ar-page .ar-prose blockquote cite {
+  display: block;
+  margin-top: 16px;
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-callout {
+  margin: 2em 0;
+  padding: 22px 24px;
+  border: 1px solid var(--dms-accent-border);
+  background: var(--dms-accent-tint);
+}
+
+.dms--redesign.ar-page .ar-callout__lab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dms-accent);
+  font-size: 0.72rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-callout__lab::before {
+  width: 6px;
+  height: 6px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.ar-page .ar-callout p {
+  margin: 10px 0 0;
+  color: var(--dms-ink);
+}
+
+/* ---- the practice panel: one CTA set into the reading column */
+.dms--redesign.ar-page .ar-practice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 2.6em 0;
+  padding: clamp(28px, 3.2vw, 44px);
+  border: 1px solid var(--dms-hairline);
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.ar-page .ar-practice__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dms-accent);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-practice__eyebrow::before {
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: currentColor;
+}
+
+.dms--redesign.ar-page .ar-practice__h {
+  max-width: 20ch;
+  margin: 18px 0 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+.dms--redesign.ar-page .ar-practice__sub {
+  max-width: 48ch;
+  margin: 12px 0 24px;
+  color: #555c68;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+
+/* =============================================================== RELATED */
+.dms--redesign.ar-page .ar-related {
+  padding-bottom: 0;
+}
+
+.dms--redesign.ar-page .ar-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px 40px;
+  margin-bottom: clamp(34px, 3.8vw, 56px);
+}
+
+.dms--redesign.ar-page .ar-head__lead {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dms--redesign.ar-page .ar-head .dms-h2 {
+  margin: 0;
+}
+
+.dms--redesign.ar-page .ar-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  border-block: 1px solid var(--hm-rail);
+  background: var(--hm-rail);
+  list-style: none;
+}
+
+.dms--redesign.ar-page .ar-ledger__cell {
+  background: var(--dms-surface);
+}
+
+.dms--redesign.ar-page .ar-cell {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  gap: 18px;
+  padding: 12px 12px 28px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.dms--redesign.ar-page .ar-cell__plate {
+  display: flex;
+  aspect-ratio: 16 / 10;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 1.8vw, 24px);
+  overflow: hidden;
+  background: var(--hm-wash-sky);
+}
+
+.dms--redesign.ar-page .ar-ledger__cell:nth-child(3n + 2) .ar-cell__plate { background: var(--hm-wash-warm); }
+.dms--redesign.ar-page .ar-ledger__cell:nth-child(3n + 3) .ar-cell__plate { background: var(--hm-wash-paper); }
+
+.dms--redesign.ar-page .ar-cell__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--dms-ink);
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-cell__cat::before {
+  width: 6px;
+  height: 6px;
+  content: "";
+  background: var(--dms-accent);
+}
+
+.dms--redesign.ar-page .ar-cell__dek {
+  display: -webkit-box;
+  max-width: 30ch;
+  overflow: hidden;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.32;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.dms--redesign.ar-page .ar-cell__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dms--redesign.ar-page .ar-cell__title {
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: 1.12rem;
+  font-weight: 560;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  text-wrap: balance;
+  transition: color 160ms ease-out;
+}
+
+.dms--redesign.ar-page .ar-cell__meta {
+  color: var(--dms-muted);
+  font-family: var(--dms-mono);
+  font-size: var(--dms-mono-size);
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.dms--redesign.ar-page .ar-cell:hover .ar-cell__title {
+  color: var(--dms-accent);
+}
+
+.dms--redesign.ar-page .ar-cell:focus-visible {
+  outline: 2px solid var(--dms-accent);
+  outline-offset: -2px;
+}
+
+/* ============================================================ RESPONSIVE
+ * Under 980px the aside drops below the article: the contents list goes
+ * (the reader is already scrolling the column it indexes), the details
+ * card stays as the article's footnote. */
+@media (max-width: 980px) {
+  .dms--redesign.ar-page .ar-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+  .dms--redesign.ar-page .ar-aside { order: 2; }
+  .dms--redesign.ar-page .ar-aside__stick { position: static; }
+  .dms--redesign.ar-page .ar-toc { display: none; }
+  .dms--redesign.ar-page .ar-article { margin-inline: 0; }
+  .dms--redesign.ar-page .ar-details { max-width: var(--ar-measure); }
+  .dms--redesign.ar-page .ar-ledger { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .dms--redesign.ar-page .ar-prose { font-size: 1rem; }
+  .dms--redesign.ar-page .ar-prose > p:first-child { font-size: 1.08rem; }
+  .dms--redesign.ar-page .ar-ledger { grid-template-columns: minmax(0, 1fr); }
+  .dms--redesign.ar-page .ar-head__all { width: 100%; justify-content: center; }
+}

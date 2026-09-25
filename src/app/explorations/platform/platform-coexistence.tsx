@@ -13,9 +13,10 @@
  *   centre  Unifize, the governed layer between (the symbol on the chip)
  *   right   the everyday tools where work happens, they keep being used
  *
- * The flows are the concept map's, drawn as arrows between the plates:
- * context in, only what you agree flows back, decisions and artifacts
- * captured from the channels, the record linked into every message. The
+ * The flows follow the Notion arrow rules (25 Sep 2026), drawn as arrows
+ * between the plates: context in from the systems of record, write-back of
+ * only what is agreed, and on the right both flows come IN: artifacts from
+ * the files and trackers, decisions from the collaboration channels. The
  * three notes sit under their bands as annotations. Hovering a band or a
  * name lights the matching module. Light variant of the graphite palette so
  * the page does not run three dark sections in a row.
@@ -63,15 +64,16 @@ type Band = "records" | "unifize" | "tools";
 
 export type CoexistenceBand = { id: Band; title: string; sub: string; names: string[]; link?: string; label: string; body: string };
 
-/* the four flow labels, in drawing order: records -> Unifize, Unifize ->
- * records, tools -> Unifize, Unifize -> tools */
-export type CoexistenceFlows = { contextIn: string; back: string; captured: string; linked: string };
-
-const FLOWS: CoexistenceFlows = {
-  contextIn: "CONTEXT IN",
-  back: "ONLY WHAT YOU AGREE",
-  captured: "DECISIONS CAPTURED",
-  linked: "THE RECORD, LINKED",
+/* the four arrows, per the Notion arrow rules (25 Sep 2026), and the same on
+ * every page that draws this: records -> Unifize, Unifize -> records, then
+ * BOTH right-hand flows come in, artifacts above and decisions below. The
+ * Notion labels verbatim, set in the drawing's uppercase register; pages no
+ * longer bring their own (the Solutions pages did until 25 Sep 2026). */
+const FLOWS = {
+  context: "CONTEXT",
+  writeBack: "WRITE-BACK",
+  artifacts: "ARTIFACTS",
+  decisions: "DECISIONS",
 };
 
 const BANDS: CoexistenceBand[] = [
@@ -127,6 +129,13 @@ const REACH = 2 * PLATE * ISO; /* half the plate's on-screen width */
 const DETAIL_ID = "pf-cx-detail";
 /* depth of each plate in the closed stack */
 const STACK_D = 11;
+/* the flows sit in mirrored pairs about the midline of the Unifize stack's
+ * side walls (25 Sep 2026: centred on the plates' top faces, the lower arrow
+ * ran beside the three-plate wall and nearly touched it while the upper one
+ * floated clear of the tapering top). Labels sit on the outside of each
+ * pair. */
+const FLOW_AXIS = CENTER + 1.5 * STACK_D;
+const FLOW_D = 30;
 
 function activate(event: KeyboardEvent<SVGGElement>, callback: () => void) {
   if (event.key === "Enter" || event.key === " ") { event.preventDefault(); callback(); }
@@ -152,13 +161,14 @@ function Node({ x, y, name, lit }: { x: number; y: number; name: string; lit: bo
   );
 }
 
-/* a flow between two plates: a fine arrow with its label above */
-function Flow({ x1, x2, y, label, reverse, dim }: { x1: number; x2: number; y: number; label: string; reverse?: boolean; dim: boolean }) {
+/* a flow between two plates: a fine arrow with its label above, or below
+ * for the lower arrow of a pair */
+function Flow({ x1, x2, y, label, reverse, below, dim }: { x1: number; x2: number; y: number; label: string; reverse?: boolean; below?: boolean; dim: boolean }) {
   const [from, to] = reverse ? [x2, x1] : [x1, x2];
   const dir = reverse ? -1 : 1;
   return (
     <g className="pf-cx__flow" data-dim={dim}>
-      <text x={(x1 + x2) / 2} y={y - 7} textAnchor="middle">{label}</text>
+      <text x={(x1 + x2) / 2} y={below ? y + 13.8 : y - 7} textAnchor="middle">{label}</text>
       <path d={`M${from},${y}H${to}`} />
       <path className="pf-cx__flow-head" d={`M${to - 5 * dir},${y - 3.5}L${to},${y}L${to - 5 * dir},${y + 3.5}`} />
     </g>
@@ -167,12 +177,10 @@ function Flow({ x1, x2, y, label, reverse, dim }: { x1: number; x2: number; y: n
 
 export function PlatformCoexistence({
   bands: BANDS_IN = BANDS,
-  flows = FLOWS,
-  label = "Isometric drawing: systems of record on the left, Unifize as the governed layer in the centre, everyday tools on the right, with the flows between them",
+  label = "Isometric drawing: systems of record on the left, Unifize as the governed layer in the centre, everyday tools on the right. Context flows from the systems of record into Unifize and only what is agreed is written back; artifacts and decisions flow into Unifize from the everyday tools.",
 }: {
   /* the Solutions pages bring their own rosters and copy (23 Sep 2026) */
   bands?: CoexistenceBand[];
-  flows?: CoexistenceFlows;
   label?: string;
 } = {}) {
   const BANDS = BANDS_IN;
@@ -193,18 +201,19 @@ export function PlatformCoexistence({
         * text"); the bands' own +/- affordance carries the interaction */}
       <div className="pf-cx__scene">
         <svg className="pf-cx__drawing" viewBox={`0 0 ${W} ${H}`} role="group" aria-label={label}>
-          {/* guides: the baseline through the plate centres, one drop per band
+          {/* guides: the baseline through the plates, on the flows' axis so
+              each pair of arrows is mirrored about it, and one drop per band
               to its annotation */}
           <g className="pf-cx__guides" aria-hidden="true">
-            <path d={`M24,${CENTER}H${W - 24}`} />
+            <path d={`M24,${FLOW_AXIS}H${W - 24}`} />
             {BAND_X.map((x) => <path key={x} d={`M${x},${CENTER + PLATE + 26}V${H}`} />)}
           </g>
 
           {/* the flows, in the concept map's vocabulary */}
-          <Flow x1={gapL[0] + 10} x2={gapL[1] - 10} y={CENTER - 30} label={flows.contextIn} dim={active === "tools"} />
-          <Flow x1={gapL[0] + 10} x2={gapL[1] - 10} y={CENTER + 30} label={flows.back} reverse dim={active === "tools"} />
-          <Flow x1={gapR[0] + 10} x2={gapR[1] - 10} y={CENTER - 30} label={flows.captured} reverse dim={active === "records"} />
-          <Flow x1={gapR[0] + 10} x2={gapR[1] - 10} y={CENTER + 30} label={flows.linked} dim={active === "records"} />
+          <Flow x1={gapL[0] + 10} x2={gapL[1] - 10} y={FLOW_AXIS - FLOW_D} label={FLOWS.context} dim={active === "tools"} />
+          <Flow x1={gapL[0] + 10} x2={gapL[1] - 10} y={FLOW_AXIS + FLOW_D} label={FLOWS.writeBack} reverse below dim={active === "tools"} />
+          <Flow x1={gapR[0] + 10} x2={gapR[1] - 10} y={FLOW_AXIS - FLOW_D} label={FLOWS.artifacts} reverse dim={active === "records"} />
+          <Flow x1={gapR[0] + 10} x2={gapR[1] - 10} y={FLOW_AXIS + FLOW_D} label={FLOWS.decisions} reverse below dim={active === "records"} />
 
           {BANDS.map((band, index) => (
             <g key={band.id} transform={`translate(${BAND_X[index] - 260} 0)`}>

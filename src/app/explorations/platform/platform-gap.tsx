@@ -33,6 +33,9 @@
  * indices, the node numbers and the narration kickers are gone; each pane
  * leads with its name and its verdict in one readable line, and the
  * narration under each pane is the sentence alone.
+ * 25 Sep ("design these headers better"): the verdict is the pane's heading
+ * and the name a square-marked eyebrow; the shared premise ("One defect,")
+ * is set quiet so the two outcomes carry the contrast.
  * -------------------------------------------------------------------------- */
 import { useEffect, useRef, useState } from "react";
 import { TILE_ICONS } from "./platform-coexistence";
@@ -195,7 +198,7 @@ export function PlatformGap() {
         <section className="pf-gap__panel pf-gap__panel--today" aria-label="Today">
           <header className="pf-gap__head">
             <span className="pf-gap__lab">Today</span>
-            <span className="pf-gap__sub">One defect, six tools, nothing linked.</span>
+            <h3 className="pf-gap__sub"><span className="pf-gap__premise">One defect,</span> six tools, nothing linked.</h3>
           </header>
           <div className="pf-gap__map" aria-hidden="true">
             <svg className="pf-gap__wires" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -230,7 +233,7 @@ export function PlatformGap() {
         <section className="pf-gap__panel pf-gap__panel--after" aria-label="On Unifize">
           <header className="pf-gap__head">
             <span className="pf-gap__lab">On Unifize</span>
-            <span className="pf-gap__sub">One defect, one record, everything attached.</span>
+            <h3 className="pf-gap__sub"><span className="pf-gap__premise">One defect,</span> one record, everything attached.</h3>
           </header>
           {/* ONE scene, config swapped in place: the camera pans between poses */}
           <div className="pf-gap__stage rf rf--twin" ref={stageRef}>

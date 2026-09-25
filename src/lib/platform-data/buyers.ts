@@ -29,7 +29,7 @@ export const BUYERS: Record<string, BuyerPageData> = {
         persona: "Owned with your VP Quality",
         anchor: "You enter through Quality.",
         weight: "deep",
-        href: "/domains/quality",
+        href: "/solution/quality",
       },
       {
         num: "02",
@@ -40,7 +40,7 @@ export const BUYERS: Record<string, BuyerPageData> = {
         persona: "Owned with your CPO / SQ Director",
         anchor: "Then in Supplier Management.",
         weight: "deep",
-        href: "/domains/supplier-management",
+        href: "/solution/supplier-management",
       },
       {
         num: "03",
@@ -51,7 +51,7 @@ export const BUYERS: Record<string, BuyerPageData> = {
         persona: "Owned with your VP R&D",
         anchor: "And in Product Development.",
         weight: "light",
-        href: "/domains/product-development",
+        href: "/solution/new-product-development",
       },
     ],
     industries: [

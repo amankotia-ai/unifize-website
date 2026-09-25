@@ -1925,6 +1925,7 @@
 .pf-page .pf-gap__stage .stx-root .stx-arc { height:var(--pf-gap-window-h); }
 .pf-page .pf-gap__stage .stx-root .stx-arc__camera {
   clip-path:inset(0 0 0 324px);
+  --stx-cut-l:324px;
   transform:
     translate3d(
       calc(-50% - 162px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + var(--pf-gap-cam-x)),

@@ -66,7 +66,7 @@
  * Shared skin: white, square, the page's layered shadow; rust for the
  * clock, ink and greys for everything else. */
 .dms--redesign.dms--rails .sk-uv {
-  --uv-rust: var(--dms-tax, oklch(0.56 0.15 42));
+  --uv-rust: var(--dms-tax, oklch(0.69 0.185 48));
   --uv-line: #ecebe8;
   display: flex;
   width: 100%;
@@ -526,3 +526,50 @@
 .dms--redesign.dms--rails .sk-uv--clauses li small { float: right; color: var(--dms-muted); font-size: 0.64rem; }
 .dms--redesign.dms--rails .sk-uv--clauses li.is-open { color: var(--dms-ink); font-weight: 620; }
 .dms--redesign.dms--rails .sk-uv--clauses li.is-open small { color: var(--uv-rust); font-weight: 650; }
+
+/* ---------------------------------------------------------------------
+ * Customer management (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--portal { gap: 8px; padding: 0 0 14px; }
+.dms--redesign.dms--rails .sk-uv__pbar { display: flex; justify-content: space-between; gap: 10px; padding: 9px 14px; background: #2b3340; color: #dfe4ec; font-size: 0.66rem; }
+.dms--redesign.dms--rails .sk-uv__pbar b { font-family: var(--dms-mono); font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv__closes { margin: 4px 16px 0; color: var(--uv-rust); font-size: 0.78rem; font-weight: 650; }
+.dms--redesign.dms--rails .sk-uv--portal ul { display: grid; margin: 0 16px; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--portal li { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); font-size: 0.74rem; }
+.dms--redesign.dms--rails .sk-uv--portal li small { color: var(--dms-muted); font-size: 0.64rem; }
+.dms--redesign.dms--rails .sk-uv--portal li.is-missing { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--portal li.is-missing small { color: var(--uv-rust); font-weight: 650; }
+.dms--redesign.dms--rails .sk-uv__submit { align-self: flex-end; margin: 4px 16px 0; padding: 5px 12px; background: #e4e6ea; color: #9aa0ab; font-size: 0.68rem; font-weight: 650; }
+
+.dms--redesign.dms--rails .sk-uv--esc ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--esc li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid var(--uv-line); color: var(--dms-ink); font-size: 0.74rem; font-weight: 600; }
+.dms--redesign.dms--rails .sk-uv--esc li small { color: var(--uv-rust); font-size: 0.64rem; font-weight: 650; white-space: nowrap; }
+
+.dms--redesign.dms--rails .sk-uv__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.dms--redesign.dms--rails .sk-uv__cols > div { display: grid; gap: 6px; padding: 8px 10px; background: #f6f5f2; }
+.dms--redesign.dms--rails .sk-uv__cols small { color: var(--dms-muted); font-size: 0.6rem; font-weight: 650; letter-spacing: 0.04em; text-transform: uppercase; }
+.dms--redesign.dms--rails .sk-uv__cols ul { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font-size: 0.68rem; color: var(--dms-ink-2, #4a4d55); }
+
+/* ---------------------------------------------------------------------
+ * New product development (24 Sep 2026), same skin. */
+.dms--redesign.dms--rails .sk-uv--loop { gap: 8px; }
+.dms--redesign.dms--rails .sk-uv__loopline { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; padding-bottom: 26px; }
+.dms--redesign.dms--rails .sk-uv__loopline span { padding: 5px 10px; background: #f6f5f2; font-size: 0.72rem; font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv__loopline span.is-gate { box-shadow: inset 0 0 0 1.5px var(--uv-rust); background: transparent; color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv__loopline > i { height: 1px; background: #cfd3da; }
+.dms--redesign.dms--rails .sk-uv__loopline svg { position: absolute; left: 8%; right: 8%; bottom: 0; width: 84%; height: 24px; fill: none; stroke: var(--uv-rust); stroke-width: 1.5; }
+.dms--redesign.dms--rails .sk-uv--loop ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--loop li { padding: 6px 0; border-top: 1px solid var(--uv-line); color: var(--dms-ink); font-size: 0.74rem; font-weight: 600; }
+
+.dms--redesign.dms--rails .sk-uv--ready table { width: 100%; border-collapse: collapse; font-size: 0.72rem; font-variant-numeric: tabular-nums; }
+.dms--redesign.dms--rails .sk-uv--ready th { padding: 0 4px 6px; color: var(--dms-muted); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.05em; text-align: left; text-transform: uppercase; }
+.dms--redesign.dms--rails .sk-uv--ready td { padding: 7px 4px; border-top: 1px solid var(--uv-line); color: var(--dms-ink-2, #4a4d55); }
+.dms--redesign.dms--rails .sk-uv--ready tr.is-fail td { color: var(--dms-ink); font-weight: 620; }
+.dms--redesign.dms--rails .sk-uv--ready tr.is-fail td:last-child { color: var(--uv-rust); }
+
+.dms--redesign.dms--rails .sk-uv--slip ol { display: grid; margin: 0; padding: 0; list-style: none; }
+.dms--redesign.dms--rails .sk-uv--slip li { display: flex; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid var(--uv-line); font-size: 0.78rem; color: var(--dms-muted); }
+.dms--redesign.dms--rails .sk-uv--slip li s { text-decoration-color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv--slip li small { font-size: 0.62rem; }
+.dms--redesign.dms--rails .sk-uv--slip li.is-now { color: var(--uv-rust); }
+.dms--redesign.dms--rails .sk-uv--slip li.is-now b { font-weight: 680; }
+.dms--redesign.dms--rails .sk-uv--slip li.is-now small { font-weight: 650; }

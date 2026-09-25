@@ -60,7 +60,7 @@ const SPEC_WORLD: ArcadeFlowWorld = {
         { label: "Current controls", note: "Linked from FMEA-88" },
         {
           label: "Residual risk",
-          kind: "field",
+          kind: "field", input: "select",
           value: "Acceptable with mitigation · seal fit test added",
           note: "Entered on the assessment",
         },
@@ -114,7 +114,7 @@ const FMEA_WORLD: ArcadeFlowWorld = {
         { label: "Failure mode · seal leak at fit", note: "Severity 6 · Occurrence 3 · Detection 4" },
         {
           label: "RPN",
-          kind: "field",
+          kind: "field", input: "number",
           value: "144 · above the action threshold 120",
           note: "Rescored after SPC-310 Rev C",
         },

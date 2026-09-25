@@ -50,7 +50,7 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
-import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+import type { ArcadeChart, ArcadeFlowWorld, ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 
 /* ------------------------------------------------------------------------
  * The live arcade journey: WI-0417 revised from v3.1 to v3.2, walked through
@@ -114,6 +114,141 @@ const DOC_REC = {
   title: "Filling line set-up",
   world: DOC_WORLD,
 } as const;
+
+/* ------------------------------------------------------------------------
+ * The hero: document control from the document controller's seat, as the
+ * Sep 16 2026 recording shows it: a home "built around what they are
+ * accountable for", the pending-review chart clicked through to "every
+ * document waiting on somebody", and the approver tagged from the record
+ * where the approval sits. The 03 journey walks WI-0417 itself. */
+const PENDING_REVIEW: ArcadeChart = {
+  title: "Documents Pending Review by Owner",
+  bars: [
+    { label: "A. Ruiz", values: [4] },
+    { label: "J. Park", values: [3] },
+    { label: "T. Cole", values: [2] },
+    { label: "N. Haddad", values: [1] },
+  ],
+  max: 5,
+  ticks: [0, 1, 2, 3, 4, 5],
+};
+const DOC_CONTROLLER_WORLD: ArcadeFlowWorld = {
+  ...DOC_WORLD,
+  viewer: "K. Moore",
+  viewerInitials: "KM",
+  home: {
+    section: "Document Control",
+    cards: [
+      { link: "Documents pending review", updated: "6 minutes ago", chart: PENDING_REVIEW },
+      {
+        link: "Upcoming documents with periodic reviews due",
+        updated: "2 hours ago",
+        chart: {
+          title: "Upcoming document periodic reviews due by month",
+          series: [
+            { label: "A. Ruiz", tone: "indigo" },
+            { label: "J. Park", tone: "teal" },
+            { label: "T. Cole", tone: "rose" },
+            { label: "N. Haddad", tone: "amber" },
+          ],
+          bars: [
+            { label: "October", values: [2, 1, 0, 1] },
+            { label: "November", values: [3, 1, 2, 0] },
+            { label: "December", values: [1, 0, 1, 1] },
+            { label: "January", values: [0, 2, 1, 0] },
+          ],
+          max: 7,
+          ticks: [0, 1, 2, 3, 4, 5, 6, 7],
+        },
+      },
+    ],
+    quickStart: [
+      { title: "Start New", buttons: ["Document", "Non-Conformance", "Change Control", "CAR"] },
+      { title: "Start New", buttons: ["New Supplier Request", "Inspection"] },
+    ],
+    lists: [
+      {
+        title: "Documents that needs your attention",
+        rows: ["Document #417: WI-0417 v3.2 · approval", "Document #231: SOP-231 · periodic review due", "Document #088: ART-088 · artwork proof"],
+        more: "+ 11 more",
+      },
+      { title: "Trainings you need to complete", rows: ["Training Record #2290: Filling line set-up (Document #417) - K. Moore"], more: "+ 1 more" },
+    ],
+  },
+  report: {
+    chart: PENDING_REVIEW,
+    updated: "9 minutes ago",
+    results: "4 Results",
+    create: "New Document",
+    filters: ["Status: Needs Review", "Owner: A. Ruiz"],
+    columns: ["#", "Document", "Revision(s)", "Status", "Owner", "Due date", "Age (days)"],
+    rows: [
+      { cells: ["417", "WI-0417 · Filling line set-up", "3.2", "Needs Review", "A. Ruiz", "Tomorrow", "4"], status: { label: "Needs Review", tone: "review" }, target: true },
+      { cells: ["231", "SOP-231 · Line clearance, filling", "5", "Needs Review", "A. Ruiz", "30 Sep", "9"], status: { label: "Needs Review", tone: "review" } },
+      { cells: ["088", "ART-088 · Label artwork, 50 ml carton", "2", "Needs Review", "A. Ruiz", "19 Sep", "22"], status: { label: "Needs Review", tone: "review" }, late: 5 },
+      { cells: ["402", "WI-0402 · Capper torque check", "1.4", "Needs Review", "A. Ruiz", "6 Oct", "3"], status: { label: "Needs Review", tone: "review" } },
+    ],
+  },
+};
+const HERO_BASE = {
+  ...DOC_REC,
+  world: DOC_CONTROLLER_WORLD,
+  status: "Needs Approval",
+  checklist: "APPROVAL",
+  checklistItems: ["QA Manager · Part 11"] as string[],
+  focusRows: ["WI-0417 · approval with N. Haddad"],
+  ownershipNote: "The document controller's view",
+};
+const HERO: { label: string; caption: string; config: ArcadeStepConfig }[] = [
+  {
+    label: "Home",
+    caption: "The document controller's home: what is waiting, and on whom",
+    config: {
+      ...HERO_BASE,
+      source: "Document controller home · 16 Sep 2026 recording",
+      ghost: "Home",
+      actor: "automator",
+      event: "Documents pending review, by owner",
+      eventDetail: "Every bar opens the documents behind it",
+      focus: "queue",
+      focusTitle: "Documents pending review",
+      homeCard: "Documents pending review",
+      chartHover: { bar: "A. Ruiz", lines: ["A. Ruiz, 4"] },
+    },
+  },
+  {
+    label: "Drill",
+    caption: "Click an owner: every document of theirs waiting on somebody",
+    config: {
+      ...HERO_BASE,
+      source: "Pending review drilled · 16 Sep 2026 recording",
+      ghost: "Drill",
+      actor: "You",
+      event: "Opened A. Ruiz's documents pending review",
+      eventDetail: "Filtered from the chart",
+      focus: "report",
+      focusTitle: "Documents Pending Review by Owner",
+      chartHover: { bar: "A. Ruiz", lines: ["A. Ruiz, 4"] },
+    },
+  },
+  {
+    label: "Chase",
+    caption: "The approval sits with the QA Manager: tag the approver from the document itself",
+    config: {
+      ...HERO_BASE,
+      source: "Approver tagged on the record · 16 Sep 2026 recording",
+      ghost: "Chase",
+      actor: "You",
+      event: "Opened WI-0417 from the report",
+      eventDetail: "Author and department reviewer signed · QA Manager pending",
+      focus: "mention",
+      focusTitle: "QA Manager · Part 11",
+      composer: { mention: "N. Haddad", text: "need your approval here, please" },
+      checklistOpen: "APPROVAL",
+      checklistProgress: { "DRAFT & REVIEW": 3, APPROVAL: 2, "EFFECTIVE & DISTRIBUTION": 0 },
+    },
+  },
+];
 
 export const DOCUMENT_AND_RECORDS_CONTROL_DATA: DomainPageData = {
   slug: "document-and-records-control",
@@ -205,7 +340,7 @@ export const DOCUMENT_AND_RECORDS_CONTROL_DATA: DomainPageData = {
         glyph: "scale",
         name: "The record behind the record",
         line: "Who can sign, what the audit trail shows, and proof that every electronic signature holds.",
-        runsIn: { label: "See the compliance solution →", href: "/domains/compliance" },
+        runsIn: { label: "See the compliance solution →", href: "/solution/compliance" },
         viz: {
           kind: "access",
           wash: "blue",
@@ -423,6 +558,7 @@ export const DOCUMENT_AND_RECORDS_CONTROL_DATA: DomainPageData = {
           related: 2,
         },
       ],
+      hero: HERO,
     },
   },
 
@@ -586,7 +722,6 @@ export const DOCUMENT_AND_RECORDS_CONTROL_DATA: DomainPageData = {
         label: "Where the versions used to drift",
         body: "The working copy on the share, the PDF in the email and the laminated sheet at the workstation stop being where the current version lives.",
       },
-      flows: { contextIn: "WHERE IT IS USED", back: "THE EFFECTIVE REVISION", captured: "COPIES RETRIEVED", linked: "ONE CURRENT VERSION" },
       back: "One controlled version per document, approved with a 21 CFR Part 11 signature and linked to every record that uses it.",
     },
   },
@@ -626,9 +761,9 @@ export const DOCUMENT_AND_RECORDS_CONTROL_DATA: DomainPageData = {
     lede: "Document control runs on the same governed record as the training and change every revision touches.",
     steps: [
       { name: "Document & records control", note: "You are here" },
-      { name: "Change control", note: "Solution page", href: "/domains/change-control" },
+      { name: "Change control", note: "Solution page", href: "/solution/change-control" },
       { name: "Training & competency", note: "Live · the DMS product", href: "/products/dms" },
-      { name: "Quality", note: "Solution page", href: "/domains/quality" },
+      { name: "Quality", note: "Solution page", href: "/solution/quality" },
     ],
   },
 

@@ -1211,3 +1211,113 @@
 .dms--redesign.sk-page.dms--rails .sk-ow-sl__chart span.is-pick i { background: #2f8a55; }
 .dms--redesign.sk-page.dms--rails .sk-ow-sl__chart span.is-pick small { color: #2f8a55; font-weight: 700; }
 .dms--redesign.sk-page.dms--rails .sk-ow-sl__call { margin: 0; color: #2f8a55; font-size: 0.78rem; font-weight: 650; }
+
+/* ------------------------------------------------ customer management (24 Sep 2026)
+ * quote: the RFQ response assembling; coc: a certificate one field off;
+ * triage: customer input sorted. Same skin. */
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt__due { padding: 1px 6px; box-shadow: inset 0 0 0 1px var(--vz-rust); color: var(--vz-rust); font-size: 0.5rem; font-weight: 650; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt ul { display: grid; margin: 0; padding: 4px 14px 12px; list-style: none; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt li { display: grid; grid-template-columns: 14px 78px minmax(0, 1fr); align-items: center; gap: 7px; padding: 6px 0; font-size: 0.6rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt li + li { border-top: 1px solid var(--vz-line); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt li b { color: var(--dms-ink); font-weight: 640; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt li small { color: var(--dms-muted); font-size: 0.54rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-qt li.is-open small { color: var(--dms-accent-text); font-weight: 620; }
+
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc { padding: 12px 14px 12px; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc__title { margin: 0 0 8px; padding-bottom: 7px; border-bottom: 1.5px solid var(--dms-ink); font-size: 0.66rem; font-weight: 750; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dl { display: grid; margin: 0; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dl div { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 8px; padding: 4px 0; font-size: 0.58rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dt { color: var(--dms-faint); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dd { display: flex; justify-content: space-between; gap: 6px; margin: 0; color: var(--dms-ink-2); font-family: var(--dms-mono); font-size: 0.56rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dl div.is-bad dd { color: var(--vz-rust); font-weight: 650; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc dd small { font-family: var(--dms-sans, inherit); font-size: 0.5rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc__sign { display: flex; align-items: center; gap: 8px; margin: 8px 0 0; color: var(--dms-muted); font-size: 0.52rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-cc__sign i { width: 60px; height: 1px; background: var(--dms-ink-2); }
+
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr ul { display: grid; margin: 0; padding: 4px 14px 12px; list-style: none; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 8px; padding: 6px 0; font-size: 0.6rem; color: var(--dms-ink-2); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr li + li { border-top: 1px solid var(--vz-line); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr em { align-self: center; padding: 1px 6px; font-size: 0.5rem; font-style: normal; font-weight: 650; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr em.is-complaint { background: color-mix(in oklab, var(--vz-rust) 12%, white); color: var(--vz-rust); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr em.is-feedback { background: var(--dms-accent-tint); color: var(--dms-accent-text); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr em.is-warranty { background: #efeeea; color: var(--dms-ink-2); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-tr li small { grid-column: 1 / -1; color: var(--dms-faint); font-size: 0.52rem; }
+
+/* ------------------------------------------------ manual (customer management)
+ * the customer's requirements manual: a cover with the acknowledged stamp,
+ * then its contents, the special characteristics section marked. */
+.dms--redesign.sk-page.dms--rails .sk-ow-mu { display: grid; grid-template-columns: 0.9fr 1.1fr; max-width: 440px; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__cover { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 20px 16px; background: #2b3340; color: #eef1f5; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__cover small { color: #aab3c2; font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__cover b { font-size: 0.92rem; font-weight: 650; line-height: 1.25; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__cover span { color: #aab3c2; font-family: var(--dms-mono); font-size: 0.66rem; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__stamp { margin-top: auto; align-self: flex-start; padding: 4px 8px; border: 1.5px solid #8fd1a9; color: #8fd1a9; font-size: 0.58rem; font-style: normal; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; transform: rotate(-5deg); }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__toc { display: grid; align-content: start; margin: 0; padding: 14px 14px 18px; list-style: none; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__toc li { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 6px; padding: 6px 0; color: var(--dms-ink-2); font-size: 0.72rem; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__toc li + li { border-top: 1px dotted var(--dms-hairline); }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__toc code { color: var(--dms-faint); font-family: var(--dms-mono); font-size: 0.64rem; }
+.dms--redesign.sk-page.dms--rails .sk-ow-mu__toc li.is-hot { margin: 0 -6px; padding-inline: 6px; background: var(--dms-tax-tint, color-mix(in oklab, var(--dms-tax) 10%, white)); color: var(--dms-ink); font-weight: 620; }
+@media (max-width: 600px) {
+  .dms--redesign.sk-page.dms--rails .sk-ow-mu { grid-template-columns: 1fr; }
+}
+
+/* ------------------------------------------------ new product development (24 Sep 2026)
+ * gates: chevron strip plus the current gate's criteria; heat: a 3x3 risk
+ * grid with one risk moved; chain: requirement to validation, sideways. */
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__row { display: grid; grid-template-columns: repeat(var(--gs-n), minmax(0, 1fr)); gap: 2px; margin: 0; padding: 8px 14px 4px; list-style: none; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__row li {
+  padding: 6px 4px 6px 10px;
+  background: #efeeea;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 50%, calc(100% - 6px) 100%, 0 100%, 6px 50%);
+  color: var(--dms-faint);
+  font-size: 0.5rem;
+  font-weight: 620;
+  text-align: center;
+}
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__row li.is-past { background: #dfe3ea; color: var(--dms-ink-2); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__row li.is-now { background: var(--dms-accent); color: #fff; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__crit { display: grid; margin: 0; padding: 6px 14px 12px; list-style: none; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__crit li { display: flex; align-items: center; gap: 7px; padding: 5px 0; color: var(--dms-ink-2); font-size: 0.6rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__crit li + li { border-top: 1px solid var(--vz-line); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-gs__crit li.is-open { color: var(--dms-ink); font-weight: 640; }
+
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__wrap { display: grid; grid-template-columns: 14px 1fr; grid-template-rows: auto auto; gap: 4px 6px; padding: 4px 14px 12px; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__y { grid-row: 1; writing-mode: vertical-rl; transform: rotate(180deg); color: var(--dms-faint); font-size: 0.48rem; text-align: center; text-transform: uppercase; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__x { grid-column: 2; color: var(--dms-faint); font-size: 0.48rem; text-align: center; text-transform: uppercase; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid span { display: grid; height: 26px; place-items: center; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid span.is-lo { background: #eef1f5; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid span.is-mid { background: #e4e7ec; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid span.is-hi { background: color-mix(in oklab, var(--vz-rust) 14%, white); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid i { width: 9px; height: 9px; border-radius: 50%; background: #9aa0ab; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid i.is-from { background: transparent; box-shadow: inset 0 0 0 1.5px var(--vz-rust); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ht__grid i.is-to { background: var(--dms-accent); }
+
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; margin: 0; padding: 10px 14px 14px; list-style: none; counter-reset: ch; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li { position: relative; display: grid; gap: 2px; padding: 7px 8px; background: #f6f5f2; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li:nth-child(odd)::after { position: absolute; top: 50%; right: -15px; width: 12px; height: 1px; content: ""; background: var(--dms-accent); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li:nth-child(2)::after { position: absolute; left: 50%; bottom: -13px; width: 1px; height: 10px; content: ""; background: var(--dms-accent); }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li:nth-child(3) { grid-row: 2; grid-column: 2; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li:nth-child(4) { grid-row: 2; grid-column: 1; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li:nth-child(3)::after { left: -15px; right: auto; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch code { color: var(--dms-muted); font-family: var(--dms-mono); font-size: 0.5rem; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch span { color: var(--dms-ink-2); font-size: 0.58rem; font-weight: 600; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li .sk-wv__ico { position: absolute; top: 6px; right: 6px; }
+.dms--redesign:is(.sk-page, .md-page).dms--rails .sk-vz-ch li.is-open { background: transparent; box-shadow: inset 0 0 0 1.5px var(--dms-accent); }
+
+/* ------------------------------------------------ invite (new product development)
+ * the design review on the calendar: title, the rescheduled note, a row of
+ * attendees, the evidence deck on version seven. */
+.dms--redesign.sk-page.dms--rails .sk-ow-iv { max-width: 400px; padding: 16px 18px 18px; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__head { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 12px; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__cal { position: relative; width: 34px; height: 34px; box-shadow: inset 0 0 0 1.5px var(--dms-ink-2); }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__cal i { position: absolute; top: 0; left: 0; right: 0; height: 9px; background: var(--dms-ink-2); }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__head > span:last-child { display: grid; gap: 2px; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__head b { font-size: 0.9rem; font-weight: 650; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__head small { color: var(--dms-muted); font-size: 0.7rem; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__note { margin: 12px 0 0; padding: 7px 10px; background: var(--dms-tax-tint, color-mix(in oklab, var(--dms-tax) 10%, white)); color: var(--dms-tax-text, var(--dms-tax)); font-size: 0.72rem; font-weight: 620; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__people { display: flex; align-items: center; gap: 0; margin: 12px 0 0; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__people i { display: grid; width: 26px; height: 26px; margin-right: -6px; place-items: center; border-radius: 50%; background: #dfe3ea; box-shadow: 0 0 0 2px #fff; color: var(--dms-ink-2); font-size: 0.56rem; font-style: normal; font-weight: 700; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__people em { margin-left: 14px; color: var(--dms-muted); font-size: 0.68rem; font-style: normal; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__files { display: grid; gap: 4px; margin: 12px 0 0; padding: 10px 0 0; border-top: 1px solid var(--dms-hairline); list-style: none; }
+.dms--redesign.sk-page.dms--rails .sk-ow-iv__files li { color: var(--dms-ink-2); font-family: var(--dms-mono); font-size: 0.66rem; }

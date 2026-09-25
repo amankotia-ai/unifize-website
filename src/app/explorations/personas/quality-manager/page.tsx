@@ -1,17 +1,15 @@
 /* ============================================================================
- * Quality leadership - the Medical Devices Quality Manager PERSONA page.
- * Renders the shared PersonaPage in the DMS product-page design system, driven
- * by QUALITY_MANAGER_DATA (grounded in the canonical Notion source-of-truth).
+ * The Quality Manager role page (PPS-2), on the rails (25 Sep 2026).
+ * Served at /personas/quality-manager; reached from the "Who it is for"
+ * roster on the DMS and QMS product pages, not from the nav.
  * ========================================================================== */
 import type { Metadata } from "next";
-import { PersonaPage } from "../_shared/PersonaPage";
+import { pageMetadata } from "@/app/explorations/_shared/seo";
+import { PersonaRailsPage } from "../_shared/PersonaRailsPage";
 import { QUALITY_MANAGER_DATA } from "./quality-manager-data";
 
-export const metadata: Metadata = {
-  title: QUALITY_MANAGER_DATA.metaTitle,
-  description: QUALITY_MANAGER_DATA.metaDescription,
-};
+export const metadata: Metadata = pageMetadata(QUALITY_MANAGER_DATA.path);
 
-export default function QualityManagerPersonaPage() {
-  return <PersonaPage data={QUALITY_MANAGER_DATA} />;
+export default function QualityManagerPage() {
+  return <PersonaRailsPage data={QUALITY_MANAGER_DATA} />;
 }

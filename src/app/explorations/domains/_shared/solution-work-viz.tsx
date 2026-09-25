@@ -710,6 +710,121 @@ function Surface({ viz }: { viz: WorkViz }) {
         </div>
       );
 
+    case "quote":
+      /* customer: the quote, each function's input, the deadline */
+      return (
+        <div className="sk-wv__card sk-vz-qt">
+          <header className="sk-wv__head">
+            <span className="sk-wv__kicker">{viz.rfq} · {viz.customer}</span>
+            <span className="sk-vz-qt__due">{viz.due}</span>
+          </header>
+          <ul>
+            {viz.inputs.map((it) => (
+              <li key={it.fn} className={it.done ? "is-done" : "is-open"}>{it.done ? <Done /> : <Open />}<b>{it.fn}</b><small>{it.note}</small></li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "coc":
+      /* a certificate of conformance, one field out of step */
+      return (
+        <div className="sk-wv__card sk-vz-cc">
+          <p className="sk-vz-cc__title">{viz.title}</p>
+          <dl>
+            {viz.fields.map((f) => (
+              <div key={f.k} className={f.bad ? "is-bad" : undefined}>
+                <dt>{f.k}</dt>
+                <dd>{f.v}{f.bad ? <small>{f.bad}</small> : null}</dd>
+              </div>
+            ))}
+          </dl>
+          <p className="sk-vz-cc__sign"><i aria-hidden="true" /><span>{viz.signer}</span></p>
+        </div>
+      );
+
+    case "triage":
+      /* customer input sorted: complaint, feedback, warranty */
+      return (
+        <div className="sk-wv__card sk-vz-tr">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ul>
+            {viz.items.map((it) => (
+              <li key={it.text}>
+                <span>{it.text}</span>
+                <em className={"is-" + it.tag.toLowerCase()}>{it.tag}</em>
+                <small>&rarr; {it.to}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "gates":
+      /* development: the gates as chevrons, the current gate's criteria */
+      return (
+        <div className="sk-wv__card sk-vz-gs">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.program}</span></header>
+          <ol className="sk-vz-gs__row" style={{ "--gs-n": viz.gates.length } as CSSProperties}>
+            {viz.gates.map((g, i) => (
+              <li key={g} className={i < viz.at ? "is-past" : i === viz.at ? "is-now" : undefined}>{g}</li>
+            ))}
+          </ol>
+          <ul className="sk-vz-gs__crit">
+            {viz.criteria.map((c) => (
+              <li key={c.label} className={c.met ? undefined : "is-open"}>{c.met ? <Done /> : <Open />}{c.label}</li>
+            ))}
+          </ul>
+        </div>
+      );
+
+    case "heat":
+      /* a 3 x 3 risk grid, one risk moved by its control */
+      return (
+        <div className="sk-wv__card sk-vz-ht">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <p className="sk-wv__title">{viz.title}</p>
+          <div className="sk-vz-ht__wrap">
+            <span className="sk-vz-ht__y">Severity</span>
+            <div className="sk-vz-ht__grid">
+              {[2, 1, 0].flatMap((sev) =>
+                [0, 1, 2].map((occ) => {
+                  const zone = sev + occ >= 3 ? "hi" : sev + occ === 2 ? "mid" : "lo";
+                  const isFrom = viz.from[0] === sev && viz.from[1] === occ;
+                  const isTo = viz.to[0] === sev && viz.to[1] === occ;
+                  const other = viz.others.some(([s2, o2]) => s2 === sev && o2 === occ);
+                  return (
+                    <span key={`${sev}-${occ}`} className={"is-" + zone}>
+                      {isFrom ? <i className="is-from" /> : null}
+                      {isTo ? <i className="is-to" /> : null}
+                      {other && !isFrom && !isTo ? <i /> : null}
+                    </span>
+                  );
+                }),
+              )}
+            </div>
+            <span className="sk-vz-ht__x">Occurrence</span>
+          </div>
+        </div>
+      );
+
+    case "chain":
+      /* requirement to validation, linked */
+      return (
+        <div className="sk-wv__card sk-vz-ch">
+          <header className="sk-wv__head"><span className="sk-wv__kicker">{viz.kicker}</span></header>
+          <ol>
+            {viz.links.map((l) => (
+              <li key={l.id} className={l.open ? "is-open" : undefined}>
+                <code>{l.id}</code>
+                <span>{l.label}</span>
+                {l.open ? <Open /> : <Done />}
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+
     case "eol":
       /* a component's life as stages, the buy window it is in */
       return (

@@ -16,7 +16,9 @@
  * -------------------------------------------------------------------------- */
 
 import {
+  type ArcadeChart,
   type ArcadeFlowWorld,
+  type ArcadeReport,
   type ArcadeStepConfig,
 } from "../../_shared/arcade/arcade";
 /* imported from the server-safe module, NOT via arcade.tsx: a value that
@@ -526,52 +528,43 @@ export const STYLIZED_MODULE_RAIL_CONFIGS: Record<string, ArcadeStepConfig> = {
     checklistOpen: "SIGNED DOCUMENT",
   },
   "change-control": {
-    source: "DMS demo 0:14-0:30 · approval routing",
+    source: "AI impact · product recording 16 Sep 2026 · the suggestion",
     ghost: "Change",
-    type: "Document",
-    id: "#118",
-    title: "Cleaning validation",
-    status: "Effective",
+    type: "Document Change Control",
+    id: "#77",
+    title: "Cleaning validation update",
+    status: "Draft",
     actor: "You",
-    event: "Configured the change control route",
-    eventDetail: "Impact assessment, approval matrix and release cascade · no code",
-    checklist: "REVISION",
-    checklistItems: ["Impact assessment", "Approval matrix", "Release cascade"],
-    focus: "builder",
-    focusTitle: "Approval matrix",
-    focusRows: [
-      "Signatures of QA lead and Regulatory",
-      "Contingent on impact assessment complete",
-      "On approval · release revision and retrain",
-    ],
-    focusAction: "Add field",
-    ownershipNote: "Process owner · R. Mehta",
-    world: MODULE_RAIL_WORLD,
-    checklistOpen: "REVISION",
-    related: 3,
+    event: "Asked AI suggestion for Assess impacted documents",
+    eventDetail: "Nothing lands until a person adds it",
+    checklist: "CHANGE REQUEST SUBMITTER",
+    checklistItems: ["AI impact summary"],
+    focus: "assist",
+    poseVariant: "suggest",
+    focusTitle: "AI impact summary",
+    focusRows: ["WI-044 · Line 2 rinse station work instruction · Rev B", "FRM-063 · Rinse conductivity log sheet · Rev A"],
+    ownershipNote: "Suggested by AI",
+    checklistOpen: "CHANGE REQUEST SUBMITTER",
+    checklistAsk: { section: "CHANGE REQUEST SUBMITTER", item: "Assess impacted documents" },
+    checklistProgress: { "CHANGE REQUEST SUBMITTER": 4, "INITIAL RISK ANALYSIS": 0, "DOCUMENT CHANGE CHECKLIST": 0 },
   },
   "training-management": {
-    source: "DMS demo 1:11-1:17 · training dashboard",
+    source: "Training Group · product recording 16 Sep 2026",
     ghost: "Train",
-    type: "Document",
-    id: "#118",
-    title: "Cleaning validation",
-    status: "Effective",
+    type: "Training Group",
+    id: "Line 2 operators",
+    title: "Line 2 operators",
+    status: "Pending",
+    reminder: true,
     actor: "automator",
-    event: "Rolled the release into the live training dashboard",
-    eventDetail: "42 people · completion, cycle times and aging · live from every record",
+    event: "Created the training records for SOP-118 revision D",
+    eventDetail: "One per operator · reminders on until each is complete",
     checklist: "TRAINING RECORD(S)",
-    checklistItems: ["Quality Assurance · 18", "Production · 24", "Next assignment"],
-    focus: "dashboard",
-    focusTitle: "Training cycle times",
-    focusRows: [
-      "Revision D retraining · 40 of 42 complete",
-      "Median cycle · 2.1 days",
-      "No export · no reconciliation",
-    ],
-    focusAction: "Open report",
+    checklistItems: ["Training record(s)"],
+    focus: "checklist",
+    focusTitle: "Training record(s)",
+    focusRows: ["#281 · completed", "#286 · pending", "#287 · pending, overdue"],
     ownershipNote: "Training follows the revision",
-    world: MODULE_RAIL_WORLD,
     checklistOpen: "TRAINING RECORD(S)",
     related: 2,
   },
@@ -845,9 +838,10 @@ export const STYLIZED_LIFECYCLE_MOCKS: React.ReactNode[] = [
  * recording): it reads the reason and the change description, the sponsor
  * adds what it suggests, and the documents link as records. */
 const CHANGE_AT_RISK = [
-  { id: "WI-044", title: "Line 2 rinse station work instruction · Rev B", why: "Cites the §4.2 limit" },
-  { id: "FRM-063", title: "Rinse conductivity log sheet · Rev A", why: "Records against the old limit" },
+  { id: "WI-044", title: "Line 2 rinse station work instruction · Rev B" },
+  { id: "FRM-063", title: "Rinse conductivity log sheet · Rev A" },
 ];
+const CHANGE_AT_RISK_SUMMARY = CHANGE_AT_RISK.map((row) => row.title.split(" · ")[0]);
 
 const CHANGE_CONTROL_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
@@ -876,16 +870,23 @@ const CHANGE_CONTROL_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Reason for change",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "§4.2 does not match the rinse conductivity check on line 2",
         },
         {
           label: "Full change description",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Update §4.2 rinse conductivity check to validated limits",
         },
         { label: "Affected documents", kind: "linked", links: ["SOP-118"] },
         { label: "Assess impacted documents", kind: "ask", value: "What else does this change affect?", note: "Beta" },
+        {
+          label: "AI impact summary",
+          kind: "field",
+          input: "rich",
+          value: CHANGE_AT_RISK_SUMMARY.map((line, i) => `${i + 1}.${line}`).join(" "),
+        },
+        { label: "Impacted document records", kind: "linked", links: CHANGE_AT_RISK.map((row) => row.id), placeholder: "+ Add Document" },
       ],
     },
     {
@@ -951,7 +952,7 @@ const APPROVER_WORLD: ArcadeFlowWorld = {
       items: [
         { label: "Released revision · C", note: "Effective" },
         { label: "Draft revision", kind: "revision", from: "Rev C · released", to: "Rev D · under approval" },
-        { label: "Reason for change", kind: "field", value: "Validated equipment limits · §4.2 rinse check updated", note: "Carried from change #77" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Validated equipment limits · §4.2 rinse check updated", note: "Carried from change #77" },
       ],
     },
     {
@@ -1007,7 +1008,7 @@ const REVIEW_WORLD: ArcadeFlowWorld = {
         { label: "Current signed render", note: "Rev D" },
         {
           label: "Reviewer observations",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Rinse limits verified against equipment logs · no drift",
           note: "Recorded in the review",
         },
@@ -1020,6 +1021,182 @@ const REVIEW_WORLD: ArcadeFlowWorld = {
 /* PF-18 crosses two records: the approved change and the document being
  * revised. Each step carries the world of the record it is standing on, so
  * the persistent scene reads as the controller navigating between them. */
+/* ============================================ the document controller's views
+ * From the 16 Sep 2026 recording of the document controller's home and the
+ * Document Control dashboard: "a home screen built around what they are
+ * accountable for", a chart drilled to "every document waiting on
+ * somebody", and "document control and training read off from one screen".
+ * This page's own records and people; the product's own screens. */
+const PENDING_REVIEW_CHART: ArcadeChart = {
+  title: "Documents Pending Review by Owner",
+  bars: [
+    { label: "R. Mehta", values: [4] },
+    { label: "N. Varga", values: [3] },
+    { label: "S. Okafor", values: [2] },
+    { label: "A. Chen", values: [1] },
+  ],
+  max: 5,
+  ticks: [0, 1, 2, 3, 4, 5],
+};
+const PERIODIC_REVIEW_CHART: ArcadeChart = {
+  title: "Upcoming document periodic reviews due by month",
+  series: [
+    { label: "R. Mehta", tone: "indigo" },
+    { label: "N. Varga", tone: "teal" },
+    { label: "S. Okafor", tone: "rose" },
+    { label: "A. Chen", tone: "amber" },
+    { label: "T. Ibarra", tone: "lilac" },
+  ],
+  bars: [
+    { label: "October", values: [3, 0, 0, 1, 0] },
+    { label: "November", values: [4, 0, 1, 1, 0] },
+    { label: "December", values: [1, 0, 2, 0, 1] },
+    { label: "January", values: [0, 2, 0, 0, 1] },
+  ],
+  max: 7,
+  ticks: [0, 1, 2, 3, 4, 5, 6, 7],
+};
+const TRAINING_COMPLETION_CHART: ArcadeChart = {
+  title: "Training completion % by group",
+  unit: "Completion %",
+  bars: [
+    { label: "Quality Assurance", values: [98] },
+    { label: "Maintenance", values: [95] },
+    { label: "Warehouse", values: [89] },
+    { label: "Production", values: [87] },
+    { label: "Line 2 operators", values: [70] },
+  ],
+  max: 100,
+  ticks: [0, 20, 40, 60, 80, 100],
+};
+
+const DOC_CONTROL_HOME: NonNullable<ArcadeFlowWorld["home"]> = {
+  section: "Document Control",
+  cards: [
+    { link: "Documents pending review", updated: "6 minutes ago", chart: PENDING_REVIEW_CHART },
+    { link: "Upcoming documents with periodic reviews due", updated: "2 hours ago", chart: PERIODIC_REVIEW_CHART },
+  ],
+  quickStart: [
+    { title: "Start New", buttons: ["Document", "Non-Conformance", "Change Control", "CAR"] },
+    { title: "Start New", buttons: ["New Supplier Request", "Inspection"] },
+  ],
+  lists: [
+    {
+      title: "Documents that needs your attention",
+      rows: ["Document #093: SOP-093 · periodic review overdue", "Document #118/2: SOP-118 Rev D · approval", "Document #071: WI-071 · periodic review"],
+      more: "+ 14 more",
+    },
+    {
+      title: "Trainings you need to complete",
+      rows: ["Training Record #291: Cleaning validation (Document #118) - T. Ibarra"],
+      more: "+ 2 more",
+    },
+  ],
+};
+
+const DOC_CONTROL_DASHBOARDS: NonNullable<ArcadeFlowWorld["dashboards"]> = {
+  list: [
+    { name: "1. [CXO] Non-Conformances and CARs", by: "L. Navarro" },
+    { name: "2. [CXO] Documents, Change and Training", by: "L. Navarro" },
+    { name: "3. [Quality Manager] Non-Conformances and CARs", by: "D. Fontaine" },
+    { name: "4. [Quality Manager] Documents, Change and Training", by: "D. Fontaine" },
+    { name: "6. [Shop Floor] Documents, Change and Training", by: "M. Osei" },
+    { name: "Supplier Management", by: "S. Okafor" },
+    { name: "Document Control", by: "T. Ibarra" },
+  ],
+  active: "Document Control",
+  by: "T. Ibarra",
+  cards: [
+    PENDING_REVIEW_CHART,
+    PERIODIC_REVIEW_CHART,
+    TRAINING_COMPLETION_CHART,
+    {
+      title: "Pending training by owner and status",
+      series: [{ label: "Pending", tone: "teal" }],
+      bars: [
+        { label: "L. Okafor", values: [6] },
+        { label: "A. Baptiste", values: [5] },
+        { label: "M. Chen", values: [4] },
+        { label: "K. Ito", values: [2] },
+        { label: "J. Park", values: [1] },
+      ],
+      max: 7,
+      ticks: [0, 1, 2, 3, 4, 5, 6, 7],
+    },
+  ],
+};
+
+/* R. Mehta's bar, clicked: every document of theirs waiting on somebody */
+const PENDING_REVIEW_REPORT: ArcadeReport = {
+  chart: PENDING_REVIEW_CHART,
+  updated: "9 minutes ago",
+  results: "4 Results",
+  create: "New Document",
+  filters: ["Status: Needs Review", "Owner: R. Mehta"],
+  columns: ["#", "Document", "Revision(s)", "Status", "Owner", "Due date", "Age (days)"],
+  rows: [
+    { cells: ["118/2", "SOP-118 · Cleaning validation", "D", "Needs Review", "R. Mehta", "Tomorrow", "3"], status: { label: "Needs Review", tone: "review" }, target: true },
+    { cells: ["093", "SOP-093 · Rinse station setup", "B", "Needs Review", "R. Mehta", "16 Sep", "41"], status: { label: "Needs Review", tone: "review" }, late: 5 },
+    { cells: ["214", "SOP-214 · Line 2 changeover", "C", "Needs Review", "R. Mehta", "30 Sep", "12"], status: { label: "Needs Review", tone: "review" } },
+    { cells: ["071", "WI-071 · Gauge handling", "A", "Needs Review", "R. Mehta", "2 Oct", "8"], status: { label: "Needs Review", tone: "review" } },
+  ],
+};
+
+/* the training group revision D retrains: its embedded training records,
+ * completed and pending, reminders on ("if we go into the training group
+ * and into the training record, we can see all the pending training
+ * records by the accountable person") */
+const TRAINING_GROUP_WORLD: ArcadeFlowWorld = {
+  team: "Engineering Industries",
+  recordNoun: "Training Group",
+  owner: "T. Ibarra",
+  ownerInitials: "TI",
+  viewer: "T. Ibarra",
+  viewerInitials: "TI",
+  participants: ["TI", "RM"],
+  participantsLabel: "T. Ibarra and R. Mehta",
+  recordKicker: "TRAINING GROUP",
+  context: {
+    initials: "A",
+    name: "automator",
+    time: "Sep 22",
+    message: "Created the training records for SOP-118 revision D.",
+    detail: "One record per operator · due in 5 days · reminders on",
+  },
+  inboxNeighbors: [
+    { title: "Cleaning validation", time: "10:20", detail: "SOP-118 · Rev D effective", kind: "Document" },
+    { title: "Quality Assurance", time: "Yesterday", detail: "Training group · 98% complete", kind: "Training Group" },
+    { title: "Maintenance", time: "Mon", detail: "Training group · 95% complete", kind: "Training Group" },
+  ],
+  checklistTitle: "Training Group",
+  checklistSections: [
+    {
+      title: "GROUP DETAILS",
+      items: [
+        { label: "Group", kind: "field", value: "Line 2 operators" },
+        { label: "Group owner", kind: "field", input: "user", value: "T. Ibarra" },
+      ],
+    },
+    { title: "EMPLOYEE(S)", items: [{ label: "Employees", note: "24 · Line 2, both shifts" }] },
+    { title: "DOCUMENT(S) TO BE TRAINED ON", items: [{ label: "Documents", kind: "linked", links: ["SOP-118 Rev D"] }] },
+    { title: "TRAINING MODULE", items: [{ label: "Training module", kind: "field", input: "select", value: "Read and acknowledge" }] },
+    {
+      title: "TRAINING RECORD(S)",
+      items: [
+        {
+          label: "Training record(s)",
+          kind: "records",
+          records: [
+            { id: "#281", title: "Cleaning validation (Document #118) - M. Chen", state: "Completed", tone: "done", owner: "M. Chen", due: "26 Sep" },
+            { id: "#286", title: "Cleaning validation (Document #118) - L. Okafor", state: "Pending", tone: "pending", reminder: true, owner: "L. Okafor", due: "30 Sep" },
+            { id: "#287", title: "Cleaning validation (Document #118) - A. Baptiste", state: "Pending", tone: "pending", reminder: true, owner: "A. Baptiste", due: "24 Sep", late: true },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 const CONTROLLER_TILES = [
   { label: "Documents pending approval", count: 2 },
   { label: "My pending documents", count: 6 },
@@ -1073,7 +1250,7 @@ const CONTROLLER_DOC_WORLD: ArcadeFlowWorld = {
         { label: "Controlled render", note: "Generated on approval" },
         {
           label: "Revision rationale",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Validated equipment limit · carried from change #77",
           note: "Entered on the revision",
         },
@@ -1463,8 +1640,9 @@ const FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       focusRows: ["SOP-093 · 14 days overdue", "WI-071 · 6 days overdue", "SOP-126 · due today"],
       focusAction: "Open oldest review",
       ownershipNote: "Escalation ran on schedule",
-      world: REVIEW_WORLD,
-      queueTile: "Document reviews due",
+      world: { ...REVIEW_WORLD, viewer: "T. Ibarra", viewerInitials: "TI", home: DOC_CONTROL_HOME },
+      homeCard: "Upcoming documents with periodic reviews due",
+      chartHover: { bar: "October", lines: ["R. Mehta, October, 3", "A. Chen, October, 1"] },
     },
   ],
 
@@ -1610,14 +1788,16 @@ const FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       eventDetail: "One approved · one pending · reminders run automatically",
       checklist: "SIGNATURE(S)",
       checklistItems: ["S. Okafor · approved", "R. Mehta · pending", "Reminder · scheduled"],
-      focus: "queue",
+      /* the document controller's view of the same wait (16 Sep
+       * recording): the pending-review chart drilled to R. Mehta's
+       * documents, #118/2 among them */
+      focus: "report",
       focusTitle: "Approval progress",
       focusRows: ["Process Engineering · approved", "Quality Assurance · pending", "Operations · not required"],
       focusAction: "Open pending approval",
-      ownershipNote: "Reminders run without chasing",
-      world: CONTROLLER_DOC_WORLD,
-      poseVariant: "monitor",
-      queueTile: "Documents pending approval",
+      ownershipNote: "Every document waiting on somebody",
+      world: { ...CONTROLLER_DOC_WORLD, report: PENDING_REVIEW_REPORT },
+      chartHover: { bar: "R. Mehta", lines: ["R. Mehta, 4"] },
       checklistOpen: "SIGNATURE(S)",
       checklistProgress: { "SIGNATURE(S)": 1 },
     },
@@ -1700,33 +1880,39 @@ const FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       id: "#77",
       title: "Cleaning validation update",
       status: "Draft",
-      actor: "Unifize Assistant",
-      event: "Two more documents depend on the limit this change replaces",
-      eventDetail: "Suggested from the reason and the change description · added by A. Chen",
+      actor: "You",
+      event: "Asked AI suggestion for Assess impacted documents",
+      eventDetail: "Ticked and added by A. Chen",
       checklist: "CHANGE REQUEST SUBMITTER",
-      checklistItems: ["Reason for change", "Full change description", "Affected documents"],
+      checklistItems: ["AI impact summary", "Impacted document records"],
       focus: "assist",
       poseVariant: "linked",
       focusTitle: "AI impact summary",
       focusRows: CHANGE_AT_RISK.map((row) => `${row.id} · ${row.title}`),
       focusAction: "Submit for review",
       ownershipNote: "Suggested by AI, added by the sponsor",
-      world: CHANGE_CONTROL_WORLD,
+      world: {
+        ...CHANGE_CONTROL_WORLD,
+        viewer: "A. Chen",
+        viewerInitials: "AC",
+        checklistSections: CHANGE_CONTROL_WORLD.checklistSections.map((section) => ({
+          ...section,
+          items: section.items.map((item) => (item.label === "Impacted document records" ? { ...item, links: [] } : item)),
+        })),
+      },
       checklistOpen: "CHANGE REQUEST SUBMITTER",
       checklistLinks: {
         section: "CHANGE REQUEST SUBMITTER",
-        item: "Affected documents",
-        links: ["SOP-118", ...CHANGE_AT_RISK.map((row) => row.id)],
-        records: CHANGE_AT_RISK.map((row) => ({ id: row.id, title: row.title, state: "Effective" })),
+        item: "Impacted document records",
+        links: CHANGE_AT_RISK.map((row) => row.id),
+        records: CHANGE_AT_RISK.map((row) => ({ id: row.id, title: row.title })),
       },
+      checklistFilled: { section: "CHANGE REQUEST SUBMITTER", items: ["AI impact summary", "Impacted document records"] },
       checklistProgress: { "INITIAL RISK ANALYSIS": 0, "DOCUMENT CHANGE CHECKLIST": 0 },
       assist: {
-        kicker: "UNIFIZE AI · BETA",
-        prompt: "What else does this change affect?",
-        read: ["Reason for change", "Full change description"],
-        suggested: CHANGE_AT_RISK.map((row) => ({ ...row, picked: true })),
-        action: "Add to checklist",
-        alt: "Dismiss",
+        asker: "A. Chen",
+        field: "Assess impacted documents",
+        rows: [{ label: "AI impact summary", list: CHANGE_AT_RISK_SUMMARY, picked: true }],
         pressed: true,
       },
     },
@@ -1916,28 +2102,55 @@ const HERO_BUILD_STEP: ArcadeStepConfig = {
   checklistProgress: { "CONTROLLED COPY": 0 },
 };
 
-const HERO_MEASURE_STEP: ArcadeStepConfig = {
-  source: "DMS demo 1:11-1:17 · training dashboard",
+
+/* The module rail's change-control and training rows draw on worlds
+ * declared below the rail (the change control's, the training group's);
+ * attached here, once both exist. Change control shows the moment before
+ * PF-28 s1: the suggestion in the thread, nothing ticked, nothing added. */
+Object.assign(STYLIZED_MODULE_RAIL_CONFIGS["change-control"], {
+  world: {
+    ...CHANGE_CONTROL_WORLD,
+    viewer: "A. Chen",
+    viewerInitials: "AC",
+    checklistSections: CHANGE_CONTROL_WORLD.checklistSections.map((section) => ({
+      ...section,
+      items: section.items.map((item) =>
+        item.label === "Impacted document records"
+          ? { ...item, links: [] }
+          : item.label === "AI impact summary"
+            ? { ...item, value: undefined }
+            : item,
+      ),
+    })),
+  },
+  assist: {
+    asker: "A. Chen",
+    field: "Assess impacted documents",
+    rows: [{ label: "AI impact summary", list: CHANGE_AT_RISK_SUMMARY }],
+  },
+} satisfies Partial<ArcadeStepConfig>);
+STYLIZED_MODULE_RAIL_CONFIGS["training-management"].world = TRAINING_GROUP_WORLD;
+
+/* Measure it: the document controller's saved dashboard, "document control
+ * and training read off from one screen" (16 Sep recording) */
+const HERO_DASHBOARDS_STEP: ArcadeStepConfig = {
+  source: "Document Control dashboard · 16 Sep 2026 recording",
   ghost: "Measure",
   type: "Document",
   id: "#118",
   title: "Cleaning validation",
   status: "Effective",
   actor: "automator",
-  event: "Rolled the release into the live dashboards",
-  eventDetail: "Cycle times, completion and aging · live from every record",
+  event: "Document control and training, on one dashboard",
+  eventDetail: "Every chart opens the records behind it",
   checklist: "TRAINING RECORD(S)",
-  checklistItems: ["Training cycle times", "Documents by state", "Approval aging"],
-  focus: "dashboard",
-  focusTitle: "Training cycle times",
-  focusRows: [
-    "Revision D retraining · 42 of 44 complete",
-    "Median cycle · 2.1 days",
-    "No export · no reconciliation",
-  ],
-  focusAction: "Open report",
+  checklistItems: ["Training completion % by group"],
+  focus: "dashboards",
+  focusTitle: "Document Control",
+  focusRows: ["Line 2 operators · 70% complete"],
   ownershipNote: "Live from every record",
-  world: HERO_DOC_WORLD,
+  world: { ...HERO_DOC_WORLD, viewer: "T. Ibarra", viewerInitials: "TI", dashboards: DOC_CONTROL_DASHBOARDS },
+  chartHover: { card: "Training completion % by group", bar: "Line 2 operators", lines: ["Completion %, Line 2 operators, 70"] },
 };
 
 /* The hero rail: configuration opens, analytics closes, and the document
@@ -1973,6 +2186,6 @@ export const STYLIZED_HERO_STEPS: StylizedHeroStep[] = [
   {
     label: "Measure it",
     icon: "measure",
-    config: HERO_MEASURE_STEP,
+    config: HERO_DASHBOARDS_STEP,
   },
 ];

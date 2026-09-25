@@ -109,7 +109,7 @@ const WORK_ICONS: Record<WorkGlyph, React.ReactNode> = {
 
 /* Solid 20-grid icons for the journey rail on the rails (one filled path
  * each, detail carved with evenodd), the platform page's rail idiom. */
-const JOURNEY_ICONS: Record<JourneyIcon, string> = {
+export const JOURNEY_ICONS: Record<JourneyIcon, string> = {
   /* a flag raised */
   escalate: "M4 2h1.8v16H4V2Zm3 1h9.5l-2.4 3.6L16.5 10H7V3Z",
   /* a target: ring, gap, bullseye */
@@ -212,6 +212,26 @@ const JOURNEY_ICONS: Record<JourneyIcon, string> = {
   award: "M10 1.5a5.5 5.5 0 1 1 0 11 5.5 5.5 0 0 1 0-11Zm0 2.5a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM6.3 12.8 5 18.5l3-1.3 2 2 2-2 3 1.3-1.3-5.7A7 7 0 0 1 10 14a7 7 0 0 1-3.7-1.2Z",
   /* a door open with an arrow in: onboarded */
   onboard: "M10 2h8v16h-8v-2h6V4h-6V2ZM8 6l4 4-4 4v-3H2V9h6V6Z",
+  /* customer management (24 Sep 2026): an envelope arriving, the RFQ */
+  intake: "M2 5h16v11H2V5Zm1.8 1.9v7.3h12.4V6.9L10 11.1 3.8 6.9Zm1.6-.1L10 9.9l4.6-3.1H5.4ZM9.1 1h1.8v2.2l.9-.9 1.3 1.3L10 6.7 6.9 3.6l1.3-1.3.9.9V1Z",
+  /* three arrows into one: the inputs */
+  inputs: "M2 3h5v4H2V3Zm0 5.5h5v4H2v-4ZM2 14h5v4H2v-4Zm11-7.5h5v8h-5v-8ZM7.5 4.6l4.4 3.4-1.1 1.4-4.4-3.4 1.1-1.4Zm0 5.5h4.5v1.8H7.5v-1.8Zm4.4 3.9 1.1 1.4-4.4 3.4-1.1-1.4 4.4-3.4Z",
+  /* a price tag */
+  price: "M2 2h8l8 8-8 8-8-8V2Zm4 2.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z",
+  /* a document with a signature line: the contract */
+  contract: "M4 2h12v16H4V2Zm2 3v1.5h8V5H6Zm0 3v1.5h8V8H6Zm0 3v1.5h5V11H6Zm0 4.2c1-.9 1.8-.9 2.5 0s1.4.9 2.3 0 1.6-.9 2.4-.1l-.9 1.1c-.4-.3-.7-.3-1.1.1-1.2 1.1-2.4 1.1-3.5.1-.4-.4-.7-.4-1.1 0l-.6-1.2Z",
+  /* a stepped cascade down: the requirement flowed down */
+  flowdown: "M2 2h8v4H2V2Zm4 6h8v4H6V8Zm4 6h8v4h-8v-4ZM5.1 6h1.8v2H5.1V6Zm4 6h1.8v2H9.1v-2Z",
+  /* new product development (24 Sep 2026): a list with ticks, the exit criteria */
+  criteria: "M2 3h3v3H2V3Zm5 .8h11v1.5H7V3.8ZM2 8.5h3v3H2v-3Zm5 .8h11v1.5H7V9.3ZM2 14h3v3H2v-3Zm5 .8h8v1.5H7v-1.5Z",
+  /* a folder with a sheet: the evidence */
+  evidence: "M2 4h6l1.5 1.5H18V17H2V4Zm6 4v6h6V9.5L12.5 8H8Zm1.5 1.5h2.2v.6h.8v2.4H9.5v-3Z",
+  /* a gauge needle in band: capability */
+  capability: "M10 4a8 8 0 0 1 8 8v1.5h-2V12a6 6 0 0 0-12 0v1.5H2V12a8 8 0 0 1 8-8Zm3.9 3.2 1.3 1.3-3.8 3.8a1.6 1.6 0 1 1-1.3-1.3l3.8-3.8ZM2 15.5h16V17H2v-1.5Z",
+  /* a gate: two posts and a bar */
+  gate: "M2 3h2.5v14H2V3Zm13.5 0H18v14h-2.5V3ZM4.5 6h11v2h-11V6Zm0 4h11v2h-11v-2Z",
+  /* a snowflake: frozen */
+  freeze: "M9.1 1.5h1.8v3.1l1.8-1.8 1.3 1.3-3.1 3.1v1.8l1.6-.9L13.6 4l1.8.5-.7 2.5 2.7-1.5.9 1.6-2.7 1.5 2.5.7-.5 1.8-4.3-1.1-1.6.9 1.6.9 4.3-1.1.5 1.8-2.5.7 2.7 1.5-.9 1.6-2.7-1.5.7 2.5-1.8.5-1.1-4.3-1.6-.9v1.8l3.1 3.1-1.3 1.3-1.8-1.8v3.1H9.1v-3.1l-1.8 1.8L6 15.3l3.1-3.1v-1.8l-1.6.9L6.4 15.6l-1.8-.5.7-2.5-2.7 1.5-.9-1.6 2.7-1.5-2.5-.7.5-1.8 4.3 1.1 1.6-.9-1.6-.9-4.3 1.1-.5-1.8 2.5-.7-2.7-1.5.9-1.6 2.7 1.5-.7-2.5L6.4 4l1.1 4.3 1.6.9V7.4L6 4.3 7.3 3l1.8 1.8V1.5Z",
   golive: "M6 1.5h1.8V3h4.4V1.5H14V3h2a1.5 1.5 0 0 1 1.5 1.5v12A1.5 1.5 0 0 1 16 18H4a1.5 1.5 0 0 1-1.5-1.5v-12A1.5 1.5 0 0 1 4 3h2V1.5ZM4.3 7.5v8.7h11.4V7.5H4.3Zm8.3 1.7 1.3 1.3-4.6 4.6-2.6-2.6 1.3-1.3 1.3 1.3 3.3-3.3Z",
 };
 
@@ -408,7 +428,7 @@ export function SolutionPage({
    * two-pane frame below) */
   const heroFrame = arcade ? (
     <div className="dms-hero__frame dms-hero__product-demo dms-hero__product-demo--arcade">
-      <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
+      <HeroArcade steps={arcade.hero ?? heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
     </div>
   ) : (
     <div className="dms-hero__frame dms-hero__product-demo sk-hero__static">
@@ -570,7 +590,7 @@ export function SolutionPage({
             </div>
             {arcade ? (
               <div className="sk-hero2__visual dms-hero__product-demo dms-hero__product-demo--arcade">
-                <HeroArcade steps={heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
+                <HeroArcade steps={arcade.hero ?? heroSteps(d.flow.trail, arcade.steps, d.flow.steps)} />
               </div>
             ) : (
               <div className="sk-hero2__visual dms-hero__product-demo sk-hero__static">
@@ -1010,15 +1030,7 @@ export function SolutionPage({
                 <PlatformCoexistence
                   label={`Isometric drawing: your ${d.coexistence.systemsOfRecord.join(", ")} stay the systems of record; Unifize runs between them and ${
                     d.coexistence.bands.tools ? d.coexistence.bands.tools.names.join(", ").toLowerCase() : "the email, chat, spreadsheets and meetings"
-                  } where decisions used to be made, capturing those decisions and sending the approved outcome back with a Part 11 signature.`}
-                  flows={
-                    d.coexistence.bands.flows ?? {
-                      contextIn: "CONTEXT IN",
-                      back: "PART 11 SIGNED",
-                      captured: "DECISIONS CAPTURED",
-                      linked: "THE RECORD, LINKED",
-                    }
-                  }
+                  } where the work used to happen. Context flows in from the systems of record and only what is agreed is written back; artifacts and decisions flow in from the channels.`}
                   bands={[
                     {
                       id: "records",

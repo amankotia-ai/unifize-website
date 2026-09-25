@@ -50,7 +50,7 @@ const GAP_WORLD: ArcadeFlowWorld = {
         { label: "Part and order context", note: "PRT-4412 · WO-8817 · from the ERP" },
         {
           label: "Problem description",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Coating 38.1 µm on housing face, spec 45-55. Photos 1-4, readings attached.",
           note: "References attached evidence",
         },
@@ -60,11 +60,14 @@ const GAP_WORLD: ArcadeFlowWorld = {
       title: "INVESTIGATION",
       items: [
         { label: "Investigation team", note: "S. Okafor · M. Osei · L. Danes · in the thread" },
-        { label: "Generate the next Why", kind: "ask", value: "Generate Why 3", note: "Beta" },
-        { label: "Why chain (one pick per level)", kind: "linked", links: ["WHY-1", "WHY-2", "WHY-3"] },
+        { label: "RCA Methodology", kind: "field", input: "select", value: "5-Whys" },
+        { label: "Why 1 (Choose only one)", kind: "linked", links: ["WHY-1"] },
+        { label: "Why 2 (Choose only one)", kind: "linked", links: ["WHY-2"] },
+        { label: "Generate Why 3", kind: "ask", value: "Generate Why 3", note: "Beta" },
+        { label: "Why 3 (Choose only one)", kind: "linked", links: [] },
         {
           label: "Root cause",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Nozzle wear past service interval; the line 2 rebuild did not carry the interval onto the maintenance plan.",
           note: "Drafted from Why 1 to Why 5 · accepted by J. Rivera",
         },
@@ -75,7 +78,7 @@ const GAP_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Recommendation",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Rework lot 118-B to spec. Nozzle serviced; re-inspect 100% before release.",
           note: "Entered on the record",
         },
@@ -100,6 +103,15 @@ const RECORD = {
   title: "Coating thickness out of spec · line 2",
   world: GAP_WORLD,
 } as const;
+
+/* the record once Why 3 is picked and added: every later pose carries it */
+const GAP_WORLD_WHY: ArcadeFlowWorld = {
+  ...GAP_WORLD,
+  checklistSections: GAP_WORLD.checklistSections.map((section) => ({
+    ...section,
+    items: section.items.map((item) => (item.label === "Why 3 (Choose only one)" ? { ...item, links: ["WHY-3"] } : item)),
+  })),
+};
 
 const REVISION = { id: "CC-2151", title: "Add nozzle service interval · line 2 maintenance plan", state: "In Review" };
 
@@ -152,38 +164,48 @@ export const GAP_NOTIFIED_CONFIG: ArcadeStepConfig = {
   related: 1,
 };
 
-/* 3 · root cause: the Why chain builds in the thread. Unifize AI proposes
- * the next Why from the last one and the evidence; only the investigator
- * picks the one that fits (Beta in product). */
+/* 3 · root cause: the Why chain builds in the checklist. "Generate Why 3
+ * (Beta)" asks from Why 2; the suggestion lands in the thread as the
+ * investigator's own message, three options in one "choose only one" row,
+ * and only the investigator picks the one that fits and adds it (the
+ * Sep 16 recording, frame by frame). */
 export const GAP_ROOT_CAUSE_CONFIG: ArcadeStepConfig = {
   source: "PLATFORM gap s3 · root cause in the thread",
   ghost: "Why",
   ...RECORD,
   status: "Investigation",
-  actor: "Unifize Assistant",
-  event: "Why 3, asked from Why 2",
-  eventDetail: "Three candidates against the evidence in this thread · only an investigator picks the one that fits",
+  actor: "You",
+  event: "Asked AI suggestion for Generate Why 3",
+  eventDetail: "Only an investigator picks the one that fits",
   checklist: "INVESTIGATION",
-  checklistItems: ["Why chain (one pick per level)"],
+  checklistItems: ["Why 3 (Choose only one)"],
   focus: "assist",
+  poseVariant: "linked",
   focusTitle: "Why 3",
   focusRows: ["WHY-3 · Nozzle wear past its service interval"],
-  ownershipNote: "Worked in the thread, evidence inline",
+  ownershipNote: "Picked by the investigator",
   checklistOpen: "INVESTIGATION",
-  checklistAsk: { section: "INVESTIGATION", item: "Generate the next Why" },
-  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 2, DISPOSITION: 0, "ACTIONS & CLOSURE": 0 },
+  checklistLinks: {
+    section: "INVESTIGATION",
+    item: "Why 3 (Choose only one)",
+    links: ["WHY-3"],
+    records: [{ id: "WHY-3", title: "Nozzle wear past its service interval", state: "Pending", tone: "review", owner: "No Owner" }],
+  },
+  checklistFilled: { section: "INVESTIGATION", items: ["Why 3 (Choose only one)"] },
+  inboxNew: [{ title: "Nozzle wear past its service interval", detail: "Me: Filled a checklist", kind: "Why (Level 3) · WHY-3", owner: "No Owner", state: "Pending" }],
+  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 6, DISPOSITION: 0, "ACTIONS & CLOSURE": 0 },
   assist: {
-    kicker: "UNIFIZE AI · BETA",
-    prompt: "Why did the nozzle deliver low flow?",
-    note: "Asked from Why 2 · answered against the maintenance log S. Okafor attached and the thickness trend",
-    pick: "one",
-    suggested: [
-      { id: "A", title: "Nozzle wear past its service interval", why: "Log confirms", picked: true },
-      { id: "B", title: "Coating viscosity drifted between batches", why: "No batch change" },
-      { id: "C", title: "Operator ran a shortened spray pass", why: "Unsupported" },
+    field: "Generate Why 3",
+    rows: [
+      {
+        label: "Why 3 (Choose only one)",
+        options: [
+          { text: "Nozzle wear past its service interval, so the spray delivered low flow on line 2.", picked: true },
+          { text: "Coating viscosity drifted between batches and was not re-checked at the line." },
+          { text: "The spray pass was shortened on the night shift and not caught at inspection." },
+        ],
+      },
     ],
-    action: "Add to checklist",
-    alt: "Ask again",
     pressed: true,
   },
 };
@@ -194,7 +216,7 @@ export const GAP_DISPOSITION_CONFIG: ArcadeStepConfig = {
   source: "PLATFORM gap s4 · disposition signed",
   ghost: "Sign",
   ...RECORD,
-  world: { ...GAP_WORLD, viewer: "D. Fontaine", viewerInitials: "DF" },
+  world: { ...GAP_WORLD_WHY, viewer: "D. Fontaine", viewerInitials: "DF" },
   status: "Disposition",
   actor: "You",
   event: "Approving the disposition with a Part 11 signature",
@@ -210,7 +232,7 @@ export const GAP_DISPOSITION_CONFIG: ArcadeStepConfig = {
     { name: "S. Okafor", initials: "SO", role: "Process Engineering · concession CON-88", approvalId: "AP-0866", time: "09:26" },
   ],
   checklistOpen: "DISPOSITION",
-  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 4, DISPOSITION: 2, "ACTIONS & CLOSURE": 0 },
+  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 7, DISPOSITION: 2, "ACTIONS & CLOSURE": 0 },
 };
 
 /* 5 · procedure updated: the revision is raised from this record as a change
@@ -219,6 +241,7 @@ export const GAP_PROCEDURE_CONFIG: ArcadeStepConfig = {
   source: "PLATFORM gap s5 · procedure revision raised from the record",
   ghost: "Revise",
   ...RECORD,
+  world: GAP_WORLD_WHY,
   status: "Actions",
   actor: "You",
   event: "Raised the change control for the maintenance plan from this record",
@@ -237,7 +260,7 @@ export const GAP_PROCEDURE_CONFIG: ArcadeStepConfig = {
     links: [REVISION.id],
     records: [REVISION],
   },
-  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 4, DISPOSITION: 3, "ACTIONS & CLOSURE": 1 },
+  checklistProgress: { "CAPTURE & EVIDENCE": 3, INVESTIGATION: 7, DISPOSITION: 3, "ACTIONS & CLOSURE": 1 },
   related: 2,
 };
 
@@ -247,6 +270,7 @@ export const GAP_CLOSURE_CONFIG: ArcadeStepConfig = {
   source: "PLATFORM gap s6 · closed on the record",
   ghost: "Close",
   ...RECORD,
+  world: GAP_WORLD_WHY,
   status: "Closed",
   actor: "You",
   event: "Closed the non-conformance",

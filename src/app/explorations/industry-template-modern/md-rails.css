@@ -733,6 +733,10 @@
 
 .dms--redesign.md-page .md-tax__ev { display: grid; gap: 3px; min-width: 0; }
 .dms--redesign.md-page .md-tax__ev b { font-size: 0.96rem; font-weight: 600; }
+.dms--redesign.md-page .md-tax__ref {
+  margin-left: 8px; font-style: normal; font-family: var(--dms-mono, ui-monospace, monospace);
+  font-size: 0.72rem; font-weight: 500; color: var(--dms-muted); letter-spacing: 0.02em;
+}
 .dms--redesign.md-page .md-tax__ev small { color: var(--dms-muted); font-size: 0.8rem; }
 
 .dms--redesign.md-page .md-tax__amt {
@@ -890,6 +894,7 @@
     grid-template-columns: 54px 270px 680px 390px;
     width: 1394px;
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     transform: translate3d(calc(-50% - 162px * var(--md-cam)), -50%, 0) scale(var(--md-cam));
     outline: 0;
     box-shadow: none;
@@ -926,6 +931,7 @@
     grid-template-columns: 54px 270px 680px 390px;
     width: 1394px;
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     transform: translate3d(calc(-50% - 162px * var(--md-cam)), -50%, 0) scale(var(--md-cam));
     outline: 0;
     box-shadow: none;

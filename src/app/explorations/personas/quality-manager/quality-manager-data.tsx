@@ -1,189 +1,206 @@
 /* ============================================================================
- * quality-manager-data.tsx - content for the Quality Manager PERSONA page.
+ * quality-manager-data.tsx - the Quality Manager page (PPS-2) on the rails.
  *
- * Grounded in the canonical Notion source-of-truth (mirrored, with provenance,
- * in src/lib/platform-data/medical-devices-canonical.ts and the industry-
- * template industry-data.ts):
- *   - Product Personas -> Quality Manager (PPS-2) + Buyer Personas -> Quality
- *     governance (BP-3): titles, cares-about, worries-about, caseload, "owns".
- *   - Root Causes (RC-2 "Missing decision trace"): the reconstruct-the-trace
- *     thesis that the whole page turns on.
- *   - External Standards (19 linked to Medical Devices): the frame audited
- *     against.
- *   - MD_WORKFLOW_VARIANTS (CAPA): the decision-trace flow, which reuses the
- *     canonical CAPA ChatShell (CAPA-2148) - the same trace QMS/PLM show.
- *   - MD_PRODUCTS: the workflows this role owns map onto QMS/DMS/MES.
- *   - PERSONAS[operations|regulatory|compliance-validation|engineering]: the
- *     adjacent roles this seat works the problem with.
- * Only framing is authored; every factual claim traces to a canonical record.
+ * Notion decides what renders (persona-source.ts): the titles strip from the
+ * persona row, 01 from the Product Roles that name PPS-2, 02 from the Pain
+ * Points that name PPS-2, the hero and 03 from PPS-2's own Product Flows
+ * (PF-8 and PF-2), 04 from approved Website Customer Videos. This file only
+ * picks ids and says them in the page's voice; each pick cites its source.
+ *
+ * Deliberately not the Quality solution page's story: that page leads with
+ * the evidence behind one CAPA (PNT-2, PNT-5, PNT-3, PNT-1) and an inbox.
+ * This page is the seat: the decisions that converge on one person, the
+ * programme they answer for, and the findings that come back.
  * ========================================================================== */
-import type { PersonaPageData } from "../_shared/PersonaPage";
-import { QmAsks } from "./quality-manager-mocks";
+import type { PersonaRailsData } from "../_shared/types";
+import { QM_AUDIT_CONFIGS, QM_HERO_STEPS } from "./qm-arcade";
 
-/* the role's title variants (Product Personas -> Quality Manager, PPS-2) */
-const ROSTER = ["VP Quality", "Quality Director", "QA Manager", "RAQA Director"];
+export const QUALITY_MANAGER_DATA: PersonaRailsData = {
+  personaId: "PPS-2",
+  path: "/personas/quality-manager",
 
-export const QUALITY_MANAGER_DATA: PersonaPageData = {
-  slug: "quality-manager",
-  crumb: { industry: { label: "Medical Devices", href: "/industries/medical-devices" }, role: "Quality leadership" },
-  metaTitle: "Quality leadership · Medical Devices · Unifize",
-  metaDescription:
-    "You own release confidence across dozens of open CAPAs, change controls, and approvals. Unifize keeps the decision - context, evidence, and sign-off - on one governed thread, so the trace is ready before the audit is.",
-
+  /* source: PPS-2 Description, "Typical caseload at any given moment:
+   * dozens of pending decisions across CAPAs, change controls, document
+   * approvals, deviations, supplier corrective actions, training overdue
+   * alerts, audit findings"; the turn is PF-8 s2, "Open the record and
+   * review evidence in context" */
   hero: {
-    tier: "Primary buyer",
-    headline: (
-      <>
-        When the investigator asks, the trace is already <span className="dms-hero__turn">there.</span>
-      </>
-    ),
-    lede: "Every decision you own on one governed thread, ready before the audit is.",
-    ctaPrimary: "Book a demo",
-    ctaSecondary: { label: "See a live CAPA trace", href: "#trace" },
-    roster: ROSTER,
-    mock: <QmAsks />,
-    mockUrl: "app.unifize.com / quality / my-queue",
+    titleLead: "Dozens of decisions wait on you.",
+    titleTurn: "Each one arrives with its evidence.",
+    sub: "CAPAs, change controls, deviations and audit findings reach you in one queue, each with its evidence and the thread behind it. You decide from the record and sign under 21 CFR Part 11.",
+    secondary: { label: "Watch an audit run", href: "#difference" },
+    flowId: "8",
+    steps: QM_HERO_STEPS,
   },
 
-  gap: {
-    eyebrowN: 1,
-    heading: "Your system of record tells you a CAPA is open. It can't tell you why.",
-    lede: "The record captures what was decided. It doesn't hold the context, the evidence, and the reasoning at the time, so when the investigator asks how you knew, you reconstruct it from memory and five systems.",
-    recordId: "CAPA-2148",
-    record: { lab: "The system of record", badge: "Open" },
-    resolved: { lab: "The decision trace", badge: "Effective" },
-    fields: [
-      { k: "Why it opened", trace: "Assembly defect · NC-25" },
-      { k: "Evidence weighed", evidence: ["Torque logs", "Photos", "Lot LOT-271"] },
-      { k: "Who decided, and why", trace: "VP Quality · Part 11", sig: true },
-      { k: "Ready for the auditor", record: "Reconstruct it", trace: "Already assembled", key: true },
+  titlesLabel: "The same seat, by other titles",
+
+  /* source: Product Roles holding PPS-2 (PRL-1..7). Each line restates the
+   * role row's own scope for the Quality Manager: "higher-risk
+   * dispositions", "SOPs and quality procedures", "corrective actions of
+   * strategic impact", "the Quality Manager (in smaller organizations)",
+   * "ISO and internal audits", "product-quality risks". */
+  seat: {
+    heading: "You hold six roles on the record.",
+    lede: "The disposition and the SOP carry your signature. You sponsor the strategic change, run the CAPA when there is no one else to, lead the audit and own the product-quality risk.",
+    groups: [
+      {
+        name: "Approve",
+        line: "Sign the higher-risk disposition and the SOP that goes live, with the evidence in view.",
+        roles: ["Disposition Approver", "Document Approver"],
+        /* the SOP-214 revision CAPA-612 raised, waiting on the QM as its
+         * Document Approver (the hero already shows the disposition) */
+        viz: {
+          kind: "redline",
+          wash: "sky",
+          cursor: { name: "D. Fontaine", tone: "#0f8f7e" },
+          doc: "SOP-214 · Sealing",
+          from: "Rev B",
+          to: "Rev C",
+          lines: [
+            { text: "5.1 Verify seal torque at the start of each shift." },
+            { text: "5.2 Inspect one seal per lot.", mark: "del" },
+            { text: "5.2 Inspect three seals per lot; record the supplier lot.", mark: "ins" },
+          ],
+          approvers: [
+            { name: "R. Mehta", done: true },
+            { name: "D. Fontaine", done: false },
+          ],
+        },
+      },
+      {
+        name: "Drive",
+        line: "Carry a change or a corrective action from the day it opens to the day it is proven.",
+        roles: ["Change Sponsor", "CAPA Investigator"],
+        /* CAPA-612 as the QMS page's PF-3 world holds it: from complaint
+         * CMP-341, SOP-214 revised as an action, a 90-day review window */
+        viz: {
+          kind: "chain",
+          wash: "blue",
+          kicker: "CAPA-612 · Recurring seal failure",
+          links: [
+            { id: "CMP-341", label: "Complaint escalated" },
+            { id: "CAPA-612", label: "Root cause agreed" },
+            { id: "SOP-214", label: "Procedure revised" },
+            { id: "90d", label: "Effectiveness check", open: true },
+          ],
+        },
+      },
+      {
+        name: "Assure",
+        line: "Run the audit programme and answer for the product-quality risks on the register.",
+        roles: ["Audit Lead", "Risk Owner"],
+        viz: {
+          kind: "heat",
+          wash: "warm",
+          cursor: { name: "D. Fontaine", tone: "#0f8f7e" },
+          kicker: "Risk register · Line 2",
+          title: "Coating thickness drift",
+          from: [1, 2],
+          to: [1, 0],
+          others: [[0, 1], [2, 0], [1, 1]],
+        },
+      },
     ],
+    /* where each role's work runs: the product page's module rail ids */
+    links: {
+      "Disposition Approver": { product: "QMS", module: "Non-conformance", href: "/products/qms#module-non-conformance" },
+      "Document Approver": { product: "DMS", module: "Document Control", href: "/products/dms#module-document-control" },
+      "Change Sponsor": { product: "DMS", module: "Change Control", href: "/products/dms#module-change-control" },
+      "CAPA Investigator": { product: "QMS", module: "CAPA", href: "/products/qms#module-capa" },
+      "Audit Lead": { product: "QMS", module: "Audit Management", href: "/products/qms#module-audit-management" },
+      "Risk Owner": { product: "QMS", module: "Quality Risk Management", href: "/products/qms#module-quality-risk-management" },
+    },
   },
 
+  /* source: Buyer Personas "Quality governance" worries "repeat issues,
+   * audit findings"; the four picks are Pain Points naming PPS-2 alone */
   breaks: {
-    eyebrowN: 2,
-    heading: "The four things that turn a release into a finding.",
-    items: [
-      { title: "Missing evidence at decision time", body: "The record says what was decided, but the context and evidence state at the time are gone. Not being able to replay decision-time reality is the compliance liability.", severity: "Critical" },
-      { title: "Unclear approvals", body: "Who signed, in what order, and what it meant - spread across email and meetings instead of on the record.", severity: "High" },
-      { title: "Repeat issues", body: "A corrective action closed on paper but never proven effective, so the nonconformance comes back.", severity: "High" },
-      { title: "Audit findings", body: "Overdue controls and unresolved holds surface at the audit instead of before it.", severity: "Medium" },
+    heading: "You answer for the programme. The same findings keep coming back.",
+    lede: "Each case closes on its own. The pattern across cases, the slipped effectiveness check and the finding nobody owns never reach a queue, so the next audit finds them again.",
+    picks: [
+      /* PNT-4: "The same defect type closes again three months later with a
+       * different CAPA number." */
+      { id: "PNT-4", title: "The same defect, a new CAPA number", short: "The pattern across cases is in the data, never in the workflow." },
+      /* PNT-6: "a target date but no enforced gate ... The CAPA is closed;
+       * the problem is unaddressed." */
+      { id: "PNT-6", title: "Effectiveness checks slip", short: "A target date with no gate, so the CAPA closes and the problem stays." },
+      /* PNT-8: "The finding sits in the audit report; the action sits in
+       * nobody's queue; the next audit re-finds it." */
+      { id: "PNT-8", title: "Audit findings stall at the owner", short: "The finding sits in the report and the action in nobody's queue." },
+      /* PNT-9: "Senior quality time goes into the build instead of the
+       * question." */
+      { id: "PNT-9", title: "Management review, built by hand", short: "Every quarter the time goes into the report, not the question." },
     ],
+    /* PNT-4 staged on the QMS page's own defect: NC-204, coating thickness
+     * on line 2, as the legacy system's search for it would show */
+    scene: {
+      kicker: "Quality records",
+      meta: "3 results",
+      query: "coating thickness · line 2",
+      rows: [
+        { id: "NC-118", when: "Feb", title: "Coating thickness out of spec", capa: "CAPA-540", state: "Closed", note: "Effectiveness not verified", warn: true },
+        { id: "NC-161", when: "May", title: "Coating thickness out of spec", capa: "CAPA-571", state: "Closed", note: "Effectiveness check overdue", warn: true },
+        { id: "NC-204", when: "Aug", title: "Coating thickness out of spec", capa: "No CAPA yet", state: "Open", note: "Investigated as a new case" },
+      ],
+      float: { kicker: "Surveillance audit", note: "Show the effectiveness check behind CAPA-540." },
+      caption: "Closed twice, back a third time. The pattern was in the data, never in anyone's queue.",
+    },
+    tail: "Every repeat investigation is paid for twice. That is the coordination tax.",
   },
 
-  trace: {
-    eyebrowN: 3,
-    heading: "The trace you reconstruct when the investigator is in the room.",
-    trailLabel: "How a CAPA closes",
+  /* source: PF-2, "Quality Manager runs an annual ISO 13485 audit on the QMS
+   * Module" (Primary Persona PPS-2), steps 1, 2 and 5-8; the poses are the QMS
+   * page's AUD-12 journey */
+  journey: {
+    heading: "Every finding leaves the audit with an owner and its evidence.",
+    lede: "The annual ISO 13485 audit, from your queue to your sign-off: each finding recorded against its clause, routed to CAPA with its context, and tracked to closure where you can see it.",
+    flowId: "2",
     steps: [
-      { state: "Event raised", gate: "Signal opened, hold issued", detail: "A nonconformance is opened with the affected units held. Required fields and a named owner are captured at intake, so nothing enters your queue unaccountable." },
-      { state: "Evidence bound", gate: "Inspection, logs, lot trace", detail: "Inspection results, torque logs, photos, and incoming-lot traceability are bound to the record, so the investigation works from evidence, not memory." },
-      { state: "Investigation", gate: "Cross-functional review, RCA", detail: "Cross-functional review completes and a root-cause method is run and approved. The trace points at the contributing factor - here, a secondary supplier." },
-      { state: "Disposition", gate: "Committed with Part 11", detail: "Disposition is committed with a 21 CFR Part 11 e-signature: scrap the affected units, retrain the line, and open a supplier SCAR." },
-      { state: "CAPA + SCAR", gate: "Actions owned, effectiveness set", detail: "Corrective and preventive actions are owned with due dates, the supplier SCAR is raised, and an effectiveness check is scheduled for the assigned window." },
-      { state: "Closed, sealed", gate: "Effectiveness proven, trail sealed", detail: "Once the effectiveness check passes, the CAPA closes and the audit trail is sealed - linked to the QMS record and the design change it drove." },
+      /* s1 "Receive audit schedule notification two weeks before the due date" */
+      { index: 1, icon: "clock", title: "In your queue, two weeks out", body: "The audit waits on your home screen with its record, prior-year findings linked." },
+      /* s2 "Open the audit record and review scope" */
+      { index: 2, icon: "scope", title: "Scoped from the standard", body: "The checklist drafts from ISO 13485 and your procedures; you confirm the scope." },
+      /* s3 (notify) and s4 (the floor walk) run in the thread between these */
+      /* s5 "Record findings with severity and clause linkage" */
+      { index: 5, icon: "finding", title: "Findings with the clause", body: "Severity, evidence and the linked clause on each finding; the report assembles from them." },
+      /* s6 "Route major findings to Corrective Actions" */
+      { index: 6, icon: "assign", title: "Routed with its context", body: "The CAPA carries the audit reference, the finding and the clause to its owner. Nothing is reconstructed." },
+      /* s7 "Track responses through closure" */
+      { index: 7, icon: "verify", title: "Tracked to closure", body: "Due and overdue responses notify on their own; closure ages on your dashboard." },
+      /* s8 "Sign off and lock the audit record" */
+      { index: 8, icon: "seal", title: "Signed and locked", body: "Once every finding is addressed, your Part 11 sign-off locks the audit record for the year." },
     ],
-    chat: { variant: "capa", points: [0.17, 0.42, 0.6, 0.86, 0.95, 1] },
-    mobileNote: { label: "CAPA decision trace", id: "CAPA-2148 · raise → evidence → review → disposition → CAPA → seal" },
+    configs: QM_AUDIT_CONFIGS,
   },
 
-  gets: {
-    eyebrowN: 4,
-    heading: "What you get when the decision lives on one thread.",
-    items: [
-      { title: "Sign for release with confidence", body: "Release knowing the evidence and the approvals that cleared it are bound to the record.", glyph: "signature" },
-      { title: "One thread per decision", body: "Context, evidence, and sign-off on a single governed thread - not reconstructed across five systems.", glyph: "trace" },
-      { title: "Part 11 on every approval", body: "Each approval is a 21 CFR Part 11 e-signature: attributable, time-stamped, and part of the trail.", glyph: "shield" },
-      { title: "Effectiveness proven, not promised", body: "Corrective actions carry an effectiveness check that has to pass before the record can close.", glyph: "review" },
-      { title: "Audit-ready by default", body: "The audit trail is the decision trace - not a report you assemble after the request comes in.", glyph: "watermark" },
-      { title: "Recurrence made visible", body: "Repeat issues and overdue controls surface early in your queue, not at the audit.", glyph: "search" },
-    ],
-  },
-
-  owns: {
-    eyebrowN: 5,
-    heading: "The workflows you own, on one system.",
-    lede: "The decisions in your queue live in modules you already know. Each opens in the product that runs it.",
-    items: [
-      { name: "CAPA & Nonconformance", product: "QMS", body: "Raise, investigate, disposition, and prove effective - with the trace intact.", href: "/products/qms" },
-      { name: "Change & Document Control", product: "DMS", body: "Controlled documents and change control with 21 CFR Part 11 e-signature and the training cascade.", href: "/products/dms" },
-      { name: "Audit & Supplier Quality", product: "QMS", body: "Audit evidence and supplier corrective actions assembled on the record, not across five systems.", href: "/products/qms" },
-      { name: "Manufacturing quality holds", product: "MES", body: "Quality holds raised on the line the moment an inspection fails, not at final inspection.", href: "/products/mes" },
-    ],
-  },
-
-  people: {
-    eyebrowN: 6,
-    heading: "The people you work the problem with.",
-    items: [
-      { name: "Operations leadership", tag: "Economic buyer", owns: "Owns whether decisions move at all, and signs for the cost when they don't." },
-      { name: "Regulatory Affairs", tag: "Owns the clock", owns: "Owns the submission and label trail under hard statutory deadlines." },
-      { name: "Compliance & Validation", tag: "Procurement gatekeeper", owns: "Decides whether a new system clears validation before it ever touches an audit." },
-      { name: "Engineering & NPI", tag: "Owns the change", owns: "Owns change velocity with control, and the rationale that must survive the next revision." },
-    ],
-  },
-
-  faq: {
-    eyebrowN: 7,
-    heading: "The questions a quality leader asks first.",
-    lede: (
-      <>
-        Anything else, <a href="#quality-manager-close-h">bring it to the walkthrough</a>.
-      </>
-    ),
-    items: [
-      {
-        q: "Is this a QMS, or does it replace mine?",
-        a: "Unifize sits alongside the QMS, ERP, PLM, and LIMS you have already validated. It replaces the ungoverned channels - email, meetings, spreadsheets - where the decision trace goes missing, not your systems of record.",
-      },
-      {
-        q: "How are approvals handled?",
-        a: "Every approval is captured as a 21 CFR Part 11 electronic signature: attributable and time-stamped, so the decision trace is the audit trail, not a reconstruction after the fact.",
-      },
-      {
-        q: "What happens to my existing evidence and records?",
-        a: "They stay in their systems of record. Unifize binds the evidence, context, and sign-offs to one thread per decision, so the trace can be replayed without assembling it from five places.",
-      },
-      {
-        q: "How fast can I see a real trace?",
-        a: "In a walkthrough we take one open CAPA and reconstruct its decision trace end to end - signal, evidence, disposition, and a sealed, Part 11 close.",
-      },
-      {
-        q: "Which standards does it map to?",
-        a: "21 CFR 820, 21 CFR Part 11, ISO 13485, ISO 14971, EU MDR, and 21 CFR 803 - the frame a medical-device quality system is audited against.",
-      },
+  /* source: Website Customer Videos, Status Live + Web Use Approved; the
+   * two quality leaders on film (Role: Director of Quality Control, Director
+   * of Quality). Each fact restates the film's own title. */
+  proof: {
+    heading: "Quality leaders, in their own words.",
+    lede: "Directors of Quality on what changed when their decisions, audits and approvals moved onto one record.",
+    /* qp7129voyy: "How Unifize improved our Non-conformances closure time by
+     * 75% within the first month" (Tedd Carr, The Will-Burt Company) */
+    lead: { wistia: "qp7129voyy", stat: "75%", statLabel: "improvement in non-conformance closure time in the first month" },
+    stills: [
+      { wistia: "6lp5j555dy", fact: "95% of internal audits run remotely" },
+      { wistia: "uashgnl3ie", fact: "Clear accountability, faster decisions" },
+      { wistia: "x98prmmwgc", fact: "Faster approvals on product specifications" },
+      { wistia: "bnv5xz2fdn", fact: "Moved off an existing eQMS" },
+      { wistia: "2r86zqiwdf", fact: "The problem with several quality systems" },
     ],
   },
 
   close: {
-    eyebrow: "Ready when you are",
-    heading: "Bring your hardest open CAPA.",
-    lede: "We'll reconstruct its decision trace end to end - signal, evidence, disposition, and a sealed, 21 CFR Part 11 close.",
-    ctaPrimary: "Book a 30-minute walkthrough",
-    ctaSecondary: { label: "See a live CAPA trace", href: "#trace" },
+    eyebrow: "Quality on Unifize",
+    heading: "Bring the decision that has waited longest.",
+    lede: "In thirty minutes we run it on one record: the evidence, the thread and your Part 11 signature, end to end.",
+    secondary: { label: "See the QMS", href: "/products/qms" },
   },
 
   footer: {
-    tagline: "One governed thread for every decision you sign for.",
-    baseRight: "Quality leadership · Medical Devices",
-    nav: [
-      {
-        label: "This role",
-        links: [
-          { label: "The gap", href: "#gap" },
-          { label: "The trace", href: "#trace" },
-          { label: "What you get", href: "#capabilities" },
-        ],
-      },
-      {
-        label: "More",
-        links: [
-          { label: "Workflows you own", href: "#workflows" },
-          { label: "Who you work with", href: "#people" },
-          { label: "FAQ", href: "#faq" },
-          { label: "Medical Devices", href: "/industries/medical-devices" },
-        ],
-      },
-    ],
+    tagline: "The decision trace for regulated operations.",
+    note: "Roles · Quality Manager",
   },
 };

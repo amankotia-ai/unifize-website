@@ -461,10 +461,25 @@ const QMS_PERSONA_PRESENTATION: Record<string, PersonaPresentation> = {
     img: "/Gemini_Generated_Image_r84h7yr84h7yr84h.png",
     daily: ["Build control plans, lead PFMEAs", "Chair phase gate reviews", "Coordinate PPAP and supplier sub-PPAPs"],
   },
+  /* Quality Manager: a page-owned seat (QMS_SEATS). The Notion row has no
+   * Daily Activities yet, so the lines restate its Description ("reviews and
+   * approves CAPAs ... deviations of consequence", "management review") and
+   * its Product Roles (Disposition Approver, Audit Lead for "ISO and
+   * internal audits"). The card opens the role page. */
+  "PPS-2": {
+    owns: "Disposition → Closure",
+    img: "/Gemini_Generated_Image_3wwcb33wwcb33wwc.png",
+    href: "/personas/quality-manager",
+    daily: ["Approve higher-risk dispositions and CAPA closures", "Lead internal and ISO audits", "Chair management review"],
+  },
 };
+
+/* the QMS row's Target Personas does not name the Quality Manager (25 Sep
+ * 2026); the page adds the seat until Notion does */
+const QMS_SEATS = ["PPS-2"];
 
 export const QMS_AUDIENCE = {
   heading: "Built for the people a quality finding lands on first.",
   lede: "From the first signal on the floor to the effectiveness check, every role works from the same quality record.",
-  personas: buildAudiencePersonas("UPD-1", QMS_PERSONA_PRESENTATION),
+  personas: buildAudiencePersonas("UPD-1", QMS_PERSONA_PRESENTATION, QMS_SEATS),
 };

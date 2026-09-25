@@ -33,7 +33,7 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE REQUEST",
       items: [
-        { label: "Reason for change", kind: "field", value: "Guarding revised on the infeed" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Guarding revised on the infeed" },
         { label: "Machine", note: "Packaging line · this build" },
         { label: "Customer", note: "Notified before FAT" },
       ],

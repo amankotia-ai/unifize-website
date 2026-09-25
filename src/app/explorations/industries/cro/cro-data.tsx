@@ -32,8 +32,8 @@ export const CRO: IndustryData = {
 
   hero: {
     crumb: "Contract research organizations",
-    titleLead: "Your eTMF says the study closed.",
-    titleTurn: "Not why.",
+    titleLead: "Sponsor B audits Study 03.",
+    titleTurn: "It sees Study 03, and only that.",
     sub: "Built for CROs running simultaneous studies for multiple sponsors, where each sponsor audits your quality system independently, and every protocol deviation, CAPA closure, and trial master file has to stay inspection-ready per study and per sponsor at any time.",
     chips: ["ICH E6(R2) GCP", "21 CFR Part 11", "21 CFR 50 / 56", "eTMF", "ALCOA+"],
     trustLabel: "Built for GCP-regulated clinical research teams",
@@ -224,11 +224,11 @@ export const CRO: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Protocol deviation → CAPA", coordination: "Clinical operations, quality, and the sponsor liaison reconstruct the investigation across systems", owner: "Clinical Quality", atRisk: "weeks of cycle time; a 483 if it ages" },
-      { name: "Sponsor audit response", coordination: "Every sponsor audits independently; evidence is assembled and segregated per sponsor under a response clock", owner: "Clinical Quality", atRisk: "MSA termination; adjacent sponsors pulling pipeline" },
-      { name: "SAE / SUSAR expedited report", coordination: "Safety, clinical, and regulatory triage the case against a hard reporting window", owner: "Sponsor & Regulatory Liaison", atRisk: "a missed expedited-reporting clock" },
-      { name: "eTMF inspection readiness", coordination: "Study and quality reconcile trial master file completeness before a monitoring visit or data lock", owner: "Study & Project Management", atRisk: "an inspection-readiness gap; a monitoring finding" },
-      { name: "Data / database lock", coordination: "Clinical operations and data management reconcile query resolution across simultaneous studies", owner: "Clinical Operations", atRisk: "a slipped lock; a delayed clinical study report" },
+      { name: "Protocol deviation → CAPA", coordination: "Clinical operations, quality, and the sponsor liaison reconstruct the investigation across systems", owner: "Clinical Quality", atRisk: "weeks of cycle time; a 483 if it ages", story: "DEV-2087" },
+      { name: "Sponsor audit response", coordination: "Every sponsor audits independently; evidence is assembled and segregated per sponsor under a response clock", owner: "Clinical Quality", atRisk: "MSA termination; adjacent sponsors pulling pipeline", story: "Sponsor B audit" },
+      { name: "SAE / SUSAR expedited report", coordination: "Safety, clinical, and regulatory triage the case against a hard reporting window", owner: "Sponsor & Regulatory Liaison", atRisk: "a missed expedited-reporting clock", story: "Study 03 safety check" },
+      { name: "eTMF inspection readiness", coordination: "Study and quality reconcile trial master file completeness before a monitoring visit or data lock", owner: "Study & Project Management", atRisk: "an inspection-readiness gap; a monitoring finding", story: "Amendment 2 training" },
+      { name: "Data / database lock", coordination: "Clinical operations and data management reconcile query resolution across simultaneous studies", owner: "Clinical Operations", atRisk: "a slipped lock; a delayed clinical study report", story: "Study 03 lock" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long protocol-deviation and CAPA cycle times", "Delayed query resolution and data lock across studies"] },
@@ -295,11 +295,18 @@ export const CRO: IndustryData = {
  *   important protocol deviation, monitoring report, eTMF, SAE / SUSAR,
  *   database lock, 21 CFR Part 11 / 50 / 56, ALCOA+).
  * source: the data above (trail, persona titles, modules, trigger clocks).
- * Cursors carry persona titles, not people; no record numbers or metrics.
+ * 24 Sep 2026, the one story (as on the MD and pharma pages): every
+ * artifact from the hero to the cost bill plays DEV-2087, the deviation 01
+ * walks: a protocol-required procedure missed in Sponsor B's Study 03
+ * because the site was never trained on amendment 2, retrained under the
+ * CAPA, and presented to Sponsor B with Study 03's evidence only. Cursors
+ * are the 01 cast, one role per name (see cro-journey.ts); record, sponsor
+ * and study names are the page's illustrative world, never customers; still
+ * no metrics.
  * ========================================================================== */
-const GCPQA = { name: "GCP QA Lead", tone: "#d97706" };
-const CTM = { name: "Clinical Trial Manager", tone: "#2563eb" };
-const LIAISON = { name: "Sponsor Liaison", tone: "#7c3aed" };
+const OKAFOR = { name: "D. Okafor", tone: "#d97706" };
+const CHEN = { name: "M. Chen", tone: "#2563eb" };
+const MARINO = { name: "S. Marino", tone: "#7c3aed" };
 
 export const CRO_RAILS: IndustryRails = {
   /* the key element: the multi-sponsor board (Notion Opportunity: every
@@ -319,8 +326,8 @@ export const CRO_RAILS: IndustryRails = {
     ],
     hit: { sponsor: 1, study: 0, label: "Important protocol deviation · Study 03" },
     steps: [
-      { label: "Root cause analysis", meta: "Clinical QA" },
-      { label: "CAPA with effectiveness check", meta: "Clinical QA" },
+      { label: "Root cause · training gap", meta: "Clinical QA" },
+      { label: "CAPA · amendment 2 retraining", meta: "Clinical QA" },
       { label: "Filed to the eTMF", meta: "Study mgmt" },
     ],
     cascadeStep: 1,
@@ -353,17 +360,17 @@ export const CRO_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Deviation",
+        kicker: "DEV-2087",
         state: "In review",
-        title: "Important protocol deviation",
+        title: "Study 03 · important protocol deviation",
         rows: [
-          { label: "Investigation & impact bound", meta: "Clinical Ops" },
-          { label: "CAPA cross-functional review", meta: "Clinical Quality" },
-          { label: "Sponsor-ready review", meta: "Sponsor Liaison", open: true },
+          { label: "Root cause · amendment 2 not trained", meta: "Clinical QA" },
+          { label: "CAPA · protocol retraining", meta: "Clinical QA" },
+          { label: "Sponsor B review", meta: "Today", open: true },
         ],
-        cursor: GCPQA,
+        cursor: OKAFOR,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -371,34 +378,34 @@ export const CRO_RAILS: IndustryRails = {
         wash: "warm",
         stamp: "HELD",
         lines: [
-          { k: "Query", v: "Awaiting resolution" },
-          { k: "Waiting on", v: "Monitoring finding" },
-          { k: "Blocks", v: "Data lock" },
+          { k: "Query", v: "Missed procedure" },
+          { k: "Waiting on", v: "DEV-2087" },
+          { k: "Blocks", v: "Study 03 data lock" },
         ],
-        note: "Closed on the thread, across studies",
-        cursor: CTM,
+        note: "Cleared the hour DEV-2087 closes",
+        cursor: CHEN,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "Sponsor audit",
-        title: "Audit response, this sponsor only",
+        kicker: "Sponsor B audit",
+        title: "DEV-2087 evidence, Study 03 only",
         cite: "ICH E6(R2)",
         state: "Assembling",
-        cursor: LIAISON,
+        cursor: MARINO,
       },
     },
     "compliance-validation": {
       viz: {
         kind: "impact",
         wash: "paper",
-        source: { kicker: "Part 11", title: "Validation package" },
+        source: { kicker: "DEV-2087", title: "Evidence trail" },
         items: [
-          { id: "IQ", label: "Installation qualification" },
-          { id: "OQ", label: "Operational qualification" },
-          { id: "PQ", label: "Performance qualification", open: true },
+          { id: "P11", label: "Signatures · Part 11" },
+          { id: "AT", label: "Audit trail · Study 03 only", open: true },
+          { id: "ALCOA+", label: "Original, contemporaneous" },
         ],
       },
       go: { label: "How it stays validated ↓", href: "#validated" },
@@ -407,8 +414,8 @@ export const CRO_RAILS: IndustryRails = {
       viz: {
         kind: "signoff",
         wash: "sky",
-        kicker: "Study close-out",
-        title: "Database lock",
+        kicker: "Study 03 · close-out",
+        title: "Database lock after DEV-2087",
         signers: [
           { org: "Clinical operations", name: "Clinical Trial Manager", meaning: "Queries resolved", time: "Signed" },
           { org: "Study management", name: "Study Manager", meaning: "Reviewed", time: "Signed" },
@@ -428,30 +435,30 @@ export const CRO_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Protocol deviation",
+          kicker: "DEV-2087",
           title: "Deviation classification",
           fields: [
             { label: "Classification", value: "Important", select: true },
-            { label: "Study", value: "Per sponsor" },
-            { label: "Root cause", value: "Investigation attached", focus: true },
+            { label: "Study", value: "Study 03" },
+            { label: "Root cause", value: "Amendment 2 not trained", focus: true },
           ],
-          cursor: GCPQA,
+          cursor: OKAFOR,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "pharmacovigilance-safety",
-        line: "Serious adverse events triaged against their expedited-reporting clock.",
+        line: "Serious adverse events triaged against their expedited-reporting clock, including the check a missed procedure forces.",
         viz: {
           kind: "decision",
           wash: "warm",
-          kicker: "SAE / SUSAR",
+          kicker: "Safety check · DEV-2087",
           steps: [
-            { q: "Serious adverse event?", a: "Yes" },
-            { q: "Suspected and unexpected?", a: "Yes" },
+            { q: "Was the missed procedure a safety assessment?", a: "Yes" },
+            { q: "Any unreported serious adverse event?", a: "No" },
           ],
-          outcome: "SUSAR · expedited report",
-          cursor: LIAISON,
+          outcome: "No expedited report · reasoning on DEV-2087",
+          cursor: MARINO,
         },
       },
       {
@@ -460,11 +467,11 @@ export const CRO_RAILS: IndustryRails = {
         viz: {
           kind: "feed",
           wash: "blue",
-          kicker: "eTMF",
+          kicker: "eTMF · Study 03",
           items: [
             { source: "Report", title: "Monitoring report filed", tag: "Filed" },
-            { source: "Deviation", title: "Root cause and CAPA attached", tag: "Filed" },
-            { source: "Training", title: "Record missing before the visit", tag: "Gap", hot: true },
+            { source: "Deviation", title: "DEV-2087 root cause and CAPA", tag: "Filed" },
+            { source: "Training", title: "Amendment 2 record missing", tag: "Gap", hot: true },
           ],
         },
       },
@@ -474,10 +481,10 @@ export const CRO_RAILS: IndustryRails = {
         viz: {
           kind: "thread",
           wash: "paper",
-          kicker: "Sponsor audit",
+          kicker: "Sponsor B audit",
           messages: [
-            { org: "Sponsor", text: "Audit request: deviation and CAPA evidence for this study", ext: true },
-            { org: "Clinical Quality", text: "Evidence for this study only, audit trail attached" },
+            { org: "Sponsor B", text: "Audit request: DEV-2087 and its CAPA evidence", ext: true },
+            { org: "Clinical Quality", text: "Study 03 only, audit trail attached" },
           ],
         },
       },
@@ -485,16 +492,29 @@ export const CRO_RAILS: IndustryRails = {
   },
 
   lead: [
-    { name: "FDA Form 483 after a BIMO inspection", viz: "alerts" },
+    /* 24 Sep 2026: the three clocks DEV-2087 starts, each surface drawn
+     * from it: Sponsor B's audit, the eTMF gap the missing amendment 2
+     * training record opens, and a BIMO 483 on the same facts (21 CFR 312:
+     * monitoring, protocol adherence, case histories) */
     {
       name: "Sponsor audit failure risking MSA termination",
       viz: "elements",
-      detail: ["Sponsor audit", "Deviation documentation", "!Corrective action effectiveness", "!Audit trail", "eTMF completeness"],
+      detail: ["Sponsor B audit", "DEV-2087 documentation", "!CAPA effectiveness", "Audit trail", "!Amendment 2 training"],
     },
     {
       name: "eTMF inspection-readiness gap before a monitoring visit or data lock",
       viz: "tree",
-      detail: ["Monitoring reports", "Protocol deviations", "!Training records", "CAPA", "Delegation log"],
+      detail: ["Monitoring reports", "DEV-2087", "!Amendment 2 training", "CAPA", "Delegation log"],
+    },
+    {
+      name: "FDA Form 483 after a BIMO inspection",
+      viz: "findings",
+      detail: [
+        "FDA 483 · BIMO · 21 CFR 312",
+        "!312.56(b)|Site non-compliance not secured promptly",
+        "312.60|Study 03 procedure not performed per protocol",
+        "312.62(b)|Study 03 case histories incomplete",
+      ],
     },
   ],
 };

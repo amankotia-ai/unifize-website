@@ -30,7 +30,7 @@ import { Eyebrow } from "../products/dms/dms-primitives";
 import { CostLedger } from "./cost-ledger";
 import { MdProofReel } from "./md-proof";
 import { RoleCells, SolutionCells } from "./ways-in";
-import { UrgentBoard } from "../_shared/urgent-board";
+import { UrgentBoard, type UrgentKind } from "../_shared/urgent-board";
 import "../domains/_shared/solution-rails.css";
 import "../domains/_shared/solution-viz.css";
 import { DecisionTraceArcade } from "./itm-arcade";
@@ -99,8 +99,38 @@ function SplitHead({
   );
 }
 
-/* the urgent board: the moments that carry a drawn surface, in order */
-const LEAD_TRIGGERS = TRIGGERS.filter((t) => t.viz).slice(0, 3);
+/* the urgent board (24 Sep 2026, the page's one story): the three clocks
+ * the CC-2148 story starts, each surface drawn from it. The seal breach
+ * complaint CMP-311 (the hero's MDR chip) runs the reporting clock, lot
+ * 22-114 (the hold tag in 02) and its sister lots need a recall scope, and
+ * the investigator's 483 asks for the change's rationale. Illustrative
+ * furniture from the page's arcade world, never a claim. */
+const STORY_MOMENTS: { name: string; viz: UrgentKind; detail: string[] }[] = [
+  {
+    name: "MDR / vigilance reporting deadline",
+    viz: "countdown",
+    detail: ["24", "CMP-311 · pouch seal breach", "FDA MDR · 30 days from awareness", "EU vigilance · 15 days"],
+  },
+  {
+    name: "Recall scope to be defined",
+    viz: "genealogy",
+    detail: ["22-114", "22-113", "22-115"],
+  },
+  {
+    name: "FDA Form 483 observation issued",
+    viz: "findings",
+    detail: [
+      "FDA 483 · QMSR, ISO 13485 clauses",
+      "!7.5.7|Sterilization change: rationale not shown",
+      "8.5.2|CAPA-2140 effectiveness unverified",
+      "8.2.2|Complaint file CMP-311 incomplete",
+    ],
+  },
+];
+const LEAD_TRIGGERS = STORY_MOMENTS.flatMap(({ name, viz, detail }) => {
+  const t = TRIGGERS.find((row) => row.name === name);
+  return t ? [{ ...t, viz, detail }] : [];
+});
 
 export default function MedicalDevicesIndustryPage() {
   return (
@@ -125,8 +155,10 @@ export default function MedicalDevicesIndustryPage() {
             <Eyebrow>Industries · Medical devices</Eyebrow>
             <h1 className="dms-hero__title">
               {/* split into words for the page-in stagger (page-motion.css) */}
-              <span className="dms-hero__line"><Words text="Your QMS remembers that it was approved." /></span>
-              <span className="dms-hero__line dms-hero__turn"><Words text="Not why." from={7} /></span>
+              {/* 24 Sep 2026: the claim now names the problem the visual plays
+                * (CC-2148 reaching six records), not a generic "why" */}
+              <span className="dms-hero__line"><Words text="Your QMS approves the change." /></span>
+              <span className="dms-hero__line dms-hero__turn"><Words text="Not the six records it touches." from={5} /></span>
             </h1>
             <p className="dms-lede dms-hero__sub">
               Built for Class II &amp; III device OEMs and CDMOs, where every change, every CAPA, and
@@ -279,7 +311,7 @@ export default function MedicalDevicesIndustryPage() {
         id="md-close-h"
         eyebrow="Medical devices on Unifize"
         heading="Incumbents track documents. Unifize reconstructs the decision."
-        lede="Pick a decision you could not replay at the last audit, a design change, a complaint or a CAPA, and we will reconstruct it live in a 30-minute walkthrough."
+        lede="Pick a decision you could not replay at the last audit, a sterilization change, a seal complaint or the CAPA behind it, and we will reconstruct it live in a 30-minute walkthrough."
         secondary={{ label: "See the platform", href: "/platform" }}
       />
 

@@ -71,7 +71,7 @@ const TRAVELLER_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Thickness reading",
-          kind: "field",
+          kind: "field", input: "number",
           value: "41.2 µm · in spec",
           note: "Sealed 10:42 · P. Ndiaye",
         },
@@ -125,7 +125,7 @@ const FAI_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Hold reason",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "CH-07 seal fit 19.4 N · above the 18 N limit",
           note: "Raised at the bench · line held",
         },

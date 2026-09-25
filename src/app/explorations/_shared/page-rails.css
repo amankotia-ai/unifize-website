@@ -292,7 +292,8 @@
 }
 
 .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__inner::before {
-  background: radial-gradient(45% 60% at 26% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
+  /* the product heroes are one centred stack, so the glow sits behind it */
+  background: radial-gradient(45% 60% at 50% 46%, oklch(0.62 0.08 255 / 0.07), transparent 72%);
   filter: blur(8px);
 }
 
@@ -311,6 +312,11 @@
   mask-image: radial-gradient(75% 70% at 40% 50%, #000 30%, transparent 80%);
 }
 
+.dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__inner::after {
+  -webkit-mask-image: radial-gradient(75% 70% at 50% 50%, #000 30%, transparent 80%);
+  mask-image: radial-gradient(75% 70% at 50% 50%, #000 30%, transparent 80%);
+}
+
 .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__title {
   line-height: 1.04;
   text-rendering: optimizeLegibility;
@@ -320,8 +326,8 @@
 /* one gradient per visual row (1lh tiles), so a wrapped line is lit the
  * same on every row; descender room under the clip */
 .dms--redesign.dms--rails:not(.dms--home, .pf-page) .dms-hero--rails .dms-hero__line {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -397,8 +403,8 @@
 /* ---- light sections: each H2 row lit from above in ink, the lede a step
  * darker. No light behind the heads (a low-alpha radial bands on white). */
 .dms--redesign.dms--rails:not(.dms--home) .dms-section:not(.dms-section--dark, .dms-hero) :is(.dms-h2, .itm-h2) {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -416,8 +422,8 @@
 /* ---- dark sections: each heading row lit white to a faint cool grey, the
  * lede a step brighter */
 .dms--redesign.dms--rails:not(.dms--home) .dms-section--dark :is(.dms-h2, .itm-h2, .dms-close__h, .itm-close__h, .pf-close__h) {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;

@@ -32,7 +32,14 @@ import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
 import { ArcadeStepScene } from "@/app/explorations/products/_shared/arcade/arcade";
 import { RibbonField } from "@/app/explorations/products/_shared/arcade/ribbon-field";
-import { HOME_HERO_QUALITY_CONFIG } from "@/app/explorations/home/home-arcade";
+import type { ArcadeStepConfig } from "@/app/explorations/products/_shared/arcade/arcade";
+import {
+  HOME_HERO_CHANGE_CONFIG,
+  HOME_HERO_OPS_CONFIG,
+  HOME_HERO_QUALITY_CONFIG,
+  HOME_SUITE_DMS_CONFIG,
+} from "@/app/explorations/home/home-arcade";
+import { QMS_MODULE_ARCADE_CONFIGS } from "@/app/explorations/products/qms/qms-arcade";
 import "./book-demo.css";
 
 /* Industries mirror the nav roster so a lead lands in a bucket the site
@@ -62,6 +69,17 @@ const INTERESTS = [
   "Production and release",
   "Not sure yet",
 ] as const;
+
+/* The visual pane follows the process pick (24 Sep): the record the call
+ * would open on, reusing the scenes the home and product pages already
+ * stage. No pick, or "Not sure yet", keeps the hero's quality event. */
+const INTEREST_SCENES: Partial<Record<(typeof INTERESTS)[number], ArcadeStepConfig>> = {
+  "Quality events and CAPA": QMS_MODULE_ARCADE_CONFIGS["capa"],
+  "Change control": HOME_HERO_CHANGE_CONFIG,
+  "Document control": HOME_SUITE_DMS_CONFIG,
+  "Supplier quality": QMS_MODULE_ARCADE_CONFIGS["supplier-quality"],
+  "Production and release": HOME_HERO_OPS_CONFIG,
+};
 
 /* Consumer mailboxes: a demo request from one is almost never a qualified
  * buyer, and the routing downstream keys off the company domain. */
@@ -350,7 +368,13 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
           <aside className="uzd__viz" aria-hidden="true">
             <div className="uzd__stage rf rf--twin rf--plate">
               <RibbonField composition="twin" tone="quiet" />
-              <ArcadeStepScene config={HOME_HERO_QUALITY_CONFIG} />
+              <ArcadeStepScene
+                key={values.interest || "default"}
+                config={
+                  INTEREST_SCENES[values.interest as (typeof INTERESTS)[number]] ??
+                  HOME_HERO_QUALITY_CONFIG
+                }
+              />
             </div>
           </aside>
 

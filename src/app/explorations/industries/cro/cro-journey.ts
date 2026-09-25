@@ -4,7 +4,14 @@
  * study-scoped record → the investigation's links bound → the CAPA's
  * protocol retraining (the hero's GCP cascade) → the sponsor-ready review
  * that releases this study only → the sealed trace. Sponsor and study names
- * are the hero's placeholders, not customers. */
+ * are the hero's placeholders, not customers.
+ * 24 Sep 2026, the page's one story: the root cause is that the site was
+ * never trained on protocol amendment 2, so the CAPA is that retraining and
+ * every section below plays DEV-2087. Cast, one role per name:
+ *   M. Chen     Clinical Operations, logged DEV-2087
+ *   D. Okafor   Clinical Quality, approves the CAPA
+ *   S. Marino   Sponsor Relations, releases the evidence to Sponsor B
+ *   L. Grant, O. Siddiqui, H. Sato  Study 03 site staff, retrained */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -33,22 +40,22 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "DEVIATION",
       items: [
-        { label: "Description", kind: "field", value: "Protocol-required procedure not performed" },
+        { label: "Description", kind: "field", input: "rich", value: "Protocol-required procedure not performed" },
         { label: "Study", note: "Study 03 · Sponsor B" },
-        { label: "Classification", kind: "field", value: "Important" },
+        { label: "Classification", kind: "field", input: "select", value: "Important" },
       ],
     },
     {
       title: "INVESTIGATION",
       items: [
-        { label: "Root cause analysis", note: "Clinical QA" },
+        { label: "Root cause analysis", note: "Amendment 2 never trained at the site" },
         { label: "Evidence", kind: "linked", links: ["Study 03"] },
       ],
     },
     {
       title: "CAPA",
       items: [
-        { label: "Protocol retraining", note: "Site staff · before the effective date" },
+        { label: "Protocol retraining", note: "Amendment 2 · site staff" },
         { label: "Effectiveness check", note: "Clinical QA" },
         { label: "CAPA review", kind: "approval", signer: "D. Okafor", state: "Approved" },
       ],

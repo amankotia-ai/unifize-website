@@ -1,0 +1,38 @@
+{
+  "personaId": "cio-regulated-manufacturer",
+  "firstImpression": "A well-drawn quality story that my VP Quality will love, but I scrolled the whole page looking for the architecture picture and never found it.",
+  "comprehension": "A collaboration and workflow layer for device quality processes (change control, CAPA, complaints, suppliers) that links the affected records around one decision, captures Part 11 signatures on it, and claims to sit beside the QMS, ERP, PLM and LIMS instead of replacing them. Where it stores data, how it connects to those systems, and whether it writes back are never shown.",
+  "resonance": 2,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "The headline is a quality-ops pain, not mine. The card shows six linked records, but linked how? Is SPEC-204 in our PLM or in their copy of it?", "aboutMyWork": "partly"},
+    {"section": "01", "reaction": "Inbox plus checklist UI. 'Linked to SOP-118 Rev C · PLM ECO-441' is the only hint of integration, and it's a label, not a connector.", "aboutMyWork": "partly"},
+    {"section": "02", "reaction": "Five seats, none of them IT. Compliance & Validation is the closest, and it points down to section 04.", "aboutMyWork": "partly"},
+    {"section": "03", "reaction": "Four solution areas and a lot of sub-module names. This reads like more surface for my team to validate.", "aboutMyWork": "no"},
+    {"section": "04", "reaction": "This is my section. 'Coexistence, not replacement' says the right thing, and naming email and spreadsheets as the channels it replaces is honest. But it's three paragraphs and no diagram. 'Walked through with your CSV team' puts off every answer until a meeting.", "aboutMyWork": "yes"},
+    {"section": "05", "reaction": "Regulatory clocks. Real, but they belong to Quality and RA.", "aboutMyWork": "no"},
+    {"section": "06", "reaction": "A $0.9M-$10M range is too wide to defend to a CFO. The per-event costs are more useful for a business case, but I can't see the method behind them.", "aboutMyWork": "partly"},
+    {"section": "07", "reaction": "The signed baseline with $81k recovered is the most credible number on the page. Almost every quote comes from one customer, and one person at it.", "aboutMyWork": "partly"},
+    {"section": "close", "reaction": "Offers to reconstruct a quality decision. I'd want an architecture session instead.", "aboutMyWork": "partly"}
+  ],
+  "seeMyself": "Only in 04: 'Unifize sits alongside the QMS, ERP, PLM, and LIMS you have already validated. It replaces the ungoverned channels (email, meetings, spreadsheets)' and 'IQ/OQ/PQ, audit-trail integrity and ALCOA+ posture, and security review'. Those are my words. The rest is about other people's work: 'Owns release confidence, and answers for the trace when the investigator is in the room', and the Engineering, RA and Operations seats. There's no seat for whoever runs the application estate. The page never mentions identity/SSO, APIs, write-back, where data lives, Copilot or Microsoft, or anything about AI governance.",
+  "examplesRead": "Clearly an illustrative scenario: the same CC-2148 / SOP-118 / CMP-311 / Lot 22-114 thread runs through every section, and people like 'L. Martin' and 'R. Kapoor' switch roles (R. Kapoor is Regulatory Affairs in one place and Supplier quality in another; L. Martin is Engineering and then Complaints). As one worked story it's easy to follow and it shows consistent traceability, so it helped a little. The role swapping reads as sloppy, and a sceptical reviewer on my team will notice it. None of it is customer data, which is fine, but it means the only evidence is 'Customer-attested · 41% lower' from an anonymized manufacturer.",
+  "objections": [
+    "No integration architecture: 'Linked to PLM ECO-441' isn't an API, a sync direction or a write-back model. To me this looks like another data silo until I see what talks to what.",
+    "Validation burden unanswered: who validates it, what's the vendor's validation package, and how do SaaS releases avoid re-triggering CSV? 'We'll walk you through it' is not an answer.",
+    "No identity, security or data-residency story: SSO, tenancy and hosting are all absent from a page that asks me to put regulated records on it.",
+    "Where does the record of authority live? If the QMS approves and Unifize holds the trace, which system does the auditor pull from?"
+  ],
+  "missing": [
+    "One coexistence diagram: our QMS/ERP/PLM/M365 on one side, Unifize in the middle, arrows labelled read, write-back or link, and where signatures are stored",
+    "A downloadable validation pack plus security/trust summary (SOC 2, SSO/SAML, hosting, release/change policy for a validated SaaS)",
+    "An AI governance and Copilot position: what the AI does, who is accountable, and how it's logged in the audit trail"
+  ],
+  "nextAction": "share-internally",
+  "demoWillingness": 4,
+  "verbatims": [
+    "Section 04 is the only part written for me, and it's three paragraphs and a promise of a meeting.",
+    "'Linked to PLM ECO-441' — linked how? Show me the arrow and tell me which way it points.",
+    "I'll send it back to Quality with one question: have they seen the integration diagram? Because I haven't."
+  ],
+  "confidence": "medium"
+}

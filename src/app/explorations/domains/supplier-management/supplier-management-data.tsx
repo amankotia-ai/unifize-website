@@ -90,7 +90,7 @@ const SUPPLIER_WORLD: ArcadeFlowWorld = {
     {
       title: "NON-CONFORMANCE",
       items: [
-        { label: "Failure description", kind: "field", value: "Plating 8–11 µm against 12 µm minimum · 3 of 20 samples", note: "Entered at incoming inspection" },
+        { label: "Failure description", kind: "field", input: "rich", value: "Plating 8–11 µm against 12 µm minimum · 3 of 20 samples", note: "Entered at incoming inspection" },
         { label: "Lot disposition", note: "Lot 4471 · rejected and held" },
         { label: "Supplier notified", note: "Apex Metals · on the record" },
       ],
@@ -674,7 +674,6 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
         label: "Where the supplier's answers used to land",
         body: "The corrective action request, the supplier's root cause and the re-inspection evidence stop crossing by email and read-only portal. Both companies answer on the same record.",
       },
-      flows: { contextIn: "PO AND SPEC IN", back: "PART 11 SIGNED", captured: "SUPPLIER EVIDENCE IN", linked: "REQUIREMENTS OUT" },
     },
   },
 
@@ -745,8 +744,8 @@ export const SUPPLIER_MANAGEMENT_DATA: DomainPageData = {
     lede: "The same governed record runs the rest of the operation, so the system you land this quarter is the platform your next function joins.",
     steps: [
       { name: "Supplier management", note: "You are here" },
-      { name: "Quality", note: "Live · the Quality solution", href: "/domains/quality" },
-      { name: "Change control", note: "Live · the Change control solution", href: "/domains/change-control" },
+      { name: "Quality", note: "Live · the Quality solution", href: "/solution/quality" },
+      { name: "Change control", note: "Live · the Change control solution", href: "/solution/change-control" },
       { name: "Document & records control", note: "Live · the DMS product", href: "/products/dms" },
       { name: "Production records", note: "Live · the MES product", href: "/products/mes" },
       { name: "Part approval (APQP & PPAP)", note: "Product in development" },

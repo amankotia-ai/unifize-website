@@ -88,7 +88,7 @@ const REGULATORY_WORLD: ArcadeFlowWorld = {
     {
       title: "INTAKE & TRIAGE",
       items: [
-        { label: "Event narrative", kind: "field", value: "Alarm failure during home use · no patient harm reported", note: "Entered at intake" },
+        { label: "Event narrative", kind: "field", input: "rich", value: "Alarm failure during home use · no patient harm reported", note: "Entered at intake" },
         { label: "Product and lot", note: "REN-40 · Lot 22-081" },
         { label: "Similar events", note: "2 in 24 months · trended" },
       ],
@@ -681,7 +681,6 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
         label: "Where the evidence used to wait",
         body: "The reportability thread, the device-history extract and the causality opinion stop living in inboxes and shared drives. They land on the case, where the clock is.",
       },
-      flows: { contextIn: "CITED RECORDS IN", back: "PART 11 SIGNED", captured: "EVIDENCE CAPTURED", linked: "ONE CASE, LINKED" },
     },
   },
 
@@ -751,11 +750,11 @@ export const REGULATORY_AFFAIRS_DATA: DomainPageData = {
     lede: "The same governed record runs the functions that feed your filings, so the system you land this quarter is the platform the next function joins.",
     steps: [
       { name: "Regulatory affairs", note: "You are here" },
-      { name: "Post-market & recall", note: "Solution page", href: "/domains/post-market-and-recall" },
-      { name: "Quality", note: "Solution page", href: "/domains/quality" },
-      { name: "Change control", note: "Solution page", href: "/domains/change-control" },
+      { name: "Post-market & recall", note: "Solution page", href: "/solution/post-market-and-recall" },
+      { name: "Quality", note: "Solution page", href: "/solution/quality" },
+      { name: "Change control", note: "Solution page", href: "/solution/change-control" },
       { name: "Document & records control", note: "Live · the DMS product", href: "/products/dms" },
-      { name: "Compliance", note: "Solution page", href: "/domains/compliance" },
+      { name: "Compliance", note: "Solution page", href: "/solution/compliance" },
     ],
   },
 

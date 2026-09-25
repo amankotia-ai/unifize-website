@@ -25,8 +25,8 @@ export const PHARMACEUTICALS: IndustryData = {
 
   hero: {
     crumb: "Pharmaceuticals",
-    titleLead: "Your batch record shows the lot was released.",
-    titleTurn: "Not why.",
+    titleLead: "One OOS result stops the batch.",
+    titleTurn: "The release carries the reason.",
     sub: "Built for commercial pharma sponsors and CDMOs, where every deviation, every change, and every batch decision has to stay traceable across quality, regulatory, and operations, and survive an FDA inspection.",
     chips: ["21 CFR 210/211", "21 CFR Part 11", "ICH Q10", "EU GMP Annex 11", "EU Annex 1"],
     trustLabel: "Built for GxP-regulated pharma teams",
@@ -250,11 +250,11 @@ export const PHARMACEUTICALS: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Deviation → CAPA", coordination: "Quality, manufacturing, and RA reconstruct the investigation across systems", owner: "Quality", atRisk: "weeks of cycle time; a 483 if it ages" },
-      { name: "CMC / process change", coordination: "Propagates to documents, validation, training, and the batch record", owner: "Tech Ops / Quality", atRisk: "months to implement; notification exposure" },
-      { name: "Batch record review & release", coordination: "Exceptions chased across QA, production, and the lab before QP release", owner: "Quality", atRisk: "days per lot; trapped inventory" },
+      { name: "Deviation → CAPA", coordination: "Quality, manufacturing, and RA reconstruct the investigation across systems", owner: "Quality", atRisk: "weeks of cycle time; a 483 if it ages", story: "DEV-4471" },
+      { name: "CMC / process change", coordination: "Propagates to documents, validation, training, and the batch record", owner: "Tech Ops / Quality", atRisk: "months to implement; notification exposure", story: "Excipient change" },
+      { name: "Batch record review & release", coordination: "Exceptions chased across QA, production, and the lab before QP release", owner: "Quality", atRisk: "days per lot; trapped inventory", story: "Batch on hold" },
       { name: "APR / PQR assembly", coordination: "Production, QA, stability, complaints, and supplier data pulled from 5 to 7 systems", owner: "Quality / RA", atRisk: "a fixed annual deadline that cannot slip" },
-      { name: "Training cascade on change", coordination: "Every SOP change fans out to assignment, completion, and proof across sites", owner: "Quality / Training", atRisk: "an open gap between effectivity and completion" },
+      { name: "Training cascade on change", coordination: "Every SOP change fans out to assignment, completion, and proof across sites", owner: "Quality / Training", atRisk: "an open gap between effectivity and completion", story: "SOP revision" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long deviation and change cycle times", "Delayed batch release and time to market"] },
@@ -319,11 +319,18 @@ export const PHARMACEUTICALS: IndustryData = {
  *   change notifications to FDA and EMA. Regulatory Vocabulary: change
  *   classification, QP release, batch record, ALCOA+).
  * source: the data above (trail, persona titles, modules, trigger clocks).
- * Cursors carry persona titles, not people; no record numbers or metrics.
+ * 24 Sep 2026, the one story (as on the MD page): every artifact from the
+ * hero to the cost bill plays the deviation section 01 walks, DEV-4471: an
+ * OOS result in the executed batch record, root-caused to an excipient
+ * supplier's process change that never reached change control (the Primary
+ * Fear Anchor, verbatim in spirit). Cursors are the 01 cast, one role per
+ * name (see pharmaceuticals-journey.ts). The record number and the names are
+ * the page's illustrative world, never a claim; still no metrics.
  * ========================================================================== */
-const QA = { name: "QA Director", tone: "#d97706" };
-const SITE = { name: "Site Head", tone: "#2563eb" };
-const RA = { name: "RA Director", tone: "#7c3aed" };
+const DUBOIS = { name: "C. Dubois", tone: "#d97706" };
+const VARGA = { name: "P. Varga", tone: "#2563eb" };
+const OSEI = { name: "N. Osei", tone: "#7c3aed" };
+const LARSEN = { name: "H. Larsen", tone: "#0f8f7e" };
 
 export const PHARMACEUTICALS_RAILS: IndustryRails = {
   /* the key element: the executed batch record under review (Notion
@@ -345,11 +352,11 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
     ],
     exception: { row: 2, label: "OOS result", closed: "Closed on deviation" },
     deviation: {
-      head: "Deviation · classified major",
+      head: "DEV-4471 · classified major",
       steps: [
         { label: "OOS investigation", meta: "Quality" },
-        { label: "Root cause bound", meta: "Quality · RA" },
-        { label: "CAPA linked", meta: "Effectiveness check" },
+        { label: "Root cause · excipient change", meta: "Quality" },
+        { label: "CAPA · change control", meta: "Quality · RA" },
       ],
     },
     stamp: { main: "QP RELEASED", sub: "Reason on the record" },
@@ -379,17 +386,17 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Deviation",
+        kicker: "DEV-4471",
         state: "In review",
-        title: "Deviation → CAPA",
+        title: "OOS result · in-process controls",
         rows: [
-          { label: "Investigation & impact bound", meta: "Quality" },
-          { label: "CAPA cross-functional review", meta: "Quality · RA" },
-          { label: "QP release", meta: "Qualified Person", open: true },
+          { label: "Root cause · excipient change", meta: "Quality" },
+          { label: "CAPA · supplier change control", meta: "Quality · RA" },
+          { label: "Batch release · Part 11", meta: "Today", open: true },
         ],
-        cursor: QA,
+        cursor: LARSEN,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -398,34 +405,34 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
         stamp: "HOLD",
         lines: [
           { k: "Batch", v: "Awaiting disposition" },
-          { k: "Waiting on", v: "Deviation closure" },
-          { k: "Released by", v: "QP release" },
+          { k: "Waiting on", v: "DEV-4471" },
+          { k: "Released by", v: "Batch release · Part 11" },
         ],
-        note: "Moves on the thread, not on an email",
-        cursor: SITE,
+        note: "Released the hour DEV-4471 closes",
+        cursor: VARGA,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "Post-approval change",
-        title: "CMC change notification",
-        cite: "FDA · EMA",
-        state: "Drafting",
-        cursor: RA,
+        kicker: "DEV-4471 · CAPA",
+        title: "Excipient change: does it touch the registered spec?",
+        cite: "FDA · EMA post-approval change",
+        state: "Assessing",
+        cursor: OSEI,
       },
-      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/solution/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
         kind: "impact",
         wash: "paper",
-        source: { kicker: "System", title: "Validated state" },
+        source: { kicker: "DEV-4471", title: "Excipient change" },
         items: [
-          { id: "IQ", label: "Installation qualification" },
-          { id: "OQ", label: "Operational qualification" },
-          { id: "PQ", label: "Performance qualification", open: true },
+          { id: "SPEC", label: "Incoming excipient spec" },
+          { id: "PPQ", label: "Process validation · re-assessed", open: true },
+          { id: "LIMS", label: "Spec limits in the validated LIMS" },
         ],
       },
       go: { label: "How it stays validated ↓", href: "#validated" },
@@ -434,15 +441,15 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
       viz: {
         kind: "signoff",
         wash: "sky",
-        kicker: "Tech transfer",
-        title: "Process change",
+        kicker: "DEV-4471 · CAPA",
+        title: "Excipient grade change",
         signers: [
           { org: "Process development", name: "Process Development", meaning: "Authored", time: "Signed" },
           { org: "MSAT", name: "Tech Transfer Lead", meaning: "Reviewed", time: "Signed" },
           { org: "Quality", name: "QA Director", meaning: "Approve" },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -456,57 +463,57 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Deviation",
+          kicker: "DEV-4471",
           title: "Unplanned deviation",
           fields: [
             { label: "Classification", value: "Major", select: true },
             { label: "Batch record", value: "Executed batch record" },
-            { label: "Investigation", value: "OOS / OOT", focus: true },
+            { label: "Investigation", value: "OOS · in-process controls", focus: true },
           ],
-          cursor: QA,
+          cursor: DUBOIS,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "product-development",
-        line: "CMC and process changes classified, with post-approval impact assessed.",
+        line: "CMC and process changes classified, like the excipient change DEV-4471 exposed, with post-approval impact assessed.",
         viz: {
           kind: "decision",
           wash: "blue",
-          kicker: "Change classification",
+          kicker: "Excipient change · from DEV-4471",
           steps: [
             { q: "Like-for-like?", a: "No" },
             { q: "Touches a registered specification?", a: "Yes" },
           ],
           outcome: "Major · notification impact assessed",
-          cursor: RA,
+          cursor: OSEI,
         },
-        go: { label: "See the change control solution →", href: "/domains/change-control" },
+        go: { label: "See the change control solution →", href: "/solution/change-control" },
       },
       {
         domain: "supplier-management",
-        line: "API, excipient and CMO changes worked across the boundary, not an inbox.",
+        line: "API, excipient and CMO changes worked across the boundary, before they reach a batch, not after.",
         viz: {
           kind: "thread",
           wash: "paper",
           kicker: "Supplier change notification",
           messages: [
-            { org: "API supplier", text: "Change notification received for a qualified material", ext: true },
-            { org: "Quality", text: "Post-approval change impact assessed on the record" },
+            { org: "Excipient supplier", text: "Process change at our site, notified after the batch was made", ext: true },
+            { org: "Quality", text: "Bound to DEV-4471 · impact assessed on the record" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "training-competency",
-        line: "Every SOP revision fans out to the roles it touches, before the effective date.",
+        line: "Every SOP revision fans out to the roles it touches, before the effective date, including the ones a CAPA revises.",
         viz: {
           kind: "feed",
           wash: "warm",
-          kicker: "SOP revisions",
+          kicker: "SOP revisions · CAPA DEV-4471",
           items: [
-            { source: "SOP", title: "New revision approved", tag: "Cascade", hot: true },
-            { source: "Roles", title: "Scoped for retraining", tag: "Assigned" },
+            { source: "SOP", title: "Inspection SOP revised", tag: "Cascade", hot: true },
+            { source: "Roles", title: "Warehouse and QC scoped", tag: "Assigned" },
             { source: "Proof", title: "Completion before effectivity", tag: "Due" },
           ],
         },
@@ -515,8 +522,27 @@ export const PHARMACEUTICALS_RAILS: IndustryRails = {
   },
 
   lead: [
-    { name: "FDA Warning Letter received", viz: "letter", detail: ["Department of Health and Human Services", "WARNING LETTER"], clock: "15 working days" },
-    { name: "Data integrity finding", viz: "elements", detail: ["ALCOA+", "Attributable", "Legible", "!Contemporaneous", "Original", "Accurate"] },
-    { name: "Recall scope definition required", viz: "alerts" },
+    /* 24 Sep 2026: the three clocks DEV-4471 starts. The 483 cites the
+     * 21 CFR 211 sections the story breaks (components tested before use,
+     * the investigation extended to other batches, changes under written
+     * procedures); the batches made with the same excipient lot need a
+     * recall scope; the CAPA's revised SOP opens a training gap. */
+    {
+      name: "FDA Form 483 observation issued",
+      viz: "findings",
+      detail: [
+        "FDA 483 · 21 CFR 211",
+        "!211.84|Supplier's changed excipient used without assessment",
+        "211.192|DEV-4471 not extended to other batches",
+        "211.100|Change made outside change control",
+      ],
+      clock: "15 business days to respond",
+    },
+    { name: "Recall scope definition required", viz: "genealogy", detail: ["B-2231", "B-2229", "B-2234"] },
+    {
+      name: "Change-driven training cascade gap",
+      viz: "roster",
+      detail: ["Incoming inspection SOP", "Warehouse receipt", "!QC sampling, day shift", "!QC sampling, night shift"],
+    },
   ],
 };

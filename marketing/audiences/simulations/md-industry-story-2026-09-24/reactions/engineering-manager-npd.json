@@ -1,0 +1,38 @@
+{
+  "personaId": "engineering-manager-npd",
+  "firstImpression": "Better than I expected from something quality sent me: ECO-441 and a DHF trace are in the hero. But the change it walks through is a sterilization SOP change, which is a process and document change. It isn't a design change.",
+  "comprehension": "A layer that sits next to our PLM and QMS and holds the cross-functional record of a change: who raised it, the rationale, which records it touches (spec, risk file, validation, supplier agreement, labeling, training), and the Part 11 sign-offs. It also claims to keep the DHF trace current as a side effect. It's pitched mainly at the quality side, but it links to PLM ECOs instead of replacing them.",
+  "resonance": 2,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "Headline lands. 'The six records it touches' is the ECO impact problem I live with. 'Linked to SOP-118 Rev C · PLM ECO-441' tells me they don't try to own the BOM. But the showcase is a sterilization hold-time change on an SOP, not a design change.", "aboutMyWork": "partly"},
+    {"section": "01", "reaction": "'The decision lives in the thread, not the status field' is exactly my DHF problem. But the flow reads as engineering raises it and Quality/QA approve and seal it. Engineering shows up at step 01 and then disappears. Where's the design review?", "aboutMyWork": "partly"},
+    {"section": "02", "reaction": "There's an 'Engineering & NPI' seat, which is more than most quality tools give me. 'The rationale that has to survive the next revision' is the right line. It's one card out of five, and I'm asked to 'find my seat' in an investigator-in-the-room frame.", "aboutMyWork": "yes"},
+    {"section": "03", "reaction": "'Engineering Change (ECO/ECR)' and 'Design Controls / DHF' are listed under Change control, but only as tags. The other three columns are CAPA, supplier and complaints. That's quality's world.", "aboutMyWork": "partly"},
+    {"section": "04", "reaction": "'Sits alongside the QMS, ERP, PLM' is the most important sentence on the page for me. It answers 'we already have PLM', at least as a claim. I'd hand the IQ/OQ/PQ part to our CSV people.", "aboutMyWork": "partly"},
+    {"section": "05", "reaction": "MDR clocks, recall scope, 483 items. Statutory deadlines that belong to RA and quality. I skimmed it. The 820.70(b) 'rationale not shown' observation is the only line that points at my team.", "aboutMyWork": "no"},
+    {"section": "06", "reaction": "'Engineering change CC-2148 8 decisions · months at risk' is the most expensive row, which I'd believe. The '$0.9M to $10M' range is too wide to take to my VP.", "aboutMyWork": "partly"},
+    {"section": "07", "reaction": "Michael Hogan, Mechanical Engineer, 'Engineering change managed in one place' is the one I'd click. An engineer speaking, not a quality lead. Nearly every other story is from the same person at Harmonic Bionics.", "aboutMyWork": "partly"},
+    {"section": "close", "reaction": "'Pick a decision you could not replay at the last audit' is a fair offer. I'd rather bring a design change that churned through three revisions than a seal complaint.", "aboutMyWork": "partly"}
+  ],
+  "seeMyself": "I saw my own work in 'Your QMS approves the change. Not the six records it touches.', 'Engineering change PLM ECO-441 · linked', the Engineering & NPI card ('Owns change velocity, and the rationale that has to survive the next revision.'), 'Design history file Trace building Trace sealed', and the tags 'Engineering Change (ECO/ECR)' and 'Design Controls / DHF'. It turned into someone else's work in 'How the decision moves': engineering raises the change, then 'Cross-functional review Quality' and 'Approved · Part 11 e-signature Quality Assurance' take over. On the checklist the approvers are R. Kapoor and P. Ramesh, and neither is engineering. Sections 05 and 03 are mostly MDR, recall, CAPA and 483 work. Design review, effectivity, BOM impact and my 30 to 100 open ECOs as a portfolio never come up.",
+  "examplesRead": "Illustrative. CC-2148, SOP-118, RA-067, 'Lot 22-114', 'CMP-311' and the three 483 observations read as one invented scenario carried through the whole page. They didn't read as a customer's data. That's fine, and the single thread helps: I can follow one change through every section. What hurt trust a little: the same few names play different roles. L. Martin is Engineering & NPI and also the 'Complaints & recall' owner. R. Kapoor is Regulatory Affairs and also 'Supplier quality'. That made it feel staged. The real proof is the Harmonic Bionics and Michael Hogan video titles and the '41% lower non-conformance coordination cost' figure. That figure is about NCs, not engineering change.",
+  "objections": [
+    "Engineering looks like the originator and not a first-class approver. The flow has engineering raise the change and Quality sign it off, which is the 'approval checkbox' pattern I've been burned by.",
+    "The story is a process/SOP change, not a design change. There's no design review, no design inputs/outputs, no effectivity by serial or lot, and no suppliers on old revisions of a drawing.",
+    "'Alongside PLM' is only asserted. It doesn't show what syncs with PLM ECO-441 or who holds the BOM, the redline and the release. I need to know I'm not keeping two change records.",
+    "The rest of the page is quality's agenda: MDR, recall, 483, CAPA. I'd read this as a quality tool that engineering has to live inside."
+  ],
+  "missing": [
+    "The same trace run on a design change: design review minutes, decisions and action items landing in the DHF, with an engineering approver on the signature block.",
+    "A concrete PLM coexistence diagram: what stays in PLM (BOM, CAD, ECO release), what Unifize holds (rationale, cross-functional impact, sign-offs), and how the two stay in sync.",
+    "A view across 30 to 100 open ECOs showing which joint sign-off each one is stuck on, and a workflow walkthrough I can watch without booking a call."
+  ],
+  "nextAction": "share-internally",
+  "demoWillingness": 5,
+  "verbatims": [
+    "(synthetic) \"At least ECO-441 is on the screen. But I raise it, and then quality signs it. Where do I sign?\"",
+    "(synthetic) \"A sterilization hold-time change is an SOP revision. Show me a design review that survives into the DHF and we can talk.\"",
+    "(synthetic) \"Tell quality engineering doesn't object yet, as long as the walkthrough uses one of our ECOs, not a CAPA.\""
+  ],
+  "confidence": "high"
+}

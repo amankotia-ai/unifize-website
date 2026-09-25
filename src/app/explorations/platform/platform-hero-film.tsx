@@ -8,7 +8,8 @@
  * edges already fade to #1f2126, and a CSS mask guarantees it on crops.
  *
  * The rail under it is the PlatformJourney rail, same markup and classes,
- * but it DRIVES the film: each step is a 5 s chapter of the 30 s loop, the
+ * but it DRIVES the film: each step is a chapter of the loop (5 s each in
+ * v2; v3 chapters run to their own length, given as start times), the
  * active step follows the playhead, the timer bar is the chapter's progress,
  * and a click seeks to the chapter. Paused while off screen. Under
  * prefers-reduced-motion nothing plays: the film holds each chapter's key
@@ -21,25 +22,34 @@ import type { PlatformJourneyStep } from "./platform-interactive";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-/* seconds per rail step, and where in a chapter its key beat sits (the
- * piece fully lifted), for the reduced-motion stills */
+/* seconds per rail step when no chapter starts are given (the v2 film) */
 const CHAPTER_S = 5;
-const KEY_BEAT_S = 2.6;
 
 export function PlatformHeroFilm({
   steps,
   sources,
   poster,
+  chapterStarts,
+  keyBeats,
   label,
   description,
 }: {
   steps: PlatformJourneyStep[];
   sources: { src: string; type: string }[];
   poster: string;
+  /* where each rail step starts in the film, seconds; defaults to 5 s each */
+  chapterStarts?: readonly number[];
+  /* per chapter, seconds in of the still shown when the film does not play
+   * (reduced motion, autoplay blocked); defaults to 2.6 s each */
+  keyBeats?: readonly number[];
   label: string;
   /* what the film shows, for assistive tech (the video has no audio) */
   description: string;
 }) {
+  const starts = chapterStarts ?? steps.map((_, i) => i * CHAPTER_S);
+  const startsKey = starts.join(",");
+  const beatsKey = (keyBeats ?? []).join(",");
+  const beatAt = (index: number) => (starts[index] ?? 0) + (keyBeats?.[index] ?? 2.6);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const timerRefs = useRef<(HTMLElement | null)[]>([]);
   const [active, setActive] = useState(0);
@@ -56,7 +66,7 @@ export function PlatformHeroFilm({
     if (!video) return;
     const measure = () => {
       if (Number.isFinite(video.duration) && video.duration > 0) {
-        setChapters(Math.min(steps.length, Math.round(video.duration / CHAPTER_S)));
+        setChapters(Math.min(steps.length, starts.filter((s) => s < video.duration - 0.25).length));
       }
     };
     measure();
@@ -66,7 +76,7 @@ export function PlatformHeroFilm({
     if (reduced) {
       setStill(true);
       video.pause();
-      const hold = () => { video.currentTime = KEY_BEAT_S; };
+      const hold = () => { video.currentTime = beatAt(0); };
       if (video.readyState >= 1) hold();
       else video.addEventListener("loadedmetadata", hold, { once: true });
       return;
@@ -75,22 +85,32 @@ export function PlatformHeroFilm({
     let raf = 0;
     const tick = () => {
       const t = video.currentTime;
-      const chapter = Math.min(steps.length - 1, Math.floor(t / CHAPTER_S));
+      let chapter = 0;
+      while (chapter < starts.length - 1 && t >= starts[chapter + 1]) chapter++;
+      chapter = Math.min(steps.length - 1, chapter);
       if (chapter !== activeRef.current) {
         activeRef.current = chapter;
         setActive(chapter);
       }
       const bar = timerRefs.current[chapter];
-      if (bar) bar.style.transform = `scaleX(${((t % CHAPTER_S) / CHAPTER_S).toFixed(4)})`;
+      const end = starts[chapter + 1] ?? video.duration;
+      const span = Math.max(0.1, (Number.isFinite(end) ? end : starts[chapter] + CHAPTER_S) - starts[chapter]);
+      if (bar) bar.style.transform = `scaleX(${Math.min(1, (t - starts[chapter]) / span).toFixed(4)})`;
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
-    /* play only while the hero is on screen */
+    /* play only while the hero is on screen. If the browser refuses to
+     * autoplay (iOS Low Power Mode), show the key beat instead of the film's
+     * first frame, which is an empty window the home is about to load into */
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
+        if (entry.isIntersecting) {
+          video.play().catch((error: unknown) => {
+            if ((error as { name?: string })?.name !== "NotAllowedError") return;
+            if (video.currentTime < beatAt(activeRef.current)) video.currentTime = beatAt(activeRef.current);
+          });
+        } else video.pause();
       },
       { threshold: 0.2 },
     );
@@ -101,7 +121,9 @@ export function PlatformHeroFilm({
       observer.disconnect();
       video.removeEventListener("loadedmetadata", measure);
     };
-  }, [steps.length]);
+    // starts/beats are compared by value (startsKey, beatsKey), not identity
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [steps.length, startsKey, beatsKey]);
 
   const select = (index: number) => {
     if (index >= chapters) return;
@@ -110,10 +132,10 @@ export function PlatformHeroFilm({
     setActive(index);
     if (!video) return;
     if (still) {
-      video.currentTime = index * CHAPTER_S + KEY_BEAT_S;
+      video.currentTime = beatAt(index);
       return;
     }
-    video.currentTime = index * CHAPTER_S + 0.01;
+    video.currentTime = starts[index] + 0.01;
     video.play().catch(() => {});
   };
 

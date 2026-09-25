@@ -24,8 +24,8 @@ export const CHEMICALS: IndustryData = {
 
   hero: {
     crumb: "Chemicals",
-    titleLead: "Your change log shows what changed.",
-    titleTurn: "Not why.",
+    titleLead: "One raw material changes supplier.",
+    titleTurn: "The SDS and the dossier follow it.",
     sub: "Built for specialty chemical manufacturers supplying pharma, food, and industrial markets, where a formulation or process change has to stay traceable across quality, EHS, and the regulatory dossier, and hold up in a GMP or REACH audit.",
     chips: ["REACH", "TSCA", "OSHA PSM", "GHS / CLP", "ICH Q7"],
     trustLabel: "Built for specialty and pharma-supply chemical makers",
@@ -226,11 +226,11 @@ export const CHEMICALS: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Formulation / process change", coordination: "Propagates to specs, SDS, training, and customer notifications", owner: "Process / Quality", atRisk: "cycle time; a customer or regulatory notification missed" },
-      { name: "Deviation → CAPA", coordination: "Quality, production, and EHS reconstruct the investigation across systems", owner: "Quality", atRisk: "weeks of cycle time; an audit finding if it ages" },
-      { name: "Supplier qualification & change", coordination: "Quality and procurement assemble evidence across the boundary", owner: "Supplier Quality", atRisk: "material on hold; a spec or SDS gap" },
-      { name: "Process safety / MOC review", coordination: "EHS, engineering, and operations sign off on change evidence", owner: "EHS", atRisk: "a reportable incident; PSM enforcement" },
-      { name: "Batch record & CoA review", coordination: "Exceptions chased across QC, production, and the lab before release", owner: "Quality", atRisk: "material on hold; delayed shipment" },
+      { name: "Formulation / process change", coordination: "Propagates to specs, SDS, training, and customer notifications", owner: "Process / Quality", atRisk: "cycle time; a customer or regulatory notification missed", story: "ECN-2210" },
+      { name: "Deviation → CAPA", coordination: "Quality, production, and EHS reconstruct the investigation across systems", owner: "Quality", atRisk: "weeks of cycle time; an audit finding if it ages", story: "483 response" },
+      { name: "Supplier qualification & change", coordination: "Quality and procurement assemble evidence across the boundary", owner: "Supplier Quality", atRisk: "material on hold; a spec or SDS gap", story: "New solvent supplier" },
+      { name: "Process safety / MOC review", coordination: "EHS, engineering, and operations sign off on change evidence", owner: "EHS", atRisk: "a reportable incident; PSM enforcement", story: "Solvent MOC" },
+      { name: "Batch record & CoA review", coordination: "Exceptions chased across QC, production, and the lab before release", owner: "Quality", atRisk: "material on hold; delayed shipment", story: "First batch CoA" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long change and deviation cycle times", "Delayed release and time to market"] },
@@ -298,10 +298,16 @@ export const CHEMICALS: IndustryData = {
  * The composition shares and component names are an illustrative
  * formulation, not a product; cursors carry persona titles, not people.
  * ========================================================================== */
-const QM = { name: "Quality Manager", tone: "#d97706" };
-const PLANT = { name: "Plant Manager", tone: "#2563eb" };
-const STEWARD = { name: "Product Stewardship Lead", tone: "#7c3aed" };
-const PSM = { name: "Process Safety Manager", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the MD, pharma, CRO and labs pages):
+ * every artifact from the hero to the cost bill plays ECN-2210, the change
+ * 01 walks: the solvent moves to a new supplier, and the change reaches the
+ * SDS, the REACH dossier, the pharma customers' notice and the MOC while
+ * the new supplier's first lot waits in quarantine. Cursors are the 01
+ * cast, one role per name (see chemicals-journey.ts); still no metrics. */
+const HADDAD = { name: "O. Haddad", tone: "#d97706" };
+const KOWALSKI = { name: "B. Kowalski", tone: "#2563eb" };
+const MOREAU = { name: "L. Moreau", tone: "#7c3aed" };
+const PETROVA = { name: "N. Petrova", tone: "#0f8f7e" };
 
 export const CHEMICALS_RAILS: IndustryRails = {
   /* the key element: the formulation's composition, one component's supplier
@@ -309,7 +315,7 @@ export const CHEMICALS_RAILS: IndustryRails = {
    * customer notice (the fear anchor's untracked substance change) */
   hero: {
     kind: "formula",
-    id: "Formulation change",
+    id: "ECN-2210 · Formulation change",
     title: "Raw material substitution",
     from: "Supplier change notification · REACH · ICH Q7",
     stages: { detect: "Change detected", impact: "Impact assessment", review: "Cross-functional review", released: "Approved · dossier current" },
@@ -352,17 +358,17 @@ export const CHEMICALS_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Change control",
+        kicker: "ECN-2210",
         state: "In review",
-        title: "Formulation change",
+        title: "Solvent · new supplier",
         rows: [
-          { label: "Impact bound · REACH, SDS", meta: "Regulatory" },
-          { label: "Cross-functional review", meta: "Quality · EHS" },
-          { label: "Approval · e-signature", meta: "Quality Head", open: true },
+          { label: "SDS, REACH, notice bound", meta: "Impact" },
+          { label: "EHS review · hazards re-checked", meta: "EHS" },
+          { label: "Approval · e-signature", meta: "Today", open: true },
         ],
-        cursor: QM,
+        cursor: HADDAD,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -370,32 +376,32 @@ export const CHEMICALS_RAILS: IndustryRails = {
         wash: "warm",
         stamp: "HOLD",
         lines: [
-          { k: "Material", v: "Quarantined" },
-          { k: "Waiting on", v: "Disposition" },
+          { k: "Material", v: "New solvent lot" },
+          { k: "Waiting on", v: "ECN-2210" },
           { k: "Released by", v: "Quality" },
         ],
-        note: "Released with the approver chain recorded",
-        cursor: PLANT,
+        note: "Released the hour ECN-2210 closes",
+        cursor: KOWALSKI,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "Regulatory dossier",
-        title: "Substance registration",
+        kicker: "ECN-2210",
+        title: "Solvent registration, new supplier",
         cite: "REACH · TSCA",
-        state: "Updating",
-        cursor: STEWARD,
+        state: "Checking",
+        cursor: MOREAU,
       },
-      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/solution/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
         kind: "signoff",
         wash: "paper",
-        kicker: "Management of change",
-        title: "Process change · MOC",
+        kicker: "ECN-2210 · MOC",
+        title: "Solvent change · PSM process",
         signers: [
           { org: "Process development", name: "Process Development Lead", meaning: "Authored", time: "Signed" },
           { org: "Operations", name: "Plant Manager", meaning: "Reviewed", time: "Signed" },
@@ -407,14 +413,14 @@ export const CHEMICALS_RAILS: IndustryRails = {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "Scale-up", title: "Pilot → commercial" },
+        source: { kicker: "ECN-2210", title: "Solvent · new supplier" },
         items: [
-          { id: "R&D", label: "Process development" },
-          { id: "QA", label: "Qualification" },
-          { id: "OPS", label: "Commercial batch", open: true },
+          { id: "LAB", label: "Lab trial batch" },
+          { id: "SPEC", label: "Incoming solvent spec" },
+          { id: "OPS", label: "First commercial batch", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -424,20 +430,20 @@ export const CHEMICALS_RAILS: IndustryRails = {
     cells: [
       {
         domain: "quality",
-        line: "From the batch record exception to a CAPA that holds at the next audit.",
+        line: "From the first batch on a changed material to a CAPA that holds at the next audit.",
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Deviation",
-          title: "Batch record exception",
+          kicker: "ECN-2210 · first batch",
+          title: "First batch review",
           fields: [
             { label: "Record", value: "Executed batch record", select: true },
-            { label: "CoA", value: "Attached" },
-            { label: "Investigation", value: "Root cause", focus: true },
+            { label: "CoA", value: "New supplier's" },
+            { label: "Comparability", value: "Against the old supplier", focus: true },
           ],
-          cursor: QM,
+          cursor: HADDAD,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "supplier-management",
@@ -447,11 +453,11 @@ export const CHEMICALS_RAILS: IndustryRails = {
           wash: "paper",
           kicker: "Supplier change notification",
           messages: [
-            { org: "Raw-material supplier", text: "Change notification for a qualified material", ext: true },
-            { org: "Supplier Quality", text: "Spec, SDS and customer-notification impact assessed" },
+            { org: "Solvent supplier", text: "Change notification on the solvent grade", ext: true },
+            { org: "Supplier Quality", text: "Raised as ECN-2210 · spec, SDS and customer impact assessed" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "compliance",
@@ -459,13 +465,13 @@ export const CHEMICALS_RAILS: IndustryRails = {
         viz: {
           kind: "decision",
           wash: "warm",
-          kicker: "Management of change",
+          kicker: "MOC · ECN-2210",
           steps: [
             { q: "Touches a PSM-covered process?", a: "Yes" },
             { q: "Hazard analysis still current?", a: "No" },
           ],
-          outcome: "Process hazard analysis updated",
-          cursor: PSM,
+          outcome: "PHA updated for the new solvent",
+          cursor: PETROVA,
         },
       },
       {
@@ -474,11 +480,11 @@ export const CHEMICALS_RAILS: IndustryRails = {
         viz: {
           kind: "feed",
           wash: "blue",
-          kicker: "SDS & specifications",
+          kicker: "SDS · ECN-2210",
           items: [
-            { source: "SDS", title: "Revision approved", tag: "Cascade", hot: true },
+            { source: "SDS", title: "Solvent SDS revised", tag: "Cascade", hot: true },
             { source: "Sites", title: "Controlled distribution", tag: "Sent" },
-            { source: "Customers", title: "Confirmation of receipt", tag: "Due" },
+            { source: "Customers", title: "Pharma customers confirm", tag: "Due" },
           ],
         },
       },
@@ -486,12 +492,31 @@ export const CHEMICALS_RAILS: IndustryRails = {
   },
 
   lead: [
-    { name: "GMP Form 483 at a pharma-supply site", viz: "sheet", clock: "15 working days" },
+    /* 24 Sep 2026: the three clocks ECN-2210 starts if it is not run on the
+     * record, each surface drawn from it: the 483 at the pharma-supply site
+     * (ICH Q7 section 13 change control, 13.17 customer notification, 7.3
+     * incoming materials), the dossier index missing the new supplier, and
+     * the pharma customer's rejection of the notice */
+    {
+      name: "GMP Form 483 at a pharma-supply site",
+      viz: "findings",
+      detail: [
+        "FDA 483 · ICH Q7",
+        "!13.17|Pharma customers not told of the solvent change",
+        "7.3|New supplier's solvent released on CoA alone",
+        "13|Change evaluated after first use",
+      ],
+      clock: "15 working days",
+    },
     {
       name: "REACH / TSCA finding on an untracked change",
       viz: "tree",
-      detail: ["Formulation", "Specifications", "!REACH dossier", "Safety data sheet", "Customer notices"],
+      detail: ["ECN-2210", "Solvent specification", "!REACH dossier · new supplier", "Safety data sheet", "Customer notices"],
     },
-    { name: "OSHA PSM / process safety incident", viz: "alerts" },
+    {
+      name: "Supplier change notification to a pharma customer",
+      viz: "rejected",
+      detail: ["Change notification · ECN-2210", "Solvent · new supplier", "Comparability data missing"],
+    },
   ],
 };

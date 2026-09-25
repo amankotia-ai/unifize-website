@@ -665,7 +665,6 @@ export const POST_MARKET_DATA: DomainPageData = {
         label: "Where the scope used to be decided",
         body: "The escalation call, the lot-list workbook and the recall channel stop being where scope gets decided. The hold, the notification, the returns and the submission read from one record.",
       },
-      flows: { contextIn: "LOT DATA IN", back: "PART 11 SIGNED", captured: "SCOPE CALLS CAPTURED", linked: "FOUR TRACKS, LINKED" },
     },
   },
 
@@ -733,10 +732,10 @@ export const POST_MARKET_DATA: DomainPageData = {
     lede: "Post-market is where the deadlines are external and the coordination is worst, which makes it the sharpest place to land. The same governed record then runs the functions it already pulls on.",
     steps: [
       { name: "Post-market & recall", note: "You are here" },
-      { name: "Quality", note: "Live · the Quality solution page", href: "/domains/quality" },
-      { name: "Change control", note: "Live · the Change control solution page", href: "/domains/change-control" },
-      { name: "Regulatory affairs", note: "Live · the Regulatory affairs solution page", href: "/domains/regulatory-affairs" },
-      { name: "Supplier management", note: "Live · the Supplier management solution page", href: "/domains/supplier-management" },
+      { name: "Quality", note: "Live · the Quality solution page", href: "/solution/quality" },
+      { name: "Change control", note: "Live · the Change control solution page", href: "/solution/change-control" },
+      { name: "Regulatory affairs", note: "Live · the Regulatory affairs solution page", href: "/solution/regulatory-affairs" },
+      { name: "Supplier management", note: "Live · the Supplier management solution page", href: "/solution/supplier-management" },
       { name: "Production records", note: "Live · the MES product", href: "/products/mes" },
     ],
   },

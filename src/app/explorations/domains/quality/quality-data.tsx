@@ -36,7 +36,7 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
-import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+import type { ArcadeChart, ArcadeFlowWorld, ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 
 /* ------------------------------------------------------------------------
  * The live arcade journey: CAPA-1284 as its owner lives it, one pose per
@@ -69,7 +69,7 @@ const QUALITY_WORLD: ArcadeFlowWorld = {
     {
       title: "EVENT & CONTAINMENT",
       items: [
-        { label: "Reason for escalation", kind: "field", value: "Recurring seal failure · third event this quarter", note: "Entered at escalation" },
+        { label: "Reason for escalation", kind: "field", input: "rich", value: "Recurring seal failure · third event this quarter", note: "Entered at escalation" },
         { label: "Linked non-conformance", note: "NC-0871 · line 2" },
         { label: "Containment", note: "Batch 22-114 held · sampling raised" },
       ],
@@ -100,6 +100,157 @@ const QUALITY_REC = {
   title: "Seal failure · line 2",
   world: QUALITY_WORLD,
 } as const;
+
+/* ------------------------------------------------------------------------
+ * The hero: the other side of CAPA-1284, as the Sep 16 2026 recording of
+ * the quality manager's home shows it: corrective actions by how long they
+ * have been open, the chart clicked through to one owner's records, and the
+ * record opened over the chart with the assistant's reminder in its thread.
+ * The 03 journey walks the record itself; the hero never repeats it. */
+const CAPA_AGING: ArcadeChart = {
+  title: "Average age of open CAPAs",
+  unit: "Days open",
+  bars: [
+    { label: "D. Okafor", values: [12] },
+    { label: "M. Chen", values: [9] },
+    { label: "P. Silva", values: [7] },
+    { label: "K. Adams", values: [6] },
+    { label: "J. Wu", values: [4] },
+  ],
+  max: 14,
+  ticks: [0, 2, 4, 6, 8, 10, 12, 14],
+};
+const QUALITY_MANAGER_WORLD: ArcadeFlowWorld = {
+  ...QUALITY_WORLD,
+  viewer: "S. Ferreira",
+  viewerInitials: "SF",
+  home: {
+    section: "Quality Events",
+    cards: [
+      { link: "CAPA aging", updated: "a few seconds ago", chart: CAPA_AGING },
+      {
+        link: "Open Audit Findings",
+        updated: "32 minutes ago",
+        chart: {
+          title: "Open Audit Finding by Severity",
+          series: [
+            { label: "Non-Conformance", tone: "indigo" },
+            { label: "Opportunity for Improvement (OFI)", tone: "teal" },
+            { label: "Observation", tone: "rose" },
+          ],
+          bars: [
+            { label: "Minor", values: [3, 2, 2] },
+            { label: "Major", values: [2, 0, 1] },
+            { label: "Critical", values: [0, 0, 0] },
+          ],
+          max: 8,
+          ticks: [0, 2, 4, 6, 8],
+        },
+      },
+    ],
+    quickStart: [
+      { title: "Start New", buttons: ["Document", "Non-Conformance", "Change Control", "CAR"] },
+      { title: "Start New", buttons: ["New Supplier Request", "Inspection"] },
+    ],
+    lists: [
+      {
+        title: "Documents that needs your attention",
+        rows: ["Document #231: SOP-231 · periodic review", "Document #417: WI-0417 v3.2 · approval"],
+        more: "+ 8 more",
+      },
+    ],
+  },
+  report: {
+    chart: CAPA_AGING,
+    updated: "a few seconds ago",
+    results: "2 Results",
+    create: "New Corrective Action",
+    filters: ["Status: Implementation", "Owner: D. Okafor"],
+    columns: ["#", "Corrective Action", "Status", "Owner", "Due date", "Age (days)"],
+    rows: [
+      { cells: ["1284", "Seal failure · line 2", "Implementation", "D. Okafor", "Fri", "12"], status: { label: "Implementation", tone: "pending", reminder: true }, target: true },
+      { cells: ["1279", "Label check skipped · packaging", "Implementation", "D. Okafor", "3 Oct", "10"], status: { label: "Implementation", tone: "pending", reminder: true } },
+    ],
+  },
+};
+const HERO_BASE = {
+  ...QUALITY_REC,
+  world: QUALITY_MANAGER_WORLD,
+  status: "Implementation",
+  checklist: "ACTIONS & CLOSURE",
+  checklistItems: ["Corrective actions"] as string[],
+  focusRows: ["CAPA-1284 · 12 days open"],
+  ownershipNote: "The quality manager's view",
+};
+const HERO: { label: string; caption: string; config: ArcadeStepConfig }[] = [
+  {
+    label: "Home",
+    caption: "The quality manager's home: corrective actions by how long they have been open",
+    config: {
+      ...HERO_BASE,
+      source: "Quality manager home · 16 Sep 2026 recording",
+      ghost: "Home",
+      actor: "automator",
+      event: "Corrective actions, by how long they have been open",
+      eventDetail: "Every bar opens the records behind it",
+      focus: "queue",
+      focusTitle: "CAPA aging",
+      homeCard: "CAPA aging",
+      chartHover: { bar: "D. Okafor", lines: ["Days open, D. Okafor, 12"] },
+    },
+  },
+  {
+    label: "Drill",
+    caption: "Click an owner: every corrective action of theirs, with its due date and state",
+    config: {
+      ...HERO_BASE,
+      source: "CAPA aging drilled · 16 Sep 2026 recording",
+      ghost: "Drill",
+      actor: "You",
+      event: "Opened D. Okafor's corrective actions",
+      eventDetail: "Filtered from the chart",
+      focus: "report",
+      focusTitle: "Average age of open CAPAs",
+      chartHover: { bar: "D. Okafor", lines: ["Days open, D. Okafor, 12"] },
+    },
+  },
+  {
+    label: "Remind",
+    caption: "The reminder already fired on the record; tag the owner from right there",
+    config: {
+      ...HERO_BASE,
+      source: "CAPA opened over the chart · 16 Sep 2026 recording",
+      ghost: "Remind",
+      actor: "You",
+      event: "Tagged the owner from the record",
+      eventDetail: "Opened over the chart",
+      focus: "modal",
+      focusTitle: "CAPA-1284",
+      chartHover: { bar: "D. Okafor", lines: [] },
+      modal: {
+        over: "report",
+        noun: "Corrective Action",
+        id: "#1284",
+        title: "Seal failure · line 2",
+        state: "Implementation",
+        tone: "pending",
+        reminder: true,
+        owner: "D. Okafor",
+        participants: 5,
+        due: "Fri",
+        thread: [
+          { kind: "date", text: "Sep 14" },
+          { kind: "event", who: "D. Okafor", text: "started this conversation" },
+          { kind: "updates", count: 9, open: true },
+          { kind: "event", who: "You", text: "updated the due date to", strong: "Fri" },
+          { kind: "message", who: "Unifize Assistant", assistant: true, time: "Sep 26", mention: "D. Okafor", text: "this corrective action is due in the next 7 days.", link: "Turn off reminders" },
+          { kind: "date", text: "Today" },
+        ],
+        composer: { mention: "D. Okafor", text: "any update on this" },
+      },
+    },
+  },
+];
 
 export const QUALITY_DATA: DomainPageData = {
   slug: "quality",
@@ -222,7 +373,7 @@ export const QUALITY_DATA: DomainPageData = {
         glyph: "box",
         name: "Suppliers and the field",
         line: "Quality at the edges: incoming parts, external partners, installed product.",
-        runsIn: { label: "See supplier management →", href: "/domains/supplier-management" },
+        runsIn: { label: "See supplier management →", href: "/solution/supplier-management" },
         viz: {
           kicker: "SCAR · Apex Metals",
           state: "Supplier action",
@@ -433,6 +584,7 @@ export const QUALITY_DATA: DomainPageData = {
           related: 3,
         },
       ],
+      hero: HERO,
     },
   },
 

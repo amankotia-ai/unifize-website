@@ -416,6 +416,17 @@ function beatsOf(d: HeroTraceData): Beats {
 }
 
 /* ---------------------------------------------------------------- pieces */
+/* both states of a chip line share one grid cell, so the chip is sized by
+ * the longer one and never jumps (or wraps) when the state flips */
+function Swap({ on, off, onText }: { on: boolean; off: string; onText: string }) {
+  return (
+    <span className="mdt-swap">
+      <span className={on ? "is-hidden" : undefined}>{off}</span>
+      <span className={on ? undefined : "is-hidden"}>{onText}</span>
+    </span>
+  );
+}
+
 function Check() {
   return (
     <svg viewBox="0 0 16 16" aria-hidden="true">
@@ -1376,13 +1387,13 @@ export function IndustryHeroTrace({ data }: { data: HeroTraceData }) {
           <span className="mdt-chip__cap">{d.cascade.cap}</span>
           {d.cascade.big ? (
             <span className="mdt-chip__big">
-              {cascadeOn ? d.cascade.big.on : d.cascade.big.off}
-              <small> {cascadeOn ? d.cascade.on : d.cascade.off}</small>
+              <Swap on={cascadeOn} off={d.cascade.big.off} onText={d.cascade.big.on} />
+              <small> <Swap on={cascadeOn} off={d.cascade.off} onText={d.cascade.on} /></small>
             </span>
           ) : (
             <span className="mdt-chip__state">
               <span className="mdt-chip__dot" />
-              {cascadeOn ? d.cascade.on : d.cascade.off}
+              <Swap on={cascadeOn} off={d.cascade.off} onText={d.cascade.on} />
             </span>
           )}
           <span className="mdt-chip__note">{d.cascade.note}</span>
@@ -1416,7 +1427,9 @@ export function IndustryHeroTrace({ data }: { data: HeroTraceData }) {
           </span>
           <span className="mdt-chip__stack">
             <span className="mdt-chip__cap">{d.seal.cap}</span>
-            <span className="mdt-chip__line">{released ? d.seal.on : d.seal.off}</span>
+            <span className="mdt-chip__line">
+              <Swap on={released} off={d.seal.off} onText={d.seal.on} />
+            </span>
           </span>
         </div>
       </div>

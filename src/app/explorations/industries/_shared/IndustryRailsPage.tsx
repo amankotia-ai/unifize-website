@@ -289,7 +289,10 @@ export function IndustryRailsPage({ data, rails }: { data: IndustryData; rails: 
                   {d.cost.events.map((v) => (
                     <li key={v.name}>
                       <span className="md-tax__ev">
-                        <b>{v.name}</b>
+                        <b>
+                          {v.name}
+                          {v.story ? <em className="md-tax__ref">{v.story}</em> : null}
+                        </b>
                         <small>{v.owner}</small>
                       </span>
                       <span className="md-tax__amt irt-bill__risk">{v.atRisk}</span>

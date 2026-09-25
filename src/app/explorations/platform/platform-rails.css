@@ -437,11 +437,15 @@
   inset: 0;
   content: "";
   pointer-events: none;
-  background-image: var(--dms-grain);
-  background-size: 180px 180px;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  animation: pf-film-grain 0.5s steps(4) infinite;
+  /* 25 Sep 2026 (v3 film, "grainy texture on the UI"): overlay grain never
+   * marked the white UI (overlay on white stays white), so the grain is a
+   * soft 1-device-px noise tile in hard-light, which darkens the whites a
+   * little as well as lifting the charcoal; 12 fps jitter like film */
+  background-image: url("/explorations/platform/hero-film-grain-v3.png");
+  background-size: 128px 128px;
+  opacity: 0.06;
+  mix-blend-mode: hard-light;
+  animation: pf-film-grain 0.333s steps(4) infinite;
 }
 
 @keyframes pf-film-grain {
@@ -600,9 +604,9 @@
 
 /* ====================================================== 02 · THE GAP
  * Split head. The stepper becomes text tabs on a rail-to-rail hairline
- * with an accent underline (the hero-tab idiom); the two panes become
- * cells rail to rail: today on the paper wash (problems are paper), the
- * product on the blue wash, on the plate. */
+ * with an accent underline (the hero-tab idiom); the two panes share one
+ * field rail to rail: today on the paper wash (problems are paper), which
+ * crossfades into the blue wash under the product, on the plate. */
 .dms--redesign.pf-page .pf-gap-section.hm-railed {
   padding-top: clamp(56px, 6vw, 88px);
   padding-bottom: clamp(56px, 6vw, 88px);
@@ -696,69 +700,170 @@
   font-weight: 600;
 }
 
-/* the panes: two cells on the hairline ground */
+/* the panes: ONE field under both (Abhishek, 25 Sep: "instead of two
+ * distinct bgs, one blended bg"), no hairline between the cells. The blue
+ * wash lies under the Unifize pane and reaches back across the seam; the
+ * paper wash lies over it and fades out across the same span, so each pane
+ * keeps its own shade and the middle is a crossfade, not an edge. Each
+ * layer is anchored to its own pane (the washes keep their geometry, and
+ * the blend follows the seam when the panes stack), at negative z in the
+ * row's stacking context, under the content; one grain over the field. */
 .dms--redesign.pf-page .hm-railed .pf-gap__panels {
+  /* the crossfade's width, centred on the seam */
+  --pf-gap-blend: clamp(240px, 26vw, 380px);
+  --pf-gap-blend-dir: 90deg;
+  position: relative;
+  isolation: isolate;
+  gap: 0;
   border: 0;
   border-top: 1px solid var(--hm-rail);
   border-bottom: 1px solid var(--hm-rail);
-  background: var(--hm-rail);
+  background: none;
 }
 
-.dms--redesign.pf-page .hm-railed .pf-gap__panel {
-  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
-}
-
-/* today: the old world on paper, with grain */
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--today {
-  position: relative;
-  isolation: isolate;
-  background: var(--hm-wash-paper);
-}
-
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--today::after {
+.dms--redesign.pf-page .hm-railed .pf-gap__panels::after {
   position: absolute;
-  z-index: 0;
+  z-index: -1;
   inset: 0;
   content: "";
   pointer-events: none;
   background-image: var(--dms-grain);
   background-size: 180px 180px;
-  opacity: 0.14;
+  opacity: 0.15;
   mix-blend-mode: multiply;
 }
 
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--today > * {
+.dms--redesign.pf-page .hm-railed .pf-gap__panel {
+  position: relative;
+  padding: clamp(24px, 2.4vw, 32px) var(--hm-rail-pad) clamp(26px, 2.6vw, 36px);
+  background: none;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel > * {
   position: relative;
   z-index: 1;
 }
 
-/* the pane head: the name as the heading, the verdict as one readable
- * line under it (no mono sub-caption) */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--today::after,
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::before,
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+/* the blue wash, the bottom layer: from the Unifize pane back under the
+ * paper's fade */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::after {
+  z-index: -4;
+  left: calc(-0.5 * var(--pf-gap-blend));
+  background: var(--hm-wash-blue);
+}
+
+/* the light bands the hero wash carries, rising out of the blend and gone
+ * before the plate's far side */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::before {
+  z-index: -3;
+  left: calc(-0.5 * var(--pf-gap-blend));
+  background: linear-gradient(
+    180deg,
+    transparent 0 14%,
+    rgba(255, 255, 255, 0.4) 14% 26%,
+    transparent 26% 40%,
+    rgba(255, 255, 255, 0.26) 40% 48%,
+    transparent 48%
+  );
+  mask-image: linear-gradient(90deg, transparent 0, #000 var(--pf-gap-blend), transparent 78%);
+}
+
+/* today: the old world on paper, over the blue, fading out across the seam
+ * on a smoothstep curve so the fade has no start or end line */
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--today::after {
+  z-index: -2;
+  right: calc(-0.5 * var(--pf-gap-blend));
+  background: var(--hm-wash-paper);
+  mask-image: linear-gradient(
+    var(--pf-gap-blend-dir),
+    #000 calc(100% - var(--pf-gap-blend)),
+    rgb(0 0 0 / 0.94) calc(100% - 0.85 * var(--pf-gap-blend)),
+    rgb(0 0 0 / 0.78) calc(100% - 0.7 * var(--pf-gap-blend)),
+    rgb(0 0 0 / 0.5) calc(100% - 0.5 * var(--pf-gap-blend)),
+    rgb(0 0 0 / 0.22) calc(100% - 0.3 * var(--pf-gap-blend)),
+    rgb(0 0 0 / 0.06) calc(100% - 0.15 * var(--pf-gap-blend)),
+    transparent
+  );
+}
+
+/* the pane head (Abhishek, 25 Sep: "design these headers better"): the
+ * name drops to the page's square-marked eyebrow, in its world's colour
+ * (amber like today's wires, blue for Unifize), and the verdict becomes the
+ * heading, its shared premise ("One defect,") quiet so the two outcomes
+ * carry the contrast */
 .dms--redesign.pf-page .hm-railed .pf-gap__head {
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
+  display: grid;
+  gap: 14px;
+  justify-items: start;
 }
 
 .dms--redesign.pf-page .hm-railed .pf-gap__lab {
-  color: var(--dms-ink);
-  font-family: var(--dms-display);
-  font-size: 1.3rem;
-  font-weight: 650;
-  letter-spacing: -0.015em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--dms-ink-2);
+  font-family: var(--dms-sans);
+  font-size: 0.76rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__lab::before {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: var(--dms-warn);
 }
 
 .dms--redesign.pf-page .hm-railed .pf-gap__panel--after .pf-gap__lab {
   color: var(--dms-accent);
 }
 
+.dms--redesign.pf-page .hm-railed .pf-gap__panel--after .pf-gap__lab::before {
+  background: currentColor;
+}
+
 .dms--redesign.pf-page .hm-railed .pf-gap__sub {
-  color: var(--dms-ink-2);
-  font-family: var(--dms-sans);
-  font-size: 1rem;
-  letter-spacing: 0;
-  line-height: 1.5;
+  margin: 0;
+  color: var(--dms-ink);
+  font-family: var(--dms-display);
+  font-size: var(--dms-h3-size);
+  font-weight: 600;
+  letter-spacing: -0.014em;
+  line-height: 1.2;
   text-transform: none;
+  text-wrap: balance;
+}
+
+/* quiet by weight as well as tone: a lighter grey would drop under 4.5:1
+ * where the verdict shrinks to 19px on phones */
+.dms--redesign.pf-page .hm-railed .pf-gap__premise {
+  color: var(--dms-muted);
+  font-weight: 500;
+}
+
+/* head, drawing and narration line up across the panes whatever each
+ * verdict wraps to */
+.dms--redesign.pf-page .hm-railed .pf-gap__panels {
+  grid-template-rows: auto 1fr auto;
+}
+
+.dms--redesign.pf-page .hm-railed .pf-gap__panel {
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
 }
 
 /* the narration: the sentence alone, on a dashed rule */
@@ -794,49 +899,8 @@
   stroke-width: 3;
 }
 
-/* on Unifize: the whole cell is the blue wash (Abhishek, 22 Sep: "make the
- * blue bg full container as you have done for the left"), with the light
- * bands and grain the hero wash carries; the stage inside is clear */
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--after {
-  position: relative;
-  isolation: isolate;
-  background: var(--hm-wash-blue);
-}
-
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::before {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0 14%,
-    rgba(255, 255, 255, 0.4) 14% 26%,
-    transparent 26% 40%,
-    rgba(255, 255, 255, 0.26) 40% 48%,
-    transparent 48%
-  );
-  mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
-}
-
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--after::after {
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  content: "";
-  pointer-events: none;
-  background-image: var(--dms-grain);
-  background-size: 180px 180px;
-  opacity: 0.16;
-  mix-blend-mode: multiply;
-}
-
-.dms--redesign.pf-page .hm-railed .pf-gap__panel--after > * {
-  position: relative;
-  z-index: 1;
-}
-
+/* on Unifize: the stage sits clear on the field (the blue wash is the
+ * field's, above) */
 .dms--redesign.pf-page .hm-railed .pf-gap__stage.rf {
   --rf-r: 0px;
   --rf-pad: 0px;
@@ -932,6 +996,30 @@
 @media (max-width: 960px) {
   .dms--redesign.pf-page .hm-railed .pf-taxlead {
     grid-template-columns: 1fr;
+  }
+}
+
+/* the gap panes stack below 1080 (kit): the crossfade turns to run across
+ * the seam between them, and the bands keep to the Unifize pane */
+@media (max-width: 1080px) {
+  .dms--redesign.pf-page .hm-railed .pf-gap__panels {
+    --pf-gap-blend: clamp(180px, 28vw, 280px);
+    --pf-gap-blend-dir: 180deg;
+  }
+
+  .dms--redesign.pf-page .hm-railed .pf-gap__panel--today::after {
+    right: 0;
+    bottom: calc(-0.5 * var(--pf-gap-blend));
+  }
+
+  .dms--redesign.pf-page .hm-railed .pf-gap__panel--after::after {
+    top: calc(-0.5 * var(--pf-gap-blend));
+    left: 0;
+  }
+
+  .dms--redesign.pf-page .hm-railed .pf-gap__panel--after::before {
+    left: 0;
+    mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
   }
 }
 
@@ -1072,7 +1160,6 @@
 .dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail p { color: var(--dms-ink-2); }
 .dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail a { color: var(--dms-accent); text-decoration-color: currentColor; }
 .dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail a:hover { color: var(--dms-accent-hover); text-decoration-color: currentColor; }
-.dms--redesign.pf-page .pf-stack-section.hm-railed .pf-iso__detail small { color: var(--dms-faint); }
 
 /* the trust strip: one row on hairlines, rail to rail */
 .dms--redesign.pf-page .pf-stack-section.hm-railed .pf-stack__trust {
@@ -1613,6 +1700,7 @@
 @media (min-width: 1025px) {
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc__camera {
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     outline: 0;
     box-shadow: none;
     transform: translate3d(calc(-50% - 162px * var(--stx-camera-scale) + var(--stx-camera-x)), calc(-50% + var(--stx-camera-y)), 0) scale(var(--stx-camera-scale));
@@ -1727,8 +1815,8 @@
 /* one gradient per visual row (1lh tiles), so a wrapped line is lit the
  * same on every row; descender room under the clip */
 .dms--redesign.pf-page .dms-hero--rails .dms-hero__line {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -1808,8 +1896,8 @@
  * light behind the heads (a low-alpha radial bands into rings on white).
  * The stack section's lede is already darker by design and is left. */
 .dms--redesign.pf-page .dms-section:not(.dms-section--dark):not(.dms-hero) .dms-h2 {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -1821,8 +1909,8 @@
 }
 
 .dms--redesign.pf-page :is(.dms-section--dark .dms-h2, .pf-close .pf-close__h) {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;

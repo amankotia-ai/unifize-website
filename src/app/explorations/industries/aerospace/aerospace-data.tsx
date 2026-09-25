@@ -26,8 +26,8 @@ export const AEROSPACE: IndustryData = {
 
   hero: {
     crumb: "Aerospace",
-    titleLead: "Your FAI signed off the first article.",
-    titleTurn: "Not why.",
+    titleLead: "Balloon 3 is out of tolerance.",
+    titleTurn: "The FAI closes with the MRB on it.",
     sub: "Built for aerospace and defense suppliers, where every engineering change, first article, and special-process decision has to stay traceable across engineering, quality, and the customer program, and survive an AS9100 audit, a NADCAP assessment, or a customer source inspection.",
     chips: ["AS9100", "NADCAP", "FAA Part 21", "FAI · AS9102", "AS6081"],
     trustLabel: "Built for AS9100-certified aerospace and defense suppliers",
@@ -230,11 +230,11 @@ export const AEROSPACE: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Engineering change → configuration", coordination: "Propagates to configuration, FAI, key characteristics, and the shop floor", owner: "Engineering / Quality", atRisk: "cycle time; a mixed-revision build or configuration drift" },
-      { name: "First article inspection (FAI)", coordination: "Engineering, quality, and the customer assemble the AS9102 package across systems", owner: "Quality", atRisk: "FAI cycle time; a failure at source inspection" },
-      { name: "Nonconformance → MRB → CAPA", coordination: "Quality, engineering, and production reconstruct the disposition and objective evidence", owner: "Quality", atRisk: "weeks of cycle time; an audit finding if it ages" },
-      { name: "Special-process / supplier qualification", coordination: "Quality and procurement flow down NADCAP requirements and assemble evidence across the boundary", owner: "Supplier Quality", atRisk: "parts on hold; a lapsed accreditation reaching a part" },
-      { name: "Source inspection readiness", coordination: "Documentation currency chased across engineering, quality, and program before a visit", owner: "Program Quality", atRisk: "production held; a failed source inspection" },
+      { name: "Engineering change → configuration", coordination: "Propagates to configuration, FAI, key characteristics, and the shop floor", owner: "Engineering / Quality", atRisk: "cycle time; a mixed-revision build or configuration drift", story: "ECO-3180" },
+      { name: "First article inspection (FAI)", coordination: "Engineering, quality, and the customer assemble the AS9102 package across systems", owner: "Quality", atRisk: "FAI cycle time; a failure at source inspection", story: "Delta FAI" },
+      { name: "Nonconformance → MRB → CAPA", coordination: "Quality, engineering, and production reconstruct the disposition and objective evidence", owner: "Quality", atRisk: "weeks of cycle time; an audit finding if it ages", story: "Balloon 3" },
+      { name: "Special-process / supplier qualification", coordination: "Quality and procurement flow down NADCAP requirements and assemble evidence across the boundary", owner: "Supplier Quality", atRisk: "parts on hold; a lapsed accreditation reaching a part", story: "Heat-treat supplier" },
+      { name: "Source inspection readiness", coordination: "Documentation currency chased across engineering, quality, and program before a visit", owner: "Program Quality", atRisk: "production held; a failed source inspection", story: "Source inspection" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long engineering-change and FAI cycle times", "Delayed release and program milestone slip"] },
@@ -302,9 +302,16 @@ export const AEROSPACE: IndustryData = {
  * The part, its drawing and the characteristics are illustrative, not a
  * customer's; cursors carry persona titles, not people.
  * ========================================================================== */
-const QM = { name: "Quality Manager", tone: "#d97706" };
-const PLANT = { name: "Production Manager", tone: "#2563eb" };
-const QSM = { name: "Quality Systems Manager", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the other railed industry pages): every
+ * artifact from the hero to the cost bill plays the machined bracket.
+ * ECO-3180 (01) revises its drawing; the hero's first article is the delta
+ * FAI; balloon 3, the revised key characteristic, measures out after heat
+ * treat, goes through MRB and rework, and is re-measured before source
+ * inspection. Cursors are the cast, one role per name (see
+ * aerospace-journey.ts); still no metrics. */
+const KIM = { name: "R. Kim", tone: "#d97706" };
+const MORENO = { name: "C. Moreno", tone: "#2563eb" };
+const ADLER = { name: "F. Adler", tone: "#0f8f7e" };
 
 export const AEROSPACE_RAILS: IndustryRails = {
   /* the key element: an AS9102 first article. The three forms close, the
@@ -314,9 +321,9 @@ export const AEROSPACE_RAILS: IndustryRails = {
    * fear anchor: FAI failure at source inspection) */
   hero: {
     kind: "fai",
-    id: "First article",
+    id: "Delta FAI · ECO-3180",
     title: "Machined bracket · FAI",
-    from: "New part number · AS9102",
+    from: "New drawing revision · AS9102",
     stages: { forms: "Assembling forms", measure: "Measuring", mrb: "Out of tolerance · MRB", released: "Signed · ready for source" },
     forms: [
       { code: "Form 1", label: "Part number accountability" },
@@ -355,17 +362,17 @@ export const AEROSPACE_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Nonconformance",
+        kicker: "NC · balloon 3",
         state: "MRB",
         title: "Key characteristic out",
         rows: [
-          { label: "Containment · parts held", meta: "Quality" },
+          { label: "First lot held", meta: "Quality" },
           { label: "MRB disposition · rework", meta: "Engineering", open: true },
-          { label: "CAPA · effectiveness", meta: "Quality" },
+          { label: "CAPA · heat treat", meta: "Quality" },
         ],
-        cursor: QM,
+        cursor: KIM,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -374,19 +381,19 @@ export const AEROSPACE_RAILS: IndustryRails = {
         stamp: "HOLD",
         lines: [
           { k: "Parts", v: "First lot" },
-          { k: "Waiting on", v: "FAI sign-off" },
+          { k: "Waiting on", v: "Delta FAI" },
           { k: "Released by", v: "Quality" },
         ],
         note: "Released before the source inspection, on the record",
-        cursor: PLANT,
+        cursor: MORENO,
       },
     },
     regulatory: {
       viz: {
         kind: "signoff",
         wash: "blue",
-        kicker: "Customer source inspection",
-        title: "FAI package",
+        kicker: "Source inspection · ECO-3180",
+        title: "Delta FAI package",
         signers: [
           { org: "Supplier", name: "Program Quality Manager", meaning: "Submitted", time: "Signed" },
           { org: "Customer", name: "Source inspector", meaning: "Accept" },
@@ -397,26 +404,26 @@ export const AEROSPACE_RAILS: IndustryRails = {
       viz: {
         kind: "dossier",
         wash: "paper",
-        kicker: "NADCAP",
-        title: "Special-process audit",
-        cite: "Heat treat · chemical processing",
+        kicker: "NADCAP · heat treat",
+        title: "Balloon 3 distortion: was the furnace in control?",
+        cite: "Heat treat · AMS 2750",
         state: "Objective evidence",
-        cursor: QSM,
+        cursor: ADLER,
       },
-      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+      go: { label: "See the compliance solution →", href: "/solution/compliance" },
     },
     engineering: {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "ECO", title: "Drawing revision" },
+        source: { kicker: "ECO-3180", title: "Drawing revision" },
         items: [
           { id: "CFG", label: "Configuration" },
           { id: "KC", label: "Key characteristics" },
           { id: "FAI", label: "Delta first article", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -430,16 +437,16 @@ export const AEROSPACE_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Nonconformance / MRB",
+          kicker: "NC · balloon 3 · MRB",
           title: "Nonconforming part",
           fields: [
-            { label: "Characteristic", value: "Key characteristic", select: true },
+            { label: "Characteristic", value: "Balloon 3 · KC", select: true },
             { label: "Disposition", value: "Rework" },
             { label: "Authority", value: "Design authority", focus: true },
           ],
-          cursor: QM,
+          cursor: KIM,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "change-control",
@@ -447,14 +454,14 @@ export const AEROSPACE_RAILS: IndustryRails = {
         viz: {
           kind: "feed",
           wash: "blue",
-          kicker: "Configuration",
+          kicker: "Configuration · ECO-3180",
           items: [
             { source: "ECO", title: "Drawing revised", tag: "Cascade", hot: true },
             { source: "FAI", title: "Delta first article", tag: "Due" },
             { source: "Floor", title: "Work instruction", tag: "Sent" },
           ],
         },
-        go: { label: "See the change control solution →", href: "/domains/change-control" },
+        go: { label: "See the change control solution →", href: "/solution/change-control" },
       },
       {
         domain: "supplier-management",
@@ -464,11 +471,11 @@ export const AEROSPACE_RAILS: IndustryRails = {
           wash: "paper",
           kicker: "Special-process flow-down",
           messages: [
-            { org: "Heat-treat supplier", text: "NADCAP certificate and process record for the lot", ext: true },
-            { org: "Supplier Quality", text: "Checked against the flow-down, lot accepted" },
+            { org: "Heat-treat supplier", text: "NADCAP certificate and furnace record for the lot", ext: true },
+            { org: "Supplier Quality", text: "Checked against the flow-down · attached to balloon 3's MRB" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "post-market-recall",
@@ -476,25 +483,43 @@ export const AEROSPACE_RAILS: IndustryRails = {
         viz: {
           kind: "decision",
           wash: "warm",
-          kicker: "Escape investigation",
+          kicker: "Escape check · ECO-3180",
           steps: [
-            { q: "Delivered parts affected?", a: "Yes" },
-            { q: "Airworthiness impact?", a: "No" },
+            { q: "Any new-revision brackets delivered?", a: "No" },
+            { q: "Earlier revision affected?", a: "No" },
           ],
-          outcome: "Customer notified, parts recalled for rework",
+          outcome: "No escape · reasoning on the MRB record",
         },
-        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+        go: { label: "See the post-market solution →", href: "/solution/post-market-and-recall" },
       },
     ],
   },
 
   lead: [
-    { name: "NADCAP special-process finding", viz: "sheet", clock: "90 days, or lose accreditation" },
+    /* 24 Sep 2026: the three clocks the bracket starts: the NADCAP heat-
+     * treat findings behind balloon 3's distortion (AMS 2750 pyrometry, the
+     * AC7102 checklist, AS9100 8.4.3 flow-down), the source inspector
+     * rejecting the delta FAI, and the customer audit asking for it */
+    {
+      name: "NADCAP special-process finding",
+      viz: "findings",
+      detail: [
+        "NADCAP · heat treat",
+        "!AMS2750|Furnace survey overdue on the bracket's load",
+        "AC7102|Distortion check not in the procedure",
+        "8.4.3|Flow-down missing on ECO-3180's PO",
+      ],
+      clock: "90 days, or lose accreditation",
+    },
     {
       name: "First article inspection failure at source inspection",
-      viz: "elements",
-      detail: ["AS9102 package", "Form 1 · part number", "Form 2 · product", "!Form 3 · characteristics", "Special-process certificates", "Material certificates"],
+      viz: "rejected",
+      detail: ["Source inspection · ECO-3180", "Machined bracket · delta FAI", "Balloon 3 MRB evidence incomplete"],
     },
-    { name: "Counterfeit part → airworthiness directive", viz: "alerts" },
+    {
+      name: "Customer audit removal from approved supplier list",
+      viz: "elements",
+      detail: ["Customer audit", "Configuration control", "!Delta FAI · ECO-3180", "MRB records", "!NADCAP certificates"],
+    },
   ],
 };

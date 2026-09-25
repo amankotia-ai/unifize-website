@@ -72,7 +72,6 @@
 .pf-page .pf-iso__detail p { margin:16px 0; color:#c4c7cc; font-size:.8rem; line-height:1.6; }
 .pf-page .pf-iso__detail a { display:inline-block; color:#ecedef; font-size:.75rem; text-decoration:underline; text-decoration-color:#6c7076; text-underline-offset:5px; padding-block:5px; }
 .pf-page .pf-iso__detail a:hover { text-decoration-color:white; }
-.pf-page .pf-iso__detail small { display:block; margin-top:14px; color:#92979f; font-size:.67rem; line-height:1.5; }
 .pf-page .pf-iso__status { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 @media (max-width:1000px) and (min-width:701px) {
   .pf-page .pf-iso__composition { grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr); }

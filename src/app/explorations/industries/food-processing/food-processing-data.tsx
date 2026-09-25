@@ -29,8 +29,8 @@ export const FOOD_PROCESSING: IndustryData = {
 
   hero: {
     crumb: "Food processing",
-    titleLead: "Your HACCP plan cleared the lot.",
-    titleTurn: "Not why.",
+    titleLead: "A supplier flags an undeclared allergen.",
+    titleTurn: "Every finished lot it reached is on hold.",
     sub: "Built for mid-market food manufacturers, co-packers, and contract manufacturers under FSMA preventive controls and a GFSI scheme, where every deviation, allergen-control record, and hold decision has to stay traceable across food safety, operations, and supplier quality, and survive a surveillance audit or a recall.",
     chips: ["FSMA · 21 CFR 117", "HACCP", "SQF", "BRCGS", "FSSC 22000"],
     trustLabel: "Built for FSMA-regulated, GFSI-certified food makers",
@@ -230,11 +230,11 @@ export const FOOD_PROCESSING: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Deviation → corrective action", coordination: "Food safety, production, and quality reconstruct the investigation across systems", owner: "Food Safety", atRisk: "weeks of cycle time; a finding if it ages" },
-      { name: "Recipe / formulation change", coordination: "Propagates to specs, labels, allergen statements, and training", owner: "R&D / Quality", atRisk: "cycle time; an allergen or label exposure" },
-      { name: "Supplier verification & COA", coordination: "Quality and procurement assemble verification and certificates across the boundary", owner: "Supplier Quality", atRisk: "product on hold; a lot cleared without documented verification" },
-      { name: "Environmental monitoring positive", coordination: "Investigation, corrective action, and disposition chased across food safety and operations", owner: "Food Safety / Ops", atRisk: "a hold; a reportable event if it spreads" },
-      { name: "Recall / mock recall", coordination: "Traceback, notifications, and RFR decision coordinated across the plant under a clock", owner: "Food Safety / RA", atRisk: "a fixed statutory deadline that cannot slip" },
+      { name: "Deviation → corrective action", coordination: "Food safety, production, and quality reconstruct the investigation across systems", owner: "Food Safety", atRisk: "weeks of cycle time; a finding if it ages", story: "CA-3180" },
+      { name: "Recipe / formulation change", coordination: "Propagates to specs, labels, allergen statements, and training", owner: "R&D / Quality", atRisk: "cycle time; an allergen or label exposure", story: "Ingredient change" },
+      { name: "Supplier verification & COA", coordination: "Quality and procurement assemble verification and certificates across the boundary", owner: "Supplier Quality", atRisk: "product on hold; a lot cleared without documented verification", story: "Letter of guarantee" },
+      { name: "Environmental monitoring positive", coordination: "Investigation, corrective action, and disposition chased across food safety and operations", owner: "Food Safety / Ops", atRisk: "a hold; a reportable event if it spreads", story: "Line 2 swabs" },
+      { name: "Recall / mock recall", coordination: "Traceback, notifications, and RFR decision coordinated across the plant under a clock", owner: "Food Safety / RA", atRisk: "a fixed statutory deadline that cannot slip", story: "Recall scope" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long deviation and corrective-action cycle times", "Delayed release and slow dispositions"] },
@@ -303,10 +303,18 @@ export const FOOD_PROCESSING: IndustryData = {
  * The lots, runs and sites are illustrative, not a customer's; cursors carry
  * persona titles, not people.
  * ========================================================================== */
-const PCQI = { name: "PCQI", tone: "#d97706" };
-const PLANT = { name: "Plant Manager", tone: "#2563eb" };
-const LABEL = { name: "Label Compliance Lead", tone: "#7c3aed" };
-const SQF = { name: "SQF Practitioner", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the other railed industry pages): every
+ * artifact from the hero to the cost bill plays CA-3180, the corrective
+ * action 01 walks: a supplier's notice of an undeclared allergen in one
+ * ingredient lot, traced to two runs and three finished lots, all held;
+ * root cause at receiving (the letter of guarantee accepted alone). Cursors
+ * are the cast, one role per name (see food-processing-journey.ts); still
+ * no metrics. */
+const KHAN = { name: "A. Khan", tone: "#d97706" };
+const CARTER = { name: "B. Carter", tone: "#0891b2" };
+const ORTIZ = { name: "J. Ortiz", tone: "#2563eb" };
+const NGUYEN = { name: "T. Nguyen", tone: "#7c3aed" };
+const BROOKS = { name: "E. Brooks", tone: "#0f8f7e" };
 
 export const FOOD_PROCESSING_RAILS: IndustryRails = {
   /* the key element: the lot genealogy. A supplier's notice on one
@@ -315,7 +323,7 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
    * decision goes on the record (the fear anchor: trace and contain) */
   hero: {
     kind: "trace",
-    id: "Supplier notice",
+    id: "CA-3180 · Supplier notice",
     title: "Undeclared allergen · ingredient lot",
     from: "Traceback · FSMA 21 CFR 117 · HACCP",
     stages: { notice: "Supplier notice", trace: "Tracing forward", decide: "RFR decision", released: "Contained · record sealed" },
@@ -365,17 +373,17 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Corrective action",
+        kicker: "CA-3180",
         state: "Verification",
-        title: "Allergen control deviation",
+        title: "Undeclared allergen · ingredient lot",
         rows: [
-          { label: "Root cause · changeover", meta: "Food Safety" },
-          { label: "Corrective action", meta: "Production" },
-          { label: "Verification · e-signature", meta: "PCQI", open: true },
+          { label: "Root cause · receiving check", meta: "Food Safety" },
+          { label: "Finished lots on hold", meta: "Ops" },
+          { label: "Verification · e-signature", meta: "Today", open: true },
         ],
-        cursor: PCQI,
+        cursor: CARTER,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -383,54 +391,54 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
         wash: "warm",
         stamp: "HOLD",
         lines: [
-          { k: "Product", v: "Finished lot" },
-          { k: "Waiting on", v: "Disposition" },
+          { k: "Product", v: "Finished lots" },
+          { k: "Waiting on", v: "CA-3180" },
           { k: "Released by", v: "Food Safety" },
         ],
-        note: "Released with the approver chain recorded",
-        cursor: PLANT,
+        note: "Released or destroyed on CA-3180's record",
+        cursor: ORTIZ,
       },
     },
     regulatory: {
       viz: {
         kind: "feed",
         wash: "blue",
-        kicker: "Allergen & label",
+        kicker: "Allergen & label · CA-3180",
         items: [
-          { source: "Recipe", title: "Change approved", tag: "Cascade", hot: true },
-          { source: "Label", title: "Allergens revised", tag: "Review" },
+          { source: "Supplier", title: "Now carries it", tag: "Notice", hot: true },
+          { source: "Label", title: "Statement revised", tag: "Review" },
           { source: "Sites", title: "Artwork sent", tag: "Sent" },
         ],
-        cursor: LABEL,
+        cursor: NGUYEN,
       },
     },
     "compliance-validation": {
       viz: {
         kind: "matrix",
         wash: "paper",
-        kicker: "GFSI surveillance",
-        cols: ["HACCP", "EMP", "Suppliers"],
+        kicker: "GFSI · CA-3180",
+        cols: ["CCP", "ALG", "COA"],
         rows: [
-          { name: "Plant 1", cells: ["ok", "ok", "ok"] },
-          { name: "Plant 2", cells: ["ok", "due", "ok"] },
-          { name: "Co-packer", cells: ["ok", "ok", "gap"] },
+          { name: "Receiving", cells: ["ok", "gap", "gap"] },
+          { name: "Line 1", cells: ["ok", "ok", "ok"] },
+          { name: "Line 2", cells: ["ok", "due", "ok"] },
         ],
-        cursor: SQF,
+        cursor: BROOKS,
       },
-      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+      go: { label: "See the compliance solution →", href: "/solution/compliance" },
     },
     engineering: {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "Recipe", title: "Formulation change" },
+        source: { kicker: "CA-3180", title: "Ingredient change" },
         items: [
           { id: "ALG", label: "Allergen statement" },
           { id: "LBL", label: "Label artwork" },
           { id: "HAZ", label: "Hazard analysis", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -444,16 +452,16 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Deviation",
+          kicker: "CA-3180",
           title: "Allergen control deviation",
           fields: [
-            { label: "Control point", value: "Allergen changeover", select: true },
+            { label: "Control point", value: "Receiving check", select: true },
             { label: "Product", value: "On hold" },
-            { label: "Root cause", value: "Investigation", focus: true },
+            { label: "Root cause", value: "Guarantee accepted alone", focus: true },
           ],
-          cursor: PCQI,
+          cursor: KHAN,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "supplier-management",
@@ -461,25 +469,25 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
         viz: {
           kind: "thread",
           wash: "paper",
-          kicker: "Letter of guarantee",
+          kicker: "Letter of guarantee · ingredient lot",
           messages: [
-            { org: "Ingredient supplier", text: "COA and letter of guarantee for the lot", ext: true },
-            { org: "Supplier Quality", text: "Checked against spec, lot released" },
+            { org: "Ingredient supplier", text: "Notice: the lot carries an undeclared allergen", ext: true },
+            { org: "Supplier Quality", text: "Traced on CA-3180 · supplier corrective action requested" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "operations",
-        line: "Environmental monitoring positives and holds decided on a trail, not an escalation call.",
+        line: "Environmental monitoring and allergen swab positives, and the holds they force, decided on a trail, not an escalation call.",
         viz: {
           kind: "signal",
           wash: "warm",
-          kicker: "Environmental monitoring",
-          title: "Zone 2 positives by week",
+          kicker: "Allergen swabs · line 2",
+          title: "Post-clean positives by week",
           weeks: [1, 2, 1, 1, 2, 1, 5, 2],
           spike: 6,
-          note: "Positive investigated, corrective action open",
+          note: "Positive after the run · on CA-3180",
         },
       },
       {
@@ -488,21 +496,40 @@ export const FOOD_PROCESSING_RAILS: IndustryRails = {
         viz: {
           kind: "lanes",
           wash: "blue",
-          kicker: "Mock recall",
+          kicker: "CA-3180 · recall scope",
           lanes: [
-            { name: "Traceback", owner: "Food Safety", pct: 100 },
-            { name: "Customer notification", owner: "Quality", pct: 64 },
+            { name: "Traceback", owner: "A. Khan", pct: 100 },
+            { name: "Customer notice", owner: "B. Carter", pct: 64 },
             { name: "RFR decision", owner: "Regulatory", pct: 40 },
           ],
         },
-        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+        go: { label: "See the post-market solution →", href: "/solution/post-market-and-recall" },
       },
     ],
   },
 
   lead: [
+    /* 24 Sep 2026: the three clocks CA-3180 starts: the recall class an
+     * undeclared allergen lands at, the supplier file missing its allergen
+     * statement, and the surveillance findings on the same facts (FSMA
+     * 21 CFR 117: supply-chain verification, allergen controls, corrective
+     * action) */
     { name: "FDA recall classification (Class I / II / III)", viz: "scale" },
-    { name: "Allergen control deviation", viz: "alerts" },
-    { name: "GFSI surveillance-audit nonconformance", viz: "sheet", clock: "the corrective-action window" },
+    {
+      name: "Supplier verification gap / missing COA",
+      viz: "elements",
+      detail: ["Supplier file · ingredient", "Letter of guarantee", "!Allergen statement", "COA", "!Receiving verification"],
+    },
+    {
+      name: "GFSI surveillance-audit nonconformance",
+      viz: "findings",
+      detail: [
+        "GFSI surveillance · FSMA 117",
+        "!117.410|Supplier allergen status not verified",
+        "117.135(c)(2)|Allergen control at receiving",
+        "117.150|CA-3180 verification still open",
+      ],
+      clock: "the corrective-action window",
+    },
   ],
 };

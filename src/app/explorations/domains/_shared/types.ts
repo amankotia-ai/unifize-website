@@ -40,6 +40,13 @@ import type { ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 export interface DomainArcadeJourney {
   steps: ArcadeStepConfig[];
   heroOrder?: number[];
+  /** The hero's own poses (26 Sep 2026). Without it the hero cycles
+   *  `steps`, the same five poses the 03 journey walks; with it the hero
+   *  shows the other side of the same work, as the Sep 16 product
+   *  recordings show it (the manager's home and dashboards, the chart
+   *  drilled to its records, a record opened over the chart, the start
+   *  dialog, the AI suggestion), so the page never shows one pose twice. */
+  hero?: { label: string; caption: string; config: ArcadeStepConfig }[];
 }
 
 /** A trigger on a Solutions page. The industries TriggerRow stops at High;
@@ -98,7 +105,9 @@ export type JourneyIcon =
   | "cascade" | "assign" | "ack" | "observe" | "matrix"
   | "hold" | "gather" | "decide" | "release" | "handover"
   | "short" | "options" | "allocate" | "commit" | "notify"
-  | "rfq" | "compare" | "score" | "award" | "onboard";
+  | "rfq" | "compare" | "score" | "award" | "onboard"
+  | "intake" | "inputs" | "price" | "contract" | "flowdown"
+  | "criteria" | "evidence" | "capability" | "gate" | "freeze";
 
 /** A named multiplayer cursor on the step the visitor would touch. */
 export interface VizCursor { name: string; tone: string }
@@ -187,6 +196,20 @@ export type WorkViz =
   | { kind: "fai"; wash: VizWash; cursor?: VizCursor; part: string; drawing: string; rows: { n: number; char: string; nominal: string; actual: string; ok: boolean }[] }
   /** a PO release gate: the supplier's standing checked before the order goes out */
   | { kind: "gate"; wash: VizWash; cursor?: VizCursor; po: string; supplier: string; checks: { label: string; ok: boolean; note: string }[]; verdict: string }
+  /* customer management (24 Sep 2026) */
+  /** a quote being assembled: each function's input, the deadline running */
+  | { kind: "quote"; wash: VizWash; cursor?: VizCursor; rfq: string; customer: string; due: string; inputs: { fn: string; note: string; done: boolean }[] }
+  /** a certificate of conformance, one field out of step with the customer's order */
+  | { kind: "coc"; wash: VizWash; cursor?: VizCursor; title: string; fields: { k: string; v: string; bad?: string }[]; signer: string }
+  /** customer input triaged: complaint, feedback or warranty, and where each went */
+  | { kind: "triage"; wash: VizWash; cursor?: VizCursor; kicker: string; items: { text: string; tag: "Complaint" | "Feedback" | "Warranty"; to: string }[] }
+  /* new product development (24 Sep 2026) */
+  /** the stage gates as chevrons, the current gate's exit criteria under them */
+  | { kind: "gates"; wash: VizWash; cursor?: VizCursor; program: string; gates: string[]; at: number; criteria: { label: string; met: boolean }[] }
+  /** a risk grid, severity by occurrence, one risk moved by its control */
+  | { kind: "heat"; wash: VizWash; cursor?: VizCursor; kicker: string; title: string; from: [number, number]; to: [number, number]; others: [number, number][] }
+  /** requirement to validation as one linked chain, the open link marked */
+  | { kind: "chain"; wash: VizWash; cursor?: VizCursor; kicker: string; links: { id: string; label: string; open?: boolean }[] }
   | { kind: "eol"; wash: VizWash; cursor?: VizCursor; part: string; name: string; stages: string[]; at: number; note: string; alt: { name: string; state: string } };
 
 /** One row of the section-02 "old world" artifact (see LeakScene). */
@@ -262,6 +285,25 @@ export interface LeakScene {
     steps: string[];
     /** the step the approved change rewrote (index into steps) */
     changed: number;
+  };
+  /** New product development: the design review invite, rescheduled again,
+   *  the evidence deck on its seventh version. */
+  invite?: {
+    title: string;
+    when: string;
+    note: string;
+    people: string[];
+    more: string;
+    files: string[];
+  };
+  /** Customer management: the customer's requirements manual, received and
+   *  acknowledged, its special characteristics never flowed down. */
+  manual?: {
+    customer: string;
+    title: string;
+    rev: string;
+    stamp: string;
+    toc: { n: string; name: string; hot?: boolean }[];
   };
   /** Procurement & sourcing: the award slide, price on it, the cost of
    *  quality not. */
@@ -370,7 +412,8 @@ export interface ProofReference {
 }
 
 export interface DomainPageData {
-  /** Route slug under /explorations/domains/ (matches the nav dropdown). */
+  /** Route slug: the folder under explorations/domains/, served at
+   *  /solution/<slug> (matches the nav dropdown). */
   slug: string;
   name: string;
   /** Domains DB Tier — Primary domains carry the full arc. */
@@ -483,9 +526,6 @@ export interface DomainPageData {
        *  for THIS work (the supplier side, escalation calls, binders), so
        *  the drawing tells the page's boundary story, not quality's */
       tools?: { title: string; sub: string; names: string[]; label: string; body: string };
-      /** the four arrow labels, in drawing order: records -> Unifize,
-       *  Unifize -> records, tools -> Unifize, Unifize -> tools */
-      flows?: { contextIn: string; back: string; captured: string; linked: string };
       /** what flows back, the centre band's note */
       back?: string;
     };

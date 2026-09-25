@@ -4,7 +4,16 @@
  * AS9102 impact bound (delta FAI, special-process flow-down) → the Quality
  * and Program review → the Design Authority's e-signature → the sealed
  * trace. Vocabulary from the Notion row (configuration management, AS9102
- * FAI, NADCAP, flow-down, AS9100). */
+ * FAI, NADCAP, flow-down, AS9100).
+ * 24 Sep 2026, the page's one story: the hero's first article IS ECO-3180's
+ * delta FAI, and balloon 3 is the key characteristic the change revised
+ * (measured out after heat treat, MRB, rework, re-measured), so every
+ * section below plays the same bracket. Cast, one role per name:
+ *   E. Walsh    Engineering, raised ECO-3180
+ *   R. Kim      Quality, the FAI and the MRB
+ *   P. Fischer  Design authority, signs the change
+ *   C. Moreno   Production, the held first lot
+ *   F. Adler    Quality systems, NADCAP */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -33,7 +42,7 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE",
       items: [
-        { label: "Reason for change", kind: "field", value: "Drawing revision on a key characteristic" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Drawing revision on a key characteristic" },
         { label: "Part", note: "Machined bracket · current configuration" },
         { label: "Drawing", kind: "revision", from: "Current revision", to: "New revision" },
       ],
@@ -42,7 +51,7 @@ const WORLD: ArcadeFlowWorld = {
       title: "CONFIGURATION & FAI",
       items: [
         { label: "Configuration baseline", note: "Updated on approval" },
-        { label: "Delta FAI · AS9102", note: "Form 3 characteristics" },
+        { label: "Delta FAI · AS9102", note: "Form 3 · balloon 3, the revised key characteristic" },
         { label: "Special process flow-down", note: "Heat treat supplier" },
       ],
     },

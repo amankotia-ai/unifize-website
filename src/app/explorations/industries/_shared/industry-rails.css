@@ -95,3 +95,8 @@
   font-weight: 500;
   letter-spacing: 0.02em;
 }
+
+/* 24 Sep 2026: the one-story pages tag each coordination event with the
+ * story record it is an instance of; the bill is narrow, so the tag takes
+ * its own line under the name instead of wrapping beside it */
+.dms--redesign.irt-page .md-tax__ref { display: block; margin: 3px 0 0; }

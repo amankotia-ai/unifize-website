@@ -12,7 +12,8 @@ const nextConfig: NextConfig = {
   // page then plays it straight from cache
   // the nav pages live under src/app/explorations but are served at clean
   // URLs. beforeFiles so they win over the older root routes of the same
-  // name (/platform, /home, /domains/[slug], /industries/[slug]).
+  // name (/platform, /home, /industries/[slug]). The solution pages keep
+  // their files in explorations/domains but are served at /solution/<slug>.
   async rewrites() {
     return {
       beforeFiles: [
@@ -20,9 +21,11 @@ const nextConfig: NextConfig = {
         { source: "/platform", destination: "/explorations/platform" },
         { source: "/industries/medical-devices", destination: "/explorations/industry-template-modern" },
         { source: "/products/:path*", destination: "/explorations/products/:path*" },
-        { source: "/domains/:path*", destination: "/explorations/domains/:path*" },
+        { source: "/solution/:path*", destination: "/explorations/domains/:path*" },
         { source: "/industries/:path*", destination: "/explorations/industries/:path*" },
         { source: "/resources/:path*", destination: "/explorations/resources/:path*" },
+        // role pages: linked from the product pages' "Who it is for", not the nav
+        { source: "/personas/:path*", destination: "/explorations/personas/:path*" },
       ],
       afterFiles: [],
       fallback: [],
@@ -30,16 +33,19 @@ const nextConfig: NextConfig = {
   },
   // old /explorations links keep working. Exact matches for home and
   // platform so the public hero-film assets under /explorations/platform/
-  // are not redirected.
+  // are not redirected. The solution pages were served at /domains/<slug>
+  // until 2026-09-25, so those links move to /solution/<slug> too.
   async redirects() {
     return [
       { source: "/explorations/home", destination: "/home", permanent: true },
       { source: "/explorations/platform", destination: "/platform", permanent: true },
       { source: "/explorations/industry-template-modern", destination: "/industries/medical-devices", permanent: true },
       { source: "/explorations/products/:path*", destination: "/products/:path*", permanent: true },
-      { source: "/explorations/domains/:path*", destination: "/domains/:path*", permanent: true },
+      { source: "/explorations/domains/:path*", destination: "/solution/:path*", permanent: true },
+      { source: "/domains/:path*", destination: "/solution/:path*", permanent: true },
       { source: "/explorations/industries/:path*", destination: "/industries/:path*", permanent: true },
       { source: "/explorations/resources/:path*", destination: "/resources/:path*", permanent: true },
+      { source: "/explorations/personas/:path*", destination: "/personas/:path*", permanent: true },
     ];
   },
   async headers() {

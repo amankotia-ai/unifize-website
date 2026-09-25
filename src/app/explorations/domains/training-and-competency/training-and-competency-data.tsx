@@ -52,7 +52,7 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
-import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+import type { ArcadeChart, ArcadeFlowWorld, ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 
 /* ------------------------------------------------------------------------
  * The live arcade journey: the training record SOP-231 Rev 5 creates,
@@ -115,6 +115,184 @@ const TRAIN_REC = {
   title: "Line clearance, filling · Rev 5",
   world: TRAIN_WORLD,
 } as const;
+
+/* ------------------------------------------------------------------------
+ * The hero: training from the coordinator's seat, as the Sep 16 2026
+ * recording shows it: "a question an auditor always asks is everyone
+ * trained on the current version": the completion chart, the training
+ * group's records by the accountable person, and the overdue one opened and
+ * its trainee tagged. The 03 journey walks TR-2317 itself. */
+const COMPLETION: ArcadeChart = {
+  title: "Training completion % by group",
+  unit: "Completion %",
+  bars: [
+    { label: "Line leads", values: [98] },
+    { label: "QC lab", values: [95] },
+    { label: "Packaging", values: [89] },
+    { label: "Warehouse", values: [87] },
+    { label: "Filling operators", values: [70] },
+  ],
+  max: 100,
+  ticks: [0, 20, 40, 60, 80, 100],
+};
+const TRAINING_RECORDS = [
+  { id: "#2317", title: "Line clearance, filling (SOP-231 Rev 5) - M. Osei", state: "Completed", tone: "done" as const, owner: "M. Osei", due: "25 Sep" },
+  { id: "#2318", title: "Line clearance, filling (SOP-231 Rev 5) - P. Nair", state: "Pending", tone: "pending" as const, reminder: true, owner: "P. Nair", due: "22 Sep", late: true },
+  { id: "#2319", title: "Line clearance, filling (SOP-231 Rev 5) - J. Silva", state: "Pending", tone: "pending" as const, reminder: true, owner: "J. Silva", due: "30 Sep" },
+];
+const GROUP_WORLD: ArcadeFlowWorld = {
+  ...TRAIN_WORLD,
+  recordNoun: "Training Group",
+  viewer: "L. Grant",
+  viewerInitials: "LG",
+  recordKicker: "TRAINING GROUP",
+  context: {
+    initials: "A",
+    name: "automator",
+    time: "Sep 19",
+    message: "Created the training records for SOP-231 Rev 5.",
+    detail: "One per operator · reminders on until each is complete",
+  },
+  dashboards: {
+    list: [
+      { name: "1. [CXO] Non-Conformances and CARs", by: "S. Ferreira" },
+      { name: "2. [CXO] Documents, Change and Training", by: "S. Ferreira" },
+      { name: "4. [Quality Manager] Documents, Change and Training", by: "S. Ferreira" },
+      { name: "6. [Shop Floor] Documents, Change and Training", by: "R. Adeyemi" },
+      { name: "Training", by: "L. Grant" },
+    ],
+    active: "Training",
+    by: "L. Grant",
+    cards: [
+      COMPLETION,
+      {
+        title: "Pending training by owner and status",
+        series: [{ label: "Pending", tone: "teal" }],
+        bars: [
+          { label: "P. Nair", values: [4] },
+          { label: "J. Silva", values: [3] },
+          { label: "K. Otto", values: [2] },
+          { label: "A. Lee", values: [1] },
+        ],
+        max: 5,
+        ticks: [0, 1, 2, 3, 4, 5],
+      },
+      {
+        title: "Upcoming training due by month",
+        series: [
+          { label: "Filling operators", tone: "indigo" },
+          { label: "Packaging", tone: "teal" },
+          { label: "QC lab", tone: "amber" },
+        ],
+        bars: [
+          { label: "October", values: [4, 2, 1] },
+          { label: "November", values: [2, 3, 0] },
+          { label: "December", values: [1, 1, 2] },
+          { label: "January", values: [0, 2, 1] },
+        ],
+        max: 8,
+        ticks: [0, 2, 4, 6, 8],
+      },
+      {
+        title: "Overdue Training by Owner",
+        kind: "donut",
+        slices: [
+          { label: "P. Nair", value: 2, tone: "rose" },
+          { label: "J. Silva", value: 1, tone: "amber" },
+          { label: "K. Otto", value: 1, tone: "indigo" },
+        ],
+      },
+    ],
+  },
+  checklistTitle: "Training Group",
+  checklistSections: [
+    { title: "GROUP DETAILS", items: [{ label: "Group", kind: "field", value: "Filling operators" }, { label: "Group owner", kind: "field", input: "user", value: "L. Grant" }] },
+    { title: "EMPLOYEE(S)", items: [{ label: "Employees", note: "12 · filling line, three shifts" }] },
+    { title: "DOCUMENT(S) TO BE TRAINED ON", items: [{ label: "Documents", kind: "linked", links: ["SOP-231 Rev 5"] }] },
+    { title: "TRAINING RECORD(S)", items: [{ label: "Training record(s)", kind: "records", records: TRAINING_RECORDS }] },
+  ],
+};
+const HERO_BASE = {
+  type: "Training Group",
+  id: "Filling operators",
+  title: "Filling operators",
+  world: GROUP_WORLD,
+  status: "Pending",
+  checklist: "TRAINING RECORD(S)",
+  checklistItems: ["Training record(s)"] as string[],
+  focusRows: ["#2318 · P. Nair · overdue"],
+  ownershipNote: "The training coordinator's view",
+};
+const HERO: { label: string; caption: string; config: ArcadeStepConfig }[] = [
+  {
+    label: "Dashboard",
+    caption: "Is everyone trained on the current version? Read it off one chart",
+    config: {
+      ...HERO_BASE,
+      source: "Training dashboard · 16 Sep 2026 recording",
+      ghost: "Dashboard",
+      actor: "automator",
+      event: "Training completion, by group",
+      eventDetail: "Every bar opens the records behind it",
+      focus: "dashboards",
+      focusTitle: "Training",
+      chartHover: { card: "Training completion % by group", bar: "Filling operators", lines: ["Completion %, Filling operators, 70"] },
+    },
+  },
+  {
+    label: "Group",
+    caption: "The training group: every record by the person accountable for it",
+    config: {
+      ...HERO_BASE,
+      source: "Training group records · 16 Sep 2026 recording",
+      ghost: "Group",
+      reminder: true,
+      actor: "automator",
+      event: "Created the training records for SOP-231 Rev 5",
+      eventDetail: "One per operator · reminders on until each is complete",
+      focus: "checklist",
+      focusTitle: "Training record(s)",
+      checklistOpen: "TRAINING RECORD(S)",
+    },
+  },
+  {
+    label: "Chase",
+    caption: "Open the overdue record and tag the trainee, right there",
+    config: {
+      ...HERO_BASE,
+      source: "Training record opened · 16 Sep 2026 recording",
+      ghost: "Chase",
+      reminder: true,
+      actor: "You",
+      event: "Tagged the trainee on the training record",
+      eventDetail: "Opened from the training group",
+      focus: "modal",
+      focusTitle: "Training Record #2318",
+      checklistOpen: "TRAINING RECORD(S)",
+      modal: {
+        over: "record",
+        noun: "Training Record",
+        id: "#2318",
+        title: "Line clearance, filling (SOP-231 Rev 5)",
+        state: "Pending",
+        tone: "pending",
+        reminder: true,
+        owner: "P. Nair",
+        participants: 3,
+        due: "22 Sep",
+        late: true,
+        thread: [
+          { kind: "date", text: "Sep 19" },
+          { kind: "event", who: "automator", text: "started this conversation" },
+          { kind: "updates", count: 5 },
+          { kind: "date", text: "Today" },
+          { kind: "message", who: "You", time: "09:12", mention: "P. Nair", text: "this training is mandatory and overdue by 4 days. Please complete at the earliest" },
+        ],
+        composer: { mention: "P. Nair", text: "Please complete your training" },
+      },
+    },
+  },
+];
 
 export const TRAINING_AND_COMPETENCY_DATA: DomainPageData = {
   slug: "training-and-competency",
@@ -419,6 +597,7 @@ export const TRAINING_AND_COMPETENCY_DATA: DomainPageData = {
           related: 2,
         },
       ],
+      hero: HERO,
     },
   },
 
@@ -573,7 +752,6 @@ export const TRAINING_AND_COMPETENCY_DATA: DomainPageData = {
         label: "Where training used to go unrecorded",
         body: "The matrix spreadsheet, the reminder to a distribution list and the classroom sign-in sheet stop being where competence lives.",
       },
-      flows: { contextIn: "PEOPLE AND ROLES IN", back: "QUALIFIED, SIGNED", captured: "SIGN-OFFS CAPTURED", linked: "THE MATRIX, CURRENT" },
       back: "One training record per revision and person, closed on a qualified trainer's signature, with the matrix built from it.",
     },
   },
@@ -609,9 +787,9 @@ export const TRAINING_AND_COMPETENCY_DATA: DomainPageData = {
     lede: "Training runs on the same governed record as the documents and changes that create it.",
     steps: [
       { name: "Training & competency", note: "You are here" },
-      { name: "Document & records control", note: "Solution page", href: "/domains/document-and-records-control" },
-      { name: "Change control", note: "Solution page", href: "/domains/change-control" },
-      { name: "Quality", note: "Solution page", href: "/domains/quality" },
+      { name: "Document & records control", note: "Solution page", href: "/solution/document-and-records-control" },
+      { name: "Change control", note: "Solution page", href: "/solution/change-control" },
+      { name: "Quality", note: "Solution page", href: "/solution/quality" },
     ],
   },
 

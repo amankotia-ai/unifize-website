@@ -233,7 +233,7 @@ const SECTIONS: ExploreSection[] = [
       {
         num: "01",
         title: "Quality",
-        href: "/domains/quality",
+        href: "/solution/quality",
         description:
           "CAPAs, deviations, MRB, audit findings.",
         longDescription:

@@ -331,16 +331,19 @@ export default async function PlatformPage({
         {/* the hero object: the platform, end to end. Since 23 Sep 2026 a
           * pre-rendered film (one change, one take; scripts/platform-render)
           * flush on the charcoal, the rail under it seeking its six
-          * chapters. HERO_FILM = false restores the live arcade journey on
-          * the wash. */}
+          * chapters. 25 Sep 2026: v3, each step performed, not lifted, and
+          * each chapter its own length (hero-film-assets.ts; v2 restorable).
+          * HERO_FILM = false restores the live arcade journey on the wash. */}
         <div className="dms-wrap dms-hero__frame dms-hero__product-demo pf-hero-demo hm-bleed">
           {heroFilm ? (
             <PlatformHeroFilm
               steps={JOURNEY_STEPS}
               label="The platform, screen by screen"
               poster={HERO_FILM_ASSETS.poster}
+              chapterStarts={HERO_FILM_ASSETS.chapterStarts}
+              keyBeats={HERO_FILM_ASSETS.keyBeats}
               sources={[{ src: HERO_FILM_ASSETS.src, type: HERO_FILM_ASSETS.type }]}
-              description="One change control, CC-2148, followed across six Unifize screens: the home queue, the inbox thread, the checklist, the Part 11 signature, the process builder, and the dashboard."
+              description="One change control, CC-2148, worked through six Unifize screens: it lands in D. Fontaine's home queue with its context and she opens it; in the inbox production, document control and supplier quality answer in one thread and she replies; on the checklist she enters the impact assessment and production's readiness lands; she signs the quality approval with a Part 11 signature; in the process builder she adds a regulatory approval with a reminder and publishes it without code; and the dashboard shows median closure, time waiting and evidence complete, with CC-2148's signature in its row."
             />
           ) : (
             <PlatformJourney

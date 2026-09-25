@@ -8,8 +8,14 @@
  * in Notion adds or removes the card here on the next sync. Presentation
  * (lifecycle span, portrait, route, page-context daily lines) stays
  * page-owned, keyed by persona ID; a persona without an entry still renders
- * from mirror facts with a fallback portrait. Personas missing name or daily
- * activities are held back rather than rendered broken.
+ * from mirror facts with a fallback portrait. Personas missing a name, or
+ * daily activities from both Notion and the page, are held back rather than
+ * rendered broken.
+ *
+ * `seats` (25 Sep 2026): persona IDs a page adds outside the product row's
+ * Target Personas, appended after them. The Quality Manager is the first:
+ * it approves on DMS and QMS, but neither Notion row names it yet, and its
+ * card is the way into the role page (/personas/quality-manager).
  * ========================================================================== */
 import productsMirror from "@/content/notion/products.json";
 import personasMirror from "@/content/notion/personas.json";
@@ -54,11 +60,17 @@ const splitDaily = (daily: string[]): string[] =>
 export function buildAudiencePersonas(
   productId: string,
   presentation: Record<string, PersonaPresentation>,
+  seats: string[] = [],
 ): AudiencePersona[] {
   const productRow = productsMirror.find((product) => product.id === productId);
-  return (productRow?.personas ?? [])
-    .map((pageId) => (personasMirror as PersonaMirrorRow[]).find((p) => p.pageId === pageId))
-    .filter((p): p is PersonaMirrorRow => Boolean(p && p.name && p.daily.length > 0))
+  const rows = personasMirror as PersonaMirrorRow[];
+  const related = (productRow?.personas ?? []).map((pageId) => rows.find((p) => p.pageId === pageId));
+  const added = seats.map((id) => rows.find((p) => p.id === id));
+  return [...related, ...added]
+    .filter((p, i, all): p is PersonaMirrorRow =>
+      Boolean(p && p.name && (p.daily.length > 0 || presentation[p.id]?.daily?.length)) &&
+      all.findIndex((q) => q?.pageId === p?.pageId) === i,
+    )
     .map((p) => {
       const pres = presentation[p.id] ?? {};
       return {

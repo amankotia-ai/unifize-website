@@ -50,7 +50,7 @@ export const DOCUMENT_WORLD: ArcadeFlowWorld = {
     {
       title: "CONTROLLED COPY",
       items: [
-        { label: "Reason for print", kind: "field", value: "Screen unavailable at packaging line 2", note: "Entered at print" },
+        { label: "Reason for print", kind: "field", input: "rich", value: "Screen unavailable at packaging line 2", note: "Entered at print" },
         { label: "Copy owner", note: "Packaging line 2" },
         { label: "Expiry and recall", note: "07 Aug 2026" },
       ],

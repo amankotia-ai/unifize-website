@@ -4,7 +4,19 @@
  * investigation bound (lot rejected, supplier notified, adulteration check)
  * → the CAPA's approval route across QC, Quality and Supplier Quality →
  * the e-signature → the sealed trace. Vocabulary from the Notion row
- * (identity testing, adulteration, 21 CFR Part 111, supplier qualification). */
+ * (identity testing, adulteration, 21 CFR Part 111, supplier qualification).
+ * 24 Sep 2026, the page's one story: every section below plays CA-3120 (the
+ * COA that passed, the FTIR that didn't, the supplier re-qualification, the
+ * tightened identity spec, the batch record waiting on the replacement
+ * lot's result). Cast, one role per name:
+ *   J. Park     Operations, raised CA-3120 at receipt
+ *   W. Zhang    QC Lab, the identity method
+ *   N. Quinn    Supplier Quality, the supplier corrective action
+ *   L. Romero   Quality, CAPA review
+ *   G. Holt     Quality leadership, approves and releases
+ *   R. Castillo Plant, the held lot
+ *   S. Patel    Label compliance
+ *   K. Moore    NSF / GMP audit */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -33,7 +45,7 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "NONCONFORMANCE",
       items: [
-        { label: "Description", kind: "field", value: "Identity test does not match the reference" },
+        { label: "Description", kind: "field", input: "rich", value: "Identity test does not match the reference" },
         { label: "Method", note: "FTIR fingerprint · unmatched band" },
         { label: "Lot status", note: "Held at receipt" },
       ],

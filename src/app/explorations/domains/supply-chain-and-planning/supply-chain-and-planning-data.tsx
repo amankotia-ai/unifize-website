@@ -546,7 +546,6 @@ export const SUPPLY_CHAIN_AND_PLANNING_DATA: DomainPageData = {
         label: "Where supply decisions used to vanish",
         body: "The stand-up notes, the war-room thread and the expedite spreadsheet stop being where the allocation lives.",
       },
-      flows: { contextIn: "DEMAND AND SUPPLY IN", back: "THE APPROVED PLAN", captured: "CALLS CAPTURED", linked: "THE CRITERIA, LINKED" },
       back: "One record per decision, the options and criteria bound, and only the approved change goes back to the plan.",
     },
   },
@@ -583,8 +582,8 @@ export const SUPPLY_CHAIN_AND_PLANNING_DATA: DomainPageData = {
     lede: "Supply decisions run on the same governed record as operations and suppliers.",
     steps: [
       { name: "Supply chain & planning", note: "You are here" },
-      { name: "Operations", note: "Solution page", href: "/domains/operations" },
-      { name: "Supplier management", note: "Solution page", href: "/domains/supplier-management" },
+      { name: "Operations", note: "Solution page", href: "/solution/operations" },
+      { name: "Supplier management", note: "Solution page", href: "/solution/supplier-management" },
     ],
   },
 

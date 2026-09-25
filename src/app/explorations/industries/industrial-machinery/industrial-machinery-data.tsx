@@ -31,8 +31,8 @@ export const INDUSTRIAL_MACHINERY: IndustryData = {
 
   hero: {
     crumb: "Industrial machinery",
-    titleLead: "Your FAT accepted the machine.",
-    titleTurn: "Not why.",
+    titleLead: "A missing IQ protocol holds the FAT.",
+    titleTurn: "Acceptance releases payment.",
     sub: "Built for build-to-order machinery OEMs serving regulated end markets, where every engineering change, safety-critical design choice, and qualification record has to stay traceable across engineering, quality, and commissioning, and survive FAT, SAT, and the customer's audit.",
     chips: ["CE marking", "Machinery Directive", "ISO 12100", "IQ / OQ / PQ", "FAT / SAT"],
     trustLabel: "Built for build-to-order machinery OEMs",
@@ -364,7 +364,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
         ],
         cursor: QM,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -403,7 +403,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
         ],
         cursor: VAL,
       },
-      go: { label: "See the compliance solution →", href: "/domains/compliance" },
+      go: { label: "See the compliance solution →", href: "/solution/compliance" },
     },
     engineering: {
       viz: {
@@ -416,7 +416,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
           { id: "IQ", label: "Qualification impact", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -439,7 +439,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
           ],
           cursor: QM,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "change-control",
@@ -454,7 +454,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
             { source: "TCF", title: "File updated", tag: "Due" },
           ],
         },
-        go: { label: "See the change control solution →", href: "/domains/change-control" },
+        go: { label: "See the change control solution →", href: "/solution/change-control" },
       },
       {
         domain: "operations",
@@ -483,7 +483,7 @@ export const INDUSTRIAL_MACHINERY_RAILS: IndustryRails = {
           open: [8],
           foot: "One element open before delivery",
         },
-        go: { label: "See the compliance solution →", href: "/domains/compliance" },
+        go: { label: "See the compliance solution →", href: "/solution/compliance" },
       },
     ],
   },

@@ -1,0 +1,989 @@
+[
+  {
+    "pageId": "363860e6-b45e-818c-ab73-d2a57980d7c0",
+    "id": "PNT-1",
+    "name": "Status-chasing across CAPA threads",
+    "severity": "High",
+    "description": "Investigators and quality managers spend daily cycles asking the next owner where a CAPA stands because the record does not surface its own state. Time disappears into email, meetings, and side conversations rather than the CAPA record itself, and the trace of who said what when is not durable.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81e2-a1af-ec580749645d",
+    "id": "PNT-2",
+    "name": "Evidence not bound to commit points",
+    "severity": "Critical",
+    "description": "Quality decisions are made at definable commit points (disposition, root cause acceptance, effectiveness verification, closure) but the supporting evidence lives in attachments, email threads, and shared drives that are not bound to the commit point in the record. When the audit asks for evidence at the commit point, the operator rebuilds it.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81d3-a93a-e61b8d677b3f",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8125-96e2-c4ea0cd8b397",
+    "id": "PNT-3",
+    "name": "Disposition decisions live in side channels",
+    "severity": "High",
+    "description": "Non-conformance disposition (release, rework, scrap, deviate) gets argued in floor walks, supervisor huddles, and emails to QA. The disposition lands in the record but the reasoning, the alternatives considered, and who agreed do not. Recurrence prevention depends on that reasoning, and it is not there.",
+    "personas": [
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891",
+      "360860e6-b45e-81d3-a93a-e61b8d677b3f"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81c4-a062-f05357108dfb",
+    "id": "PNT-4",
+    "name": "Repeat non-conformance pattern recognition fails",
+    "severity": "High",
+    "description": "Each non-conformance and CAPA gets investigated as a fresh case. The pattern across cases (same root cause, same supplier, same line, same process step) is visible in the data but never surfaces in the workflow. The same defect type closes again three months later with a different CAPA number.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8152-a18e-ebb1333829a6",
+    "id": "PNT-5",
+    "name": "Audit-day evidence pull collapses to a manual rebuild",
+    "severity": "Critical",
+    "description": "When an auditor asks for the full record of a deviation, change, or CAPA, the team spends hours stitching together exports, screenshots, and email forwards. The audit passes but the cost of passing is days of senior time per audit cycle.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81cb-8e8a-f941c64695ed",
+    "id": "PNT-6",
+    "name": "Effectiveness verification routinely slips past target date",
+    "severity": "Medium",
+    "description": "CAPA effectiveness verification has a target date but no enforced gate. Verification slips by weeks or months, often closes on paperwork, and the recurrence test is rarely a real one. The CAPA is closed; the problem is unaddressed.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81ac-8278-d8b436080281",
+    "id": "PNT-7",
+    "name": "Risk register reflects gate-day state, not operating state",
+    "severity": "Medium",
+    "description": "Risk assessments are produced for design reviews, validation, or audit. They are not refreshed when the process changes, the supplier changes, or new failure modes surface. The risk register is up to date as of the last gate; it is not up to date as of today.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-8176-a514-d0c34e2bf0cd",
+      "360860e6-b45e-81be-baba-ccc697f659f7"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81f3-a6ae-e8924c0824e1",
+    "id": "PNT-8",
+    "name": "Internal audit findings stall at owner assignment",
+    "severity": "High",
+    "description": "Internal audits surface findings, but the conversion of a finding into an owned action plan with a date routinely stalls. The finding sits in the audit report; the action sits in nobody's queue; the next audit re-finds it.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81d3-acba-ee36cd4b0712",
+    "id": "PNT-9",
+    "name": "KPI dashboard requires manual report build each quarter",
+    "severity": "Medium",
+    "description": "Quality KPIs (CAPA cycle time, defect rate, supplier quality, audit findings) cannot be answered without a custom report each quarter. Senior quality time goes into the build instead of the question.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81a7-b440-d99418d656a0",
+    "id": "PNT-10",
+    "name": "Quality system drift between paper-passable and shop-floor reality",
+    "severity": "Critical",
+    "description": "The QMS as documented passes external audits. The QMS as practised on the shop floor does not match the documentation in several places that operators take for granted as 'how it really works'. The drift is invisible until a serious finding forces it open.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-81d3-a93a-e61b8d677b3f",
+      "360860e6-b45e-8169-a2af-dd81b8e10128"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81e2-b8c6-e7e963eac38c",
+    "id": "PNT-11",
+    "name": "Production hold disposition stalls on documented rationale",
+    "severity": "High",
+    "description": "When a production hold is called, the supervisor needs disposition fast. The decision often gets made verbally and parts move; the documented rationale (why this disposition, what evidence supported it, who agreed) catches up days later, sometimes never. Audit and recall investigations later cannot reconstruct the call.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8148-a0a4-de3e0fd91891",
+      "360860e6-b45e-81d3-a93a-e61b8d677b3f"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-819a-b0aa-c678c9ffdeef",
+    "id": "PNT-12",
+    "name": "Shop-floor decision rationale lost between shift handoffs",
+    "severity": "High",
+    "description": "Decisions taken on one shift (deviation accepted, parameter adjusted, equipment behaviour noted) do not transfer cleanly to the next shift. The next supervisor inherits the consequence without the reasoning, and the same call gets re-litigated when the issue recurs.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e"
+    ],
+    "modules": [
+      "360860e6-b45e-8140-b854-db4f40b603fa",
+      "360860e6-b45e-8174-9963-ec1d6d753a56"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-815c-b1b3-f62afca708b0",
+    "id": "PNT-13",
+    "name": "Travellers and batch records exist in paper plus three systems",
+    "severity": "High",
+    "description": "A single batch carries paper travellers on the floor, an MES record of step completion, an ERP record of consumption, and a QMS record of inspection events. None of them is the single source of truth; the operator reconciles when forced to.",
+    "personas": [
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "modules": [
+      "360860e6-b45e-8140-b854-db4f40b603fa",
+      "360860e6-b45e-8174-9963-ec1d6d753a56"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8130-b85c-fb234feee62e",
+    "id": "PNT-14",
+    "name": "Inspection checklist not bound to the work order it covers",
+    "severity": "Medium",
+    "description": "Inspection forms exist in a forms library and work orders exist in the planning system, but the binding between this work order and the right checklist at the right revision is operator memory. Wrong checklist gets used; right checklist gets used at the wrong revision.",
+    "personas": [
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-819c-9ee6-e561035a55ba",
+      "360860e6-b45e-81f9-ae92-cd8156553076"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81da-a14b-eb0674feef03",
+    "id": "PNT-15",
+    "name": "Calibration overdue alerts notify nobody specific",
+    "severity": "Medium",
+    "description": "Instrument calibration due dates produce alerts, but the alert goes to a shared inbox or distribution list rather than the named owner of that instrument. Overdue calibrations accumulate; the instrument keeps being used; the audit finds it.",
+    "personas": [
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-81cd-acd6-c3eb2b50b279",
+      "361860e6-b45e-8189-9069-f1d24eb544d3"
+    ],
+    "modules": [
+      "360860e6-b45e-81c2-acc8-fd29e4aff89b",
+      "360860e6-b45e-81bb-b9aa-c4baf25dcea7"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81dc-8b78-fecc328e7aa5",
+    "id": "PNT-16",
+    "name": "Cross-site lessons learned trapped at the originating site",
+    "severity": "Medium",
+    "description": "A site solves a recurring problem (yield, scrap, deviation pattern, supplier issue) and the solution lives in that site's local knowledge base. The other three sites solve the same problem independently months later. Continuous improvement never compounds across the network.",
+    "personas": [
+      "361860e6-b45e-8134-be6a-c5123ecb5918",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-8128-8fb1-c007cebfad8e",
+      "360860e6-b45e-8168-9c0b-c595b46ed38e"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81c8-a018-facb50668b4c",
+    "id": "PNT-17",
+    "name": "Standard work drifts from documented version on the line",
+    "severity": "High",
+    "description": "Standard work is updated in the document control system and the operator on the line keeps doing what works. The documented standard and the running standard diverge slowly; nobody flags it because the line is producing. The drift surfaces when a new operator joins or an auditor walks.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-8156-84b8-f8d3d131bb6e",
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "modules": [
+      "360860e6-b45e-81f7-9ee5-e2a00dab8209"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81d4-a9c1-f8884cde5e71",
+    "id": "PNT-18",
+    "name": "Maintenance breakdown response leaves no record of decisions taken",
+    "severity": "Medium",
+    "description": "Equipment breakdown response is high-tempo. The technician fixes it, the supervisor accepts the fix, and the line restarts. The decisions taken under pressure (what failed, why it failed, what was changed, what was deferred) rarely make it into the maintenance record in a queryable form.",
+    "personas": [
+      "361860e6-b45e-81cf-a67a-f5126d0d450b",
+      "361860e6-b45e-8193-bfcb-ddc92674e7f0",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-816c-b2d2-da5fa4c5217e"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-819a-a47c-e3497cbdb205",
+    "id": "PNT-19",
+    "name": "APQP gate review evidence rebuilt at each phase",
+    "severity": "High",
+    "description": "Each APQP phase gate requires a package of evidence (DFMEA, PFMEA, control plan, validation, supplier capability). The package is assembled freshly for each gate from the same underlying artefacts; the artefacts are not bound to the gate they support. The same evidence gets re-explained at the next gate.",
+    "personas": [
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81c9-b7c1-d82722bf7230",
+      "360860e6-b45e-81f3-9b95-c1488b27a458"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8109-9aaf-cc603b652bc8",
+    "id": "PNT-20",
+    "name": "Design FMEA and Process FMEA drift between programmes",
+    "severity": "Medium",
+    "description": "Each programme produces its own DFMEA and PFMEA. The lessons learned, the failure modes catalogued, and the controls established do not consistently flow into the next programme. The team rediscovers the same failure modes one programme later.",
+    "personas": [
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c",
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b"
+    ],
+    "modules": [
+      "360860e6-b45e-81f3-9b95-c1488b27a458",
+      "360860e6-b45e-8166-8c6a-c3a5b4853822"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-811f-8b7e-d9a9d01d2fc9",
+    "id": "PNT-21",
+    "name": "PPAP submissions assembled from scratch each programme",
+    "severity": "High",
+    "description": "Production Part Approval Process submissions require eighteen elements; the customer-specific format on top of that. Each programme rebuilds the package by hand. The reusable components (control plan template, dimensional layout, capability study format) exist but are not threaded.",
+    "personas": [
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81c9-b7c1-d82722bf7230",
+      "360860e6-b45e-81b0-a7cd-f9dfcf20a2e7"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8126-a8dc-c7a413a160a1",
+    "id": "PNT-22",
+    "name": "Validation runs cannot be reproduced from the record alone",
+    "severity": "High",
+    "description": "Process validation runs (IQ, OQ, PQ) produce a report, but the parameters, deviations, and operator actions during the run live partially in raw data, partially in supervisor notebooks, and partially in memory. A revalidation needs the same conditions, and reconstructing them is guesswork.",
+    "personas": [
+      "361860e6-b45e-8115-9243-c81508af35cc",
+      "361860e6-b45e-8189-9069-f1d24eb544d3",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f8-9a0f-fed21e782f6a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-813b-830c-f769dde6fa8d",
+    "id": "PNT-23",
+    "name": "Design change loop never closes back to the originating decision",
+    "severity": "Medium",
+    "description": "A design change is initiated by a CAPA, a complaint, or a supplier issue. The change is approved and implemented. The closure of the change rarely circles back to the originating record with the link 'this is what we did and here is why we believe it solves it'. The originating record stays open or closes blind.",
+    "personas": [
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-81a2-93c4-d8663536f08d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8103-960f-c8bca20fb93d",
+    "id": "PNT-24",
+    "name": "Specifications locked before supplier capability is verified",
+    "severity": "Critical",
+    "description": "Design specifications get locked at a phase gate. Supplier capability data may not yet be available for the new spec. Parts arrive at incoming inspection that fail the spec the supplier was never qualified to meet. The spec is rolled back or waivered.",
+    "personas": [
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b",
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c"
+    ],
+    "modules": [
+      "360860e6-b45e-81a2-93c4-d8663536f08d",
+      "360860e6-b45e-8111-a174-d087651a29c3"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8130-966c-fedbdaa492a5",
+    "id": "PNT-25",
+    "name": "Design review action items dispersed across email and meeting notes",
+    "severity": "Medium",
+    "description": "Design reviews produce action items. The actions live in meeting notes, emails to assignees, and an occasional spreadsheet. The assignment, the due date, and the closure rarely live in the same place. Recurrence: 'we covered this in the last review' answered with 'where'.",
+    "personas": [
+      "361860e6-b45e-8115-9243-c81508af35cc",
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-81f3-9b95-c1488b27a458"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8173-9840-e71bfaf3841e",
+    "id": "PNT-26",
+    "name": "Supplier qualification evidence cannot be reconstructed at re-qual time",
+    "severity": "High",
+    "description": "When a supplier comes up for requalification (typically annual), the original qualification evidence (audit findings, capability data, samples, certifications) is hard to assemble. The original folder is partial; the rest lives with the people who ran the qualification, several of whom have moved roles. Requalification becomes a paperwork exercise.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8168-9a3e-fa3c3f69bc56",
+    "id": "PNT-27",
+    "name": "SCAR loops close on paperwork without behaviour change at supplier",
+    "severity": "High",
+    "description": "Supplier Corrective Action Requests get raised, accepted, closed by the supplier. The closure usually rests on supplier-submitted documentation rather than verified behaviour change at the supplier's process. The same defect type returns from the same supplier two months later.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b780-eed760e72d52",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81ac-835a-e590bad96322",
+    "id": "PNT-28",
+    "name": "Incoming inspection acts as the supplier process control",
+    "severity": "High",
+    "description": "Incoming inspection is meant to verify what the supplier already controls. In practice it catches defects the supplier's own process should never have shipped. Inspection becomes the filter; supplier process capability is masked rather than improved.",
+    "personas": [
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-819c-9ee6-e561035a55ba",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-818c-b9e8-f216b61de899",
+    "id": "PNT-29",
+    "name": "Supplier scorecard data does not flow to sourcing decisions",
+    "severity": "Medium",
+    "description": "Quality maintains supplier scorecards with defect rates, on-time delivery, and SCAR responsiveness. Sourcing makes supplier decisions on unit price and lead time. The scorecard is informational, not consequential.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81f8-891e-e832eb76b00b",
+    "id": "PNT-30",
+    "name": "Lot genealogy breaks at the supplier handoff during traceability events",
+    "severity": "Critical",
+    "description": "Internal lot genealogy is clean; the genealogy back into the supplier's lots is partial. When a recall, complaint, or supplier issue forces traceability, the supplier-side coverage is rebuilt manually from purchase orders, shipping records, and supplier-submitted batch data.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-81db-9230-ee70ac746e48",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-8174-9963-ec1d6d753a56",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-813f-8008-d2add3480ae5",
+    "id": "PNT-31",
+    "name": "Supplier change notifications drop between supplier, sourcing, and quality",
+    "severity": "High",
+    "description": "A supplier notifies sourcing of a change (process, sub-supplier, material). Sourcing acknowledges. Quality and Engineering only hear about it weeks later, often after parts arrive with the change. The notification crossed an organisational boundary and lost its addressee.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-819e-81fb-dde6bbd103ca",
+    "id": "PNT-32",
+    "name": "Vendor portal is read-only when it needs to be collaborative",
+    "severity": "Medium",
+    "description": "Vendor portals expose supplier scorecards, purchase orders, and inspection reports for supplier viewing. They do not support genuine collaborative work (joint root cause, joint corrective action, joint capability planning). The work happens in email and the portal carries the artefacts.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-814b-84b5-dd4ee2241afc",
+    "id": "PNT-33",
+    "name": "Change effectivity not propagated to the production line before parts ship",
+    "severity": "Critical",
+    "description": "A change is approved with an effective date. The shop floor builds to the old version because the line did not get the notification, the training did not happen, or the parts on hand are old-version. The first the operator hears about the change is when a finished part is rejected.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8152-b972-e6be49b71f0a",
+    "id": "PNT-34",
+    "name": "Change impact assessment skips the affected persona set",
+    "severity": "High",
+    "description": "Change requests carry an impact assessment field. The assessor names the obvious affected functions (Engineering, Quality) and misses adjacent ones (Training, Supplier Quality, Field Service). The change lands and the missed function discovers the consequence after the fact.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81b1-9438-c15103a3c557",
+    "id": "PNT-35",
+    "name": "Low-risk changes inherit high-risk approval depth",
+    "severity": "Medium",
+    "description": "Change control workflows are designed for high-risk changes (process, design, supplier of critical material). The same approval depth is applied to low-risk changes (a typo in an SOP, a phone number update). Approval queues fill with low-risk records; high-risk changes wait behind them.",
+    "personas": [
+      "361860e6-b45e-8115-9243-c81508af35cc"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81b8-a0a9-fe6bbd18e907",
+    "id": "PNT-36",
+    "name": "Late training cascade after change closure",
+    "severity": "High",
+    "description": "Change closure includes a training cascade: who needs retraining, by when. The training assignment goes out late, the completion deadline slips, and people are working to the new version without verified training for weeks. The audit traceability between change and training is partial.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-815c-9e10-c9a26790aaa2",
+    "id": "PNT-37",
+    "name": "SOP version drift between Notion, file share, and shop floor",
+    "severity": "Critical",
+    "description": "The same SOP exists in the controlled-document system at v3.2, in a working file share at v3.1 (someone's local edit), and laminated at the workstation at v2.8 from the last reprint. The operator uses what is in front of them. The 'current' version is a function of where you look.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8168-803d-cb649b2a3922",
+    "id": "PNT-38",
+    "name": "Document approval queue invisible until SLA breach",
+    "severity": "Medium",
+    "description": "Documents in the approval queue are visible only to those who think to look. The approver does not know what is waiting; the originator does not know whether to chase. The SLA breach alert is the first visible signal that something has stalled.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81bd-9ae9-ec8b21284098",
+    "id": "PNT-39",
+    "name": "Periodic review of controlled documents stalls without owner accountability",
+    "severity": "Medium",
+    "description": "Controlled documents carry a periodic review date. The review owner gets notified; the review does not happen; the next notification arrives; the review still does not happen. The document is overdue but in active use. Audit finding is predictable.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8173-bc24-d54c9af4543f",
+    "id": "PNT-40",
+    "name": "Effective-date governance ambiguous at point of use",
+    "severity": "High",
+    "description": "A document is approved on date A with effective date B. Between A and B the operator may be using the old version or the new version depending on local interpretation. The effective-date rule exists but the system does not enforce or display it at point of use.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "361860e6-b45e-81db-9230-ee70ac746e48"
+    ],
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81a9-a332-d62125abcbe9",
+    "id": "PNT-41",
+    "name": "Training matrix is the first audit pull and the last system updated",
+    "severity": "High",
+    "description": "External auditors open with 'show me your training matrix'. The training matrix is one of the lowest-priority systems to maintain because no daily workflow depends on it being current. The mismatch produces audit findings every cycle.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8178-89c0-ed0d6a3e7ee3",
+    "id": "PNT-42",
+    "name": "Training completion ticks the box without competency evidence",
+    "severity": "High",
+    "description": "An operator completes a training module by reading a deck and signing an acknowledgement. The training system records completion. The operator may or may not be able to actually perform the task. The record says trained; the floor reality says it depends.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81bc-bca2-e1794291ff86",
+    "id": "PNT-43",
+    "name": "New hire ramp is a tribal-knowledge process",
+    "severity": "Medium",
+    "description": "A new hire shadows for a few days, picks up the rhythm by watching, and gradually takes on work. The actual learning sequence is informal. When the trainer is out, the new hire's progress stalls. When the trainer leaves, the next new hire learns differently.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781",
+      "360860e6-b45e-81f7-9ee5-e2a00dab8209"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8136-b0fc-d27ff5f6d8d3",
+    "id": "PNT-44",
+    "name": "Training due-date alerts notify the wrong audience",
+    "severity": "Low",
+    "description": "Training due-date reminders fire to a generic distribution rather than the named trainee and their supervisor. Reminders pile up in inboxes that nobody is responsible for clearing. The training itself drifts past due.",
+    "personas": [
+      "361860e6-b45e-8105-8c22-e32266e39830"
+    ],
+    "modules": [
+      "360860e6-b45e-81ec-8a8f-c7fb0880a781"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8157-a954-d5d68d275fb1",
+    "id": "PNT-45",
+    "name": "Compliance posture answer assembled per question, never queryable",
+    "severity": "High",
+    "description": "When Compliance is asked a specific question (status of CSV, SOX-relevant change controls, GDPR data flows, NIST mapping) the answer is assembled from documents, spreadsheets, and emails. The answer is correct for that question and stale for the next.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81cc-a630-fb81f34fdad9",
+    "id": "PNT-46",
+    "name": "EHS audit findings tracked in spreadsheets parallel to QMS",
+    "severity": "Medium",
+    "description": "EHS audits produce findings, action plans, and closure evidence. The tracking lives in spreadsheets maintained by the EHS function, separate from the QMS audit module. Cross-domain analysis (does this EHS finding repeat in a quality finding) is impossible without manual reconciliation.",
+    "personas": [
+      "361860e6-b45e-810d-b38c-fa27d3add5b3"
+    ],
+    "modules": [
+      "360860e6-b45e-81f8-ae15-db23ea273815",
+      "360860e6-b45e-8169-a2af-dd81b8e10128"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8128-a88d-d8dda891731b",
+    "id": "PNT-47",
+    "name": "Regulatory change horizon scanning not linked to operating documents",
+    "severity": "High",
+    "description": "Regulatory teams scan for upcoming changes (new ISO revision, new FDA guidance, new GDPR ruling). The scan output lives in a separate brief. The link from 'regulation X changed' to 'SOPs 12, 14, and 22 plus form F-3 need review' is manual every time.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-812f-b37f-d2c0dfc04c1d",
+    "id": "PNT-48",
+    "name": "PPE issuance and fit-test history scattered across HR and EHS",
+    "severity": "Low",
+    "description": "Personal protective equipment issuance is logged in EHS records; fit-test results in safety records; replacement cycles in maintenance; training in HR. When an EHS audit asks for the full PPE history for a given operator, the answer requires four systems.",
+    "personas": [
+      "361860e6-b45e-810d-b38c-fa27d3add5b3",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-812b-b3e4-c1e0eac125bd"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8112-9c68-d903fc056f83",
+    "id": "PNT-49",
+    "name": "Submission cross-references chase outdated controlled documents",
+    "severity": "Critical",
+    "description": "Regulatory submissions cite controlled documents (SOPs, validation reports, risk assessments) by document number and revision. When the cited document goes through a revision after submission, the cross-reference quietly stales. The submission says 'see SOP X v3'; SOP X is now at v5.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81fe-adee-ddf580464905",
+    "id": "PNT-50",
+    "name": "Post-submission commitments fall between Regulatory and Operations",
+    "severity": "High",
+    "description": "Regulatory submissions often include post-market commitments (annual reporting, ongoing validation, periodic update). These commitments are tracked by Regulatory but executed by Operations or Quality. The handoff is not always clean, and a commitment falling through has regulatory consequences.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-813d-9883-c5a022583121",
+    "id": "PNT-51",
+    "name": "Field-action timeline rebuilt from email and meeting notes",
+    "severity": "Critical",
+    "description": "When a field safety notice, recall, or other field action is required, the timeline (what we knew, when we knew it, what we did) needs to be reconstructed from emails, meeting notes, and a scattered set of system records. Regulators expect that timeline as a clean record.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-8169-a2af-dd81b8e10128"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81b8-a5ef-c20a5cb82a0a",
+    "id": "PNT-52",
+    "name": "Labeling changes propagate inconsistently to packaging and inserts",
+    "severity": "High",
+    "description": "A regulatory-driven labeling change must reach the label artwork, the package insert, the secondary packaging, the IFU, and the website copy. The change is approved centrally; the propagation runs through different functions on different schedules; one or more endpoints lag for weeks.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-b902-df2000f4441e",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81fc-81b0-d1c428bda9eb",
+    "id": "PNT-53",
+    "name": "Complaint trend signals lost in case-by-case triage",
+    "severity": "High",
+    "description": "Each customer complaint is triaged on its own merits. Trends (the same product code accumulating complaints, the same failure mode across sites, a complaint cluster after a process change) become visible only when someone runs an analysis that is not part of the standard workflow.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81b6-b5fe-f28aa4820f2e",
+    "id": "PNT-54",
+    "name": "Field service feedback never reaches the design loop",
+    "severity": "Medium",
+    "description": "Field service captures detailed information about how products fail and how customers actually use them. Engineering and APQP do not see most of it. The next product revision repeats failure modes that field service has been working around for two years.",
+    "personas": [
+      "361860e6-b45e-8167-8c5d-c3693a69c7c1",
+      "361860e6-b45e-81cb-a7e4-dfa47ffb7e7b"
+    ],
+    "modules": [
+      "360860e6-b45e-81f2-892c-f39d919db704",
+      "360860e6-b45e-819c-9fec-fe252a5eeb63"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8165-bdbb-e348c6a0a1d4",
+    "id": "PNT-55",
+    "name": "Recall traceability assembled in spreadsheets under regulator pressure",
+    "severity": "Critical",
+    "description": "When a recall is initiated, the traceability (which lots shipped to which customers, what supplier inputs, what processing parameters, what dispositions) is assembled in spreadsheets and emailed exports because no single system holds the full chain. The recall is executed but the traceability cost is enormous.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-8174-9963-ec1d6d753a56"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81a5-80c1-d2efd6742c1e",
+    "id": "PNT-56",
+    "name": "Shortage decisions live in meeting notes, not the planning system",
+    "severity": "High",
+    "description": "When a critical part shortage forces allocation decisions (which customer, which order, what substitute), the decision gets made in a stand-up or war room and recorded in meeting notes. The planning system reflects the eventual outcome, not the reasoning, the trade-offs, or the alternatives considered.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-ae92-cd8156553076"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81ec-92fc-e4501de1f017",
+    "id": "PNT-57",
+    "name": "Expedite escalations bypass the schedule of record",
+    "severity": "Medium",
+    "description": "Customer escalations trigger expedite decisions that override the published schedule. The bypass is fast and the customer is served, but the master schedule of record drifts from reality. The next planning cycle is based on data that does not match what happened.",
+    "personas": [
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-81f9-ae92-cd8156553076"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-815a-ad5a-de85b20d5bc0",
+    "id": "PNT-58",
+    "name": "PO change approvals scattered between sourcing and quality",
+    "severity": "Medium",
+    "description": "A purchase order change (quantity, delivery date, sub-supplier substitution) routes through sourcing for commercial approval and through quality for technical approval. The two approvals run in parallel without a shared view; one can land before the other; the change executes inconsistently.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-811f-9e7d-c332470c97ca",
+    "id": "PNT-59",
+    "name": "Supply disruption response runs in a war-room chat thread",
+    "severity": "High",
+    "description": "Major supply disruption (supplier shutdown, logistics failure, geopolitical event) gets coordinated in a real-time chat thread. The thread is fast and useful in the moment but leaves no durable record. Three months later, the lessons learned are lost; the same disruption pattern surprises the team again.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8172-aa5d-e01efb3ef313"
+    ],
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81c7-82e4-e9f4f0b0a008",
+    "id": "PNT-60",
+    "name": "APR and PQR rebuilt each cycle from cold-start exports",
+    "severity": "High",
+    "description": "Annual Product Review and Periodic Quality Review require pulling production data, deviation data, complaint data, change data, and supplier data into a single document. The pull is a manual process each cycle. The output document is forensic-quality; the act of producing it consumes weeks of senior time.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81d3-969e-c02eccff5923",
+    "id": "PNT-61",
+    "name": "Master data ownership ambiguous at field level",
+    "severity": "Medium",
+    "description": "Customer codes, material codes, supplier codes, document numbers each have a named owner at the system level. Specific field-level changes (a phone number, a tax code, a shipping flag) do not. Updates happen in place without governance and create downstream inconsistencies.",
+    "personas": [
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81a2-93c4-d8663536f08d",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-813d-b19a-d759a1d06a07",
+    "id": "PNT-62",
+    "name": "Data integrity findings recur each audit cycle",
+    "severity": "High",
+    "description": "Data integrity findings (incomplete records, retrospective edits, attribution gaps) appear on every audit cycle in roughly the same form. The corrective action closes the specific instance; the structural cause stays in place; the next audit finds the next instance.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8169-b76e-f6b249727064",
+    "id": "PNT-63",
+    "name": "Sourcing decisions optimise unit price without total quality cost",
+    "severity": "High",
+    "description": "Sourcing has a clean view of unit price, lead time, and payment terms. It does not have a clean view of the supplier's total cost of quality (rework, SCAR cycle, expedites, scrap). Sourcing decisions optimise the visible cost at the expense of the hidden one.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81ce-ae0d-c3535ee985c0",
+    "id": "PNT-64",
+    "name": "Supplier requalification cadence drifts without trigger",
+    "severity": "Medium",
+    "description": "Suppliers are meant to be requalified on a defined cadence. Without an enforced trigger, requalification slips when sourcing and quality are busy. The approved supplier list claims a supplier is current; the supplier has not been formally reassessed in three years.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81b1-991b-cf90a4ac129f",
+    "id": "PNT-65",
+    "name": "Sourcing scorecard refresh stalls without owner accountability",
+    "severity": "Medium",
+    "description": "Supplier scorecards are meant to be refreshed quarterly. Without an explicit refresh owner with the time blocked for it, the refresh either does not happen or happens partially. The scorecard slowly becomes a historical artefact rather than a current view.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81b1-b599-ee44756d92ff",
+      "360860e6-b45e-817b-a763-c1d362e2de2d"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-81bf-a938-ce32dc5ad486",
+    "id": "PNT-66",
+    "name": "Customer-specific requirements not flowed down to operating documents",
+    "severity": "High",
+    "description": "Each customer carries its own requirements package (special characteristics, PPAP format, deviation handling, packaging). The package is received and acknowledged; the requirements do not consistently flow down into the operating documents and the inspection plans for the parts shipping to that customer.",
+    "personas": [
+      "361860e6-b45e-8138-a16d-cb9161aa0f1c",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2",
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-81c3-990f-fb67e159f4cd",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8136-b6ce-c5fcd40a373d",
+    "id": "PNT-67",
+    "name": "Customer complaint root cause not traceable to design or supplier",
+    "severity": "Medium",
+    "description": "A complaint is investigated and a probable cause is identified. The link from the complaint back to the specific design decision, the specific supplier lot, or the specific process change that caused it is rarely durable. The same root cause keeps producing complaints because the link is too soft to act on.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba"
+    ],
+    "modules": [
+      "360860e6-b45e-816f-b15b-cfdc470fd359",
+      "360860e6-b45e-81f9-b780-eed760e72d52"
+    ]
+  },
+  {
+    "pageId": "363860e6-b45e-8105-a9fb-c857b5bb9d03",
+    "id": "PNT-68",
+    "name": "Customer audit prep duplicates internal audit prep effort",
+    "severity": "Medium",
+    "description": "Internal audits and customer audits ask for similar evidence (training records, deviation handling, supplier qualification, document control). The two preps run in parallel rather than from a shared evidence base. The duplicated work consumes senior quality time without proportional benefit.",
+    "personas": [
+      "352860e6-b45e-817e-81c7-caf0eb4f92ba",
+      "361860e6-b45e-8183-9ea3-dd204c736ed2"
+    ],
+    "modules": [
+      "360860e6-b45e-8169-a2af-dd81b8e10128",
+      "360860e6-b45e-819a-b47d-d65659287f7a"
+    ]
+  }
+]

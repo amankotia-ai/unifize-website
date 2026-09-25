@@ -282,6 +282,7 @@
     grid-template-columns: 54px 270px 680px 390px;
     width: 1394px;
     clip-path: inset(0 0 0 324px);
+    --stx-cut-l: 324px;
     transform: translate3d(calc(-50% - 162px * var(--sk-cam-k)), -50%, 0) scale(var(--sk-cam-k));
     /* the clip cuts the camera's own plate; it is drawn on the anchor below */
     outline: 0;
@@ -1063,6 +1064,8 @@
   --stx-camera-y: 0px;
   --stx-camera-scale: var(--sk-hk);
   clip-path: inset(0 var(--sk-cut-r) 0 var(--sk-cut-l));
+  --stx-cut-l: var(--sk-cut-l);
+  --stx-cut-r: var(--sk-cut-r);
   outline: 0;
   box-shadow: none;
 }

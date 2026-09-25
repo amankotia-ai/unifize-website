@@ -1753,8 +1753,8 @@
 
 .dms--redesign.dms--home .dms-hero--rails .hm-headline:not([data-variant="A"]) .dms-hero__line {
   /* room for descenders and the comma under the clip */
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   /* one gradient per visual row (1lh tiles), so a wrapped line is lit the
    * same on both rows instead of greying out toward the bottom */
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
@@ -1768,8 +1768,8 @@
 
 .dms--redesign.dms--home .dms-hero--rails .hm-headline:not([data-variant="A"]) .dms-hero__turn {
   display: inline-block;
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #82b8ff 30%, var(--u-blue-400) 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -1858,8 +1858,8 @@
  * the heads: at the alpha that reads as subtle on white, a radial bands
  * into visible rings. */
 .dms--redesign.dms--home :is(.hm-entry-section, .hm-recognition, .hm-products-section, .hm-industries-section) .dms-h2 {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #3a3f49 0%, #17191f 55%, #101216 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -1892,8 +1892,8 @@
  * light behind the heads (a low-alpha radial bands). The logo band has no
  * heading and is left alone. */
 .dms--redesign.dms--home :is(.hm-proof .dms-h2, .hm-resources__intro h3, .hm-close .dms-close__h) {
-  padding-bottom: 0.06em;
-  margin-bottom: -0.06em;
+  padding-bottom: 0.2em;
+  margin-bottom: -0.2em;
   background-image: linear-gradient(180deg, #ffffff 30%, #e4e7ec 100%);
   background-size: 100% 1lh;
   background-repeat: repeat-y;
@@ -1952,6 +1952,8 @@
   }
   .dms--redesign.dms--home .hm-suite__scene .stx-root .stx-arc__camera {
     clip-path: inset(0 var(--hm-clip-r) 0 324px);
+    --stx-cut-l: 324px;
+    --stx-cut-r: var(--hm-clip-r);
     transform: translate3d(calc(-50% - var(--hm-frame-dx) * var(--hm-zoom)), calc(-50% + var(--hm-cam-y)), 0) scale(var(--hm-zoom));
     box-shadow: none;
     outline: 0;

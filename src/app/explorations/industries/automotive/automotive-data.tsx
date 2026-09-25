@@ -27,8 +27,8 @@ export const AUTOMOTIVE: IndustryData = {
 
   hero: {
     crumb: "Automotive",
-    titleLead: "Your PPAP proves the part conforms.",
-    titleTurn: "Not why.",
+    titleLead: "A warranty return opens the 8D.",
+    titleTurn: "Suspect stock is contained everywhere.",
     sub: "Built for Tier 1 and Tier 2 suppliers running IATF 16949, where every PPAP, every engineering change, and every 8D has to stay traceable across quality, engineering, and the supply base, and survive a customer audit and a warranty return.",
     chips: ["IATF 16949", "PPAP", "APQP", "FMEA", "8D"],
     trustLabel: "Built for IATF 16949 automotive suppliers",
@@ -229,11 +229,11 @@ export const AUTOMOTIVE: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Engineering change → PPAP", coordination: "Propagates to FMEA, control plan, work instructions, training, and the customer submission", owner: "Engineering / Quality", atRisk: "cycle time; a PPAP rejection at cut-in" },
-      { name: "Warranty return → 8D", coordination: "Quality, engineering, and the supply base reconstruct the investigation across systems", owner: "Quality", atRisk: "an overdue response; a customer scorecard hit" },
-      { name: "Supplier PPAP / 8D", coordination: "Quality and procurement assemble sub-tier evidence across the boundary", owner: "Supplier Quality", atRisk: "material on hold; a sub-tier defect at the line" },
-      { name: "Production hold / run-at-rate", coordination: "Operations, quality, and engineering sign off on disposition and launch evidence", owner: "Operations", atRisk: "line downtime; a failed safe launch" },
-      { name: "Layered process audit cascade", coordination: "Every control-plan change fans out to audit cadence, training, and proof across shifts", owner: "Quality Systems", atRisk: "an open gap between effectivity and completion" },
+      { name: "Engineering change → PPAP", coordination: "Propagates to FMEA, control plan, work instructions, training, and the customer submission", owner: "Engineering / Quality", atRisk: "cycle time; a PPAP rejection at cut-in", story: "ECR-3180" },
+      { name: "Warranty return → 8D", coordination: "Quality, engineering, and the supply base reconstruct the investigation across systems", owner: "Quality", atRisk: "an overdue response; a customer scorecard hit", story: "8D-4402" },
+      { name: "Supplier PPAP / 8D", coordination: "Quality and procurement assemble sub-tier evidence across the boundary", owner: "Supplier Quality", atRisk: "material on hold; a sub-tier defect at the line", story: "Tier 2 steel" },
+      { name: "Production hold / run-at-rate", coordination: "Operations, quality, and engineering sign off on disposition and launch evidence", owner: "Operations", atRisk: "line downtime; a failed safe launch", story: "Suspect brackets" },
+      { name: "Layered process audit cascade", coordination: "Every control-plan change fans out to audit cadence, training, and proof across shifts", owner: "Quality Systems", atRisk: "an open gap between effectivity and completion", story: "Welding LPA" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long change and 8D cycle times", "Delayed PPAP and program launch"] },
@@ -300,9 +300,16 @@ export const AUTOMOTIVE: IndustryData = {
  * The return, the locations and the lines are illustrative, not a
  * customer's; cursors carry persona titles, not people.
  * ========================================================================== */
-const QM = { name: "Quality Manager", tone: "#d97706" };
-const PLANT = { name: "Plant Manager", tone: "#2563eb" };
-const LPA = { name: "Layered Process Audit Owner", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the other railed industry pages): every
+ * artifact from the hero to the cost bill plays the mounting bracket. A
+ * warranty return opens 8D-4402 (hero); the root cause is the weld
+ * flange's material gauge; the D5 corrective action is ECR-3180 (01), a
+ * material change that reaches the PFMEA, control plan, the Tier 2 steel
+ * supplier's PPAP and the customer PSW. Cursors are the cast, one role per
+ * name (see automotive-journey.ts); still no metrics. */
+const LINDQVIST = { name: "S. Lindqvist", tone: "#d97706" };
+const NOVAK = { name: "J. Novak", tone: "#2563eb" };
+const MUELLER = { name: "H. Mueller", tone: "#0f8f7e" };
 
 export const AUTOMOTIVE_RAILS: IndustryRails = {
   /* the key element: the 8D in motion. A warranty return opens the eight
@@ -311,7 +318,7 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
    * goes back to the OEM (the fear anchor: controlled shipping, overdue 8Ds) */
   hero: {
     kind: "eightd",
-    id: "Warranty return",
+    id: "8D-4402 · Warranty return",
     title: "Customer 8D · field return",
     from: "OEM warranty claim · IATF 16949",
     stages: { opened: "8D opened", contain: "Containing", solve: "Root cause & correction", released: "Closed · accepted by OEM" },
@@ -362,17 +369,17 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
     quality: {
       viz: {
         wash: "sky",
-        kicker: "Customer 8D",
-        state: "D4 · root cause",
-        title: "Warranty return",
+        kicker: "8D-4402",
+        state: "D5 · corrective action",
+        title: "Warranty return · bracket",
         rows: [
           { label: "D3 · containment, sorted", meta: "Quality" },
-          { label: "D4 · root cause", meta: "Engineering", open: true },
-          { label: "D5 · corrective action", meta: "Production" },
+          { label: "D4 · weld flange gauge", meta: "Engineering" },
+          { label: "D5 · ECR-3180", meta: "Engineering", open: true },
         ],
-        cursor: QM,
+        cursor: LINDQVIST,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -380,19 +387,19 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
         wash: "warm",
         stamp: "HOLD",
         lines: [
-          { k: "Parts", v: "Suspect lot" },
-          { k: "Waiting on", v: "MRB disposition" },
+          { k: "Parts", v: "Suspect brackets" },
+          { k: "Waiting on", v: "8D-4402" },
           { k: "Released by", v: "Quality" },
         ],
-        note: "Released with the approver chain recorded",
-        cursor: PLANT,
+        note: "Shipped when the OEM lifts controlled shipping",
+        cursor: NOVAK,
       },
     },
     regulatory: {
       viz: {
         kind: "signoff",
         wash: "blue",
-        kicker: "PPAP",
+        kicker: "PPAP · ECR-3180",
         title: "Part submission warrant",
         signers: [
           { org: "Supplier", name: "Customer Quality Manager", meaning: "Submitted", time: "Signed" },
@@ -404,28 +411,28 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
       viz: {
         kind: "matrix",
         wash: "paper",
-        kicker: "Layered process audit",
+        kicker: "LPA · ECR-3180",
         cols: ["Shift 1", "Shift 2", "Shift 3"],
         rows: [
           { name: "Stamping", cells: ["ok", "ok", "ok"] },
-          { name: "Welding", cells: ["ok", "due", "ok"] },
-          { name: "Assembly", cells: ["ok", "ok", "gap"] },
+          { name: "Welding", cells: ["ok", "due", "gap"] },
+          { name: "Assembly", cells: ["ok", "ok", "ok"] },
         ],
-        cursor: LPA,
+        cursor: MUELLER,
       },
     },
     engineering: {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "ECR", title: "Material change" },
+        source: { kicker: "ECR-3180", title: "Weld flange gauge" },
         items: [
           { id: "FMEA", label: "PFMEA" },
           { id: "CP", label: "Control plan" },
           { id: "PSW", label: "PPAP resubmission", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -439,16 +446,16 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Nonconformance / MRB",
-          title: "Suspect lot at the line",
+          kicker: "8D-4402 · MRB",
+          title: "Suspect brackets at the line",
           fields: [
-            { label: "Defect", value: "Out of tolerance", select: true },
+            { label: "Defect", value: "Weld flange crack", select: true },
             { label: "Containment", value: "Sorted" },
             { label: "Disposition", value: "MRB review", focus: true },
           ],
-          cursor: QM,
+          cursor: LINDQVIST,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "change-control",
@@ -456,13 +463,13 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
         viz: {
           kind: "tiles",
           wash: "blue",
-          kicker: "PPAP",
+          kicker: "PPAP · ECR-3180",
           title: "Submission elements",
           total: 18,
           open: [9, 14],
           foot: "Two elements open before cut-in",
         },
-        go: { label: "See the change control solution →", href: "/domains/change-control" },
+        go: { label: "See the change control solution →", href: "/solution/change-control" },
       },
       {
         domain: "supplier-management",
@@ -470,13 +477,13 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
         viz: {
           kind: "thread",
           wash: "paper",
-          kicker: "Sub-tier PPAP",
+          kicker: "Sub-tier PPAP · ECR-3180",
           messages: [
-            { org: "Tier 2 supplier", text: "PPAP package and control plan for the change", ext: true },
-            { org: "Supplier Quality", text: "Reviewed, one element returned" },
+            { org: "Tier 2 steel supplier", text: "PPAP package for the thicker gauge", ext: true },
+            { org: "Supplier Quality", text: "Reviewed, material cert returned" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "training-competency",
@@ -484,11 +491,11 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
         viz: {
           kind: "lanes",
           wash: "warm",
-          kicker: "Training cascade",
+          kicker: "Training cascade · ECR-3180",
           lanes: [
             { name: "Control plan revision", owner: "Quality Systems", pct: 100 },
-            { name: "Operator training", owner: "Production", pct: 68 },
-            { name: "LPA checklist", owner: "Quality", pct: 45 },
+            { name: "Welder training", owner: "Production", pct: 68 },
+            { name: "Welding LPA", owner: "Quality", pct: 45 },
           ],
         },
       },
@@ -496,8 +503,15 @@ export const AUTOMOTIVE_RAILS: IndustryRails = {
   },
 
   lead: [
-    { name: "OEM quality hold · controlled shipping (CS-1/CS-2)", viz: "bins", detail: ["Finished goods"] },
-    { name: "8D overdue on a warranty return", viz: "calendar", clock: "Customer response window" },
-    { name: "PPAP rejected at cut-in", viz: "letter", detail: ["Customer supplier portal", "PPAP REJECTED"], clock: "before cut-in" },
+    /* 24 Sep 2026: the three clocks the bracket starts: the OEM's
+     * controlled shipping on the brackets, 8D-4402's response window, and
+     * the PPAP for ECR-3180 rejected at cut-in over the Tier 2 cert */
+    { name: "OEM quality hold · controlled shipping (CS-1/CS-2)", viz: "bins", detail: ["Brackets · finished goods"] },
+    { name: "8D overdue on a warranty return", viz: "calendar", clock: "8D-4402 · response window" },
+    {
+      name: "PPAP rejected at cut-in",
+      viz: "rejected",
+      detail: ["PPAP · ECR-3180", "Mounting bracket · new gauge", "Tier 2 material cert missing"],
+    },
   ],
 };

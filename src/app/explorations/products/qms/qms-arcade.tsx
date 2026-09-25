@@ -12,7 +12,10 @@
  * -------------------------------------------------------------------------- */
 
 import {
+  type ArcadeChart,
   type ArcadeFlowWorld,
+  type ArcadeModal,
+  type ArcadeReport,
   type ArcadeStepConfig,
 } from "../_shared/arcade/arcade";
 import { type HeroArcadeStep } from "../_shared/arcade/hero-arcade";
@@ -55,7 +58,7 @@ const NC_CAPTURE_WORLD: ArcadeFlowWorld = {
         { label: "Part and order context", note: "PRT-4412 · WO-8817 · ERP" },
         {
           label: "Problem description",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Coating 38.1 µm on housing face, spec 45-55. Photos 1-4, readings attached.",
           note: "References attached evidence",
         },
@@ -89,15 +92,25 @@ const NC_CAPTURE_WORLD: ArcadeFlowWorld = {
  * AI drafts the root cause, the risk and the corrective actions as
  * suggestions a person accepts. Every AI button is Beta in the product. */
 const WHY_CHAIN = [
-  { id: "WHY-1", title: "Coating fell below 45 µm on the housing face", state: "Picked" },
-  { id: "WHY-2", title: "Spray nozzle delivered low flow on line 2", state: "Picked" },
-  { id: "WHY-3", title: "Nozzle wear past its service interval", state: "Picked" },
-  { id: "WHY-4", title: "Service interval not on the maintenance plan after the line 2 rebuild", state: "Picked" },
-  { id: "WHY-5", title: "Rebuild change control did not update the maintenance plan", state: "Picked" },
+  { id: "WHY-1", title: "Coating fell below 45 µm on the housing face" },
+  { id: "WHY-2", title: "Spray nozzle delivered low flow on line 2" },
+  { id: "WHY-3", title: "Nozzle wear past its service interval" },
+  { id: "WHY-4", title: "Service interval not on the maintenance plan after the line 2 rebuild" },
+  { id: "WHY-5", title: "Rebuild change control did not update the maintenance plan" },
 ];
 const RCA_ACTIONS = [
-  { id: "CA-1072", title: "Containment · sort and re-coat lot 118-B", state: "M. Osei · due Fri" },
-  { id: "CA-1073", title: "Add nozzle service to the line 2 maintenance plan", state: "L. Danes · due 30 Sep" },
+  { id: "CA-1072", title: "Containment: sort and re-coat lot 118-B", state: "Pending", tone: "pending" as const, owner: "M. Osei", due: "Fri" },
+  { id: "CA-1073", title: "Add nozzle service to the line 2 maintenance plan", state: "Pending", tone: "pending" as const, owner: "L. Danes", due: "30 Sep" },
+];
+const RCA_RISK = { id: "RSK-7", title: "Repeat under-thickness on a rebuilt line", state: "Identification", tone: "review" as const, owner: "J. Rivera" };
+const RCA_ROOT_CAUSE =
+  "Nozzle wear past its service interval; the line 2 rebuild change did not carry the service interval onto the maintenance plan.";
+const RCA_PROBLEM = [
+  "# Summary",
+  "During in-process inspection of WO-8817 on line 2, coating on the PRT-4412 housing face measured 38.1 µm against a 45 to 55 µm requirement.",
+  "# What happened",
+  "- 4 photos and 3 readings logged from the line; lot 118-B on hold.",
+  "- Repeat of two coating events in the last 12 months.",
 ];
 
 const NC_RCA_WORLD: ArcadeFlowWorld = {
@@ -105,6 +118,8 @@ const NC_RCA_WORLD: ArcadeFlowWorld = {
   recordNoun: "Non-conformance",
   owner: "J. Rivera",
   ownerInitials: "JR",
+  viewer: "J. Rivera",
+  viewerInitials: "JR",
   participants: ["JR", "SO", "+3"],
   participantsLabel: "J. Rivera, S. Okafor, and three others",
   recordKicker: "ROOT CAUSE ANALYSIS",
@@ -116,8 +131,8 @@ const NC_RCA_WORLD: ArcadeFlowWorld = {
     detail: "Maintenance log attached · contributed asynchronously",
   },
   inboxNeighbors: [
-    { title: "Nozzle wear past its service interval", time: "11:02", detail: "Why (Level 3) #1 · picked by J. Rivera", kind: "Why" },
-    { title: "Spray nozzle delivered low flow on line 2", time: "10:58", detail: "Why (Level 2) #1 · picked by J. Rivera", kind: "Why" },
+    { title: "Spray nozzle delivered low flow on line 2", time: "10:58", detail: "Me: Filled a checklist", kind: "Why (Level 2) · WHY-2" },
+    { title: "Coating fell below 45 µm on the housing face", time: "10:52", detail: "Me: Filled a checklist", kind: "Why (Level 1) · WHY-1" },
     { title: "Supplier corrective action", time: "Yesterday", detail: "SCAR-31 · response received", kind: "Quality event" },
   ],
   checklistTitle: "Root Cause Analysis",
@@ -126,45 +141,209 @@ const NC_RCA_WORLD: ArcadeFlowWorld = {
       title: "PROBLEM & PARTICIPANTS",
       items: [
         { label: "S. Okafor · M. Osei · L. Danes", note: "Process, Production, Maintenance · in the thread" },
-        { label: "Generate problem description", kind: "ask", value: "Generate Problem Description", note: "Beta" },
-        {
-          label: "Problem description",
-          kind: "field",
-          value: "Coating 38.1 µm on PRT-4412 housing face, spec 45-55, WO-8817, line 2. Repeat of two events in 12 months.",
-          note: "Drafted by Unifize AI from the record · accepted by J. Rivera",
-        },
+        { label: "Generate Problem Description", kind: "ask", value: "Generate Problem Description", note: "Beta" },
+        { label: "Problem Description", kind: "field", input: "rich" },
       ],
     },
     {
       title: "ANALYSIS · 5-WHY",
       items: [
-        { label: "Generate the next Why", kind: "ask", value: "Generate Why 3", note: "Beta" },
-        { label: "Why 1 (choose only one)", kind: "linked", links: ["WHY-1"] },
-        { label: "Why 2 (choose only one)", kind: "linked", links: ["WHY-2"] },
-        { label: "Why 3 (choose only one)", kind: "linked", links: [] },
-        { label: "Why 4 · Why 5", kind: "linked", links: [] },
+        { label: "RCA Methodology", kind: "field", input: "select", value: "5-Whys" },
+        { label: "Why 1 (Choose only one)", kind: "linked", links: ["WHY-1"] },
+        { label: "Why 2 (Choose only one)", kind: "linked", links: ["WHY-2"] },
+        { label: "Generate Why 3", kind: "ask", value: "Generate Why 3", note: "Beta" },
+        { label: "Why 3 (Choose only one)", kind: "linked", links: [] },
+        { label: "Why 4 (Choose only one)", kind: "linked", links: [] },
+        { label: "Why 5 (Choose only one)", kind: "linked", links: [] },
       ],
     },
     {
       title: "ROOT CAUSE STATEMENT",
       items: [
-        { label: "Build with AI", kind: "ask", value: "Generate root cause, risk and corrective actions", note: "Beta" },
-        {
-          label: "Root cause analysis",
-          kind: "field",
-          value: "Nozzle wear past service interval; the line 2 rebuild change did not carry the service interval onto the maintenance plan.",
-          note: "Drafted from Why 1 to Why 5 · accepted by J. Rivera",
-        },
-        { label: "Corrective actions", kind: "linked", links: [] },
+        { label: "Generate Risk analysis and CAPAs", kind: "ask", value: "Build with AI", note: "Beta" },
+        { label: "Root cause analysis", kind: "field", input: "rich" },
+        { label: "Risk Analysis", kind: "records", records: [], placeholder: "+ Add Risk" },
+        { label: "CAPAs Identification", kind: "linked", links: [] },
       ],
     },
   ],
 };
 
+/* the record as it fills: the problem written, Why levels picked, and
+ * what Build with AI added. Every step carries what came before it. */
+function rcaWorld(stage: { problem?: boolean; whys?: number; built?: boolean; capas?: boolean }): ArcadeFlowWorld {
+  return {
+    ...NC_RCA_WORLD,
+    checklistSections: NC_RCA_WORLD.checklistSections.map((section) => ({
+      ...section,
+      items: section.items.map((item) => {
+        if (item.label === "Problem Description" && stage.problem) return { ...item, lines: RCA_PROBLEM, value: RCA_PROBLEM[1] };
+        const why = /^Why (\d)/.exec(item.label);
+        if (why && Number(why[1]) <= (stage.whys ?? 2)) return { ...item, links: [`WHY-${why[1]}`] };
+        if (!stage.built) return item;
+        if (item.label === "Root cause analysis") return { ...item, value: RCA_ROOT_CAUSE };
+        if (item.label === "Risk Analysis") return { ...item, records: [RCA_RISK] };
+        if (item.label === "CAPAs Identification" && stage.capas !== false) return { ...item, links: RCA_ACTIONS.map((row) => row.id) };
+        return item;
+      }),
+    })),
+  };
+}
+
+/* ===================================================== the manager's views
+ * The quality manager's side of the same dataset, drawn from the 16 Sep
+ * 2026 recordings of the quality manager's home and the Findings and CAPA
+ * dashboard: "corrective actions by how long they have been open, open
+ * audit findings", a chart you click through to the records behind a bar,
+ * a record opened over the chart with the assistant's reminder in its
+ * thread, and the owner tagged from there. Numbers are this page's own. */
+const CAPA_AGING: ArcadeChart = {
+  title: "Average age of open CAPAs",
+  unit: "Days open",
+  bars: [
+    { label: "M. Osei", values: [9] },
+    { label: "R. Iyer", values: [8.5] },
+    { label: "S. Okafor", values: [7] },
+    { label: "J. Rivera", values: [6.67] },
+    { label: "L. Danes", values: [6] },
+    { label: "R. Mehta", values: [5] },
+  ],
+  max: 10,
+  ticks: [0, 2, 4, 6, 8, 10],
+};
+const FINDINGS_BY_SEVERITY: ArcadeChart = {
+  title: "Open Audit Finding by Severity",
+  series: [
+    { label: "Non-Conformance", tone: "indigo" },
+    { label: "Opportunity for Improvement (OFI)", tone: "teal" },
+    { label: "Observation", tone: "rose" },
+  ],
+  bars: [
+    { label: "Minor", values: [4, 3, 2] },
+    { label: "Major", values: [2, 1, 1] },
+    { label: "Critical", values: [1, 0, 0] },
+  ],
+  max: 10,
+  ticks: [0, 2, 4, 6, 8, 10],
+};
+
+/* the quality manager's home: Quality Events, Quick Start, what needs you */
+export const QM_HOME: NonNullable<ArcadeFlowWorld["home"]> = {
+  section: "Quality Events",
+  cards: [
+    { link: "CAPA aging", updated: "a few seconds ago", chart: CAPA_AGING },
+    { link: "Open Audit Findings", updated: "32 minutes ago", chart: FINDINGS_BY_SEVERITY },
+  ],
+  quickStart: [
+    { title: "Start New", buttons: ["Document", "Non-Conformance", "Change Control", "CAR"] },
+    { title: "Start New", buttons: ["New Supplier Request", "Inspection"] },
+  ],
+  lists: [
+    {
+      title: "Documents that needs your attention",
+      rows: ["Document #214: SOP-214 Rev C · periodic review", "Document #118: SOP-118 Rev D · acknowledgement", "Document #031: WI-31 · retraining"],
+      more: "+ 12 more",
+    },
+  ],
+  shortcuts: [{ title: "Audit", button: "Audit" }],
+};
+
+/* the saved dashboards, "Findings and CAPA" open */
+export const QM_DASHBOARDS: NonNullable<ArcadeFlowWorld["dashboards"]> = {
+  list: [
+    { name: "1. [CXO] Non-Conformances and CARs", by: "L. Navarro" },
+    { name: "2. [CXO] Documents, Change and Training", by: "L. Navarro" },
+    { name: "3. [Quality Manager] Non-Conformances and CARs", by: "D. Fontaine" },
+    { name: "4. [Quality Manager] Documents, Change and Training", by: "D. Fontaine" },
+    { name: "5. [Shop Floor] Non-Conformances and CARs", by: "M. Osei" },
+    { name: "Supplier Management", by: "S. Okafor" },
+    { name: "Findings and CAPA", by: "D. Fontaine" },
+  ],
+  active: "Findings and CAPA",
+  by: "D. Fontaine",
+  cards: [
+    FINDINGS_BY_SEVERITY,
+    {
+      title: "Overdue Corrective Action by Owner",
+      kind: "donut",
+      slices: [
+        { label: "M. Osei", value: 4, tone: "rose" },
+        { label: "R. Iyer", value: 3, tone: "amber" },
+        { label: "S. Okafor", value: 1, tone: "indigo" },
+        { label: "J. Rivera", value: 1, tone: "teal" },
+        { label: "L. Danes", value: 1, tone: "green" },
+      ],
+    },
+    CAPA_AGING,
+    {
+      title: "Audit by Department",
+      series: [
+        { label: "Non-Conformance", tone: "indigo" },
+        { label: "Opportunity for Improvement (OFI)", tone: "teal" },
+        { label: "Observation", tone: "rose" },
+      ],
+      bars: [
+        { label: "Production", values: [3, 2, 1] },
+        { label: "Quality", values: [1, 1, 1] },
+        { label: "Maintenance", values: [2, 0, 1] },
+        { label: "Warehouse", values: [1, 1, 0] },
+        { label: "Engineering", values: [0, 1, 1] },
+      ],
+      max: 8,
+      ticks: [0, 2, 4, 6, 8],
+    },
+  ],
+};
+
+/* AUD-12's majors, drilled from the Major bar */
+export const QM_FINDINGS_REPORT: ArcadeReport = {
+  chart: FINDINGS_BY_SEVERITY,
+  updated: "a few seconds ago",
+  results: "2 Results",
+  create: "New Finding",
+  filters: ["Severity: Major", "Audit: AUD-12"],
+  columns: ["#", "Finding", "Clause", "Status", "Owner", "Due date", "Corrective action"],
+  rows: [
+    {
+      cells: ["F-3", "Coating check skipped on line 2", "§7.5.6", "Implementation", "M. Osei", "Fri", "CAPA-618"],
+      status: { label: "Implementation", tone: "pending", reminder: true },
+      target: true,
+    },
+    {
+      cells: ["F-6", "Supplier certificate expired", "§7.4.1", "Completed", "S. Okafor", "12 Sep", "CAPA-615"],
+      status: { label: "Completed", tone: "done" },
+    },
+  ],
+};
+
+/* CAPA-618 opened over the report: the reminder already in its thread,
+ * and the owner tagged from the record */
+export const QM_CAPA_MODAL: ArcadeModal = {
+  over: "report",
+  noun: "Corrective Action",
+  id: "#618",
+  title: "Coating check skipped on line 2",
+  state: "Implementation",
+  tone: "pending",
+  reminder: true,
+  owner: "M. Osei",
+  participants: 3,
+  due: "Fri",
+  thread: [
+    { kind: "date", text: "Sep 22" },
+    { kind: "event", who: "You", text: "started this conversation" },
+    { kind: "updates", count: 5, open: true },
+    { kind: "event", who: "You", text: "added", strong: "L. Danes" },
+    { kind: "message", who: "Unifize Assistant", assistant: true, time: "Sep 29", mention: "M. Osei", text: "this corrective action is due in the next 7 days.", link: "Turn off reminders" },
+    { kind: "date", text: "Today" },
+  ],
+  composer: { mention: "M. Osei", text: "any update on this" },
+};
+
 /* ============================================================ PF-7 world
  * NC-204 at disposition: the decision, the engineering concession, and the
  * handoff to production, all inside the record. */
-const NC_DISPO_WORLD: ArcadeFlowWorld = {
+export const NC_DISPO_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Non-conformance",
   owner: "J. Rivera",
@@ -192,7 +371,7 @@ const NC_DISPO_WORLD: ArcadeFlowWorld = {
         { label: "Options considered", note: "Rework · use-as-is · scrap" },
         {
           label: "Recommendation",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Rework lot 118-B to spec. Nozzle serviced; re-inspect 100% before release.",
           note: "Entered on the record",
         },
@@ -270,7 +449,7 @@ const CAPA_WORLD: ArcadeFlowWorld = {
         { label: "Root cause analysis", note: "5-Why · interviews attached" },
         {
           label: "Root cause statement",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Seal spec drift at supplier lot level",
           note: "Entered on the CAPA",
         },
@@ -356,7 +535,7 @@ const SCAR_WORLD: ArcadeFlowWorld = {
 /* ============================================================ PF-2 world
  * AUD-12: the annual ISO 13485 audit the Quality Manager runs from schedule
  * notification to the Part 11 sign-off, tracked on the live dashboard. */
-const AUDIT_WORLD: ArcadeFlowWorld = {
+export const AUDIT_WORLD: ArcadeFlowWorld = {
   team: "Engineering Industries",
   recordNoun: "Audit",
   owner: "D. Fontaine",
@@ -410,7 +589,7 @@ const AUDIT_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Observations",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Coating check skipped on line 2 · photo 12 attached",
           note: "Captured on mobile",
         },
@@ -447,10 +626,18 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       eventDetail: "4 photos and 3 readings attached at the source · live before leaving the line",
       checklist: "CAPTURE & EVIDENCE",
       checklistItems: ["Photos and measurements", "Part and order context", "Problem description"],
-      focus: "record",
+      /* the recording's first beat: "we start a non-conformance from the
+       * home screen", a title and an owner, and the record is created */
+      focus: "start",
+      startNew: {
+        noun: "Non-conformance",
+        title: "#204: Coating thickness out of spec · line 2",
+        owner: "J. Rivera",
+        participants: ["J. Rivera", "M. Osei"],
+      },
       focusTitle: "Captured at the point of detection",
       focusRows: ["Captured on mobile · Line 2", "Evidence attached at the source"],
-      focusAction: "Open live record",
+      focusAction: "Create",
       ownershipNote: "Point of detection · in-process check",
       world: NC_CAPTURE_WORLD,
       checklistOpen: "CAPTURE & EVIDENCE",
@@ -632,74 +819,79 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       focusRows: ["S. Okafor · Process Engineering · required", "M. Osei · Production · required", "L. Danes · Maintenance · optional"],
       focusAction: "Add to record thread",
       ownershipNote: "Contribute when they can, in context",
-      world: NC_RCA_WORLD,
+      world: rcaWorld({}),
       checklistProgress: { "PROBLEM & PARTICIPANTS": 1, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      /* the problem statement written from what is already on the record:
-       * "everyone downstream is working off the same version" */
+      /* "Generate Problem Description (Beta)": the problem statement is
+       * written straight into the field from what is already on the record,
+       * "so everyone downstream is working off the same version" */
       source: "PF-6 s2 · problem description generated from the record",
       ghost: "Describe",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Investigation",
-      actor: "Unifize Assistant",
-      event: "Drafted the problem description from the record",
-      eventDetail: "Evidence, part context and history already captured · nobody retypes it · accepted by J. Rivera",
+      actor: "You",
+      event: "Generated the problem description from the record",
+      eventDetail: "Written from the evidence, part context and history already captured",
       checklist: "PROBLEM & PARTICIPANTS",
-      checklistItems: ["Problem description"],
+      checklistItems: ["Problem Description"],
       focus: "checklist",
       poseVariant: "ask",
-      focusTitle: "Problem description",
+      focusTitle: "Problem Description",
       focusRows: ["Photos and measurements", "Part and order context", "Prior events"],
-      ownershipNote: "Drafted by AI, accepted by a person",
-      world: NC_RCA_WORLD,
+      ownershipNote: "Pressed by the investigator",
+      world: rcaWorld({ problem: true }),
       checklistOpen: "PROBLEM & PARTICIPANTS",
-      checklistAsk: { section: "PROBLEM & PARTICIPANTS", item: "Generate problem description" },
+      checklistAsk: { section: "PROBLEM & PARTICIPANTS", item: "Generate Problem Description" },
+      checklistFilled: { section: "PROBLEM & PARTICIPANTS", items: ["Problem Description"] },
       checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 0, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      /* each Why is generated from the last; the investigator picks one and
-       * it lands as a linked Why record: "the chain builds instead of
-       * starting from a blank box" */
+      /* "Generate Why 3 (Beta)" asks from Why 2; the suggestion lands as the
+       * investigator's own message, three options in one "choose only one"
+       * row; only the investigator picks the one that fits and adds it, and
+       * the pick becomes its own Why record ("Why (Level 3)", no owner yet) */
       source: "PF-6 s3 · the Why chain, one pick per level",
       ghost: "Analyse",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Investigation",
-      actor: "Unifize Assistant",
-      event: "Why 3, asked from Why 2",
-      eventDetail: "Three candidates against the evidence · only an investigator picks the one that fits",
+      actor: "You",
+      event: "Asked AI suggestion for Generate Why 3",
+      eventDetail: "Only an investigator picks the one that fits",
       checklist: "ANALYSIS · 5-WHY",
-      checklistItems: ["Why 3 (choose only one)"],
+      checklistItems: ["Why 3 (Choose only one)"],
       focus: "assist",
       poseVariant: "linked",
       focusTitle: "Why 3",
       focusRows: WHY_CHAIN.slice(0, 3).map((row) => `${row.id} · ${row.title}`),
       ownershipNote: "The chain builds, level by level",
-      world: NC_RCA_WORLD,
+      world: rcaWorld({ problem: true }),
       checklistOpen: "ANALYSIS · 5-WHY",
       checklistLinks: {
         section: "ANALYSIS · 5-WHY",
-        item: "Why 3 (choose only one)",
+        item: "Why 3 (Choose only one)",
         links: ["WHY-3"],
-        records: [WHY_CHAIN[2]],
+        records: [{ ...WHY_CHAIN[2], state: "Pending", tone: "review", owner: "No Owner" }],
       },
-      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 4, "ROOT CAUSE STATEMENT": 0 },
+      checklistFilled: { section: "ANALYSIS · 5-WHY", items: ["Why 3 (Choose only one)"] },
+      inboxNew: [{ title: WHY_CHAIN[2].title, detail: "Me: Filled a checklist", kind: "Why (Level 3) · WHY-3", owner: "No Owner", state: "Pending" }],
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 5, "ROOT CAUSE STATEMENT": 0 },
       assist: {
-        kicker: "UNIFIZE AI · BETA",
-        prompt: "Why did the nozzle deliver low flow?",
-        note: "Asked from Why 2 · answered against the maintenance log and the thickness trend",
-        pick: "one",
-        suggested: [
-          { id: "A", title: "Nozzle wear past its service interval", why: "Log confirms", picked: true },
-          { id: "B", title: "Coating viscosity drifted between batches", why: "No batch change" },
-          { id: "C", title: "Operator ran a shortened spray pass", why: "Unsupported" },
+        field: "Generate Why 3",
+        rows: [
+          {
+            label: "Why 3 (Choose only one)",
+            options: [
+              { text: "Nozzle wear past its service interval, so the spray delivered low flow on line 2.", picked: true },
+              { text: "Coating viscosity drifted between batches and was not re-checked at the line." },
+              { text: "The spray pass was shortened on the night shift and not caught at inspection." },
+            ],
+          },
         ],
-        action: "Add to checklist",
-        alt: "Ask again",
         pressed: true,
       },
     },
@@ -714,7 +906,7 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       event: "Put the root cause to the participants",
       eventDetail: "Confirm or challenge in the thread, against the evidence and the Why chain · disputes resolve in context",
       checklist: "ANALYSIS · 5-WHY",
-      checklistItems: ["Why 4 · Why 5"],
+      checklistItems: ["Why 5 (Choose only one)"],
       focus: "review",
       focusTitle: "Root cause consensus",
       focusRows: [
@@ -725,75 +917,66 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       focusAction: "Confirm root cause",
       focusAlts: ["Challenge in thread"],
       ownershipNote: "No second scheduled meeting",
-      world: {
-        ...NC_RCA_WORLD,
-        checklistSections: NC_RCA_WORLD.checklistSections.map((section) =>
-          section.title === "ANALYSIS · 5-WHY"
-            ? {
-                ...section,
-                items: section.items.map((item) =>
-                  item.label === "Why 3 (choose only one)"
-                    ? { ...item, links: ["WHY-3"] }
-                    : item.label === "Why 4 · Why 5"
-                      ? { ...item, links: ["WHY-4", "WHY-5"] }
-                      : item,
-                ),
-              }
-            : section,
-        ),
-      },
+      world: rcaWorld({ problem: true, whys: 5 }),
       checklistOpen: "ANALYSIS · 5-WHY",
-      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 5, "ROOT CAUSE STATEMENT": 0 },
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 7, "ROOT CAUSE STATEMENT": 0 },
     },
     {
-      /* one click drafts the root cause, the risk and the corrective actions
-       * from what the record already holds; "nothing is saved until the
-       * investigator accepts it", and what is accepted becomes records
-       * with owners and due dates, tracked like everything else */
-      source: "PF-6 s5 · Build with AI, accepted into records",
+      /* "Build with AI (Beta)" under "Generate Risk analysis and CAPAs":
+       * one suggestion carries the root cause analysis, the risk and the
+       * corrective actions, each record with its embedded fields; "nothing
+       * is saved until the investigator actually accepts it", and what is
+       * added becomes records with owners and due dates, "tracked the same
+       * way everything else is tracked" */
+      source: "PF-6 s5 · Build with AI, added as records",
       ghost: "Record",
       type: "Non-conformance",
       id: "#204",
       title: "Coating thickness out of spec",
       status: "Cause Agreed",
-      actor: "Unifize Assistant",
-      event: "Drafted the root cause, the risk and two corrective actions",
-      eventDetail: "From the Why chain and the evidence · accepted by J. Rivera · two actions now have owners and due dates",
+      actor: "You",
+      event: "Asked AI suggestion for Generate Risk analysis and CAPAs",
+      eventDetail: "Added by J. Rivera · two actions now have owners and due dates",
       checklist: "ROOT CAUSE STATEMENT",
-      checklistItems: ["Root cause analysis", "Corrective actions"],
+      checklistItems: ["Root cause analysis", "CAPAs Identification"],
       focus: "assist",
       poseVariant: "linked",
       focusTitle: "Build with AI",
       focusRows: RCA_ACTIONS.map((row) => `${row.id} · ${row.title}`),
-      ownershipNote: "Drafted by AI, accepted by a person, tracked as records",
-      world: {
-        ...NC_RCA_WORLD,
-        checklistSections: NC_RCA_WORLD.checklistSections.map((section) =>
-          section.title === "ANALYSIS · 5-WHY"
-            ? { ...section, items: section.items.map((item) => (item.kind === "linked" && !item.links?.length ? { ...item, links: item.label.startsWith("Why 3") ? ["WHY-3"] : ["WHY-4", "WHY-5"] } : item)) }
-            : section,
-        ),
-      },
+      ownershipNote: "Suggested by AI, added by a person, tracked as records",
+      world: rcaWorld({ problem: true, whys: 5, built: true, capas: false }),
       checklistOpen: "ROOT CAUSE STATEMENT",
       checklistLinks: {
         section: "ROOT CAUSE STATEMENT",
-        item: "Corrective actions",
+        item: "CAPAs Identification",
         links: RCA_ACTIONS.map((row) => row.id),
         records: RCA_ACTIONS,
       },
-      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 5, "ROOT CAUSE STATEMENT": 3 },
+      checklistFilled: { section: "ROOT CAUSE STATEMENT", items: ["Root cause analysis", "Risk Analysis", "CAPAs Identification"] },
+      checklistScroll: 200,
+      inboxNew: [
+        { title: RCA_ACTIONS[1].title, detail: "Me: Assigned L. Danes as the owner", kind: "Corrective Action · CA-1073", owner: "L. Danes", state: "Pending" },
+        { title: RCA_ACTIONS[0].title, detail: "Me: Assigned M. Osei as the owner", kind: "Corrective Action · CA-1072", owner: "M. Osei", state: "Pending" },
+      ],
+      checklistProgress: { "PROBLEM & PARTICIPANTS": 3, "ANALYSIS · 5-WHY": 7, "ROOT CAUSE STATEMENT": 4 },
       assist: {
-        kicker: "UNIFIZE AI · BETA",
-        prompt: "Generate root cause, risk and corrective actions",
-        note: "Drafted from Why 1 to Why 5, the maintenance log and the severity · a suggestion until accepted",
-        fields: [
-          { label: "Root cause", value: "Nozzle wear past service interval; the line 2 rebuild change did not carry the service interval onto the maintenance plan.", picked: true },
-          { label: "Risk", value: "Repeat under-thickness on any line rebuilt without a maintenance plan review · Major", picked: true },
-          { label: "Corrective action", value: "Containment · sort and re-coat lot 118-B · Corrective", picked: true },
-          { label: "Corrective action", value: "Add nozzle service to the line 2 maintenance plan · Preventive", picked: true },
+        field: "Generate Risk analysis and CAPAs",
+        rows: [
+          { label: "Root cause analysis", value: RCA_ROOT_CAUSE, picked: true },
+          {
+            label: "Risk",
+            picked: true,
+            records: [{ title: RCA_RISK.title, fields: [{ label: "Risk Category", value: "Process" }] }],
+          },
+          {
+            label: "CAPAs Identification",
+            picked: true,
+            records: [
+              { title: RCA_ACTIONS[0].title, fields: [{ label: "Type of action", value: "Corrective" }] },
+              { title: RCA_ACTIONS[1].title, fields: [{ label: "Type of action", value: "Preventive" }] },
+            ],
+          },
         ],
-        action: "Accept into the record",
-        alt: "Edit first",
         pressed: true,
       },
     },
@@ -1574,7 +1757,12 @@ const QMS_FLOW_STEP_SCENES: Record<string, ArcadeStepConfig[]> = {
       eventDetail: "Notifications fire when responses are due or overdue · no chasing spreadsheet",
       checklist: "CLOSURE",
       checklistItems: ["Responses tracked"],
-      focus: "dashboard",
+      focus: "report",
+      report: QM_FINDINGS_REPORT,
+      chartHover: {
+        bar: "Major",
+        lines: ["Non-Conformance, Major, 2", "Opportunity for Improvement (OFI), Major, 1", "Observation, Major, 1"],
+      },
       focusTitle: "Closure aging",
       focusRows: [
         "CAPA-618 · response due Friday",
@@ -1689,12 +1877,17 @@ export const QMS_MODULE_ARCADE_CONFIGS: Record<string, ArcadeStepConfig> = {
     eventDetail: "Findings linked to clauses · majors routed to CAPA with context preserved",
     checklist: "CLOSURE",
     checklistItems: ["Routed corrective actions", "Responses tracked"],
-    focus: "dashboard",
-    focusTitle: "Closure aging",
+    focus: "dashboards",
+    focusTitle: "Findings and CAPA",
     focusRows: ["CAPA-618 · response due Friday", "2 action items closed this week", "1 overdue · escalated with rationale"],
     focusAction: "Review the programme",
     ownershipNote: "Due and overdue notify by themselves",
-    world: AUDIT_WORLD,
+    world: { ...AUDIT_WORLD, dashboards: QM_DASHBOARDS },
+    chartHover: {
+      card: "Open Audit Finding by Severity",
+      bar: "Critical",
+      lines: ["Non-Conformance, Critical, 1", "Opportunity for Improvement (OFI), Critical, 0", "Observation, Critical, 0"],
+    },
   },
   "supplier-quality": {
     source: "PF-11 s11 · SCAR exchange",
@@ -1845,6 +2038,28 @@ const QMS_HERO_CLOSE_STEP: ArcadeStepConfig = {
   checklistProgress: { INVESTIGATION: 3, "ACTION PLAN": 3, EFFECTIVENESS: 3 },
 };
 
+const QMS_HERO_MEASURE_STEP: ArcadeStepConfig = {
+  source: "QM home · 16 Sep 2026 recording · CAPA aging",
+  ghost: "Measure",
+  type: "CAPA",
+  id: "#612",
+  title: "Recurring seal failure",
+  status: "Monitoring",
+  actor: "automator",
+  event: "Corrective actions, by how long they have been open",
+  eventDetail: "Every bar opens the records behind it",
+  checklist: "EFFECTIVENESS",
+  checklistItems: ["Review window"],
+  focus: "queue",
+  focusTitle: "CAPA aging",
+  focusRows: ["M. Osei · 9 days open"],
+  ownershipNote: "The quality manager's home",
+  world: { ...CAPA_WORLD, viewer: "D. Fontaine", viewerInitials: "DF", home: QM_HOME },
+  homeCard: "CAPA aging",
+  chartHover: { bar: "M. Osei", lines: ["Days open, M. Osei, 9"] },
+  checklistProgress: { INVESTIGATION: 3, "ACTION PLAN": 3, EFFECTIVENESS: 1 },
+};
+
 export const QMS_HERO_STEPS: HeroArcadeStep[] = [
   {
     label: "Build it",
@@ -1861,10 +2076,12 @@ export const QMS_HERO_STEPS: HeroArcadeStep[] = [
     icon: "contain",
     config: QMS_FLOW_STEP_SCENES["5"][4],
   },
+  /* the cause is found the way the product finds it: Why 3 generated,
+   * the investigator picks the one that fits (PF-6 s3, Beta) */
   {
-    label: "Agree the cause",
+    label: "Find the cause",
     icon: "cause",
-    config: QMS_FLOW_STEP_SCENES["6"][3],
+    config: QMS_FLOW_STEP_SCENES["6"][2],
   },
   {
     label: "Fix it",
@@ -1878,9 +2095,10 @@ export const QMS_HERO_STEPS: HeroArcadeStep[] = [
     icon: "sign",
     config: QMS_HERO_CLOSE_STEP,
   },
+  /* the quality manager's own home, CAPA aging first (16 Sep recording) */
   {
     label: "Measure it",
     icon: "measure",
-    config: QMS_FLOW_STEP_SCENES["3"][7],
+    config: QMS_HERO_MEASURE_STEP,
   },
 ];

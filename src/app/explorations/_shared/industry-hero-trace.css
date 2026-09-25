@@ -56,7 +56,7 @@
 /* ================================================================ the card */
 .mdt-card {
   position: absolute;
-  top: 100px;
+  top: 82px; /* centres the ~540px change card in the 700px scene */
   left: 200px;
   width: 400px;
   padding: 18px 20px 16px;
@@ -280,6 +280,10 @@
 }
 
 .mdt-chip__stack { display: flex; flex-direction: column; gap: 3px; }
+.mdt-chip .mdt-chip__cap { white-space: nowrap; }
+.mdt-swap { display: inline-grid; }
+.mdt-swap > span { grid-area: 1 / 1; }
+.mdt-swap > .is-hidden { visibility: hidden; }
 .mdt-chip__line { font-size: 12.5px; font-weight: 600; color: var(--mdt-ink); white-space: nowrap; }
 
 /* the regulatory frame: rule toggles, all on */
@@ -381,7 +385,7 @@
 .mdt-chip--seal {
   top: 380px;
   right: 0;
-  width: 186px;
+  width: max-content;
   align-items: center;
 }
 .mdt-seal {
@@ -395,7 +399,7 @@
   transition: background-color 400ms var(--mdt-ease), color 400ms var(--mdt-ease), box-shadow 400ms var(--mdt-ease);
 }
 .mdt-seal svg { width: 15px; height: 15px; }
-.mdt-chip--seal .mdt-chip__line { white-space: normal; color: var(--mdt-muted); transition: color 400ms var(--mdt-ease); }
+.mdt-chip--seal .mdt-chip__line { color: var(--mdt-muted); transition: color 400ms var(--mdt-ease); }
 .mdt-chip--seal.is-on .mdt-seal { background: var(--mdt-blue); box-shadow: none; color: #fff; }
 .mdt-chip--seal.is-on .mdt-chip__line { color: var(--mdt-ink); }
 
@@ -703,7 +707,7 @@
 
 .mdt__scene--sponsors .mdt-chip--train { right: auto; left: 0; }
 .mdt__scene--sponsors .mdt-chip--frame { left: 30px; top: 230px; }
-.mdt__scene--sponsors .mdt-chip--seal { top: 300px; width: 176px; }
+.mdt__scene--sponsors .mdt-chip--seal { top: 300px; }
 .mdt__scene--sponsors .mdt-chip--mdr { left: auto; right: 10px; bottom: 16px; }
 
 .mdt__scene--control .mdt-chip--frame { left: 30px; top: 180px; }
@@ -948,7 +952,7 @@
 .mhk-req li.is-on .mhk-req__text { animation: mdt-in 360ms var(--mdt-ease); }
 
 .mdt__scene--file .mdt-chip--frame { left: auto; right: 6px; top: 290px; }
-.mdt__scene--file .mdt-chip--seal { right: auto; left: 0; top: 190px; width: 176px; }
+.mdt__scene--file .mdt-chip--seal { right: auto; left: 0; top: 190px; }
 .mdt__scene--file .mdt-chip--mdr { left: 20px; bottom: 36px; }
 
 @media (max-width: 767px) {
@@ -1019,7 +1023,7 @@
 .mdt__scene--trace .mdt-chip--train { right: auto; left: 0; top: 0; }
 .mdt__scene--trace .mdt-chip--mdr { left: auto; right: 0; top: 14px; bottom: auto; }
 .mdt__scene--trace .mdt-chip--frame { left: auto; right: 0; top: 420px; }
-.mdt__scene--trace .mdt-chip--seal { right: auto; left: 0; top: 540px; width: 186px; }
+.mdt__scene--trace .mdt-chip--seal { right: auto; left: 0; top: 540px; }
 
 @media (max-width: 767px) {
   .mdt-card--trace { left: 0; width: 440px; }
@@ -1074,7 +1078,7 @@
 
 .mdt__scene--identity .mdt-chip--train { right: auto; left: 0; top: 20px; }
 .mdt__scene--identity .mdt-chip--frame { left: 0; top: 400px; }
-.mdt__scene--identity .mdt-chip--seal { right: 0; top: 30px; width: 196px; }
+.mdt__scene--identity .mdt-chip--seal { right: 0; top: 30px; }
 .mdt__scene--identity .mdt-chip--mdr { left: auto; right: 0; bottom: 60px; }
 
 @media (max-width: 767px) {
@@ -1170,7 +1174,7 @@
 
 .mdt__scene--eightd .mdt-chip--frame { left: auto; right: 0; top: 60px; }
 .mdt__scene--eightd .mdt-chip--train { right: auto; left: 0; top: 330px; }
-.mdt__scene--eightd .mdt-chip--seal { right: 0; top: 470px; width: 190px; }
+.mdt__scene--eightd .mdt-chip--seal { right: 0; top: 470px; }
 .mdt__scene--eightd .mdt-chip--mdr { left: 30px; bottom: auto; top: 30px; }
 
 @media (max-width: 767px) {
@@ -1256,7 +1260,7 @@
 
 .mdt__scene--fai .mdt-chip--train { right: auto; left: 0; top: 250px; }
 .mdt__scene--fai .mdt-chip--frame { left: 20px; top: 20px; }
-.mdt__scene--fai .mdt-chip--seal { right: 0; top: 0; width: 196px; }
+.mdt__scene--fai .mdt-chip--seal { right: 0; top: 0; }
 .mdt__scene--fai .mdt-chip--mdr { left: auto; right: 0; bottom: 30px; }
 
 @media (max-width: 767px) {
@@ -1341,7 +1345,7 @@
 
 .mdt__scene--fat .mdt-chip--train { right: auto; left: 0; top: 440px; }
 .mdt__scene--fat .mdt-chip--frame { left: auto; right: 0; top: 150px; }
-.mdt__scene--fat .mdt-chip--seal { right: auto; left: 0; top: 20px; width: 196px; }
+.mdt__scene--fat .mdt-chip--seal { right: auto; left: 0; top: 20px; }
 .mdt__scene--fat .mdt-chip--mdr { left: auto; right: 0; top: 10px; bottom: auto; }
 
 @media (max-width: 767px) {

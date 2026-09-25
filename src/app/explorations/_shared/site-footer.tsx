@@ -65,7 +65,7 @@ export function SiteFooter({
     byMenu(menu).cols!.map((c) => ({ heading: c.heading, links: c.items.map(pick) }));
   const products = [...byMenu("products").items!.map(pick), { label: "The platform", href: "/platform" }];
   const resources = [...byMenu("resources").items!.map(pick), { label: "All resources", href: "/resources" }];
-  const company = [{ label: "About us", href: "/about" }, { label: "Book a demo", href: "#demo" }];
+  const company = [{ label: "About", href: "/about" }, { label: "Book a demo", href: "#demo" }];
 
   return (
     <footer className="sft">

@@ -8,9 +8,13 @@
  * The world is the page's own canonical story - change control CC-2148, the
  * sterilization SOP change (SOP-118 Rev C → D, PLM ECO-441) that the old
  * ChatShell thread played. Names and facts mirror that script: L. Martin
- * raises it, the impact assessment binds, R. Kapoor closes the
- * cross-functional review, P. Ramesh approves with a Part 11 e-signature,
- * and the record seals under 21 CFR 820.40.
+ * (Device Engineering) raises it, the impact assessment binds, J. Sato
+ * (design authority) approves the design review, R. Kapoor (Regulatory
+ * Affairs) closes the cross-functional review, P. Ramesh (Quality) approves
+ * with a Part 11 e-signature, and the record seals under 21 CFR 820.35.
+ * 24 Sep 2026: one role per name across the whole page (panel finding), and
+ * citations on the QMSR numbering (Part 820 incorporates ISO 13485 since
+ * 2 Feb 2026), so no old QSR section numbers.
  *
  * Two mounts:
  *   HeroArcade          - the hero product shot, cycling poses on a timer.
@@ -35,8 +39,8 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
   recordNoun: "Change Control",
   owner: "L. Martin",
   ownerInitials: "LM",
-  participants: ["LM", "RK", "+3"],
-  participantsLabel: "L. Martin, R. Kapoor, and three others",
+  participants: ["LM", "JS", "+3"],
+  participantsLabel: "L. Martin, J. Sato, and three others",
   recordKicker: "CHANGE CONTROL",
   context: {
     initials: "LM",
@@ -57,7 +61,7 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Reason for change",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Supplier material change · update sterilization hold time",
           note: "Entered on the request",
         },
@@ -70,15 +74,16 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
       items: [
         { label: "Risk file reviewed", note: "RA-067 · ISO 14971" },
         { label: "Document redline", kind: "revision", from: "Rev C · effective", to: "Rev D · draft" },
-        { label: "Training impact", note: "Line 2 · 2 roles" },
+        { label: "Training impact", note: "Line 2 · 12 operators" },
       ],
     },
     {
       title: "APPROVAL & RELEASE",
       items: [
+        { label: "Design review · Engineering", kind: "approval", signer: "J. Sato", state: "Approved" },
         { label: "Cross-functional review", kind: "approval", signer: "R. Kapoor", state: "Approved" },
         { label: "Quality approval · Part 11", kind: "approval", signer: "P. Ramesh", state: "Signed" },
-        { label: "Audit trail", note: "Sealed · 21 CFR 820.40" },
+        { label: "Audit trail", note: "Sealed · 21 CFR 820.35" },
       ],
     },
   ],
@@ -155,7 +160,7 @@ export const TRACE_STEPS: TraceStep[] = [
       checklistItems: [
         "SOP-118 · Sterilization · Rev C → D",
         "Risk file RA-067 · ISO 14971",
-        "Training impact · Line 2 · 2 roles",
+        "Training impact · Line 2 · 12 operators",
       ],
       focus: "trace",
       focusTitle: "Impact assessment bound",
@@ -169,8 +174,8 @@ export const TRACE_STEPS: TraceStep[] = [
     },
   },
   {
-    t: "Cross-functional review",
-    who: "Quality",
+    t: "Design and cross-functional review",
+    who: "Engineering · RA",
     when: "T+5d",
     zoom: 1.3,
     config: {
@@ -182,14 +187,14 @@ export const TRACE_STEPS: TraceStep[] = [
       status: "In Review",
       actor: "Unifize Assistant",
       event: "Assembled the cross-functional review",
-      eventDetail: "Engineering and Manufacturing on one thread · comment resolved inline",
+      eventDetail: "Design review and Regulatory on one thread · comment resolved inline",
       checklist: "APPROVAL & RELEASE",
-      checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
+      checklistItems: ["Design review · Engineering", "Cross-functional review", "Quality approval · Part 11"],
       focus: "review",
       focusTitle: "Cross-functional review",
       focusRows: [
-        "Engineering · Approved",
-        "Manufacturing · Approved",
+        "Design review · J. Sato · Approved",
+        "Regulatory · R. Kapoor · Approved",
         "Hold-time comment · Resolved inline",
       ],
       focusAction: "Approve redline",
@@ -197,7 +202,7 @@ export const TRACE_STEPS: TraceStep[] = [
       ownershipNote: "The redline stays on the record",
       world: CHANGE_WORLD,
       checklistOpen: "APPROVAL & RELEASE",
-      checklistProgress: { "APPROVAL & RELEASE": 1 },
+      checklistProgress: { "APPROVAL & RELEASE": 2 },
     },
   },
   {
@@ -216,7 +221,7 @@ export const TRACE_STEPS: TraceStep[] = [
       event: "Re-authenticated for regulated approval",
       eventDetail: "Signer, meaning and time seal to CC-2148",
       checklist: "APPROVAL & RELEASE",
-      checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
+      checklistItems: ["Design review · Engineering", "Cross-functional review", "Quality approval · Part 11"],
       focus: "signature",
       focusTitle: "Apply your signature",
       focusRows: [],
@@ -224,14 +229,15 @@ export const TRACE_STEPS: TraceStep[] = [
       ownershipNote: "Identity re-verified · 21 CFR Part 11",
       world: APPROVER_WORLD,
       checklistOpen: "APPROVAL & RELEASE",
-      checklistProgress: { "APPROVAL & RELEASE": 1 },
+      checklistProgress: { "APPROVAL & RELEASE": 2 },
       signedItems: [
+        { name: "J. Sato", initials: "JS", role: "Design review", approvalId: "2B08A2148C17", time: "Sep 12" },
         { name: "R. Kapoor", initials: "RK", role: "Cross-functional review", approvalId: "4C21B2148A90", time: "Sep 13" },
       ],
     },
   },
   {
-    t: "Record sealed · 21 CFR 820.40",
+    t: "Record sealed · 21 CFR 820.35",
     who: "Unifize",
     when: "T+9d",
     zoom: 1,
@@ -244,7 +250,7 @@ export const TRACE_STEPS: TraceStep[] = [
       status: "Approved",
       actor: "automator",
       event: "Published Rev D and sealed the trace",
-      eventDetail: "Rev C retired · training cascade complete · 21 CFR 820.40",
+      eventDetail: "Rev C retired · design review filed to the DHF · 21 CFR 820.35",
       checklist: "APPROVAL & RELEASE",
       checklistItems: ["Cross-functional review", "Quality approval · Part 11", "Audit trail"],
       focus: "history",
@@ -252,8 +258,8 @@ export const TRACE_STEPS: TraceStep[] = [
       focusTitle: "One sealed decision trace",
       focusRows: [
         "CC-2148 · Approved · trace sealed",
-        "SOP-118 Rev D live · Rev C retired",
-        "Training cascade · Line 2 · 14/14",
+        "SOP-118 Rev D live · design review in DHF",
+        "Training cascade · Line 2 · 12/12",
       ],
       ownershipNote: "Reconstructable at audit",
       world: CHANGE_WORLD,
@@ -360,7 +366,7 @@ export function MdHeroArcade() {
  * reader takes over. */
 const DESKTOP_PIN = "(min-width: 1025px)";
 
-/* a regulation reference never breaks across lines ("Part 11", "21 CFR 820.40"),
+/* a regulation reference never breaks across lines ("Part 11", "21 CFR 820.35"),
  * and a separator dot stays on the line it closes */
 const keepRefs = (t: string) =>
   t.replace(/\b(Part|CFR|\d+) (?=\d|CFR)/g, "$1\u00a0").replace(/ ·/g, "\u00a0·");

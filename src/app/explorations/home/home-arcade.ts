@@ -78,7 +78,7 @@ const QUALITY_EVENT_WORLD: ArcadeFlowWorld = {
         { label: "Part and order context", note: "PRT-4412 · WO-8817 · ERP" },
         {
           label: "Problem description",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Coating 38.1 µm on housing face, spec 45-55. Photos 1-4 attached.",
           note: "References attached evidence",
         },
@@ -335,7 +335,7 @@ const OPS_HOLD_WORLD: ArcadeFlowWorld = {
       items: [
         {
           label: "Decision",
-          kind: "field",
+          kind: "field", input: "rich",
           value: "Rework to spec on line 2, re-inspect before release.",
           note: "Entered on the record",
         },

@@ -1,0 +1,38 @@
+{
+  "personaId": "vp-quality-medical-devices",
+  "firstImpression": "The hero reads like someone has sat through a change-control audit: six affected records, Part 11 signatures, 820 and 14971 on the card. So this is not a generic workflow tool, and I'll give it another thirty seconds.",
+  "comprehension": "A layer that sits next to my validated eQMS, ERP and PLM and replaces the email, meetings and spreadsheets where cross-functional decisions get made. It ties one change, CAPA or complaint to every record it touches (DMR, risk file, PQ, supplier agreement, labeling, training), captures Part 11 approvals along the way, and seals that as the audit trail, so nobody has to rebuild it when an investigator asks. They sell it as solutions: CAPA, change control, supplier and post-market.",
+  "resonance": 2,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "Strong. 'Your QMS approves the change. Not the six records it touches.' is a gap I actually have. The card shows DMR, ISO 14971 risk file, PQ, contract sterilizer QA and IFU across 14 markets, which is the real blast radius of a sterilization change. Two logos I don't recognise.", "aboutMyWork": "yes"},
+    {"section": "01", "reaction": "'The decision lives in the thread' sets off my first worry straight away: will an auditor accept a chat thread as the record? The five-step flow ending in 'Record sealed · 21 CFR 820.40' helps a bit. The inbox and checklist mock-up is a user's view, not mine.", "aboutMyWork": "partly"},
+    {"section": "02", "reaction": "The quality leadership seat is me: 'answers for the trace when the investigator is in the room.' Accurate. The other seats are my team's work. The headline about reconstruction is exactly how my audit programme runs today.", "aboutMyWork": "yes"},
+    {"section": "03", "reaction": "Useful for my QM's comparison. CAPA, change, supplier and complaint/MDR cover the table stakes. I didn't see document control or training named as core here, and 'Start with the one that costs you most' implies a partial rollout.", "aboutMyWork": "partly"},
+    {"section": "04", "reaction": "The section I came for. Coexistence and Part 11 are stated plainly, which I credit. But 'not one you have to re-validate' sits badly next to 'IQ/OQ/PQ ... walked through with your CSV team'. If it holds Part 11 signatures, it gets validated. Tell me what that takes, don't promise me a meeting.", "aboutMyWork": "yes"},
+    {"section": "05", "reaction": "The 483 item 'Sterilization change: rationale not shown' is the kind of observation that ends up in my board update. The MDR 30-day and recall clocks are real. This is my buying trigger drawn on the page.", "aboutMyWork": "yes"},
+    {"section": "06", "reaction": "'$0.9M to $10M' is too wide a range to take to my CEO. Per-event figures of a few hundred dollars make the problem look small. I can't defend headcount with these.", "aboutMyWork": "partly"},
+    {"section": "07", "reaction": "The 41% figure against a signed baseline is the most useful number on the page, but it's anonymized. Nearly all the stories come from one company, Harmonic Bionics, and one person. I want three device logos, not seven clips from one.", "aboutMyWork": "partly"},
+    {"section": "close", "reaction": "'Pick a decision you could not replay at the last audit ... we will reconstruct it live' is a confident offer and it tempts me. 'Incumbents track documents' still doesn't tell me how this differs from MasterControl's change module.", "aboutMyWork": "yes"}
+  ],
+  "seeMyself": "Most clearly in the quality leadership seat: 'Owns release confidence, and answers for the trace when the investigator is in the room.' Also in 'When the investigator is in the room, someone reconstructs it.' and in the 483 card ('820.100 CAPA-2140 effectiveness unverified'). Section 04 speaks to my objections directly. The page drifts to other people's work in the 01 product mock-up ('My Conversations 24', 'Reply to Change Control CC-2148… Send'), which is an engineer's inbox, and in the Operations and Engineering seats. I consume roll-ups, and nowhere on the page is there a management-review or site-level view of open changes, CAPAs and deadlines. That is the view I would actually use.",
+  "examplesRead": "Illustrative. One scenario (CC-2148, SOP-118 Rev C to D, RA-067, PQ-31, CAPA-2140, CMP-311, Lot 22-114, 'L. Martin', 'P. Ramesh') is carried through every section, so it reads as a worked example, not customer data. It hangs together well. A sterilization change after a pouch seal complaint is plausible, and following one case helped me understand the product more than a feature list would. It does little for trust, because it is clearly staged, and the same names turn up in different seats (L. Martin is engineering in 02 and complaints in 03; R. Kapoor is both RA and supplier quality). The 483 citations use the old QSR section numbers ('820.70(b)', '820.198'). I'd want my RA lead to check whether that framing is current. The only customer-grade evidence is '41% lower non-conformance coordination cost ... Signed baseline, anonymized'. It is credible in form but has no name.",
+  "objections": [
+    "Validation posture is hedged: 'not one you have to re-validate' against a promised 'validation review'. What is the CSV package, and how long does it take?",
+    "An auditor accepting a thread as the record. 'The decision lives in the thread' puts my biggest worry in the headline.",
+    "Thin device proof: one anonymized metric, and customer stories that mostly come from one company and one person. There are no recognisable device logos to put beside MasterControl or Greenlight.",
+    "'Decision trace' and 'coordination tax' are category terms presented as settled fact. The cost range is too wide to take to the exec team."
+  ],
+  "missing": [
+    "A plain validation and migration statement: what Unifize provides (validation package, Part 11 assessment), and typical time to go live alongside an existing eQMS",
+    "Two or three named device customers with a number each, preferably a clean FDA inspection or a 483 closed faster",
+    "A VP-level view: the management-review roll-up or site-wide trace dashboard I would open, not an engineer's inbox"
+  ],
+  "nextAction": "share-internally",
+  "demoWillingness": 6,
+  "verbatims": [
+    "Whoever wrote the sterilization change card has lived one. I'll give them that.",
+    "You say I don't have to re-validate, then you offer me an IQ/OQ/PQ review. Which is it?",
+    "Send this to my QM, ask her to find out what the validation package looks like, and see if they'll replay our last CAPA the way they're offering."
+  ],
+  "confidence": "high"
+}

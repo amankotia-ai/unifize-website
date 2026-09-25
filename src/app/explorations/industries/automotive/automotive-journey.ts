@@ -3,7 +3,17 @@
  * request → the PFMEA, control plan and PSW linked to it → the APQP route
  * across Quality, Program and Manufacturing → Customer Quality's
  * e-signature on the PPAP → the sealed trace. Vocabulary from the Notion
- * row (APQP, PPAP, PSW, PFMEA, control plan, IATF 16949). */
+ * row (APQP, PPAP, PSW, PFMEA, control plan, IATF 16949).
+ * 24 Sep 2026, the page's one story: ECR-3180 is the D5 corrective action
+ * of the hero's 8D (8D-4402, a warranty return on the mounting bracket,
+ * root cause at the weld flange's material gauge), so every section below
+ * plays the same bracket. Cast, one role per name:
+ *   M. Hoffmann  Product Engineering, raised ECR-3180
+ *   S. Lindqvist Quality, the 8D and the PFMEA
+ *   D. Brooks    Customer Quality, the PSW to the OEM
+ *   T. Reyes     Program, launch timing
+ *   J. Novak     Manufacturing, the suspect stock and the welding cell
+ *   H. Mueller   Layered process audit */
 import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
 import { cast, onRecord } from "../_shared/industry-journey";
 
@@ -19,11 +29,11 @@ const WORLD: ArcadeFlowWorld = {
     initials: "MH",
     name: "M. Hoffmann",
     time: "08:25",
-    message: "Design change needed on a production part.",
-    detail: "Design change · PPAP resubmission likely",
+    message: "8D-4402 D5: the bracket's weld flange needs the thicker gauge.",
+    detail: "Material change · PPAP resubmission likely",
   },
   inboxNeighbors: [
-    { title: "Customer 8D", time: "09:10", detail: "Field return · in the response window", kind: "Quality event" },
+    { title: "Customer 8D · 8D-4402", time: "09:10", detail: "Bracket field return · in the response window", kind: "Quality event" },
     { title: "Layered process audit", time: "Yesterday", detail: "Shift 2 · control plan check", kind: "Audit" },
     { title: "Supplier PPAP", time: "Mon", detail: "Sub-tier part · PSW pending", kind: "Supplier" },
   ],
@@ -32,8 +42,8 @@ const WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE REQUEST",
       items: [
-        { label: "Reason for change", kind: "field", value: "Design change on a production part" },
-        { label: "Part", note: "Production part · current PPAP" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Thicker weld flange gauge · 8D-4402 D5" },
+        { label: "Part", note: "Mounting bracket · current PPAP" },
         { label: "Customer notification", note: "Required under IATF 16949" },
       ],
     },

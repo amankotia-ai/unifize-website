@@ -1,0 +1,38 @@
+{
+  "personaId": "coo-vp-operations-pharma-cdmo",
+  "firstImpression": "A device-industry change-control page written for the quality team; the only line that sounds like my job is a small hold card two scrolls down, on a page for an industry I don't operate in.",
+  "comprehension": "A workflow layer that sits alongside the QMS, ERP and PLM, where cross-functional decisions like change controls, CAPAs, complaints and supplier changes run on one record with Part 11 signatures. The pitch is that it replaces email and meetings, not my systems of record. Here it's framed for medical device makers.",
+  "resonance": 1,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "'Your QMS approves the change. Not the six records it touches.' That's the quality VP's problem, not mine. The card is a sterilization SOP change with a risk file, IFU and 510(k) references: device world. 'CDMOs' is in there, but device CDMOs.", "aboutMyWork": "no"},
+    {"section": "01", "reaction": "'The decision lives in the thread, not the status field.' A conceptual argument with an inbox and checklist drawing. No throughput, no cycle time. This is the point where I'd normally stop.", "aboutMyWork": "no"},
+    {"section": "02", "reaction": "Skimmed the seats and stopped at the last one: 'HOLD Lot 22-114 ... Waiting on CC-2148 ... Released the hour CC-2148 closes', 'Owns whether decisions move at all, and signs for the cost when they don't.' That is my job, but it's fifth in line behind quality, engineering, RA and validation.", "aboutMyWork": "partly"},
+    {"section": "03", "reaction": "CAPA, change control, suppliers, complaints/MDR. A menu of quality solutions. Didn't read closely.", "aboutMyWork": "no"},
+    {"section": "04", "reaction": "Validation reassurance for the CSV team. The line that matters to me is 'sits alongside the QMS, ERP, PLM', and MES isn't on that list.", "aboutMyWork": "partly"},
+    {"section": "05", "reaction": "MDR deadlines, recall scope, 483 response. Regulatory clocks. I don't own those; my clock is the customer's ship date.", "aboutMyWork": "no"},
+    {"section": "06", "reaction": "Jumped here looking for a number. '$0.9M to $10M' is too wide a range to be anyone's number. '$285 – $907' per CAPA is a unit cost, not an operating impact. Nothing on holds, WIP days or on-time delivery.", "aboutMyWork": "partly"},
+    {"section": "07", "reaction": "'41% lower non-conformance coordination cost' against a 'signed $198,150 baseline' is the most credible thing on the page, but it's small and anonymized, and the videos are engineers and quality leads. No operations executive speaks.", "aboutMyWork": "no"},
+    {"section": "close", "reaction": "'Pick a decision you could not replay at the last audit.' Audit framing again. An offer to reconstruct one of my holds would have been a different conversation.", "aboutMyWork": "no"}
+  ],
+  "seeMyself": "Only in one card in section 02: 'HOLD Lot 22-114 · Line 2 · sterilization · Waiting on CC-2148 · Released the hour CC-2148 closes' and 'Operations: Owns whether decisions move at all, and signs for the cost when they don't.' That's my pain exactly: product sitting on a hold while a decision waits on someone. Everything else is someone else's work. The hero and section 01 are the quality/engineering change owner's job ('Incumbents track document status'). 05 is regulatory affairs ('MDR / vigilance reporting deadline', 'owned by Regulatory Affairs'). 04 is the CSV team's. The whole thing is a medical-device page; I run pharma cGMP manufacturing, so 510(k), IFU, EO cycle and MDR are outside my world.",
+  "examplesRead": "Clearly illustrative: CC-2148, SOP-118, Lot 22-114, CMP-311, the 483 items ('820.70(b) Sterilization change: rationale not shown') and people like 'L. Martin' and 'M. Osei' are one consistent made-up scenario. That's fine and doesn't hurt trust, since I'm not taking it as customer data. It helped a little: I could follow one change from complaint to hold to release. But it's a device scenario, so it made the page feel less like mine. The real-data lines are separate: 'Customer-attested ... $81,350 a year recovered against a signed $198,150 baseline' reads as real and is the one thing I'd trust. The 'Harmonic Bionics' video titles are real customers but quality/engineering voices.",
+  "objections": [
+    "This is quality's tool and quality's meeting. The operations angle is one card out of five.",
+    "Wrong industry for me: device regulations throughout, nothing on cGMP batch disposition, deviations holding batch release, or client-driven changes at a CDMO.",
+    "Numbers aren't in operations terms. '$0.9M to $10M' and per-event dollar ranges aren't hold days, cycle time, throughput or OTD. Whose number is it?",
+    "Coexistence names QMS, ERP, PLM and LIMS but not MES, and nothing says whether it adds work for the floor."
+  ],
+  "missing": [
+    "One operations proof point stated in my units: hold-to-release days or disposition cycle time before and after, ideally from a manufacturer, with how it was measured.",
+    "A pharma CDMO version of this story: batch on hold, deviation or client change pending, disposition waiting, released when the record closes. Near the top, not fifth.",
+    "An explicit line on floor impact and MES/ERP coexistence: no new screens for operators, hold status flows from the record."
+  ],
+  "nextAction": "bounce",
+  "demoWillingness": 2,
+  "verbatims": [
+    "Released the hour CC-2148 closes. Fine, that's the only line here about me. Why is it fifth?",
+    "Point nine to ten million isn't a number, it's a shrug. What does this do to my holds?",
+    "This is a device page for the quality team. If it's worth anything, it's worth it to our VP Quality, and I'm not forwarding a device page to a pharma QA head."
+  ],
+  "confidence": "medium"
+}

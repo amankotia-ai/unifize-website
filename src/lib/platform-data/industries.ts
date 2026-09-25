@@ -50,7 +50,7 @@ export const INDUSTRIES: Record<string, IndustryPageData> = {
         persona: "VP R&D / NPI Program Director",
         anchor: "Then in Product Development.",
         weight: "deep",
-        href: "/domains/product-development",
+        href: "/solution/new-product-development",
       },
       {
         num: "03",
@@ -61,7 +61,7 @@ export const INDUSTRIES: Record<string, IndustryPageData> = {
         persona: "Supplier Quality Director",
         anchor: "And in Supplier Management.",
         weight: "deep",
-        href: "/domains/supplier-management",
+        href: "/solution/supplier-management",
       },
       {
         num: "04",
@@ -72,7 +72,7 @@ export const INDUSTRIES: Record<string, IndustryPageData> = {
         persona: "Head of Regulatory Affairs",
         anchor: "In Regulatory Affairs.",
         weight: "light",
-        href: "/domains/regulatory-affairs",
+        href: "/solution/regulatory-affairs",
       },
       {
         num: "05",
@@ -83,7 +83,7 @@ export const INDUSTRIES: Record<string, IndustryPageData> = {
         persona: "VP Quality / Chief Medical Officer",
         anchor: "And it does not stop in Post-Market.",
         weight: "light",
-        href: "/domains/post-market-and-recall",
+        href: "/solution/post-market-and-recall",
       },
     ],
     /* Product Personas — source of truth: Notion Industries record

@@ -61,7 +61,7 @@
 
 import { MD_PROOF } from "@/lib/platform-data/medical-devices-canonical";
 import type { DomainPageData } from "../_shared/types";
-import type { ArcadeFlowWorld } from "../../products/_shared/arcade/arcade";
+import type { ArcadeFlowWorld, ArcadeStepConfig } from "../../products/_shared/arcade/arcade";
 
 /* ------------------------------------------------------------------------
  * The live arcade journey: CC-2148 as its owner lives it, one pose per
@@ -95,7 +95,7 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
     {
       title: "CHANGE REQUEST",
       items: [
-        { label: "Reason for change", kind: "field", value: "Supplier material change · update sterilization hold time", note: "Entered on the request" },
+        { label: "Reason for change", kind: "field", input: "rich", value: "Supplier material change · update sterilization hold time", note: "Entered on the request" },
         { label: "Affected document", note: "SOP-118 · Sterilization · Rev C" },
         { label: "Engineering change", note: "PLM ECO-441 · linked" },
       ],
@@ -106,6 +106,11 @@ const CHANGE_WORLD: ArcadeFlowWorld = {
         { label: "Risk file reviewed", note: "RA-067 · ISO 14971" },
         { label: "Document redline", kind: "revision", from: "Rev C · effective", to: "Rev D · draft" },
         { label: "Training impact", note: "Line 2 · 2 roles" },
+        /* the product's AI button and the two fields it fills (16 Sep 2026
+         * recording of "What else does this change affect? (Beta)") */
+        { label: "Assess impacted documents", kind: "ask", value: "What else does this change affect?", note: "Beta" },
+        { label: "AI impact summary", kind: "field", input: "rich", value: "1.Sterilizer load configuration 2.Sterilization cycle record" },
+        { label: "Impacted document records", kind: "linked", links: ["WI-212", "FRM-118A"], placeholder: "+ Add Document" },
       ],
     },
     {
@@ -127,6 +132,23 @@ const CHANGE_APPROVER_WORLD: ArcadeFlowWorld = {
   viewerInitials: "PR",
 };
 
+/* the documents the AI suggestion names, and the record before a person
+ * adds it: summary empty, nothing linked */
+const IMPACTED = [
+  { id: "WI-212", title: "Sterilizer load configuration · Rev B" },
+  { id: "FRM-118A", title: "Sterilization cycle record · Rev A" },
+];
+const IMPACT_SUMMARY = IMPACTED.map((row) => row.title.split(" · ")[0]);
+const CHANGE_WORLD_ASKING: ArcadeFlowWorld = {
+  ...CHANGE_WORLD,
+  checklistSections: CHANGE_WORLD.checklistSections.map((section) => ({
+    ...section,
+    items: section.items.map((item) =>
+      item.label === "AI impact summary" ? { ...item, value: undefined } : item.label === "Impacted document records" ? { ...item, links: [] } : item,
+    ),
+  })),
+};
+
 /* the constants every pose of the journey shares */
 const CHANGE_REC = {
   type: "Change Control",
@@ -134,6 +156,87 @@ const CHANGE_REC = {
   title: "Sterilization SOP change",
   world: CHANGE_WORLD,
 } as const;
+
+/* the hero's three moments (16 Sep 2026 recording of the change control
+ * with AI impact), on this page's own record */
+const CHANGE_HERO_BASE = {
+  ...CHANGE_REC,
+  checklist: "IMPACT ASSESSMENT",
+  checklistItems: ["Assess impacted documents"] as string[],
+  focusRows: IMPACTED.map((row) => `${row.id} · ${row.title}`),
+  ownershipNote: "One record from the first decision",
+};
+const CHANGE_HERO: { label: string; caption: string; config: ArcadeStepConfig }[] = [
+  {
+    label: "Start",
+    caption: "Start the change from home: a title, an owner, the people it needs",
+    config: {
+      ...CHANGE_HERO_BASE,
+      source: "Change control · start from home (16 Sep 2026 recording)",
+      ghost: "Start",
+      status: "Draft",
+      actor: "You",
+      event: "Started the change control from home",
+      eventDetail: "Title, owner and participants",
+      focus: "start",
+      focusTitle: "Start new Change Control",
+      startNew: { noun: "Change Control", title: "CC-2148: Sterilization SOP change", owner: "L. Martin", participants: ["L. Martin", "R. Kapoor"] },
+      world: { ...CHANGE_WORLD_ASKING, homeTiles: [{ label: "My change controls", count: 3 }, { label: "Pending approvals", count: 2 }, { label: "Documents", count: 6 }] },
+      checklistProgress: { "CHANGE REQUEST": 0, "IMPACT ASSESSMENT": 0, "APPROVAL & EFFECTIVITY": 0 },
+    },
+  },
+  {
+    label: "Assess",
+    caption: "One click in the checklist: the procedures this change puts at risk",
+    config: {
+      ...CHANGE_HERO_BASE,
+      source: "Change control · AI suggestion (16 Sep 2026 recording)",
+      ghost: "Assess",
+      status: "Open",
+      actor: "You",
+      event: "Asked AI suggestion for Assess impacted documents",
+      eventDetail: "Nothing lands until a person adds it",
+      focus: "assist",
+      poseVariant: "suggest",
+      focusTitle: "AI impact summary",
+      world: CHANGE_WORLD_ASKING,
+      checklistOpen: "IMPACT ASSESSMENT",
+      checklistAsk: { section: "IMPACT ASSESSMENT", item: "Assess impacted documents" },
+      checklistScroll: 130,
+      checklistProgress: { "CHANGE REQUEST": 3, "IMPACT ASSESSMENT": 4, "APPROVAL & EFFECTIVITY": 0 },
+      assist: { field: "Assess impacted documents", rows: [{ label: "AI impact summary", list: IMPACT_SUMMARY }] },
+    },
+  },
+  {
+    label: "Approve",
+    caption: "Approval requested: the assistant tags the approver on the record",
+    config: {
+      ...CHANGE_HERO_BASE,
+      source: "Change control · approval requested (16 Sep 2026 recording)",
+      ghost: "Approve",
+      status: "Needs Approval",
+      actor: "Unifize Assistant",
+      event: "@P. Ramesh this is ready for approval",
+      eventDetail: "Posted when L. Martin requested approval",
+      checklist: "APPROVAL & EFFECTIVITY",
+      checklistItems: ["VP Quality · Part 11"],
+      focus: "comment",
+      focusTitle: "Approval requested",
+      focusRows: ["VP Quality · waiting on P. Ramesh"],
+      history: [
+        {
+          actor: "You",
+          name: "L. Martin",
+          time: "Day 2",
+          message: "Asked AI suggestion for Assess impacted documents",
+          detail: "AI impact summary · WI-212, FRM-118A added to the checklist",
+        },
+      ],
+      checklistOpen: "APPROVAL & EFFECTIVITY",
+      checklistProgress: { "APPROVAL & EFFECTIVITY": 1 },
+    },
+  },
+];
 
 export const CHANGE_CONTROL_DATA: DomainPageData = {
   slug: "change-control",
@@ -416,21 +519,36 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         },
         {
           ...CHANGE_REC,
-          source: "DK · CC-2148 · bind",
-          ghost: "Bind",
+          source: "DK · CC-2148 · impact, AI impact (16 Sep 2026 recording)",
+          ghost: "Assess",
           status: "Open",
-          actor: "automator",
-          event: "Bound the impact assessment to the record",
-          eventDetail: "Documents, risk and training scoped in one pass",
+          actor: "You",
+          event: "Asked AI suggestion for Assess impacted documents",
+          eventDetail: "Ticked and added by L. Martin",
           checklist: "IMPACT ASSESSMENT",
-          checklistItems: ["SOP-118 · Sterilization · Rev C → D", "Risk file RA-067 · ISO 14971", "Training impact · Line 2 · 2 roles"],
-          focus: "trace",
-          focusTitle: "Impact assessment bound",
-          focusRows: ["Everything the change touches", "3 records linked"],
-          focusAction: "Open evidence chain",
-          ownershipNote: "Scoped by rule, not by memory",
+          checklistItems: ["AI impact summary", "Impacted document records"],
+          focus: "assist",
+          poseVariant: "linked",
+          focusTitle: "AI impact summary",
+          focusRows: IMPACTED.map((row) => `${row.id} · ${row.title}`),
+          ownershipNote: "Suggested by AI, added by the owner",
+          world: {
+            ...CHANGE_WORLD,
+            checklistSections: CHANGE_WORLD_ASKING.checklistSections.map((section) => ({
+              ...section,
+              items: section.items.map((item) => (item.label === "AI impact summary" ? { ...item, value: IMPACT_SUMMARY.map((l, i) => `${i + 1}.${l}`).join(" ") } : item)),
+            })),
+          },
           checklistOpen: "IMPACT ASSESSMENT",
-          checklistProgress: { "IMPACT ASSESSMENT": 2, "APPROVAL & EFFECTIVITY": 0 },
+          checklistLinks: { section: "IMPACT ASSESSMENT", item: "Impacted document records", links: IMPACTED.map((row) => row.id), records: IMPACTED },
+          checklistFilled: { section: "IMPACT ASSESSMENT", items: ["AI impact summary", "Impacted document records"] },
+          checklistScroll: 130,
+          checklistProgress: { "IMPACT ASSESSMENT": 6, "APPROVAL & EFFECTIVITY": 0 },
+          assist: {
+            field: "Assess impacted documents",
+            rows: [{ label: "AI impact summary", list: IMPACT_SUMMARY, picked: true }],
+            pressed: true,
+          },
           related: 3,
         },
         {
@@ -496,6 +614,10 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
           related: 3,
         },
       ],
+      /* the hero walks the recording's own order: the change started from
+       * home, the AI suggestion in the thread, and the assistant tagging
+       * the approver once approval is requested */
+      hero: CHANGE_HERO,
     },
   },
 
@@ -720,7 +842,6 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
         label: "Where the reasoning used to go missing",
         body: "The design review, the approval thread and the redline on the shared drive stop being where the decision lives. What was reviewed and what was accepted move onto the change.",
       },
-      flows: { contextIn: "THE REVISION IN", back: "PART 11 SIGNED", captured: "THE REVIEW CAPTURED", linked: "THE CHANGE, LINKED" },
       back: "One record per change, the evidence bound, and only the approved revision goes back, with a 21 CFR Part 11 signature.",
     },
   },
@@ -794,8 +915,8 @@ export const CHANGE_CONTROL_DATA: DomainPageData = {
       { name: "Document & records control", note: "Live · the DMS product", href: "/products/dms" },
       { name: "Training & competency", note: "Live · the DMS product", href: "/products/dms" },
       { name: "Product development", note: "Live · the PLM product", href: "/products/plm" },
-      { name: "Quality", note: "Solution page live", href: "/domains/quality" },
-      { name: "Supplier management", note: "Solution page", href: "/domains/supplier-management" },
+      { name: "Quality", note: "Solution page live", href: "/solution/quality" },
+      { name: "Supplier management", note: "Solution page", href: "/solution/supplier-management" },
     ],
   },
 

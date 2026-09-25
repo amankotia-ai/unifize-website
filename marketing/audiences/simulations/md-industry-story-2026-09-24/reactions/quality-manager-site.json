@@ -1,0 +1,38 @@
+{
+  "personaId": "quality-manager-site",
+  "firstImpression": "The headline hits a nerve, and the first screen is an actual change control record with its six affected records, owners and statuses, which is a lot more than most vendor pages show me.",
+  "comprehension": "A workflow layer that sits next to my existing eQMS, ERP and PLM. It runs change controls, CAPAs, complaints and supplier changes as single records with a conversation thread, a checklist and Part 11 sign-offs, and it links every downstream record the change touches (risk file, validation, labeling, training, supplier agreement) so the audit trail builds as the work happens instead of being pieced together later.",
+  "resonance": 2,
+  "sectionsRead": [
+    {"section": "hero", "reaction": "Good. CC-2148 with SPEC-204, RA-067, PQ-31, QA-12, the IFU and 12 operators on training is exactly the fan-out I chase by hand. I read the record before the headline.", "aboutMyWork": "yes"},
+    {"section": "01", "reaction": "The thread plus the checklist ('Completion 2 / 3', 'R. Kapoor Pending', 'P. Ramesh Pending') is the closest I've got to seeing the product actually do my process. 'Reconstructs the decision trace' is a bit abstract. Show me who gets nudged when R. Kapoor sits on it.", "aboutMyWork": "yes"},
+    {"section": "02", "reaction": "'When the investigator is in the room, someone reconstructs it' is me. The seat cards are fine, but I'd skim them. My seat is 'Quality leadership' and it gets one line.", "aboutMyWork": "partly"},
+    {"section": "03", "reaction": "CAPA-2140 opened from the complaint spike and raising CC-2148 is a believable chain. The supplier '15 of 18' evidence tracker is nice. Too many sub-module names, though.", "aboutMyWork": "yes"},
+    {"section": "04", "reaction": "'Coexistence, not replacement' answers my first question, which was whether this replaces my QMS or sits on top of it. But 'replaces the ungoverned channels (email...)' just tells me it's another place to check.", "aboutMyWork": "partly"},
+    {"section": "05", "reaction": "The 483 items (820.100 CAPA effectiveness unverified, 820.198 complaint file incomplete) are the real stuff. Clocks I recognise.", "aboutMyWork": "yes"},
+    {"section": "06", "reaction": "'$0.9M to $10M' coordination tax is too wide a range to be useful. Per-event dollar numbers aren't how I argue a case to my VP. I skimmed it.", "aboutMyWork": "partly"},
+    {"section": "07", "reaction": "Mostly one customer, Harmonic Bionics, and mostly one person. The 41% / $81,350 against a signed baseline is interesting but anonymous.", "aboutMyWork": "partly"},
+    {"section": "close", "reaction": "'Pick a decision you could not replay at the last audit' and they reconstruct it live in 30 minutes. That's a concrete offer I could take to my VP.", "aboutMyWork": "yes"}
+  ],
+  "seeMyself": "Strongly in the hero and 01: 'Affected records 6 of 6 linked', 'Training 12 operators on SOP-118 Assigned', 'CAPA-2140 · effectiveness check due', 'PR Quality approval · Part 11 P. Ramesh Pending'. That's my week. Section 05's 483 lines ('820.100 CAPA-2140 effectiveness unverified') and the 02 line 'The reconstruction always lands on someone' land too. Less me: section 06's cost ledger ('Coordination tax, per device company per year $0.9M to $10M') reads like it's written for my VP or finance, and the Operations and Regulatory Affairs seat cards are other people's jobs. I don't see training-matrix or document-status spreadsheets addressed anywhere, even though the training cascade shows up in the hero.",
+  "examplesRead": "Illustrative. It's one invented, coherent scenario (a pouch seal breach, CMP-311, CAPA-2140, CC-2148, Lot 22-114, L. Martin / R. Kapoor / P. Ramesh) threaded through every section, not a customer's data. That helped, because it's internally consistent and uses correct clause numbers ('21 CFR 820.70', '820.198', '807.81(a)(3)'), so whoever wrote it knows device QA. It stretched a little when the same initials keep changing hats: L. Martin is engineering in 02 and complaints in 03, and R. Kapoor is Regulatory Affairs and also Supplier quality. The '483' items are clearly a staged example. Fine as illustration, but I noticed the cast recycling.",
+  "objections": [
+    "Another place to check: my team lives in Outlook and our eQMS already, so what stops this becoming a third inbox ('My Conversations 24')?",
+    "Who does the configuration and migration of our CC/CAPA forms, and how long does validation take? 'Walked through with your CSV team' tells me nothing about effort.",
+    "Does it actually chase overdue approvers and training for me? I see 'Pending' but no reminder or escalation.",
+    "Proof is thin: one named customer, mostly one voice, plus an anonymous ROI stat."
+  ],
+  "missing": [
+    "A short clip or screenshot sequence of a real CAPA going end to end, including the automatic reminder or escalation when a sign-off goes overdue",
+    "A plain answer on implementation: who configures it, typical timeline, what's validated vs what we validate, and how it links to our existing eQMS records",
+    "A second or third named device customer at my size, ideally with a quality manager talking about audit prep time"
+  ],
+  "nextAction": "share-internally",
+  "demoWillingness": 6,
+  "verbatims": [
+    "Finally a vendor page that shows the change fanning out to the risk file, the PQ and the training, not just a document status.",
+    "Okay, it sits on top of my QMS. But will it chase R. Kapoor, or will I?",
+    "I'd forward the 'reconstruct your worst audit decision in 30 minutes' offer to my VP. That's a test I'd enjoy watching them fail or pass."
+  ],
+  "confidence": "high"
+}

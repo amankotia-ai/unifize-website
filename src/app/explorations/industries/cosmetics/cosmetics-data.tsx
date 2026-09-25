@@ -24,8 +24,8 @@ export const COSMETICS: IndustryData = {
 
   hero: {
     crumb: "Cosmetics",
-    titleLead: "Your substantiation file says the product is safe.",
-    titleTurn: "Not why.",
+    titleLead: "The retailer asks for the safety file.",
+    titleTurn: "The missing COA lands on its lot.",
     sub: "Built for cosmetic and personal-care manufacturers under MoCRA, where safety substantiation, supplier COAs, and every formula change have to stay traceable, and hold up in a retailer audit or an FDA inquiry.",
     chips: ["MoCRA", "ISO 22716", "21 CFR 700 / 740", "21 CFR 330", "EU 1223/2009"],
     trustLabel: "Built for cosmetic and personal-care manufacturers",
@@ -224,11 +224,11 @@ export const COSMETICS: IndustryData = {
   cost: {
     heading: "The cost is real. It just never lands on a line you can see.",
     events: [
-      { name: "Formula change", coordination: "Propagates to substantiation, stability, specs, and claims", owner: "R&D / Quality", atRisk: "cycle time; a substantiation gap at audit" },
-      { name: "Safety substantiation assembly", coordination: "Quality, safety, and regulatory assemble evidence per SKU across tools", owner: "Quality / Safety", atRisk: "a delisting if the file is incomplete" },
-      { name: "Supplier COA management", coordination: "Quality and procurement chase and check COAs at receipt", owner: "Supplier Quality", atRisk: "material on hold; a missing certificate" },
-      { name: "Adverse event report", coordination: "Quality and regulatory reconstruct the hazard analysis under an FDA clock", owner: "Quality / Reg", atRisk: "the MoCRA reporting window; an FDA inquiry" },
-      { name: "MoCRA registration & listing", coordination: "Regulatory maintains facility registration and product listing as SKUs change", owner: "Regulatory", atRisk: "listing rejection; market access" },
+      { name: "Formula change", coordination: "Propagates to substantiation, stability, specs, and claims", owner: "R&D / Quality", atRisk: "cycle time; a substantiation gap at audit", story: "FRM-1180" },
+      { name: "Safety substantiation assembly", coordination: "Quality, safety, and regulatory assemble evidence per SKU across tools", owner: "Quality / Safety", atRisk: "a delisting if the file is incomplete", story: "Face cream file" },
+      { name: "Supplier COA management", coordination: "Quality and procurement chase and check COAs at receipt", owner: "Supplier Quality", atRisk: "material on hold; a missing certificate", story: "Preservative lot COA" },
+      { name: "Adverse event report", coordination: "Quality and regulatory reconstruct the hazard analysis under an FDA clock", owner: "Quality / Reg", atRisk: "the MoCRA reporting window; an FDA inquiry", story: "Consumer report" },
+      { name: "MoCRA registration & listing", coordination: "Regulatory maintains facility registration and product listing as SKUs change", owner: "Regulatory", atRisk: "listing rejection; market access", story: "Listing update" },
     ],
     consequences: [
       { type: "Cycle time", items: ["Long formula-change and substantiation cycle times", "Delayed launches and time to market"] },
@@ -295,10 +295,17 @@ export const COSMETICS: IndustryData = {
  * The product and the SKUs are illustrative, not a customer's; cursors carry
  * persona titles, not people.
  * ========================================================================== */
-const QA = { name: "QA Manager", tone: "#d97706" };
-const PLANT = { name: "Plant Manager", tone: "#2563eb" };
-const RP = { name: "Responsible Person (EU)", tone: "#7c3aed" };
-const SAFETY = { name: "Safety Assessor", tone: "#0f8f7e" };
+/* 24 Sep 2026, the one story (as on the MD, pharma, CRO, labs and chemicals
+ * pages): every artifact from the hero to the cost bill plays the leave-on
+ * face cream. FRM-1180 (01) revises its preservative system; the revised
+ * preservative's first lot arrives without a COA; the retailer audit asks
+ * for the file; the batch waits, the PIF is updated, and a consumer report
+ * is judged against the same hazard analysis. Cursors are the cast, one
+ * role per name (see cosmetics-journey.ts); still no metrics. */
+const FERREIRA = { name: "A. Ferreira", tone: "#d97706" };
+const ALVAREZ = { name: "G. Alvarez", tone: "#2563eb" };
+const NAIR = { name: "P. Nair", tone: "#7c3aed" };
+const WEBER = { name: "J. Weber", tone: "#0f8f7e" };
 
 export const COSMETICS_RAILS: IndustryRails = {
   /* the key element: the per-SKU safety substantiation file a retailer audit
@@ -320,8 +327,8 @@ export const COSMETICS_RAILS: IndustryRails = {
     ],
     gap: { tile: 0, label: "Missing for one lot", closed: "Tied to the lot" },
     request: [
-      { org: "Supplier Quality", text: "COA requested for the lot at receipt" },
-      { org: "Ingredient supplier", text: "COA sent, checked against spec", ext: true },
+      { org: "Supplier Quality", text: "COA requested for the revised preservative's lot" },
+      { org: "Preservative supplier", text: "COA sent, checked against spec", ext: true },
     ],
     sign: { idle: "Sign · e-signature", done: "Signed" },
     approvers: { label: "Quality · Safety · Regulatory" },
@@ -353,13 +360,13 @@ export const COSMETICS_RAILS: IndustryRails = {
         state: "File requested",
         title: "Safety substantiation file",
         rows: [
-          { label: "Ingredient COAs", meta: "Supplier Quality" },
-          { label: "Stability & challenge testing", meta: "R&D" },
-          { label: "Hazard analysis · CIR", meta: "Safety", open: true },
+          { label: "FRM-1180 substantiation", meta: "Complete" },
+          { label: "Hazard analysis · CIR", meta: "Safety" },
+          { label: "Preservative COA · one lot", meta: "Requested", open: true },
         ],
-        cursor: QA,
+        cursor: FERREIRA,
       },
-      go: { label: "See the quality solution →", href: "/domains/quality" },
+      go: { label: "See the quality solution →", href: "/solution/quality" },
     },
     operations: {
       viz: {
@@ -367,52 +374,51 @@ export const COSMETICS_RAILS: IndustryRails = {
         wash: "warm",
         stamp: "HOLD",
         lines: [
-          { k: "Batch", v: "Filled" },
-          { k: "Waiting on", v: "Micro results" },
+          { k: "Batch", v: "Face cream · filled" },
+          { k: "Waiting on", v: "Preservative COA" },
           { k: "Released by", v: "Quality" },
         ],
-        note: "Released on one thread, not an email chain",
-        cursor: PLANT,
+        note: "Released the hour the COA lands on its lot",
+        cursor: ALVAREZ,
       },
     },
     regulatory: {
       viz: {
         kind: "dossier",
         wash: "blue",
-        kicker: "EU PIF",
-        title: "Product Information File",
+        kicker: "EU PIF · face cream",
+        title: "Updated for FRM-1180",
         cite: "EC 1223/2009 · MoCRA listing",
-        state: "Current",
-        cursor: RP,
+        state: "Updating",
+        cursor: NAIR,
       },
-      go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+      go: { label: "Regulatory affairs →", href: "/solution/regulatory-affairs" },
     },
     "compliance-validation": {
       viz: {
         kind: "matrix",
         wash: "paper",
-        kicker: "Safety substantiation",
-        cols: ["COA", "Stability", "CIR"],
+        kicker: "Face cream · FRM-1180",
+        cols: ["COA", "Micro", "CIR"],
         rows: [
-          { name: "Face cream", cells: ["ok", "ok", "ok"] },
-          { name: "Shampoo", cells: ["ok", "due", "ok"] },
-          { name: "Body lotion", cells: ["gap", "ok", "due"] },
+          { name: "Current system", cells: ["ok", "ok", "ok"] },
+          { name: "Revised system", cells: ["gap", "ok", "ok"] },
         ],
-        cursor: SAFETY,
+        cursor: WEBER,
       },
     },
     engineering: {
       viz: {
         kind: "impact",
         wash: "sky",
-        source: { kicker: "Change", title: "Preservative system" },
+        source: { kicker: "FRM-1180", title: "Preservative system" },
         items: [
           { id: "STB", label: "Stability" },
           { id: "PCT", label: "Challenge test" },
           { id: "SSF", label: "Safety substantiation", open: true },
         ],
       },
-      go: { label: "See the change control solution →", href: "/domains/change-control" },
+      go: { label: "See the change control solution →", href: "/solution/change-control" },
     },
   },
 
@@ -426,16 +432,16 @@ export const COSMETICS_RAILS: IndustryRails = {
         viz: {
           kind: "form",
           wash: "sky",
-          kicker: "Batch record review",
+          kicker: "Face cream · first batch",
           title: "Executed batch record",
           fields: [
             { label: "Micro limits", value: "Within spec", select: true },
-            { label: "Stability", value: "Attached" },
-            { label: "Disposition", value: "Release", focus: true },
+            { label: "Preservative lot", value: "COA pending" },
+            { label: "Disposition", value: "Hold", focus: true },
           ],
-          cursor: QA,
+          cursor: FERREIRA,
         },
-        go: { label: "See the quality solution →", href: "/domains/quality" },
+        go: { label: "See the quality solution →", href: "/solution/quality" },
       },
       {
         domain: "supplier-management",
@@ -443,13 +449,13 @@ export const COSMETICS_RAILS: IndustryRails = {
         viz: {
           kind: "thread",
           wash: "paper",
-          kicker: "Certificate of analysis",
+          kicker: "COA · revised preservative",
           messages: [
-            { org: "Ingredient supplier", text: "COA for the lot at receipt", ext: true },
-            { org: "Supplier Quality", text: "Checked against spec, tied to the lot" },
+            { org: "Preservative supplier", text: "COA for the lot, sent on request", ext: true },
+            { org: "Supplier Quality", text: "Checked against spec, tied to the lot and FRM-1180" },
           ],
         },
-        go: { label: "See the supplier solution →", href: "/domains/supplier-management" },
+        go: { label: "See the supplier solution →", href: "/solution/supplier-management" },
       },
       {
         domain: "post-market-recall",
@@ -457,15 +463,15 @@ export const COSMETICS_RAILS: IndustryRails = {
         viz: {
           kind: "decision",
           wash: "warm",
-          kicker: "Adverse event report",
+          kicker: "Consumer report · face cream",
           steps: [
-            { q: "Serious adverse event?", a: "Yes" },
+            { q: "Serious adverse event?", a: "No" },
             { q: "Hazard analysis on file?", a: "Yes" },
           ],
-          outcome: "Report to FDA within 15 business days",
-          cursor: SAFETY,
+          outcome: "Not reportable · reasoning on FRM-1180's file",
+          cursor: WEBER,
         },
-        go: { label: "See the post-market solution →", href: "/domains/post-market-and-recall" },
+        go: { label: "See the post-market solution →", href: "/solution/post-market-and-recall" },
       },
       {
         domain: "regulatory-affairs",
@@ -473,25 +479,29 @@ export const COSMETICS_RAILS: IndustryRails = {
         viz: {
           kind: "lanes",
           wash: "blue",
-          kicker: "MoCRA registration & listing",
+          kicker: "MoCRA listing · FRM-1180",
           lanes: [
-            { name: "Facility registration", owner: "Regulatory", pct: 100 },
-            { name: "Product listing", owner: "Regulatory", pct: 72 },
-            { name: "Claim substantiation", owner: "Quality", pct: 48 },
+            { name: "Facility registration", owner: "P. Nair", pct: 100 },
+            { name: "Listing update", owner: "P. Nair", pct: 72 },
+            { name: "Claim support", owner: "Quality", pct: 48 },
           ],
         },
-        go: { label: "Regulatory affairs →", href: "/domains/regulatory-affairs" },
+        go: { label: "Regulatory affairs →", href: "/solution/regulatory-affairs" },
       },
     ],
   },
 
   lead: [
-    { name: "Serious adverse event report (SAER)", viz: "countdown", detail: ["15", "FDA · business days · MoCRA"] },
+    /* 24 Sep 2026: the three clocks the face cream story starts, each
+     * surface drawn from it: the retailer audit's file with the preservative
+     * COA missing, the preservative lot traced to the face cream batches it
+     * went into, and the PIF's Responsible Person copy still pre-FRM-1180 */
     {
       name: "Retailer audit exposes a substantiation gap",
       viz: "elements",
-      detail: ["Safety substantiation file", "Ingredient COAs", "Stability", "!Claim support", "Hazard analysis", "Preservative challenge"],
+      detail: ["Face cream file", "FRM-1180 stability", "Preservative challenge", "!Preservative lot COA", "Hazard analysis · CIR"],
     },
-    { name: "MoCRA product listing or registration rejected", viz: "alerts" },
+    { name: "Supplier COA missing at receipt", viz: "genealogy", detail: ["P-0412", "FC-2231", "FC-2232"] },
+    { name: "EU PIF or Responsible Person gap", viz: "revs", detail: ["EU PIF · face cream", "FRM-1180", "Before FRM-1180", "RP copy"] },
   ],
 };

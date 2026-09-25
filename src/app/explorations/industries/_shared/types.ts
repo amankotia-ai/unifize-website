@@ -105,6 +105,9 @@ export interface CoordinationEvent {
   owner: string;
   /** What is at risk while it stalls (cycle / deadline framing). */
   atRisk: string;
+  /** The page's story record this event is an instance of (24 Sep 2026,
+   *  the one-story pages), shown as a quiet mono tag beside the name. */
+  story?: string;
 }
 
 export interface ConsequenceGroup {

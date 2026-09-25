@@ -137,20 +137,38 @@ export function HomeProofReel({
       <ul className="hm-reel__track" ref={trackRef} aria-label="Customers on film">
         {lead ? (
           <li className="hm-reel__item hm-reel__item--lead">
-            <div className="hm-reel__card">
-              <span className="hm-reel__lead">
-                <span className="hm-reel__lead-lab">{lead.label}</span>
-                <span className="hm-reel__lead-stat">{lead.stat}</span>
-                <span className="hm-reel__lead-statlab">{lead.statLabel}</span>
-              </span>
-              <span className="hm-reel__caption">
-                <span className="hm-reel__who">
-                  {lead.who ? <strong>{lead.who}</strong> : null}
-                  <small>{lead.body}</small>
-                </span>
-                <span className="hm-reel__fact">{lead.footnote}</span>
-              </span>
-            </div>
+            {(() => {
+              const inner = (
+                <>
+                  <span className="hm-reel__lead">
+                    <span className="hm-reel__lead-lab">{lead.label}</span>
+                    <span className="hm-reel__lead-stat">{lead.stat}</span>
+                    <span className="hm-reel__lead-statlab">{lead.statLabel}</span>
+                  </span>
+                  <span className="hm-reel__caption">
+                    <span className="hm-reel__who">
+                      {lead.who ? <strong>{lead.who}</strong> : null}
+                      <small>{lead.body}</small>
+                    </span>
+                    <span className="hm-reel__fact">{lead.footnote}</span>
+                  </span>
+                </>
+              );
+              /* a lead attested on film opens that film, like the stills */
+              return lead.href ? (
+                <a
+                  className="hm-reel__card"
+                  href={lead.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${lead.stat} ${lead.statLabel}. ${lead.who ?? lead.body}. Opens the customer story.`}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div className="hm-reel__card">{inner}</div>
+              );
+            })()}
           </li>
         ) : null}
         {stills.map((s) => {
