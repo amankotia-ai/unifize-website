@@ -28,6 +28,16 @@
  * (usePannedConfig): the panels dim, the config swaps at the bottom of the
  * dip, and the pan carries the new record in. Reduced motion swaps
  * instantly, matching the disabled camera transition.
+ *
+ * Hero films (26 Sep 2026): a view can carry a film, a short video of its
+ * workflow performed in the window, filmed still in the window's own place
+ * (scripts/product-films/home-hero). From 768px up the film covers the
+ * window's rectangle with its own plate and grain; the wash around it is
+ * the stage's CSS, untouched. The tabs follow the film: it plays once,
+ * holds its finished result 1.5 s, then the next tab starts. A picked tab
+ * plays and holds its result; picking it again replays it. Under reduced
+ * motion, or when autoplay is refused, the film holds its finished frame.
+ * Phones keep the arcade (the hero's phone frame is the thread column).
  * -------------------------------------------------------------------------- */
 
 import { useEffect, useRef, useState } from "react";
@@ -37,6 +47,7 @@ import { ArcadeStepScene, type ArcadeStepConfig } from "../products/_shared/arca
 import { RibbonField } from "../products/_shared/arcade/ribbon-field";
 import { PlatformJourney, type PlatformJourneyStep } from "../platform/platform-interactive";
 import { NavGlyph, type IconName } from "../_shared/nav-data";
+import type { HomeHeroFilm } from "./hero-film-assets";
 
 export type HeroArcadeView = {
   key: string;
@@ -44,6 +55,8 @@ export type HeroArcadeView = {
   /* a solid glyph from the nav set in place of the tab number (22 Sep 2026) */
   icon?: IconName;
   config: ArcadeStepConfig;
+  /* the view's workflow as a film, shown in place of the window from 768px */
+  film?: HomeHeroFilm;
 };
 
 /* the record-swap dip: dim-out finishes on the 160ms panel transition in
@@ -70,12 +83,91 @@ function usePannedConfig(target: ArcadeStepConfig) {
 }
 
 const ADVANCE_MS = 6400;
+/* how long a finished film holds its result before the next tab */
+const FILM_HOLD_MS = 1500;
+/* films play from tablet up; phones keep the arcade's thread-column frame */
+const FILM_MEDIA = "(min-width: 768px)";
+
+type FilmPhase = "waiting" | "playing" | "ended" | "still";
+
+/* One hero film, mounted while its tab is active (so every visit plays it
+ * from the top). It reports its phase so the tabs can follow it, and plays
+ * only while on screen. */
+function HeroFilm({
+  film,
+  onPhase,
+}: {
+  film: HomeHeroFilm;
+  onPhase: (phase: FilmPhase, left?: number) => void;
+}) {
+  const ref = useRef<HTMLVideoElement | null>(null);
+  const report = useRef(onPhase);
+  useEffect(() => { report.current = onPhase; });
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    /* the finished workflow, when the film can't play */
+    const hold = () => {
+      const seek = () => { video.currentTime = film.keyBeat; };
+      if (video.readyState >= 1) seek();
+      else video.addEventListener("loadedmetadata", seek, { once: true });
+      report.current("still");
+    };
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      hold();
+      return;
+    }
+    report.current("waiting");
+    const onPlaying = () => report.current("playing", Math.max(0, (video.duration || film.keyBeat) - video.currentTime));
+    const onEnded = () => report.current("ended");
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("ended", onEnded);
+    const play = () => video.play().catch((error: unknown) => {
+      if ((error as { name?: string })?.name === "NotAllowedError") hold();
+    });
+    /* play only while the hero is on screen */
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { if (!video.ended) play(); }
+      else video.pause();
+    }, { threshold: 0.2 });
+    observer.observe(video);
+    return () => {
+      observer.disconnect();
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("ended", onEnded);
+    };
+  }, [film]);
+
+  return (
+    <div className="hm-heromock__film">
+      <video
+        ref={ref}
+        className="hm-heromock__video"
+        src={film.src}
+        poster={film.poster}
+        muted
+        playsInline
+        preload="auto"
+        aria-label={film.description}
+      />
+    </div>
+  );
+}
 
 export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(false);
   const [paused, setPaused] = useState(false);
   const timer = useRef<number | null>(null);
+  /* films: whether this viewport shows them, the active film's phase, how
+   * much of it was left when it started playing (the timer bar's length),
+   * and a counter that remounts the film to replay it */
+  const [filmMedia, setFilmMedia] = useState(false);
+  const [phase, setPhase] = useState<FilmPhase>("waiting");
+  const [left, setLeft] = useState(0);
+  const [run, setRun] = useState(0);
 
   /* auto-advance only when motion is welcome, and only until first interaction */
   useEffect(() => {
@@ -84,17 +176,52 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
   }, []);
 
   useEffect(() => {
+    const mq = window.matchMedia?.(FILM_MEDIA);
+    if (!mq) return;
+    const sync = () => setFilmMedia(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  const view = views[active];
+  const film = filmMedia ? view.film : undefined;
+
+  /* a view with a film advances once the film has ended and held its
+   * result; the others (and a film held as a still) on the fixed beat. A
+   * newly mounted film reports "waiting" in its own effect, which runs
+   * before this one's rerun, so a phase left over from the last visit
+   * never advances the new one. */
+  useEffect(() => {
     if (!autoplay || paused) return;
-    timer.current = window.setTimeout(() => setActive((i) => (i + 1) % views.length), ADVANCE_MS);
+    let ms = ADVANCE_MS;
+    if (film && phase !== "still") {
+      if (phase !== "ended") return;
+      ms = FILM_HOLD_MS;
+    }
+    timer.current = window.setTimeout(() => setActive((i) => (i + 1) % views.length), ms);
     return () => { if (timer.current !== null) window.clearTimeout(timer.current); };
-  }, [autoplay, paused, active, views.length]);
+  }, [autoplay, paused, active, views.length, film, phase]);
 
   const pick = (i: number) => {
     setAutoplay(false);
+    if (i === active && views[i].film) setRun((n) => n + 1);   /* again: replay */
     setActive(i);
   };
 
-  const view = views[active];
+  const onPhase = (next: FilmPhase, remaining?: number) => {
+    setPhase(next);
+    if (next === "playing" && remaining !== undefined) setLeft(remaining);
+  };
+
+  /* the tab's timer bar: the film's remaining time plus the hold, from the
+   * moment it plays (one continuous run through the hold) */
+  const timerMs = !film || phase === "still"
+    ? ADVANCE_MS
+    : phase === "playing" || phase === "ended"
+      ? left * 1000 + FILM_HOLD_MS
+      : null;
+
   const scene = usePannedConfig(view.config);
   return (
     <div
@@ -114,10 +241,11 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
           >
             {v.icon ? <span className="hm-heromock__ico" aria-hidden="true"><NavGlyph name={v.icon} /></span> : null}
             {v.label}
-            {autoplay && !paused && i === active ? (
+            {autoplay && !paused && i === active && timerMs !== null ? (
               <span
+                key={`${active}-${run}-${film ? "film" : "arcade"}`}
                 className="hm-heromock__timer"
-                style={{ animationDuration: `${ADVANCE_MS}ms` }}
+                style={{ animationDuration: `${timerMs}ms` }}
                 aria-hidden="true"
               />
             ) : null}
@@ -125,12 +253,13 @@ export function HeroArcadeSwitcher({ views }: { views: HeroArcadeView[] }) {
         ))}
       </div>
       {/* one persistent window: the camera pans between worlds, the interior
-        * dips for the record swap */}
-      <div className="hm-heromock__stage rf rf--fan rf--plate">
+        * dips for the record swap. A view's film covers it in place. */}
+      <div className={cn("hm-heromock__stage rf rf--fan rf--plate", film && "has-film")}>
         <RibbonField composition="fan" />
-        <div className={cn("hm-heromock__scene", scene.dipped && "is-dipped")}>
+        <div className={cn("hm-heromock__scene", scene.dipped && "is-dipped")} aria-hidden={film ? true : undefined}>
           <ArcadeStepScene config={scene.shown} />
         </div>
+        {film ? <HeroFilm key={`${view.key}-${run}`} film={film} onPhase={onPhase} /> : null}
       </div>
     </div>
   );
@@ -260,8 +389,10 @@ export function ProductSuiteShowcase({ items }: { items: ProductSuiteItem[] }) {
               className="hm-suite__pick"
               onClick={() => select(index)}
             >
-              <span className="hm-suite__glyph" aria-hidden="true"><NavGlyph name={product.icon} /></span>
-              <span className="hm-suite__name">{product.name}</span>
+              <span className="hm-suite__head">
+                <span className="hm-suite__glyph" data-glyph={product.icon} aria-hidden="true"><NavGlyph name={product.icon} /></span>
+                <span className="hm-suite__name">{product.name}</span>
+              </span>
               <span className="hm-suite__body">{product.body}</span>
               <strong className="hm-suite__outcome">{product.outcome}</strong>
               {auto && index === active ? (

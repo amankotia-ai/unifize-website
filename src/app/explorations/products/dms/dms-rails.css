@@ -848,6 +848,7 @@
 }
 
 .dms--redesign.dms-page .hm-railed .dms-mrail__eyebrow { color: var(--dms-muted); }
+.dms--redesign.dms-page .hm-railed .dms-mrail__eyebrow svg { color: var(--dms-faint); }
 .dms--redesign.dms-page .hm-railed .dms-mrail__title { color: var(--dms-ink); }
 .dms--redesign.dms-page .hm-railed .dms-mrail__blurb { color: var(--dms-ink-2); }
 .dms--redesign.dms-page .hm-railed .dms-mrail__points li { color: var(--dms-ink-2); }

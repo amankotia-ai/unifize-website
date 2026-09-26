@@ -245,8 +245,17 @@
   main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__body {
     display: none;
   }
+  /* names wrap to two lines here: the glyph holds the first line */
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__head {
+    align-items: flex-start;
+    gap: 8px;
+  }
+  main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__head .hm-suite__glyph {
+    --glyph-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
   main.dms--redesign.dms--home.dms--rails.dms--rails .hm-suite__name {
-    margin-top: 10px;
     font-size: 0.98rem;
     line-height: 1.2;
   }

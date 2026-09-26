@@ -94,9 +94,10 @@ const STEPS: GapStep[] = [
 const ADVANCE_MS = 5200;
 
 /* the visible cut of the app window (the engine's 54 rail + 270 inbox are
- * clipped away, leaving the 826-wide record) and the margin kept around it */
+ * clipped away, leaving the 826-wide record, cut to 500 tall: 27 Sep 2026,
+ * matches --pf-gap-cam-h) and the margin kept around it */
 const WINDOW_W = 826;
-const WINDOW_H = 560;
+const WINDOW_H = 500;
 const MARGIN = 22;
 const ZOOM_MAX = 0.92;
 /* phones: below this the window is illegible, so the container clips its

@@ -115,6 +115,17 @@ function RailIcon({ moduleKey }: { moduleKey: string }) {
   );
 }
 
+/* the module's glyph: a page-supplied path when there is one, else the built-in set */
+function ModuleGlyph({ moduleKey, iconPaths }: { moduleKey: string; iconPaths?: Record<string, string> }) {
+  const d = iconPaths?.[moduleKey];
+  if (!d) return <RailIcon moduleKey={moduleKey} />;
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d={d} />
+    </svg>
+  );
+}
+
 /* Faint tiles on the colour field, so it reads as a surface rather than a
  * flat fill. Positions differ per module so the three rows do not rhyme. */
 const TILES: Record<string, Array<[number, number, number]>> = {
@@ -218,11 +229,7 @@ export function ModuleRail({
                   aria-current={i === active ? "true" : undefined}
                   onClick={() => jumpTo(i)}
                 >
-                  {iconPaths?.[mod.key] ? (
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d={iconPaths[mod.key]} />
-                    </svg>
-                  ) : <RailIcon moduleKey={mod.key} />}
+                  <ModuleGlyph moduleKey={mod.key} iconPaths={iconPaths} />
                   <span>{mod.name}</span>
                 </button>
               </li>
@@ -244,7 +251,10 @@ export function ModuleRail({
               aria-labelledby={`module-${mod.key}-title`}
             >
               <div className="dms-mrail__text">
-                <span className="dms-mrail__eyebrow">{mod.name}</span>
+                <span className="dms-mrail__eyebrow">
+                  <ModuleGlyph moduleKey={mod.key} iconPaths={iconPaths} />
+                  {mod.name}
+                </span>
                 <h3 className="dms-mrail__title" id={`module-${mod.key}-title`}>{mod.promise}</h3>
                 <p className="dms-mrail__blurb">{mod.blurb}</p>
                 <ul className="dms-mrail__points">

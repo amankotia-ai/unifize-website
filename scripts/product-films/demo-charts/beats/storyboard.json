@@ -1,0 +1,21 @@
+{
+  "title": "Book a demo · left pane · three 8 s chart films in one 24 s loop",
+  "sub": "Three published customer results, one per promise in the positioning (shorter cycle times, less coordination, cleaner audits). Rust is the before, blue is with Unifize. One set of 35 pieces carries all three charts and morphs between them, so the loop never cuts. Transparent film: the modal's own blue wash shows through; shadows are real (Blender, Cycles).",
+  "beats": [
+    {"t": 0.60, "head": "1 · The calendar assembles", "text": "The clock from film 3 breaks into 35 frosted day squares (7 days x 5 weeks). Head arrives: NCR closure time, 4 to 5 weeks. Source line: The Will-Burt Company."},
+    {"t": 1.70, "head": "Days fill, one by one", "text": "Each square fills in rust in reading order, a wave through weeks 1 to 4."},
+    {"t": 3.00, "head": "4 to 5 weeks", "text": "Weeks 1 to 4 solid, week 5 in the lighter rust tint (the 'up to'). Holds 0.5 s."},
+    {"t": 4.10, "head": "The days drain away", "text": "Fills empty backwards from day 35; week 1 turns blue as it goes."},
+    {"t": 5.60, "head": "7.2 days · 75% faster", "text": "Week 1 blue plus a fifth of day 8. Figure swaps to 7.2 days, 75% faster counts up. Holds 2.2 s (the proof)."},
+    {"t": 7.80, "head": "Into a strip of weeks", "text": "Head leaves; the 35 squares stream out of the calendar, in order, into one row."},
+    {"t": 8.60, "head": "2 · Weeks under a months axis", "text": "The same 35 pieces are now 35 weeks (8 months). Head: Approval cycle time. Source: Applechem."},
+    {"t": 10.90, "head": "3 to 8 months", "text": "13 weeks solid rust (3 months), the rest in tint out to 8 months."},
+    {"t": 12.40, "head": "Down to 2 weeks", "text": "The strip drains back from month 8; the first two weeks turn blue."},
+    {"t": 13.90, "head": "About 2 weeks", "text": "Figure: About 2 weeks, down from 3 to 8 months. Holds 2.8 s."},
+    {"t": 17.80, "head": "3 · Weeks", "text": "Head: Internal audit prep. Two weeks fill in rust and fade out into the tint: 'weeks' has no fixed end. Source: ATS Scientific Products."},
+    {"t": 19.50, "head": "The calendar bends into a clock", "text": "The months axis goes; the strip curls up from both ends into a ring, the gaps close. Legend becomes 1 lap = 1 hour."},
+    {"t": 20.90, "head": "Under 30 minutes", "text": "Rust fades, the blue arc sweeps clockwise from 12 and stops short of the 30 min tick."},
+    {"t": 22.50, "head": "Held", "text": "Figure: Under 30 minutes, down from weeks. Holds 2 s."},
+    {"t": 23.60, "head": "Back to the calendar", "text": "The arc retracts, the ring breaks into 35 pieces that fly back into the calendar: frame 24.0 = frame 0.0."}
+  ]
+}

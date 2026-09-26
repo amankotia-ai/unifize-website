@@ -1906,14 +1906,14 @@
  * Conversations" list (the first 324px of the engine's 1150 grid) are
  * clipped away and the camera centres on the 826-wide record. The zoom is
  * measured off the pane by the component (--pf-gap-zoom), so the WHOLE
- * record window stays in frame with margin at every width; each pose only
- * drifts a little toward its subject so consecutive steps read as camera
- * movement (product-visual framing rule, 18 Sep 2026). */
+ * record window stays in frame with margin at every width (product-visual
+ * framing rule, 18 Sep 2026); the camera holds still between steps. */
 .pf-page .pf-gap__stage {
   --rf-pad: 18px;
   --rf-r: 18px;
   --pf-gap-zoom: .8;
-  --pf-gap-window-h: 504px;
+  --pf-gap-window-h: 444px;
+  --pf-gap-cam-h: 500px;
   --pf-gap-cam-x: 0px;
   --pf-gap-cam-y: 0px;
   --pf-gap-cam-k: 1;
@@ -1924,6 +1924,9 @@
 }
 .pf-page .pf-gap__stage .stx-root .stx-arc { height:var(--pf-gap-window-h); }
 .pf-page .pf-gap__stage .stx-root .stx-arc__camera {
+  /* shorter than the engine's 560 so the window sits in the pane with room
+   * (27 Sep 2026); WINDOW_H in platform-gap.tsx matches */
+  height:var(--pf-gap-cam-h);
   clip-path:inset(0 0 0 324px);
   --stx-cut-l:324px;
   transform:
@@ -1936,13 +1939,8 @@
 .pf-page .pf-gap__stage.is-fit .stx-root .stx-arc__camera { transition:transform .9s cubic-bezier(.2, .7, .2, 1); }
 /* the sign dialog centres over the visible cut, not the clipped window */
 .pf-page .pf-gap__stage .stx-root .stx-arc__signwrap { left:324px; }
-/* the poses: where each moment happens on the record */
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-trace { --pf-gap-cam-x:6px; --pf-gap-cam-y:10px; --pf-gap-cam-k:1; }
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-queue.is-pose-route { --pf-gap-cam-x:0px; --pf-gap-cam-y:-8px; --pf-gap-cam-k:1.02; }
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-assist { --pf-gap-cam-x:8px; --pf-gap-cam-y:-16px; --pf-gap-cam-k:.97; }
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-signature { --pf-gap-cam-x:0px; --pf-gap-cam-y:0px; --pf-gap-cam-k:1.03; }
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-comment { --pf-gap-cam-x:-22px; --pf-gap-cam-y:-6px; --pf-gap-cam-k:1.02; }
-.pf-page .pf-gap__stage .stx-root .stx-arc__camera.is-focus-history { --pf-gap-cam-x:6px; --pf-gap-cam-y:-10px; --pf-gap-cam-k:.98; }
+/* 27 Sep 2026 (Abhishek): ONE pose for every step, no per-moment drift or
+ * zoom; only the record's content changes. */
 .pf-page .pf-gap__say--after small { color:var(--dms-accent-text); }
 
 /* the control: a segmented stepper standing on its own above the panes.

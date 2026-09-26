@@ -26,6 +26,7 @@
  * Draw-in motion keys off the shared DmsMotion reveal layer.
  * -------------------------------------------------------------------------- */
 import type { ReactNode } from "react";
+import { TaxCellFilm } from "./tax-cell-film";
 
 /* one recall week: 3,200 a year ≈ 62 events, laid out Mon-Sun */
 const RECALL_WEEK = [
@@ -96,21 +97,27 @@ function TaxLead() {
           re-keying, chasing, rebuilding context. About <strong>19 hours</strong> of it per record.
         </p>
       </div>
-      <div className="pf-taxlead__fig" aria-hidden="true">
-        {/* the stat cell's head (rails wave): what is counted, and the total */}
-        <div className="pf-taxlead__figlab">
-          <span>One non-conformance, detection to CAPA closure</span>
-          <b>{NC_STEPS} steps</b>
+      <div className="pf-taxlead__fig has-film">
+        {/* the static figure: phones, tablets, reduced motion, and the film's
+          * first and last frame (27 Sep 2026) */}
+        <div className="pf-taxlead__static" aria-hidden="true">
+          {/* the stat cell's head (rails wave): what is counted, and the total */}
+          <div className="pf-taxlead__figlab">
+            <span>One non-conformance, detection to CAPA closure</span>
+            <b>{NC_STEPS} steps</b>
+          </div>
+          <div className="pf-taxlead__cells">
+            {Array.from({ length: NC_STEPS }, (_, i) => (
+              <i key={i} className={i < NC_VALUE_STEPS ? "is-work" : "is-tax"} />
+            ))}
+          </div>
+          <div className="pf-leak__legend">
+            <span><i className="is-keep" />The work · investigate, decide, verify · {NC_VALUE_STEPS}</span>
+            <span><i className="is-leak" />The coordination tax · {NC_STEPS - NC_VALUE_STEPS}</span>
+          </div>
         </div>
-        <div className="pf-taxlead__cells">
-          {Array.from({ length: NC_STEPS }, (_, i) => (
-            <i key={i} className={i < NC_VALUE_STEPS ? "is-work" : "is-tax"} />
-          ))}
-        </div>
-        <div className="pf-leak__legend">
-          <span><i className="is-keep" />The work · investigate, decide, verify · {NC_VALUE_STEPS}</span>
-          <span><i className="is-leak" />The coordination tax · {NC_STEPS - NC_VALUE_STEPS}</span>
-        </div>
+        {/* from 1200px with motion allowed: the same figure as a 10 s film */}
+        <TaxCellFilm />
       </div>
       {/* the source strip that sat under this row was removed on the rails
         * pass (Abhishek, 22 Sep: "remove this bit"); the stream (Notion VS-2,

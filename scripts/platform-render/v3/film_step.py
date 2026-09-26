@@ -22,8 +22,8 @@ opt = lambda k, d: argv[argv.index(k) + 1] if k in argv else d
 F0, F1 = map(int, opt("--frames", "1:0").split(":"))
 SAMPLES = int(opt("--samples", "32"))
 RES_X, RES_Y = map(int, opt("--res", "2560x1152").split("x"))
-FILTER = float(opt("--filter", "0.9"))
-SAVE = opt("--save", None)  # px; 1.5 (the default) softened the type
+FILTER = float(opt("--filter", "0.9"))  # px; 1.5 (the default) softened the type
+SAVE = opt("--save", None)
 
 PX = 0.001                      # metres per UI px
 SENSOR = 36.0                   # mm, fitted to the frame width

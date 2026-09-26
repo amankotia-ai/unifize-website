@@ -54,6 +54,18 @@ const nextConfig: NextConfig = {
         source: "/explorations/platform/:file(hero-film-.*)",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
+      {
+        /* the homepage hero films, versioned the same way
+         * (src/app/explorations/home/hero-film-assets.ts) */
+        source: "/explorations/home/:file(hero-film-.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        /* the platform tax cell film, versioned the same way
+         * (src/app/explorations/platform/tax-cell-film.tsx) */
+        source: "/explorations/platform/:file(tax-film-.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
     ];
   },
 };

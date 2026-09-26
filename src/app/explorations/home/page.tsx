@@ -73,6 +73,8 @@ import { HomeStackMark } from "./home-stack-mark";
 import { ENTRY_VIZ } from "./home-entry-viz";
 import { NavGlyph } from "../_shared/nav-data";
 import { PrefetchHeroFilm } from "../_shared/prefetch-hero-film";
+import { HOME_HERO_FILMS } from "./hero-film-assets";
+import { TaxCellFilm } from "../platform/tax-cell-film";
 import "../products/dms/dms.css";
 import "../products/_shared/product-kit.css";
 import "../platform/platform-kit.css";
@@ -95,6 +97,11 @@ import { pageMetadata } from "@/app/explorations/_shared/seo";
 
 export const metadata: Metadata = pageMetadata("/home");
 
+/* the tax film's media query here, the same as the CSS that shows it
+ * (home-rails.css): the home cell is narrower than /platform's, so the
+ * film's type holds its size from 1280px rather than 1200px */
+const HOME_TAX_FILM_QUERY = "(min-width: 1280px) and (prefers-reduced-motion: no-preference)";
+
 /* the hero visual: one arcade app window, four worlds - pick yours. One
  * artifact per audience, per the panel's role-coverage finding. Each tab
  * carries a door to the L2 page that owns its record's world (2026-09-01
@@ -106,24 +113,29 @@ const HERO_VIEWS = [
     icon: "seal" as const,
     label: "Quality event",
     config: HOME_HERO_QUALITY_CONFIG,
+    /* 26 Sep 2026: the workflow performed as a film (hero-film-assets.ts) */
+    film: HOME_HERO_FILMS.quality,
   },
   {
     key: "change",
     icon: "compass" as const,
     label: "Change order",
     config: HOME_HERO_CHANGE_CONFIG,
+    film: HOME_HERO_FILMS.change,
   },
   {
     key: "ops",
     icon: "pallet" as const,
     label: "Holds & release",
     config: HOME_HERO_OPS_CONFIG,
+    film: HOME_HERO_FILMS.holds,
   },
   {
     key: "document",
     icon: "dms" as const,
     label: "Controlled document",
     config: HOME_HERO_DOCUMENT_CONFIG,
+    film: HOME_HERO_FILMS.document,
   },
 ];
 
@@ -680,7 +692,7 @@ export default function HomePage() {
               * coordination in blue. Source: Notion reference value stream
               * VS-2, non-conformance to CAPA closure, typical case, modelled. */}
             <figure
-              className="hm-taxviz"
+              className="hm-taxviz has-film"
               aria-label="Closing one non-conformance takes 75 steps. 54 of them are coordination, not quality work."
             >
               <div className="hm-taxviz__head">
@@ -713,6 +725,10 @@ export default function HomePage() {
                   <i>54</i>
                 </span>
               </div>
+              {/* from 1280px with motion allowed, the head, grid and legend
+                * give way to the platform page's 10 s tax film (27 Sep 2026);
+                * the claim stays above it */}
+              <TaxCellFilm query={HOME_TAX_FILM_QUERY} />
             </figure>
           </div>
         </div>

@@ -1,0 +1,106 @@
+{
+  "title": "Step 1 · Quality event · raised to closed · 20.5 s",
+  "sub": "NC-204 on one record: it lands with its evidence, owners contain it in the thread, engineering finds the cause, the owner decides and signs under Part 11, and it can only close complete.",
+  "beats": [
+    {
+      "t": 0.0,
+      "head": "Raised (the poster)",
+      "text": "M. Osei raises NC-204 from the in-process check on WO-8817. Open, 0 of 7, and Close event is locked."
+    },
+    {
+      "t": 0.9,
+      "head": "The report lands",
+      "text": "Coating reads 38.1 µm, spec is 45 to 55. Photos and thickness readings are attached to the record."
+    },
+    {
+      "t": 1.8,
+      "head": "Evidence ticks itself",
+      "text": "Photos and readings from the line, part and work order from ERP. Nothing re-keyed. 2 of 7."
+    },
+    {
+      "t": 4.0,
+      "head": "The owner asks in the thread",
+      "text": "J. Rivera @mentions M. Osei to quarantine lot 118-B and M. Kerr to sort the WIP."
+    },
+    {
+      "t": 5.6,
+      "head": "Her ask lands",
+      "text": "08:02, on the record's own thread, next to the evidence."
+    },
+    {
+      "t": 6.9,
+      "head": "Contained from the line",
+      "text": "M. Osei confirms 240 units held; her tick lands live on Quarantine lot 118-B. The event moves to In progress."
+    },
+    {
+      "t": 7.8,
+      "head": "WIP sorted",
+      "text": "M. Kerr ticks Sort remaining WIP live at 08:09. 4 of 7."
+    },
+    {
+      "t": 9.3,
+      "head": "Root cause, next working day",
+      "text": "Mon, Sep 28: S. Okafor posts the worn fixture on head 2 with photos; Root cause ticks live. 5 of 7."
+    },
+    {
+      "t": 11.0,
+      "head": "The owner decides",
+      "text": "J. Rivera opens Disposition: Rework to spec, Use as is, or Scrap."
+    },
+    {
+      "t": 11.6,
+      "head": "Rework to spec",
+      "text": "Chosen and ticked at 11:02. 6 of 7."
+    },
+    {
+      "t": 12.3,
+      "head": "Sign, on the checklist",
+      "text": "J. Rivera hovers and presses Sign on Quality approval, as on the platform film."
+    },
+    {
+      "t": 13.2,
+      "head": "The Part 11 dialog",
+      "text": "Meaning of signature: Approval, Review or Responsibility. She picks Approval, I approve this disposition."
+    },
+    {
+      "t": 14.5,
+      "head": "Her credentials",
+      "text": "User ID jrivera, password typed. Signed under 21 CFR Part 11; name, meaning and time kept on the record."
+    },
+    {
+      "t": 15.45,
+      "head": "Signing",
+      "text": "Sign waits for both, then signs."
+    },
+    {
+      "t": 15.65,
+      "head": "Signed",
+      "text": "The button turns to Signed before the dialog closes."
+    },
+    {
+      "t": 16.4,
+      "head": "Sealed on both sides",
+      "text": "Signed on Quality approval (Approval · 11:20) and her signature card in the thread. 7 of 7."
+    },
+    {
+      "t": 17.2,
+      "head": "Close unlocks",
+      "text": "Only now, with every item and the signature on the record, does Close event unlock."
+    },
+    {
+      "t": 17.95,
+      "head": "She closes it",
+      "text": "Hover, press, Closing."
+    },
+    {
+      "t": 18.8,
+      "head": "Closed, and the record says why",
+      "text": "Status Closed. The thread notes NC-204 closed by J. Rivera, every item and signature on the record."
+    },
+    {
+      "t": 20.45,
+      "head": "End at rest",
+      "text": "The finished record. The page holds this 1.5 s, then the next tab starts."
+    }
+  ]
+}

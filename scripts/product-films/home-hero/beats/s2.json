@@ -1,0 +1,26 @@
+{
+  "title": "Step 2 · Change order · raised to released · 18.6 s",
+  "sub": "CC-2148 on one record: it arrives with its reason from NC-204, AI names what else it affects and a person adds it, production confirms, quality signs under Part 11, and it can only be released with the approvals in.",
+  "beats": [
+    {"t": 0.0, "head": "Raised (the poster)", "text": "CC-2148, torque spec update, raised from NC-204 with the root cause linked. In review, 0 of 8, Release change locked."},
+    {"t": 0.9, "head": "The drawing lands", "text": "S. Okafor: housing fastener torque goes from 4.2 to 4.8 N·m. DWG-2201 Rev D and the risk assessment attached."},
+    {"t": 1.9, "head": "Reason and documents tick themselves", "text": "Reason for change from NC-204, affected documents SOP-118 and DWG-2201 from the drawing. 2 of 8."},
+    {"t": 2.85, "head": "What else does this change affect?", "text": "D. Fontaine, the owner, hovers the AI button in the checklist: What else does this change affect? (Beta)."},
+    {"t": 3.4, "head": "It reads the change", "text": "Pressed, the button works on the reason and the impact answers."},
+    {"t": 4.5, "head": "The suggestion, as the product posts it", "text": "Her message in the thread: asked AI suggestion for Assess impacted documents. Field label / Suggested Value, one box per row, Add to Checklist greyed."},
+    {"t": 5.45, "head": "A person decides", "text": "She ticks AI impact summary; Add to Checklist wakes."},
+    {"t": 6.25, "head": "Added to Checklist", "text": "Nothing lands on the record until she adds it."},
+    {"t": 7.1, "head": "The records land", "text": "AI impact summary written; WI-092 and FRM-201 linked as document records, suggested by AI, added by D. Fontaine. 4 of 8."},
+    {"t": 8.2, "head": "On to the approvals", "text": "The checklist scrolls to Approvals and Closure."},
+    {"t": 9.1, "head": "Production confirms", "text": "M. Kerr: Line 2 can run the new torque from Monday's first shift. Production readiness ticks live. 5 of 8."},
+    {"t": 10.0, "head": "Sign, on the checklist", "text": "She presses Sign on Quality approval, as on the platform film."},
+    {"t": 11.0, "head": "The Part 11 dialog", "text": "Meaning of signature: Approval, I approve this change as written."},
+    {"t": 12.4, "head": "Her credentials", "text": "User ID dfontaine, password typed. Name, meaning and time kept on the record."},
+    {"t": 13.4, "head": "Signed", "text": "Sign, Signing, Signed."},
+    {"t": 14.3, "head": "Sealed on both sides", "text": "Signed on Quality approval (Approval · 09:21) and her signature card in the thread. 6 of 8."},
+    {"t": 14.9, "head": "Release unlocks", "text": "Only with the approvals in does Release change unlock."},
+    {"t": 15.55, "head": "She releases it", "text": "Hover, press, Releasing."},
+    {"t": 16.6, "head": "Released", "text": "Status Released. Revision: DWG-2201 Rev D effective. Training assigned to Line 2 operators, due Oct 2. 8 of 8. The thread records it."},
+    {"t": 18.55, "head": "End at rest", "text": "The released change. The page holds this 1.5 s, then the next tab starts."}
+  ]
+}

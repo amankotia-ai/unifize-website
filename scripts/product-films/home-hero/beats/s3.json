@@ -1,0 +1,24 @@
+{
+  "title": "Step 3 · Holds & release · held to released · 17.2 s",
+  "sub": "Lot 118-B on one record: held from NC-204's containment, the disposition and rework land, the owner enters the re-inspection, signs the release under Part 11, and the lot can only be released once the signature is on the record.",
+  "beats": [
+    {"t": 0.0, "head": "Held (the poster)", "text": "HLD-118, lot 118-B, placed from NC-204's containment. On hold, 0 of 6, Release lot locked."},
+    {"t": 0.9, "head": "The quarantine", "text": "M. Osei, 08:06: lot 118-B quarantined, 240 units tagged and moved to the hold area."},
+    {"t": 1.9, "head": "Reason and scope tick themselves", "text": "NC-204, coating 38.1 µm against spec 45 to 55; lot 118-B, 240 units, line 2. 2 of 6."},
+    {"t": 3.2, "head": "The disposition arrives", "text": "Mon, Sep 28: J. Rivera posts NC-204's disposition, rework to spec, re-inspect 3 samples. It ticks in from NC-204. 3 of 6."},
+    {"t": 4.6, "head": "Reworked", "text": "M. Kerr: rework done on line 2, all 240 units recoated. Rework order ticks live, WO-8901 done. 4 of 6."},
+    {"t": 5.5, "head": "The owner re-inspects", "text": "M. Osei clicks into Re-inspection."},
+    {"t": 6.4, "head": "Types the results", "text": "3 of 3 samples in spec: 48.2, 49.0, 47.6 µm."},
+    {"t": 7.3, "head": "Entered", "text": "The results typed, the pointer back to tick the row."},
+    {"t": 7.95, "head": "Ticked and saved", "text": "The value sits on the record at 14:08. 5 of 6."},
+    {"t": 9.0, "head": "Sign, on the checklist", "text": "She presses Sign on Release signature."},
+    {"t": 10.0, "head": "The Part 11 dialog", "text": "Meaning of signature: Approval, I approve release of this lot."},
+    {"t": 11.4, "head": "Her credentials", "text": "User ID mosei, password typed. Name, meaning and time kept on the record."},
+    {"t": 12.4, "head": "Signed", "text": "Sign, Signing, Signed."},
+    {"t": 13.3, "head": "Sealed on both sides", "text": "Signed on Release signature (Approval · 14:12) and her signature card in the thread. 6 of 6."},
+    {"t": 13.9, "head": "Release unlocks", "text": "Only with the signature on the record does Release lot unlock."},
+    {"t": 14.5, "head": "She releases the lot", "text": "Hover, press, Releasing."},
+    {"t": 15.4, "head": "Released", "text": "Status Released. The thread records lot 118-B released by M. Osei, 240 units cleared for use."},
+    {"t": 17.15, "head": "End at rest", "text": "The released lot. The page holds this 1.5 s, then the next tab starts."}
+  ]
+}

@@ -1,0 +1,1377 @@
+<!doctype html>
+<!--
+  film.html - the homepage hero films: four short videos, one per hero tab
+  (Quality event, Change order, Holds & release, Controlled document).
+  Direction log: direction.md (same folder).
+
+  Unlike the platform film there is no camera: the window stays exactly
+  where the hero window sits on the page, and only the UI moves. So a flat
+  frame of this scene IS the finished frame (no Blender), and the video
+  covers only the window's rectangle; the page keeps its own wash, dots,
+  grain and frosted plate around it.
+
+  The window is the hero's cut of the record view: 1070 x 560 window px,
+  the thread column (680) and the checklist (390), in the film kit's UI
+  (ui-kit.css, verbatim from the platform film).
+
+    ?step=1..4        which film
+    ?mode=flat        the window alone (the finished frame, exported at 2.4x)
+    ?mode=board       the window on a replica of the hero wash at 1.16
+                      (the page's zoom at 1536px and up), for review boards
+    ?t=3.2            a still;  ?play (or ?play=2.5) real time, looping
+
+  Every frame is a pure function of time: seek(t) puts every element in its
+  state at t. Each film: S<n> (length), render<n>(t), reset<n>(); classes
+  new to this film are prefixed hh- (shared) or s<n>- (per film).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Homepage hero films</title>
+<!-- the Unifize app UI as the films draw it: reuse, never restyle -->
+<link rel="stylesheet" href="ui-kit.css">
+<style>
+@font-face { font-family: "Inter"; src: url("../../../src/app/fonts/inter-variable.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Plex"; src: url("../../../src/app/fonts/ibm-plex-sans-variable.woff2") format("woff2"); font-weight: 100 700; }
+@font-face { font-family: "JBM"; src: url("../../../src/app/fonts/jetbrains-mono-variable.woff2") format("woff2"); font-weight: 100 800; }
+
+/* ---------------------------------------------------------------- the frame
+ * the hero's cut: thread column + checklist, 1070 x 560 window px */
+#cam { width: 1070px; height: 560px; }
+.flat #stage { width: 1070px; height: 560px; }
+.hh-win { display: block; }
+.hh-win[hidden] { display: none; }
+.hh-col { position: absolute; left: 0; top: 0; bottom: 0; width: 680px; display: flex; flex-direction: column; background: #fff; }
+.hh-win .ck { width: 390px; visibility: visible; opacity: 1; }
+.hh-col .dr-thread { flex: 1; min-height: 0; }
+.hh-col .dr-comp { flex: none; }
+/* the thread scrolls under the record's head: a short fade, so a message
+   leaving the top reads as scrolled, not cut */
+.hh-col .dr-thread {
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18px); mask-image: linear-gradient(180deg, transparent 0, #000 18px); }
+
+/* people and files this film adds to the kit's set */
+.av.hh-jr { background: linear-gradient(135deg, #e0a23c, #b06d12); }
+.av.hh-mo { background: linear-gradient(135deg, #d9738f, #a8445f); }
+.att .fi.hh-img { background: #1f7f86; }
+.ci .pend.hh-hot { color: #b8372b; }
+/* a record action in the head, built from the kit's Open record button:
+   locked (grey, a lock) until the record can take it */
+.hh-act { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px 0 10px; border-radius: 5px; background: #eef1f5; color: var(--faint); font-size: 11.5px; font-weight: 600; }
+.hh-act .ic { width: 12px; height: 12px; stroke-width: 2.2; }
+.hh-act #s1-close-ok, .hh-act .spin { display: none; }
+.hh-act .spin { width: 11px; height: 11px; }
+/* statuses the kit's pills lack: done green (the kit's Signed/Published) */
+.pill.hh-green { background: #e9f6ef; color: #1f7a4a; box-shadow: inset 0 0 0 1px #c9e8d6; }
+/* a day marker in the thread, and arrivals that carry more than a message */
+.hh-day { align-self: center; padding: 3px 10px; border-radius: 999px; background: #fff; box-shadow: inset 0 0 0 1px var(--line); color: var(--muted); font: 500 10px/1.2 var(--mono); }
+.pop > .hh-popwrap { display: flex; flex-direction: column; gap: 14px; padding-top: 14px; }
+/* a select field in the checklist: the kit's dialog select at the
+   checklist's input size; near the window's foot its menu opens upward */
+.hh-sel { position: relative; display: flex; align-items: center; gap: 8px; height: 30px; margin-top: 7px; padding: 0 10px; border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--line2); color: var(--faint); font-size: 11.5px; }
+.hh-sel .v { display: none; color: var(--ink); font-weight: 500; }
+.hh-sel .chev { margin-left: auto; color: var(--muted); }
+.hh-sel .chev .ic { width: 13px; height: 13px; }
+.hh-sel .menu { top: auto; bottom: 35px; }
+/* the time a filled field lands with takes its room from the start, so the
+   select doesn't narrow when it appears */
+#s1-d > .pend { min-width: 31px; }
+/* the Part 11 dialog, centred on this window (the kit places it on the
+   platform film's 1360 x 660 window) */
+#w1 .sig { left: 305px; top: 126px; }
+/* an @mention, in the composer and on the sent message */
+.hh-men { color: var(--blue); font-weight: 500; }
+
+/* ---------------------------------------------------------------- board: the hero wash (preview only)
+ * a replica of the page's stage at 1600px (1494 x 768, window at 1.16),
+ * so review boards show the window in its place. The page draws its own.
+ * Colours: the product suite stage's --hm-wash-blue tones (26 Sep). */
+.board #stage { -webkit-mask-image: none; mask-image: none; background: #e3eeff; }
+.board #grain, .flat .hh-wash, .flat .hh-plate { display: none; }
+.hh-wash { position: absolute; inset: 0; overflow: hidden; isolation: isolate; }
+.hh-wash .ba, .hh-wash .bb { position: absolute; z-index: -1; width: 90%; aspect-ratio: 1; border-radius: 50%; }
+.hh-wash .ba { top: -35%; left: -20%; background: radial-gradient(closest-side, #cfe3ff 0%, rgba(207, 227, 255, 0.55) 45%, rgba(207, 227, 255, 0) 100%); }
+.hh-wash .bb { right: -25%; bottom: -40%; background: radial-gradient(closest-side, #f1f6ff 0%, rgba(241, 246, 255, 0.55) 45%, rgba(241, 246, 255, 0) 100%); }
+.hh-wash .dots { position: absolute; inset: 0; background: radial-gradient(circle at center, oklch(0.42 0.06 252 / 0.28) 0.9px, transparent 1.3px); background-size: 16px 16px; background-position: 8px 8px;
+  -webkit-mask-image: radial-gradient(120% 95% at 50% 30%, transparent 30%, #000 85%); mask-image: radial-gradient(120% 95% at 50% 30%, transparent 30%, #000 85%); }
+.hh-wash .edge { position: absolute; inset: 0; background: linear-gradient(180deg, oklch(1 0 0 / 0.35), transparent 18%), radial-gradient(110% 90% at 50% 45%, transparent 60%, oklch(0.36 0.05 250 / 0.14) 100%);
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 0.7), inset 0 0 0 1px oklch(0.3 0.03 250 / 0.06); }
+.hh-wash .grain { position: absolute; inset: 0; opacity: 0.32; mix-blend-mode: overlay; background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncG type='linear' slope='1.9' intercept='-0.45'/%3E%3CfeFuncB type='linear' slope='1.9' intercept='-0.45'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
+.hh-plate { position: absolute; background: oklch(1 0 0 / 0.1);
+  box-shadow: 0 0 0 1px oklch(1 0 0 / 0.2), 0 4px 10px -4px oklch(0 0 0 / 0.28), 0 24px 48px -20px oklch(0 0 0 / 0.5), 0 48px 96px -32px oklch(0 0 0 / 0.55); }
+.board .win { box-shadow: none; }
+/* the film grain over the window, the platform film's page recipe (tile,
+ * hard-light, 0.06, 128px, 12 fps jitter). The page lays it in CSS over
+ * the video; here it is baked into review cuts only (?grain=0 to drop) */
+.hh-fgrain { position: absolute; inset: 0; z-index: 9; pointer-events: none; opacity: 0.06; mix-blend-mode: hard-light;
+  background-image: url("../../../public/explorations/platform/hero-film-grain-v3.png"); background-size: 110px 110px; }   /* 128 CSS px at the 1.16 zoom */
+.flat .hh-fgrain, .nograin .hh-fgrain { display: none; }
+/* ---------------------------------------------------------------- film 2 parts (kit parts, hh- names)
+ * the checklist body scrolls under its head, which stays */
+.hh-ckbody { position: relative; flex: 1; min-height: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12px); mask-image: linear-gradient(180deg, transparent 0, #000 12px); }
+/* the AI button in the checklist, as the product draws it: full width,
+   the wand, the label with (Beta) */
+.hh-ask { display: flex; align-items: center; gap: 8px; height: 30px; margin-top: 7px; padding: 0 10px; border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--blue200); color: var(--blue); font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.hh-ask .ic { width: 14px; height: 14px; }
+.hh-ask .spin { display: none; width: 12px; height: 12px; border-color: rgb(0 91 183 / 0.25); border-top-color: var(--blue); }
+/* the AI suggestion as the product posts it in the thread: the asker's
+   message, a Field label / Suggested Value table with a box per row, and
+   one Add to Checklist, greyed until something is ticked */
+.bubble.hh-ai header span em { color: var(--ink); font-style: normal; font-weight: 500; }
+.hh-aitb { margin: 10px 0 12px; border-radius: 5px; box-shadow: inset 0 0 0 1px var(--line2); overflow: hidden; background: #fff; }
+.hh-aitr { display: grid; grid-template-columns: 16px 140px minmax(0, 1fr); column-gap: 12px; align-items: start; padding: 9px 12px; border-top: 1px solid var(--line); font-size: 12px; }
+.hh-aitr.th { align-items: center; padding: 6px 12px; border-top: 0; background: #f7f8fa; color: var(--muted); font: 600 9.5px/16px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.hh-aitr:not(.th) > span:nth-child(2) { font-weight: 500; }
+.hh-aitr:not(.th) > span:last-child { color: var(--ink2); line-height: 1.45; }
+.hh-abox { display: grid; place-items: center; width: 16px; height: 16px; border-radius: 4px; box-shadow: inset 0 0 0 1.5px #c3cad4; background: #fff; color: #fff; }
+.hh-abox .ic { width: 11px; height: 11px; stroke-width: 3; }
+.hh-abox .chk { opacity: 0; stroke-dasharray: 20; stroke-dashoffset: 20; }
+.hh-aift { display: flex; }
+.hh-add { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 12px; border-radius: 5px; background: #eef1f5; color: var(--faint); font-size: 11.5px; font-weight: 600; }
+.hh-add .ic { display: none; width: 12px; height: 12px; stroke-width: 2.4; }
+/* linked records landing in a checklist item */
+.hh-slot { display: block; height: 0; overflow: hidden; }
+.hh-recs { display: flex; flex-direction: column; gap: 6px; padding-top: 7px; }
+.hh-rec { display: grid; grid-template-columns: 26px auto minmax(0, 1fr); column-gap: 8px; align-items: center; height: 28px; padding: 0 8px 0 5px; border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--line2); font-size: 11px; white-space: nowrap; }
+.hh-rec .ty { display: grid; place-items: center; height: 18px; border-radius: 4px; font: 700 7px/1 var(--mono); }
+.hh-rec em { color: var(--blue); font: 500 10px/1 var(--mono); font-style: normal; }
+.hh-rec > span:nth-child(3) { overflow: hidden; text-overflow: ellipsis; color: var(--ink2); }
+.hh-rec small { color: var(--muted); font: 500 10px/1 var(--mono); }
+#w2 .sig { left: 305px; top: 126px; }
+/* ---------------------------------------------------------------- film 3 parts
+ * a hold status (the kit's NC badge colours) */
+.pill.hh-rust { background: #fdece4; color: #b4461f; box-shadow: inset 0 0 0 1px #f6d3c3; }
+#w3 .sig { left: 305px; top: 126px; }
+/* ---------------------------------------------------------------- film 4 parts (s4-: record view, then
+ * the document viewer at point of use; all built from kit parts) */
+.s4-rec, .s4-view { position: absolute; inset: 0; }
+/* the revision rows in the checklist */
+.s4-revs { display: flex; flex-direction: column; gap: 6px; margin-top: 7px; }
+.s4-rv { display: grid; grid-template-columns: 40px auto minmax(0, 1fr); align-items: center; column-gap: 8px; height: 26px; padding: 0 8px; border-radius: 5px; background: #fff; box-shadow: inset 0 0 0 1px var(--line2); font-size: 11px; }
+.s4-rv em, .s4-rrow em { font: 600 10.5px/1 var(--mono); font-style: normal; }
+.s4-rv small, .s4-rrow small { justify-self: end; color: var(--muted); font: 500 10px/1 var(--mono); white-space: nowrap; }
+/* the viewer: a top bar, the controlled page, the side panel */
+.s4-view { display: flex; flex-direction: column; background: #f1f3f6; opacity: 0; visibility: hidden; }
+.s4-top { flex: none; display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 22px; background: #fff; border-bottom: 1px solid var(--line); }
+.s4-ty { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 6px; font: 700 8px/1 var(--mono); }
+.s4-tt em { display: block; color: var(--blue); font: 600 10.5px/1 var(--mono); font-style: normal; }
+.s4-tt b { display: block; margin-top: 4px; font: 600 15px/1.2 var(--disp); letter-spacing: -0.01em; }
+.s4-when { margin-left: auto; color: var(--muted); font: 500 10.5px/1 var(--mono); }
+.s4-me { display: inline-flex; align-items: center; gap: 7px; color: var(--ink2); font-size: 11.5px; }
+.av.s4-ki { background: linear-gradient(135deg, #7aa35f, #4b7a33); }
+.s4-main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 320px; }
+.s4-pagewrap { position: relative; overflow: hidden; padding: 20px 24px 0;
+  -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 22px), transparent); }
+.s4-page { max-width: 620px; margin: 0 auto; padding: 24px 34px 30px; border-radius: 3px; background: #fff; box-shadow: 0 0 0 1px rgb(16 24 40 / 0.06), 0 8px 24px -10px rgb(16 24 40 / 0.18); }
+.s4-ph { display: flex; justify-content: space-between; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 1px solid var(--line); color: var(--muted); font: 600 9px/1 var(--mono); letter-spacing: 0.1em; }
+.s4-page h3 { margin: 16px 0 8px; font: 600 15px/1.3 var(--disp); }
+.s4-page h3:first-of-type { margin-top: 0; }
+.s4-step { display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 6px; margin: 0 -10px 4px; padding: 8px 10px; border-radius: 5px; }
+.s4-step i { color: var(--muted); font: 600 11px/1.6 var(--mono); font-style: normal; }
+.s4-step p { margin: 0; color: var(--ink); font-size: 12.5px; line-height: 1.6; }
+.s4-tag { grid-column: 2; justify-self: start; display: inline-flex; align-items: center; height: 18px; margin-top: 6px; padding: 0 7px; border-radius: 999px; background: var(--blue50); box-shadow: inset 0 0 0 1px var(--blue100); color: var(--blue); font-size: 10px; font-weight: 600; }
+.s4-side { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 0 0; }
+.s4-card { padding: 12px 14px; border-radius: 7px; background: #fff; box-shadow: inset 0 0 0 1px var(--line), 0 1px 2px rgb(16 24 40 / 0.04); }
+.s4-card label { display: block; margin-bottom: 8px; color: var(--muted); font: 600 9.5px/1 var(--mono); letter-spacing: 0.1em; }
+.s4-card p { margin: 0; color: var(--ink2); font-size: 12px; line-height: 1.5; }
+.s4-rrow { display: grid; grid-template-columns: 44px auto minmax(0, 1fr); align-items: center; column-gap: 8px; height: 26px; font-size: 11.5px; }
+.s4-train b { display: block; font-size: 12.5px; font-weight: 600; }
+.s4-train small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
+.s4-read { width: 100%; margin-top: 12px; }
+#w4 .sig { left: 305px; top: 126px; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="hh-wash"><i class="ba"></i><i class="bb"></i><i class="dots"></i><i class="edge"></i><i class="grain"></i></div>
+  <div class="hh-plate" id="plate"></div>
+  <div id="cam">
+
+    <!-- ================================================================ film 1: quality event
+         NC-204, raised to closed on one record: the event lands with its
+         evidence, owners contain it in the thread, engineering posts the
+         root cause, J. Rivera decides the disposition, D. Fontaine signs,
+         and Close unlocks only when every item is done. -->
+    <div class="win hh-win" id="w1">
+      <section class="hh-col">
+        <div class="dr-top"><span class="kick">QUALITY EVENT</span><div class="dr-tools"><span><svg class="ic" viewBox="0 0 24 24"><path d="M15 3h6v6M21 3l-8 8M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></span><span><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div></div>
+        <div class="dr-head">
+          <span class="rid">NC-204</span>
+          <h2>Coating thickness out of spec · line 2</h2>
+          <div class="dr-meta"><span class="pill blue" id="s1-pill">Open</span><span class="who"><span class="av hh-jr">JR</span>J. Rivera · owner</span><i class="sep"></i><span class="stack"><span class="av hh-jr">JR</span><span class="av hh-mo">MO</span><span class="more">+3</span></span>
+            <span class="hh-act" id="s1-close"><svg class="ic" id="s1-close-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><svg class="ic" id="s1-close-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><i class="spin" id="s1-close-spin"></i><span id="s1-close-t">Close event</span></span></div>
+        </div>
+        <div class="dr-thread" id="s1-thread">
+          <div class="dr-scroll" id="s1-scroll">
+            <div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>Raised by M. Osei from the in-process check on <b>WO-8817</b><time>07:58</time></div>
+            <div class="pop" id="s1-pop-report"><div class="msg"><span class="av hh-mo">MO</span>
+              <div class="bubble"><header><b>M. Osei</b><span>Production · line 2</span><time>07:58</time></header>
+                <p>Coating reads 38.1 µm on the housing face. Spec is 45 to 55.</p>
+                <div class="atts"><span class="att"><span class="fi hh-img">IMG</span>Photos<small>4</small></span><span class="att"><span class="fi xls">CSV</span>Thickness readings<small>PRT-4412</small></span></div>
+              </div></div></div>
+            <div class="pop" id="s1-pop-me"><div class="msg"><span class="av hh-jr">JR</span>
+              <div class="bubble me"><header><b>J. Rivera</b><span>Quality · owner</span><time>08:02</time></header>
+                <p id="s1-sent"></p></div></div></div>
+            <div class="pop" id="s1-pop-mo"><div class="msg"><span class="av hh-mo">MO</span>
+              <div class="bubble"><header><b>M. Osei</b><span>Production · line 2</span><time>08:06</time></header>
+                <p>Lot 118-B quarantined. 240 units tagged and moved to the hold area.</p></div></div></div>
+            <div class="pop" id="s1-pop-so"><div class="hh-popwrap"><span class="hh-day">Mon, Sep 28</span>
+              <div class="msg"><span class="av so">SO</span>
+                <div class="bubble"><header><b>S. Okafor</b><span>Engineering</span><time>10:14</time></header>
+                  <p>Root cause: the coating fixture on head 2 is worn, so housings sit off-angle and the face runs thin. Replacement fixture is fitted.</p>
+                  <div class="atts"><span class="att"><span class="fi hh-img">IMG</span>Fixture, head 2<small>3</small></span></div>
+                </div></div></div></div>
+            <div class="pop" id="s1-pop-seal"><div class="msg"><span class="sealic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+              <div class="bubble sealb"><header><b>J. Rivera</b><span>signed Quality approval</span><time>11:20</time></header>
+                <p class="sealline"><span class="pill blue">Approval</span><span class="mono">21 CFR Part 11 e-signature · jrivera</span></p></div></div></div>
+            <div class="pop" id="s1-pop-closed"><div class="hh-popwrap"><div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg><b>NC-204</b> closed by J. Rivera · every item and signature on the record<time>11:24</time></div></div></div>
+          </div>
+        </div>
+        <div class="dr-comp" id="s1-comp"><span class="ph" id="s1-ph">Write to the thread…</span><span class="line"><span class="typed" id="s1-typed"></span><i class="caret" id="s1-caret"></i></span><span class="send" id="s1-send"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+      </section>
+      <aside class="ck">
+        <div class="ck-head">
+          <div class="r1"><span class="kick">CHECKLIST</span><span class="kick">NC-204</span></div>
+          <b>Quality Event</b>
+          <div class="ck-prog"><span class="bar"><i id="s1-bar"></i></span><span id="s1-count">0 of 7</span></div>
+        </div>
+        <div class="ck-sec"><h4>CAPTURE &amp; EVIDENCE</h4>
+          <div class="ci" id="s1-ph1"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Photos and measurements</b><small class="hh-sm" data-a="From the line" data-b="4 photos · 3 readings">From the line</small></span><span class="pend"></span></div>
+          <div class="ci" id="s1-ctx"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Part and order context</b><small class="hh-sm" data-a="From ERP" data-b="PRT-4412 · WO-8817 · from ERP">From ERP</small></span><span class="pend"></span></div>
+        </div>
+        <div class="ck-sec"><h4>CONTAINMENT</h4>
+          <div class="ci" id="s1-q"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Quarantine lot 118-B</b><small class="who"><span class="av hh-mo">MO</span>M. Osei<span class="hh-note"></span></small></span><span class="pend hh-hot">Today</span></div>
+          <div class="ci" id="s1-w"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Sort remaining WIP</b><small class="who"><span class="av mk">MK</span>M. Kerr<span class="hh-note"></span></small></span><span class="pend hh-hot">Today</span></div>
+        </div>
+        <div class="ck-sec"><h4>INVESTIGATION</h4>
+          <div class="ci" id="s1-rc"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Root cause</b><small class="who"><span class="av so">SO</span>S. Okafor<span class="hh-note"></span></small></span><span class="pend">Sep 29</span></div>
+        </div>
+        <div class="ck-sec"><h4>DISPOSITION &amp; CLOSURE</h4>
+          <div class="ci" id="s1-d"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Disposition</b>
+            <span class="hh-sel" id="s1-sel"><span class="ph" id="s1-sel-ph">Choose a disposition</span><span class="v" id="s1-sel-v">Rework to spec</span><span class="chev"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+              <span class="menu" id="s1-menu">
+                <span class="opt"><i></i><span><b>Rework to spec</b><span>Rework on line 2, re-inspect before release</span></span></span>
+                <span class="opt"><i></i><span><b>Use as is</b><span>Needs a customer concession</span></span></span>
+                <span class="opt"><i></i><span><b>Scrap</b><span>Scrap the lot and reorder</span></span></span>
+              </span></span></span><span class="pend"></span></div>
+          <div class="ci" id="s1-qa"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Quality approval</b><small class="who"><span class="av hh-jr">JR</span>J. Rivera<span class="hh-note"></span></small></span><span class="sign" id="s1-sign">Sign</span><span class="signed"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>Signed</span></div>
+        </div>
+      </aside>
+      <!-- the Part 11 signature dialog (the platform film's, verbatim markup) -->
+      <div class="mscrim" id="s1-mscrim"></div>
+      <div class="sig" id="s1-sig">
+        <div class="sig-h"><span class="shield"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span><span><b>Sign quality approval</b><small>NC-204 · Coating thickness out of spec · line 2</small></span><span class="x"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+        <div><label>MEANING OF SIGNATURE</label>
+          <div class="msel" id="s1-msel"><span id="s1-msel-ph">Choose what your signature means</span><span class="v" id="s1-msel-v"><b>Approval</b> <span>· I approve this disposition</span></span><span class="chev"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            <div class="menu" id="s1-mmenu">
+              <div class="opt"><i></i><span><b>Approval</b><span>I approve this disposition</span></span></div>
+              <div class="opt"><i></i><span><b>Review</b><span>I have reviewed this event</span></span></div>
+              <div class="opt"><i></i><span><b>Responsibility</b><span>I am responsible for carrying it out</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="creds">
+          <div><label>USER ID</label><div class="inp ro">jrivera</div></div>
+          <div><label>PASSWORD</label><div class="inp" id="s1-pw"><span class="dots" id="s1-dots"></span><i class="caret" id="s1-pwc"></i><span class="pph" id="s1-pph">Enter your password</span></div></div>
+        </div>
+        <div class="attest"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Signed under 21 CFR Part 11. Your name, the meaning and the time are kept on the record and in its audit trail.</span></div>
+        <div class="sig-f"><span class="btn ghost">Cancel</span><span class="btn pri" id="s1-sigbtn">Sign</span></div>
+      </div>
+    </div>
+
+    <!-- ================================================================ film 2: change order
+         CC-2148, raised to released on one record: it arrives with its
+         reason from NC-204, AI names what else it affects and a person adds
+         it, production confirms, D. Fontaine signs, and Release unlocks
+         only once the approvals are in. -->
+    <div class="win hh-win" id="w2">
+      <section class="hh-col">
+        <div class="dr-top"><span class="kick">CHANGE CONTROL</span><div class="dr-tools"><span><svg class="ic" viewBox="0 0 24 24"><path d="M15 3h6v6M21 3l-8 8M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></span><span><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div></div>
+        <div class="dr-head">
+          <span class="rid">CC-2148</span>
+          <h2>Torque spec update · housing assembly</h2>
+          <div class="dr-meta"><span class="pill amber" id="s2-pill">In review</span><span class="who"><span class="av df">DF</span>D. Fontaine · owner</span><i class="sep"></i><span class="stack"><span class="av df">DF</span><span class="av so">SO</span><span class="av mk">MK</span><span class="more">+2</span></span>
+            <span class="hh-act" id="s2-rel"><svg class="ic hh-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><i class="spin"></i><span class="hh-lbl">Release change</span></span></div>
+        </div>
+        <div class="dr-thread" id="s2-thread">
+          <div class="dr-scroll" id="s2-scroll">
+            <div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>Raised from <b>NC-204</b> · root cause linked<time>09:10</time></div>
+            <div class="pop" id="s2-pop-so"><div class="msg"><span class="av so">SO</span>
+              <div class="bubble"><header><b>S. Okafor</b><span>Engineering</span><time>09:12</time></header>
+                <p>Housing fastener torque goes from 4.2 to 4.8 N·m. Drawing and risk assessment attached.</p>
+                <div class="atts"><span class="att"><span class="fi pdf">PDF</span>DWG-2201<small>Rev D</small></span><span class="att"><span class="fi xls">XLS</span>Risk assessment<small>v2</small></span></div>
+              </div></div></div>
+            <div class="pop" id="s2-pop-ai"><div class="msg"><span class="av df">DF</span>
+              <div class="bubble hh-ai"><header><b>D. Fontaine</b><span>asked AI suggestion for <em>Assess impacted documents</em></span><time>09:14</time></header>
+                <div class="hh-aitb">
+                  <div class="hh-aitr th"><span class="hh-abox" id="s2-allbox"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Field label</span><span>Suggested Value</span></div>
+                  <div class="hh-aitr" id="s2-airow"><span class="hh-abox" id="s2-rowbox"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>AI impact summary</span><span>1.Line clearance, packaging 2.Assembly torque check form</span></div>
+                </div>
+                <div class="hh-aift"><span class="hh-add" id="s2-add"><svg class="ic hh-ok" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><span class="hh-lbl">Add to Checklist</span></span></div>
+              </div></div></div>
+            <div class="pop" id="s2-pop-mk"><div class="msg"><span class="av mk">MK</span>
+              <div class="bubble"><header><b>M. Kerr</b><span>Production</span><time>09:19</time></header>
+                <p>Line 2 can run the new torque from Monday’s first shift.</p></div></div></div>
+            <div class="pop" id="s2-pop-seal"><div class="msg"><span class="sealic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+              <div class="bubble sealb"><header><b>D. Fontaine</b><span>signed Quality approval</span><time>09:21</time></header>
+                <p class="sealline"><span class="pill blue">Approval</span><span class="mono">21 CFR Part 11 e-signature · dfontaine</span></p></div></div></div>
+            <div class="pop" id="s2-pop-rel"><div class="hh-popwrap"><div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg><b>CC-2148</b> released by D. Fontaine · Rev D effective, training assigned<time>09:26</time></div></div></div>
+          </div>
+        </div>
+        <div class="dr-comp"><span class="ph">Write to the thread…</span><span class="send"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+      </section>
+      <aside class="ck">
+        <div class="ck-head">
+          <div class="r1"><span class="kick">CHECKLIST</span><span class="kick">CC-2148</span></div>
+          <b>Change Control</b>
+          <div class="ck-prog"><span class="bar"><i id="s2-bar"></i></span><span id="s2-count">0 of 8</span></div>
+        </div>
+        <div class="hh-ckbody" id="s2-ckbody"><div id="s2-ckscroll">
+          <div class="ck-sec"><h4>CHANGE &amp; IMPACT</h4>
+            <div class="ci" id="s2-rsn"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Reason for change</b><small class="hh-sm" data-a="From NC-204" data-b="Torque 4.2 to 4.8 N·m · root cause NC-204">From NC-204</small></span><span class="pend"></span></div>
+            <div class="ci" id="s2-aff"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Affected documents</b><small class="hh-sm" data-a="From the drawing" data-b="SOP-118 · DWG-2201">From the drawing</small></span><span class="pend"></span></div>
+            <div class="ci"><span></span><span><b>Assess impacted documents</b><span class="hh-ask" id="s2-ask"><svg class="ic hh-wand" viewBox="0 0 24 24"><path d="M4.6 19.4 15.2 8.8M13.4 7l3.6 3.6M17.6 3.6v3M16.1 5.1h3M19.8 9.6v2.2M18.7 10.7h2.2"/></svg><i class="spin"></i><span>What else does this change affect? (Beta)</span></span></span><span></span></div>
+            <div class="ci" id="s2-sum"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>AI impact summary</b><small class="hh-sm" data-a="Empty" data-b="1.Line clearance, packaging 2.Assembly torque check form">Empty</small></span><span class="pend"></span></div>
+            <div class="ci" id="s2-rec"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Impacted document records</b><small class="hh-sm" data-a="+ Add Document" data-b="Suggested by AI, added by D. Fontaine">+ Add Document</small>
+              <span class="hh-slot" id="s2-recslot"><span class="hh-recs">
+                <span class="hh-rec"><span class="ty doc">WI</span><em>WI-092</em><span>Line clearance, packaging</span></span>
+                <span class="hh-rec"><span class="ty doc">FRM</span><em>FRM-201</em><span>Assembly torque check form</span></span>
+              </span></span></span><span class="pend"></span></div>
+          </div>
+          <div class="ck-sec"><h4>APPROVALS</h4>
+            <div class="ci" id="s2-prod"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Production readiness</b><small class="who"><span class="av mk">MK</span>M. Kerr<span class="hh-note"></span></small></span><span class="pend">Waiting</span></div>
+            <div class="ci" id="s2-qa"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Quality approval</b><small class="who"><span class="av df">DF</span>D. Fontaine<span class="hh-note"></span></small></span><span class="sign" id="s2-sign">Sign</span><span class="signed"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>Signed</span></div>
+          </div>
+          <div class="ck-sec"><h4>CLOSURE</h4>
+            <div class="ci" id="s2-rev"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Revision</b><small class="hh-sm" data-a="DWG-2201 Rev C to Rev D" data-b="DWG-2201 Rev D effective">DWG-2201 Rev C to Rev D</small></span><span class="pend"></span></div>
+            <div class="ci" id="s2-trn"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Training assigned</b><small class="hh-sm" data-a="Line 2 operators" data-b="Line 2 operators · due Oct 2">Line 2 operators</small></span><span class="pend"></span></div>
+          </div>
+        </div></div>
+      </aside>
+      <!-- the Part 11 signature dialog (the platform film's, verbatim markup) -->
+      <div class="mscrim"></div>
+      <div class="sig">
+        <div class="sig-h"><span class="shield"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span><span><b>Sign quality approval</b><small>CC-2148 · Torque spec update · housing assembly</small></span><span class="x"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+        <div><label>MEANING OF SIGNATURE</label>
+          <div class="msel"><span>Choose what your signature means</span><span class="v"><b>Approval</b> <span>· I approve this change as written</span></span><span class="chev"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            <div class="menu">
+              <div class="opt"><i></i><span><b>Approval</b><span>I approve this change as written</span></span></div>
+              <div class="opt"><i></i><span><b>Review</b><span>I have reviewed this change</span></span></div>
+              <div class="opt"><i></i><span><b>Responsibility</b><span>I am responsible for carrying it out</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="creds">
+          <div><label>USER ID</label><div class="inp ro">dfontaine</div></div>
+          <div><label>PASSWORD</label><div class="inp"><span class="dots"></span><i class="caret"></i><span class="pph">Enter your password</span></div></div>
+        </div>
+        <div class="attest"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Signed under 21 CFR Part 11. Your name, the meaning and the time are kept on the record and in its audit trail.</span></div>
+        <div class="sig-f"><span class="btn ghost">Cancel</span><span class="btn pri">Sign</span></div>
+      </div>
+    </div>
+
+    <!-- ================================================================ film 3: holds & release
+         HLD-118, lot 118-B held to released on one record: the hold comes
+         from NC-204's containment, the disposition and the rework land, the
+         owner enters the re-inspection, signs the release, and Release lot
+         unlocks only once the signature is on the record. -->
+    <div class="win hh-win" id="w3">
+      <section class="hh-col">
+        <div class="dr-top"><span class="kick">HOLD &amp; RELEASE</span><div class="dr-tools"><span><svg class="ic" viewBox="0 0 24 24"><path d="M15 3h6v6M21 3l-8 8M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></span><span><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div></div>
+        <div class="dr-head">
+          <span class="rid">HLD-118</span>
+          <h2>Lot 118-B · quarantine hold</h2>
+          <div class="dr-meta"><span class="pill hh-rust" id="s3-pill">On hold</span><span class="who"><span class="av hh-mo">MO</span>M. Osei · owner</span><i class="sep"></i><span class="stack"><span class="av hh-mo">MO</span><span class="av hh-jr">JR</span><span class="av mk">MK</span><span class="more">+1</span></span>
+            <span class="hh-act" id="s3-rel"><svg class="ic hh-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><i class="spin"></i><span class="hh-lbl">Release lot</span></span></div>
+        </div>
+        <div class="dr-thread" id="s3-thread">
+          <div class="dr-scroll" id="s3-scroll">
+            <div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>Placed from <b>NC-204</b> · containment<time>08:06</time></div>
+            <div class="pop" id="s3-pop-mo"><div class="msg"><span class="av hh-mo">MO</span>
+              <div class="bubble me"><header><b>M. Osei</b><span>Production · line 2</span><time>08:06</time></header>
+                <p>Lot 118-B quarantined. 240 units tagged and moved to the hold area.</p></div></div></div>
+            <div class="pop" id="s3-pop-jr"><div class="hh-popwrap"><span class="hh-day">Mon, Sep 28</span>
+              <div class="msg"><span class="av hh-jr">JR</span>
+                <div class="bubble"><header><b>J. Rivera</b><span>Quality</span><time>11:05</time></header>
+                  <p>NC-204 disposition is rework to spec. Re-inspect 3 samples before release.</p></div></div></div></div>
+            <div class="pop" id="s3-pop-mk"><div class="msg"><span class="av mk">MK</span>
+              <div class="bubble"><header><b>M. Kerr</b><span>Production</span><time>13:40</time></header>
+                <p>Rework done on line 2. All 240 units recoated.</p>
+                <div class="atts"><span class="att"><span class="fi doc">WO</span>WO-8901<small>closed</small></span></div></div></div></div>
+            <div class="pop" id="s3-pop-seal"><div class="msg"><span class="sealic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+              <div class="bubble sealb"><header><b>M. Osei</b><span>signed Release signature</span><time>14:12</time></header>
+                <p class="sealline"><span class="pill blue">Approval</span><span class="mono">21 CFR Part 11 e-signature · mosei</span></p></div></div></div>
+            <div class="pop" id="s3-pop-rel"><div class="hh-popwrap"><div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg><b>Lot 118-B</b> released by M. Osei · 240 units cleared for use<time>14:15</time></div></div></div>
+          </div>
+        </div>
+        <div class="dr-comp"><span class="ph">Write to the thread…</span><span class="send"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+      </section>
+      <aside class="ck">
+        <div class="ck-head">
+          <div class="r1"><span class="kick">CHECKLIST</span><span class="kick">HLD-118</span></div>
+          <b>Hold &amp; Release</b>
+          <div class="ck-prog"><span class="bar"><i id="s3-bar"></i></span><span id="s3-count">0 of 6</span></div>
+        </div>
+        <div class="ck-sec"><h4>HOLD</h4>
+          <div class="ci" id="s3-rsn"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Reason</b><small class="hh-sm" data-a="From NC-204" data-b="NC-204 · coating 38.1 µm, spec 45 to 55">From NC-204</small></span><span class="pend"></span></div>
+          <div class="ci" id="s3-scp"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Scope</b><small class="hh-sm" data-a="From the lot" data-b="Lot 118-B · 240 units · line 2">From the lot</small></span><span class="pend"></span></div>
+        </div>
+        <div class="ck-sec"><h4>DISPOSITION</h4>
+          <div class="ci" id="s3-dsp"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Disposition</b><small class="hh-sm" data-a="From NC-204" data-b="Rework to spec · decided on NC-204">From NC-204</small></span><span class="pend"></span></div>
+          <div class="ci" id="s3-rwk"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Rework order</b><small class="who"><span class="av mk">MK</span>M. Kerr<span class="hh-note"></span></small></span><span class="pend">Waiting</span></div>
+        </div>
+        <div class="ck-sec"><h4>RELEASE</h4>
+          <div class="ci" id="s3-insp"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Re-inspection</b><div class="fld" id="s3-fld"><span class="ftx" id="s3-ftx"></span><i class="caret" id="s3-caret"></i><span class="fph" id="s3-fph">Enter the re-inspection results</span></div></span><span class="pend"></span></div>
+          <div class="ci" id="s3-rs"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Release signature</b><small class="who"><span class="av hh-mo">MO</span>M. Osei<span class="hh-note"></span></small></span><span class="sign" id="s3-sign">Sign</span><span class="signed"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>Signed</span></div>
+        </div>
+      </aside>
+      <!-- the Part 11 signature dialog (the platform film's, verbatim markup) -->
+      <div class="mscrim"></div>
+      <div class="sig">
+        <div class="sig-h"><span class="shield"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span><span><b>Sign release</b><small>HLD-118 · Lot 118-B · quarantine hold</small></span><span class="x"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+        <div><label>MEANING OF SIGNATURE</label>
+          <div class="msel"><span>Choose what your signature means</span><span class="v"><b>Approval</b> <span>· I approve release of this lot</span></span><span class="chev"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+            <div class="menu">
+              <div class="opt"><i></i><span><b>Approval</b><span>I approve release of this lot</span></span></div>
+              <div class="opt"><i></i><span><b>Review</b><span>I have reviewed the re-inspection</span></span></div>
+              <div class="opt"><i></i><span><b>Responsibility</b><span>I am responsible for this release</span></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="creds">
+          <div><label>USER ID</label><div class="inp ro">mosei</div></div>
+          <div><label>PASSWORD</label><div class="inp"><span class="dots"></span><i class="caret"></i><span class="pph">Enter your password</span></div></div>
+        </div>
+        <div class="attest"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Signed under 21 CFR Part 11. Your name, the meaning and the time are kept on the record and in its audit trail.</span></div>
+        <div class="sig-f"><span class="btn ghost">Cancel</span><span class="btn pri">Sign</span></div>
+      </div>
+    </div>
+
+    <!-- ================================================================ film 4: controlled document
+         SOP-118 Rev E, draft to effective to point of use: the revision is
+         raised from NC-204's root cause, reviewed, signed, made effective
+         (Rev D superseded, retraining assigned), then a line 2 operator
+         reads the controlled copy and acknowledges it. -->
+    <div class="win hh-win" id="w4">
+      <div class="s4-rec" id="s4-rec">
+        <section class="hh-col">
+          <div class="dr-top"><span class="kick">DOCUMENT</span><div class="dr-tools"><span><svg class="ic" viewBox="0 0 24 24"><path d="M15 3h6v6M21 3l-8 8M10 5H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/></svg></span><span><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div></div>
+          <div class="dr-head">
+            <span class="rid">SOP-118</span>
+            <h2>Cleaning validation, coating line 2</h2>
+            <div class="dr-meta"><span class="pill amber" id="s4-pill">In review</span><span class="who"><span class="av df">DF</span>D. Fontaine · owner</span><i class="sep"></i><span class="stack"><span class="av df">DF</span><span class="av rp">RP</span><span class="av so">SO</span><span class="more">+1</span></span>
+              <span class="hh-act" id="s4-eff"><svg class="ic hh-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><i class="spin"></i><span class="hh-lbl">Make effective</span></span></div>
+          </div>
+          <div class="dr-thread" id="s4-thread">
+            <div class="dr-scroll" id="s4-scroll">
+              <div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M15 10l5 5-5 5"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>Revision raised from <b>NC-204</b> · corrective action<time>10:30</time></div>
+              <div class="pop" id="s4-pop-rp"><div class="msg"><span class="av rp">RP</span>
+                <div class="bubble"><header><b>R. Patel</b><span>Document control</span><time>10:32</time></header>
+                  <p>Rev E redline attached. It adds a fixture check on head 2 before each shift.</p>
+                  <div class="atts"><span class="att"><span class="fi doc">DOC</span>SOP-118<small>Rev E draft</small></span></div></div></div></div>
+              <div class="pop" id="s4-pop-so"><div class="msg"><span class="av so">SO</span>
+                <div class="bubble"><header><b>S. Okafor</b><span>Engineering</span><time>13:05</time></header>
+                  <p>Reviewed. The check matches the head 2 fixture drawing.</p></div></div></div>
+              <div class="pop" id="s4-pop-seal"><div class="msg"><span class="sealic"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span>
+                <div class="bubble sealb"><header><b>D. Fontaine</b><span>signed Quality approval</span><time>14:20</time></header>
+                  <p class="sealline"><span class="pill blue">Approval</span><span class="mono">21 CFR Part 11 e-signature · dfontaine</span></p></div></div></div>
+              <div class="pop" id="s4-pop-eff"><div class="hh-popwrap"><div class="sys"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg><b>SOP-118</b> Rev E effective · Rev D superseded · retraining assigned to line 2<time>14:22</time></div></div></div>
+            </div>
+          </div>
+          <div class="dr-comp"><span class="ph">Write to the thread…</span><span class="send"><svg class="ic" viewBox="0 0 24 24"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></span></div>
+        </section>
+        <aside class="ck">
+          <div class="ck-head">
+            <div class="r1"><span class="kick">CHECKLIST</span><span class="kick">SOP-118</span></div>
+            <b>Document</b>
+            <div class="ck-prog"><span class="bar"><i id="s4-bar"></i></span><span id="s4-count">0 of 6</span></div>
+          </div>
+          <div class="ck-sec"><h4>REVISION</h4>
+            <div class="ci" id="s4-rsn"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Reason for revision</b><small class="hh-sm" data-a="From NC-204" data-b="Fixture check on head 2 · from NC-204">From NC-204</small></span><span class="pend"></span></div>
+            <div class="ci" id="s4-red"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Redline</b><small class="hh-sm" data-a="Waiting for the draft" data-b="Rev E draft · R. Patel">Waiting for the draft</small></span><span class="pend"></span></div>
+          </div>
+          <div class="ck-sec"><h4>REVIEW &amp; APPROVAL</h4>
+            <div class="ci" id="s4-eng"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Engineering review</b><small class="who"><span class="av so">SO</span>S. Okafor<span class="hh-note"></span></small></span><span class="pend">Waiting</span></div>
+            <div class="ci" id="s4-qa"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Quality approval</b><small class="who"><span class="av df">DF</span>D. Fontaine<span class="hh-note"></span></small></span><span class="sign" id="s4-sign">Sign</span><span class="signed"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg>Signed</span></div>
+          </div>
+          <div class="ck-sec"><h4>RELEASE</h4>
+            <div class="ci" id="s4-rev"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Revision</b>
+              <span class="s4-revs"><span class="s4-rv"><em>Rev E</em><span class="pill amber" id="s4-rvE">Draft</span><small id="s4-rvEd">Not yet effective</small></span><span class="s4-rv"><em>Rev D</em><span class="pill hh-green" id="s4-rvD">Effective</span><small id="s4-rvDd">since Mar 12</small></span></span></span><span class="pend"></span></div>
+            <div class="ci" id="s4-trn"><span class="box"><svg class="ic chk" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span><b>Training</b><small class="hh-sm" data-a="Line 2 operators" data-b="Line 2 operators · assigned, due Oct 2">Line 2 operators</small></span><span class="pend"></span></div>
+          </div>
+        </aside>
+        <!-- the Part 11 signature dialog (the platform film's, verbatim markup) -->
+        <div class="mscrim"></div>
+        <div class="sig">
+          <div class="sig-h"><span class="shield"><svg class="ic" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.3-2.9 8-7 9.5-4.1-1.5-7-5.2-7-9.5V6l7-3z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></span><span><b>Sign quality approval</b><small>SOP-118 · Rev E · Cleaning validation, coating line 2</small></span><span class="x"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg></span></div>
+          <div><label>MEANING OF SIGNATURE</label>
+            <div class="msel"><span>Choose what your signature means</span><span class="v"><b>Approval</b> <span>· I approve this revision as written</span></span><span class="chev"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span>
+              <div class="menu">
+                <div class="opt"><i></i><span><b>Approval</b><span>I approve this revision as written</span></span></div>
+                <div class="opt"><i></i><span><b>Review</b><span>I have reviewed this revision</span></span></div>
+                <div class="opt"><i></i><span><b>Responsibility</b><span>I am responsible for this document</span></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="creds">
+            <div><label>USER ID</label><div class="inp ro">dfontaine</div></div>
+            <div><label>PASSWORD</label><div class="inp"><span class="dots"></span><i class="caret"></i><span class="pph">Enter your password</span></div></div>
+          </div>
+          <div class="attest"><svg class="ic" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Signed under 21 CFR Part 11. Your name, the meaning and the time are kept on the record and in its audit trail.</span></div>
+          <div class="sig-f"><span class="btn ghost">Cancel</span><span class="btn pri">Sign</span></div>
+        </div>
+      </div>
+
+      <!-- point of use: the controlled copy in the document viewer, the next
+           morning, on a line 2 operator's screen -->
+      <div class="s4-view" id="s4-view">
+        <div class="s4-top">
+          <span class="ty doc s4-ty">SOP</span>
+          <span class="s4-tt"><em>SOP-118</em><b>Cleaning validation, coating line 2</b></span>
+          <span class="pill hh-green">Rev E · Effective</span>
+          <span class="chip">Controlled copy</span>
+          <span class="s4-when">Tue, Sep 29 · 06:02</span>
+          <span class="s4-me"><span class="av s4-ki">KI</span>K. Iyer · Line 2</span>
+        </div>
+        <div class="s4-main">
+          <div class="s4-pagewrap" id="s4-pagewrap"><div class="s4-page" id="s4-page">
+            <div class="s4-ph"><span>SOP-118 · REV E · EFFECTIVE SEP 29</span><span>CONTROLLED COPY</span></div>
+            <h3>1. Purpose</h3>
+            <div class="s4-step"><i></i><p>Defines how coating line 2 is cleaned and checked so every housing meets the 45 to 55 µm coating spec.</p></div>
+            <h3>2. Scope</h3>
+            <div class="s4-step"><i></i><p>Coating heads 1 and 2 on line 2, and the fixtures that hold housings during coating.</p></div>
+            <h3>3. Materials</h3>
+            <div class="s4-step"><i></i><p>IPA, lint-free cloths, fixture gauge FG-12, FRM-201.</p></div>
+            <h3>4. Procedure</h3>
+            <div class="s4-step"><i>4.1</i><p>Stop line 2 and lock out coating head 2 before any cleaning.</p></div>
+            <div class="s4-step"><i>4.2</i><p>Clean the nozzle and the fixture faces with IPA, then wipe dry with a lint-free cloth.</p></div>
+            <div class="s4-step s4-new" id="s4-new"><i>4.3</i><p>Check the head 2 fixture for wear against DWG-2201 Rev D before each shift. Replace the fixture if the locating pins show wear.</p><span class="s4-tag">New in Rev E</span></div>
+            <div class="s4-step"><i>4.4</i><p>Record the check and the fixture ID on FRM-201.</p></div>
+            <div class="s4-step"><i>4.5</i><p>Release the head for production only once the first-piece coating reads 45 to 55 µm.</p></div>
+            <h3>5. Records</h3>
+            <div class="s4-step"><i>5.1</i><p>FRM-201 stays with the batch record for the life of the product.</p></div>
+            <h3>6. References</h3>
+            <div class="s4-step"><i></i><p>DWG-2201 Rev D, FRM-201, NC-204.</p></div>
+          </div></div>
+          <aside class="s4-side">
+            <div class="s4-card"><label>REVISIONS</label>
+              <div class="s4-rrow"><em>Rev E</em><span class="pill hh-green">Effective</span><small>Sep 29</small></div>
+              <div class="s4-rrow"><em>Rev D</em><span class="pill grey">Superseded</span><small>Sep 29</small></div>
+            </div>
+            <div class="s4-card"><label>WHAT CHANGED</label><p>4.3 added: a fixture check on head 2 before each shift. Raised from NC-204.</p></div>
+            <div class="s4-card s4-train"><label>YOUR TRAINING</label><b>Read and understood</b><small id="s4-cnt">Line 2 operators · 0 of 12 read · due Oct 2</small><span class="btn pri s4-read" id="s4-read">Read and understood</span></div>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <i class="hh-fgrain" id="fgrain"></i>
+    <svg id="cursor" viewBox="0 0 22 30"><path d="M2 2 L2 23.5 L7.4 18.3 L11.1 27 L14.7 25.5 L11 16.9 L18.6 16.9 Z" fill="#101114" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  </div>
+  <div id="grain"></div>
+</div>
+
+<!-- the films' motion: easing, pointer, typing, arrivals, ticks -->
+<script src="motion-kit.js"></script>
+<script>
+/* ================================================================== scene setup */
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const Q = new URLSearchParams(location.search);
+const MODE = Q.get("mode") || "board";
+const STEP = +(Q.get("step") || 1);
+document.documentElement.classList.add(MODE);
+if (Q.get("grain") === "0") document.documentElement.classList.add("nograin");
+const cam = $("#cam"), cursor = $("#cursor");
+
+/* the page's zoom at 1536px and up; boards frame the window as the hero does */
+const ZOOM = 1.16, WIN_W = 1070, WIN_H = 560;
+function layoutBoard() {
+  if (MODE !== "board") return;
+  const W = innerWidth, H = innerHeight, w = WIN_W * ZOOM, h = WIN_H * ZOOM, x = (W - w) / 2, y = (H - h) / 2;
+  cam.style.transform = `translate(${x}px, ${y}px) scale(${ZOOM})`;
+  Object.assign($("#plate").style, { left: `${x - 8}px`, top: `${y - 8}px`, width: `${w + 16}px`, height: `${h + 16}px` });
+}
+
+/* ---------------------------------------------------------------- shared moves */
+/* a message arriving in a thread: the slot opens, the bubble rises in */
+function popIn(pop, t, t0) {
+  const inner = pop.firstElementChild, a = arrive(t, t0);
+  pop.style.height = `${inner.offsetHeight * a.slot}px`;
+  inner.style.opacity = a.show;
+  inner.style.transform = `translateY(${a.rise}px) scale(${a.scale})`;
+  inner.style.transformOrigin = "0 100%";
+}
+/* the thread keeps its newest message in view once it overflows */
+function follow(scroll, thread) {
+  scroll.style.transform = `translateY(${-Math.max(0, scroll.offsetHeight - (thread.clientHeight - 32))}px)`;
+}
+/* a colleague's tick landing live: their avatar rings in their colour, the
+ * row flashes the kit's done green, the box ticks without the pointer */
+function liveTick(row, box, av, rgb, t, t0) {
+  const f = liveRing(t, t0);
+  row.style.background = `rgb(31 138 82 / ${0.07 * f})`;
+  av.style.boxShadow = `0 0 0 1.5px #fff, 0 0 0 ${1.5 + 2 * f}px rgb(${rgb} / ${0.9 * f})`;
+  tick(box, seg(t, t0, t0 + 0.3));
+}
+/* typed text with @mentions in blue, for the first n characters */
+function withMentions(text, n) {
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  let out = "", i = 0;
+  for (const m of text.matchAll(/@[A-Z]\. [A-Z][a-z]+/g)) {
+    const a = m.index, b = a + m[0].length;
+    if (a >= n) break;
+    out += esc(text.slice(i, a)) + `<span class="hh-men">${esc(text.slice(a, Math.min(b, n)))}</span>`;
+    i = Math.min(b, n);
+  }
+  return out + esc(text.slice(i, n));
+}
+/* hover and press on a small bordered button (Sign, Acknowledge) */
+function ghostBtn(el, hv, pr) {
+  el.style.background = `color-mix(in oklab, var(--blue50) ${hv * 100}%, #fff)`;
+  el.style.boxShadow = `inset 0 0 0 1px color-mix(in oklab, var(--blue) ${hv * 80}%, var(--blue200))`;
+  el.style.transform = `scale(${1 - 0.04 * pr})`;
+}
+const setHTML = (el, html) => { if (el.innerHTML !== html) el.innerHTML = html; };
+const setText = (el, s) => { if (el.textContent !== s) el.textContent = s; };
+
+/* ---------------------------------------------------------------- shared: the Part 11 signature
+ * as the platform film performs it (its render4), on a clock r that reads
+ * 0.1 at the Sign click: meaning menu, password, Sign, Signing, Signed.
+ * signRow then seals the approval row: the box ticks, Signed replaces Sign,
+ * the row flashes blue, the note settles in. */
+const SG = { SEL: 0.8, OPT: 1.22, PW: 1.55, PW_AT: 1.7, SIGN2: 2.95, DONE: 3.36, OUT: 3.6, SEAL: 3.95 };
+const PW_N = 11, PW_T = dotRhythm(PW_N, 5);
+const SIGN_HTML = { idle: "Sign", busy: '<i class="spin"></i>Signing', done: '<svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Signed' };
+function sigParts(win) {
+  const q = sel => win.querySelector(sel);
+  return {
+    mscrim: q(".mscrim"), sig: q(".sig"), msel: q(".msel"), mselPh: q(".msel > span:first-child"), mselV: q(".msel .v"),
+    menu: q(".sig .menu"), opts: [...win.querySelectorAll(".sig .menu .opt")],
+    pw: q(".creds .inp:not(.ro)"), dots: q(".sig .dots"), pwc: q(".sig .inp .caret"), pph: q(".sig .pph"), btn: q(".sig-f .btn.pri"),
+  };
+}
+function signReset(g) {
+  for (const el of [g.mscrim, g.sig, g.msel, g.mselPh, g.mselV, g.menu, g.pw, g.dots, g.pwc, g.pph, g.btn, ...g.opts]) el.removeAttribute("style");
+  g.opts.forEach(o => o.querySelector("i").removeAttribute("style"));
+  g.dots.textContent = "";
+  if (g.btn.dataset.s !== "idle") { g.btn.innerHTML = SIGN_HTML.idle; g.btn.dataset.s = "idle"; }
+}
+function signDialog(g, r) {
+  const dlg = E.outCubic(seg(r, 0.18, 0.55)) * (1 - E.inOutCubic(seg(r, SG.OUT, SG.OUT + 0.28)));
+  g.mscrim.style.visibility = g.sig.style.visibility = dlg > 0.001 ? "visible" : "hidden";
+  g.mscrim.style.opacity = dlg;
+  g.sig.style.opacity = dlg;
+  g.sig.style.transform = `translateY(${(1 - dlg) * 10}px) scale(${0.965 + 0.035 * dlg})`;
+  const mO = E.outCubic(seg(r, SG.SEL + 0.04, SG.SEL + 0.2)) * (1 - E.outCubic(seg(r, SG.OPT + 0.04, SG.OPT + 0.16)));
+  g.menu.style.visibility = mO > 0.001 ? "visible" : "hidden";
+  g.menu.style.opacity = mO;
+  g.menu.style.transform = `translateY(${(1 - mO) * -4}px)`;
+  const mFocus = E.outCubic(seg(r, SG.SEL + 0.02, SG.SEL + 0.14)) * (1 - E.outCubic(seg(r, SG.PW, SG.PW + 0.12)));
+  g.msel.style.boxShadow = mFocus > 0.001 ? focusRing(mFocus) : "";
+  const meant = r >= SG.OPT + 0.06;
+  g.mselPh.style.display = meant ? "none" : "";
+  g.mselV.style.display = meant ? "inline" : "none";
+  g.opts[0].style.background = `rgb(0 91 183 / ${0.07 * E.outCubic(seg(r, 1.1, 1.18))})`;
+  g.opts[0].querySelector("i").style.boxShadow = r >= SG.OPT ? "inset 0 0 0 4.5px var(--blue)" : "";
+  const pwFocus = E.outCubic(seg(r, SG.PW + 0.02, SG.PW + 0.14)) * (1 - E.outCubic(seg(r, SG.SIGN2, SG.SIGN2 + 0.1)));
+  g.pw.style.boxShadow = pwFocus > 0.001 ? focusRing(pwFocus) : "";
+  const nd = PW_T.filter(ct => r >= SG.PW_AT + ct).length;
+  setText(g.dots, "•".repeat(nd));
+  g.pph.style.display = nd > 0 ? "none" : "";
+  g.pwc.style.opacity = pwFocus > 0.5 && (nd < PW_N || Math.floor((r - SG.PW) * 2.2) % 2 === 0) ? 1 : 0;
+  const st = r < SG.SIGN2 + 0.06 ? "idle" : r < SG.DONE ? "busy" : "done";
+  if (g.btn.dataset.s !== st) { g.btn.innerHTML = SIGN_HTML[st]; g.btn.dataset.s = st; }
+  if (st === "busy") g.btn.querySelector(".spin").style.transform = `rotate(${(r - 3.0) * 900}deg)`;
+  const prS2 = pressAt(r, SG.SIGN2);
+  g.btn.style.opacity = (meant && nd === PW_N) || st !== "idle" ? 1 : 0.45;
+  g.btn.style.background = st === "done" ? "#1f8a52" : prS2 > 0 ? "var(--blue-d)" : "";
+  g.btn.style.transform = `scale(${1 - 0.04 * prS2})`;
+}
+function signRow(row, signBtn, t, r, clickAt, note) {
+  const hvSign = hoverIn(t, clickAt - 0.22) * (1 - E.outCubic(seg(r, 0.35, 0.6)));
+  tick(row.box, seg(r, SG.SEAL, SG.SEAL + 0.3));
+  const sg = E.outCubic(seg(r, SG.SEAL + 0.05, SG.SEAL + 0.3));
+  ghostBtn(signBtn, hvSign, pressAt(t, clickAt));
+  signBtn.style.opacity = 1 - sg;
+  row.signed.style.opacity = sg;
+  row.signed.style.transform = `scale(${0.9 + 0.1 * clamp(E.outBack(seg(r, SG.SEAL + 0.05, SG.SEAL + 0.4)), 0, 1.2)})`;
+  setText(row.note, r >= SG.SEAL + 0.1 ? note : "");
+  row.note.style.opacity = E.outCubic(seg(r, SG.SEAL + 0.1, SG.SEAL + 0.4));
+  row.row.style.background = `rgb(0 91 183 / ${0.06 * E.outCubic(seg(r, SG.SEAL - 0.05, SG.SEAL + 0.2)) * (1 - E.inOutSine(seg(r, SG.SEAL + 0.7, SG.SEAL + 1.6)))})`;
+}
+
+/* the pointer through the dialog, on the platform film's path: Sign, the
+ * meaning select, Approval, the password, Sign; then out to pAfter. And
+ * its hide while the password is typed, and its clicks. */
+function signPath(r, g, pSign, pAfter) {
+  const ms = at(g.msel), mo = at(g.opts[0]), pwb = at(g.pw), sgb = at(g.btn);
+  const pMsel = { x: ms.x + 170, y: ms.y + 21 }, pMopt = { x: mo.x + 120, y: mo.y + 18 };
+  const pPw = { x: pwb.x + 90, y: pwb.y + 21 }, pSig = { x: sgb.x + sgb.w / 2, y: sgb.y + sgb.h / 2 + 2 };
+  if (r < 0.5) return pSign;
+  if (r < 0.95) return arc(pSign, pMsel, E.inOutCubic(seg(r, 0.5, 0.78)), 40);
+  if (r < 1.3) return mix(pMsel, pMopt, E.inOutCubic(seg(r, 1.0, 1.18)));
+  if (r < 2.4) return arc(pMopt, pPw, E.inOutCubic(seg(r, 1.3, 1.52)), 12);
+  if (r < 3.45) return arc(pPw, pSig, E.inOutCubic(seg(r, 2.45, 2.88)), 30);
+  return arc(pSig, pAfter, E.inOutCubic(seg(r, 3.5, 4.3)), 40);
+}
+const signHide = r => seg(r, SG.PW_AT + 0.02, SG.PW_AT + 0.14) * (1 - seg(r, 2.36, 2.46));
+const signClicks = clickAt => [clickAt, ...[SG.SEL, SG.OPT, SG.PW, SG.SIGN2].map(x => clickAt - 0.1 + x)];
+
+/* ---------------------------------------------------------------- shared: a locked record action
+ * (Close event, Release change): grey with a lock until the record can take
+ * it, then the kit's primary look with a small pop; hover, press, busy with
+ * a spinner, and it fades once done */
+function actButton(a, t, { unlock, click, done, label, busyLabel }) {
+  const un = E.outCubic(seg(t, unlock, unlock + 0.3));
+  const hvC = hoverIn(t, click - 0.22), prC = pressAt(t, click);
+  const busy = t >= click + 0.06 && t < done;
+  a.el.style.background = prC > 0 || hvC > 0.5 && un > 0.99 ? `color-mix(in oklab, var(--blue-d) ${Math.max(prC, 0.6 * hvC) * 100}%, var(--blue))` : `color-mix(in oklab, var(--blue) ${un * 100}%, #eef1f5)`;
+  a.el.style.color = `color-mix(in oklab, #fff ${un * 100}%, var(--faint))`;
+  a.el.style.boxShadow = un > 0.01 ? `inset 0 1px 0 rgb(255 255 255 / ${0.16 * un}), 0 1px 2px rgb(0 40 90 / ${0.3 * un}), 0 4px 10px -4px rgb(0 60 130 / ${0.45 * un})` : "";
+  a.el.style.transform = `scale(${(t >= unlock ? 0.94 + 0.06 * clamp(E.outBack(seg(t, unlock, unlock + 0.35)), 0, 1.2) : 1) * (1 - 0.04 * prC)})`;
+  a.el.style.opacity = 1 - E.outCubic(seg(t, done, done + 0.28));
+  a.lock.style.display = un < 0.5 && !busy ? "" : "none";
+  a.spin.style.display = busy ? "block" : "none";
+  if (busy) a.spin.style.transform = `rotate(${(t - click) * 900}deg)`;
+  setText(a.label, busy ? busyLabel : label);
+}
+
+/* ================================================================== film 1: quality event
+ * NC-204, raised to closed on one record (v2, 26 Sep 2026: the first cut
+ * stopped at containment and "had no real story of what a quality event
+ * means on Unifize"). Five acts, one window:
+ *   captured   M. Osei's report lands; photos, readings, part and order
+ *              context tick onto the checklist on their own
+ *   contained  J. Rivera (the pointer) asks the owners in the thread;
+ *              M. Osei and M. Kerr answer and tick live; In progress
+ *   root cause next day, S. Okafor posts it with photos; it ticks live
+ *   decided    J. Rivera picks the disposition, then signs the quality
+ *              approval: the checklist's Sign button and the Part 11 dialog,
+ *              exactly as the platform film performs them (meaning, user ID,
+ *              password, Signing, Signed), the signature on both sides
+ *   closed     Close event was locked until every item was done; it
+ *              unlocks at 7 of 7, she closes, the record says so
+ * Ends at rest on the closed record. */
+const S1 = 20.5;
+const w1 = $("#w1");
+const T1 = {
+  REPORT: 0.4, PH: 1.1, CTX: 1.45,
+  CLICK_COMP: 2.8, TYPE: 3.0, SEND: 5.25,
+  REPLY: 6.2, LAND_Q: 6.45, STATUS: 6.75, LAND_W: 7.3,
+  ROOT: 8.4, LAND_RC: 8.85,
+  CLICK_SEL: 10.7, CLICK_OPT: 11.3,
+  SIGN0: 12.3,                     /* Sign on the checklist; the dialog runs on the platform film's step-4 clock from here */
+  UNLOCK: 16.75, CLICK_CLOSE: 17.85, CLOSED: 18.27, CLOSED_MSG: 18.45,
+};
+const sgAbs = r => T1.SIGN0 - 0.1 + r;
+const s1 = {
+  pill: $("#s1-pill"), thread: $("#s1-thread"), scroll: $("#s1-scroll"), sent: $("#s1-sent"),
+  comp: $("#s1-comp"), ph: $("#s1-ph"), typed: $("#s1-typed"), caret: $("#s1-caret"), send: $("#s1-send"),
+  bar: $("#s1-bar"), count: $("#s1-count"),
+  close: $("#s1-close"), lock: $("#s1-close-lock"), ok: $("#s1-close-ok"), spin: $("#s1-close-spin"), closeT: $("#s1-close-t"),
+  sel: $("#s1-sel"), selPh: $("#s1-sel-ph"), selV: $("#s1-sel-v"), menu: $("#s1-menu"),
+  sign: $("#s1-sign"), mscrim: $("#s1-mscrim"), sig: $("#s1-sig"), msel: $("#s1-msel"), mselPh: $("#s1-msel-ph"), mselV: $("#s1-msel-v"), mmenu: $("#s1-mmenu"),
+  pw: $("#s1-pw"), dots: $("#s1-dots"), pwc: $("#s1-pwc"), pph: $("#s1-pph"), sigbtn: $("#s1-sigbtn"),
+};
+const s1MOpts = $$("#s1-mmenu .opt");
+const s1Sig = sigParts(w1);
+const s1Opts = $$("#s1-menu .opt");
+const s1Pops = ["report", "me", "mo", "so", "seal", "closed"].reduce((o, k) => ({ ...o, [k]: $(`#s1-pop-${k}`) }), {});
+/* a checklist row and the parts a landing touches, with its first state */
+function ckRow(id) {
+  const row = $(id), meta = row.querySelector(":scope > .pend");
+  return {
+    row, box: row.querySelector(".box"), av: row.querySelector(".who .av"), meta, note: row.querySelector(".hh-note"),
+    sm: row.querySelector(".hh-sm"), signed: row.querySelector(".signed"),
+    meta0: meta ? meta.textContent : "", hot0: meta ? meta.classList.contains("hh-hot") : false,
+  };
+}
+const s1Rows = { ph: ckRow("#s1-ph1"), ctx: ckRow("#s1-ctx"), q: ckRow("#s1-q"), w: ckRow("#s1-w"), rc: ckRow("#s1-rc"), d: ckRow("#s1-d"), qa: ckRow("#s1-qa") };
+const S1_ASK = "@M. Osei please quarantine lot 118-B. @M. Kerr, sort the remaining WIP today.";
+const S1_T = rhythm(S1_ASK, 11, 0.013, 0.012);
+s1.sent.innerHTML = withMentions(S1_ASK, S1_ASK.length);
+const CLOSE_HTML = "Close event";
+
+function reset1() {
+  for (const el of Object.values(s1)) el.removeAttribute("style");
+  for (const o of [...s1Opts, ...s1MOpts]) { o.removeAttribute("style"); o.querySelector("i").removeAttribute("style"); }
+  s1.dots.textContent = "";
+  if (s1.sigbtn.dataset.s !== "idle") { s1.sigbtn.innerHTML = SIGN_HTML.idle; s1.sigbtn.dataset.s = "idle"; }
+  for (const p of Object.values(s1Pops)) { p.removeAttribute("style"); p.firstElementChild.removeAttribute("style"); }
+  for (const r of Object.values(s1Rows)) {
+    for (const el of [r.row, r.box, r.box.querySelector(".chk"), r.av, r.meta, r.note, r.sm, r.signed]) el?.removeAttribute("style");
+    if (r.meta) { r.meta.textContent = r.meta0; r.meta.classList.toggle("hh-hot", r.hot0); }
+    if (r.note) r.note.textContent = "";
+    if (r.sm) r.sm.textContent = r.sm.dataset.a;
+  }
+  s1.pill.className = "pill blue"; s1.pill.textContent = "Open";
+  s1.typed.textContent = ""; s1.count.textContent = "0 of 7"; s1.closeT.textContent = CLOSE_HTML;
+}
+
+/* a row's work landing: its owner's avatar rings (rgb), the row flashes done
+ * green, the box ticks, then the time and a short note (or the captured
+ * value) settle in. The pointer never touches it. */
+function landRow(r, t, t0, { rgb, time, note } = {}) {
+  const f = liveRing(t, t0);
+  r.row.style.background = `rgb(31 138 82 / ${0.07 * f})`;
+  if (r.av && rgb) r.av.style.boxShadow = `0 0 0 1.5px #fff, 0 0 0 ${1.5 + 2 * f}px rgb(${rgb} / ${0.9 * f})`;
+  tick(r.box, seg(t, t0, t0 + 0.3));
+  const landed = t >= t0 + 0.12, k = E.outCubic(seg(t, t0 + 0.12, t0 + 0.4));
+  if (r.meta && time !== undefined) {
+    setText(r.meta, landed ? time : r.meta0);
+    r.meta.classList.toggle("hh-hot", !landed && r.hot0);
+    r.meta.style.opacity = landed ? k : 1;
+  }
+  if (r.note && note) { setText(r.note, landed ? note : ""); r.note.style.opacity = k; }
+  if (r.sm) { setText(r.sm, landed ? r.sm.dataset.b : r.sm.dataset.a); r.sm.style.opacity = landed ? 0.3 + 0.7 * k : 1; }
+  return landed;
+}
+/* the status pill: Open, In progress, Closed, each change a small pop */
+function s1Status(t) {
+  const [cls, txt, at0] = t >= T1.CLOSED ? ["pill hh-green", "Closed", T1.CLOSED] : t >= T1.STATUS ? ["pill amber", "In progress", T1.STATUS] : ["pill blue", "Open", -1];
+  if (s1.pill.className !== cls) s1.pill.className = cls;
+  setText(s1.pill, txt);
+  s1.pill.style.transform = at0 >= 0 ? `scale(${0.9 + 0.1 * clamp(E.outBack(seg(t, at0, at0 + 0.35)), 0, 1.2)})` : "";
+}
+
+function render1(t) {
+  /* -- captured (0.4 - 1.8): the report lands, the evidence ticks on its own */
+  popIn(s1Pops.report, t, T1.REPORT);
+  landRow(s1Rows.ph, t, T1.PH, { time: "07:58" });
+  landRow(s1Rows.ctx, t, T1.CTX, { time: "07:58" });
+
+  /* -- contained (2.8 - 7.9): the ask, typed and sent; the owners answer */
+  const focus = E.outCubic(seg(t, T1.CLICK_COMP + 0.03, T1.CLICK_COMP + 0.16)) * (1 - E.outCubic(seg(t, T1.SEND + 0.1, T1.SEND + 0.3)));
+  s1.comp.style.boxShadow = focus > 0.001 ? focusRing(focus) + ", 0 1px 2px rgb(16 24 40 / 0.05)" : "";
+  const sent = t >= T1.SEND + 0.04;
+  const n = sent ? 0 : typedCount(S1_T, t, T1.TYPE);
+  setHTML(s1.typed, withMentions(S1_ASK, n));
+  s1.ph.style.opacity = n > 0 ? 0 : 1;
+  s1.caret.style.opacity = focus > 0.5 && !sent && caretOn(t, T1.CLICK_COMP, n > 0 && n < S1_ASK.length) ? 1 : 0;
+  const live = n > 0 && !sent, prSend = pressAt(t, T1.SEND);
+  s1.send.style.background = live ? (prSend > 0 ? "var(--blue-d)" : "var(--blue)") : "";
+  s1.send.style.color = live ? "#fff" : "";
+  s1.send.style.transform = `scale(${1 - 0.08 * prSend})`;
+  popIn(s1Pops.me, t, T1.SEND + 0.06);
+  popIn(s1Pops.mo, t, T1.REPLY);
+  landRow(s1Rows.q, t, T1.LAND_Q, { rgb: "217 115 143", time: "08:06", note: " · 240 units held" });
+  landRow(s1Rows.w, t, T1.LAND_W, { rgb: "95 176 138", time: "08:09", note: " · WIP sorted" });
+
+  /* -- root cause (8.4 - 9.3): next day, engineering posts it */
+  popIn(s1Pops.so, t, T1.ROOT);
+  landRow(s1Rows.rc, t, T1.LAND_RC, { rgb: "217 138 78", time: "10:14", note: " · Fixture wear, head 2" });
+
+  /* -- decided (10.7 - 16.5): the disposition, then her signature */
+  const hvSel = hoverIn(t, T1.CLICK_SEL - 0.2) * (1 - E.outCubic(seg(t, T1.CLICK_SEL, T1.CLICK_SEL + 0.1)));
+  const selFocus = E.outCubic(seg(t, T1.CLICK_SEL + 0.02, T1.CLICK_SEL + 0.14)) * (1 - E.outCubic(seg(t, T1.CLICK_OPT + 0.1, T1.CLICK_OPT + 0.3)));
+  s1.sel.style.boxShadow = selFocus > 0.001 ? focusRing(selFocus) : hvSel > 0.001 ? `inset 0 0 0 1px color-mix(in oklab, var(--blue) ${hvSel * 70}%, var(--line2))` : "";
+  const mOpen = menuOpen(t, T1.CLICK_SEL, T1.CLICK_OPT);
+  s1.menu.style.visibility = mOpen > 0.001 ? "visible" : "hidden";
+  s1.menu.style.opacity = mOpen;
+  s1.menu.style.transform = `translateY(${(1 - mOpen) * 4}px)`;
+  const hvOpt = E.outCubic(seg(t, T1.CLICK_OPT - 0.2, T1.CLICK_OPT - 0.1));
+  s1Opts[0].style.background = `rgb(0 91 183 / ${0.07 * hvOpt})`;
+  s1Opts[0].querySelector("i").style.boxShadow = t >= T1.CLICK_OPT ? "inset 0 0 0 4.5px var(--blue)" : "";
+  const chosen = t >= T1.CLICK_OPT + 0.06;
+  s1.selPh.style.display = chosen ? "none" : "";
+  s1.selV.style.display = chosen ? "inline" : "none";
+  landRow(s1Rows.d, t, T1.CLICK_OPT + 0.12, { time: "11:02" });
+  /* the signature, performed: Sign on the checklist opens the Part 11
+   * dialog; meaning, password, Sign; then it lands on both sides */
+  const r = t - T1.SIGN0 + 0.1;
+  signDialog(s1Sig, r);
+  signRow(s1Rows.qa, s1.sign, t, r, T1.SIGN0, " · Approval · 11:20");
+  popIn(s1Pops.seal, t, sgAbs(SG.SEAL + 0.15));
+
+  /* the progress: one step per landing */
+  const lands = [T1.PH, T1.CTX, T1.LAND_Q, T1.LAND_W, T1.LAND_RC, T1.CLICK_OPT + 0.12, sgAbs(SG.SEAL + 0.05)];
+  const done = lands.reduce((a, l) => a + E.outCubic(seg(t, l + 0.15, l + 0.55)), 0);
+  s1.bar.style.width = `${done / 7 * 100}%`;
+  setText(s1.count, `${lands.filter(l => t >= l + 0.15).length} of 7`);
+
+  /* -- closed (16.75 - 18.7): Close unlocks at 7 of 7, she closes */
+  s1Status(t);
+  actButton({ el: s1.close, lock: s1.lock, spin: s1.spin, label: s1.closeT }, t, { unlock: T1.UNLOCK, click: T1.CLICK_CLOSE, done: T1.CLOSED, label: CLOSE_HTML, busyLabel: "Closing" });
+  popIn(s1Pops.closed, t, T1.CLOSED_MSG);
+  follow(s1.scroll, s1.thread);
+
+  /* -- the pointer: reading while the event lands, into the composer,
+   *    hidden while typing, Send, rest on the empty composer; the
+   *    disposition; Sign and the dialog on the platform film's path; rest
+   *    in the gutter; up to Close event */
+  const c = at(s1.comp), sd = at(s1.send), sl = at(s1.sel), o0 = at(s1Opts[0]), cl = at(s1.close);
+  const sb = at(s1.sign), ms = at(s1.msel), mo = at(s1MOpts[0]), pwb = at(s1.pw), sgb = at(s1.sigbtn), qab = at(s1Rows.qa.row);
+  const pRead = { x: 520, y: 330 };
+  const pComp = { x: c.x + c.w - 150, y: c.y + c.h / 2 + 2 };
+  const pSend = { x: sd.x + sd.w / 2, y: sd.y + sd.h / 2 + 2 };
+  const pRest = { x: sd.x - 64, y: c.y + c.h / 2 + 6 };
+  const pSel = { x: sl.x + 150, y: sl.y + sl.h / 2 + 2 };
+  const pOpt = { x: o0.x + 150, y: o0.y + 16 };
+  const pSign = { x: sb.x + sb.w / 2 + 2, y: sb.y + sb.h / 2 + 2 };
+  const pMsel = { x: ms.x + 170, y: ms.y + 21 };
+  const pMopt = { x: mo.x + 120, y: mo.y + 18 };
+  const pPw = { x: pwb.x + 90, y: pwb.y + 21 };
+  const pSig = { x: sgb.x + sgb.w / 2, y: sgb.y + sgb.h / 2 + 2 };
+  const pGut = { x: 668, y: qab.y - 30 };
+  const pClose = { x: cl.x + cl.w / 2 + 4, y: cl.y + cl.h / 2 + 2 };
+  let p;
+  if (t < T1.CLICK_COMP) p = move(t, pRead, pComp, 2.2, 2.7, 30);
+  else if (t < 4.85) p = pComp;
+  else if (t < T1.SEND + 0.2) p = move(t, pComp, pSend, 4.85, 5.15, 16);
+  else if (t < 9.9) p = move(t, pSend, pRest, 5.45, 5.8, 10);
+  else if (t < T1.CLICK_SEL + 0.1) p = move(t, pRest, pSel, 9.9, 10.5, 80);
+  else if (t < T1.CLICK_OPT + 0.1) p = move(t, pSel, pOpt, 10.85, 11.12, 10);
+  else if (r < 0.5) p = move(t, pOpt, pSign, 11.55, 12.05, 30);
+  else if (r < 0.95) p = arc(pSign, pMsel, E.inOutCubic(seg(r, 0.5, 0.78)), 40);
+  else if (r < 1.3) p = mix(pMsel, pMopt, E.inOutCubic(seg(r, 1.0, 1.18)));
+  else if (r < 2.4) p = arc(pMopt, pPw, E.inOutCubic(seg(r, 1.3, 1.52)), 12);
+  else if (r < 3.45) p = arc(pPw, pSig, E.inOutCubic(seg(r, 2.45, 2.88)), 30);
+  else if (t < 16.95) p = arc(pSig, pGut, E.inOutCubic(seg(r, 3.5, 4.3)), 40);
+  else p = move(t, pGut, pClose, 16.95, 17.55, 60);
+  const hide = Math.max(typingHide(t, T1.TYPE, 4.85), seg(r, SG.PW_AT + 0.02, SG.PW_AT + 0.14) * (1 - seg(r, 2.36, 2.46)));
+  setPointer(cursor, p, 1 - hide, pressAny(t, [T1.CLICK_COMP, T1.SEND, T1.CLICK_SEL, T1.CLICK_OPT, T1.SIGN0, sgAbs(SG.SEL), sgAbs(SG.OPT), sgAbs(SG.PW), sgAbs(SG.SIGN2), T1.CLICK_CLOSE]));
+}
+
+/* ================================================================== film 2: change order
+ * CC-2148, raised to released on one record. Four acts, one window:
+ *   raised     it arrives from NC-204; S. Okafor's drawing lands; the reason
+ *              and the affected documents tick on their own
+ *   impact     D. Fontaine (the pointer) asks "What else does this change
+ *              affect? (Beta)"; her AI suggestion lands in the thread exactly
+ *              as the product posts it; she ticks it and adds it, and WI-092
+ *              and FRM-201 land as linked records
+ *   approvals  the checklist scrolls to them; M. Kerr confirms production
+ *              readiness live; she signs the quality approval (the platform
+ *              film's Sign button and Part 11 dialog)
+ *   released   Release change was locked until the approvals were in; she
+ *              releases, Rev D goes effective and training is assigned
+ * Ends at rest on the released record. */
+const S2 = 18.6;
+const w2 = $("#w2");
+const T2 = {
+  REPORT: 0.4, RSN: 1.1, AFF: 1.45,
+  CLICK_ASK: 3.0, AI_IN: 3.95,
+  CLICK_ROW: 5.2, CLICK_ADD: 6.05, SUM: 6.35, REC: 6.5, REC_LAND: 6.75,
+  CK_SCROLL: 7.45,
+  MK_MSG: 8.3, PROD: 8.55,
+  SIGN0: 10.0,
+  UNLOCK: 14.4, CLICK_REL: 15.35, RELEASED: 15.75, REV: 15.85, TRN: 16.1, REL_MSG: 16.3,
+};
+const s2 = {
+  pill: $("#s2-pill"), thread: $("#s2-thread"), scroll: $("#s2-scroll"),
+  bar: $("#s2-bar"), count: $("#s2-count"),
+  ask: $("#s2-ask"), allBox: $("#s2-allbox"), rowBox: $("#s2-rowbox"), aiRow: $("#s2-airow"), add: $("#s2-add"),
+  recSlot: $("#s2-recslot"), ckBody: $("#s2-ckbody"), ckScroll: $("#s2-ckscroll"), sign: $("#s2-sign"),
+  rel: $("#s2-rel"),
+};
+const s2AskWand = s2.ask.querySelector(".hh-wand"), s2AskSpin = s2.ask.querySelector(".spin");
+const s2AddOk = s2.add.querySelector(".hh-ok"), s2AddLbl = s2.add.querySelector(".hh-lbl");
+const s2Recs = $$("#s2-recslot .hh-rec");
+const s2Rel = { el: s2.rel, lock: s2.rel.querySelector(".hh-lock"), spin: s2.rel.querySelector(".spin"), label: s2.rel.querySelector(".hh-lbl") };
+const s2Pops = ["so", "ai", "mk", "seal", "rel"].reduce((o, k) => ({ ...o, [k]: $(`#s2-pop-${k}`) }), {});
+const s2Rows = { rsn: ckRow("#s2-rsn"), aff: ckRow("#s2-aff"), sum: ckRow("#s2-sum"), rec: ckRow("#s2-rec"), prod: ckRow("#s2-prod"), qa: ckRow("#s2-qa"), rev: ckRow("#s2-rev"), trn: ckRow("#s2-trn") };
+const s2Sig = sigParts(w2);
+const s2SgAbs = r => T2.SIGN0 - 0.1 + r;
+
+function reset2() {
+  for (const el of [...Object.values(s2), s2AskWand, s2AskSpin, s2AddOk, s2AddLbl, s2.allBox.querySelector(".chk"), s2.rowBox.querySelector(".chk"), ...s2Recs, s2Rel.lock, s2Rel.spin]) el.removeAttribute("style");
+  for (const p of Object.values(s2Pops)) { p.removeAttribute("style"); p.firstElementChild.removeAttribute("style"); }
+  for (const r of Object.values(s2Rows)) {
+    for (const el of [r.row, r.box, r.box.querySelector(".chk"), r.av, r.meta, r.note, r.sm, r.signed]) el?.removeAttribute("style");
+    if (r.meta) { r.meta.textContent = r.meta0; r.meta.classList.toggle("hh-hot", r.hot0); }
+    if (r.note) r.note.textContent = "";
+    if (r.sm) r.sm.textContent = r.sm.dataset.a;
+  }
+  signReset(s2Sig);
+  s2.pill.className = "pill amber"; s2.pill.textContent = "In review";
+  s2.count.textContent = "0 of 8"; s2AddLbl.textContent = "Add to Checklist"; s2Rel.label.textContent = "Release change";
+}
+
+function render2(t) {
+  /* -- raised (0.4 - 1.9): the drawing lands, reason and documents tick */
+  popIn(s2Pops.so, t, T2.REPORT);
+  landRow(s2Rows.rsn, t, T2.RSN, { time: "09:10" });
+  landRow(s2Rows.aff, t, T2.AFF, { time: "09:12" });
+
+  /* -- impact (2.8 - 7.2): ask the AI, tick its suggestion, add it */
+  const hvAsk = hoverIn(t, T2.CLICK_ASK - 0.22) * (1 - E.outCubic(seg(t, T2.AI_IN, T2.AI_IN + 0.3)));
+  const prAsk = pressAt(t, T2.CLICK_ASK);
+  const asking = t >= T2.CLICK_ASK + 0.06 && t < T2.AI_IN;
+  s2.ask.style.background = `color-mix(in oklab, var(--blue50) ${Math.max(hvAsk, asking ? 1 : 0) * 100}%, #fff)`;
+  s2.ask.style.boxShadow = `inset 0 0 0 1px color-mix(in oklab, var(--blue) ${hvAsk * 80}%, var(--blue200))`;
+  s2.ask.style.transform = `scale(${1 - 0.02 * prAsk})`;
+  s2AskWand.style.display = asking ? "none" : "";
+  s2AskSpin.style.display = asking ? "block" : "none";
+  if (asking) s2AskSpin.style.transform = `rotate(${(t - T2.CLICK_ASK) * 900}deg)`;
+  popIn(s2Pops.ai, t, T2.AI_IN);
+  /* the row ticked (and with it the header's all-box); Add to Checklist wakes */
+  tick(s2.rowBox, seg(t, T2.CLICK_ROW + 0.02, T2.CLICK_ROW + 0.32));
+  tick(s2.allBox, seg(t, T2.CLICK_ROW + 0.08, T2.CLICK_ROW + 0.38));
+  s2.aiRow.style.background = `rgb(0 91 183 / ${0.04 * E.outCubic(seg(t, T2.CLICK_ROW, T2.CLICK_ROW + 0.2))})`;
+  const on = E.outCubic(seg(t, T2.CLICK_ROW + 0.1, T2.CLICK_ROW + 0.35));
+  const hvAdd = hoverIn(t, T2.CLICK_ADD - 0.22), prAdd = pressAt(t, T2.CLICK_ADD);
+  const added = t >= T2.CLICK_ADD + 0.2, ad = E.outCubic(seg(t, T2.CLICK_ADD + 0.2, T2.CLICK_ADD + 0.45));
+  s2.add.style.background = added ? `color-mix(in oklab, #e9f6ef ${ad * 100}%, var(--blue))` : prAdd > 0 || hvAdd > 0.5 && on > 0.99 ? `color-mix(in oklab, var(--blue-d) ${Math.max(prAdd, 0.6 * hvAdd) * 100}%, var(--blue))` : `color-mix(in oklab, var(--blue) ${on * 100}%, #eef1f5)`;
+  s2.add.style.color = added ? `color-mix(in oklab, #1f7a4a ${ad * 100}%, #fff)` : `color-mix(in oklab, #fff ${on * 100}%, var(--faint))`;
+  s2.add.style.boxShadow = added ? `inset 0 0 0 1px rgb(201 232 214 / ${ad})` : on > 0.01 ? `inset 0 1px 0 rgb(255 255 255 / ${0.16 * on}), 0 1px 2px rgb(0 40 90 / ${0.3 * on})` : "";
+  s2.add.style.transform = `scale(${1 - 0.04 * prAdd})`;
+  s2AddOk.style.display = added ? "block" : "none";
+  setText(s2AddLbl, added ? "Added to Checklist" : "Add to Checklist");
+  /* the checklist takes it: the summary written, the records linked */
+  landRow(s2Rows.sum, t, T2.SUM, { time: "09:15" });
+  s2Rows.sum.sm.style.color = t >= T2.SUM + 0.12 ? "" : "var(--faint)";
+  const inner = s2.recSlot.firstElementChild;
+  s2.recSlot.style.height = `${inner.offsetHeight * E.inOutCubic(seg(t, T2.REC, T2.REC + 0.32))}px`;
+  s2Recs.forEach((el, i) => { const a = arrive(t, T2.REC + 0.04 + i * 0.14); el.style.opacity = a.show; el.style.transform = `translateY(${a.rise * 0.6}px)`; });
+  landRow(s2Rows.rec, t, T2.REC_LAND, { time: "09:15" });
+  s2Rows.rec.sm.style.color = t >= T2.REC_LAND + 0.12 ? "" : "var(--faint)";
+
+  /* -- approvals (7.45 - 14.3): the checklist scrolls to them */
+  const maxScroll = Math.max(0, s2.ckScroll.offsetHeight - s2.ckBody.clientHeight + 6);
+  const ckY = maxScroll * E.inOutCubic(seg(t, T2.CK_SCROLL, T2.CK_SCROLL + 0.6));
+  s2.ckScroll.style.transform = `translateY(${-ckY}px)`;
+  popIn(s2Pops.mk, t, T2.MK_MSG);
+  landRow(s2Rows.prod, t, T2.PROD, { rgb: "95 176 138", time: "09:19", note: " · Line 2 briefed" });
+  const r = t - T2.SIGN0 + 0.1;
+  signDialog(s2Sig, r);
+  signRow(s2Rows.qa, s2.sign, t, r, T2.SIGN0, " · Approval · 09:21");
+  popIn(s2Pops.seal, t, s2SgAbs(SG.SEAL + 0.15));
+
+  /* -- released (14.4 - 16.6): Release unlocks with the approvals in */
+  actButton(s2Rel, t, { unlock: T2.UNLOCK, click: T2.CLICK_REL, done: T2.RELEASED, label: "Release change", busyLabel: "Releasing" });
+  landRow(s2Rows.rev, t, T2.REV, { time: "09:26" });
+  landRow(s2Rows.trn, t, T2.TRN, { time: "09:26" });
+  const rel = t >= T2.RELEASED;
+  s2.pill.className = rel ? "pill hh-green" : "pill amber";
+  setText(s2.pill, rel ? "Released" : "In review");
+  s2.pill.style.transform = rel ? `scale(${0.9 + 0.1 * clamp(E.outBack(seg(t, T2.RELEASED, T2.RELEASED + 0.35)), 0, 1.2)})` : "";
+  popIn(s2Pops.rel, t, T2.REL_MSG);
+  follow(s2.scroll, s2.thread);
+
+  /* the progress: one step per landing */
+  const lands = [T2.RSN, T2.AFF, T2.SUM, T2.REC_LAND, T2.PROD, s2SgAbs(SG.SEAL + 0.05), T2.REV, T2.TRN];
+  const done = lands.reduce((a, l) => a + E.outCubic(seg(t, l + 0.15, l + 0.55)), 0);
+  s2.bar.style.width = `${done / 8 * 100}%`;
+  setText(s2.count, `${lands.filter(l => t >= l + 0.15).length} of 8`);
+
+  /* -- the pointer: reading while it lands; the AI button; out to the
+   *    gutter while the suggestion comes; the row's box; Add to Checklist;
+   *    the gutter; Sign and the dialog on the platform film's path; up to
+   *    Release change. Checklist targets are read from the layout, less the
+   *    checklist's own scroll. */
+  const ak = at(s2.ask), rb = at(s2.rowBox), adb = at(s2.add), sb = at(s2.sign), rl = at(s2.rel), g = s2Sig;
+  const tr = s2.scroll.style.transform, thY = tr ? +tr.match(/-?[\d.]+/)[0] : 0;   /* the thread's own scroll */
+  const pRead = { x: 520, y: 360 };
+  const pAsk = { x: ak.x + 120, y: ak.y + ak.h / 2 + 2 };
+  const pGut = { x: 668, y: ak.y + 40 };
+  const pRow = { x: rb.x + 8, y: rb.y + thY + 9 };
+  const pAdd = { x: adb.x + adb.w / 2, y: adb.y + thY + adb.h / 2 + 2 };
+  const pGut2 = { x: 668, y: 300 };
+  const pSign = { x: sb.x + sb.w / 2 + 2, y: sb.y - ckY + sb.h / 2 + 2 };
+  const pRest = { x: 668, y: sb.y - ckY - 36 };
+  const pRel = { x: rl.x + rl.w / 2 + 4, y: rl.y + rl.h / 2 + 2 };
+  let p;
+  if (t < T2.CLICK_ASK + 0.1) p = move(t, pRead, pAsk, 2.3, 2.85, 40);
+  else if (t < 4.4) p = move(t, pAsk, pGut, 3.25, 3.7, 20);
+  else if (t < T2.CLICK_ROW + 0.1) p = move(t, pGut, pRow, 4.45, 5.0, 50);
+  else if (t < T2.CLICK_ADD + 0.1) p = move(t, pRow, pAdd, 5.4, 5.8, 20);
+  else if (r < 0) p = t < 9.2 ? move(t, pAdd, pGut2, 6.35, 6.85, 30) : move(t, pGut2, pSign, 9.2, 9.8, 40);
+  else if (t < 14.7) p = signPath(r, g, pSign, pRest);
+  else p = move(t, pRest, pRel, 14.7, 15.2, 90);
+  const hide = r >= 0 ? signHide(r) : 0;
+  setPointer(cursor, p, 1 - hide, pressAny(t, [T2.CLICK_ASK, T2.CLICK_ROW, T2.CLICK_ADD, ...signClicks(T2.SIGN0), T2.CLICK_REL]));
+}
+
+/* ================================================================== film 3: holds & release
+ * HLD-118, lot 118-B held to released on one record. Four acts:
+ *   held         placed from NC-204's containment; M. Osei's quarantine
+ *                note; the reason and scope tick on their own
+ *   dispositioned  next working day, J. Rivera posts NC-204's disposition
+ *                and it ticks in from NC-204; M. Kerr's rework lands live
+ *   re-inspected M. Osei (the pointer) types the results into the field
+ *                and ticks it (the platform film's field-and-tick)
+ *   released     she signs the release (Sign + the Part 11 dialog); Release
+ *                lot was locked until the signature; she releases it
+ * Ends at rest on the released lot. */
+const S3 = 17.2;
+const w3 = $("#w3");
+const T3 = {
+  REPORT: 0.4, RSN: 1.1, SCP: 1.45,
+  JR_MSG: 2.4, DSP: 2.75,
+  MK_MSG: 3.9, RWK: 4.15,
+  CLICK_FLD: 5.45, TYPE: 5.7, CLICK_BOX: 7.55,
+  SIGN0: 9.0,
+  UNLOCK: 13.4, CLICK_REL: 14.35, RELEASED: 14.75, REL_MSG: 14.95,
+};
+const s3 = {
+  pill: $("#s3-pill"), thread: $("#s3-thread"), scroll: $("#s3-scroll"),
+  bar: $("#s3-bar"), count: $("#s3-count"),
+  fld: $("#s3-fld"), ftx: $("#s3-ftx"), caret: $("#s3-caret"), fph: $("#s3-fph"),
+  sign: $("#s3-sign"), rel: $("#s3-rel"),
+};
+const s3Rel = { el: s3.rel, lock: s3.rel.querySelector(".hh-lock"), spin: s3.rel.querySelector(".spin"), label: s3.rel.querySelector(".hh-lbl") };
+const s3Pops = ["mo", "jr", "mk", "seal", "rel"].reduce((o, k) => ({ ...o, [k]: $(`#s3-pop-${k}`) }), {});
+const s3Rows = { rsn: ckRow("#s3-rsn"), scp: ckRow("#s3-scp"), dsp: ckRow("#s3-dsp"), rwk: ckRow("#s3-rwk"), insp: ckRow("#s3-insp"), rs: ckRow("#s3-rs") };
+const s3Sig = sigParts(w3);
+const s3SgAbs = r => T3.SIGN0 - 0.1 + r;
+const S3_TXT = "3 of 3 samples in spec: 48.2, 49.0, 47.6 µm.";
+const S3_T = rhythm(S3_TXT, 13, 0.013, 0.012);
+const FLD_H = 52, FLD_SAVED_H = 15;
+
+function reset3() {
+  for (const el of [...Object.values(s3), s3Rel.lock, s3Rel.spin]) el.removeAttribute("style");
+  for (const p of Object.values(s3Pops)) { p.removeAttribute("style"); p.firstElementChild.removeAttribute("style"); }
+  for (const r of Object.values(s3Rows)) {
+    for (const el of [r.row, r.box, r.box.querySelector(".chk"), r.av, r.meta, r.note, r.sm, r.signed]) el?.removeAttribute("style");
+    if (r.meta) { r.meta.textContent = r.meta0; r.meta.classList.toggle("hh-hot", r.hot0); }
+    if (r.note) r.note.textContent = "";
+    if (r.sm) r.sm.textContent = r.sm.dataset.a;
+  }
+  signReset(s3Sig);
+  s3.pill.className = "pill hh-rust"; s3.pill.textContent = "On hold";
+  s3.ftx.textContent = ""; s3.count.textContent = "0 of 6"; s3Rel.label.textContent = "Release lot";
+}
+
+function render3(t) {
+  /* -- held (0.4 - 1.9): her quarantine note, reason and scope tick */
+  popIn(s3Pops.mo, t, T3.REPORT);
+  landRow(s3Rows.rsn, t, T3.RSN, { time: "08:06" });
+  landRow(s3Rows.scp, t, T3.SCP, { time: "08:06" });
+
+  /* -- dispositioned (2.4 - 4.6): the decision from NC-204, the rework */
+  popIn(s3Pops.jr, t, T3.JR_MSG);
+  landRow(s3Rows.dsp, t, T3.DSP, { time: "11:05" });
+  popIn(s3Pops.mk, t, T3.MK_MSG);
+  landRow(s3Rows.rwk, t, T3.RWK, { rgb: "95 176 138", time: "13:40", note: " · WO-8901 done" });
+
+  /* -- re-inspected (5.45 - 8.0): into the field, type, tick; saved, the
+   *    value sits under its label like the other rows' lines */
+  const focus = E.outCubic(seg(t, T3.CLICK_FLD + 0.03, T3.CLICK_FLD + 0.16));
+  const saved = E.inOutCubic(seg(t, T3.CLICK_BOX + 0.1, T3.CLICK_BOX + 0.45));
+  const n = typedCount(S3_T, t, T3.TYPE);
+  setText(s3.ftx, S3_TXT.slice(0, n));
+  s3.fph.style.display = n > 0 ? "none" : "";
+  s3.caret.style.opacity = focus > 0.5 && saved < 0.05 && caretOn(t, T3.CLICK_FLD, n > 0 && n < S3_TXT.length) ? 1 : 0;
+  const hvF = hoverIn(t, T3.CLICK_FLD - 0.22) * (1 - focus), ring = focus * (1 - saved);
+  s3.fld.style.boxShadow = saved > 0 ? `inset 0 0 0 1px rgb(223 228 234 / ${1 - saved})` : ring > 0.001 ? focusRing(ring) : `inset 0 0 0 1px color-mix(in oklab, var(--blue) ${hvF * 70}%, var(--line2))`;
+  s3.fld.style.background = `rgb(255 255 255 / ${1 - saved})`;
+  s3.fld.style.height = `${lerp(FLD_H, FLD_SAVED_H, saved)}px`;
+  s3.fld.style.paddingLeft = `${lerp(10, 0, saved)}px`;
+  s3.fld.style.paddingTop = s3.fld.style.paddingBottom = `${lerp(8, 0, saved)}px`;
+  s3.fld.style.marginTop = `${lerp(7, 3, saved)}px`;
+  s3.ftx.style.color = saved > 0 ? `color-mix(in oklab, var(--ink2) ${saved * 100}%, var(--ink))` : "";
+  const insp = s3Rows.insp;
+  tick(insp.box, seg(t, T3.CLICK_BOX + 0.02, T3.CLICK_BOX + 0.32));
+  setText(insp.meta, t >= T3.CLICK_BOX + 0.2 ? "14:08" : "");
+  insp.meta.style.opacity = E.outCubic(seg(t, T3.CLICK_BOX + 0.2, T3.CLICK_BOX + 0.45));
+  insp.row.style.background = `rgb(0 91 183 / ${0.045 * hvF})`;
+
+  /* -- released (9.0 - 15.2): she signs, Release unlocks, she releases */
+  const r = t - T3.SIGN0 + 0.1;
+  signDialog(s3Sig, r);
+  signRow(s3Rows.rs, s3.sign, t, r, T3.SIGN0, " · Approval · 14:12");
+  popIn(s3Pops.seal, t, s3SgAbs(SG.SEAL + 0.15));
+  actButton(s3Rel, t, { unlock: T3.UNLOCK, click: T3.CLICK_REL, done: T3.RELEASED, label: "Release lot", busyLabel: "Releasing" });
+  const rel = t >= T3.RELEASED;
+  s3.pill.className = rel ? "pill hh-green" : "pill hh-rust";
+  setText(s3.pill, rel ? "Released" : "On hold");
+  s3.pill.style.transform = rel ? `scale(${0.9 + 0.1 * clamp(E.outBack(seg(t, T3.RELEASED, T3.RELEASED + 0.35)), 0, 1.2)})` : "";
+  popIn(s3Pops.rel, t, T3.REL_MSG);
+  follow(s3.scroll, s3.thread);
+
+  /* the progress: one step per landing */
+  const lands = [T3.RSN, T3.SCP, T3.DSP, T3.RWK, T3.CLICK_BOX + 0.05, s3SgAbs(SG.SEAL + 0.05)];
+  const done = lands.reduce((a, l) => a + E.outCubic(seg(t, l + 0.15, l + 0.55)), 0);
+  s3.bar.style.width = `${done / 6 * 100}%`;
+  setText(s3.count, `${lands.filter(l => t >= l + 0.15).length} of 6`);
+
+  /* -- the pointer: reading while the hold fills in; into the field,
+   *    hidden while typing, to the box, aside; Sign and the dialog on the
+   *    platform film's path; up to Release lot */
+  const fl = at(s3.fld), bx = at(insp.box), sb = at(s3.sign), rl = at(s3.rel), cp = at(w3.querySelector(".dr-comp"));
+  const pRead = { x: 560, y: cp.y + cp.h / 2 + 4 };                   /* on the empty composer, off the thread */
+  const pFld = { x: fl.x + 150, y: fl.y + 30 };
+  const pBox = { x: bx.x + 8, y: bx.y + 9 };
+  const pAside = { x: 668, y: bx.y + 30 };
+  const pSign = { x: sb.x + sb.w / 2 + 2, y: sb.y + sb.h / 2 + 2 };
+  const pRest = { x: 668, y: sb.y - 40 };
+  const pRel = { x: rl.x + rl.w / 2 + 4, y: rl.y + rl.h / 2 + 2 };
+  let p;
+  if (t < T3.CLICK_FLD + 0.1) p = move(t, pRead, pFld, 4.8, 5.3, 50);
+  else if (t < 7.1) p = pFld;
+  else if (t < T3.CLICK_BOX + 0.15) p = move(t, pFld, pBox, 7.1, 7.42, 26);
+  else if (r < 0) p = t < 8.2 ? move(t, pBox, pAside, 7.75, 8.1, 20) : move(t, pAside, pSign, 8.3, 8.8, 30);
+  else if (t < 13.7) p = signPath(r, s3Sig, pSign, pRest);
+  else p = move(t, pRest, pRel, 13.7, 14.2, 90);
+  const hide = Math.max(typingHide(t, T3.TYPE, 7.1), r >= 0 ? signHide(r) : 0);
+  setPointer(cursor, p, 1 - hide, pressAny(t, [T3.CLICK_FLD, T3.CLICK_BOX, ...signClicks(T3.SIGN0), T3.CLICK_REL]));
+}
+
+/* ================================================================== film 4: controlled document
+ * SOP-118 Rev E, draft to effective to point of use. Two parts:
+ *   the revision (record view, D. Fontaine at the pointer): raised from
+ *     NC-204's root cause; R. Patel's redline lands; S. Okafor reviews live;
+ *     she signs (Sign + the Part 11 dialog); Make effective was locked
+ *     until the approval; she makes it effective: Rev E Effective, Rev D
+ *     Superseded, retraining assigned to line 2
+ *   point of use (a page change to the next morning, K. Iyer at the
+ *     pointer): the controlled copy in the viewer, Rev D shown superseded;
+ *     the page scrolls to 4.3, new in Rev E; he reads and acknowledges
+ * Ends at rest on his acknowledgment. */
+const S4 = 18.6;
+const w4 = $("#w4");
+const T4 = {
+  REPORT: 0.4, RSN: 1.1, RED: 1.45, SO_MSG: 2.4, ENG: 2.7,
+  SIGN0: 4.1,
+  UNLOCK: 8.5, CLICK_EFF: 9.45, EFFECTIVE: 9.85, TRN: 10.15, EFF_MSG: 10.35,
+  PAGE: 12.0, SCROLL: 12.9, HL: 13.85, CLICK_READ: 16.1,
+};
+const s4 = {
+  rec: $("#s4-rec"), view: $("#s4-view"),
+  pill: $("#s4-pill"), thread: $("#s4-thread"), scroll: $("#s4-scroll"), bar: $("#s4-bar"), count: $("#s4-count"),
+  sign: $("#s4-sign"), eff: $("#s4-eff"),
+  rvE: $("#s4-rvE"), rvEd: $("#s4-rvEd"), rvD: $("#s4-rvD"), rvDd: $("#s4-rvDd"),
+  page: $("#s4-page"), pagewrap: $("#s4-pagewrap"), step: $("#s4-new"), read: $("#s4-read"), cnt: $("#s4-cnt"),
+};
+const s4Eff = { el: s4.eff, lock: s4.eff.querySelector(".hh-lock"), spin: s4.eff.querySelector(".spin"), label: s4.eff.querySelector(".hh-lbl") };
+const s4Pops = ["rp", "so", "seal", "eff"].reduce((o, k) => ({ ...o, [k]: $(`#s4-pop-${k}`) }), {});
+const s4Rows = { rsn: ckRow("#s4-rsn"), red: ckRow("#s4-red"), eng: ckRow("#s4-eng"), qa: ckRow("#s4-qa"), rev: ckRow("#s4-rev"), trn: ckRow("#s4-trn") };
+const s4Sig = sigParts(w4);
+const s4SgAbs = r => T4.SIGN0 - 0.1 + r;
+const READ_HTML = { idle: "Read and understood", busy: '<i class="spin"></i>Saving', done: '<svg class="ic" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Read · 06:04' };
+
+function reset4() {
+  for (const el of [...Object.values(s4), s4Eff.lock, s4Eff.spin]) el.removeAttribute("style");
+  for (const p of Object.values(s4Pops)) { p.removeAttribute("style"); p.firstElementChild.removeAttribute("style"); }
+  for (const r of Object.values(s4Rows)) {
+    for (const el of [r.row, r.box, r.box.querySelector(".chk"), r.av, r.meta, r.note, r.sm, r.signed]) el?.removeAttribute("style");
+    if (r.meta) { r.meta.textContent = r.meta0; r.meta.classList.toggle("hh-hot", r.hot0); }
+    if (r.note) r.note.textContent = "";
+    if (r.sm) r.sm.textContent = r.sm.dataset.a;
+  }
+  signReset(s4Sig);
+  s4.pill.className = "pill amber"; s4.pill.textContent = "In review";
+  s4.rvE.className = "pill amber"; s4.rvE.textContent = "Draft"; s4.rvEd.textContent = "Not yet effective";
+  s4.rvD.className = "pill hh-green"; s4.rvD.textContent = "Effective"; s4.rvDd.textContent = "since Mar 12";
+  s4.count.textContent = "0 of 6"; s4Eff.label.textContent = "Make effective";
+  s4.cnt.textContent = "Line 2 operators · 0 of 12 read · due Oct 2";
+  if (s4.read.dataset.s !== "idle") { s4.read.innerHTML = READ_HTML.idle; s4.read.dataset.s = "idle"; }
+}
+
+/* a pill changing state with the small pop the status pills use */
+function swapPill(el, t, at0, [cls0, txt0], [cls1, txt1]) {
+  const on = t >= at0;
+  el.className = on ? cls1 : cls0;
+  setText(el, on ? txt1 : txt0);
+  el.style.transform = on ? `scale(${0.9 + 0.1 * clamp(E.outBack(seg(t, at0, at0 + 0.35)), 0, 1.2)})` : "";
+}
+
+function render4(t) {
+  /* ---- the revision */
+  popIn(s4Pops.rp, t, T4.REPORT);
+  landRow(s4Rows.rsn, t, T4.RSN, { time: "10:30" });
+  landRow(s4Rows.red, t, T4.RED, { time: "10:32" });
+  popIn(s4Pops.so, t, T4.SO_MSG);
+  landRow(s4Rows.eng, t, T4.ENG, { rgb: "217 138 78", time: "13:05", note: " · Reviewed" });
+  const r = t - T4.SIGN0 + 0.1;
+  signDialog(s4Sig, r);
+  signRow(s4Rows.qa, s4.sign, t, r, T4.SIGN0, " · Approval · 14:20");
+  popIn(s4Pops.seal, t, s4SgAbs(SG.SEAL + 0.15));
+  /* made effective: the new revision on, the old one superseded */
+  actButton(s4Eff, t, { unlock: T4.UNLOCK, click: T4.CLICK_EFF, done: T4.EFFECTIVE, label: "Make effective", busyLabel: "Making effective" });
+  swapPill(s4.pill, t, T4.EFFECTIVE, ["pill amber", "In review"], ["pill hh-green", "Effective"]);
+  landRow(s4Rows.rev, t, T4.EFFECTIVE + 0.05, { time: "14:22" });
+  swapPill(s4.rvE, t, T4.EFFECTIVE + 0.1, ["pill amber", "Draft"], ["pill hh-green", "Effective"]);
+  swapPill(s4.rvD, t, T4.EFFECTIVE + 0.2, ["pill hh-green", "Effective"], ["pill grey", "Superseded"]);
+  setText(s4.rvEd, t >= T4.EFFECTIVE + 0.1 ? "from Sep 29" : "Not yet effective");
+  setText(s4.rvDd, t >= T4.EFFECTIVE + 0.2 ? "Sep 29" : "since Mar 12");
+  landRow(s4Rows.trn, t, T4.TRN, { time: "14:22" });
+  popIn(s4Pops.eff, t, T4.EFF_MSG);
+  follow(s4.scroll, s4.thread);
+  const lands = [T4.RSN, T4.RED, T4.ENG, s4SgAbs(SG.SEAL + 0.05), T4.EFFECTIVE + 0.05, T4.TRN];
+  const done = lands.reduce((a, l) => a + E.outCubic(seg(t, l + 0.15, l + 0.55)), 0);
+  s4.bar.style.width = `${done / 6 * 100}%`;
+  setText(s4.count, `${lands.filter(l => t >= l + 0.15).length} of 6`);
+
+  /* ---- the page change to point of use: the record gives way, the
+   *      viewer rises in (the kit's page change) */
+  const pg = pageIn(t, T4.PAGE);
+  s4.rec.style.opacity = 1 - pg;
+  s4.rec.style.visibility = pg >= 1 ? "hidden" : "";
+  s4.view.style.visibility = pg > 0 ? "visible" : "hidden";
+  s4.view.style.opacity = pg;
+  s4.view.style.transform = `translateY(${(1 - pg) * 10}px)`;
+  /* the page scrolls to 4.3, new in Rev E, which lights up and stays lit */
+  const target = Math.max(0, s4.step.offsetTop - 150);
+  s4.page.style.transform = `translateY(${-target * E.inOutCubic(seg(t, T4.SCROLL, T4.SCROLL + 1.0))}px)`;
+  const hl = E.outCubic(seg(t, T4.HL, T4.HL + 0.35));
+  s4.step.style.background = `rgb(0 91 183 / ${0.055 * hl})`;
+  s4.step.style.boxShadow = hl > 0.01 ? `inset 0 0 0 1px rgb(197 222 255 / ${hl})` : "";
+  /* read and understood */
+  const st = buttonState(t, T4.CLICK_READ, 0.35);
+  if (s4.read.dataset.s !== st) { s4.read.innerHTML = READ_HTML[st]; s4.read.dataset.s = st; }
+  if (st === "busy") s4.read.querySelector(".spin").style.transform = `rotate(${(t - T4.CLICK_READ) * 900}deg)`;
+  const hvR = hoverIn(t, T4.CLICK_READ - 0.22), prR = pressAt(t, T4.CLICK_READ);
+  s4.read.style.background = st === "done" ? "#1f8a52" : prR > 0 || hvR > 0.5 ? "var(--blue-d)" : "";
+  s4.read.style.transform = `scale(${1 - 0.04 * prR})`;
+  setText(s4.cnt, st === "done" ? "Line 2 operators · 1 of 12 read · due Oct 2" : "Line 2 operators · 0 of 12 read · due Oct 2");
+
+  /* ---- the pointer: D. Fontaine, from the composer to Sign, through the
+   *      dialog, to Make effective; she leaves with the page change. K.
+   *      Iyer's pointer comes in on the page, reads, and acknowledges. */
+  const cp = at(w4.querySelector(".s4-rec .dr-comp")), sb = at(s4.sign), ef = at(s4.eff), rd = at(s4.read);
+  const pRest = { x: 560, y: cp.y + cp.h / 2 + 4 };
+  const pSign = { x: sb.x + sb.w / 2 + 2, y: sb.y + sb.h / 2 + 2 };
+  const pGut = { x: 668, y: sb.y - 40 };
+  const pEff = { x: ef.x + ef.w / 2 + 4, y: ef.y + ef.h / 2 + 2 };
+  const pPage = { x: 720, y: 470 };                                  /* the grey gap between the page and the panel */
+  const pRead = { x: rd.x + rd.w / 2 + 6, y: rd.y + rd.h / 2 + 2 };
+  let p, vis = 1;
+  if (r < 0) p = move(t, pRest, pSign, 3.3, 3.9, 40);
+  else if (t < 8.7) p = signPath(r, s4Sig, pSign, pGut);
+  else if (t < T4.PAGE) { p = move(t, pGut, pEff, 8.7, 9.2, 80); vis = 1 - seg(t, 11.55, 11.8); }
+  else { p = t < 15.3 ? pPage : move(t, pPage, pRead, 15.3, 15.85, 60); vis = seg(t, 12.45, 12.65); }
+  const hide = r >= 0 && t < T4.PAGE ? signHide(r) : 0;
+  setPointer(cursor, p, vis * (1 - hide), pressAny(t, [...signClicks(T4.SIGN0), T4.CLICK_EFF, T4.CLICK_READ]));
+}
+
+/* ================================================================== dispatcher */
+const FILMS = {
+  1: { S: S1, win: w1, render: render1, reset: reset1 },
+  2: { S: S2, win: w2, render: render2, reset: reset2 },
+  3: { S: S3, win: w3, render: render3, reset: reset3 },
+  4: { S: S4, win: w4, render: render4, reset: reset4 },
+};
+const F = FILMS[STEP] || FILMS[1];
+for (const [k, f] of Object.entries(FILMS)) f.win.hidden = f !== F;
+const DUR = F.S;
+
+function render(t) {
+  t = clamp(t, 0, DUR);
+  F.reset();
+  F.render(t);
+  /* grain jitter in steps at 12 fps, as the page's keyframes (0.333 s, 4 steps) */
+  const j = [[0, 0], [-37, 21], [53, -44], [-18, 67]][Math.floor(t * 12 + 1e-6) % 4];
+  $("#fgrain").style.backgroundPosition = `${j[0]}px ${j[1]}px`;
+  window.__t = t;
+}
+window.seek = t => render(t);
+window.camAt = () => ({ cx: WIN_W / 2, cy: WIN_H / 2, vw: WIN_W });   /* no camera: the frame is the window */
+window.STEPS = [0, DUR];
+window.DUR = DUR;
+
+layoutBoard();
+addEventListener("resize", layoutBoard);
+const t0 = +(Q.get("t") || 0);
+document.fonts.ready.then(() => render(t0));
+render(t0);
+if (Q.has("play")) {
+  const from = +(Q.get("play") || 0), start = performance.now();
+  const loop = now => { render((from + (now - start) / 1000) % (DUR + 1.5)); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>

@@ -6,22 +6,27 @@ viewport keeps up), labelled with its rail step, seen through a camera in
 rendered view. Also sets each step's own file to open looking through its
 camera with the UI showing.
 
-  /Applications/Blender.app/Contents/MacOS/Blender -b -P scripts/platform-render/v3/overview_blend.py -- FOLDER
+  /Applications/Blender.app/Contents/MacOS/Blender -b -P scripts/platform-render/v3/overview_blend.py -- FOLDER [--titles "A|B|..."] [--name NAME]
 
-FOLDER holds step1-home/ ... step6-dashboard/, each with preview/ (from
-tex/) and its stepN-*.blend (film_step.py --save).
+FOLDER holds one folder per step, named step<N>-<slug> (step1-home ...),
+each with preview/ (quarter-size jpgs of tex/) and its step<N>-<slug>.blend
+(film_step.py --save). Titles default to the platform film's rail titles
+for its six folders, otherwise to the folder slug.
 """
-import bpy, os, sys
+import bpy, os, re, sys
 
-FOLDER = os.path.abspath(sys.argv[sys.argv.index("--") + 1])
-STEPS = [
-    ("step1-home", "The home screen"),
-    ("step2-inbox", "The inbox"),
-    ("step3-checklist", "The checklist"),
-    ("step4-seal", "The seal"),
-    ("step5-builder", "The process builder"),
-    ("step6-dashboard", "The dashboard"),
-]
+argv = sys.argv[sys.argv.index("--") + 1:]
+FOLDER = os.path.abspath(argv[0])
+KNOWN = {
+    "step1-home": "The home screen", "step2-inbox": "The inbox", "step3-checklist": "The checklist",
+    "step4-seal": "The seal", "step5-builder": "The process builder", "step6-dashboard": "The dashboard",
+}
+folders = sorted((f for f in os.listdir(FOLDER) if re.match(r"step\d+-", f) and os.path.isdir(os.path.join(FOLDER, f))),
+                 key=lambda f: int(re.match(r"step(\d+)", f).group(1)))
+titles = argv[argv.index("--titles") + 1].split("|") if "--titles" in argv else None
+NAME = argv[argv.index("--name") + 1] if "--name" in argv else "film-overview"
+STEPS = [(f, titles[i] if titles and i < len(titles) else KNOWN.get(f, f.split("-", 1)[1].replace("-", " ").capitalize()))
+         for i, f in enumerate(folders)]
 W, H, GAP_X, GAP_Y = 1.36, 0.66, 0.26, 0.42     # a window is 1360 x 660 px at 1 px = 1 mm
 HERO = (0x1F, 0x21, 0x26)
 
@@ -89,7 +94,8 @@ label_mat = emission("label", color=(0.82, 0.84, 0.87))
 for i, (folder, title) in enumerate(STEPS):
     col, row = i % 3, i // 3
     x = (col - 1) * (W + GAP_X)
-    y = (0.5 - row) * (H + GAP_Y)
+    rows = (len(STEPS) + 2) // 3
+    y = ((rows - 1) / 2 - row) * (H + GAP_Y)
     prev = os.path.join(FOLDER, folder, "preview")
     files = sorted(f for f in os.listdir(prev) if f.endswith(".jpg"))
     longest = max(longest, len(files))
@@ -109,14 +115,14 @@ for i, (folder, title) in enumerate(STEPS):
 
 cam_data = bpy.data.cameras.new("overview")
 cam_data.type = "ORTHO"
-cam_data.ortho_scale = 3 * W + 2 * GAP_X + 0.6
+cam_data.ortho_scale = 3 * W + 2 * GAP_X + 0.6   # three columns; rows grow with the step count
 cam = bpy.data.objects.new("overview", cam_data)
 cam.location = (0, 0.03, 5)
 scene.collection.objects.link(cam)
 scene.camera = cam
 scene.frame_start, scene.frame_end = 1, longest
 look_through_camera("RENDERED")
-out = os.path.join(FOLDER, "platform-film-v3-overview.blend")
+out = os.path.join(FOLDER, f"{NAME}.blend")
 bpy.ops.wm.save_as_mainfile(filepath=out, relative_remap=True)
 for im in bpy.data.images:
     im.filepath = bpy.path.relpath(im.filepath)

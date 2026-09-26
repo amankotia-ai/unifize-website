@@ -1,0 +1,101 @@
+{
+  "title": "Step 4 · Controlled document · draft to point of use · 18.6 s",
+  "sub": "SOP-118 Rev E on one record: raised from NC-204's root cause, reviewed, signed under Part 11, made effective with Rev D superseded and retraining assigned, then read at point of use on line 2 the next morning.",
+  "beats": [
+    {
+      "t": 0.0,
+      "head": "Revision raised (the poster)",
+      "text": "SOP-118, cleaning validation for coating line 2, revision raised from NC-204's corrective action. In review, 0 of 6, Make effective locked."
+    },
+    {
+      "t": 0.9,
+      "head": "The redline lands",
+      "text": "R. Patel, document control: Rev E adds a fixture check on head 2 before each shift. The draft is attached."
+    },
+    {
+      "t": 1.9,
+      "head": "Reason and redline tick themselves",
+      "text": "Fixture check on head 2, from NC-204; Rev E draft by R. Patel. 2 of 6."
+    },
+    {
+      "t": 3.1,
+      "head": "Engineering reviews",
+      "text": "S. Okafor: the check matches the head 2 fixture drawing. Engineering review ticks live. 3 of 6."
+    },
+    {
+      "t": 4.1,
+      "head": "Sign, on the checklist",
+      "text": "D. Fontaine, the SOP's owner, presses Sign on Quality approval."
+    },
+    {
+      "t": 5.0,
+      "head": "The Part 11 dialog",
+      "text": "Meaning of signature: Approval, I approve this revision as written."
+    },
+    {
+      "t": 6.3,
+      "head": "Her credentials",
+      "text": "User ID dfontaine, password typed. Name, meaning and time kept on the record."
+    },
+    {
+      "t": 7.3,
+      "head": "Signed",
+      "text": "Sign, Signing, Signed."
+    },
+    {
+      "t": 8.2,
+      "head": "Sealed on both sides",
+      "text": "Signed on Quality approval (Approval · 14:20) and her signature card in the thread. 4 of 6."
+    },
+    {
+      "t": 9.0,
+      "head": "Make effective unlocks",
+      "text": "Only with the approval on the record."
+    },
+    {
+      "t": 9.6,
+      "head": "She makes it effective",
+      "text": "Hover, press, Making effective."
+    },
+    {
+      "t": 10.9,
+      "head": "One current version",
+      "text": "Rev E Effective from Sep 29, Rev D Superseded. Retraining assigns itself to line 2 operators, due Oct 2. 6 of 6."
+    },
+    {
+      "t": 12.35,
+      "head": "Next morning, on the line",
+      "text": "The screen changes: Tue, Sep 29, 06:02, K. Iyer on line 2 has SOP-118 open in the viewer."
+    },
+    {
+      "t": 12.8,
+      "head": "The controlled copy",
+      "text": "Rev E Effective and marked as the controlled copy; Rev D shown Superseded; what changed, and his training task."
+    },
+    {
+      "t": 14.4,
+      "head": "Straight to what changed",
+      "text": "The page scrolls to 4.3, the fixture check, flagged New in Rev E."
+    },
+    {
+      "t": 15.9,
+      "head": "Read and understood",
+      "text": "He moves to the button in his training task."
+    },
+    {
+      "t": 16.2,
+      "head": "Acknowledged",
+      "text": "Pressed, saving."
+    },
+    {
+      "t": 16.6,
+      "head": "On the record",
+      "text": "Read at 06:04. Line 2 operators, 1 of 12 read."
+    },
+    {
+      "t": 18.55,
+      "head": "End at rest",
+      "text": "The operator's acknowledgment of the current revision. The page holds this 1.5 s, then the first tab starts again."
+    }
+  ]
+}

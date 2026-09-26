@@ -752,30 +752,26 @@
   background: var(--dms-d-bg);
 }
 
-/* solid icons in place of the numbers (the platform rail's 32px tile) */
-.dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__head { margin-bottom: 4px; }
+/* solid icons in place of the numbers. 27 Sep 2026: no tile, the bare
+ * glyph at 22px flush with the title, blue when the step is live (the
+ * platform hero's treatment) */
+.dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__head { margin-bottom: 6px; }
 
 .dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__icon {
   display: grid;
-  width: 32px;
-  height: 32px;
   place-items: center;
-  background: var(--dms-d-bg-3);
-  box-shadow: inset 0 0 0 1px var(--hm-rail);
   color: var(--dms-d-ink-2);
-  transition: background-color 0.18s ease-out, color 0.18s ease-out;
+  transition: color 0.18s ease-out;
 }
 
 .dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__icon svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
 .dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__step.is-active .pf-journey__icon {
-  background: var(--dms-accent);
-  box-shadow: none;
-  color: #fff;
+  color: var(--dms-accent);
 }
 
 .dms--redesign.sk-page.dms--rails .sk-journey-section .pf-journey__step:hover,

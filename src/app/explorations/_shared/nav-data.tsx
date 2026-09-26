@@ -37,8 +37,10 @@ export const NAV_ICONS: Record<IconName, React.ReactNode> = {
   dms: (<path fillRule="evenodd" d="M6.2 2.8h7l5.6 5.6v12.8H6.2V2.8zM9 12.4h6v1.5H9v-1.5zm0 3.2h6v1.5H9v-1.5z" />),
   /* gear: body + 8 teeth union, hub carved by opposite winding */
   mes: (<path d="M19.2 12A7.2 7.2 0 1 1 4.8 12A7.2 7.2 0 1 1 19.2 12z M18.8 10.45h3v3.1h-3z M17.9 15.71l2.13 2.12-2.2 2.2-2.12-2.13z M13.55 18.8v3h-3.1v-3z M8.29 17.9l-2.12 2.13-2.2-2.2 2.13-2.12z M5.2 13.55h-3v-3.1h3z M6.1 8.29L3.97 6.17l2.2-2.2 2.12 2.13z M10.45 5.2v-3h3.1v3z M15.71 6.1l2.12-2.13 2.2 2.2-2.13 2.12z M15.1 12A3.1 3.1 0 1 0 8.9 12A3.1 3.1 0 1 0 15.1 12z" />),
-  /* lifecycle loop with a solid station node bridging the band */
-  plm: (<path d="M19.2 12A7.2 7.2 0 1 1 4.8 12A7.2 7.2 0 1 1 19.2 12z M16.6 12A4.6 4.6 0 1 0 7.4 12A4.6 4.6 0 1 0 16.6 12z M14.7 6.1A2.7 2.7 0 1 1 9.3 6.1A2.7 2.7 0 1 1 14.7 6.1z" />),
+  /* layers: a product record built up in stacked revisions (27 Sep 2026,
+   * replaces the ring, which read as a donut; the same drawing as the
+   * 20-grid PLM glyph on /platform, /about and the coexistence tiles) */
+  plm: (<path d="M12 2.8 21 7.6 12 12.4 3 7.6z M3 12l2.6-1.4L12 14l6.4-3.4L21 12l-9 4.8z M3 16.4l2.6-1.4L12 18.4l6.4-3.4L21 16.4l-9 4.8z" />),
   flask: (<path d="M9.9 3.2h4.2v5.2l4.8 9a2.1 2.1 0 0 1-1.9 3.1H7a2.1 2.1 0 0 1-1.9-3.1l4.8-9V3.2z" />),
   droplet: (<path d="M12 3.4c2.8 3.6 5 6.2 5 9a5 5 0 0 1-10 0c0-2.8 2.2-5.4 5-9z" />),
   /* cube with the top face carved out */

@@ -12,10 +12,12 @@
  * (itm, dms, the atoms kit) aliases rather than redefines.
  *
  * Rebuilt 22 Sep 2026 in the rails grammar the home, platform and DMS pages
- * share; the rails came out on 24 Sep. Every block shares one inset, a
- * hairline divides the head from the form, and the footer
- * strip sits on the alt grey. The old record chrome (mono code, status chip,
- * four-step thread, standards strip, receipt stamp) stays gone.
+ * share; the rails came out on 24 Sep. Every block shares one inset and a
+ * hairline divides the head from the form. 27 Sep: the form pane went
+ * compact, its fields split into two labelled groups (about you, about the
+ * demo) and the reply note moved beside the button in place of the grey
+ * footer strip. The old record chrome (mono code, status chip, four-step
+ * thread, standards strip, receipt stamp) stays gone.
  * -------------------------------------------------------------------------- */
 
 import {
@@ -30,16 +32,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { cn } from "@/lib/cn";
-import { ArcadeStepScene } from "@/app/explorations/products/_shared/arcade/arcade";
 import { RibbonField } from "@/app/explorations/products/_shared/arcade/ribbon-field";
-import type { ArcadeStepConfig } from "@/app/explorations/products/_shared/arcade/arcade";
-import {
-  HOME_HERO_CHANGE_CONFIG,
-  HOME_HERO_OPS_CONFIG,
-  HOME_HERO_QUALITY_CONFIG,
-  HOME_SUITE_DMS_CONFIG,
-} from "@/app/explorations/home/home-arcade";
-import { QMS_MODULE_ARCADE_CONFIGS } from "@/app/explorations/products/qms/qms-arcade";
+import { BookDemoCharts } from "./book-demo-charts";
 import "./book-demo.css";
 
 /* Industries mirror the nav roster so a lead lands in a bucket the site
@@ -69,17 +63,6 @@ const INTERESTS = [
   "Production and release",
   "Not sure yet",
 ] as const;
-
-/* The visual pane follows the process pick (24 Sep): the record the call
- * would open on, reusing the scenes the home and product pages already
- * stage. No pick, or "Not sure yet", keeps the hero's quality event. */
-const INTEREST_SCENES: Partial<Record<(typeof INTERESTS)[number], ArcadeStepConfig>> = {
-  "Quality events and CAPA": QMS_MODULE_ARCADE_CONFIGS["capa"],
-  "Change control": HOME_HERO_CHANGE_CONFIG,
-  "Document control": HOME_SUITE_DMS_CONFIG,
-  "Supplier quality": QMS_MODULE_ARCADE_CONFIGS["supplier-quality"],
-  "Production and release": HOME_HERO_OPS_CONFIG,
-};
 
 /* Consumer mailboxes: a demo request from one is almost never a qualified
  * buyer, and the routing downstream keys off the company domain. */
@@ -362,19 +345,13 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
         tabIndex={-1}
       >
         <div className="uzd__split">
-          {/* left pane: the product visual, the same stylized record window
-            * the home, platform and product heroes stage, on the pages' own
-            * wash ground. Decorative: the dialog is the form beside it. */}
+          {/* left pane: three published customer results, one chart at a
+            * time, on the pages' own wash ground (27 Sep; replaced the
+            * product window). Decorative: the dialog is the form beside it. */}
           <aside className="uzd__viz" aria-hidden="true">
-            <div className="uzd__stage rf rf--twin rf--plate">
+            <div className="uzd__stage rf rf--twin">
               <RibbonField composition="twin" tone="quiet" />
-              <ArcadeStepScene
-                key={values.interest || "default"}
-                config={
-                  INTEREST_SCENES[values.interest as (typeof INTERESTS)[number]] ??
-                  HOME_HERO_QUALITY_CONFIG
-                }
-              />
+              <BookDemoCharts />
             </div>
           </aside>
 
@@ -433,69 +410,91 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
               <Divider />
 
               <form className="uzd__block" onSubmit={onSubmit} noValidate>
-                <div className="uzd__grid">
-                  {TEXT_FIELDS.map((f, i) => (
-                    <div className="uzd__field" key={f.name}>
-                      <label className="uzd__label" htmlFor={fid(f.name)}>
-                        {f.label}
-                        {f.required ? null : (
-                          <span className="uzd__optional">Optional</span>
-                        )}
-                      </label>
-                      <input
-                        id={fid(f.name)}
-                        ref={i === 0 ? firstFieldRef : undefined}
-                        className="uzd__input"
-                        name={f.name}
-                        type={f.type ?? "text"}
-                        inputMode={f.type === "email" ? "email" : undefined}
-                        autoComplete={f.autoComplete}
-                        required={f.required}
-                        value={values[f.name]}
-                        aria-invalid={invalid(f.name)}
-                        aria-describedby={describe(f.name)}
-                        onChange={(e) => set(f.name, e.target.value)}
-                      />
-                      {submitted && errors[f.name] ? (
-                        <p className="uzd__err" id={fid(`${f.name}-err`)}>
-                          {errors[f.name]}
-                        </p>
-                      ) : null}
-                    </div>
-                  ))}
+                {/* two groups: who to reply to (what we need), then what the
+                  * call should cover (what helps). No "Optional" markers
+                  * (27 Sep): the validation says what is required. */}
+                <div
+                  className="uzd__group"
+                  role="group"
+                  aria-labelledby={fid("g-you")}
+                >
+                  <p className="uzd__legend" id={fid("g-you")}>
+                    About you
+                  </p>
+                  <div className="uzd__grid">
+                    {TEXT_FIELDS.map((f, i) => (
+                      <div
+                        className={cn("uzd__field", `uzd__field--${f.name}`)}
+                        key={f.name}
+                      >
+                        <label className="uzd__label" htmlFor={fid(f.name)}>
+                          {f.label}
+                        </label>
+                        <input
+                          id={fid(f.name)}
+                          ref={i === 0 ? firstFieldRef : undefined}
+                          className="uzd__input"
+                          name={f.name}
+                          type={f.type ?? "text"}
+                          inputMode={f.type === "email" ? "email" : undefined}
+                          autoComplete={f.autoComplete}
+                          required={f.required}
+                          value={values[f.name]}
+                          aria-invalid={invalid(f.name)}
+                          aria-describedby={describe(f.name)}
+                          onChange={(e) => set(f.name, e.target.value)}
+                        />
+                        {submitted && errors[f.name] ? (
+                          <p className="uzd__err" id={fid(`${f.name}-err`)}>
+                            {errors[f.name]}
+                          </p>
+                        ) : null}
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                  <Select
-                    id={fid("industry")}
-                    label="Industry"
-                    placeholder="Select an industry"
-                    options={INDUSTRIES}
-                    value={values.industry}
-                    onChange={(v) => set("industry", v)}
-                  />
-
-                  <Select
-                    id={fid("interest")}
-                    label="What should we look at?"
-                    placeholder="Select a process"
-                    options={INTERESTS}
-                    value={values.interest}
-                    onChange={(v) => set("interest", v)}
-                  />
-
-                  <div className="uzd__field uzd__field--wide">
-                    <label className="uzd__label" htmlFor={fid("notes")}>
-                      Anything we should know first?
-                      <span className="uzd__optional">Optional</span>
-                    </label>
-                    <textarea
-                      id={fid("notes")}
-                      className="uzd__textarea"
-                      name="notes"
-                      rows={3}
-                      placeholder="The systems you run today, the audit you are preparing for, the backlog you want gone."
-                      value={values.notes}
-                      onChange={(e) => set("notes", e.target.value)}
+                <div
+                  className="uzd__group"
+                  role="group"
+                  aria-labelledby={fid("g-demo")}
+                >
+                  <p className="uzd__legend" id={fid("g-demo")}>
+                    About the demo
+                  </p>
+                  <div className="uzd__grid">
+                    <Select
+                      id={fid("industry")}
+                      label="Industry"
+                      placeholder="Select"
+                      options={INDUSTRIES}
+                      value={values.industry}
+                      onChange={(v) => set("industry", v)}
                     />
+
+                    <Select
+                      id={fid("interest")}
+                      label="Process"
+                      placeholder="Select"
+                      options={INTERESTS}
+                      value={values.interest}
+                      onChange={(v) => set("interest", v)}
+                    />
+
+                    <div className="uzd__field uzd__field--wide">
+                      <label className="uzd__label" htmlFor={fid("notes")}>
+                        Notes
+                      </label>
+                      <textarea
+                        id={fid("notes")}
+                        className="uzd__textarea"
+                        name="notes"
+                        rows={2}
+                        placeholder="The systems you run today, the audit you are preparing for."
+                        value={values.notes}
+                        onChange={(e) => set("notes", e.target.value)}
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -517,25 +516,25 @@ export function BookDemoModal({ open, onClose, source }: BookDemoModalProps) {
                   </p>
                 ) : null}
 
-                <button
-                  type="submit"
-                  className="uzd__submit"
-                  disabled={status === "submitting"}
-                >
-                  {status === "submitting" ? "Sending" : "Request a demo"}
-                  <span className="uzd__arr" aria-hidden="true">
-                    →
-                  </span>
-                </button>
+                <div className="uzd__actions">
+                  <button
+                    type="submit"
+                    className="uzd__submit"
+                    disabled={status === "submitting"}
+                  >
+                    {status === "submitting" ? "Sending" : "Request a demo"}
+                    <span className="uzd__arr" aria-hidden="true">
+                      →
+                    </span>
+                  </button>
+                  <p className="uzd__note">
+                    <span>We reply within one business day.</span>{" "}
+                    <span>No lists, no sequences.</span>
+                  </p>
+                </div>
               </form>
             </>
           )}
-
-          {status === "done" ? null : (
-              <p className="uzd__foot">
-                We reply within one business day. No lists, no sequences.
-              </p>
-            )}
           </div>
         </div>
       </div>
@@ -568,7 +567,6 @@ function Select({
     <div className="uzd__field">
       <label className="uzd__label" htmlFor={id}>
         {label}
-        <span className="uzd__optional">Optional</span>
       </label>
       <div className="uzd__select-wrap">
         <select

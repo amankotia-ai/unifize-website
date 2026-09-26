@@ -1,0 +1,14 @@
+{
+  "title": "Coordination tax cell · /platform 01 · 10 s loop, no product UI",
+  "sub": "One non-conformance from Notion VS-2 (detection to CAPA closure): 75 real steps, 21 of them the work, 54 the coordination around it. The film opens the static waffle up to show what it stands for, then closes it again. First and last frames are today's figure, so the loop has no cut.",
+  "beats": [
+    {"t": 0.00, "head": "Today's figure (poster)", "text": "The cell exactly as it sits on /platform: 21 steps of work in grey, 54 of coordination tax in orange, sorted. At rest for 2.4 s across the loop."},
+    {"t": 1.15, "head": "Turned over, step by step", "text": "Head: The same 75 steps, in the order they happen. Every cell flips where it stands, in a wave from detection (top left) to closure, and shows what that step really is."},
+    {"t": 2.20, "head": "In the order it happens", "text": "The work is scattered through the tax. Row one is detection and containment alone: 5 steps of work, 10 of coordination. Holds 0.9 s."},
+    {"t": 3.30, "head": "The work steps aside", "text": "Head: The 54 coordination steps, by kind · 54 steps. The grey work fades where it stands, the legend's work line dims, and the 54 tax steps leave for their rows."},
+    {"t": 4.40, "head": "By kind", "text": "Five rows fill as streams; each label lands once its row is full. Chasing and waiting 13, meetings 13, notifying 11, writing it up 10, re-keying 7. Holds to 7.0 s."},
+    {"t": 7.60, "head": "Poured back", "text": "The head returns to the original. The labels leave and the rows pour back into the grid bottom row first, so no cells cross."},
+    {"t": 8.10, "head": "The work returns to the front", "text": "The 21 work steps fade back in at the head of the grid, behind the last tax cells to land."},
+    {"t": 9.90, "head": "54 of 75, held", "text": "Today's figure again, pixel-identical to frame one (checked), so the loop has no cut."}
+  ]
+}

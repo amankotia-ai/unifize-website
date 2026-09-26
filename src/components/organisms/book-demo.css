@@ -7,8 +7,8 @@
  * local system builds on.
  *
  * The grammar, at card size:
- *   - no rails in the dialog (24 Sep 2026); head, form and footer share one
- *     inset, --uzd-inset
+ *   - no rails in the dialog (24 Sep 2026); head and form share one inset,
+ *     --uzd-inset; no footer strip (27 Sep), the reply note sits by the button
  *   - the divider is one plain hairline
  *   - blue-square eyebrow, display face on the heading, house pill button
  * ========================================================================== */
@@ -22,9 +22,7 @@
   --uzd-muted: #606773;
   --uzd-alt: #f5f6f8;
   --uzd-accent: var(--u-primary);
-  --uzd-rail-x: clamp(18px, 2.4vw, 30px);
-  --uzd-rail-pad: clamp(16px, 2vw, 26px);
-  --uzd-inset: calc(var(--uzd-rail-x) + var(--uzd-rail-pad));
+  --uzd-inset: clamp(24px, 3vw, 40px);
 
   position: fixed;
   inset: 0;
@@ -50,8 +48,9 @@
   position: relative;
   width: min(1360px, 100%);
   max-height: calc(100dvh - 48px);
-  overflow: auto;
-  overscroll-behavior: contain;
+  /* the card never scrolls (27 Sep): on short screens the form tightens to
+   * fit instead (see "short screens" below) */
+  overflow: hidden;
   background: var(--n-0);
   border: 0;
   border-radius: 0;
@@ -73,35 +72,18 @@
 
 .uzd__split {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 600px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 520px);
   /* the card holds its height between the form and the confirmation, so the
    * product visual stays composed and the panel does not jump on submit */
-  min-height: min(700px, calc(100dvh - 50px));
+  min-height: min(640px, calc(100dvh - 50px));
 }
 
 /* ------------------------------------------------------------- the visual ---
- * The stylized record window the home, platform and product heroes stage,
- * on the pages' own wash ground. The dialog portals onto <body>, outside
- * .dms--redesign, so the handful of --dms-* tokens the arcade reads are
- * declared here rather than inherited. */
+ * Three published customer results, one chart at a time
+ * (book-demo-charts.tsx), on the pages' own wash ground. Replaced the
+ * product window on 27 Sep 2026. */
 
 .uzd__viz {
-  --dms-surface: #ffffff;
-  --dms-surface-alt: #f5f6f8;
-  --dms-surface-quiet: #fafbfc;
-  --dms-surface-sunk: #eceef2;
-  --dms-ink: #17191f;
-  --dms-ink-2: #3f4550;
-  --dms-muted: #606773;
-  --dms-faint: #69717d;
-  --dms-hairline: #dfe2e7;
-  --dms-line-strong: #cfd4dc;
-  --dms-accent: var(--u-primary);
-  --dms-accent-text: #ffffff;
-  --dms-accent-tint: #f0f6ff;
-  --dms-header-h: 72px;
-  --dms-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E");
-
   position: relative;
   overflow: hidden;
 }
@@ -148,63 +130,264 @@
   mix-blend-mode: overlay;
 }
 
-/* the suite stage's frosted plate on the wash */
-.uzd__stage.rf.rf--plate .stx-root .stx-arc__camera {
-  outline: 1px solid oklch(0 0 0 / 0.035);
-  box-shadow:
-    0 0 0 var(--rf-plate) oklch(1 0 0 / 0.24),
-    0 0 0 calc(var(--rf-plate) + 1px) oklch(1 0 0 / 0.45),
-    0 4px 10px -4px oklch(0 0 0 / 0.12),
-    0 24px 48px -20px oklch(0 0 0 / 0.22),
-    0 48px 96px -32px oklch(0 0 0 / 0.18);
-}
+/* the charts (book-demo-charts.tsx): one card on the wash, three published
+ * results crossfading inside it, each held 4.5 s. Chart "B" (one bar is the
+ * before, the brand-blue fill is the time with Unifize, the rest is hatched
+ * as the time gone) drawn as card "1, drafted" (27 Sep 2026): an engineering
+ * sheet, with crosshair corners, dashed rules, mono labels, a big numeral, a
+ * ruler, the customer's logo. One accent: the brand blue token. */
+.uzd-ch {
+  --ch-ink: #17191f;
+  --ch-ink-2: #3f4550;
+  --ch-muted: #606773;
+  --ch-faint: #8b93a0;
+  --ch-line: #b8bec7;
+  --ch-accent: var(--u-primary);
 
-/* the dialog is wide so the visual pane can hold the record whole: the
- * record-only cut the module rows use (thread 540 + checklist 286 = 826,
- * no nav rail, no inbox) with the camera pinned, so the whole window sits
- * centred on the wash with margin on every side instead of cropping at the
- * pane edge (24 Sep: the cropped hero pose read as broken in the modal).
- * The scale steps with the pane width (about vw - 648px). */
-.uzd__viz {
-  --uzd-viz-scale: 0.84;
-}
-
-.uzd__viz .stx-root .stx-arc__camera {
-  --stx-camera-x: 0px !important;
-  --stx-camera-y: 0px !important;
-  --stx-camera-scale: var(--uzd-viz-scale) !important;
-  grid-template-columns: 540px 286px;
-  width: 826px;
-}
-
-/* the camera centres on the anchor box, so the anchor fills the stage and
- * the window lands in the middle of the pane, not at the top of it */
-.uzd__viz .stx-root .stx-arc {
-  height: 100%;
-}
-
-.uzd__viz .stx-root :is(.stx-arc__rail, .stx-arc__inbox) {
-  display: none;
-}
-
-.uzd__viz .stx-root :is(.stx-arc__home, .stx-arc__reports, .stx-arc__builder) {
+  position: absolute;
+  z-index: 1;
   inset: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 4vw, 56px);
 }
 
-@media (max-width: 1407px) {
-  .uzd__viz { --uzd-viz-scale: 0.72; }
+.uzd-ch__card {
+  position: relative;
+  display: grid;
+  width: min(600px, 100%);
+  background: #ffffff;
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.04),
+    0 2px 4px -2px rgb(0 0 0 / 0.06),
+    0 24px 48px -24px rgb(0 0 0 / 0.22);
 }
 
-@media (max-width: 1299px) {
-  .uzd__viz { --uzd-viz-scale: 0.62; }
+/* registration crosshairs on the four corners */
+.uzd-ch__cross {
+  position: absolute;
+  width: 13px;
+  height: 13px;
 }
 
-@media (max-width: 1219px) {
-  .uzd__viz { --uzd-viz-scale: 0.54; }
+.uzd-ch__cross::before,
+.uzd-ch__cross::after {
+  position: absolute;
+  content: "";
+  background: var(--ch-accent);
 }
 
-@media (min-width: 1300px) and (max-height: 760px) {
-  .uzd__viz { --uzd-viz-scale: 0.62; }
+.uzd-ch__cross::before { top: 0; left: 6px; width: 1px; height: 13px; }
+.uzd-ch__cross::after { top: 6px; left: 0; width: 13px; height: 1px; }
+.uzd-ch__cross--tl { top: -7px; left: -7px; }
+.uzd-ch__cross--tr { top: -7px; right: -7px; }
+.uzd-ch__cross--bl { bottom: -7px; left: -7px; }
+.uzd-ch__cross--br { right: -7px; bottom: -7px; }
+
+/* every result in the same cell, so nothing jumps */
+.uzd-ch__frame {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  opacity: 0;
+  animation: uzd-ch-cycle 15s linear infinite both;
+  animation-delay: calc(var(--i) * 5s);   /* longhand: a var in the shorthand drops the rule */
+}
+
+@keyframes uzd-ch-cycle {
+  0% { opacity: 0; }
+  4%, 33.3% { opacity: 1; }
+  37.3%, 100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .uzd-ch__frame { animation: none; }
+  .uzd-ch__frame:first-child { opacity: 1; }
+}
+
+/* the sheet's head and foot: mono labels on dashed rules */
+.uzd-ch__top,
+.uzd-ch__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 32px;
+  color: var(--ch-muted);
+  font-family: var(--u-mono);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.uzd-ch__top { border-bottom: 1px dashed var(--ch-line); }
+
+.uzd-ch__foot {
+  margin: auto 0 0;
+  color: var(--ch-faint);
+  border-top: 1px dashed var(--ch-line);
+}
+
+.uzd-ch__foot img {
+  display: block;
+  width: auto;
+  opacity: 0.75;
+}
+
+.uzd-ch__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.uzd-ch__eyebrow::before {
+  width: 7px;
+  height: 7px;
+  content: "";
+  background: var(--ch-accent);
+}
+
+.uzd-ch__body { padding: 28px 32px 26px; }
+
+/* the numeral, its unit up top, two lines of words beside it */
+.uzd-ch__hero {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin: 0;
+  color: var(--ch-ink);
+  font-family: var(--u-display);
+}
+
+.uzd-ch__num {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  font-size: clamp(5.25rem, 7.8vw, 7rem);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  line-height: 0.86;
+}
+
+.uzd-ch__num small {
+  margin-top: 0.1em;
+  font-size: 0.36em;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.uzd-ch__word {
+  margin-bottom: 0.3em;
+  color: var(--ch-ink-2);
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+/* the bar: the before at its low end, the time gone hatched in line-work */
+.uzd-ch__plot { margin-top: 48px; }
+
+.uzd-ch__bar {
+  --fill: max(3px, var(--share) * 100%);
+  position: relative;
+  height: 22px;
+  border: 1px solid var(--ch-line);
+  background: repeating-linear-gradient(135deg, var(--ch-line) 0 1px, transparent 1px 7px);
+}
+
+.uzd-ch__fill {
+  position: absolute;
+  inset: -1px auto -1px -1px;
+  width: var(--fill);
+  background: var(--ch-accent);
+}
+
+/* square markers where the result ends and where the before ends */
+.uzd-ch__mark {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: #ffffff;
+  border: 1.5px solid var(--ch-accent);
+}
+
+.uzd-ch__mark--after { left: var(--fill); }
+.uzd-ch__mark--before { left: 100%; border-color: var(--ch-faint); }
+
+/* the note over the time gone, on a dashed stem */
+.uzd-ch__note {
+  position: absolute;
+  bottom: 100%;
+  left: calc(var(--fill) + (100% - var(--fill)) / 2);
+  height: 22px;
+  border-left: 1px dashed var(--ch-faint);
+}
+
+.uzd-ch__note > span {
+  position: absolute;
+  bottom: calc(100% + 5px);
+  left: 0;
+  color: var(--ch-ink-2);
+  font-family: var(--u-mono);
+  font-size: 0.69rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.uzd-ch__ruler {
+  position: relative;
+  height: 26px;
+  margin-top: 8px;
+}
+
+.uzd-ch__ruler > span {
+  position: absolute;
+  top: 10px;
+  color: var(--ch-faint);
+  font-family: var(--u-mono);
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.uzd-ch__ruler > span::before {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  width: 1px;
+  height: 6px;
+  content: "";
+  background: var(--ch-faint);
+}
+
+.uzd-ch__ruler > span:first-child { transform: none; }
+.uzd-ch__ruler > span:first-child::before { left: 0; }
+.uzd-ch__ruler > span:last-child { transform: translateX(-100%); }
+.uzd-ch__ruler > span:last-child::before { left: auto; right: 0; }
+
+.uzd-ch__legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 10px;
+  color: var(--ch-muted);
+  font-size: 0.8rem;
+}
+
+.uzd-ch__legend b {
+  color: var(--ch-ink);
+  font-weight: 600;
 }
 
 /* ------------------------------------------------------------ form column ---
@@ -220,12 +403,12 @@
 .uzd__close {
   position: absolute;
   z-index: 4;
-  top: 12px;
-  right: calc(var(--uzd-rail-x) + 8px);
+  top: 14px;
+  right: 14px;
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -235,8 +418,8 @@
 }
 
 .uzd__close svg {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .uzd__close:hover {
@@ -244,18 +427,19 @@
 }
 
 /* ---------------------------------------------------------------- blocks ---
- * Head, form and footer are the card's three sections: each inset inside the
- * rails, in the page's own proportions. */
+ * Head and form are the card's two sections, split by one hairline and
+ * sharing one inset. Compact on purpose (27 Sep): the pane is a form, so the
+ * type and the controls sit at form size, not page-heading size. */
 
 .uzd__head {
-  padding: clamp(28px, 3.4vw, 40px) var(--uzd-inset) clamp(24px, 2.6vw, 30px);
+  padding: clamp(24px, 3vw, 32px) var(--uzd-inset) clamp(20px, 2.2vw, 24px);
 }
 
 .uzd__block {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: clamp(24px, 2.8vw, 32px) var(--uzd-inset);
+  gap: 24px;
+  padding: clamp(20px, 2.4vw, 24px) var(--uzd-inset) clamp(24px, 3vw, 32px);
 }
 
 /* the confirmation is short and the card keeps the form's height, so it sits
@@ -269,10 +453,10 @@
 .uzd__eyebrow {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 14px;
+  gap: 8px;
+  margin: 0 0 12px;
   color: var(--uzd-accent);
-  font-size: 0.74rem;
+  font-size: 0.6875rem;
   font-weight: 620;
   letter-spacing: 0.08em;
   line-height: 1;
@@ -281,27 +465,27 @@
 
 .uzd__eyebrow::before {
   flex: none;
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   content: "";
   background: currentColor;
 }
 
 .uzd__title {
   margin: 0;
-  max-width: 20ch;
+  max-width: 24ch;
   font-family: var(--u-display);
-  font-size: clamp(1.55rem, 2.8vw, 1.95rem);
+  font-size: clamp(1.3rem, 2vw, 1.5rem);
   font-weight: 600;
-  letter-spacing: -0.035em;
-  line-height: 1.08;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
 }
 
 .uzd__lede {
-  margin: 12px 0 0;
+  margin: 6px 0 0;
   max-width: 46ch;
   color: var(--uzd-muted);
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   line-height: 1.5;
 }
 
@@ -314,18 +498,42 @@
   background: var(--uzd-rail);
 }
 
+/* ---------------------------------------------------------------- groups ---
+ * The form's two groups: what we need to reply, then what helps the call.
+ * A group heading reads one step above the field labels. No "Optional"
+ * markers anywhere (27 Sep). */
+
+.uzd__group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.uzd__legend {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: var(--uzd-ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
 /* ---------------------------------------------------------------- fields --- */
 
 .uzd__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px 18px;
+  gap: 12px 14px;
 }
 
 .uzd__field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -338,18 +546,9 @@
   align-items: baseline;
   gap: 8px;
   color: var(--uzd-ink-2);
-  font-size: 0.8rem;
-  font-weight: 560;
-  letter-spacing: -0.005em;
-}
-
-.uzd__optional {
-  margin-left: auto;
-  color: var(--n-400);
-  font-size: 0.68rem;
-  font-weight: 560;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.3;
 }
 
 .uzd__input,
@@ -361,7 +560,7 @@
   background: var(--n-0);
   color: var(--uzd-ink);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   transition:
     border-color 140ms ease-out,
     box-shadow 140ms ease-out;
@@ -369,13 +568,15 @@
 
 .uzd__input,
 .uzd__select {
-  height: 44px;
-  padding: 0 13px;
+  height: 36px;
+  padding: 0 11px;
 }
 
 .uzd__textarea {
-  padding: 11px 13px;
-  line-height: 1.5;
+  display: block;
+  min-height: 62px;
+  padding: 8px 11px;
+  line-height: 1.45;
   resize: vertical;
 }
 
@@ -413,7 +614,7 @@
 
 .uzd__select {
   appearance: none;
-  padding-right: 38px;
+  padding-right: 32px;
   cursor: pointer;
 }
 
@@ -424,9 +625,9 @@
 .uzd__chev {
   position: absolute;
   top: 50%;
-  right: 12px;
-  width: 16px;
-  height: 16px;
+  right: 10px;
+  width: 14px;
+  height: 14px;
   color: var(--uzd-muted);
   transform: translateY(-50%);
   pointer-events: none;
@@ -435,18 +636,18 @@
 .uzd__err {
   margin: 0;
   color: #b4342c;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   line-height: 1.35;
 }
 
 .uzd__form-err {
   margin: 0;
-  padding: 10px 12px;
+  padding: 8px 11px;
   background: #fdf3f2;
   border: 1px solid #f0d3d0;
   border-radius: 4px;
   color: #8f2820;
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
   line-height: 1.45;
 }
 
@@ -468,22 +669,31 @@
   white-space: nowrap;
 }
 
-/* -------------------------------------------------------------- actions --- */
+/* -------------------------------------------------------------- actions ---
+ * The button and the reply promise on one row: the promise answers "what
+ * happens when I press this", so it sits beside the press, not in a strip
+ * of its own. */
+
+.uzd__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
 .uzd__submit {
   display: inline-flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  align-self: flex-start;
-  min-height: 46px;
-  padding: 12px 26px;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 18px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: var(--uzd-accent);
   color: #fff;
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 0.875rem;
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
@@ -507,15 +717,27 @@
   transform: translateX(3px);
 }
 
+.uzd__note {
+  margin: 0;
+  color: var(--uzd-muted);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+/* one sentence per line beside the button, never broken mid-phrase */
+.uzd__note > span {
+  display: block;
+}
+
 .uzd__ghost {
-  min-height: 42px;
-  padding: 11px 20px;
+  min-height: 38px;
+  padding: 0 18px;
   border: 1px solid var(--uzd-line-strong);
   border-radius: 999px;
   background: transparent;
   color: var(--uzd-ink);
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 560;
   cursor: pointer;
   transition:
@@ -526,18 +748,6 @@
 .uzd__ghost:hover {
   background: var(--uzd-alt);
   border-color: var(--n-300);
-}
-
-/* the last section of the card, on the alt grey the pages use */
-.uzd__foot {
-  margin: 0;
-  margin-top: auto;
-  padding: 14px var(--uzd-inset);
-  border-top: 1px solid var(--uzd-line);
-  background: var(--uzd-alt);
-  color: var(--uzd-muted);
-  font-size: 0.82rem;
-  line-height: 1.45;
 }
 
 /* --------------------------------------------------------------- focus --- */
@@ -564,7 +774,7 @@
   }
 
   .uzd__panel {
-    width: min(660px, 100%);
+    width: min(560px, 100%);
   }
 }
 
@@ -574,18 +784,159 @@
     padding: 0;
   }
 
+  /* the sheet is only as tall as the form; the cap is the whole screen
+   * because the sheet does not scroll */
   .uzd__panel {
     width: 100%;
-    max-height: 92dvh;
+    max-height: 100dvh;
     animation: uzd-sheet 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
+  /* the sheet does not scroll either, so it keeps two columns where the
+   * values are short: name and email run full width, company and title,
+   * industry and process pair up */
   .uzd__grid {
-    grid-template-columns: minmax(0, 1fr);
+    gap: 8px 10px;
+  }
+
+  .uzd__field--name,
+  .uzd__field--email {
+    grid-column: 1 / -1;
+  }
+
+  .uzd__head {
+    padding-top: 20px;
+    padding-bottom: 16px;
+  }
+
+  .uzd__eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .uzd__block {
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 20px;
+  }
+
+  .uzd__group {
+    gap: 8px;
+  }
+
+  /* two lines: the placeholder wraps at phone width */
+  .uzd__textarea {
+    height: 66px;
+    min-height: 66px;
+  }
+
+  /* 16px keeps iOS from zooming the page when a field takes focus */
+  .uzd__input,
+  .uzd__select,
+  .uzd__textarea {
+    font-size: 1rem;
+  }
+
+  .uzd__input,
+  .uzd__select {
+    height: 42px;
   }
 
   .uzd__title {
     max-width: none;
+  }
+
+  .uzd__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .uzd__submit {
+    min-height: 44px;
+  }
+
+  .uzd__note {
+    text-align: center;
+  }
+
+  .uzd__note > span {
+    display: inline;
+  }
+}
+
+/* -------------------------------------------------------- short screens ---
+ * The card does not scroll, so on a short window the form gives up air
+ * rather than overflow: tighter padding and gaps, a one-line notes box, and
+ * below 600px the lede goes. Only under 520px, where the form cannot fit at
+ * any legible size, does the card scroll again so the button stays reachable. */
+
+@media (min-width: 721px) and (max-height: 720px) {
+  .uzd {
+    padding: 16px;
+  }
+
+  .uzd__panel {
+    max-height: calc(100dvh - 32px);
+  }
+
+  .uzd__head {
+    padding-top: 20px;
+    padding-bottom: 16px;
+  }
+
+  .uzd__eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .uzd__block {
+    gap: 16px;
+    padding-top: 16px;
+    padding-bottom: 20px;
+  }
+
+  .uzd__group {
+    gap: 8px;
+  }
+
+  .uzd__grid {
+    row-gap: 8px;
+  }
+
+  .uzd__textarea {
+    height: 44px;
+    min-height: 44px;
+  }
+}
+
+/* the two-pane card keeps its held height inside the smaller margin */
+@media (min-width: 1141px) and (max-height: 720px) {
+  .uzd__split {
+    min-height: min(640px, calc(100dvh - 34px));
+  }
+}
+
+@media (min-width: 721px) and (max-height: 600px) {
+  .uzd__lede {
+    display: none;
+  }
+}
+
+/* a short phone drops the lede and closes the gaps between groups */
+@media (max-width: 720px) and (max-height: 700px) {
+  .uzd__lede {
+    display: none;
+  }
+
+  .uzd__block {
+    gap: 12px;
+    padding-bottom: 14px;
+  }
+}
+
+@media (max-height: 519px) {
+  .uzd__panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
 

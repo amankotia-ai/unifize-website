@@ -333,33 +333,28 @@
   background: var(--dms-d-bg-2);
 }
 
-/* the solid icon where the index stood (the AI rail's idiom): a 32px
- * tile on the charcoal, blue when the step is live */
+/* the solid icon where the index stood (the AI rail's idiom). 27 Sep 2026:
+ * no tile, the bare glyph at 22px flush with the title, blue when the step
+ * is live (the timer's blue) */
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__head {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__icon {
   display: grid;
-  width: 32px;
-  height: 32px;
   place-items: center;
-  background: var(--dms-d-bg-3);
-  box-shadow: inset 0 0 0 1px var(--hm-rail);
   color: var(--dms-d-ink-2);
-  transition: background-color 0.18s ease-out, color 0.18s ease-out;
+  transition: color 0.18s ease-out;
 }
 
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__icon svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   fill: currentColor;
 }
 
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__step.is-active .pf-journey__icon {
-  background: var(--dms-accent);
-  box-shadow: none;
-  color: #fff;
+  color: var(--u-blue-400);
 }
 
 .dms--redesign.pf-page .dms-hero--rails .pf-journey__body {
@@ -556,6 +551,70 @@
   color: var(--dms-ink);
   font-weight: 600;
   white-space: nowrap;
+}
+
+/* the tax cell film (27 Sep 2026, tax-cell-film.tsx): from 1200px with
+ * motion allowed, the figure plays once as a 10 s film, then a small replay
+ * button sits under the bottom-right square. The video is the content box
+ * (head, grid, legend) at 620:300, so the cell's padding stays live and the
+ * grid keeps the rail's edge; below 1200 its type would drop under 10px,
+ * so tablets, phones and reduced motion keep the static figure. */
+.dms--redesign.pf-page .pf-taxfilm { display: none; }
+
+@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+  .dms--redesign.pf-page .pf-taxlead__fig.has-film {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .dms--redesign.pf-page .pf-taxlead__fig.has-film > .pf-taxlead__static { display: none; }
+  .dms--redesign.pf-page .pf-taxfilm {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 620 / 300;
+  }
+  .dms--redesign.pf-page .pf-taxfilm__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--n-50);
+  }
+  /* right edge on the last column, 12px under the grid (its floor is 79.4%
+   * of the frame: head 15.68 + 20, grid 202.53, of 300) */
+  .dms--redesign.pf-page .pf-taxfilm__replay {
+    position: absolute;
+    top: calc(79.4% + 12px);
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid var(--dms-line-strong);
+    border-radius: 0;
+    background: var(--dms-surface);
+    color: var(--dms-muted);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-3px);
+    transition: opacity .3s var(--dms-ease), transform .3s var(--dms-ease), visibility 0s linear .3s, color .15s, border-color .15s;
+  }
+  .dms--redesign.pf-page .pf-taxfilm.is-done .pf-taxfilm__replay {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity .3s var(--dms-ease), transform .3s var(--dms-ease), visibility 0s, color .15s, border-color .15s;
+  }
+  .dms--redesign.pf-page .pf-taxfilm__replay:hover {
+    border-color: var(--dms-faint);
+    color: var(--dms-ink);
+  }
+  .dms--redesign.pf-page .pf-taxfilm__replay:focus-visible {
+    outline: 2px solid var(--dms-accent);
+    outline-offset: 2px;
+  }
 }
 
 .dms--redesign.pf-page .hm-railed .pf-stats__kicker {
@@ -929,10 +988,9 @@
 /* the plate under the record window ("for all product visuals, the same
  * translucent border as the hero"). The camera is clip-pathed to its cut,
  * which clips a box-shadow plate away, so the plate is a layer under the
- * window on .stx-arc, sized to the visible cut (826 x 560 in camera space)
- * at the measured zoom and following the pose drift. The poses set their
- * drift on the camera; :has() lifts the same values to .stx-arc so the
- * layer can read them. */
+ * window on .stx-arc, sized to the visible cut (826 x --pf-gap-cam-h in
+ * camera space) at the measured zoom. Since 27 Sep 2026 every step holds
+ * the same pose, so the plate never moves. */
 .dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc {
   --pf-gap-cam-x: 0px;
   --pf-gap-cam-y: 0px;
@@ -940,20 +998,13 @@
   --rf-plate: 8px;
 }
 
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-trace) { --pf-gap-cam-x: 6px; --pf-gap-cam-y: 10px; --pf-gap-cam-k: 1; }
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-queue.is-pose-route) { --pf-gap-cam-x: 0px; --pf-gap-cam-y: -8px; --pf-gap-cam-k: 1.02; }
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist) { --pf-gap-cam-x: 8px; --pf-gap-cam-y: -16px; --pf-gap-cam-k: 0.97; }
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-signature) { --pf-gap-cam-x: 0px; --pf-gap-cam-y: 0px; --pf-gap-cam-k: 1.03; }
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-comment) { --pf-gap-cam-x: -22px; --pf-gap-cam-y: -6px; --pf-gap-cam-k: 1.02; }
-.dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc:has(.stx-arc__camera.is-focus-history) { --pf-gap-cam-x: 6px; --pf-gap-cam-y: -10px; --pf-gap-cam-k: 0.98; }
-
 .dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc::before {
   position: absolute;
   z-index: 0;
   top: 50%;
   left: 50%;
   width: calc(826px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + 2 * var(--rf-plate));
-  height: calc(560px * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + 2 * var(--rf-plate));
+  height: calc(var(--pf-gap-cam-h) * var(--pf-gap-zoom) * var(--pf-gap-cam-k) + 2 * var(--rf-plate));
   content: "";
   background: oklch(1 0 0 / 0.24);
   box-shadow:
@@ -963,10 +1014,6 @@
     0 48px 96px -32px oklch(0 0 0 / 0.18);
   transform: translate(calc(-50% + var(--pf-gap-cam-x)), calc(-50% + var(--pf-gap-cam-y)));
   pointer-events: none;
-}
-
-.dms--redesign.pf-page .hm-railed .pf-gap__stage.is-fit .stx-root .stx-arc::before {
-  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 /* phones: the container clips the window (component floors the zoom); the
@@ -1021,10 +1068,6 @@
     left: 0;
     mask-image: linear-gradient(90deg, #000 20%, transparent 72%);
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dms--redesign.pf-page .hm-railed .pf-gap__stage .stx-root .stx-arc::before { transition: none; }
 }
 
 /* ================================================== 03 · YOUR SYSTEMS STAY
@@ -1212,13 +1255,23 @@
   background: var(--dms-d-bg-2);
 }
 
+/* 27 Sep 2026: no tile, the bare glyph at 22px, blue when live (as the hero) */
 .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__icon {
-  box-shadow: inset 0 0 0 1px var(--hm-rail);
+  width: auto;
+  height: auto;
+  background: none;
+  box-shadow: none;
+  transition: color 0.18s ease-out;
+}
+
+.dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__icon svg {
+  width: 22px;
+  height: 22px;
 }
 
 .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__step.is-active .pf-journey__icon {
-  background: var(--dms-accent);
-  color: #fff;
+  background: none;
+  color: var(--u-blue-400);
 }
 
 .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey__timer { background: rgba(255, 255, 255, 0.1); }
@@ -1650,7 +1703,7 @@
 
 /* the AI side list, re-set (Abhishek, 22 Sep: "the padding on the tabs is
  * just weird, the tabs don't sit well"): every row is one cell grid, icon
- * tile left, title beside it, the live step's line under the title; rows
+ * left, title beside it, the live step's line under the title; rows
  * share the frame's height equally and centre their content. */
 @media (min-width: 1025px) {
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__rail {
@@ -1659,7 +1712,7 @@
 
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--side .pf-journey__step {
     display: grid;
-    grid-template-columns: 32px minmax(0, 1fr);
+    grid-template-columns: 22px minmax(0, 1fr);
     grid-template-rows: auto auto;
     column-gap: 14px;
     row-gap: 6px;
@@ -1694,11 +1747,18 @@
  * the 54px nav rail and the 270px conversation list and re-centred on the
  * 826-wide cut (the -162px term), the component fits --pf-cam-k to that
  * width, and the plate moves to a layer under the window on .stx-arc
- * because the clip cuts a box-shadow plate away. The per-pose drift the
- * kit sets on the camera is mirrored onto .stx-arc with :has() so the
- * plate follows. */
+ * because the clip cuts a box-shadow plate away. */
 @media (min-width: 1025px) {
+  /* 27 Sep 2026 (Abhishek: "a little shorter in height so it fits better in
+   * the frame", "I don't want the frame moving around in each of the steps,
+   * keep it in the same position"): the window is cut to --pf-ai-h tall
+   * instead of the engine's 560px, and every step holds ONE pose (no drift,
+   * no zoom change); only the content inside the window changes. */
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc__camera {
+    --stx-camera-x: 0px;
+    --stx-camera-y: 0px;
+    --stx-camera-scale: calc(var(--pf-ai-s) * var(--pf-cam-k, 1));
+    height: var(--pf-ai-h);
     clip-path: inset(0 0 0 324px);
     --stx-cut-l: 324px;
     outline: 0;
@@ -1711,15 +1771,10 @@
   }
 
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc {
-    --pf-ai-x: 0px;
-    --pf-ai-y: 0px;
-    --pf-ai-s: 0.9;
+    --pf-ai-s: 0.94;
+    --pf-ai-h: 500px;
     --rf-plate: 8px;
   }
-  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-checklist) { --pf-ai-x: -34px; --pf-ai-y: 0px; --pf-ai-s: 0.96; }
-  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist) { --pf-ai-x: -12px; --pf-ai-y: -4px; --pf-ai-s: 0.94; }
-  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-assist.is-pose-linked) { --pf-ai-x: -26px; --pf-ai-y: 2px; --pf-ai-s: 0.96; }
-  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc:has(.stx-arc__camera.is-focus-history) { --pf-ai-x: 6px; --pf-ai-y: -8px; --pf-ai-s: 0.94; }
 
   .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc::before {
     position: absolute;
@@ -1727,7 +1782,7 @@
     top: 50%;
     left: 50%;
     width: calc(826px * var(--pf-ai-s) * var(--pf-cam-k, 1) + 2 * var(--rf-plate));
-    height: calc(560px * var(--pf-ai-s) * var(--pf-cam-k, 1) + 2 * var(--rf-plate));
+    height: calc(var(--pf-ai-h) * var(--pf-ai-s) * var(--pf-cam-k, 1) + 2 * var(--rf-plate));
     content: "";
     background: oklch(1 0 0 / 0.24);
     box-shadow:
@@ -1735,14 +1790,9 @@
       0 4px 10px -4px oklch(0 0 0 / 0.12),
       0 24px 48px -20px oklch(0 0 0 / 0.22),
       0 48px 96px -32px oklch(0 0 0 / 0.18);
-    transform: translate(calc(-50% + var(--pf-ai-x)), calc(-50% + var(--pf-ai-y)));
-    transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transform: translate(-50%, -50%);
     pointer-events: none;
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dms--redesign.pf-page .pf-ai-section.hm-railed .pf-journey--cut .pf-journey__stage.rf .stx-root .stx-arc::before { transition: none; }
 }
 
 /* ==================================================== 06 · CUSTOMER PROOF

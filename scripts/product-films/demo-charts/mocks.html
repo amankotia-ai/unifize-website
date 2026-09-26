@@ -1,0 +1,155 @@
+<!doctype html>
+<!--
+  mocks.html - three chart directions for the Book-a-demo left pane, same
+  data (Will-Burt NCR closure: 4 to 5 weeks -> 7.2 days, 75% faster), each in
+  the pane at 1440 (760 x 700) on its wash. Built to the dataviz mark specs:
+  thin marks (<= 18px bars, 4px rounded data-end), 2px lines, >= 10px dots
+  with a 2px surface ring, hairline recessive axes, one accent, text in text
+  tokens, the chart on a white surface.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Demo pane chart directions</title>
+<style>
+@font-face { font-family: "Inter"; src: url("../../../src/app/fonts/inter-variable.woff2") format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Plex"; src: url("../../../src/app/fonts/ibm-plex-sans-variable.woff2") format("woff2"); font-weight: 100 700; }
+@font-face { font-family: "Mono"; src: url("../../../src/app/fonts/jetbrains-mono-variable.woff2") format("woff2"); font-weight: 100 800; }
+:root {
+  --ink: #17191f; --ink2: #3f4550; --muted: #606773; --faint: #8b93a0;
+  --hair: #e4e7eb; --grid: #eef0f2; --before: #b8bec7; --before-2: #dde1e6;
+  --accent: #0052ff; --accent-tint: #eef3ff; --accent-text: #0041cc;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #f4f5f7; font-family: Inter, sans-serif; color: var(--ink);
+  font-feature-settings: "cv11", "ss01", "ss03"; -webkit-font-smoothing: antialiased; }
+.row { display: flex; gap: 24px; padding: 24px; }
+.pane { position: relative; width: 760px; height: 700px; overflow: hidden; flex: none;
+  background: linear-gradient(180deg, #cfe3ff 0%, #e3eeff 55%, #f1f6ff 100%); display: grid; place-items: center; }
+.pane::before { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 0 14%, rgba(255,255,255,.4) 14% 26%, transparent 26% 40%, rgba(255,255,255,.26) 40% 48%, transparent 48%);
+  -webkit-mask-image: linear-gradient(90deg, #000 20%, transparent 72%); }
+.tag { position: absolute; left: 18px; top: 14px; font: 600 12px Mono, monospace; color: var(--ink2); z-index: 2; }
+
+.card { position: relative; z-index: 1; width: 600px; padding: 36px 40px 30px; background: #fff;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / .04), 0 2px 4px -2px rgb(0 0 0 / .06), 0 24px 48px -24px rgb(0 0 0 / .22); }
+.eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 18px; color: var(--muted);
+  font-size: 11.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.eyebrow::before { content: ""; width: 7px; height: 7px; background: var(--accent); }
+.hero { display: flex; align-items: baseline; gap: 14px; margin: 0; }
+.fig { font: 600 60px/1 Plex, sans-serif; letter-spacing: -0.035em; }
+.delta { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; background: var(--accent-tint);
+  color: var(--accent-text); font-size: 14px; font-weight: 600; letter-spacing: -0.005em; transform: translateY(-10px); }
+.sub { margin: 12px 0 0; color: var(--ink2); font-size: 15px; line-height: 1.45; }
+.src { margin: 26px 0 0; padding-top: 14px; border-top: 1px solid var(--grid); color: var(--muted); font-size: 12.5px; }
+
+/* ---------- A: dumbbell on a days axis */
+.dumb { position: relative; height: 150px; margin-top: 30px; }
+.dumb .axis { position: absolute; left: 0; right: 0; bottom: 26px; height: 1px; background: var(--hair); }
+.dumb .tick { position: absolute; bottom: 0; transform: translateX(-50%); color: var(--faint);
+  font: 500 11px Mono, monospace; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dumb .tick::before { content: ""; position: absolute; left: 50%; bottom: 18px; width: 1px; height: 96px; background: var(--grid); }
+.dumb .range { position: absolute; bottom: 60px; height: 8px; border-radius: 4px; background: var(--before); }
+.dumb .link { position: absolute; bottom: 63px; height: 2px; background: linear-gradient(90deg, var(--accent), rgb(0 82 255 / .25)); }
+.dumb .dot { position: absolute; bottom: 57px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 0 3px #fff; }
+.dumb .lab { position: absolute; bottom: 82px; transform: translateX(-50%); white-space: nowrap; text-align: center; }
+.dumb .lab b { display: block; font: 600 15px Inter; color: var(--ink); }
+.dumb .lab span { display: block; margin-top: 2px; font-size: 12px; color: var(--muted); }
+
+/* ---------- B: one bar, the removed time bracketed */
+.meter { position: relative; margin-top: 40px; padding-top: 44px; }
+.meter .track { position: relative; height: 18px; background: var(--before-2); border-radius: 0 4px 4px 0; }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); border-radius: 0 4px 4px 0; }
+.meter .bracket { position: absolute; top: 18px; height: 10px; border: 1px solid var(--faint); border-bottom: 0; }
+.meter .bracket span { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); white-space: nowrap;
+  font-size: 13px; font-weight: 600; color: var(--ink2); }
+.meter .ends { display: flex; justify-content: space-between; margin-top: 12px; font-size: 13px; color: var(--muted); }
+.meter .ends b { color: var(--ink); font-weight: 600; }
+
+/* ---------- C: two thin bars on a weeks grid */
+.bars { position: relative; margin-top: 34px; }
+.bars .plot { position: relative; margin-left: 96px; height: 96px; }
+.bars .g { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--grid); }
+.bars .gl { position: absolute; top: 102px; transform: translateX(-50%); color: var(--faint); font: 500 11px Mono, monospace; white-space: nowrap; }
+.bars .r { position: absolute; left: -96px; right: 0; display: flex; align-items: center; height: 18px; }
+.bars .r .l { width: 96px; font-size: 13px; color: var(--muted); }
+.bars .b { position: absolute; left: 96px; height: 18px; border-radius: 0 4px 4px 0; }
+.bars .v { position: absolute; font-size: 14px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="row">
+
+  <!-- A -->
+  <div class="pane"><div class="tag">A · dumbbell on one time axis</div>
+    <div class="card">
+      <p class="eyebrow">NCR closure time</p>
+      <p class="hero"><span class="fig">7.2 days</span><span class="delta">75% faster</span></p>
+      <p class="sub">Average time to close a non-conformance, down from 4 to 5 weeks.</p>
+      <div class="dumb" id="dumb"></div>
+      <p class="src">The Will-Burt Company · published case study</p>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="pane"><div class="tag">B · one bar, the time removed</div>
+    <div class="card">
+      <p class="eyebrow">NCR closure time</p>
+      <p class="hero"><span class="fig">75% faster</span></p>
+      <p class="sub">What took 4 to 5 weeks now closes in 7.2 days.</p>
+      <div class="meter">
+        <div class="track"><div class="fill" style="width: 22.9%"></div></div>
+        <div class="bracket" style="left: 22.9%; right: 0; top: 28px"><span>75% less time</span></div>
+        <div class="ends"><span><b>7.2 days</b> with Unifize</span><span>before: <b>4 to 5 weeks</b></span></div>
+      </div>
+      <p class="src">The Will-Burt Company · published case study</p>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="pane"><div class="tag">C · two thin bars on a weeks grid</div>
+    <div class="card">
+      <p class="eyebrow">NCR closure time</p>
+      <p class="hero"><span class="fig">7.2 days</span><span class="delta">75% faster</span></p>
+      <p class="sub">Average time to close a non-conformance.</p>
+      <div class="bars" id="bars"></div>
+      <p class="src">The Will-Burt Company · published case study</p>
+    </div>
+  </div>
+
+</div>
+<script>
+// A: 0..35 days across the plot
+(() => {
+  const el = document.getElementById("dumb"), W = 520, X = d => (d / 35) * W;
+  let h = "";
+  for (const [d, t] of [[0,"0"],[7,"1 wk"],[14,"2 wk"],[21,"3 wk"],[28,"4 wk"],[35,"5 wk"]])
+    h += `<span class="tick" style="left:${X(d)}px">${t}</span>`;
+  h += `<div class="axis"></div>`;
+  h += `<div class="link" style="left:${X(7.2)}px;width:${X(28) - X(7.2)}px"></div>`;
+  h += `<div class="range" style="left:${X(28)}px;width:${X(35) - X(28)}px"></div>`;
+  h += `<div class="dot" style="left:${X(7.2)}px"></div>`;
+  h += `<div class="lab" style="left:${X(31.5)}px"><b>4 to 5 weeks</b><span>Before</span></div>`;
+  h += `<div class="lab" style="left:${X(7.2)}px"><b>7.2 days</b><span>With Unifize</span></div>`;
+  el.style.width = W + "px"; el.innerHTML = h;
+})();
+// C: 0..5 weeks
+(() => {
+  const el = document.getElementById("bars"), W = 400, X = d => (d / 35) * W;
+  let h = `<div class="plot">`;
+  for (let w = 0; w <= 5; w++) h += `<div class="g" style="left:${X(w * 7)}px"></div><span class="gl" style="left:${X(w * 7)}px">${w ? w + " wk" : "0"}</span>`;
+  const row = (top, label, parts, value, end) => {
+    let s = `<div class="r" style="top:${top}px"><span class="l">${label}</span>`;
+    for (const [a, b, c, round] of parts) s += `<i class="b" style="left:${96 + X(a)}px;width:${X(b) - X(a)}px;background:${c};border-radius:${round ? "0 4px 4px 0" : "0"}"></i>`;
+    s += `<span class="v" style="left:${96 + X(end) + 10}px">${value}</span></div>`;
+    return s;
+  };
+  h += row(18, "Before", [[0, 28, "var(--before)", false], [28.3, 35, "var(--before-2)", true]], "4 to 5 weeks", 35);
+  h += row(58, "With Unifize", [[0, 7.2, "var(--accent)", true]], "7.2 days", 7.2);
+  h += `</div>`;
+  el.innerHTML = h;
+})();
+</script>
+</body>
+</html>

@@ -112,8 +112,10 @@
 }
 
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab {
+  justify-content: center;
   min-height: 60px;
   color: var(--dms-d-ink-2);
+  text-align: center;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__tab::before {
@@ -156,11 +158,15 @@
 
 /* the wash moves (Abhishek, 22 Sep: "the hero bg colors in a transitioning
  * animation, flowy, same two shades, slowly and subtly moving"): the ground
- * is the mid tone, and two soft radial blobs, one blue and one peach, drift
- * on long eased loops under the grain. Transform only, so it stays cheap;
- * reduced motion leaves them still. */
+ * is the mid tone, and two soft radial blobs, one deeper and one lighter,
+ * drift on long eased loops under the grain. Transform only, so it stays
+ * cheap; reduced motion leaves them still.
+ * 26 Sep 2026 (hero films, "refer to the colors used on the bg for the
+ * platform section visuals"): the three tones are the product suite
+ * stage's --hm-wash-blue (#cfe3ff, #e3eeff, #f1f6ff), without its bands;
+ * the peach blob became the light end. */
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf {
-  background: #e7eef8;
+  background: #e3eeff;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::before,
@@ -177,14 +183,14 @@
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::before {
   top: -35%;
   left: -20%;
-  background: radial-gradient(closest-side, #c2dbff 0%, rgba(194, 219, 255, 0.55) 45%, rgba(194, 219, 255, 0) 100%);
+  background: radial-gradient(closest-side, #cfe3ff 0%, rgba(207, 227, 255, 0.55) 45%, rgba(207, 227, 255, 0) 100%);
   animation: hm-wash-a 26s ease-in-out infinite alternate;
 }
 
 .dms--redesign.dms--home .dms-hero--rails .hm-heromock__stage.rf::after {
   right: -25%;
   bottom: -40%;
-  background: radial-gradient(closest-side, #fbe0cc 0%, rgba(251, 224, 204, 0.55) 45%, rgba(251, 224, 204, 0) 100%);
+  background: radial-gradient(closest-side, #f1f6ff 0%, rgba(241, 246, 255, 0.55) 45%, rgba(241, 246, 255, 0) 100%);
   animation: hm-wash-b 32s ease-in-out infinite alternate;
 }
 
@@ -738,6 +744,77 @@
   );
 }
 
+/* the tax film (27 Sep 2026, ../platform/tax-cell-film.tsx): the platform
+ * page's 10 s film of this same figure. From 1280px with motion allowed the
+ * head, grid and legend give way to it and the claim sits above it; the
+ * video is the content box at 620:300, so the cell's padding stays page CSS.
+ * Below 1280 this cell is narrower than /platform's at its 1200 floor and
+ * the film's type would shrink past it, so tablets, phones and reduced
+ * motion keep the static figure. */
+.dms--redesign.dms--home .hm-taxviz .pf-taxfilm { display: none; }
+
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--home .hm-taxviz.has-film {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .dms--redesign.dms--home .hm-taxviz.has-film > :is(.hm-taxviz__head, .hm-taxviz__cells, .hm-taxviz__legend) {
+    display: none;
+  }
+  .dms--redesign.dms--home .hm-taxviz.has-film > .hm-taxviz__v {
+    margin-top: 0;
+  }
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin-top: 24px;
+    aspect-ratio: 620 / 300;
+  }
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm__video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--n-50);
+  }
+  /* right edge on the last column, 12px under the grid (its floor is 79.4%
+   * of the frame), as on /platform */
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm__replay {
+    position: absolute;
+    top: calc(79.4% + 12px);
+    right: 0;
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 1px solid var(--dms-line-strong);
+    border-radius: 0;
+    background: var(--dms-surface);
+    color: var(--dms-muted);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-3px);
+    transition: opacity .3s var(--dms-ease), transform .3s var(--dms-ease), visibility 0s linear .3s, color .15s, border-color .15s;
+  }
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm.is-done .pf-taxfilm__replay {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity .3s var(--dms-ease), transform .3s var(--dms-ease), visibility 0s, color .15s, border-color .15s;
+  }
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm__replay:hover {
+    border-color: var(--dms-faint);
+    color: var(--dms-ink);
+  }
+  .dms--redesign.dms--home .hm-taxviz .pf-taxfilm__replay:focus-visible {
+    outline: 2px solid var(--dms-accent);
+    outline-offset: 2px;
+  }
+}
+
 /* Preserve home-kit's single-column mobile layout after the Rails layer. */
 @media (max-width: 960px) {
   .dms--redesign.dms--home .hm-recognition--reframed .hm-recognition__head,
@@ -849,9 +926,41 @@
   background: var(--n-50);
 }
 
+/* the product names in the display face at a heading weight, like the way-in
+ * names (27 Sep 2026: the base rule's --dms-display lost to the kit's
+ * `.dms--redesign * { font-family: var(--u-font) !important }`, so they
+ * rendered in Inter) */
 .dms--redesign.dms--home .hm-suite__name {
+  font-family: var(--u-display) !important;
   font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em !important;
 }
+
+/* the pictogram and the product name on one line (Abhishek, 27 Sep 2026:
+ * "keep icon and titles in the same line") */
+.dms--redesign.dms--home .hm-suite__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* the glyphs sit in a 24-unit box with uneven side bearings, so the box edge
+ * is not the ink edge: trim each glyph's bearings so its ink is flush with
+ * the text below and a true 10px from the name. Bearings are each path's
+ * getBBox, in 24ths of the box. */
+.dms--redesign.dms--home .hm-suite__head .hm-suite__glyph {
+  --glyph-size: 22px;
+  flex: none;
+  margin-inline:
+    calc(var(--ink-l, 0) * var(--glyph-size) / -24)
+    calc(var(--ink-r, 0) * var(--glyph-size) / -24);
+}
+
+.dms--redesign.dms--home .hm-suite__glyph[data-glyph="qms"] { --ink-l: 4.6; --ink-r: 4.6; }
+.dms--redesign.dms--home .hm-suite__glyph[data-glyph="dms"] { --ink-l: 6.2; --ink-r: 5.2; }
+.dms--redesign.dms--home .hm-suite__glyph[data-glyph="mes"] { --ink-l: 2.2; --ink-r: 2.2; }
+.dms--redesign.dms--home .hm-suite__glyph[data-glyph="plm"] { --ink-l: 3; --ink-r: 3; }
 
 /* the hero is pulled up under the sticky bar (margin-top: -header); its
  * rails start at the bar's bottom edge, not the top of the page */
@@ -2127,4 +2236,101 @@
     /* the ledger starts level with the claim, under the label line */
     margin-top: 40px;
   }
+}
+
+/* ================================================================ HERO FILMS
+ * 26 Sep 2026: a tab's film (hero-film-assets.ts) covers the hero window in
+ * its own place. It is centred on the stage like the arcade camera and
+ * sized as the window's cut, 1070 x 560 window px at the hero's zoom for the
+ * band (the same steps as the camera in home-kit.css: keep them in step).
+ * The plate is the hero's, drawn round the film; over it lies the platform
+ * film's grain (hard-light noise tile, 12 fps jitter). The wash around it is
+ * the stage, untouched. The arcade under it is hidden but keeps the stage's
+ * size. The film only mounts from 768px (home-interactive.tsx). */
+.dms--redesign.dms--home .hm-heromock__film {
+  --hm-film-z: 0.7;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  width: calc(1070px * var(--hm-film-z));
+  aspect-ratio: 1070 / 560;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 820px) {
+  .dms--redesign.dms--home .hm-heromock__film { --hm-film-z: 0.62; }
+}
+
+@media (min-width: 1025px) {
+  .dms--redesign.dms--home .hm-heromock__film { --hm-film-z: 0.82; }
+}
+
+@media (min-width: 1280px) {
+  .dms--redesign.dms--home .hm-heromock__film { --hm-film-z: 0.96; }
+}
+
+@media (min-width: 1536px) {
+  .dms--redesign.dms--home .hm-heromock__film { --hm-film-z: 1.16; }
+}
+
+/* the hero plate (home-kit.css, .stx-arc::before) round the film */
+.dms--redesign.dms--home .hm-heromock__film::before {
+  position: absolute;
+  z-index: -1;
+  inset: -8px;
+  content: "";
+  background: oklch(1 0 0 / 0.1);
+  box-shadow:
+    0 0 0 1px oklch(1 0 0 / 0.2),
+    0 4px 10px -4px oklch(0 0 0 / 0.28),
+    0 24px 48px -20px oklch(0 0 0 / 0.5),
+    0 48px 96px -32px oklch(0 0 0 / 0.55);
+  pointer-events: none;
+}
+
+.dms--redesign.dms--home .hm-heromock__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #fff;
+}
+
+/* grain on the film, as on the platform hero film (platform-rails.css):
+ * overlay grain never marks white UI, so a soft noise tile in hard-light */
+.dms--redesign.dms--home .hm-heromock__film::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-image: url("/explorations/platform/hero-film-grain-v3.png");
+  background-size: 128px 128px;
+  opacity: 0.06;
+  mix-blend-mode: hard-light;
+  animation: hm-film-grain 0.333s steps(4) infinite;
+}
+
+@keyframes hm-film-grain {
+  0% { background-position: 0 0; }
+  25% { background-position: -37px 21px; }
+  50% { background-position: 53px -44px; }
+  75% { background-position: -18px 67px; }
+  100% { background-position: 0 0; }
+}
+
+/* the arcade window gives way while the film is up; the film fades in over
+ * it (its poster is its first frame, so there is no jump when it plays) */
+.dms--redesign.dms--home .hm-heromock__stage.has-film .hm-heromock__scene {
+  visibility: hidden;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dms--redesign.dms--home .hm-heromock__film { animation: hm-film-in 0.22s var(--dms-ease, ease-out) both; }
+  @keyframes hm-film-in { from { opacity: 0; } }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dms--redesign.dms--home .hm-heromock__film::after { animation: none; }
 }

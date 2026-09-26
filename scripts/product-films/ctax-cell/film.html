@@ -1,0 +1,324 @@
+<!doctype html>
+<!--
+  film.html - the coordination tax cell film: a 10 s loop that lives in the
+  tax cell on /platform 01, in place of the static 75-step waffle.
+  Direction log: direction.md (same folder).
+
+  No product UI and no camera: the frame is the cell (706 x 380 CSS px, the
+  cell at a 1440 viewport), in the figure's own vocabulary: square cells,
+  grey = the work, tax orange = the coordination tax, the head label and
+  the legend. The first and last frames are today's figure, so the loop has
+  no cut and the page looks unchanged at rest.
+
+  The 75 cells are VS-2's real steps (Notion, The Value Model / Reference
+  Value Streams, "Non-Conformance, Detection to CAPA Closure"), in order,
+  each marked work or tax, each tax step with its kind.
+
+    ?mode=flat / ?mode=board   the frame (both are the cell itself)
+    ?cut=content               the page cut: the figure's content box only
+                               (620 x 300), the cell's padding stays page CSS
+    ?t=3.2                     a still;  ?play (or ?play=2.5) real time, looping
+
+  Every frame is a pure function of time: seek(t) puts every element in its
+  state at t.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Coordination tax cell film</title>
+<style>
+@font-face { font-family: "Inter"; src: url("../../../src/app/fonts/inter-variable.woff2") format("woff2"); font-weight: 100 900; }
+
+/* computed off the live /platform page at 1440 (27 Sep 2026) */
+:root {
+  --bg: rgb(246 247 248);          /* --n-50, the cell */
+  --muted: rgb(96 103 115);        /* --dms-muted */
+  --ink: rgb(23 25 31);            /* --dms-ink */
+  --work: rgb(207 212 220);        /* --dms-line-strong */
+  --sunk: rgb(236 238 242);        /* --dms-surface-sunk */
+  --tax: oklch(0.690 0.185 48);    /* --u-tax */
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); }
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+#cam {
+  position: relative;
+  width: 706px;
+  height: 380px;
+  padding: 40px 43.2px;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* the page cut: no padding, the video is the content box */
+.cut-content #cam { width: 620px; height: 300px; padding: 0; }
+
+/* the head: what is counted, and the total (.pf-taxlead__figlab) */
+.cx-lab {
+  position: relative;
+  height: 15.68px;
+  margin-bottom: 20px;
+  color: var(--muted);
+  font-size: 11.2px;
+  font-weight: 500;
+  line-height: 15.68px;
+  text-transform: uppercase;
+}
+.cx-lab span, .cx-lab b { position: absolute; top: 0; white-space: nowrap; }
+.cx-lab span { left: 0; }
+.cx-lab b { right: 0; color: var(--ink); font-weight: 600; }
+
+/* the band the cells live in: 5 rows of the 15-column grid */
+.cx-band { position: relative; height: 202.53px; margin-bottom: 18px; }
+.cx-band i { position: absolute; display: block; }
+.cx-band i.w { z-index: 2; background: var(--work); }
+.cx-band i.x { z-index: 1; background: var(--tax); }
+.cx-kind {
+  position: absolute;
+  left: 0;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  color: var(--muted);
+  font-size: 11.52px;
+  line-height: 17.856px;
+  white-space: nowrap;
+}
+.cx-num {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  color: var(--ink);
+  font-size: 11.52px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* the legend (.pf-leak__legend) */
+.cx-legend { display: flex; flex-direction: column; gap: 8px; }
+.cx-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  font-size: 11.52px;
+  line-height: 17.856px;
+}
+.cx-legend i { width: 10px; height: 10px; flex: none; }
+.cx-legend i.keep { background: var(--sunk); box-shadow: inset 0 0 0 1px var(--work); }
+.cx-legend i.leak { background: var(--tax); }
+</style>
+</head>
+<body>
+<div id="cam">
+  <div class="cx-lab">
+    <span id="lab0">One non-conformance, detection to CAPA closure</span>
+    <span id="lab1">The same 75 steps, in the order they happen</span>
+    <span id="lab2">The 54 coordination steps, by kind</span>
+    <b id="tot0">75 steps</b>
+    <b id="tot1">54 steps</b>
+  </div>
+  <div class="cx-band" id="band"></div>
+  <div class="cx-legend">
+    <span id="legWork"><i class="keep"></i>The work · investigate, decide, verify · 21</span>
+    <span><i class="leak"></i>The coordination tax · 54</span>
+  </div>
+</div>
+
+<script>
+if (new URLSearchParams(location.search).get("cut") === "content") document.documentElement.classList.add("cut-content");
+
+/* ------------------------------------------------------------ motion kit (the film kit's easing) */
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, x) => a + (b - a) * x;
+const E = {
+  outCubic: x => 1 - Math.pow(1 - x, 3),
+  inOutCubic: x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2,
+};
+
+/* ------------------------------------------------------------ the record: VS-2, 75 steps in order
+ * w = the work (VA). Tax kinds, from each NVA step's first primitive tag:
+ *   c  chasing and waiting        (L latency, G gates)
+ *   m  meetings, rebuilding context (M meetings, C context)
+ *   n  notifying, handing off     (H handoffs)
+ *   e  writing it up, redoing it  (E evidence, Re rework)
+ *   r  re-keying between systems  (Sys, T tracker) */
+const STEPS = [
+  ["1.1","w"],["1.2","w"],["1.3","n"],["1.4","m"],["1.5","n"],["1.6","m"],["1.7","w"],["1.8","r"],["1.9","r"],["1.10","r"],["1.11","w"],["1.12","w"],["1.13","n"],["1.14","e"],["1.15","r"],
+  ["2.1","m"],["2.2","w"],["2.3","w"],["2.4","w"],["2.5","n"],["2.6","n"],
+  ["3.1","m"],["3.2","m"],["3.3","m"],["3.4","m"],["3.5","m"],["3.6","w"],["3.7","w"],["3.8","e"],["3.9","n"],["3.10","c"],["3.11","c"],["3.12","e"],["3.13","m"],
+  ["4.1","w"],["4.2","n"],["4.3","c"],["4.4","c"],["4.5","e"],["4.6","c"],["4.7","c"],["4.8","w"],["4.9","n"],["4.10","w"],["4.11","w"],["4.12","e"],
+  ["5.1","w"],["5.2","n"],["5.3","w"],["5.4","n"],["5.5","c"],["5.6","c"],["5.7","c"],
+  ["6.1","w"],["6.2","c"],["6.3","m"],["6.4","m"],["6.5","n"],["6.6","w"],["6.7","e"],["6.8","e"],
+  ["7.1","w"],["7.2","c"],["7.3","r"],["7.4","w"],["7.5","e"],["7.6","e"],
+  ["8.1","e"],["8.2","c"],["8.3","c"],["8.4","w"],["8.5","r"],["8.6","r"],["8.7","m"],["8.8","m"],
+];
+const KINDS = [
+  { k: "c", label: "Chasing and waiting" },
+  { k: "m", label: "Meetings, rebuilding context" },
+  { k: "n", label: "Notifying, handing off" },
+  { k: "e", label: "Writing it up, redoing it" },
+  { k: "r", label: "Re-keying between systems" },
+];
+
+/* ------------------------------------------------------------ geometry (window px, band-local) */
+const CW = 706 - 2 * 43.2;              // content width, 619.6
+const GAP = 6;
+const C = (CW - 14 * GAP) / 15;         // 35.707, the page's cell
+const P = C + GAP;                      // pitch
+const BAND = 5 * C + 4 * GAP;           // 202.53
+const slot = i => ({ x: (i % 15) * P, y: Math.floor(i / 15) * P, s: C });
+
+/* the kinds chart: one row per kind in the same band, smaller cells */
+const KC = 24, KP = KC + GAP, KX = 186;
+const ROW = BAND / 5;
+const kindCell = (r, col) => ({ x: KX + col * KP, y: (r + 0.5) * ROW - KC / 2, s: KC });
+
+/* every cell: where it sits sorted (the page), in order, and in its kind row */
+const band = document.getElementById("band");
+let wRank = 0, xRank = 0;
+const kindCount = Object.fromEntries(KINDS.map(k => [k.k, 0]));
+const cells = STEPS.map(([id, kind], i) => {
+  const el = document.createElement("i");
+  const work = kind === "w";
+  el.className = work ? "w" : "x";
+  band.appendChild(el);
+  const c = { el, id, kind, work, order: i };
+  if (work) c.sorted = wRank++;
+  else {
+    c.sorted = 21 + xRank++;
+    c.row = KINDS.findIndex(k => k.k === kind);
+    c.col = kindCount[kind]++;
+  }
+  return c;
+});
+/* on the way back the rows pour into the grid in reading order */
+const rowStart = []; KINDS.reduce((a, k, r) => (rowStart[r] = a, a + kindCount[k.k]), 0);
+cells.filter(c => !c.work).forEach(c => { c.back = 21 + rowStart[c.row] + c.col; });
+
+/* labels + counts of the kinds chart */
+const kindEls = KINDS.map((k, r) => {
+  const lab = document.createElement("div");
+  lab.className = "cx-kind";
+  lab.textContent = k.label;
+  lab.style.top = `${(r + 0.5) * ROW - 12}px`;
+  const num = document.createElement("div");
+  num.className = "cx-num";
+  num.style.top = `${(r + 0.5) * ROW - 12}px`;
+  num.style.left = `${KX + kindCount[k.k] * KP - GAP + 10}px`;
+  band.append(lab, num);
+  return { lab, num, n: kindCount[k.k] };
+});
+
+/* ------------------------------------------------------------ timeline (10 s, loops) */
+/* v2 (27 Sep 2026, "a little more time in each state"): the film plays once
+ * and ends on its last frame, so the 1.8 s end hold went into the states:
+ * the figure 0.8 s, in order 1.4 s, by kind 3.4 s once every label is in */
+const S = 10;
+const A0 = 0.80;   // sorted -> in order
+const B0 = 3.40;   // in order -> by kind
+const C0 = 8.50;   // by kind -> sorted (54 of 75), settled by 9.85
+const MOVE = 0.72;
+const departB = c => B0 + 0.1 + c.row * 0.1 + c.col * 0.035;
+
+const place = (el, p, o = 1) => {
+  el.style.left = `${p.x}px`;
+  el.style.top = `${p.y}px`;
+  el.style.width = el.style.height = `${p.s}px`;
+  el.style.opacity = o;
+};
+const mixP = (a, b, k) => ({ x: lerp(a.x, b.x, k), y: lerp(a.y, b.y, k), s: lerp(a.s, b.s, k) });
+/* a cell that shrinks or grows in place keeps its centre */
+const scaled = (p, k) => ({ x: p.x + p.s * (1 - k) / 2, y: p.y + p.s * (1 - k) / 2, s: p.s * k });
+
+/* a label swap: out rises 4 px and fades, in comes up from 4 px below */
+function swap(el, vis) {
+  el.style.opacity = vis;
+  el.style.transform = vis >= 1 ? "none" : `translateY(${(1 - vis) * 4}px)`;
+}
+const outIn = (t, t0) => ({ out: 1 - E.outCubic(seg(t, t0, t0 + 0.18)), in: E.outCubic(seg(t, t0 + 0.16, t0 + 0.42)) });
+
+function render(t) {
+  t = ((t % S) + S) % S;
+
+  for (const c of cells) {
+    if (t < B0) {
+      /* in order: every cell turns over where it stands, in a wave from the
+       * first step to the last, and shows what that step really is */
+      const f0 = A0 + (c.order / 74) * 0.9;
+      const kF = seg(t, f0, f0 + 0.3);
+      const sy = Math.abs(Math.cos(Math.PI * E.inOutCubic(kF)));
+      const was = c.order < 21;                       /* the sorted figure's colour in this slot */
+      const grey = kF < 0.5 ? was : c.work;
+      const p = slot(c.order);
+      c.el.style.background = grey ? "var(--work)" : "var(--tax)";
+      c.el.style.zIndex = grey ? 2 : 1;
+      c.el.style.left = `${p.x}px`;
+      c.el.style.top = `${p.y + C * (1 - sy) / 2}px`;
+      c.el.style.width = `${C}px`;
+      c.el.style.height = `${C * sy}px`;
+      c.el.style.opacity = 1;
+      continue;
+    }
+    c.el.style.background = c.work ? "var(--work)" : "var(--tax)";
+    /* on the way back the tax passes over the work's slots: keep it on top */
+    c.el.style.zIndex = (t < C0) === c.work ? 2 : 1;
+    if (c.work) {
+      /* the work fades where it stands, then returns at the front of the grid */
+      const gone = E.outCubic(seg(t, B0, B0 + 0.3));
+      const back = E.outCubic(seg(t, C0 + 0.75 + (c.sorted / 20) * 0.2, C0 + 1.15 + (c.sorted / 20) * 0.2));
+      if (t < C0) place(c.el, scaled(slot(c.order), 1 - 0.25 * gone), 1 - gone);
+      else place(c.el, scaled(slot(c.sorted), 0.75 + 0.25 * back), back);
+    } else {
+      /* each kind fills its row as a stream, first step first */
+      const kB = E.inOutCubic(seg(t, departB(c), departB(c) + MOVE));
+      const j = c.back - 21;
+      const back0 = C0 + 0.05 + ((53 - j) / 53) * 0.5;   /* the bottom row pours first, so rows never cross */
+      const kC = E.inOutCubic(seg(t, back0, back0 + MOVE));
+      if (t < C0) place(c.el, mixP(slot(c.order), kindCell(c.row, c.col), kB));
+      else place(c.el, mixP(kindCell(c.row, c.col), slot(c.back), kC));
+    }
+  }
+
+  /* kind labels and counts: in once the row is full (nothing flies over
+   * them), out as the row leaves */
+  kindEls.forEach((k, r) => {
+    const full = Math.max(...cells.filter(c => c.row === r).map(c => departB(c) + MOVE));
+    const vis = E.outCubic(seg(t, full - 0.05, full + 0.28)) * (1 - E.outCubic(seg(t, C0, C0 + 0.22)));
+    swap(k.lab, vis);
+    swap(k.num, vis);
+    k.num.textContent = k.n;
+  });
+
+  /* head: what is counted */
+  const a = outIn(t, A0), b = outIn(t, B0), c = outIn(t, C0);
+  swap(document.getElementById("lab0"), t < C0 ? a.out : c.in);
+  swap(document.getElementById("lab1"), t < B0 ? a.in : b.out);
+  swap(document.getElementById("lab2"), t < C0 ? b.in : c.out);
+  swap(document.getElementById("tot0"), t < C0 ? b.out : c.in);
+  swap(document.getElementById("tot1"), t < C0 ? b.in : c.out);
+
+  /* the legend's work line steps back while the work is off the band */
+  const dim = E.outCubic(seg(t, B0, B0 + 0.3)) * (1 - E.outCubic(seg(t, C0 + 0.75, C0 + 1.15)));
+  document.getElementById("legWork").style.opacity = 1 - 0.6 * dim;
+}
+
+window.seek = t => render(t);
+window.camAt = () => ({ cx: 353, cy: 190, vw: 706 });   /* (page cut: 310, 150, 620) */   /* no camera: the frame is the cell */
+
+const q = new URLSearchParams(location.search);
+if (q.has("play")) {
+  const t0 = performance.now() - (+q.get("play") || 0) * 1000;
+  const loop = () => { render((performance.now() - t0) / 1000); requestAnimationFrame(loop); };
+  loop();
+} else render(+(q.get("t") || 0));
+</script>
+</body>
+</html>

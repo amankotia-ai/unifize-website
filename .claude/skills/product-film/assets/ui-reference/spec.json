@@ -1,0 +1,307 @@
+[
+ {
+  "name": "home-assembled",
+  "t": 1.4
+ },
+ {
+  "name": "home-row-landed",
+  "t": 2.4
+ },
+ {
+  "name": "home-hover-open-record",
+  "t": 3.3
+ },
+ {
+  "name": "home-click",
+  "t": 3.8
+ },
+ {
+  "name": "record-drawer",
+  "t": 4.95
+ },
+ {
+  "name": "conversation-view",
+  "t": 6.6
+ },
+ {
+  "name": "inbox-peek-hover",
+  "t": 7.3
+ },
+ {
+  "name": "thread-replies",
+  "t": 8.6
+ },
+ {
+  "name": "composer-typing",
+  "t": 9.6
+ },
+ {
+  "name": "reply-sent",
+  "t": 10.8
+ },
+ {
+  "name": "checklist-typing",
+  "t": 12.6
+ },
+ {
+  "name": "checklist-ticked",
+  "t": 13.8
+ },
+ {
+  "name": "checklist-live-update",
+  "t": 14.8
+ },
+ {
+  "name": "sign-dialog",
+  "t": 17.3
+ },
+ {
+  "name": "sign-meaning-menu",
+  "t": 17.7
+ },
+ {
+  "name": "sign-password",
+  "t": 19.2
+ },
+ {
+  "name": "sign-signing",
+  "t": 19.75
+ },
+ {
+  "name": "sign-signed",
+  "t": 20.05
+ },
+ {
+  "name": "seal-landed",
+  "t": 21.2
+ },
+ {
+  "name": "edit-process-hover",
+  "t": 22.55
+ },
+ {
+  "name": "builder",
+  "t": 23.5
+ },
+ {
+  "name": "builder-drag",
+  "t": 24.3
+ },
+ {
+  "name": "builder-naming",
+  "t": 25.0
+ },
+ {
+  "name": "builder-settings-toggle",
+  "t": 26.2
+ },
+ {
+  "name": "builder-published",
+  "t": 27.6
+ },
+ {
+  "name": "dashboard",
+  "t": 30.4
+ },
+ {
+  "name": "dashboard-tooltip",
+  "t": 31.2
+ },
+ {
+  "name": "dashboard-row-hover",
+  "t": 32.6
+ },
+ {
+  "name": "loop-end-equals-start",
+  "t": 34.55
+ },
+ {
+  "name": "c-sidebar",
+  "t": 2.4,
+  "sel": ".nav",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-sidebar-tooltip",
+  "t": 28.95,
+  "sel": "#nav-tip",
+  "pad": 40,
+  "scale": 2
+ },
+ {
+  "name": "c-queue-tile",
+  "t": 3.3,
+  "sel": "#t-cc",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-approvals-tile",
+  "t": 2.4,
+  "sel": ".col > .tile:nth-child(2)",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-overview-chart",
+  "t": 1.4,
+  "sel": ".chart",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-updates-card",
+  "t": 2.4,
+  "sel": ".upd",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-open-record-button",
+  "t": 3.3,
+  "sel": "#open-btn",
+  "pad": 16,
+  "scale": 2
+ },
+ {
+  "name": "c-drawer-head",
+  "t": 4.95,
+  "sel": ".dr-head",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-message",
+  "t": 4.95,
+  "sel": ".dr-scroll > .msg",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-composer-typing",
+  "t": 9.6,
+  "sel": "#comp",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-inbox-list",
+  "t": 7.3,
+  "sel": "#inbox",
+  "pad": 0,
+  "scale": 2
+ },
+ {
+  "name": "c-checklist",
+  "t": 14.8,
+  "sel": "#ck",
+  "pad": 0,
+  "scale": 2
+ },
+ {
+  "name": "c-checklist-field-typing",
+  "t": 12.6,
+  "sel": "#ck-impact",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-checklist-signed-row",
+  "t": 21.2,
+  "sel": "#ck-qa",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-signature-dialog-menu",
+  "t": 17.7,
+  "sel": "#sig",
+  "pad": 12,
+  "scale": 2
+ },
+ {
+  "name": "c-signature-dialog-password",
+  "t": 19.2,
+  "sel": "#sig",
+  "pad": 12,
+  "scale": 2
+ },
+ {
+  "name": "c-seal-message",
+  "t": 21.2,
+  "sel": "#seal-pop",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-canvas-drop-line",
+  "t": 24.4,
+  "sel": ".bd-canvas",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-new-field-naming",
+  "t": 25.0,
+  "sel": ".bd-canvas",
+  "pad": 6,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-palette",
+  "t": 23.5,
+  "sel": "#bd-pal",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-drag-ghost",
+  "t": 24.3,
+  "sel": "#bd-ghost",
+  "pad": 30,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-settings",
+  "t": 26.2,
+  "sel": "#bd-set",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-builder-topbar-published",
+  "t": 27.6,
+  "sel": ".bd-top",
+  "pad": 0,
+  "scale": 2
+ },
+ {
+  "name": "c-dashboard-kpis",
+  "t": 30.4,
+  "sel": ".db-kpis",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-dashboard-chart-tooltip",
+  "t": 31.2,
+  "sel": ".db-card",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-dashboard-table",
+  "t": 32.6,
+  "sel": "#db-table",
+  "pad": 8,
+  "scale": 2
+ },
+ {
+  "name": "c-pointer",
+  "t": 3.3,
+  "sel": "#cursor",
+  "pad": 10,
+  "scale": 2
+ }
+]

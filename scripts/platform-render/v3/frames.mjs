@@ -7,6 +7,10 @@
  *
  * board: 1600x720 viewport (the 20:9 hero box) at 2x, JPEG.
  * flat:  the 1360x660 window alone at --scale (default 4), PNG.
+ *
+ * Other films: --win=WxH (the scene's window, default 1360x660),
+ * --vp=WxH (the board viewport, default 1600x720), --query=a=1&b=2 (extra
+ * URL parameters, e.g. step=2 for a scene that holds several films).
  */
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
@@ -24,6 +28,11 @@ const scaleArg = process.argv.find(a => a.startsWith("--scale="));
 const SCALE = scaleArg ? +scaleArg.split("=")[1] : 4;
 const dsfArg = process.argv.find(a => a.startsWith("--dsf="));
 const BOARD_DSF = dsfArg ? +dsfArg.split("=")[1] : 2;
+const dims = (name, def) => { const a = process.argv.find(x => x.startsWith(`--${name}=`)); return a ? a.split("=")[1].split("x").map(Number) : def; };
+const [WIN_W, WIN_H] = dims("win", [1360, 660]);
+const [VP_W, VP_H] = dims("vp", [1600, 720]);
+const qArg = process.argv.find(a => a.startsWith("--query="));
+const QUERY = qArg ? `&${qArg.slice(8)}` : "";
 const SEQ = times.startsWith("seq:");
 mkdirSync(out, { recursive: true });
 
@@ -37,6 +46,9 @@ if (times.startsWith("seq:")) {
 const port = 9400 + Math.floor(Math.random() * 400);
 const chrome = spawn(CHROME, ["--headless", `--remote-debugging-port=${port}`, "--hide-scrollbars", "--force-color-profile=srgb", "--allow-file-access-from-files", "about:blank"], { stdio: "ignore" });
 const sleep = ms => new Promise(r => setTimeout(r, ms));
+for (const sig of ["exit", "SIGINT", "SIGTERM"]) process.on(sig, () => { try { chrome.kill(); } catch {} });
+process.on("uncaughtException", e => { console.error(e); try { chrome.kill(); } catch {} process.exit(1); });
+process.on("unhandledRejection", e => { console.error(e); try { chrome.kill(); } catch {} process.exit(1); });
 
 let target;
 for (let i = 0; i < 60 && !target; i++) {
@@ -53,17 +65,17 @@ const evaluate = async expr => (await send("Runtime.evaluate", { expression: exp
 
 const flat = mode === "flat";
 await send("Emulation.setDeviceMetricsOverride", flat
-  ? { width: 1360, height: 660, deviceScaleFactor: SCALE, mobile: false }
-  : { width: 1600, height: 720, deviceScaleFactor: BOARD_DSF, mobile: false });
+  ? { width: WIN_W, height: WIN_H, deviceScaleFactor: SCALE, mobile: false }
+  : { width: VP_W, height: VP_H, deviceScaleFactor: BOARD_DSF, mobile: false });
 await send("Page.enable");
-await send("Page.navigate", { url: `${pathToFileURL(path.resolve(scene)).href}?mode=${mode}` });
+await send("Page.navigate", { url: `${pathToFileURL(path.resolve(scene)).href}?mode=${mode}${QUERY}` });
 await sleep(1200);
 await evaluate("document.fonts.ready.then(() => document.fonts.size)");
 
 for (const [i, t] of list.entries()) {
   await evaluate(`(seek(${t}), new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))))`);
   const shot = await send("Page.captureScreenshot", flat
-    ? { format: "png", clip: { x: 0, y: 0, width: 1360, height: 660, scale: 1 }, captureBeyondViewport: false }
+    ? { format: "png", clip: { x: 0, y: 0, width: WIN_W, height: WIN_H, scale: 1 }, captureBeyondViewport: false }
     : SEQ ? { format: "png" } : { format: "jpeg", quality: 92 });
   const name = flat || SEQ ? `f${String(i).padStart(4, "0")}.png` : `t${t.toFixed(2)}.jpg`;
   writeFileSync(path.join(out, name), Buffer.from(shot.result.data, "base64"));
@@ -73,12 +85,16 @@ if (flat) {
   /* the camera the scene defines, sampled at every rendered frame, so Blender
    * films exactly the move the storyboard shows (window px: centre + width) */
   const cams = await evaluate(`JSON.stringify(${JSON.stringify(list)}.map(t => camAt(t)))`);
-  writeFileSync(path.join(out, "camera.json"), JSON.stringify({ window: [1360, 660], scale: SCALE, times: list, cam: JSON.parse(cams) }));
+  writeFileSync(path.join(out, "camera.json"), JSON.stringify({ window: [WIN_W, WIN_H], scale: SCALE, times: list, cam: JSON.parse(cams) }));
   console.log("camera.json");
 }
+/* --geo=sel|sel prints where elements sit in window px (for camera keys and
+ * pointer targets); selectors that match nothing are skipped */
 const geoArg = process.argv.find(a => a.startsWith("--geo="));
-const GEO = geoArg ? geoArg.slice(6).split("|") : ["#r-new", "#open-btn", "#t-cc", "#drawer", ".chart"];
-const geo = await evaluate(`JSON.stringify(Object.fromEntries(${JSON.stringify(GEO)}.map(s => { const r = document.querySelector(s).getBoundingClientRect(); const c = document.querySelector("#cam").getBoundingClientRect(); const k = c.width / 1360; return [s, [(r.x - c.x) / k, (r.y - c.y) / k, r.width / k, r.height / k].map(v => Math.round(v))]; })))`);
-console.log("geometry (window px, x y w h):", geo);
+if (geoArg) {
+  const GEO = geoArg.slice(6).split("|");
+  const geo = await evaluate(`JSON.stringify(Object.fromEntries(${JSON.stringify(GEO)}.filter(s => document.querySelector(s)).map(s => { const r = document.querySelector(s).getBoundingClientRect(); const c = document.querySelector("#cam").getBoundingClientRect(); const k = c.width / ${WIN_W}; return [s, [(r.x - c.x) / k, (r.y - c.y) / k, r.width / k, r.height / k].map(v => Math.round(v))]; })))`);
+  console.log("geometry (window px, x y w h):", geo);
+}
 ws.close();
 chrome.kill();
